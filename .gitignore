@@ -1,0 +1,8 @@
+/clients/android/**/*.iml
+/clients/android/.gradle
+/clients/android//local.properties
+/clients/android/.idea/workspace.xml
+/clients/android/.idea/libraries
+/clients/android/.DS_Store
+/clients/android/build
+/clients/android/captures

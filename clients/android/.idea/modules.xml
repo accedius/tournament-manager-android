@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hockey/hockey.iml" filepath="$PROJECT_DIR$/hockey/hockey.iml" />
+      <module fileurl="file://$PROJECT_DIR$/squash/squash.iml" filepath="$PROJECT_DIR$/squash/squash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmlibrary/tmlibrary.iml" filepath="$PROJECT_DIR$/tmlibrary/tmlibrary.iml" />
+    </modules>
+  </component>
+</project>
