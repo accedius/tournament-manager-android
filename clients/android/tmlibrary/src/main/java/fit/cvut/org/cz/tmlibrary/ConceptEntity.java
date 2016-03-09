@@ -10,6 +10,16 @@ public class ConceptEntity implements Parcelable {
 
     String name;
     long id;
+
+    @Override
+    public String toString() {
+        return "ConceptEntity{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", entity=" + entity.toString() +
+                '}';
+    }
+
     InnerEntity entity;
 
     public ConceptEntity(String name, long id, InnerEntity entity) {

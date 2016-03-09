@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TournamentManager</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">TM Maim</string>
 </resources>

@@ -2,6 +2,7 @@ package fit.cvut.org.cz.tmlibrary;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,9 @@ public class ConceptService extends IntentService {
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
-     * @param name Used to name the worker thread, important only for debugging.
      */
-    public ConceptService(String name) {
-        super(name);
+    public ConceptService() {
+        super("Concept service");
     }
 
     public static final String ARG_DATA = "data";
@@ -33,15 +33,16 @@ public class ConceptService extends IntentService {
 
         Random r = new Random();
 
-        List<ConceptEntity> data = new ArrayList<>();
+        ArrayList<ConceptEntity> data = new ArrayList<>();
         for (int i = 0; i< 10; i++){
             ConceptEntity entity = new ConceptEntity("name " + Integer.toString(r.nextInt(100)), i, new InnerEntity("name " + Integer.toString(r.nextInt(100))));
             data.add(entity);
         }
 
-        Intent resultIntnet = new Intent("action");
-        intent.putExtra(ARG_DATA, data.toArray());
+        Intent resultIntnet = new Intent("akce");
+        resultIntnet.putParcelableArrayListExtra(ARG_DATA, data);
+        Log.d("SRVC", "DONE WORK");
 
-        sendBroadcast(intent);
+        sendBroadcast(resultIntnet);
     }
 }

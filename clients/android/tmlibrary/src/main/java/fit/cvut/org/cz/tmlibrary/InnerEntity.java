@@ -47,4 +47,11 @@ public class InnerEntity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(innerName);
     }
+
+    @Override
+    public String toString() {
+        return "InnerEntity{" +
+                "innerName='" + innerName + '\'' +
+                '}';
+    }
 }
