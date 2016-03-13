@@ -6,3 +6,5 @@
 /clients/android/.DS_Store
 /clients/android/build
 /clients/android/captures
+/clients/android/**/*.log
+
