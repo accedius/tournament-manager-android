@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TournamentManager</string>
-    <string name="title_activity_main">TM Maim</string>
+    <string name="main_acc_name">Main Activity</string>
+
 </resources>

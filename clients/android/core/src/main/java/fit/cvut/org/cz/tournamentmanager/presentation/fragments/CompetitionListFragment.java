@@ -2,11 +2,16 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
@@ -21,14 +26,15 @@ public class CompetitionListFragment extends AbstractListFragment {
     @Override
     protected void registerReceivers() {
 
-        getActivity().registerReceiver(receiver, new IntentFilter(action));
+        //getActivity().);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(action));
 
     }
 
     @Override
     protected void unregisterReceivers() {
 
-        getActivity().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
 
     }
 
@@ -42,6 +48,8 @@ public class CompetitionListFragment extends AbstractListFragment {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return null;
+        return new CompetitionAdapter();
     }
+
+
 }
