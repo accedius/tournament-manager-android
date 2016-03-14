@@ -8,3 +8,5 @@
 /clients/android/captures
 /clients/android/**/*.log
 
+.idea/
+clients/android/local.properties
