@@ -85,8 +85,8 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Fragmen
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        RecyclerView.ItemDecoration dividers = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
-        recyclerView.addItemDecoration(dividers);
+//        RecyclerView.ItemDecoration dividers = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+//        recyclerView.addItemDecoration(dividers);
         receiver = new DataReceiver();
 
         return fragmetview;

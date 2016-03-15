@@ -5,7 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.Window;
+import android.widget.ProgressBar;
 
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -13,13 +15,17 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.CompetitionListF
 
 public class MainActivity extends AppCompatActivity implements IProgressInterface {
 
+    private ProgressBar bar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
+        bar = (ProgressBar) findViewById(R.id.progress_spinner);
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null){
             getSupportFragmentManager()
@@ -32,11 +38,11 @@ public class MainActivity extends AppCompatActivity implements IProgressInterfac
 
     @Override
     public void showProgress() {
-        setSupportProgressBarIndeterminateVisibility(true);
+        bar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        setSupportProgressBarIndeterminateVisibility(true);
+        bar.setVisibility(View.GONE);
     }
 }

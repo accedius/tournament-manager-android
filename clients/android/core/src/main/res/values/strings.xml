@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TournamentManager</string>
     <string name="main_acc_name">Main Activity</string>
+    <string name="title_activity_toolbar">ToolbarActivity</string>
 
 </resources>

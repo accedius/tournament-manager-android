@@ -7,7 +7,15 @@ import android.os.Parcelable;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Player implements Parcelable {
+
+    private String name;
+
     protected Player(Parcel in) {
+        name = in.readString();
+    }
+
+    public Player(String name) {
+        this.name = name;
     }
 
     public static final Creator<Player> CREATOR = new Creator<Player>() {
@@ -29,5 +37,14 @@ public class Player implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
