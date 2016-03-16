@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -26,9 +29,9 @@ public class CompetitionService extends IntentService {
     private ArrayList<Competition> getData() {
 
         ArrayList<Competition> data = new ArrayList<>();
-        data.add(new Competition(1, null, "Prvni liga", new Date(2013,1,1), new Date(2013,12,31), null, null, null, "squash"));
-        data.add(new Competition(2, null, "Vikendova liga", new Date(2013,1,1), new Date(2013,6, 30), null, null, null, "hockey"));
-        data.add(new Competition(3, null, "Mistrovstvi Prahy", new Date(2015, 3, 2), new Date(2015,3,5), null, null, null, "squash"));
+        data.add(new Competition(1, null, "Prvni liga", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
+        data.add(new Competition(2, null, "Vikendova liga",Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "hockey"));
+        data.add(new Competition(3, null, "Mistrovstvi Prahy", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
 
         return data;
     }
@@ -36,7 +39,7 @@ public class CompetitionService extends IntentService {
     public static Intent getStartIntent(String action, Context context){
 
         Intent intent = new Intent(context, CompetitionService.class);
-        intent.setAction(action);
+        intent.putExtra(EXTRA_ACTION, action);
 
         return intent;
     }
@@ -49,10 +52,10 @@ public class CompetitionService extends IntentService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        String action = intent.getAction();
+        String action = intent.getStringExtra(EXTRA_ACTION);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
+        result.putParcelableArrayListExtra(AbstractListFragment.EXTRA_DATA, getData());
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }

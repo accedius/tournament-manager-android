@@ -7,17 +7,23 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="fit.cvut.org.cz.tournamentmanager.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:name=".presentation.activities.MainActivity"
+            android:label="@string/main_acc_name">
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".presentation.services.CompetitionService" />
+
+        <activity
+            android:name=".presentation.activities.ToolbarActivity"
+            android:label="@string/title_activity_toolbar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

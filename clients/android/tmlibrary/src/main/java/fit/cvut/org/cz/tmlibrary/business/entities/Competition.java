@@ -41,6 +41,8 @@ public class Competition implements Parcelable {
         players = in.createTypedArrayList(Player.CREATOR);
         note = in.readString();
         type = in.readString();
+        startDate = new Date(in.readLong());
+        endDate = new Date(in.readLong());
     }
 
     public static final Creator<Competition> CREATOR = new Creator<Competition>() {
@@ -141,5 +143,7 @@ public class Competition implements Parcelable {
         dest.writeTypedList(players);
         dest.writeString(note);
         dest.writeString(type);
+        dest.writeLong(startDate.getTime());
+        dest.writeLong(endDate.getTime());
     }
 }

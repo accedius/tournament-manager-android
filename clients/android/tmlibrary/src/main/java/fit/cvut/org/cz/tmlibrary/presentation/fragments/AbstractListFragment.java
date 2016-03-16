@@ -7,15 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.decorators.DividerItemDecoration;
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 /**
@@ -28,7 +32,7 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Fragmen
     private List<T> data;
     private IProgressInterface progressInterface;
     private RecyclerView recyclerView;
-    private AbstractListAdapter<T> adapter;
+    private AbstractListAdapter adapter;
 
     protected DataReceiver receiver;
 
@@ -39,7 +43,7 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Fragmen
     protected abstract void registerReceivers();
     protected abstract void unregisterReceivers();
     protected abstract void getData();
-    protected abstract AbstractListAdapter<T> getAdapter();
+    protected abstract AbstractListAdapter getAdapter();
 
 
 
@@ -75,8 +79,14 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Fragmen
         View fragmetview = inflater.inflate(R.layout.fragment_abstract_list, container, false);
 
         recyclerView = (RecyclerView) fragmetview.findViewById(R.id.recycler_view);
+        data = new ArrayList<T>();
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+//        RecyclerView.ItemDecoration dividers = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+//        recyclerView.addItemDecoration(dividers);
         receiver = new DataReceiver();
 
         return fragmetview;
@@ -101,8 +111,10 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Fragmen
         public void onReceive(Context context, Intent intent) {
 
             hideProgress();
-            data = intent.getParcelableArrayListExtra(EXTRA_DATA);
-            adapter.swapData(data);
+            Toast.makeText(getActivity(), "Data received", Toast.LENGTH_SHORT).show();
+            List<T> newData = intent.getParcelableArrayListExtra(EXTRA_DATA);
+            //recyclerView.swapAdapter(getAdapter(data), false);
+            adapter.swapData(newData);
         }
     }
 
