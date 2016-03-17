@@ -67,16 +67,12 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
      */
     protected abstract void bindView(VH holder, int position);
 
-    public void click(AppCompatCheckBox checkbox, int position){
+    public void click(int position){
 
-        if (checkbox.isChecked()){
-            //we want to unmark and remove
-            selectedIndeces.delete(position);
-            checkbox.setChecked(false);
-        } else {
-            selectedIndeces.append(position, true);
-            checkbox.setChecked(true);
-        }
+       if (!selectedIndeces.get(position, false)){
+           selectedIndeces.delete(position);
+           selectedIndeces.append(position, true);
+       } else selectedIndeces.delete(position);
 
     }
 
