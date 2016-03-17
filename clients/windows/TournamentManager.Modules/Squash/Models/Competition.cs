@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TournamentManager.Library.Models;
-namespace TournamentManager.Core.Models
+
+namespace TournamentManager.Modules.Squash.Models
 {
-    class Competition : BaseCompetition
+    public class Competition : CompetitionBase
     {
     }
 }

@@ -6,6 +6,12 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System;
 using System.Reflection;
+using Windows.UI.Xaml.Data;
+using TournamentManager.Core.Models;
+using TournamentManager.Library.Helpers;
+using TournamentManager.Library.Models;
+using TournamentManager.Core.Services;
+using TournamentManager.Core.BusinessLogic;
 
 namespace TournamentManager.Core.ViewModels
 {
@@ -13,21 +19,9 @@ namespace TournamentManager.Core.ViewModels
     {
         public MainPageViewModel()
         {
-            Windows.ApplicationModel.Package package = Windows.ApplicationModel.Package.Current;
-            IReadOnlyList<Windows.ApplicationModel.Package> dependencies = package.Dependencies;
-
-            // The count of dependencies is dependencies.Count
-            String output = String.Format("Count: {0}", dependencies.Count.ToString());
-            for (int i = 0; i < dependencies.Count; i++)
-            {
-                // The package full name is dependency.Id.FullName
-                Windows.ApplicationModel.Package dependency = dependencies[i];
-                output += String.Format("\n[{0}]: {1}", i.ToString(), dependency.Id.FullName);
-            }
-          
-            System.Diagnostics.Debug.WriteLine(output);
-            
-           
+            CompetitionsSource.Source = groupedCompetitions = new CompetitionManager().GetAllCompetitions() as List<TitledList<TMModule, CompetitionBase>>;
+            CompetitionsSource.IsSourceGrouped = true;
+            CompetitionsSource.ItemsPath = new Windows.UI.Xaml.PropertyPath("Items");
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
@@ -37,6 +31,23 @@ namespace TournamentManager.Core.ViewModels
 
         string _Value = "Gas";
         public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+
+        private CollectionViewSource competitionsSource = new CollectionViewSource();
+        private List<TitledList<TMModule, CompetitionBase>> groupedCompetitions;
+
+        public CollectionViewSource CompetitionsSource
+        {
+            get
+            {
+                return competitionsSource;
+            }
+            set
+            {
+                competitionsSource = value;
+            }
+        }
+
+
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {

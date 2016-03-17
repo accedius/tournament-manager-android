@@ -1,45 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TournamentManager.Library.DataAccessLayer.Competition;
+using TournamentManager.Library.Models;
 
 namespace TournamentManager.Library.DataAccessLayer.Generic
 {
-    public abstract class GenericDAO<T> : IGenericDAO<T> where T : class
+    public abstract class GenericDAO<T, TResult> :  IGenericDAO<T, TResult> where T : BaseEntity where TResult : BaseEntity
     {
-        protected SQLite.Net.SQLiteConnection _db = default(SQLite.Net.SQLiteConnection);
+        protected SQLite.Net.SQLiteConnection dbConnection;
 
-        public GenericDAO(SQLite.Net.SQLiteConnection db)
+        public GenericDAO(SQLite.Net.SQLiteConnection dbConnection)
         {
-            this._db = db;
+            this.dbConnection = dbConnection;
+            dbConnection.CreateTable<T>();
         }
 
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            dbConnection.Insert(entity);
         }
 
         public void Delete(long id)
         {
-            throw new NotImplementedException();
+            dbConnection.Delete<T>(id);
         }
 
         public void Edit(T entity)
         {
-            throw new NotImplementedException();
+           if( dbConnection.Update(entity) == 0)
+            {
+                dbConnection.InsertOrReplace(entity);
+                
+            }
+            dbConnection.Commit();
         }
 
-        public IEnumerable<T> GetAll()
+        public int CountAll()
         {
-            throw new NotImplementedException();
+            return dbConnection.Table<T>().Count();
         }
 
-        public T GetById()
+        public IEnumerable<TResult> GetAll()
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("GetAllFrom - "+typeof(T).FullName);
+            return (from t in dbConnection.Table<T>()
+                    select t) as IEnumerable<TResult>;
+            
         }
 
+        public TResult GetById(long id)
+        {
+            return dbConnection.Table<T>().FirstOrDefault(t => t.Id == id) as TResult;
+        }
 
     }
 }

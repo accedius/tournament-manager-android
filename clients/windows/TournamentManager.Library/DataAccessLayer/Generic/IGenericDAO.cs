@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TournamentManager.Library.DataAccessLayer.Generic
 {
-    public interface IGenericDAO<T> where T : class
+    public interface IGenericDAO< in T, out TResult> : IGenericDAOIn<T>, IGenericDAOOut<TResult>
     {
-        
+
+    }
+
+    public interface IGenericDAOIn< in T>
+    {
         void Add(T entity);
         void Edit(T entity);
         void Delete(long id);
-        T GetById();
-        IEnumerable<T> GetAll();
-
     }
+
+    public interface IGenericDAOOut<out TResult>
+    {
+        int CountAll();
+        TResult GetById(long id);
+        IEnumerable<TResult> GetAll();
+    }
+
 }

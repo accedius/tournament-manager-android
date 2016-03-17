@@ -14,39 +14,12 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
-                <VisualState x:Name="VisualStateNarrow">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for narrow view  -->
-                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="VisualStateNormal">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for normal view  -->
-                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="VisualStateWide">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for wide view  -->
-                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
 
         <controls:PageHeader x:Name="pageHeader" Text="Main Page">
             <!--  place stretched, across top  -->
@@ -61,124 +34,90 @@
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
-        <controls:Resizer x:Name="parameterResizer" Margin="16,16,16,0">
-            <!--  place below page header  -->
-            <RelativePanel.Below>pageHeader</RelativePanel.Below>
-            <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
-            <TextBox MinWidth="150" MinHeight="62"
-                     Header="Parameter to pass"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap">
-                <Interactivity:Interaction.Behaviors>
-                    <!--  enable submit on enter key  -->
-                    <Behaviors:KeyBehavior Key="Enter">
-                        <Core:CallMethodAction MethodName="GotoDetailsPage" TargetObject="{Binding}" />
-                    </Behaviors:KeyBehavior>
-                    <!--  focus on textbox when page loads  -->
-                    <Core:EventTriggerBehavior>
-                        <Behaviors:FocusAction />
-                    </Core:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
-            </TextBox>
-        </controls:Resizer>
+       <SemanticZoom Grid.Row="2" x:Name="Zoom" ScrollViewer.ZoomMode="Enabled">
 
-
-        <SemanticZoom x:Name="Zoom" ScrollViewer.ZoomMode="Enabled">
-
-            <SemanticZoom.ZoomedInView>
-                <ListView
+                <SemanticZoom.ZoomedInView>
+                    <ListView
                     x:Name="competitionsListView"
                     ScrollViewer.IsVerticalScrollChainingEnabled="False"
                     Margin="0"
-                    ItemsSource="{Binding TheSource.View}" 
-                    SelectionMode="{Binding ManageClickedMode}"
-                    IsMultiSelectCheckBoxEnabled="{Binding ManageClicked}" 
-                    SelectionChanged="{x:Bind ViewModel.managedListView_SelectionChanged}"
-                    IsItemClickEnabled="{Binding ItemClickEnabled}" 
-                    ItemClick="{x:Bind ViewModel.TournamentClick}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <!--   <Interactivity:Interaction.Behaviors>
+                    ItemsSource="{Binding CompetitionsSource.View}" 
+
+                    >
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <!--   <Interactivity:Interaction.Behaviors>
                         <Core:EventTriggerBehavior EventName="ItemClick">
                             <Core:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
                         </Core:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
 -->
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="20,10,0,10" Holding="StackPanel_Holding">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="20,10,0,10">
 
-                                <FlyoutBase.AttachedFlyout >
-                                    <MenuFlyout Placement="top" >
-                                        <MenuFlyoutItem Text="Delete" Tag="{Binding Id}" Click="MenuFlyoutItem_Click"></MenuFlyoutItem>
-                                        <MenuFlyoutItem Text="Edit" Tag="{Binding Id}"></MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </FlyoutBase.AttachedFlyout>
-                                <TextBlock FontSize="20" Text="{Binding Name}"/>
-                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Date}" VerticalAlignment="Top"/>
-                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Location}" VerticalAlignment="Top"/>
-                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top">
-                                   Players: 20, Teams: <Run Text="{Binding Teams.Count}" />
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                                    <FlyoutBase.AttachedFlyout >
+                                        <MenuFlyout Placement="top" >
+                                            <MenuFlyoutItem Text="Delete" Tag="{Binding Id}"></MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Edit" Tag="{Binding Id}"></MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </FlyoutBase.AttachedFlyout>
+                                    <TextBlock FontSize="20" Text="{Binding Name}"/>
+                                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding From}" VerticalAlignment="Top"/>
+                                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding To}" VerticalAlignment="Top"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsStackPanel/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
 
-                    <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderContainerStyle>
-                                <Style TargetType="ListViewBaseHeaderItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                </Style>
-                            </GroupStyle.HeaderContainerStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <StackPanel Padding="10,10,0,10" Orientation="Horizontal">
-                                        <StackPanel.Background>
-                                            <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}"/>
-                                        </StackPanel.Background>
-                                        <TextBlock Text='{Binding Sport.Icon}' Margin="0,0,15,0"
-                                         FontSize="18" FontFamily="Segoe UI Symbol" FontWeight="Light"/>
-                                        <TextBlock Text='{Binding Sport.Name}' 
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderContainerStyle>
+                                    <Style TargetType="ListViewBaseHeaderItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </GroupStyle.HeaderContainerStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Padding="10,10,0,10" Orientation="Horizontal">
+                                            <StackPanel.Background>
+                                                <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}"/>
+                                            </StackPanel.Background>
+                                            <TextBlock Text='{Binding Title.Name}' 
                                         FontSize="18" FontFamily="Segoe UI" FontWeight="Light"/>
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
 
-                    </ListView.GroupStyle>
+                        </ListView.GroupStyle>
 
-                </ListView>
-            </SemanticZoom.ZoomedInView>
-            <SemanticZoom.ZoomedOutView>
-                <ListView VerticalAlignment="Center" ItemsSource="{Binding TheSource.View.CollectionGroups}" HorizontalAlignment="Center" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" >
-                                <TextBlock FontSize="20" FontFamily="Segoe UI Symbol" Margin="15,0"
-                                   Text="{Binding Group.Sport.Icon}"
+                    </ListView>
+                </SemanticZoom.ZoomedInView>
+                <SemanticZoom.ZoomedOutView>
+                <ListView VerticalAlignment="Center" ItemsSource="{Binding CompetitionsSource.View.CollectionGroups}" HorizontalAlignment="Center" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" >
+                                   <TextBlock FontSize="20" 
+                                   Text="{Binding Group.Title.Name}"
                                    />
-                                <TextBlock FontSize="20" 
-                                   Text="{Binding Group.Sport.Name}"
-                                   />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-                </ListView>
-            </SemanticZoom.ZoomedOutView>
-        </SemanticZoom>
-        
-    </RelativePanel>
+                    </ListView>
+                </SemanticZoom.ZoomedOutView>
+            </SemanticZoom>
+        </Grid>
 </Page>
 

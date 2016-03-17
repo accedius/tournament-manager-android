@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Diagnostics;
+using TournamentManager.Core.Services;
 
 namespace TournamentManager.Core
 {
@@ -34,6 +35,10 @@ namespace TournamentManager.Core
             ShowShellBackButton = _settings.UseShellBackButton;
 
             #endregion
+
+            #region Module loading
+                ModuleService.Instance.Initialize();
+            #endregion
         }
 
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
@@ -43,21 +48,34 @@ namespace TournamentManager.Core
             {
                 // setup hamburger shell inside a modal dialog
                 var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
+
                 Window.Current.Content = new ModalDialog
                 {
                     DisableBackButtonWhenModal = true,
                     Content = new Views.Shell(nav),
                     ModalContent = new Views.Busy(),
                 };
+              
             }
+
             await Task.CompletedTask;
         }
+
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // long-running startup tasks go here
 
-            NavigationService.Navigate(typeof(Views.MainPage));
+            //if this is first start of app, navigate to sport-selection start page
+            if (ModuleService.Instance.IsFirstStart)
+            {
+                NavigationService.Navigate(typeof(Views.FirstStartPage));
+            }
+            else
+            {
+                NavigationService.Navigate(typeof(Views.MainPage));
+            }
+
             await Task.CompletedTask;
         }
 
