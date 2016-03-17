@@ -28,7 +28,7 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
         this.selectedIndeces.clear();
         for (int i =0; i< selectedIndeces.size(); i++){
             int key = selectedIndeces.keyAt(i);
-            this.selectedIndeces.append(key, selectedIndeces.valueAt(key));
+            this.selectedIndeces.append(key, selectedIndeces.get(key));
         }
 
         notifyDataSetChanged();
@@ -37,7 +37,7 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
     public ArrayList<T> getSelectedItems(){
 
         ArrayList<T> selected = new ArrayList<>();
-        for (int i = 0; i < selected.size(); i++){
+        for (int i = 0; i < selectedIndeces.size(); i++){
             int index = selectedIndeces.keyAt(i);
             selected.add(data.get(index));
         }
@@ -56,6 +56,7 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
     public final void onBindViewHolder(VH holder, int position) {
         ((SelectableViewHolder) holder).checkbox.setChecked(selectedIndeces.get(position, false));
         ((SelectableViewHolder) holder).position = position;
+        bindView(holder, position);
     }
 
     /**
