@@ -31,7 +31,7 @@ public class CompetitionListFragment extends AbstractListFragment {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking;
+        return CompetitionService.isWorking();
     }
 
     @Override

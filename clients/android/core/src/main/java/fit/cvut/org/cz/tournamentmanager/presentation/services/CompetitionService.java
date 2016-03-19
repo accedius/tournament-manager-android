@@ -13,16 +13,16 @@ import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class CompetitionService extends IntentService {
+public class CompetitionService extends AbstractIntentServiceWProgress {
 
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_RESULT = "extra_result";
 
-    public static boolean isWorking;
 
     public CompetitionService() {
         super("Competition Service");
@@ -48,7 +48,7 @@ public class CompetitionService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        isWorking = true;
+        super.onHandleIntent(intent);
 
         try {
             Thread.sleep(8000);
@@ -61,11 +61,5 @@ public class CompetitionService extends IntentService {
         result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isWorking = false;
     }
 }
