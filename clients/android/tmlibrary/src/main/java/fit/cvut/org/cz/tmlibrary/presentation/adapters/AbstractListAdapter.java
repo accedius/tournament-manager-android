@@ -17,4 +17,9 @@ public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder>
         this.data.addAll(list);
         notifyDataSetChanged();
     }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
 }

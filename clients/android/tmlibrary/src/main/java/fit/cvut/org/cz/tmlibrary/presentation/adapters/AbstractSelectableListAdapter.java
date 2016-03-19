@@ -1,36 +1,28 @@
 package fit.cvut.org.cz.tmlibrary.presentation.adapters;
 
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SelectableViewHolder;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 
 
 /**
  * Created by Vaclav on 15. 3. 2016.
  */
-public abstract class AbstractSelectableListAdapter<T, VH extends SelectableViewHolder> extends RecyclerView.Adapter<VH>  {
+public abstract class AbstractSelectableListAdapter<T, VH extends OneActionViewHolder> extends AbstractOneActionListAdapter<T, VH>  {
 
     protected SparseBooleanArray selectedIndeces = new SparseBooleanArray();
-    protected ArrayList<T> data = new ArrayList<>();
 
     public void swapData(ArrayList<T> data, SparseBooleanArray selectedIndeces){
 
-        this.data.clear();
-        this.data.addAll(data);
-
+        super.swapData(data);
         this.selectedIndeces.clear();
         for (int i =0; i< selectedIndeces.size(); i++){
             int key = selectedIndeces.keyAt(i);
             this.selectedIndeces.append(key, selectedIndeces.get(key));
         }
-
         notifyDataSetChanged();
     }
 
@@ -39,7 +31,8 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
         ArrayList<T> selected = new ArrayList<>();
         for (int i = 0; i < selectedIndeces.size(); i++){
             int index = selectedIndeces.keyAt(i);
-            selected.add(data.get(index));
+            if (selectedIndeces.get(index))
+                selected.add(data.get(index));
         }
 
         return selected;
@@ -47,15 +40,8 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
 
 
     @Override
-    public int getItemCount() {
-        return data.size();
-    }
-
-
-    @Override
     public final void onBindViewHolder(VH holder, int position) {
-        ((SelectableViewHolder) holder).checkbox.setChecked(selectedIndeces.get(position, false));
-        ((SelectableViewHolder) holder).position = position;
+        ((AppCompatCheckBox) holder.viewWAction).setChecked(selectedIndeces.get(position, false));
         bindView(holder, position);
     }
 
@@ -67,16 +53,13 @@ public abstract class AbstractSelectableListAdapter<T, VH extends SelectableView
      */
     protected abstract void bindView(VH holder, int position);
 
-    public void click(int position){
-
-       if (!selectedIndeces.get(position, false)){
-           selectedIndeces.delete(position);
-           selectedIndeces.append(position, true);
-       } else selectedIndeces.delete(position);
-
+    @Override
+    public void doAction(int position) {
+        if (!selectedIndeces.get(position, false)){
+            selectedIndeces.delete(position);
+            selectedIndeces.append(position, true);
+        } else selectedIndeces.delete(position);
     }
-
-
 }
 
 
