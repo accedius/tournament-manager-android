@@ -24,31 +24,35 @@ public class CompetitionListFragment extends AbstractListFragment {
     //private DataReceiver receiver = new DataReceiver();
 
     @Override
+    protected void askForData() {
+        Intent intent = CompetitionService.getStartIntent(action, getActivity());
+        getActivity().startService(intent);
+    }
+
+    @Override
+    protected boolean isDataSourceWorking() {
+        return CompetitionService.isWorking;
+    }
+
+    @Override
     protected void registerReceivers() {
-
-        //getActivity().);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(action));
-
     }
 
     @Override
     protected void unregisterReceivers() {
-
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-
     }
 
-    @Override
-    protected void getData() {
-
-        Intent intent = CompetitionService.getStartIntent(action, getActivity());
-        getActivity().startService(intent);
-
-    }
 
     @Override
     protected AbstractListAdapter getAdapter() {
         return new CompetitionAdapter();
+    }
+
+    @Override
+    protected String getDataKey() {
+        return CompetitionService.EXTRA_RESULT;
     }
 
 

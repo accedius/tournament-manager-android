@@ -22,6 +22,8 @@ public class CompetitionService extends IntentService {
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_RESULT = "extra_result";
 
+    public static boolean isWorking;
+
     public CompetitionService() {
         super("Competition Service");
     }
@@ -46,17 +48,24 @@ public class CompetitionService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        isWorking = true;
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(8000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         String action = intent.getStringExtra(EXTRA_ACTION);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(AbstractListFragment.EXTRA_DATA, getData());
+        result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isWorking = false;
     }
 }
