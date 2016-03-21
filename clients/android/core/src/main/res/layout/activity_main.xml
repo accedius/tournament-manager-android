@@ -22,8 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"
             android:elevation="4dp"
-            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" >
+             >
 
             <ProgressBar
                 android:id="@+id/progress_spinner"

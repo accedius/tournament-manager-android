@@ -1,7 +1,10 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,4 +24,13 @@ public class TopLevelActivity extends AbstractToolbarActivity {
     protected FloatingActionButton getFloatingActionButton() {
         return null;
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
 }

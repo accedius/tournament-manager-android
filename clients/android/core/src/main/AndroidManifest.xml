@@ -25,6 +25,7 @@
             android:label="@string/title_activity_toolbar" />
         <activity android:name=".presentation.activities.TopLevelActivity"
             android:label="Toplvl" />
+        <activity android:name=".presentation.activities.AbstractTabActivity"/>
     </application>
 
 </manifest>
