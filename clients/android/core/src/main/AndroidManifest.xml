@@ -23,9 +23,10 @@
         <activity
             android:name=".presentation.activities.ToolbarActivity"
             android:label="@string/title_activity_toolbar" />
-        <activity android:name=".presentation.activities.TopLevelActivity"
+        <activity
+            android:name=".presentation.activities.TopLevelActivity"
             android:label="Toplvl" />
-        <activity android:name=".presentation.activities.AbstractTabActivity"/>
+        <activity android:name=".presentation.activities.AbstractTabActivity" />
     </application>
 
 </manifest>
