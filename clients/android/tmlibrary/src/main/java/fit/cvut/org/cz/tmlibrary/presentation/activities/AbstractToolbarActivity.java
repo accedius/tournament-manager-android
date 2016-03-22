@@ -36,7 +36,7 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
      * return null if you don't want one.
      * @return
      */
-    protected abstract FloatingActionButton getFloatingActionButton();
+    protected abstract FloatingActionButton getFloatingActionButton(ViewGroup root);
 
     protected Toolbar toolbar;
 
@@ -48,15 +48,17 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        CoordinatorLayout topLevelLayout = (CoordinatorLayout) findViewById(R.id.top_level);
+
         LinearLayout content = (LinearLayout) findViewById(R.id.content_layout);
         View v = injectView(content);
         if (v != null && content != null)
             content.addView(v);
 
-        FloatingActionButton fab = getFloatingActionButton();
+        FloatingActionButton fab = getFloatingActionButton(topLevelLayout);
 
         if (fab != null)
-            addContentView(fab, new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            topLevelLayout.addView(fab);
     }
 }
 

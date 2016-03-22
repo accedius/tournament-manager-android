@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,10 +22,18 @@ public class TopLevelActivity extends AbstractToolbarActivity {
     }
 
     @Override
-    protected FloatingActionButton getFloatingActionButton() {
+    protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
 
-//        return new FloatingActionButton(this, );
-        return null;
+        FloatingActionButton fab = (FloatingActionButton) getLayoutInflater().inflate(R.layout.fab_plus, root, false);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "I  am a Snack Msg!", Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        return fab;
     }
 
 

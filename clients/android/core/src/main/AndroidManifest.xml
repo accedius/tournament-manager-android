@@ -26,7 +26,7 @@
         <activity
             android:name=".presentation.activities.TopLevelActivity"
             android:label="Toplvl" />
-        <activity android:name=".presentation.activities.AbstractTabActivity" />
+        <activity android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity" />
     </application>
 
 </manifest>
