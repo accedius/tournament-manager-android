@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
+ * Simple adapter that already provides container where you can store data
  */
 public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 

@@ -7,6 +7,10 @@ import android.support.v7.widget.RecyclerView;
  */
 public abstract class AbstractOneActionListAdapter<T, VH extends RecyclerView.ViewHolder> extends AbstractListAdapter<T, VH> {
 
+    /**
+     * action that is fired upon clicking on View specified in OneActionViewHolder
+     * @param position
+     */
     public abstract void doAction(int position);
 
 }

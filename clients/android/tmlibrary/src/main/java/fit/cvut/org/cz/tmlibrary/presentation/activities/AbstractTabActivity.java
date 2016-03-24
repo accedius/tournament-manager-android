@@ -32,6 +32,7 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
     @Override
     protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
+        //We dont want FAB in tab activity individual fragments will have FABS if needed
         return null;
     }
 
@@ -48,5 +49,10 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
+    /**
+     *
+     * @param manager Support fragment manager needed to create adapter
+     * @return Adapter with fragments for ViewPager
+     */
     protected abstract PagerAdapter getAdapter(FragmentManager manager);
 }
