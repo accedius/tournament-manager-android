@@ -3,6 +3,9 @@ package fit.cvut.org.cz.tmlibrary.presentation.services;
 import android.app.IntentService;
 import android.content.Intent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by Vaclav on 19. 3. 2016.
  * Simple Intent service with added methods to check if service is currently handling requests.
@@ -19,16 +22,10 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
         super(name);
     }
 
-    private static boolean isWorking;
+    private static ArrayList<String> workingKeys = new ArrayList<>();
 
-    public static boolean isWorking() {
-        return isWorking;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isWorking = false;
+    public static boolean isWorking(String key) {
+        return workingKeys.contains(key);
     }
 
     /**
@@ -38,6 +35,22 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        isWorking = true;
+        String key = intent.getStringExtra(getActionKey());
+        workingKeys.add(key);
+        doWork(intent);
+        workingKeys.remove(key);
     }
+
+    /**
+     *
+     * @return Key of action you put into extras as string when calling this service
+     */
+    protected abstract String getActionKey();
+
+    /**
+     * Do not handle your work in onHandleIntent do it in this method instead. This method is calledInOnHandleIntent and
+     * intent passed to service is passed here as well.
+     * @param intent that was passed to service
+     */
+    protected abstract void doWork(Intent intent);
 }

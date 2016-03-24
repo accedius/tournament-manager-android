@@ -47,8 +47,12 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        super.onHandleIntent(intent);
+    protected String getActionKey() {
+        return EXTRA_ACTION;
+    }
+
+    @Override
+    protected void doWork(Intent intent) {
 
         try {
             Thread.sleep(8000);
@@ -61,5 +65,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+
     }
 }
