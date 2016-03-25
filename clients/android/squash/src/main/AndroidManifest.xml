@@ -13,6 +13,10 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"/>
+        <provider
+            android:authorities="fit.cvut.org.cz.tm.squash.competitionprovider"
+            android:name="fit.cvut.org.cz.squash.data.CompetitionCP"
+            android:exported="true" />
     </application>
 
 </manifest>
