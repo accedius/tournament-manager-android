@@ -3,7 +3,11 @@ package fit.cvut.org.cz.tournamentmanager.presentation.services;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -28,12 +32,26 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         super("Competition Service");
     }
 
-    private ArrayList<Competition> getData() {
-
+    private ArrayList<Competition> getData(String package_name) {
         ArrayList<Competition> data = new ArrayList<>();
-        data.add(new Competition(1, null, "Prvni liga", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
+
+        Uri myUri = Uri.parse("content://fit.cvut.org.cz."+package_name+".data/competitions");
+        Cursor cur = getContentResolver().query(myUri, null, null, null, null);
+        if (cur == null) {
+            return data;
+        }
+        else {
+            Log.d("DB", "Total rows " + cur.getCount());
+            if (cur.moveToFirst()) {
+                do {
+                    data.add(new Competition(cur));
+                } while (cur.moveToNext());
+            }
+        }
+
+        /*data.add(new Competition(1, null, "Prvni liga", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
         data.add(new Competition(2, null, "Vikendova liga",Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "hockey"));
-        data.add(new Competition(3, null, "Mistrovstvi Prahy", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
+        data.add(new Competition(3, null, "Mistrovstvi Prahy", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));*/
 
         return data;
     }
@@ -53,18 +71,11 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         String action = intent.getStringExtra(EXTRA_ACTION);
+        Log.d("ACTION", action);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
-
+        result.putParcelableArrayListExtra(EXTRA_RESULT, getData("squash"));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
-
     }
 }

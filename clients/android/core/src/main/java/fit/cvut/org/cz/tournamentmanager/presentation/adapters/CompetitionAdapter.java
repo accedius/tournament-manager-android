@@ -30,27 +30,22 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
 
     @Override
     public void onBindViewHolder(CompetitonViewHolder holder, int position) {
-
         Competition competition = data.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(competition.getName());
-        holder.startDate.setText("from: " + dateFormat.format(competition.getStartDate()));
+        holder.startDate.setText("From: " + dateFormat.format(competition.getStartDate()));
         holder.endDate.setText("to: " + dateFormat.format(competition.getEndDate()));
         holder.name.setText(competition.getName());
-
     }
 
     @Override
     public int getItemCount() {
-
         return data.size();
     }
 
     public class CompetitonViewHolder extends RecyclerView.ViewHolder{
-
         public TextView name, startDate, endDate;
-
         public CompetitonViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_name);

@@ -9,9 +9,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="fit.cvut.org.cz.hockey.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
+        <meta-data android:name="sport_name" android:value="@string/sport_name"/>
+
     </application>
 
 </manifest>

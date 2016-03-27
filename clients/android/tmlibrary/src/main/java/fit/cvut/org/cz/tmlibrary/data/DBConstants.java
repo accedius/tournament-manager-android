@@ -7,13 +7,8 @@ public class DBConstants {
 
     public static final String tCOMPETITIONS = "competitions";
 
-
-
-
-
-
-
     public static final String CID = "_id";
+    public static final String UID = "uid";
     public static final String CNAME = "name";
     public static final String cSTART = "start";
     public static final String cEND = "end";

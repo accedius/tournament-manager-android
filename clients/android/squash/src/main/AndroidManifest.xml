@@ -12,11 +12,23 @@
             android:name="fit.cvut.org.cz.squash.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
+            android:exported="true">
+
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <provider
-            android:authorities="fit.cvut.org.cz.tm.squash.competitionprovider"
             android:name="fit.cvut.org.cz.squash.data.CompetitionCP"
-            android:exported="true" />
+            android:authorities="fit.cvut.org.cz.squash.data"
+            android:exported="true"
+            android:enabled="true"
+            android:multiprocess="true"/>
+
+        <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
+        <meta-data android:name="sport_name" android:value="@string/sport_name"/>
     </application>
 
 </manifest>

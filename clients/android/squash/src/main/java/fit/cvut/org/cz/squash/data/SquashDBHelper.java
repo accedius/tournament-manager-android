@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class SquashDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMSquash";
-    private static final int DBVersion = 1;
+    private static final int DBVersion = 7;
 
     public SquashDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -22,13 +22,18 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXITS " + DBConstants.tCOMPETITIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
 
     }
 }

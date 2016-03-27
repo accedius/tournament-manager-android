@@ -17,11 +17,9 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
  */
 public class CompetitionCP extends ContentProvider {
 
-    public static final String AUTHORITY = "fit.cvut.org.cz.tm.squash.competitionprovider";
+    public static final String AUTHORITY = "fit.cvut.org.cz.squash.data";
 
     private SquashDBHelper helper;
-
-
 
     private static final int COMPETITIONS_ALL = 0;
     private static final int COMPETITION_ONE = 1;
@@ -35,7 +33,6 @@ public class CompetitionCP extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-
         helper = new SquashDBHelper(getContext());
         return true;
     }
@@ -43,7 +40,6 @@ public class CompetitionCP extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-
         int uriType = matcher.match(uri);
 
         if (uriType != COMPETITIONS_ALL) return null;

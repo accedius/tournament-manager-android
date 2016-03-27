@@ -1,8 +1,11 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,29 @@ public class Competition implements Parcelable {
         this.players = players;
         this.note = note;
         this.type = type;
+    }
+
+    public Competition(Cursor cursor)  {
+        this.id = cursor.getInt(0);
+        this.uid = cursor.getString(1);
+        this.name = cursor.getString(2);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = formatter.parse(cursor.getString(3));
+            endDate = formatter.parse(cursor.getString(4));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = cursor.getString(5);
+        this.type = cursor.getString(6);
+        this.tournaments = null;
+        this.players = null;
     }
 
     protected Competition(Parcel in) {
