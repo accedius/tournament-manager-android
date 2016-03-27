@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">hockey</string>
+    <string name="package_name">hockey</string>
     <string name="sport_name">Hockey</string>
     <string name="tournament_manager_package">TournamentManagerPackage</string>
     <string name="title_activity_main">Hockey Main Activity</string>

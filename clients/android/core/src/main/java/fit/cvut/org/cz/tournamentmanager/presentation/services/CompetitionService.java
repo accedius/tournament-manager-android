@@ -25,8 +25,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
 public class CompetitionService extends AbstractIntentServiceWProgress {
 
     public static final String EXTRA_ACTION = "extra_action";
+    public static final String EXTRA_PACKAGE = "extra_package";
     public static final String EXTRA_RESULT = "extra_result";
-
 
     public CompetitionService() {
         super("Competition Service");
@@ -49,18 +49,13 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             }
         }
 
-        /*data.add(new Competition(1, null, "Prvni liga", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));
-        data.add(new Competition(2, null, "Vikendova liga",Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "hockey"));
-        data.add(new Competition(3, null, "Mistrovstvi Prahy", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), null, null, null, "squash"));*/
-
         return data;
     }
 
-    public static Intent getStartIntent(String action, Context context){
-
+    public static Intent getStartIntent(String action, String package_name, Context context){
         Intent intent = new Intent(context, CompetitionService.class);
         intent.putExtra(EXTRA_ACTION, action);
-
+        intent.putExtra(EXTRA_PACKAGE, package_name);
         return intent;
     }
 
@@ -72,10 +67,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     @Override
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(EXTRA_ACTION);
-        Log.d("ACTION", action);
+        String package_name = intent.getStringExtra(EXTRA_PACKAGE);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_RESULT, getData("squash"));
+        result.putParcelableArrayListExtra(EXTRA_RESULT, getData(package_name));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }
 }

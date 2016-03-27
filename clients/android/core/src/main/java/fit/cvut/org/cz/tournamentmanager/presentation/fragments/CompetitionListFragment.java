@@ -16,11 +16,17 @@ public class CompetitionListFragment extends AbstractListFragment {
 
     private static final String action = "org.cz.cvut.tournamentmanager.action";
 
+    private String package_name;
+
     //private DataReceiver receiver = new DataReceiver();
+
+    public void setPackageName(String package_name) {
+        this.package_name = package_name;
+    }
 
     @Override
     protected void askForData() {
-        Intent intent = CompetitionService.getStartIntent(action, getActivity());
+        Intent intent = CompetitionService.getStartIntent(action, this.package_name, getActivity());
         getActivity().startService(intent);
     }
 

@@ -24,16 +24,33 @@ public class SportFragment extends Fragment {
 
     //private DataReceiver receiver = new DataReceiver();
 
+    private TextView tv;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        ArrayList<String> titles = getArguments().getStringArrayList("titles");
-        View v = inflater.inflate(R.layout.activity_sport, container, false);
-        TextView txt =(TextView) v.findViewById(R.id.sport_name);
-        txt.setText(titles.get(0));
+        View v = inflater.inflate(R.layout.fragment_sport_layout, container, false);
+        tv = (TextView) v.findViewById(R.id.sport_name);
+        Bundle b = getArguments();
+        String s = b.getString("sport_name");
+        String p = b.getString("package_name");
+        Log.d("SPORT_NAME", s);
+        Log.d("PACKAGE_NAME", p);
+        tv.setText(s);
+
+        if (getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
+            CompetitionListFragment clf = new CompetitionListFragment();
+            clf.setPackageName(p);
+            Log.d("LIST_SET_FROM", p);
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_competitions_list, clf)
+                    .commit();
+        }
+
         return v;
 
     }
@@ -41,12 +58,5 @@ public class SportFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        CompetitionListFragment clf = new CompetitionListFragment();
-        ft.add(R.id.fragment_competitions_list, clf);
-        ft.commit();
-
-        // pridat fragment (swipe) - viz main activity
     }
 }

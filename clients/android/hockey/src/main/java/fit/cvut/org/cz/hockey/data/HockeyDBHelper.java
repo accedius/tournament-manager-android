@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.data;
+package fit.cvut.org.cz.hockey.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,30 +10,30 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class SquashDBHelper extends SQLiteOpenHelper {
+public class HockeyDBHelper extends SQLiteOpenHelper {
 
-    private static final String DBName = "TMSquash";
+    private static final String DBName = "TMHockey";
     private static final int DBVersion = 10;
 
-    public SquashDBHelper(Context context) {
+    public HockeyDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H1);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H1);
+        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H2);
 
     }
 }
