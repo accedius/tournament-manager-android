@@ -61,13 +61,17 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
             progressInterface.hideProgress();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    protected void sendForData(){
         registerReceivers();
         if (! isDataSourceWorking())
             askForData();
         displayProgress();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendForData();
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.CompetitionListFragment;
@@ -31,7 +32,7 @@ public class TestingActivity extends AppCompatActivity implements IProgressInter
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null){
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, new ParentFragment())
+                    .add(R.id.fragment_container, new NewCompetitionFragment())
                     .commit();
         }
 
