@@ -36,6 +36,15 @@ public class Competition implements Parcelable {
         this.type = type;
     }
 
+    public Competition(long id, String name, Date startDate, Date endDate, String note, String type) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = note;
+        this.type = type;
+    }
+
     public Competition(Cursor cursor)  {
         this.id = cursor.getInt(0);
         this.uid = cursor.getString(1);

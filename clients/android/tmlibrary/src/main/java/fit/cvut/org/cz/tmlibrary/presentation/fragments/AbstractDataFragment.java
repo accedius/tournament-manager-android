@@ -86,8 +86,10 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
         super.onAttach(context);
         progressInterface = null;
 
-        if (getParentFragment() != null && getParentFragment() instanceof IProgressInterface) {
-            progressInterface = (IProgressInterface) getParentFragment();
+        if (getParentFragment() != null){
+            if (getParentFragment() instanceof IProgressInterface) {
+                progressInterface = (IProgressInterface) getParentFragment();
+            }
         } else if (context instanceof IProgressInterface)
             progressInterface = (IProgressInterface) context;
     }

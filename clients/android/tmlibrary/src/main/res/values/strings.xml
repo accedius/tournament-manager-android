@@ -8,4 +8,5 @@
     <string name="type">Type</string>
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
+    <string name="invalidName">Name is not valid!</string>
 </resources>
