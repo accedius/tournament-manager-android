@@ -5,13 +5,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="hockey"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name="fit.cvut.org.cz.hockey.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <provider
             android:name="fit.cvut.org.cz.hockey.data.CompetitionCP"

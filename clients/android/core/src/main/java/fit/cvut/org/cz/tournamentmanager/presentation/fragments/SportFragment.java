@@ -40,12 +40,13 @@ public class SportFragment extends Fragment {
         Log.d("PACKAGE_NAME", p);
         tv.setText(s);
 
-        if (getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
+        if (getChildFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
             CompetitionListFragment clf = new CompetitionListFragment();
-            clf.setPackageName(p);
+            //clf.setPackageName(p);
+
+            clf.setArguments(b);
             Log.d("LIST_SET_FROM", p);
-            getActivity()
-                    .getSupportFragmentManager()
+            getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_competitions_list, clf)
                     .commit();

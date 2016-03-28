@@ -178,7 +178,9 @@ public class Competition implements Parcelable {
         dest.writeTypedList(players);
         dest.writeString(note);
         dest.writeString(type);
-        dest.writeLong(startDate.getTime());
+        if (startDate != null)
+            dest.writeLong(startDate.getTime());
+        //TODO  here
         dest.writeLong(endDate.getTime());
     }
 }

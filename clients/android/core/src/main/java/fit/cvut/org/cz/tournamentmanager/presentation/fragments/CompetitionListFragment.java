@@ -2,7 +2,11 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -22,6 +26,14 @@ public class CompetitionListFragment extends AbstractListFragment {
 
     public void setPackageName(String package_name) {
         this.package_name = package_name;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        package_name = getArguments().getString("package_name");
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

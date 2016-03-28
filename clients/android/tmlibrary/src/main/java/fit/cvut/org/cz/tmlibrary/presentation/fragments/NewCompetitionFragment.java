@@ -3,8 +3,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -157,9 +155,15 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void sendForData() {
+    protected void customOnResume() {
         if (competitionId != -1)
-            super.sendForData();
+            super.customOnResume();
+    }
+
+    @Override
+    protected void customOnPause() {
+        if (competitionId != -1)
+            super.customOnPause();
     }
 
     protected abstract void saveCompetition(Competition c);

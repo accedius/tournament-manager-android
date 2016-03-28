@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.widget.Toast;
 
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IWorkingInterface;
@@ -62,23 +60,27 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
             progressInterface.hideProgress();
     }
 
-    protected void sendForData(){
+    protected void customOnResume(){
         registerReceivers();
         if (! isDataSourceWorking())
             askForData();
         displayProgress();
     }
 
+    protected void customOnPause(){
+        unregisterReceivers();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        sendForData();
+        customOnResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceivers();
+        customOnPause();
     }
 
     @Override
