@@ -20,6 +20,19 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
+    protected void updateCompetition(Competition c) {
+        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, getContext());
+        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
+
+        getContext().startService(intent);
+    }
+
+    @Override
+    protected String getCompetitionKey() {
+        return CompetitionService.EXTRA_COMPETITION;
+    }
+
+    @Override
     protected void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionId);
@@ -32,11 +45,6 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
         return CompetitionService.isWorking(CompetitionService.ACTION_FIND_BY_ID);
     }
 
-    @Override
-    protected void bindDataOnView(Intent intent) {
-        Competition c = intent.getParcelableExtra(CompetitionService.EXTRA_COMPETITION);
-        bindCompetitionOnView( c );
-    }
 
     @Override
     protected void registerReceivers() {

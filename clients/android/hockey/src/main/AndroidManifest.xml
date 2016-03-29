@@ -8,9 +8,13 @@
         android:label="hockey"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.activities.CreateCompetitionActivity"
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Hockey Competition"
+            android:exported="true"/>
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Competition"
             android:exported="true"/>
 
         <provider

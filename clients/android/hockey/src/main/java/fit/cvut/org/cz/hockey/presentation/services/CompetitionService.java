@@ -3,6 +3,7 @@ package fit.cvut.org.cz.hockey.presentation.services;
 import android.content.Context;
 import android.content.Intent;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -47,16 +48,21 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         {
             case ACTION_CREATE:
             {
+                Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
+
 
                 break;
             }
             case ACTION_FIND_BY_ID:
             {
+                Intent res = new Intent();
+                res.setAction(ACTION_FIND_BY_ID);
 
                 break;
             }
             case ACTION_UPDATE:
             {
+                Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
 
                 break;
             }
