@@ -9,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 
 /**
@@ -20,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.R;
  * forget to call super.OnCreate or it won't work
  *
  */
-public abstract class AbstractToolbarActivity extends AppCompatActivity {
+public abstract class AbstractToolbarActivity extends AppCompatActivity implements IProgressInterface {
 
     /**
      * This activity uses coordinator layout as top level layout in order for Toolbar
@@ -39,6 +41,7 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
     protected abstract FloatingActionButton getFloatingActionButton(ViewGroup root);
 
     protected Toolbar toolbar;
+    protected ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +50,8 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_abstract_toolbar);
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
 
         CoordinatorLayout topLevelLayout = (CoordinatorLayout) findViewById(R.id.top_level);
 
@@ -59,6 +64,16 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
 
         if (fab != null)
             topLevelLayout.addView(fab);
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 }
 

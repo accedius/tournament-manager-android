@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.Date;
+
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -51,11 +53,12 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
             }
             case ACTION_GET_BY_ID:{
 
-                Intent result = new Intent(ACTION_GET_BY_ID);
-                Competition c = new Competition(intent.getLongExtra(EXTRA_ID, -1), "name3", null, null, "uberNote", "teams");
+                Intent result = new Intent();
+                result.setAction(ACTION_GET_BY_ID);
+                Competition c = new Competition(intent.getLongExtra(EXTRA_ID, -1), "name3", new Date(2011,3,1), null, "uberNote", "teams");
                 result.putExtra(EXTRA_COMPETITION, c);
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

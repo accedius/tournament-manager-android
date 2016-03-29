@@ -1,7 +1,9 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -29,6 +31,11 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
+    protected String getCompetitionKey() {
+        return CompetitionService.EXTRA_COMPETITION;
+    }
+
+    @Override
     protected void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionId);
@@ -42,20 +49,12 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
-    protected void bindDataOnView(Intent intent) {
-
-        Competition competition = intent.getParcelableExtra(CompetitionService.EXTRA_COMPETITION);
-        bindCompetitionOnView(competition);
-
-    }
-
-    @Override
     protected void registerReceivers() {
-        getContext().registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_GET_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_GET_BY_ID));
     }
 
     @Override
     protected void unregisterReceivers() {
-        getContext().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 }

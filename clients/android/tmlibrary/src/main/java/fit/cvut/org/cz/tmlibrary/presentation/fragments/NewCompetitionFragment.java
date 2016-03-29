@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -169,10 +171,27 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
     protected abstract void saveCompetition(Competition c);
     protected abstract void updateCompetition(Competition c);
+    protected abstract String getCompetitionKey();
 
+    @Override
+    protected void bindDataOnView(Intent intent) {
+        competition = intent.getParcelableExtra(getCompetitionKey());
+        bindCompetitionOnView(competition);
+    }
 
-    protected final void bindCompetitionOnView(Competition c){
-
-        this.competition = c;
+    private void bindCompetitionOnView(Competition c){
+        name.setText(c.getName());
+        if (c.getStartDate() != null){
+            startDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(c.getStartDate()));
+            dStartDate = Calendar.getInstance();
+            dStartDate.setTime(c.getStartDate());
+        }
+        if (c.getEndDate() != null){
+            endDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(c.getEndDate()));
+            dEndDate = Calendar.getInstance();
+            dEndDate.setTime(c.getStartDate());
+        }
+        note.setText(c.getNote());
+        type.setText(c.getType());
     }
 }

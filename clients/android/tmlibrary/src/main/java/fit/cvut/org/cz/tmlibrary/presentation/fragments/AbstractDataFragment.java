@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IWorkingInterface;
 
