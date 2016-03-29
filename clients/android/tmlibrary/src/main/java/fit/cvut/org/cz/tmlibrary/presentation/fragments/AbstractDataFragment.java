@@ -62,7 +62,7 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
 
     protected void customOnResume(){
         registerReceivers();
-        if (! isDataSourceWorking())
+        if (!isDataSourceWorking())
             askForData();
         displayProgress();
     }
@@ -92,6 +92,7 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
             if (getParentFragment() instanceof IProgressInterface) {
                 progressInterface = (IProgressInterface) getParentFragment();
             }
+            //TODO pretypovat na aktivitu
         } else if (context instanceof IProgressInterface)
             progressInterface = (IProgressInterface) context;
     }

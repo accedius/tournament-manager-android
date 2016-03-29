@@ -21,6 +21,14 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
+    protected void updateCompetition(Competition c) {
+        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, getContext());
+        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
+
+        getContext().startService(intent);
+    }
+
+    @Override
     protected void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionId);

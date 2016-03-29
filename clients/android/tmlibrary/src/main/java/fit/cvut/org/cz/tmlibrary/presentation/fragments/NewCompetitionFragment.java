@@ -95,7 +95,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                             startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
                             dStartDate = Calendar.getInstance();
                             dStartDate.set(Calendar.YEAR, year);
-                            dStartDate.set(Calendar.MONTH, monthOfYear + 1);
+                            dStartDate.set(Calendar.MONTH, monthOfYear);
                             dStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         }
                     };
@@ -116,7 +116,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                             endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
                             dEndDate = Calendar.getInstance();
                             dEndDate.set(Calendar.YEAR, year);
-                            dEndDate.set(Calendar.MONTH, monthOfYear + 1);
+                            dEndDate.set(Calendar.MONTH, monthOfYear);
                             dEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         }
                     };
@@ -133,7 +133,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     if (dStartDate != null) sDate = dStartDate.getTime();
                     if (dEndDate != null) eDate = dEndDate.getTime();
                     competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), type.getText().toString());
-                    saveCompetition(competition);
+                    if (competitionId == -1) saveCompetition(competition);
+                    else updateCompetition(competition);
                     getActivity().finish();
                 }
             }
@@ -167,8 +168,11 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     protected abstract void saveCompetition(Competition c);
+    protected abstract void updateCompetition(Competition c);
+
 
     protected final void bindCompetitionOnView(Competition c){
+
         this.competition = c;
     }
 }
