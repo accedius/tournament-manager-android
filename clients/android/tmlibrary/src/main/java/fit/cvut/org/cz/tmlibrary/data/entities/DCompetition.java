@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.entities;
+package fit.cvut.org.cz.tmlibrary.data.entities;
 
 import android.database.Cursor;
 import android.os.Parcel;
@@ -8,12 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
-
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class Competition implements Parcelable {
+public class DCompetition implements Parcelable {
 
     private long id;
     private String uid;
@@ -25,15 +23,7 @@ public class Competition implements Parcelable {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static DCompetition convertToDCompetition(Competition c){
-
-        return new DCompetition(c.getId(), c.getUid(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getType());
-    }
-
-
-
-    public Competition(long id, String uid, String name, Date startDate, Date endDate, String note, String type) {
+    public DCompetition(long id, String uid, String name, Date startDate, Date endDate, String note, String type) {
         this.id = id;
         this.uid = uid;
         this.name = name;
@@ -43,7 +33,7 @@ public class Competition implements Parcelable {
         this.type = type;
     }
 
-    public Competition(long id, String name, Date startDate, Date endDate, String note, String type) {
+    public DCompetition(long id, String name, Date startDate, Date endDate, String note, String type) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -52,17 +42,7 @@ public class Competition implements Parcelable {
         this.type = type;
     }
 
-    public Competition(DCompetition c) {
-        this.id = c.getId();
-        this.uid = c.getUid();
-        this.name = c.getName();
-        this.startDate = c.getStartDate();
-        this.endDate = c.getEndDate();
-        this.note = c.getNote();
-        this.type = c.getType();
-    }
-
-    public Competition(Cursor cursor)  {
+    public DCompetition(Cursor cursor)  {
         this.id = cursor.getInt(0);
         this.uid = cursor.getString(1);
         this.name = cursor.getString(2);
@@ -82,7 +62,7 @@ public class Competition implements Parcelable {
         this.type = cursor.getString(6);
     }
 
-    protected Competition(Parcel in) {
+    protected DCompetition(Parcel in) {
         id = in.readLong();
         uid = in.readString();
         name = in.readString();
@@ -104,15 +84,15 @@ public class Competition implements Parcelable {
         }
     }
 
-    public static final Creator<Competition> CREATOR = new Creator<Competition>() {
+    public static final Creator<DCompetition> CREATOR = new Creator<DCompetition>() {
         @Override
-        public Competition createFromParcel(Parcel in) {
-            return new Competition(in);
+        public DCompetition createFromParcel(Parcel in) {
+            return new DCompetition(in);
         }
 
         @Override
-        public Competition[] newArray(int size) {
-            return new Competition[size];
+        public DCompetition[] newArray(int size) {
+            return new DCompetition[size];
         }
     };
 
