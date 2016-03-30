@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -9,9 +11,9 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
  */
 public interface ICompetitionManager {
 
-    void insert(Competition competition);
-    void update(Competition competition);
-    void delete(long id);
+    void insert(Context context, Competition competition);
+    void update(Context context, Competition competition);
+    void delete(Context context, long id);
 
-    Competition getById(long id);
+    Competition getById(Context context, long id);
 }
