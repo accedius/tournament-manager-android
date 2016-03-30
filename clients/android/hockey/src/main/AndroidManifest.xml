@@ -12,10 +12,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Hockey Competition"
             android:exported="true">
-        <intent-filter android:label="Hockey Package">
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -28,6 +24,8 @@
             android:exported="true"
             android:enabled="true"
             android:multiprocess="true"/>
+        <service android:name=".presentation.services.CompetitionService"
+            />
 
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
         <meta-data android:name="sport_name" android:value="@string/sport_name"/>

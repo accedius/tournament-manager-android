@@ -27,27 +27,19 @@ public class CompetitionDAO implements ICompetitionDAO {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         ContentValues values = new ContentValues();
-//        values.put(DBConstants.CID, competition.getId());
-//        values.put(DBConstants.UID, competition.getUid());
-//        values.put(DBConstants.CNAME, competition.getName());
-//        values.put(DBConstants.cTYPE, competition.getType());
-//        values.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
-//        values.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
-//        values.put(DBConstants.cNOTE, competition.getNote());
+        //values.put(DBConstants.CID, competition.getId());
+        values.put(DBConstants.UID, competition.getUid());
+        values.put(DBConstants.CNAME, competition.getName());
+        values.put(DBConstants.cTYPE, competition.getType());
+        if ( competition.getStartDate() != null )
+            values.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
+        if ( competition.getEndDate() != null )
+            values.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
+        values.put(DBConstants.cNOTE, competition.getNote());
 
-        values.put(DBConstants.CID, 1);
-        values.put(DBConstants.UID, "45862");
-        values.put(DBConstants.CNAME, "MockComp");
-        values.put(DBConstants.cTYPE, "Tymy");
-        values.put(DBConstants.cSTART,  "2017-01-01");
-        values.put(DBConstants.cEND,  "2017-01-01");
-        values.put(DBConstants.cNOTE,  "----");
 
         long newRowId;
         newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
-
-        db.execSQL(String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                DBConstants.tCOMPETITIONS, 2, "90833", "MockComp2", "2017-06-01", "2017-07-01", "team", "---"));
 
     }
 
