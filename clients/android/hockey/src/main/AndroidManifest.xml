@@ -11,7 +11,12 @@
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Hockey Competition"
-            android:exported="true"/>
+            android:exported="true">
+        <intent-filter android:label="Hockey Package">
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Competition"

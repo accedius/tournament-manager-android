@@ -12,10 +12,11 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  */
 public class CompetitionManager implements ICompetitionManager {
 
-    private CompetitionDAO competitionDAO = new CompetitionDAO();
+    protected CompetitionDAO competitionDAO;
 
     @Override
     public void insert(Context context, Competition competition) {
+        competitionDAO = new CompetitionDAO();
         DCompetition dc = Competition.convertToDCompetition(competition);
         competitionDAO.insert(context, dc);
     }
