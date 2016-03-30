@@ -17,5 +17,5 @@ public class DatabaseFactory {
     private DatabaseFactory() {
     }
 
-    public SQLiteDatabase getDatabase(Context context) { return new SquashDBHelper(getA)}
+    public SQLiteDatabase getDatabase(Context context) { return new SquashDBHelper(context).getWritableDatabase();}
 }

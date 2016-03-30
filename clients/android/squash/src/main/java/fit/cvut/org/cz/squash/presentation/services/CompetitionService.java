@@ -6,6 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.Date;
 
+import fit.cvut.org.cz.squash.buisness.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -47,6 +48,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
             case ACTION_CREATE:{
 
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
+
+                ManagersFactory.getInstance().competitionManager.insert(this, c);
 
 
                 break;
