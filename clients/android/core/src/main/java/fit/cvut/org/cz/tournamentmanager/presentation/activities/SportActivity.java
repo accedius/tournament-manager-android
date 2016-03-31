@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -17,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +43,8 @@ public class SportActivity extends AbstractToolbarActivity {
 
     @Override
     protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
-
         return null;
+        //return new FloatingActionButton(this);
     }
 
     @Override

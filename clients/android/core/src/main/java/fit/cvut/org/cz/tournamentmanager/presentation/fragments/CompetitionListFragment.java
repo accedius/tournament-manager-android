@@ -18,14 +18,17 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  */
 public class CompetitionListFragment extends AbstractListFragment {
 
-    private static final String action = "org.cz.cvut.tournamentmanager.action";
+    private String action = "org.cz.cvut.tournamentmanager.action";
 
     private String package_name;
 
     //private DataReceiver receiver = new DataReceiver();
 
-    public void setPackageName(String package_name) {
-        this.package_name = package_name;
+    public void setAction(String action) {
+        this.action = action;
+    }
+    public String getAction() {
+        return this.action;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class CompetitionListFragment extends AbstractListFragment {
 
     @Override
     protected void askForData() {
-        Intent intent = CompetitionService.getStartIntent(action, this.package_name, getActivity());
+        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, getActivity());
         getActivity().startService(intent);
     }
 
@@ -56,7 +59,6 @@ public class CompetitionListFragment extends AbstractListFragment {
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
-
 
     @Override
     protected AbstractListAdapter getAdapter() {

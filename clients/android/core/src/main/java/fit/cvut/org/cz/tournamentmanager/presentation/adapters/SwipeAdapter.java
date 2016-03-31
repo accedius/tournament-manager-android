@@ -20,11 +20,8 @@ public class SwipeAdapter extends FragmentPagerAdapter {
     ArrayList<String> package_names;
     ArrayList<ApplicationInfo> sport_packages;
 
-    //public SwipeAdapter(FragmentManager fm, ArrayList<String> sport_names, ArrayList<String> package_names) {
     public SwipeAdapter(FragmentManager fm, ArrayList<ApplicationInfo> sport_packages) {
         super(fm);
-        /*this.sport_names = sport_names;
-        this.package_names = package_names;*/
         this.sport_packages = sport_packages;
     }
 

@@ -34,18 +34,14 @@ public class SportFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_sport_layout, container, false);
         tv = (TextView) v.findViewById(R.id.sport_name);
         Bundle b = getArguments();
-        String s = b.getString("sport_name");
         String p = b.getString("package_name");
-        Log.d("SPORT_NAME", s);
-        Log.d("PACKAGE_NAME", p);
+        String s = b.getString("sport_name");
         tv.setText(s);
 
         if (getChildFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
             CompetitionListFragment clf = new CompetitionListFragment();
-            //clf.setPackageName(p);
-
+            clf.setAction(clf.getAction() + "." + p);
             clf.setArguments(b);
-            Log.d("LIST_SET_FROM", p);
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_competitions_list, clf)
