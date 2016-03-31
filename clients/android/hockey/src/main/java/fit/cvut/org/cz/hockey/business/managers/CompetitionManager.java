@@ -1,8 +1,9 @@
-package fit.cvut.org.cz.hockey.business;
+package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
 
 import fit.cvut.org.cz.hockey.data.DAO.CompetitionDAO;
+import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
@@ -12,13 +13,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  */
 public class CompetitionManager implements ICompetitionManager {
 
-    protected CompetitionDAO competitionDAO;
-
     @Override
     public void insert(Context context, Competition competition) {
-        competitionDAO = new CompetitionDAO();
         DCompetition dc = Competition.convertToDCompetition(competition);
-        competitionDAO.insert(context, dc);
+        DAOFactory.getInstance().competitionDAO.insert( context, dc );
     }
 
     @Override

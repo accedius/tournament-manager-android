@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
+import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -20,17 +22,30 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     private static String HEADER_TOURNAMENTS_LIST = "Tournaments";
     private static String HEADER_COMPETITION_STANDINGS = "Players";
 
+    private long competitionID;
 
     private Fragment[] fragments;
     private String[] titles;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        competitionID = 36;
+
+        titles = new String[]{ HEADER_OVERVIEW_COMPETITION/*, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS*/ };
+        Fragment f1 = new HockeyCompetitionOverviewFragment();
+//        Fragment f2 = new HockeyCompetitionOverviewFragment();
+//        Fragment f3 = new HockeyCompetitionOverviewFragment();
+        fragments = new Fragment[]{ f1 };
+
         super.onCreate(savedInstanceState);
 
-        //V intentu mi musi prijit id competitionu. Tady podle toho vytvorim fragmenty - ty by mely mit id competitionu v konstruktoru
-        //V tech fragmentech nactu ty data a tak. Tady je jen prihodim do fragments[]
-         titles = new String[]{ HEADER_OVERVIEW_COMPETITION, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS };
+
+    }
+
+    public long getCompetitionID()
+    {
+        return competitionID;
     }
 
     @Override

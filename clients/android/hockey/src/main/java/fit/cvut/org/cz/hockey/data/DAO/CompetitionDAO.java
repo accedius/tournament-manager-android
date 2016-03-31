@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
@@ -17,12 +18,12 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  */
 public class CompetitionDAO implements ICompetitionDAO {
 
-    protected HockeyDBHelper helper;
+
 
     @Override
     public void insert(Context context, DCompetition competition) {
-        helper = new HockeyDBHelper(context);
-        SQLiteDatabase db = helper.getWritableDatabase();
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

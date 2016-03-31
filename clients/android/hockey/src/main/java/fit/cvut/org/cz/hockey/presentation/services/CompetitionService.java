@@ -2,8 +2,11 @@ package fit.cvut.org.cz.hockey.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
-import fit.cvut.org.cz.hockey.business.CompetitionManager;
+import java.util.Date;
+
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -14,7 +17,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
-    private CompetitionManager cm = new CompetitionManager();
 
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_COMPETITION = "extra_competition";
@@ -52,7 +54,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             case ACTION_CREATE:
             {
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                cm.insert(this,c);
+                ManagerFactory.getInstance().competitionManager.insert(this, c);
 
                 break;
             }
@@ -60,6 +62,9 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent();
                 res.setAction(ACTION_FIND_BY_ID);
+                Competition c = new Competition(intent.getLongExtra(EXTRA_ID, -1), "name3", new Date(2011,3,1), null, "uberNote", "teams");
+                res.putExtra(EXTRA_COMPETITION, c);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
             }
