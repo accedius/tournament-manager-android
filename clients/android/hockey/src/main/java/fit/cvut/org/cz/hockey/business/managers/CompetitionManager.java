@@ -31,6 +31,10 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public Competition getById(Context context, long id) {
-        return null;
+        DCompetition dc = DAOFactory.getInstance().competitionDAO.getById(context, id);
+        if( dc == null )
+            return null;
+        Competition c = new Competition(dc.getId(),dc.getUid(),dc.getName(),dc.getStartDate(),dc.getEndDate(),dc.getNote(),dc.getType());
+        return c;
     }
 }

@@ -62,7 +62,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent();
                 res.setAction(ACTION_FIND_BY_ID);
-                Competition c = new Competition(intent.getLongExtra(EXTRA_ID, -1), "name3", new Date(2011,3,1), null, "uberNote", "teams");
+                Competition c = ManagerFactory.getInstance().competitionManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 res.putExtra(EXTRA_COMPETITION, c);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 

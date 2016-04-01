@@ -6,4 +6,6 @@
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
     <string name="invalidName">Name is not valid!</string>
+    <string name="tours_held">Tournaments held</string>
+    <string name="players">Players</string>
 </resources>

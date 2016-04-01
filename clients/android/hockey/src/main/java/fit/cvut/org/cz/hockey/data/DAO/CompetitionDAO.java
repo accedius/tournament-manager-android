@@ -2,6 +2,7 @@ package fit.cvut.org.cz.hockey.data.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.text.DateFormat;
@@ -56,6 +57,12 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public DCompetition getById(Context context, long id) {
-        return null;
+        String[] selArgs = { String.valueOf( id ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        Cursor cursor = db.query( DBConstants.tCOMPETITIONS, null, DBConstants.CID + "=?", selArgs, null, null, null );
+        cursor.moveToFirst();
+        if( cursor.getCount() <= 0 )
+            return null;
+        return new DCompetition( cursor );
     }
 }

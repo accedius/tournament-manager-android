@@ -6,11 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
+import android.view.ViewGroup;
 
+import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
  * Created by atgot_000 on 29. 3. 2016.
@@ -27,13 +30,14 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     private Fragment[] fragments;
     private String[] titles;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        competitionID = 36;
+        competitionID = 33;
 
         titles = new String[]{ HEADER_OVERVIEW_COMPETITION/*, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS*/ };
-        Fragment f1 = new HockeyCompetitionOverviewFragment();
+        Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
 //        Fragment f2 = new HockeyCompetitionOverviewFragment();
 //        Fragment f3 = new HockeyCompetitionOverviewFragment();
         fragments = new Fragment[]{ f1 };
@@ -42,6 +46,8 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
 
     }
+
+
 
     public long getCompetitionID()
     {
