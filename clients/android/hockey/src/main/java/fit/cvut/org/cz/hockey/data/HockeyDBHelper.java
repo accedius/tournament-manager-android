@@ -22,18 +22,12 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
-        db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_H2);
+        onCreate(db);
 
     }
 

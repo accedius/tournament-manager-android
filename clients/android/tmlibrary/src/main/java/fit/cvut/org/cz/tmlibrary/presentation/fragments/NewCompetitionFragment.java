@@ -6,12 +6,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -53,7 +57,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    private EditText note, name, type, startDate, endDate;
+    private EditText note, name, startDate, endDate;
+    private AppCompatSpinner type;
     private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
     protected long competitionId = -1;
@@ -70,7 +75,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
-        type = (EditText) v.findViewById(R.id.et_type);
+        type = (AppCompatSpinner) v.findViewById(R.id.sp_type);
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
@@ -84,8 +89,18 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         startDate.setKeyListener(null);
         endDate.setKeyListener(null);
 
+        //We set adapter for spinner from CompetitionType Enum
 
-        //Instead we show dialog with date picker when the focus is gaied
+        ArrayAdapter<CompetitionType> adapter = new ArrayAdapter<CompetitionType>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+        type.setAdapter(adapter);
+
+
+
+        //Instead we show dialog with date picker when the focus is gained
         startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -134,7 +149,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     Date sDate = null; Date eDate = null;
                     if (dStartDate != null) sDate = dStartDate.getTime();
                     if (dEndDate != null) eDate = dEndDate.getTime();
-                    competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), type.getText().toString());
+                    CompetitionType t = (CompetitionType) type.getSelectedItem();
+                    competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
                     if (competitionId == -1) saveCompetition(competition);
                     else updateCompetition(competition);
                     getActivity().finish();
@@ -192,6 +208,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             dEndDate.setTime(c.getStartDate());
         }
         note.setText(c.getNote());
-        type.setText(c.getType());
+        //type.setText(c.getType());
     }
 }

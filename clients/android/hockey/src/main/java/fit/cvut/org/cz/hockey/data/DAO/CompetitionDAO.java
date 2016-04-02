@@ -61,7 +61,7 @@ public class CompetitionDAO implements ICompetitionDAO {
     public DCompetition getById(Context context, long id) {
         String[] selArgs = { String.valueOf( id ) };
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        Cursor cursor = db.query( DBConstants.tCOMPETITIONS, null, DBConstants.CID + "=?", selArgs, null, null, null );
+        Cursor cursor = db.query( DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null );
         cursor.moveToFirst();
         if( cursor.getCount() <= 0 )
             return null;

@@ -22,18 +22,13 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
-        db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_1);
-        db.execSQL(DBScripts.INSERT_INTO_COMPETITIONS_2);
+        onCreate(db);
 
     }
 }

@@ -4,9 +4,10 @@ package fit.cvut.org.cz.tmlibrary.data;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class DBConstants {
-
+    // t prefix stands for table
     public static final String tCOMPETITIONS = "competitions";
 
+    //c prefix stands for column
     public static final String cID = "_id";
     public static final String cUID = "uid";
     public static final String cNAME = "name";
