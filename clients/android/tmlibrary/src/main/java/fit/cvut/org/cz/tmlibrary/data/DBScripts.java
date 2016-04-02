@@ -6,8 +6,8 @@ package fit.cvut.org.cz.tmlibrary.data;
 public class DBScripts {
 
     public static final String CREATE_TABLE_COMPETITIONS =
-            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT );",
-                    DBConstants.tCOMPETITIONS, DBConstants.CID, DBConstants.UID, DBConstants.CNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE);
+            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+                    DBConstants.tCOMPETITIONS, DBConstants.cID, DBConstants.cNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED);
 
     public static final String INSERT_INTO_COMPETITIONS =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",

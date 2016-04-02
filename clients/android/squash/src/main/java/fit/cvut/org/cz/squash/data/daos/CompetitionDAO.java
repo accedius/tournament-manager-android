@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
@@ -26,7 +25,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.CNAME, competition.getName());
+        cv.put(DBConstants.cNAME, competition.getName());
         cv.put(DBConstants.cTYPE, competition.getType());
         cv.put(DBConstants.cNOTE, competition.getNote());
         if (competition.getStartDate() != null)

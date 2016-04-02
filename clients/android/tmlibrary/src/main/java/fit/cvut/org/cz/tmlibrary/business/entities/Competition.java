@@ -13,10 +13,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class Competition implements Parcelable {
+public class Competition extends ShareBase implements Parcelable {
 
     private long id;
-    private String uid;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -27,8 +26,8 @@ public class Competition implements Parcelable {
 
     public static DCompetition convertToDCompetition(Competition c){
 
-        return new DCompetition(c.getId(), c.getUid(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getType());
+        return new DCompetition(c.getId(), c.getName(), c.getStartDate(),
+                c.getEndDate(), c.getNote(), c.getType(), c.getEtag(), c.getUid(), c.getLastModified());
     }
 
 
@@ -54,12 +53,16 @@ public class Competition implements Parcelable {
 
     public Competition(DCompetition c) {
         this.id = c.getId();
-        this.uid = c.getUid();
         this.name = c.getName();
         this.startDate = c.getStartDate();
         this.endDate = c.getEndDate();
         this.note = c.getNote();
         this.type = c.getType();
+
+        this.uid = c.getUid();
+        this.etag = c.getEtag();
+        this.lastModified = c.getLastModified();
+
     }
 
     public Competition(Cursor cursor)  {
@@ -84,25 +87,48 @@ public class Competition implements Parcelable {
 
     protected Competition(Parcel in) {
         id = in.readLong();
-        uid = in.readString();
         name = in.readString();
         note = in.readString();
         type = in.readString();
-        String text = in.readString();
-        if (text == null) startDate = null;
-        else try {
-            startDate = dateFormat.parse(text);
+
+        try{
+            String text = in.readString();
+            if (text == null) startDate = null;
+            else startDate = dateFormat.parse(text);
+
+            text = in.readString();
+            if (text == null) endDate = null;
+            else endDate = dateFormat.parse(text);
+
+            text = in.readString();
+            if (text == null) lastModified = null;
+            else lastModified = dateFormat.parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        text = in.readString();
-        if (text == null) endDate = null;
-        else try {
-            endDate = dateFormat.parse(text);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        uid = in.readString();
+        etag = in.readString();
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeString(note);
+        dest.writeString(type);
+        if (startDate == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(startDate));
+        if (endDate == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(endDate));
+
+        //shared base parcelable
+        if (lastModified == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(lastModified));
+        dest.writeString(uid);
+        dest.writeString(etag);
+    }
+
 
     public static final Creator<Competition> CREATOR = new Creator<Competition>() {
         @Override
@@ -122,14 +148,6 @@ public class Competition implements Parcelable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getName() {
@@ -175,18 +193,5 @@ public class Competition implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(uid);
-        dest.writeString(name);
-        dest.writeString(note);
-        dest.writeString(type);
-        if (startDate == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(startDate));
-        if (endDate == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(endDate));
     }
 }
