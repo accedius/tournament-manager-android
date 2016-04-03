@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractDeletableListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.adapters.vh.SimpleOneActionViewHolder;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
 
 /**
  * Created by Vaclav on 19. 3. 2016.
