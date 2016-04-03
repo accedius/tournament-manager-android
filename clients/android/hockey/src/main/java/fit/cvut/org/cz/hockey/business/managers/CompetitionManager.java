@@ -34,7 +34,7 @@ public class CompetitionManager implements ICompetitionManager {
         DCompetition dc = DAOFactory.getInstance().competitionDAO.getById(context, id);
         if( dc == null )
             return null;
-        Competition c = new Competition(dc.getId(),dc.getUid(),dc.getName(),dc.getStartDate(),dc.getEndDate(),dc.getNote(),dc.getType());
+        Competition c = new Competition( dc );
         return c;
     }
 }

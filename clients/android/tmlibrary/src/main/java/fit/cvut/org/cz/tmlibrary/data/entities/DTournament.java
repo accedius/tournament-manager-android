@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.entities;
+package fit.cvut.org.cz.tmlibrary.data.entities;
 
 import android.database.Cursor;
 import android.os.Parcel;
@@ -8,13 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
-
 /**
- * Created by Vaclav on 12. 3. 2016.
+ * Created by atgot_000 on 3. 4. 2016.
  */
-public class Tournament extends ShareBase implements Parcelable {
+public class DTournament extends DShareBase implements Parcelable {
 
     private long id;
     private String name;
@@ -24,22 +21,30 @@ public class Tournament extends ShareBase implements Parcelable {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static DTournament convertToDTournament(Tournament c){
+    public static final Creator<DTournament> CREATOR = new Creator<DTournament>() {
+        @Override
+        public DTournament createFromParcel(Parcel in) {
+            return new DTournament(in);
+        }
 
-        return new DTournament(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified());
-    }
+        @Override
+        public DTournament[] newArray(int size) {
+            return new DTournament[size];
+        }
+    };
 
-    public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note) {
+    public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified) {
         this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = note;
         this.uid = uid;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.note = note;
+        this.etag = etag;
+        this.lastModified = lastModified;
     }
 
-    public Tournament(long id, String name, Date startDate, Date endDate, String note) {
+    public DTournament(long id, String name, Date startDate, Date endDate, String note) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -47,19 +52,26 @@ public class Tournament extends ShareBase implements Parcelable {
         this.note = note;
     }
 
-    public Tournament(DTournament c) {
-        this.id = c.getId();
-        this.name = c.getName();
-        this.startDate = c.getStartDate();
-        this.endDate = c.getEndDate();
-        this.note = c.getNote();
+    public DTournament(Cursor cursor)  {
+        this.id = cursor.getInt(0);
+        this.uid = cursor.getString(1);
+        this.name = cursor.getString(2);
 
-        this.uid = c.getUid();
-        this.etag = c.getEtag();
-        this.lastModified = c.getLastModified();
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = dateFormat.parse(cursor.getString(3));
+            endDate = dateFormat.parse(cursor.getString(4));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = cursor.getString(5);
     }
 
-    protected Tournament(Parcel in) {
+    protected DTournament(Parcel in) {
         id = in.readLong();
         name = in.readString();
         note = in.readString();
@@ -101,24 +113,10 @@ public class Tournament extends ShareBase implements Parcelable {
         dest.writeString(etag);
     }
 
-
-    public static final Creator<Tournament> CREATOR = new Creator<Tournament>() {
-        @Override
-        public Tournament createFromParcel(Parcel in) {
-            return new Tournament(in);
-        }
-
-        @Override
-        public Tournament[] newArray(int size) {
-            return new Tournament[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
     }
-
 
     public long getId() {
         return id;
