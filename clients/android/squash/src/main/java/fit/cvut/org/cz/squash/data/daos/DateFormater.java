@@ -13,7 +13,7 @@ public class DateFormater {
     }
 
     public SimpleDateFormat getFormat(){ return new SimpleDateFormat("yyyy-MM-dd");}
-    public SimpleDateFormat getDateTimeFormat(){ return new SimpleDateFormat("yyyy-MM-dd mm:HH:ss");}
+    public SimpleDateFormat getDateTimeFormat(){ return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");}
 
     private DateFormater() {
     }

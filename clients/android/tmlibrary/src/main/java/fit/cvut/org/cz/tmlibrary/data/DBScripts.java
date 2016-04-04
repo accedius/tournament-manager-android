@@ -12,6 +12,38 @@ public class DBScripts {
             String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
                     DBConstants.tCOMPETITIONS, DBConstants.cID, DBConstants.cNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED);
 
+
+
+
+    public static final String CREATE_TABLE_TOURNAMENTS = "create table " + DBConstants.tTOURNAMENTS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cNAME + " TEXT NOT NULL, "
+            + DBConstants.cSTART + " TEXT, "
+            + DBConstants.cEND + " TEXT, "
+            + DBConstants.cNOTE + " TEXT, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
+            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static final String INSERT_INTO_COMPETITIONS =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
                     DBConstants.tCOMPETITIONS, 14, "41212", "WC in Squash", "2017-01-01", "2017-01-21", "single", "---");
