@@ -17,16 +17,19 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public void update(Context context, Competition competition) {
-
+        DAOFactory.getInstance().competitionDAO.update(context, Competition.convertToDCompetition(competition));
     }
 
     @Override
     public void delete(Context context, long id) {
 
+        //TODO delete everything else before competition
+
+        DAOFactory.getInstance().competitionDAO.delete(context, id);
     }
 
     @Override
     public Competition getById(Context context, long id) {
-        return null;
+       return new Competition(DAOFactory.getInstance().competitionDAO.getById(context, id));
     }
 }

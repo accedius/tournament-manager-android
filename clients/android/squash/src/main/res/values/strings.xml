@@ -4,4 +4,5 @@
     <string name="tournament_manager_package">TournamentManagerPackage</string>
     <string name="title_activity_main">Squash Main Activity</string>
     <string name="squashpcg">Squash PCG</string>
+    <string name="dateFirmat">yyyy-MM-dd</string>
 </resources>

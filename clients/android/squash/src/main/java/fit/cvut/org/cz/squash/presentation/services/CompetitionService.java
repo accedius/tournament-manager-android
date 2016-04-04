@@ -49,31 +49,22 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
             case ACTION_CREATE:{
 
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-
                 ManagersFactory.getInstance().competitionManager.insert(this, c);
-
-
                 break;
             }
             case ACTION_GET_BY_ID:{
 
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Competition c = new Competition(intent.getLongExtra(EXTRA_ID, -1), "name3", new Date(2011,3,1), null, "uberNote", CompetitionType.Individuals);
+                Competition c = ManagersFactory.getInstance().competitionManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_COMPETITION, c);
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
 
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-
-
+                ManagersFactory.getInstance().competitionManager.update(this, c);
                 break;
             }
         }

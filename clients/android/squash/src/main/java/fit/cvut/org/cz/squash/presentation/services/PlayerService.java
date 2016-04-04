@@ -41,14 +41,11 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         }
 
         ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player("Adam"));
-        players.add(new Player("Jake"));
-        players.add(new Player("Stan"));
-        players.add(new Player("Kyle"));
-        players.add(new Player("Cartman"));
-        players.add(new Player("Butters"));
-        players.add(new Player("Token"));
-        players.add(new Player("Tweek"));
+        players.add(new Player(0, "Stan", null, null));
+        players.add(new Player(0, "Kyle", null, null));
+        players.add(new Player(0, "Cartman", null, null));
+        players.add(new Player(0, "Kenny", null, null));
+        players.add(new Player(0, "Butters", null, null));
 
         ArrayList<Integer> sel = new ArrayList<>();
         sel.add(0);
