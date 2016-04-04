@@ -31,6 +31,8 @@
             android:multiprocess="true"/>
         <service android:name=".presentation.services.CompetitionService"
             />
+        <service android:name=".presentation.services.TournamentService"
+            />
 
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
         <meta-data android:name="sport_name" android:value="@string/sport_name"/>

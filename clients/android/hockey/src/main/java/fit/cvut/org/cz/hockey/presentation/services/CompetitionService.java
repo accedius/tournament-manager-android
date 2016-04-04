@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -43,6 +45,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
         return res;
     }
+
 
     @Override
     protected void doWork(Intent intent) {

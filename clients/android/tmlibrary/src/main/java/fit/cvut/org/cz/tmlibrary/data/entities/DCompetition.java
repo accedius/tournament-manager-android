@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.ShareBase;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -45,25 +46,6 @@ public class DCompetition extends DShareBase implements Parcelable {
         this.type = type;
     }
 
-    public DCompetition(Cursor cursor)  {
-        this.id = cursor.getInt(0);
-        this.uid = cursor.getString(1);
-        this.name = cursor.getString(2);
-
-        Date startDate = null;
-        Date endDate = null;
-        try {
-            startDate = dateFormat.parse(cursor.getString(3));
-            endDate = dateFormat.parse(cursor.getString(4));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.note = cursor.getString(5);
-        this.type = cursor.getString(6);
-    }
 
     protected DCompetition(Parcel in) {
         id = in.readLong();

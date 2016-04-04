@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
@@ -28,9 +29,10 @@ public class CompetitionDAO implements ICompetitionDAO {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         ContentValues values = new ContentValues();
-//        values.put(DBConstants.cID, competition.getId());
-//        values.put(DBConstants.cUID, competition.getUid());
-//        values.put(DBConstants.cNAME, competition.getName());
+        if ( competition.getId() > 0 )
+            values.put(DBConstants.cID, competition.getId());
+        values.put(DBConstants.cUID, competition.getUid());
+        values.put(DBConstants.cNAME, competition.getName());
         values.put(DBConstants.cTYPE, competition.getType());
         if ( competition.getStartDate() != null )
             values.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
@@ -38,9 +40,9 @@ public class CompetitionDAO implements ICompetitionDAO {
             values.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
         values.put(DBConstants.cNOTE, competition.getNote());
 
-        values.put(DBConstants.cID, 1);
-        values.put(DBConstants.cUID, "45862");
-        values.put(DBConstants.cNAME, "MockComp");
+//        values.put(DBConstants.cID, 1);
+//        values.put(DBConstants.cUID, "45862");
+//        values.put(DBConstants.cNAME, "MockComp");
 
         long newRowId;
         newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
@@ -65,6 +67,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         cursor.moveToFirst();
         if( cursor.getCount() <= 0 )
             return null;
-        return new DCompetition( cursor );
+        DCompetition res = CursorParser.getInstance().parseDCompetition( cursor );
+        return res;
     }
 }

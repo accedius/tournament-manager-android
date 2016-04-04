@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
+import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -34,13 +35,13 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        competitionID = 33;
+        competitionID = 2;
 
-        titles = new String[]{ HEADER_OVERVIEW_COMPETITION/*, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS*/ };
+        titles = new String[]{ HEADER_OVERVIEW_COMPETITION, HEADER_TOURNAMENTS_LIST/*, HEADER_COMPETITION_STANDINGS*/ };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
-//        Fragment f2 = new HockeyCompetitionOverviewFragment();
+        Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
 //        Fragment f3 = new HockeyCompetitionOverviewFragment();
-        fragments = new Fragment[]{ f1 };
+        fragments = new Fragment[]{ f1, f2 };
 
         super.onCreate(savedInstanceState);
 
