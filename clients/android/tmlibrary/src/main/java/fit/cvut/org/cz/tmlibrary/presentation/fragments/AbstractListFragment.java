@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,9 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View fragmetview = inflater.inflate(R.layout.fragment_abstract_list, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_abstract_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) fragmetview.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -53,13 +54,13 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 //        RecyclerView.ItemDecoration dividers = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
 //        recyclerView.addItemDecoration(dividers);
 
-        return fragmetview;
+        return fragmentView;
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-
         List<T> data = intent.getParcelableArrayListExtra(getDataKey());
+        Log.d("ADF", "Received data, len: "+data.size());
         adapter.swapData(data);
     }
 }

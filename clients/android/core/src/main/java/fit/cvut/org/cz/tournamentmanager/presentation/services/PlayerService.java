@@ -10,6 +10,9 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -24,8 +27,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         super("Competition Service");
     }
 
-    private ArrayList<Competition> getData() {
-        ArrayList<Competition> data = new ArrayList<>();
+    private ArrayList<DPlayer> getData() {
+        ArrayList<DPlayer> data = new ArrayList<>();
 
         Uri myUri = Uri.parse("content://fit.cvut.org.cz.tournamentmanager.data/players");
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
@@ -34,9 +37,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         }
         else {
             Log.d("DB", "Total rows " + cur.getCount());
+            CursorParser cp = CursorParser.getInstance();
             if (cur.moveToFirst()) {
                 do {
-                    data.add(new Competition(cur));
+                    data.add(cp.parseDPlayer(cur));
                 } while (cur.moveToNext());
             }
         }

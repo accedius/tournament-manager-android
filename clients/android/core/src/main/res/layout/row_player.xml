@@ -22,6 +22,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/tv_name"/>
-    </RelativeLayout>
 
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

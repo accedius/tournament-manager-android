@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
 /**
  * Created by atgot_000 on 4. 4. 2016.
@@ -20,8 +21,7 @@ public class CursorParser {
         return ourInstance;
     }
 
-    public DCompetition parseDCompetition(Cursor cursor)
-    {
+    public DCompetition parseDCompetition(Cursor cursor) {
         long id;
         String uid, name, note, type, etag;
         Date startDate = null;
@@ -31,7 +31,6 @@ public class CursorParser {
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
         name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
-
 
         try {
             if( cursor.getString(cursor.getColumnIndex(DBConstants.cSTART)) != null )
@@ -49,6 +48,20 @@ public class CursorParser {
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
         return new DCompetition(id, name, startDate, endDate, note, type, etag, uid, lastModified);
+    }
 
+    public DPlayer parseDPlayer(Cursor cursor) {
+        long id;
+        String uid, name, email, note, etag;
+        Date lastModified = null;
+
+        id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
+        uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
+        email = cursor.getString(cursor.getColumnIndex(DBConstants.cEMAIL));
+        note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
+        etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
+
+        return new DPlayer(id, name, email, note, etag, uid, lastModified);
     }
 }

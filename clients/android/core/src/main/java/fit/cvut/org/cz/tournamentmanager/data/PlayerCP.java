@@ -7,9 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
  * Created by kevin on 4.4.2016.
@@ -26,8 +28,8 @@ public class PlayerCP extends ContentProvider {
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(AUTHORITY, CPConstants.uCompetitions, PLAYERS_ALL);
-        //matcher.addURI(AUTHORITY, CPConstants.uCompetitions + "#", COMPETITION_ONE);
+        matcher.addURI(AUTHORITY, CPConstants.uPlayers, PLAYERS_ALL);
+        //matcher.addURI(AUTHORITY, CPConstants.uPlayers + "#", PLAYER_ONE);
     }
 
     @Override
@@ -49,7 +51,6 @@ public class PlayerCP extends ContentProvider {
         Cursor cursor = builder.query(helper.getWritableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
         return cursor;
     }
 

@@ -64,7 +64,6 @@ public class Competition extends ShareBase implements Parcelable {
         this.uid = c.getUid();
         this.etag = c.getEtag();
         this.lastModified = c.getLastModified();
-
     }
 
     public Competition(Cursor cursor)  {
@@ -75,8 +74,8 @@ public class Competition extends ShareBase implements Parcelable {
         Date startDate = null;
         Date endDate = null;
         try {
-            startDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cSTART)));
-            endDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cEND)));
+            startDate = dateFormat.parse("2015-02-02");
+            //endDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cEND)));
         } catch (ParseException e) {
             e.printStackTrace();
         }

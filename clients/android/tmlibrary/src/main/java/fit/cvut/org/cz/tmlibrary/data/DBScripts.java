@@ -34,11 +34,11 @@ public class DBScripts {
 
     public static final String INSERT_INTO_PLAYERS =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04");
+                    DBConstants.tPLAYERS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_1 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 1, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04");
+                    DBConstants.tPLAYERS, 2, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_2 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 1, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04");
+                    DBConstants.tPLAYERS, 3, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04");
 }

@@ -1,22 +1,16 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.services;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -32,8 +26,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         super("Competition Service");
     }
 
-    private ArrayList<Competition> getData(String package_name) {
-        ArrayList<Competition> data = new ArrayList<>();
+    private ArrayList<DCompetition> getData(String package_name) {
+        ArrayList<DCompetition> data = new ArrayList<>();
 
         Uri myUri = Uri.parse("content://fit.cvut.org.cz."+package_name+".data/competitions");
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
@@ -42,9 +36,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         }
         else {
             Log.d("DB", "Total rows " + cur.getCount());
+            CursorParser cp = CursorParser.getInstance();
             if (cur.moveToFirst()) {
                 do {
-                    data.add(new Competition(cur));
+                    data.add(cp.parseDCompetition(cur));
                 } while (cur.moveToNext());
             }
         }

@@ -10,13 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class CompetitionAdapter extends AbstractListAdapter<Competition, CompetitionAdapter.CompetitonViewHolder> {
+public class CompetitionAdapter extends AbstractListAdapter<DCompetition, CompetitionAdapter.CompetitonViewHolder> {
 
     @Override
     public CompetitonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,12 +31,12 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
 
     @Override
     public void onBindViewHolder(CompetitonViewHolder holder, int position) {
-        Competition competition = data.get(position);
+        Competition competition = new Competition(data.get(position));
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(competition.getName());
-        holder.startDate.setText("From: " + dateFormat.format(competition.getStartDate()));
-        holder.endDate.setText("to: " + dateFormat.format(competition.getEndDate()));
+        holder.startDate.setText("From: ");
+        holder.endDate.setText("to: ");
         holder.name.setText(competition.getName());
     }
 

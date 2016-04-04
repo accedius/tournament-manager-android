@@ -44,7 +44,6 @@ public class SportFragment extends Fragment {
         }
 
         return v;
-
     }
 
     @Override

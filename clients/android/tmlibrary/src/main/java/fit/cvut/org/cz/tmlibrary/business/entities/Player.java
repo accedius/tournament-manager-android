@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
@@ -57,6 +59,14 @@ public class Player extends ShareBase implements Parcelable {
         this.name = name;
         this.email = email;
         this.note = note;
+    }
+
+    public Player(Cursor cursor) {
+        this.id = cursor.getLong(cursor.getColumnIndex(DBConstants.cID));
+        this.uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        this.name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
+        this.email = cursor.getString(cursor.getColumnIndex(DBConstants.cEMAIL));
+        this.note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
     }
 
     public Player(DPlayer p) {

@@ -9,15 +9,15 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.PlayerViewHolder> {
+public class PlayerAdapter extends AbstractListAdapter<DPlayer, PlayerAdapter.PlayerViewHolder> {
 
     @Override
     public PlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +31,7 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
 
     @Override
     public void onBindViewHolder(PlayerViewHolder holder, int position) {
-        Player player = data.get(position);
+        Player player = new Player(data.get(position));
 
         holder.name.setText(player.getName());
         holder.email.setText(player.getEmail());
