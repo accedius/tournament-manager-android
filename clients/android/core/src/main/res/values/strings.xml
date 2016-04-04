@@ -2,6 +2,7 @@
     <string name="app_name">TournamentManager</string>
     <string name="tournament_manager_package">TournamentManagerPackage</string>
     <string name="main_acc_name">Competitions</string>
+    <string name="title_activity_players">Players</string>
     <string name="title_activity_toolbar">ToolbarActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
 </resources>

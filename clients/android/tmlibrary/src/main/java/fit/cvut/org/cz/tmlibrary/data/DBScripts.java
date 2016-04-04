@@ -4,6 +4,9 @@ package fit.cvut.org.cz.tmlibrary.data;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class DBScripts {
+    public static final String CREATE_TABLE_PLAYERS =
+            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+                    DBConstants.tPLAYERS, DBConstants.cID, DBConstants.cNAME, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED);
 
     public static final String CREATE_TABLE_COMPETITIONS =
             String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
@@ -28,4 +31,14 @@ public class DBScripts {
     public static final String INSERT_INTO_COMPETITIONS_H2 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
                     DBConstants.tCOMPETITIONS, 33, "18742", "NHL", "2016-01-01", "2016-02-29", "team", "no, its team :D");
+
+    public static final String INSERT_INTO_PLAYERS =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tCOMPETITIONS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_1 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tCOMPETITIONS, 1, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_2 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tCOMPETITIONS, 1, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04");
 }

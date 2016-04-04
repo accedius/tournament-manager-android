@@ -16,8 +16,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.activities.PlayersActivity"
+            android:label="@string/title_activity_players" />
 
         <service android:name=".presentation.services.CompetitionService" />
+        <service android:name=".presentation.services.PlayerService" />
+
+        <provider
+            android:name="fit.cvut.org.cz.tournamentmanager.data.PlayerCP"
+            android:authorities="fit.cvut.org.cz.tournamentmanager.data"
+            android:exported="true"
+            android:enabled="true"
+            android:multiprocess="true"/>
 
         <activity
             android:name=".presentation.activities.ToolbarActivity"

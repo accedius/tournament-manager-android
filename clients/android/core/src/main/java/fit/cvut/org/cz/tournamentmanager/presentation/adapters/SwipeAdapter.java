@@ -1,12 +1,10 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.adapters;
 
-import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,8 +14,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportFragment;
  * Created by kevin on 27.3.2016.
  */
 public class SwipeAdapter extends FragmentPagerAdapter {
-    ArrayList<String> sport_names;
-    ArrayList<String> package_names;
     ArrayList<ApplicationInfo> sport_packages;
 
     public SwipeAdapter(FragmentManager fm, ArrayList<ApplicationInfo> sport_packages) {

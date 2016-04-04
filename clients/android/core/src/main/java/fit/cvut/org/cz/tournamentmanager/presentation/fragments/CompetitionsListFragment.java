@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class CompetitionListFragment extends AbstractListFragment {
+public class CompetitionsListFragment extends AbstractListFragment {
 
     private String action = "org.cz.cvut.tournamentmanager.action";
 

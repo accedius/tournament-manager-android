@@ -61,7 +61,7 @@ public class ParentFragment extends Fragment implements IProgressInterface {
 
         if (getChildFragmentManager().findFragmentById(R.id.container)== null){
 
-            getChildFragmentManager().beginTransaction().add(R.id.container,new CompetitionListFragment()).commit();
+            getChildFragmentManager().beginTransaction().add(R.id.container,new CompetitionsListFragment()).commit();
         }
     }
 }
