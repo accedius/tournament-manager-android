@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,7 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
@@ -17,6 +15,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 public class Tournament extends ShareBase implements Parcelable {
 
     private long id;
+    private long competitionId;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -27,7 +26,7 @@ public class Tournament extends ShareBase implements Parcelable {
     public static DTournament convertToDTournament(Tournament c){
 
         return new DTournament(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified());
+                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified(), c.getCompetitionId());
     }
 
     public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note) {
@@ -39,13 +38,15 @@ public class Tournament extends ShareBase implements Parcelable {
         this.note = note;
     }
 
-    public Tournament(long id, String name, Date startDate, Date endDate, String note) {
+    public Tournament(long id, long competitionId, String name, Date startDate, Date endDate, String note) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
+        this.setCompetitionId(competitionId);
     }
+
 
     public Tournament(DTournament c) {
         this.id = c.getId();
@@ -53,6 +54,7 @@ public class Tournament extends ShareBase implements Parcelable {
         this.startDate = c.getStartDate();
         this.endDate = c.getEndDate();
         this.note = c.getNote();
+        this.competitionId = c.getCompetitionId();
 
         this.uid = c.getUid();
         this.etag = c.getEtag();
@@ -82,6 +84,7 @@ public class Tournament extends ShareBase implements Parcelable {
 
         uid = in.readString();
         etag = in.readString();
+        competitionId = in.readLong();
     }
 
     @Override
@@ -99,6 +102,7 @@ public class Tournament extends ShareBase implements Parcelable {
         else dest.writeString(dateFormat.format(lastModified));
         dest.writeString(uid);
         dest.writeString(etag);
+        dest.writeLong(competitionId);
     }
 
 
@@ -158,5 +162,13 @@ public class Tournament extends ShareBase implements Parcelable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public long getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(long competitionId) {
+        this.competitionId = competitionId;
     }
 }

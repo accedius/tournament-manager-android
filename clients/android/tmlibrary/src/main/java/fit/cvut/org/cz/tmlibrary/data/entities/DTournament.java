@@ -14,6 +14,7 @@ import java.util.Date;
 public class DTournament extends DShareBase implements Parcelable {
 
     private long id;
+    private long competitionId;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -33,7 +34,7 @@ public class DTournament extends DShareBase implements Parcelable {
         }
     };
 
-    public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified) {
+    public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified, long competitionId) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -42,6 +43,7 @@ public class DTournament extends DShareBase implements Parcelable {
         this.uid = uid;
         this.etag = etag;
         this.lastModified = lastModified;
+        this.competitionId  = competitionId;
     }
 
     public DTournament(long id, String name, Date startDate, Date endDate, String note) {
@@ -94,6 +96,7 @@ public class DTournament extends DShareBase implements Parcelable {
 
         uid = in.readString();
         etag = in.readString();
+        competitionId = in.readLong();
     }
 
     @Override
@@ -111,6 +114,7 @@ public class DTournament extends DShareBase implements Parcelable {
         else dest.writeString(dateFormat.format(lastModified));
         dest.writeString(uid);
         dest.writeString(etag);
+        dest.writeLong(competitionId);
     }
 
     @Override
@@ -156,5 +160,13 @@ public class DTournament extends DShareBase implements Parcelable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public long getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(long competitionId) {
+        this.competitionId = competitionId;
     }
 }

@@ -61,6 +61,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     private AppCompatSpinner type;
     private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
+    private ArrayAdapter<CompetitionType> adapter;
     protected long competitionId = -1;
 
     private Competition competition = null;
@@ -76,13 +77,16 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
         type = (AppCompatSpinner) v.findViewById(R.id.sp_type);
+        //We do not want to change competition type if it is already created
+        if (competitionId != -1)
+            type.setEnabled(false);
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
         if (getArguments() != null)
-            competitionId = getArguments().getLong(ARG_ID, -1);
+            competitionId = getArguments().getLong(ARG_ID , -1);
 
 
         //We don't want user to write into editTexts
@@ -91,10 +95,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
         //We set adapter for spinner from CompetitionType Enum
 
-        ArrayAdapter<CompetitionType> adapter = new ArrayAdapter<CompetitionType>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
+        adapter = new ArrayAdapter<CompetitionType>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
 
         type.setAdapter(adapter);
 
@@ -208,6 +210,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             dEndDate.setTime(c.getStartDate());
         }
         note.setText(c.getNote());
-        //type.setText(c.getType());
+
+        int index = adapter.getPosition(c.getType());
+        type.setSelection(index);
     }
 }

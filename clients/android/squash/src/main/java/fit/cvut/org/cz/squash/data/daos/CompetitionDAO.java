@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
@@ -79,12 +80,14 @@ public class CompetitionDAO implements ICompetitionDAO {
 
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(id)});
 
+        DCompetition competition = null;
+
         if (c.moveToFirst())
-            ;//TODO parse DCompetition
+            competition = CursorParser.getInstance().parseDCompetition(c);
 
         c.close();
 
-        return null;
+        return competition;
 
     }
 }

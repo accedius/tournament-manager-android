@@ -28,9 +28,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 public abstract class NewTournamentFragment extends AbstractDataFragment {
 
     private static final String ARG_ID = "arg_id";
+    private static final String ARG_COMPETIITON_ID = "arg_competition_id";
 
-
-    public static NewTournamentFragment newInstance(long id, Class<? extends NewTournamentFragment> clazz){
+    /**
+     *
+     * @param id id of tournament for update or id of Competition this tournament belongs to depends on forCompetition param
+     * @param forComeptition if true id is this tournaments competition
+     * @param clazz class of child fragment
+     * @return
+     */
+    public static NewTournamentFragment newInstance(long id, boolean forComeptition, Class<? extends NewTournamentFragment> clazz){
         NewTournamentFragment fragment = null;
         try {
             Constructor<? extends NewTournamentFragment> c = clazz.getConstructor();
@@ -46,16 +53,21 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+
+        if (forComeptition) args.putLong(ARG_COMPETIITON_ID, id);
+        else args.putLong(ARG_ID, id);
 
         fragment.setArguments(args);
         return fragment;
     }
 
+
+
     private EditText note, name, startDate, endDate;
     private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
     protected long tournamentId = -1;
+    protected long competitionId = -1;
 
     private Tournament tournament = null;
 
@@ -64,7 +76,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View v = inflater.inflate(R.layout.fragment_newcompetition, container, false);
+        View v = inflater.inflate(R.layout.fragment_new_tournament, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
@@ -73,8 +85,11 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
-        if (getArguments() != null)
+        if (getArguments() != null){
             tournamentId = getArguments().getLong(ARG_ID, -1);
+            competitionId = getArguments().getLong(ARG_COMPETIITON_ID, -1);
+        }
+
 
 
         //We don't want user to write into editTexts
@@ -130,9 +145,17 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
                     Date sDate = null; Date eDate = null;
                     if (dStartDate != null) sDate = dStartDate.getTime();
                     if (dEndDate != null) eDate = dEndDate.getTime();
-                    tournament = new Tournament(tournamentId, name.getText().toString(), sDate, eDate, note.getText().toString());
-                    if (tournamentId == -1) saveTournament(tournament);
-                    else updateTournament(tournament);
+                    if (tournamentId == -1){
+                        tournament = new Tournament(tournamentId, competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
+                        saveTournament(tournament);
+                    }
+                    else{
+                        tournament.setName(name.getText().toString());
+                        tournament.setStartDate(sDate);
+                        tournament.setEndDate(eDate);
+                        tournament.setNote(note.getText().toString());
+                        updateTournament(tournament);
+                    }
                     getActivity().finish();
                 }
             }
@@ -146,6 +169,12 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             Snackbar.make(v, R.string.invalidName, Snackbar.LENGTH_LONG).show();
             return false;
         }
+
+        if (competitionId == -1 && tournamentId == -1){
+            Snackbar.make(v, R.string.tournament_id_invalid, Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
         Snackbar.make(v, "Tournament created", Snackbar.LENGTH_SHORT).show();
         return true;
     }

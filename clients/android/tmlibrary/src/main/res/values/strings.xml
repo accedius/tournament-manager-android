@@ -9,4 +9,5 @@
     <string name="tours_held">Tournaments held</string>
     <string name="players">Players</string>
     <string name="finish">Finish</string>
+    <string name="tournament_id_invalid">You have to specify either competitionId or tournamentId</string>
 </resources>
