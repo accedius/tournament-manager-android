@@ -17,9 +17,13 @@
         <activity android:name=".presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Competition"/>
+        <activity android:name=".presentation.activities.SelectPlayersActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Select Players"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>
+        <service android:name=".presentation.services.PlayerService"/>
 
         <provider
             android:name="fit.cvut.org.cz.squash.data.CompetitionCP"

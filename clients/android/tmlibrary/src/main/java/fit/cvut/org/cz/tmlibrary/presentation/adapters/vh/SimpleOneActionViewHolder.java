@@ -1,12 +1,10 @@
-package fit.cvut.org.cz.tournamentmanager.presentation.adapters.vh;
+package fit.cvut.org.cz.tmlibrary.presentation.adapters.vh;
 
 import android.view.View;
 import android.widget.TextView;
 
+import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractOneActionListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
-import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
  * Created by Vaclav on 15. 3. 2016.

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractDeletableListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.DeletePlayersAdapter;
-import fit.cvut.org.cz.tournamentmanager.presentation.adapters.SelectPlayersAdapter;
-import fit.cvut.org.cz.tournamentmanager.presentation.adapters.vh.SimpleOneActionViewHolder;
 
 public class ToolbarActivity extends AppCompatActivity {
 

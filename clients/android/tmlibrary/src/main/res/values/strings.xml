@@ -8,4 +8,5 @@
     <string name="invalidName">Name is not valid!</string>
     <string name="tours_held">Tournaments held</string>
     <string name="players">Players</string>
+    <string name="finish">Finish</string>
 </resources>

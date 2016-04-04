@@ -27,8 +27,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
  */
 public abstract class AbstractListFragment<T extends Parcelable> extends AbstractDataFragment {
 
-    public static final String EXTRA_DATA = "extra_data";
-
     private AbstractListAdapter adapter;
 
     public AbstractListFragment() {
