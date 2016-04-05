@@ -30,7 +30,7 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new NewSquashCompetitionFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashCompetitionFragment.newInstance(1, NewSquashCompetitionFragment.class)).commit();
         }
     }
 }

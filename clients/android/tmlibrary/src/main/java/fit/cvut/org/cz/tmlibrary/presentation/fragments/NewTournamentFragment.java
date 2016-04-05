@@ -191,8 +191,22 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             super.customOnPause();
     }
 
+    /**
+     * Called when tournament in param needs to be created
+     * @param t
+     */
     protected abstract void saveTournament(Tournament t);
+
+    /**
+     * Called when tournament in param needs to be updated
+     * @param t
+     */
     protected abstract void updateTournament(Tournament t);
+
+    /**
+     *
+     * @return String key of tournament received in Bundle from datasource
+     */
     protected abstract String getTournamentKey();
 
     @Override

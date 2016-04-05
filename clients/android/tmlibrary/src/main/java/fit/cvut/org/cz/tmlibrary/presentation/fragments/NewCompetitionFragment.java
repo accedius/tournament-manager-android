@@ -34,7 +34,12 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
     private static final String ARG_ID = "arg_id";
 
-
+    /**
+     * Constructor for this fragment with id of competition that needs to update
+     * @param id
+     * @param clazz
+     * @return
+     */
     public static NewCompetitionFragment newInstance(long id, Class<? extends NewCompetitionFragment> clazz){
         NewCompetitionFragment fragment = null;
         try {
@@ -77,16 +82,22 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
         type = (AppCompatSpinner) v.findViewById(R.id.sp_type);
+
+        if (getArguments() != null)
+            competitionId = getArguments().getLong(ARG_ID , -1);
+
         //We do not want to change competition type if it is already created
-        if (competitionId != -1)
+        if (competitionId != -1){
             type.setEnabled(false);
+            //type.setClickable(false);
+        }
+
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
-        if (getArguments() != null)
-            competitionId = getArguments().getLong(ARG_ID , -1);
+
 
 
         //We don't want user to write into editTexts
@@ -152,9 +163,18 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     if (dStartDate != null) sDate = dStartDate.getTime();
                     if (dEndDate != null) eDate = dEndDate.getTime();
                     CompetitionType t = (CompetitionType) type.getSelectedItem();
-                    competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
-                    if (competitionId == -1) saveCompetition(competition);
-                    else updateCompetition(competition);
+
+                    if (competitionId == -1){
+                        competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
+                        saveCompetition(competition);
+                    }
+                    else{
+                        competition.setStartDate(sDate);
+                        competition.setEndDate(eDate);
+                        competition.setName(name.getText().toString());
+                        competition.setNote(note.getText().toString());
+                        updateCompetition(competition);
+                    }
                     getActivity().finish();
                 }
             }
@@ -187,8 +207,22 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             super.customOnPause();
     }
 
+    /**
+     * Called with new Competition in param
+     * @param c
+     */
     protected abstract void saveCompetition(Competition c);
+
+    /**
+     * Called when competition in param should be updated
+     * @param c
+     */
     protected abstract void updateCompetition(Competition c);
+
+    /**
+     *
+     * @return String key of competition gotten in Bundle of Intent when receiving from service
+     */
     protected abstract String getCompetitionKey();
 
     @Override

@@ -59,7 +59,7 @@ public class TournamentDAO implements ITournamentDAO {
         cv.put(DBConstants.cETAG, tournament.getEtag());
 
 
-        String where = String.format("where %s = ?", DBConstants.cID);
+        String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tTOURNAMENTS, cv, where, new String[]{Long.toString(tournament.getId())});
     }
 
@@ -67,7 +67,7 @@ public class TournamentDAO implements ITournamentDAO {
     public void delete(Context context, long id) {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-        String where = String.format("where %s = ?", DBConstants.cID);
+        String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tTOURNAMENTS, where, new String[]{Long.toString(id)});
     }
 

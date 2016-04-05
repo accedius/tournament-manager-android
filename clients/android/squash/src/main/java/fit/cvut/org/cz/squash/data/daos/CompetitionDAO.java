@@ -59,7 +59,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         cv.put(DBConstants.cETAG, competition.getEtag());
 
 
-        String where = String.format("where %s = ?", DBConstants.cID);
+        String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tCOMPETITIONS, cv, where, new String[]{Long.toString(competition.getId())});
     }
 
@@ -67,7 +67,7 @@ public class CompetitionDAO implements ICompetitionDAO {
     public void delete(Context context, long id) {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-        String where = String.format("where %s = ?", DBConstants.cID);
+        String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tCOMPETITIONS, where, new String[]{Long.toString(id)});
     }
 
