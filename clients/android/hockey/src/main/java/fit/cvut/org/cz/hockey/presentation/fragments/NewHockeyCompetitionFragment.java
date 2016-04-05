@@ -2,6 +2,7 @@ package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -48,12 +49,12 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
 
     @Override
     protected void registerReceivers() {
-        getContext().registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
     }
 
     @Override
     protected void unregisterReceivers() {
-        getContext().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
 }

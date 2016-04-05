@@ -57,12 +57,12 @@ public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragme
     }
 
     @Override
-    protected long getTournamentsSumKey() {
-        return 0;
+    protected String getTournamentsSumKey() {
+        return CompetitionService.EXTRA_TOURNAMENT_COUNT;
     }
 
     @Override
-    protected long getPlayersSumKey() {
-        return 0;
+    protected String getPlayersSumKey() {
+        return CompetitionService.EXTRA_PLAYERS_COUNT;
     }
 }

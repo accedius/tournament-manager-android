@@ -23,6 +23,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_COMPETITION = "extra_competition";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_TOURNAMENT_COUNT = "extra_tour_count";
+    public static final String EXTRA_PLAYERS_COUNT = "extra_ply_count";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.competition_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.competition_find_by_id";
@@ -64,9 +66,14 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             case ACTION_FIND_BY_ID:
             {
                 Intent res = new Intent();
+                long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
-                Competition c = ManagerFactory.getInstance().competitionManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compID );
+                ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId( this, compID );
+
                 res.putExtra(EXTRA_COMPETITION, c);
+                res.putExtra(EXTRA_PLAYERS_COUNT, 0); //TODO
+                res.putExtra(EXTRA_TOURNAMENT_COUNT, tournaments.size());
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
