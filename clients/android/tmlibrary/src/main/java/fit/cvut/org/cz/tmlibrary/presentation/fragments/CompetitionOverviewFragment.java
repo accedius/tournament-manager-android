@@ -85,12 +85,12 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
 
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 
-        name.append(competition.getName());
-        start.append( df.format(competition.getStartDate()) );
-        end.append( df.format(competition.getStartDate()) );
-        tourSum.append( String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
-        playerSum.append( String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
-        note.append(competition.getNote());
+        name.setText(competition.getName());
+        start.setText(df.format(competition.getStartDate()));
+        end.setText(df.format(competition.getStartDate()));
+        tourSum.setText(String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
+        playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
+        note.setText(competition.getNote());
     }
 
 
