@@ -69,7 +69,7 @@ public class TournamentService extends AbstractIntentServiceWProgress{
             case ACTION_GET_BY_COMPETITION_ID:{
 
                 Intent result = new Intent();
-                result.setAction(ACTION_GET_BY_ID);
+                result.setAction(ACTION_GET_BY_COMPETITION_ID);
 
                 result.putParcelableArrayListExtra(EXTRA_TOURNAMENT, ManagersFactory.getInstance().tournamentManager.getByCompetitionId(this, intent.getLongExtra(EXTRA_ID, -1)));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);

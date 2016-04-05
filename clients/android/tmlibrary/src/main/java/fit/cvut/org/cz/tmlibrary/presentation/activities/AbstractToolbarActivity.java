@@ -38,7 +38,7 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity implemen
      * return null if you don't want one.
      * @return
      */
-    protected abstract FloatingActionButton getFloatingActionButton(ViewGroup root);
+    protected FloatingActionButton getFloatingActionButton(ViewGroup root) {return null;}
 
     protected Toolbar toolbar;
     protected ProgressBar progressBar;

@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +21,14 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
 
     public static final String EXTRA_COMPETITON_ID = "competition_id";
     public static final String EXTRA_TOURNAMENT_ID = "tournament_id";
+
+    public static Intent newStartIntent(Context context, long id, boolean forCompetition){
+        Intent intent = new Intent(context, CreateTournamentActivity.class);
+        if (forCompetition) intent.putExtra(EXTRA_COMPETITON_ID, id);
+        else intent.putExtra(EXTRA_TOURNAMENT_ID,id);
+
+        return intent;
+    }
 
     @Override
     protected View injectView(ViewGroup parent) {
@@ -41,8 +51,13 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
 
+            if (tournamentid != -1){
+                getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashTournametFragment.newInstance(tournamentid, false, NewSquashTournametFragment.class)).commit();
+            } else if (competitionId != -1){
+                getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashTournametFragment.newInstance(competitionId, true, NewSquashTournametFragment.class)).commit();
+            }
 
-            getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashTournametFragment.newInstance(1, false, NewSquashTournametFragment.class)).commit();
+
         }
     }
 }

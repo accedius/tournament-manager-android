@@ -23,14 +23,25 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         return holder;
     }
 
+    /**
+     * You can overload this view to set various listeners on inflated row view
+     * By default none are added
+     * @param v target view
+     */
+    protected void setOnClickListeners(View v){}
+
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
         Tournament tournament = data.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(tournament.getName());
-        holder.startDate.setText("From: " + dateFormat.format(tournament.getStartDate()));
-        holder.endDate.setText("to: " + dateFormat.format(tournament.getEndDate()));
+        holder.startDate.setText(R.string.from);
+        holder.endDate.setText(R.string.to);
+
+        if (tournament.getStartDate() != null) holder.startDate.append(dateFormat.format(tournament.getStartDate()));
+        if (tournament.getEndDate() != null) holder.endDate.append(dateFormat.format(tournament.getEndDate()));
+
         holder.name.setText(tournament.getName());
 
     }

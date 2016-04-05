@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,11 +52,16 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-//        RecyclerView.ItemDecoration dividers = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
-//        recyclerView.addItemDecoration(dividers);
+
+        FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
+        if (fab != null){
+            ((ViewGroup) fragmentView).addView(fab);
+        }
 
         return fragmentView;
     }
+
+    protected FloatingActionButton getFAB(ViewGroup parent){return null;}
 
     @Override
     protected void bindDataOnView(Intent intent) {
