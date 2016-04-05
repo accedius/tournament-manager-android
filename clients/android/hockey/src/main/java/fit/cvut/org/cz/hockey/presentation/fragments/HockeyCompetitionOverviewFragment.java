@@ -48,7 +48,7 @@ public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragme
 
     @Override
     protected void unregisterReceivers() {
-        getContext().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override

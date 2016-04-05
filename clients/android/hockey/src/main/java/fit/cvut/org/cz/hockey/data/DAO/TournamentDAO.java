@@ -94,7 +94,7 @@ public class TournamentDAO implements ITournamentDAO {
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
         String[] selArgs = { String.valueOf( competitionId ) };
-        Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
+        Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
 
         ArrayList<DTournament> res = new ArrayList<>();
 
