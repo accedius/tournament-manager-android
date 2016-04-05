@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
@@ -19,6 +20,25 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  */
 public class CompetitionDAO implements ICompetitionDAO {
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    private ContentValues toContVal(DCompetition competition)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.cUID, competition.getUid());
+        cv.put(DBConstants.cETAG, competition.getEtag());
+        cv.put(DBConstants.cNAME, competition.getName());
+        cv.put(DBConstants.cTYPE, competition.getType());
+        if ( competition.getStartDate() != null )
+            cv.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
+        if ( competition.getEndDate() != null )
+            cv.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
+        cv.put(DBConstants.cNOTE, competition.getNote());
+        cv.put(DBConstants.cLASTMODIFIED, sdf.format(new Date()));
+
+        return cv;
+    }
+
 
 
     @Override
@@ -26,23 +46,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        ContentValues values = new ContentValues();
-        if ( competition.getId() > 0 )
-            values.put(DBConstants.cID, competition.getId());
-        values.put(DBConstants.cUID, competition.getUid());
-        values.put(DBConstants.cNAME, competition.getName());
-        values.put(DBConstants.cTYPE, competition.getType());
-        if ( competition.getStartDate() != null )
-            values.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
-        if ( competition.getEndDate() != null )
-            values.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
-        values.put(DBConstants.cNOTE, competition.getNote());
-
-//        values.put(DBConstants.cID, 1);
-//        values.put(DBConstants.cUID, "45862");
-//        values.put(DBConstants.cNAME, "MockComp");
+        ContentValues values = toContVal( competition );
 
         long newRowId;
         newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
@@ -52,10 +56,25 @@ public class CompetitionDAO implements ICompetitionDAO {
     @Override
     public void update(Context context, DCompetition competition) {
 
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        ContentValues values = toContVal( competition );
+
+        values.put(DBConstants.cID, competition.getId());
+
+        String where = String.format( "%s = ?", DBConstants.cID );
+        String[] projection = new String[]{ Long.toString(competition.getId()) };
+        db.update(DBConstants.tCOMPETITIONS, values, where, projection );
     }
 
     @Override
     public void delete(Context context, long id) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format( "%s = ?", DBConstants.cID );
+        String[] projection = new String[]{ Long.toString( id ) };
+        db.delete(DBConstants.tCOMPETITIONS, where, projection);
+
 
     }
 
@@ -68,6 +87,9 @@ public class CompetitionDAO implements ICompetitionDAO {
         if( cursor.getCount() <= 0 )
             return null;
         DCompetition res = CursorParser.getInstance().parseDCompetition( cursor );
+        
+        cursor.close();
+
         return res;
     }
 }

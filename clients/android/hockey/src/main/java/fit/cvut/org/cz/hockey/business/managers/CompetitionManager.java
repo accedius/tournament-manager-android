@@ -21,12 +21,14 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public void update(Context context, Competition competition) {
-
+        DCompetition dc = Competition.convertToDCompetition( competition );
+        DAOFactory.getInstance().competitionDAO.update( context, dc );
     }
 
     @Override
     public void delete(Context context, long id) {
-
+        //TODO odstranit shity pod competitionem
+        DAOFactory.getInstance().competitionDAO.delete( context, id );
     }
 
     @Override

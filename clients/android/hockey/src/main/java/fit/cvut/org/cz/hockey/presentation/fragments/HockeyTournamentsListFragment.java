@@ -51,7 +51,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment {
     @Override
     protected void askForData() {
         Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_GET_ALL, getContext() );
-        intent.putExtra(TournamentService.EXTRA_ID, competitionID );
+        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionID );
         getActivity().startService( intent );
     }
 

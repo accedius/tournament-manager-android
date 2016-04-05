@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -18,6 +19,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_TOURNAMENT = "extra_tournament";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_COMP_ID = "extra_id";
     public static final String EXTRA_LIST = "extra_list";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
@@ -42,12 +44,9 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
-    private ArrayList<Tournament> getData()
+    private ArrayList<Tournament> getData( long competitionID )
     {
-        ArrayList<Tournament> res = new ArrayList<>();
-        res.add( new Tournament(1, "12345", "Turnaj A", new Date(2011,3,1), new Date(2011,3,2), "----") );
-        res.add( new Tournament(1, "12345", "Turnaj B", new Date(2012,3,1), new Date(2012,3,2), "----") );
-        res.add( new Tournament(1, "12345", "Turnaj C", new Date(2013,3,1), new Date(2013,3,2), "----") );
+        ArrayList<Tournament> res = ManagerFactory.getInstance().tournamentManager.getByCompetitionId( this, competitionID );
         return res;
     }
 
@@ -60,19 +59,24 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         {
             case ACTION_CREATE:
             {
-
-
+                Tournament t = intent.getParcelableExtra( EXTRA_TOURNAMENT );
+                ManagerFactory.getInstance().tournamentManager.insert( this, t);
                 break;
             }
             case ACTION_FIND_BY_ID:
             {
-
+                Intent res = new Intent();
+                res.setAction(ACTION_FIND_BY_ID);
+                Tournament c = ManagerFactory.getInstance().tournamentManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                res.putExtra(EXTRA_TOURNAMENT, c);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
             }
             case ACTION_UPDATE:
             {
-
+                Tournament c = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+                ManagerFactory.getInstance().tournamentManager.update( this, c );
 
                 break;
             }
@@ -80,7 +84,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent();
                 res.setAction( ACTION_GET_ALL );
-                res.putParcelableArrayListExtra(EXTRA_LIST, getData());
+                res.putParcelableArrayListExtra(EXTRA_LIST, getData( intent.getLongExtra(EXTRA_COMP_ID, -1) ));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;

@@ -74,7 +74,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             case ACTION_UPDATE:
             {
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-
+                ManagerFactory.getInstance().competitionManager.update( this, c );
                 break;
             }
         }
