@@ -14,15 +14,20 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
         </activity>
-        <activity android:name=".presentation.activities.CreateCompetitionActivity"
+        <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Competition"/>
+            android:label="New Competition"
+            android:exported="true"/>
         <activity android:name=".presentation.activities.CreateTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Tournament"/>
         <activity android:name=".presentation.activities.SelectPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Select Players"/>
+        <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Competition Detail"
+            android:exported="true" />
 
 
         <service android:name=".presentation.services.CompetitionService"/>

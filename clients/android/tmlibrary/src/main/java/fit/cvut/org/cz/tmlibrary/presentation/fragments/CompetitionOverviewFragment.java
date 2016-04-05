@@ -28,8 +28,8 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     protected abstract String getCompetitionKey();
 
     //U těchhle by se dalo nahoru předat competition. To by ale nemělo být potřeba, protože fragment ví competitionID
-    protected abstract long getTournamentsSum();
-    protected abstract long getPlayersSum();
+    protected abstract String getTournamentsSumKey();
+    protected abstract String getPlayersSumKey();
 
 
     public static CompetitionOverviewFragment newInstance(long id, Class<? extends CompetitionOverviewFragment> clazz){
@@ -88,8 +88,8 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         name.append(competition.getName());
         start.append( df.format(competition.getStartDate()) );
         end.append( df.format(competition.getStartDate()) );
-        tourSum.append( String.valueOf(getTournamentsSum()));
-        playerSum.append( String.valueOf(getPlayersSum()));
+        tourSum.append( String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
+        playerSum.append( String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
         note.append(competition.getNote());
     }
 

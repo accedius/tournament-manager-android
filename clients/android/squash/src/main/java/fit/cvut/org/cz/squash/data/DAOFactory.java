@@ -1,8 +1,10 @@
 package fit.cvut.org.cz.squash.data;
 
 import fit.cvut.org.cz.squash.data.daos.CompetitionDAO;
+import fit.cvut.org.cz.squash.data.daos.PlayerDAO;
 import fit.cvut.org.cz.squash.data.daos.TournamentDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 /**
@@ -21,4 +23,5 @@ public class DAOFactory {
 
     public ICompetitionDAO competitionDAO = new CompetitionDAO();
     public ITournamentDAO tournamentDAO = new TournamentDAO();
+    public IPackagePlayerDAO playerDAO = new PlayerDAO();
 }

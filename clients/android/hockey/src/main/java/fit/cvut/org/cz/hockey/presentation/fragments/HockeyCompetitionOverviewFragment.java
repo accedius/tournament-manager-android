@@ -57,12 +57,12 @@ public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragme
     }
 
     @Override
-    protected long getTournamentsSum() {
+    protected long getTournamentsSumKey() {
         return 0;
     }
 
     @Override
-    protected long getPlayersSum() {
+    protected long getPlayersSumKey() {
         return 0;
     }
 }
