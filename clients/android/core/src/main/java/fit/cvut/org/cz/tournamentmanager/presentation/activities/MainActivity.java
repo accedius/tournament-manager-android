@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -32,8 +33,6 @@ public class MainActivity extends AbstractToolbarActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
-    SportsFragment sf;
-    PlayersListFragment plf;
     ArrayList<ApplicationInfo> sport_packages;
 
     @Override
@@ -44,19 +43,17 @@ public class MainActivity extends AbstractToolbarActivity {
         sport_packages = new ArrayList<>();
 
         for (ApplicationInfo packageInfo : packages) {
-            if (packageInfo.metaData != null
-                    && packageInfo.metaData.containsKey("application_type") == true
+            if (packageInfo.metaData != null) {
+                if (packageInfo.metaData.containsKey("application_type") == true
                     && packageInfo.metaData.get("application_type").equals(getString(R.string.tournament_manager_package))) {
-                sport_packages.add(packageInfo);
+                    sport_packages.add(packageInfo);
+
+                    for (String a : packageInfo.metaData.keySet()) {
+
+                    }
+                }
             }
         }
-
-        sf = new SportsFragment();
-        Bundle b = new Bundle();
-        b.putParcelableArrayList("sport_packages", sport_packages);
-        sf.setArguments(b);
-
-        plf = new PlayersListFragment();
 
         mMenuOptions = new String[]{"Competitions", "Players", "Settings"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -92,6 +89,10 @@ public class MainActivity extends AbstractToolbarActivity {
             case 0:
                 // get list of installed sport packages
                 setTitle("Competitions");
+                SportsFragment sf = new SportsFragment();
+                Bundle b = new Bundle();
+                b.putParcelableArrayList("sport_packages", sport_packages);
+                sf.setArguments(b);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, sf)
@@ -99,6 +100,7 @@ public class MainActivity extends AbstractToolbarActivity {
                 break;
             case 1:
                 setTitle("Players");
+                PlayersListFragment plf = new PlayersListFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, plf)
@@ -107,7 +109,6 @@ public class MainActivity extends AbstractToolbarActivity {
         }
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
-        Log.d("NewMainAct", "pos"+position);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 }

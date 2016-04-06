@@ -29,21 +29,19 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     private ArrayList<DCompetition> getData(String package_name) {
         ArrayList<DCompetition> data = new ArrayList<>();
 
-        Uri myUri = Uri.parse("content://fit.cvut.org.cz."+package_name+".data/competitions");
+        Uri myUri = Uri.parse("content://"+package_name+".data/competitions");
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null) {
             return data;
         }
-        else {
-            Log.d("DB", "Total rows " + cur.getCount());
-            CursorParser cp = CursorParser.getInstance();
-            if (cur.moveToFirst()) {
-                do {
-                    data.add(cp.parseDCompetition(cur));
-                } while (cur.moveToNext());
-            }
-        }
 
+        Log.d("DB", "Total rows " + cur.getCount());
+        CursorParser cp = CursorParser.getInstance();
+        if (cur.moveToFirst()) {
+            do {
+                data.add(cp.parseDCompetition(cur));
+            } while (cur.moveToNext());
+        }
         return data;
     }
 

@@ -20,6 +20,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.adapters.SwipeAdapter;
 
 public class SportsFragment extends Fragment {
 
+    private ArrayList<ApplicationInfo> sport_packages;
 
     public SportsFragment() {}
 
@@ -28,10 +29,20 @@ public class SportsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragment_view = inflater.inflate(R.layout.fragment_sports, container, false);
 
-        ArrayList<ApplicationInfo> sport_packages = getArguments().getParcelableArrayList("sport_packages");
+        sport_packages = getArguments().getParcelableArrayList("sport_packages");
         ViewPager vp = (ViewPager)fragment_view.findViewById(R.id.view_pager);
         SwipeAdapter sa = new SwipeAdapter(getActivity().getSupportFragmentManager(), sport_packages);
         vp.setAdapter(sa);
         return vp;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SportSFragment", "Started");
+        ViewPager vp = (ViewPager)getView().findViewById(R.id.view_pager);
+        Log.d("SSF", "sport packages "+sport_packages.size());
+        SwipeAdapter sa = new SwipeAdapter(getActivity().getSupportFragmentManager(), sport_packages);
+        vp.setAdapter(sa);
     }
 }

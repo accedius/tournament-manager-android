@@ -1,6 +1,9 @@
 <resources>
-    <string name="package_name">hockey</string>
     <string name="sport_name">Hockey</string>
     <string name="tournament_manager_package">TournamentManagerPackage</string>
     <string name="title_activity_main">Hockey Main Activity</string>
+
+    <string name="package_name">fit.cvut.org.cz.hockey</string>
+    <string name="activity_create_competition">fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity</string>
+    <string name="activity_detail_competition">fit.cvut.org.cz.hockey.presentation.activities.CompetitionDetailActivity</string>
 </resources>

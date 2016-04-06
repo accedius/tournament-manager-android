@@ -1,8 +1,11 @@
 <resources>
-    <string name="package_name">squash</string>
     <string name="sport_name">Squash</string>
     <string name="tournament_manager_package">TournamentManagerPackage</string>
     <string name="title_activity_main">Squash Main Activity</string>
     <string name="squashpcg">Squash PCG</string>
     <string name="dateFirmat">yyyy-MM-dd</string>
+
+    <string name="package_name">fit.cvut.org.cz.squash</string>
+    <string name="activity_create_competition">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
+    <string name="activity_detail_competition">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>
 </resources>
