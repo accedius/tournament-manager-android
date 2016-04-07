@@ -30,6 +30,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 public abstract class AbstractListFragment<T extends Parcelable> extends AbstractDataFragment {
 
     private AbstractListAdapter adapter;
+    protected RecyclerView recyclerView;
 
     public AbstractListFragment() {
         // Required empty public constructor
@@ -46,16 +47,27 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 
         View fragmentView = inflater.inflate(R.layout.fragment_abstract_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
+        final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
         if (fab != null){
             ((ViewGroup) fragmentView).addView(fab);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                        fab.setVisibility(View.VISIBLE);
+                    else fab.setVisibility(View.INVISIBLE);
+                }
+
+
+            });
         }
 
         return fragmentView;

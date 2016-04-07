@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +19,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by Vaclav on 5. 4. 2016.
  */
-public class AgregatedStatsFragment extends AbstractListFragment<AgregatedStats> {
+public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedStats> {
 
     public static final String ARG_ID = "ARG_ID";
 
-    public static AgregatedStatsFragment newInstance(long competitionId){
-        AgregatedStatsFragment fragment = new AgregatedStatsFragment();
+
+    public static AgregatedStatsListFragment newInstance(long competitionId){
+        AgregatedStatsListFragment fragment = new AgregatedStatsListFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, competitionId);
         fragment.setArguments(args);
@@ -41,6 +41,7 @@ public class AgregatedStatsFragment extends AbstractListFragment<AgregatedStats>
                 //TODO add player to competition
             }
         });
+
         return fab;
     }
 

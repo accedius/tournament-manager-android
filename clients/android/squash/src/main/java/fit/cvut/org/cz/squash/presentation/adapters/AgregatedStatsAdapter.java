@@ -29,16 +29,19 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
         holder.W.append(Integer.toString(stats.getWon()));
         holder.L.append(Integer.toString(stats.getLost()));
         holder.D.append(Integer.toString(stats.getDraws()));
-        holder.SW.append(Integer.toString(stats.getSetsWon()));
-        holder.SL.append(Integer.toString(stats.getSetsLost()));
-        holder.BW.append(Integer.toString(stats.getBallsWon()));
-        holder.BL.append(Integer.toString(stats.getBallsLost()));
-        holder.SWAVG.append(String.format("%.2f", stats.getSetsWonAvg()));
-        holder.SLAVG.append(String.format("%.2f", stats.getSetsLostAvg()));
-        holder.BWAVG.append(String.format("%.2f", stats.getBallsWonAvg()));
-        holder.BLAVG.append(String.format("%.2f", stats.getBallsLostAvg()));
-        holder.WPER.append(String.format("%.2f", stats.getMatchWinRate()));
-        holder.SWPER.append(String.format("%.2f", stats.getSetsWinRate()));
+        if (holder.SW != null){
+            holder.SW.append(Integer.toString(stats.getSetsWon()));
+            holder.SL.append(Integer.toString(stats.getSetsLost()));
+            holder.BW.append(Integer.toString(stats.getBallsWon()));
+            holder.BL.append(Integer.toString(stats.getBallsLost()));
+            holder.SWAVG.append(String.format("%.2f", stats.getSetsWonAvg()));
+            holder.SLAVG.append(String.format("%.2f", stats.getSetsLostAvg()));
+            holder.BWAVG.append(String.format("%.2f", stats.getBallsWonAvg()));
+            holder.BLAVG.append(String.format("%.2f", stats.getBallsLostAvg()));
+            holder.WPER.append(String.format("%.2f", stats.getMatchWinRate()));
+            holder.SWPER.append(String.format("%.2f", stats.getSetsWinRate()));
+        }
+
 
     }
 
@@ -63,7 +66,7 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
             BLAVG = (TextView) itemView.findViewById(R.id.tv_balls_lost_avg);
             BWAVG = (TextView) itemView.findViewById(R.id.tv_balls_won_avg);
             WPER = (TextView) itemView.findViewById(R.id.tv_won_per);
-            SWPER = (TextView) itemView.findViewById(R.id.tv_sets_won_per);
+            SWPER = (TextView) itemView.findViewById(R.id.tv_sets_per);
 
 
         }
