@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +19,21 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  */
 public class PlayersListFragment extends AbstractListFragment {
 
-    private String action = "org.cz.cvut.tournamentmanager.action.players";
-
-    //private DataReceiver receiver = new DataReceiver();
-
-    /*public void setAction(String action) {
-        this.action = action;
+    @Override
+    protected FloatingActionButton getFAB(ViewGroup parent) {
+        FloatingActionButton fab = new FloatingActionButton(getContext());
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            Intent intent = new Intent();
+            intent.setClassName(
+                    "fit.cvut.org.cz.tournamentmanager",
+                    "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity");
+            startActivity(intent);
+            }
+        });
+        return fab;
     }
-    public String getAction() {
-        return this.action;
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,18 +42,18 @@ public class PlayersListFragment extends AbstractListFragment {
 
     @Override
     protected void askForData() {
-        Intent intent = PlayerService.getStartIntent(this.action, getActivity());
+        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_ALL, getActivity());
         getActivity().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return PlayerService.isWorking(action);
+        return PlayerService.isWorking(PlayerService.ACTION_GET_ALL);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(action));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_ALL));
     }
 
     @Override
@@ -62,7 +68,7 @@ public class PlayersListFragment extends AbstractListFragment {
 
     @Override
     protected String getDataKey() {
-        return PlayerService.EXTRA_RESULT;
+        return PlayerService.EXTRA_PLAYERS;
     }
 
 

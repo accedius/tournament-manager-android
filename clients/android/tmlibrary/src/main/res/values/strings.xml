@@ -1,10 +1,12 @@
 <resources>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>
+    <string name="email">E-mail</string>
     <string name="note">Note</string>
     <string name="type">Type</string>
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
+    <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>
     <string name="tours_held">Tournaments held</string>
     <string name="players">Players</string>

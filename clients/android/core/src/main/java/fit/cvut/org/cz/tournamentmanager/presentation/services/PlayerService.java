@@ -9,11 +9,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
+import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
 
 /**
  * Created by kevin on 4.4.2016.
@@ -21,10 +21,18 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
 public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static final String EXTRA_ACTION = "extra_action";
+    public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_PLAYER = "extra_player";
+    public static final String EXTRA_PLAYERS = "extra_players";
+
+    public static final String ACTION_CREATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.new_player";
+    public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_player_by_id";
+    public static final String ACTION_GET_ALL = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_all_players";
+    public static final String ACTION_UPDATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.update_player";
 
     public PlayerService() {
-        super("Competition Service");
+        super("Player Service");
     }
 
     private ArrayList<DPlayer> getData() {
@@ -48,7 +56,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         return data;
     }
 
-    public static Intent getStartIntent(String action, Context context){
+    public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
         intent.putExtra(EXTRA_ACTION, action);
         return intent;
@@ -59,12 +67,40 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
+
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(EXTRA_ACTION);
-        Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_RESULT, getData());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+        String action = intent.getStringExtra(EXTRA_ACTION);
+
+        switch (action){
+            case ACTION_CREATE:{
+                Player c = intent.getParcelableExtra(EXTRA_PLAYER);
+                ManagersFactory.getInstance().playerManager.insert(this, c);
+                break;
+            }
+            case ACTION_GET_ALL:{
+                Intent result = new Intent();
+                result.setAction(ACTION_GET_ALL);
+                ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getAll(this);
+                result.putExtra(EXTRA_PLAYERS, players);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_BY_ID:{
+                Intent result = new Intent();
+                result.setAction(ACTION_GET_BY_ID);
+                Player p = ManagersFactory.getInstance().playerManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                result.putExtra(EXTRA_PLAYER, p);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_UPDATE:{
+                Player p = intent.getParcelableExtra(EXTRA_PLAYER);
+                ManagersFactory.getInstance().playerManager.update(this, p);
+                break;
+            }
+        }
+
     }
 }

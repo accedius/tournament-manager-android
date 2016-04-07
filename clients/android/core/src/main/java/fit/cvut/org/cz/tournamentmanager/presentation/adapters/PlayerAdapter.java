@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class PlayerAdapter extends AbstractListAdapter<DPlayer, PlayerAdapter.PlayerViewHolder> {
+public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.PlayerViewHolder> {
 
     @Override
     public PlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,8 +31,7 @@ public class PlayerAdapter extends AbstractListAdapter<DPlayer, PlayerAdapter.Pl
 
     @Override
     public void onBindViewHolder(PlayerViewHolder holder, int position) {
-        Player player = new Player(data.get(position));
-
+        Player player = data.get(position);
         holder.name.setText(player.getName());
         holder.email.setText(player.getEmail());
     }

@@ -80,6 +80,12 @@ public class Player extends ShareBase implements Parcelable {
         this.lastModified = p.getLastModified();
     }
 
+    public static DPlayer convertToDPlayer(Player p){
+
+        return new DPlayer(p.getId(), p.getName(), p.getEmail(),p.getNote(),
+                p.getEtag(), p.getUid(), p.getLastModified());
+    }
+
     public static final Creator<Player> CREATOR = new Creator<Player>() {
         @Override
         public Player createFromParcel(Parcel in) {
@@ -109,6 +115,10 @@ public class Player extends ShareBase implements Parcelable {
         else dest.writeString(dateFormat.format(lastModified));
         dest.writeString(uid);
         dest.writeString(etag);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
