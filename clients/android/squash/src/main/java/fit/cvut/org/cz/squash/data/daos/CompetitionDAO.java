@@ -47,6 +47,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         ContentValues cv = serializeCompetition(competition);
 
         db.insert(DBConstants.tCOMPETITIONS, null, cv);
+        db.close();
     }
 
     @Override
@@ -61,6 +62,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tCOMPETITIONS, cv, where, new String[]{Long.toString(competition.getId())});
+        db.close();
     }
 
     @Override
@@ -69,6 +71,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tCOMPETITIONS, where, new String[]{Long.toString(id)});
+        db.close();
     }
 
     @Override
@@ -86,6 +89,7 @@ public class CompetitionDAO implements ICompetitionDAO {
             competition = CursorParser.getInstance().parseDCompetition(c);
 
         c.close();
+        db.close();
 
         return competition;
 

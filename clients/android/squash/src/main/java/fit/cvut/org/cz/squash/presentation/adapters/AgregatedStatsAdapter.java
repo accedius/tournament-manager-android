@@ -33,12 +33,12 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
         holder.SL.append(Integer.toString(stats.getSetsLost()));
         holder.BW.append(Integer.toString(stats.getBallsWon()));
         holder.BL.append(Integer.toString(stats.getBallsLost()));
-        holder.SWAVG.append(Double.toString(stats.getSetsWonAvg()));
-        holder.SLAVG.append(Double.toString(stats.getSetsLostAvg()));
-        holder.BWAVG.append(Double.toString(stats.getBallsWonAvg()));
-        holder.BLAVG.append(Double.toString(stats.getSetsLostAvg()));
-        holder.WPER.append(Double.toString(stats.getMatchWinRate()));
-        holder.SWPER.append(Double.toString(stats.getSetsWinRate()));
+        holder.SWAVG.append(String.format("%.2f", stats.getSetsWonAvg()));
+        holder.SLAVG.append(String.format("%.2f", stats.getSetsLostAvg()));
+        holder.BWAVG.append(String.format("%.2f", stats.getBallsWonAvg()));
+        holder.BLAVG.append(String.format("%.2f", stats.getBallsLostAvg()));
+        holder.WPER.append(String.format("%.2f", stats.getMatchWinRate()));
+        holder.SWPER.append(String.format("%.2f", stats.getSetsWinRate()));
 
     }
 
