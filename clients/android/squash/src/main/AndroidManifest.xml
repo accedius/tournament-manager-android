@@ -33,6 +33,7 @@
         <service android:name=".presentation.services.CompetitionService"/>
         <service android:name=".presentation.services.PlayerService"/>
         <service android:name=".presentation.services.TournamentService"/>
+        <service android:name=".presentation.services.StatsService"/>
 
         <provider
             android:name="fit.cvut.org.cz.squash.data.CompetitionCP"
