@@ -43,6 +43,7 @@ public class PlayerDAO implements IPlayerDAO {
         ContentValues cv = serializePlayer(player);
 
         db.insert(DBConstants.tPLAYERS, null, cv);
+        db.close();
     }
 
     @Override
@@ -57,6 +58,7 @@ public class PlayerDAO implements IPlayerDAO {
 
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tPLAYERS, cv, where, new String[]{Long.toString(player.getId())});
+        db.close();
     }
 
     @Override
@@ -65,6 +67,7 @@ public class PlayerDAO implements IPlayerDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tPLAYERS, where, new String[]{Long.toString(id)});
+        db.close();
     }
 
     @Override
