@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -19,7 +20,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by atgot_000 on 29. 3. 2016.
  */
-public class HockeyTournamentsListFragment extends AbstractListFragment {
+public class HockeyTournamentsListFragment extends AbstractListFragment<Tournament> {
 
     private long competitionID;
     private static String ARG_ID = "competition_id";
