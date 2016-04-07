@@ -47,6 +47,7 @@ public class TournamentDAO implements ITournamentDAO {
         ContentValues cv = serializeTournament(tournament);
 
         db.insert(DBConstants.tTOURNAMENTS, null, cv);
+        db.close();
     }
 
     @Override
@@ -61,6 +62,7 @@ public class TournamentDAO implements ITournamentDAO {
 
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tTOURNAMENTS, cv, where, new String[]{Long.toString(tournament.getId())});
+        db.close();
     }
 
     @Override
@@ -69,6 +71,7 @@ public class TournamentDAO implements ITournamentDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tTOURNAMENTS, where, new String[]{Long.toString(id)});
+        db.close();
     }
 
     @Override
@@ -86,6 +89,7 @@ public class TournamentDAO implements ITournamentDAO {
             tournament = CursorParser.getInstance().parseDTournament(c);
 
         c.close();
+        db.close();
 
         return tournament;
 
@@ -106,6 +110,7 @@ public class TournamentDAO implements ITournamentDAO {
             tournaments.add(CursorParser.getInstance().parseDTournament(c));
 
         c.close();
+        db.close();
 
         return tournaments;
     }
