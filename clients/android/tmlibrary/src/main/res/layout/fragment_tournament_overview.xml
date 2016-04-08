@@ -5,10 +5,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_name"
+                android:id="@+id/tour_name"
                 android:layout_marginBottom="10dp"
                 style="@style/Base.TextAppearance.AppCompat.Display2"/>
 
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_start"
+                android:id="@+id/tour_start"
                 style="@style/TextAppearance.AppCompat.Display1"/>
 
             <TextView
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_end"
+                android:id="@+id/tour_end"
                 android:layout_marginBottom="40dp"
                 style="@style/TextAppearance.AppCompat.Display1"/>
 
@@ -49,7 +49,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_tour_sum"
+                android:id="@+id/match_sum"
+                style="@style/TextAppearance.AppCompat.Display1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/teams"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/team_sum"
                 style="@style/TextAppearance.AppCompat.Display1"/>
 
             <TextView
@@ -59,10 +69,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_player_sum"
-                android:layout_marginBottom="40dp"
+                android:id="@+id/tour_player_sum"
+                android:layout_marginBottom="10dp"
                 style="@style/TextAppearance.AppCompat.Display1"/>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:text="@string/point_config"
+                android:id="@+id/conf_but"
+                style="@style/Base.TextAppearance.AppCompat.Button"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -71,11 +88,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comp_note"
+                android:id="@+id/tour_note"
                 style="@style/TextAppearance.AppCompat.Body1"/>
 
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

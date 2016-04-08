@@ -25,26 +25,25 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     private long competitionID;
     private static String ARG_ID = "competition_id";
 
-    public static HockeyTournamentsListFragment newInstance( long id )
-    {
+    public static HockeyTournamentsListFragment newInstance(long id) {
         HockeyTournamentsListFragment fragment = new HockeyTournamentsListFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
-        fragment.setArguments( args );
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if( getArguments() != null )
-            competitionID = getArguments().getLong( ARG_ID );
+        if (getArguments() != null)
+            competitionID = getArguments().getLong(ARG_ID);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new TournamentAdapter();
+        return new HockeyTournamentAdapter();
     }
 
     @Override
@@ -54,41 +53,55 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected void askForData() {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_GET_ALL, getContext() );
-        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionID );
-        getActivity().startService( intent );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_ALL, getContext());
+        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionID);
+        getActivity().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TournamentService.isWorking( TournamentService.ACTION_GET_ALL );
+        return TournamentService.isWorking(TournamentService.ACTION_GET_ALL);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance( getContext() ).registerReceiver( receiver, new IntentFilter(TournamentService.ACTION_GET_ALL));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_GET_ALL));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance( getContext() ).unregisterReceiver( receiver );
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false );
+        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
 
-        fab.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long compId = getArguments().getLong( ARG_ID, -1 );
-                Intent intent = CreateTournamentActivity.newStartIntent( getContext(), compId, true );
+        fab.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View v) {
+                                       long compId = getArguments().getLong(ARG_ID, -1);
+                                       Intent intent = CreateTournamentActivity.newStartIntent(getContext(), compId, true);
 
-                startActivity( intent );
-            }
-        }
+                                       startActivity(intent);
+                                   }
+                               }
         );
 
         return fab;
+    }
+
+    public class HockeyTournamentAdapter extends TournamentAdapter {
+        @Override
+        protected void setOnClickListeners(View v) {
+            super.setOnClickListeners(v);
+            v.setOnClickListener(new View.OnClickListener() {
+                                     @Override
+                                     public void onClick(View v) {
+                                         //TODO na rozkliknuti otevrit tournament, na podrzeni dalsi moznosti
+                                     }
+                                 }
+            );
+        }
     }
 }

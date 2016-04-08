@@ -21,6 +21,9 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_COMP_ID = "extra_id";
     public static final String EXTRA_LIST = "extra_list";
+    public static final String EXTRA_PLAYER_SUM = "extra_number_of_players";
+    public static final String EXTRA_MATCHES_SUM = "extra_number_of_matches";
+    public static final String EXTRA_TEAMS_SUM = "extra_number_of_teams";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";
@@ -69,6 +72,11 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.setAction(ACTION_FIND_BY_ID);
                 Tournament c = ManagerFactory.getInstance().tournamentManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 res.putExtra(EXTRA_TOURNAMENT, c);
+
+                //TODO remove mock
+                res.putExtra(EXTRA_MATCHES_SUM, 0);
+                res.putExtra(EXTRA_TEAMS_SUM, 0);
+                res.putExtra(EXTRA_PLAYER_SUM, 0);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
