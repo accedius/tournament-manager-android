@@ -29,6 +29,7 @@ public class SwipeAdapter extends FragmentPagerAdapter {
         b.putString("sport_name", sport_packages.get(position).metaData.getString("sport_name"));
         b.putString("package_name", sport_packages.get(position).metaData.getString("package_name"));
         b.putString("activity_create_competition", sport_packages.get(position).metaData.getString("activity_create_competition"));
+        b.putString("activity_detail_competition", sport_packages.get(position).metaData.getString("activity_detail_competition"));
 
         f.setArguments(b);
         return f;

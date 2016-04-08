@@ -21,6 +21,7 @@ public class CompetitionsListFragment extends AbstractListFragment {
     private String action = "org.cz.cvut.tournamentmanager.action";
 
     private String package_name;
+    private String activity_detail_competition;
 
     //private DataReceiver receiver = new DataReceiver();
 
@@ -35,6 +36,7 @@ public class CompetitionsListFragment extends AbstractListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         package_name = getArguments().getString("package_name");
+        activity_detail_competition = getArguments().getString("activity_detail_competition");
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -62,7 +64,7 @@ public class CompetitionsListFragment extends AbstractListFragment {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new CompetitionAdapter();
+        return new CompetitionAdapter(package_name, activity_detail_competition, getActivity());
     }
 
     @Override

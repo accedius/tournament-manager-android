@@ -17,8 +17,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
 public class CompetitionDetailActivity extends AbstractTabActivity {
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
+        // TODO string konstanta, pravděpodobně definovat někde bokem, ne? (Pepa)
+        Long id = getIntent().getExtras().getLong("competition_id");
         return new DefaultViewPagerAdapter(getSupportFragmentManager(),
-                new Fragment[]{CompetitionOverviewFragment.newInstance(1, SquashCompetitionOverviewFragment.class), TournamentsListFragment.newInstance(1), AgregatedStatsListFragment.newInstance(1)},
+                new Fragment[]{CompetitionOverviewFragment.newInstance(id, SquashCompetitionOverviewFragment.class), TournamentsListFragment.newInstance(1), AgregatedStatsListFragment.newInstance(1)},
                 new String[] {"Overview", "Tournaments", "Stats && Players"});
     }
 

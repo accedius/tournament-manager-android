@@ -5,7 +5,7 @@
 
     <string name="package_name">fit.cvut.org.cz.hockey</string>
     <string name="activity_create_competition">fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity</string>
-    <string name="activity_detail_competition">fit.cvut.org.cz.hockey.presentation.activities.CompetitionDetailActivity</string>
+    <string name="activity_detail_competition">fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity</string>
 
     <string name="gp">GP</string>
     <string name="w">W</string>

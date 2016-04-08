@@ -50,6 +50,7 @@
         <meta-data android:name="sport_name" android:value="@string/sport_name"/>
         <meta-data android:name="package_name" android:value="@string/package_name"/>
         <meta-data android:name="activity_create_competition" android:value="@string/activity_create_competition"/>
+        <meta-data android:name="activity_detail_competition" android:value="@string/activity_detail_competition"/>
 
     </application>
 

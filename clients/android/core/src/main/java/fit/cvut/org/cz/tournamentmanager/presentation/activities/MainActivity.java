@@ -47,10 +47,6 @@ public class MainActivity extends AbstractToolbarActivity {
                 if (packageInfo.metaData.containsKey("application_type") == true
                     && packageInfo.metaData.get("application_type").equals(getString(R.string.tournament_manager_package))) {
                     sport_packages.add(packageInfo);
-
-                    for (String a : packageInfo.metaData.keySet()) {
-
-                    }
                 }
             }
         }
