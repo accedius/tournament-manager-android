@@ -38,6 +38,8 @@
             />
         <service android:name=".presentation.services.TournamentService"
             />
+        <service android:name=".presentation.services.StatsService"
+            />
 
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
         <meta-data android:name="sport_name" android:value="@string/sport_name"/>
