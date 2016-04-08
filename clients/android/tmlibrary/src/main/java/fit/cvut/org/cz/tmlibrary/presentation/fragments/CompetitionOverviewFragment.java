@@ -79,7 +79,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
 
         if( competition == null )
         {
-            name.append( "Competition not found" ); //PROZATIMNI RESENI
+            name.setText( "Competition not found" ); //PROZATIMNI RESENI
             return;
         }
 

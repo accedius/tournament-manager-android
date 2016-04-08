@@ -5,6 +5,7 @@ import android.content.Context;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 
 /**
  * Created by Vaclav on 30. 3. 2016.
@@ -30,6 +31,8 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public Competition getById(Context context, long id) {
-       return new Competition(DAOFactory.getInstance().competitionDAO.getById(context, id));
+        DCompetition res = DAOFactory.getInstance().competitionDAO.getById(context, id);
+        if( res == null ) return null;
+        return new Competition( res );
     }
 }
