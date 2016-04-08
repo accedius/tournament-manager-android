@@ -25,20 +25,20 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AgregatedSta
     public void onBindViewHolder(AgregatedStatisticsViewHolder holder, int position) {
         AgregatedStatistics stats = data.get( position );
         holder.name.setText(stats.getPlayerName());
-        holder.W.append(Long.toString(stats.getWins()));
-        holder.L.append(Long.toString(stats.getLosses()));
-        holder.D.append(Long.toString(stats.getDraws()));
-        holder.G.append(Long.toString(stats.getGoals()));
-        holder.A.append(Long.toString(stats.getAssists()));
+        holder.W.setText(Long.toString(stats.getWins()));
+        holder.L.setText(Long.toString(stats.getLosses()));
+        holder.D.setText(Long.toString(stats.getDraws()));
+        holder.G.setText(Long.toString(stats.getGoals()));
+        holder.A.setText(Long.toString(stats.getAssists()));
         if( holder.M != null ) {
-            holder.M.append(Long.toString(stats.getMatches()));
-            holder.P.append(Long.toString(stats.getPoints()));
-            holder.PMP.append(Long.toString(stats.getPlusMinusPoints()));
-            holder.TP.append(Long.toString(stats.getTeamPoints()));
-            holder.AG.append(String.format("%.2f", stats.getAvgGoals()));
-            holder.AP.append(String.format("%.2f", stats.getAvgPoints()));
-            holder.APMP.append(String.format("%.2f", stats.getAvgPlusMinus()));
-            holder.ATP.append(String.format("%.2f", stats.getAvgTeamPoints()));
+            holder.M.setText(Long.toString(stats.getMatches()));
+            holder.P.setText(Long.toString(stats.getPoints()));
+            holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
+            holder.TP.setText(Long.toString(stats.getTeamPoints()));
+            holder.AG.setText(String.format("%.2f", stats.getAvgGoals()));
+            holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
+            holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));
+            holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
     }
 
