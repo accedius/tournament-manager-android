@@ -3,13 +3,16 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
@@ -18,12 +21,12 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  */
 public class CompetitionsListFragment extends AbstractListFragment {
 
+    // TODO refactor - action name may be empty or shorter - is alwayas setting by SportFragment
     private String action = "org.cz.cvut.tournamentmanager.action";
 
     private String package_name;
+    private String activity_create_competition;
     private String activity_detail_competition;
-
-    //private DataReceiver receiver = new DataReceiver();
 
     public void setAction(String action) {
         this.action = action;
@@ -34,8 +37,8 @@ public class CompetitionsListFragment extends AbstractListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         package_name = getArguments().getString("package_name");
+        activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -44,17 +47,18 @@ public class CompetitionsListFragment extends AbstractListFragment {
     @Override
     protected void askForData() {
         Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, getActivity());
+        Log.d("CLF - ACTION", this.action);
         getActivity().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking(action);
+        return CompetitionService.isWorking(this.action);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(action));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(this.action));
     }
 
     @Override
@@ -72,5 +76,19 @@ public class CompetitionsListFragment extends AbstractListFragment {
         return CompetitionService.EXTRA_RESULT;
     }
 
+    @Override
+    protected FloatingActionButton getFAB(ViewGroup parent) {
+        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floating_button_add, parent, false);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClassName(package_name, activity_create_competition);
+                startActivity(intent);
+            }
+        });
+
+        return fab;
+    }
 }

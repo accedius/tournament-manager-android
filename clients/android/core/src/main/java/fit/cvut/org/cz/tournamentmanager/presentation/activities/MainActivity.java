@@ -59,6 +59,7 @@ public class MainActivity extends AbstractToolbarActivity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_option, mMenuOptions));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        selectItem(0);
     }
 
     @Override

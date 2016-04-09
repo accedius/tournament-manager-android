@@ -56,32 +56,14 @@ public class SportFragment extends Fragment {
             b.putString("package_name", package_name);
             b.putString("sport_name", sport_name);
             b.putString("activity_detail_competition", activity_detail_competition);
+            b.putString("activity_create_competition", activity_create_competition);
             clf.setAction(clf.getAction() + "." + package_name);
+            Log.d("SF - ACTION", clf.getAction());
             clf.setArguments(b);
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_competitions_list, clf)
                     .commit();
         }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClassName(package_name, activity_create_competition);
-                startActivity(intent);
-            }
-        });
     }
 }

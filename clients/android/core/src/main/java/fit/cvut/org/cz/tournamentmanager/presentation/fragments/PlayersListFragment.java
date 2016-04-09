@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.PlayerAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
@@ -19,19 +20,22 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  */
 public class PlayersListFragment extends AbstractListFragment {
 
+    private String package_name = "fit.cvut.org.cz.tournamentmanager";
+    private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
+
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = new FloatingActionButton(getContext());
+        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floating_button_add, parent, false);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            Intent intent = new Intent();
-            intent.setClassName(
-                    "fit.cvut.org.cz.tournamentmanager",
-                    "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity");
-            startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClassName(package_name, activity_create_player);
+                startActivity(intent);
             }
         });
+
         return fab;
     }
 

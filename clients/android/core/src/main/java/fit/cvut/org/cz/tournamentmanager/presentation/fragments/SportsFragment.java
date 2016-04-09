@@ -28,21 +28,12 @@ public class SportsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragment_view = inflater.inflate(R.layout.fragment_sports, container, false);
+        Log.d("SportSFragment", "On Create View");
 
         sport_packages = getArguments().getParcelableArrayList("sport_packages");
         ViewPager vp = (ViewPager)fragment_view.findViewById(R.id.view_pager);
-        SwipeAdapter sa = new SwipeAdapter(getActivity().getSupportFragmentManager(), sport_packages);
+        SwipeAdapter sa = new SwipeAdapter(getChildFragmentManager(), sport_packages);
         vp.setAdapter(sa);
         return vp;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("SportSFragment", "Started");
-        ViewPager vp = (ViewPager)getView().findViewById(R.id.view_pager);
-        Log.d("SSF", "sport packages "+sport_packages.size());
-        SwipeAdapter sa = new SwipeAdapter(getActivity().getSupportFragmentManager(), sport_packages);
-        vp.setAdapter(sa);
     }
 }
