@@ -67,7 +67,7 @@ public class PlayersListFragment extends AbstractListFragment {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new PlayerAdapter();
+        return new PlayerAdapter(getActivity());
     }
 
     @Override

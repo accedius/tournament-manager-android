@@ -33,6 +33,11 @@
             android:name=".presentation.activities.CreatePlayerActivity"
             android:label="@string/title_activity_create_player" >
         </activity>
+
+        <activity
+            android:name=".presentation.activities.PlayerDetailActivity"
+            android:label="@string/title_activity_player_detail" >
+        </activity>
     </application>
 
 </manifest>

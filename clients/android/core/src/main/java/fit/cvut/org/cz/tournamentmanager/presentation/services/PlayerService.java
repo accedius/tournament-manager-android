@@ -88,10 +88,13 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_GET_BY_ID:{
+                Log.d("PlayerService", "Received, id: " + intent.getLongExtra(EXTRA_ID, -1));
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
                 Player p = ManagersFactory.getInstance().playerManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                Log.d("PlayerService", "Answering with player "+p.getName());
                 result.putExtra(EXTRA_PLAYER, p);
+                Log.d("PlayerService", "Player set to: "+EXTRA_PLAYER);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }

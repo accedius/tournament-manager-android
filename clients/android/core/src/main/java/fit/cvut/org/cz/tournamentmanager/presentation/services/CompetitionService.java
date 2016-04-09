@@ -17,6 +17,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 12. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress {
+    public static final String ACTION_GET_ALL = "get_all";
+
+    public static final String EXTRA_PLAYER_ID = "extra_player_id";
+    public static final String EXTRA_LIST = "extra_list";
 
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_PACKAGE = "extra_package";

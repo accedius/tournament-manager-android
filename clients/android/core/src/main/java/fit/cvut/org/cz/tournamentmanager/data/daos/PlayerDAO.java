@@ -4,18 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPlayerDAO;
+import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
 
 /**
  * Created by kevin on 7. 4. 2016.

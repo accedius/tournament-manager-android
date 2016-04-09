@@ -1,19 +1,16 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.SwipeAdapter;

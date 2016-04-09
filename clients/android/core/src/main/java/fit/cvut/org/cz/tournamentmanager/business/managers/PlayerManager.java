@@ -4,10 +4,10 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
-import fit.cvut.org.cz.tournamentmanager.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tournamentmanager.data.DAOFactory;
 
 /**
  * Created by kevin on 30. 3. 2016.

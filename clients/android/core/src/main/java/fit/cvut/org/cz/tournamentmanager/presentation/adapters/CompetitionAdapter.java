@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
  */
 public class CompetitionAdapter extends AbstractListAdapter<DCompetition, CompetitionAdapter.CompetitionViewHolder> {
 
-    View v;
+    private View v;
     private Context c;
 
     private String package_name;
@@ -39,7 +39,7 @@ public class CompetitionAdapter extends AbstractListAdapter<DCompetition, Compet
     public CompetitionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         //inflate
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_competition, parent, false);
+        this.v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_competition, parent, false);
         CompetitionViewHolder holder = new CompetitionViewHolder(v);
         return holder;
     }
@@ -50,9 +50,13 @@ public class CompetitionAdapter extends AbstractListAdapter<DCompetition, Compet
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(competition.getName());
-        holder.startDate.setText("From: ");
-        holder.endDate.setText("to: ");
-        holder.name.setText(competition.getName());
+
+        if (competition.getStartDate() != null) {
+            holder.startDate.setText("From: "+dateFormat.format(competition.getStartDate()));
+        }
+        if (competition.getEndDate() != null) {
+            holder.endDate.setText("To: "+dateFormat.format(competition.getEndDate()));
+        }
 
         final long id = competition.getId();
 
@@ -62,10 +66,18 @@ public class CompetitionAdapter extends AbstractListAdapter<DCompetition, Compet
                 Intent intent = new Intent();
                 intent.setClassName(package_name, activity_detail_competition);
                 Bundle b = new Bundle();
-                // TODO string kosntanta, definovat pravděpodobně někde bokem
+                // TODO string konstanta, definovat pravděpodobně někde bokem
                 b.putLong("competition_id", id);
                 intent.putExtras(b);
                 c.startActivity(intent);
+            }
+        });
+
+        v.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add("Edit");
+                menu.add("Delete");
             }
         });
     }

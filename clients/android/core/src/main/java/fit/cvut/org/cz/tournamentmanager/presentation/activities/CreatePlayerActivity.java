@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewGroup;

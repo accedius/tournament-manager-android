@@ -1,7 +1,7 @@
 package fit.cvut.org.cz.tournamentmanager.data;
 
-import fit.cvut.org.cz.tournamentmanager.data.daos.PlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPlayerDAO;
+import fit.cvut.org.cz.tournamentmanager.data.daos.PlayerDAO;
 
 /**
  * Created by kevin on 7. 4. 2016.

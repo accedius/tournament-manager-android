@@ -1,12 +1,11 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
  * Created by kevin on 7. 4. 2016.

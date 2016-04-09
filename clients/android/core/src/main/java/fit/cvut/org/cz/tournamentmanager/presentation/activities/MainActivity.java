@@ -5,10 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +17,6 @@ import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.adapters.SwipeAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
 
