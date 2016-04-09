@@ -1,8 +1,8 @@
-package fit.cvut.org.cz.squash.buisness.interfaces;
+package fit.cvut.org.cz.squash.business.interfaces;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.squash.buisness.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
 
 /**
  * Created by Vaclav on 7. 4. 2016.

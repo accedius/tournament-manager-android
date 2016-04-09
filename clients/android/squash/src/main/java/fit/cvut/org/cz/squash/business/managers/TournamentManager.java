@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.buisness.managers;
+package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
 

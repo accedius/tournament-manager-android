@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-import fit.cvut.org.cz.squash.buisness.ManagersFactory;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.buisness.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
 import fit.cvut.org.cz.squash.presentation.adapters.AgregatedStatsAdapter;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;

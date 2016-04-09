@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.buisness.entities;
+package fit.cvut.org.cz.squash.business.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;

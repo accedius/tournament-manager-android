@@ -1,10 +1,10 @@
-package fit.cvut.org.cz.squash.buisness;
+package fit.cvut.org.cz.squash.business;
 
-import fit.cvut.org.cz.squash.buisness.interfaces.IStatsManager;
-import fit.cvut.org.cz.squash.buisness.managers.CompetitionManager;
-import fit.cvut.org.cz.squash.buisness.managers.PlayerManager;
-import fit.cvut.org.cz.squash.buisness.managers.StatsManager;
-import fit.cvut.org.cz.squash.buisness.managers.TournamentManager;
+import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;
+import fit.cvut.org.cz.squash.business.managers.CompetitionManager;
+import fit.cvut.org.cz.squash.business.managers.PlayerManager;
+import fit.cvut.org.cz.squash.business.managers.StatsManager;
+import fit.cvut.org.cz.squash.business.managers.TournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;

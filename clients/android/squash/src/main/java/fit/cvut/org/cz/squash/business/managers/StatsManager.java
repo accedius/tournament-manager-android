@@ -1,9 +1,9 @@
-package fit.cvut.org.cz.squash.buisness.managers;
+package fit.cvut.org.cz.squash.business.managers;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.squash.buisness.entities.AgregatedStats;
-import fit.cvut.org.cz.squash.buisness.interfaces.IStatsManager;
+import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
