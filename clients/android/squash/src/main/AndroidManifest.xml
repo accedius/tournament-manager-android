@@ -24,6 +24,9 @@
         <activity android:name=".presentation.activities.SelectPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Select Players"/>
+        <activity android:name=".presentation.activities.TournamentDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Tournament Detail"/>
         <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Competition Detail"
@@ -34,6 +37,7 @@
         <service android:name=".presentation.services.PlayerService"/>
         <service android:name=".presentation.services.TournamentService"/>
         <service android:name=".presentation.services.StatsService"/>
+        <service android:name=".presentation.services.MatchService"/>
 
         <provider
             android:name="fit.cvut.org.cz.squash.data.CompetitionCP"

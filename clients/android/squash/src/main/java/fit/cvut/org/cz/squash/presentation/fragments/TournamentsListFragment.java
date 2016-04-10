@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -36,9 +38,19 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
     protected AbstractListAdapter getAdapter() {
         return new TournamentAdapter(){
             @Override
-            protected void setOnClickListeners(View v) {
-                super.setOnClickListeners(v);
+            protected void setOnClickListeners(View v, long tournamentId) {
+                final Context c = getContext();
+                final long id = tournamentId;
                 //TODO launch tournament detail activiy and contextual dialog
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(c, TournamentDetailActivity.class);
+                        intent.putExtra(TournamentDetailActivity.EXTRA_ID, id);
+
+                        startActivity(intent);
+                    }
+                });
             }
         };
     }

@@ -26,9 +26,11 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
     /**
      * You can overload this view to set various listeners on inflated row view
      * By default none are added
+     * @param tournamnetId
      * @param v target view
+     * @param tournamentId
      */
-    protected void setOnClickListeners(View v){}
+    protected void setOnClickListeners(View v, long tournamentId){}
 
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
@@ -43,18 +45,21 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         if (tournament.getEndDate() != null) holder.endDate.append(dateFormat.format(tournament.getEndDate()));
 
         holder.name.setText(tournament.getName());
+        setOnClickListeners(holder.wholeView, tournament.getId());
 
     }
 
     public class TournamentViewHolder extends RecyclerView.ViewHolder
     {
         public TextView name, startDate, endDate;
+        public View wholeView;
         public TournamentViewHolder(View itemView)
         {
             super (itemView);
             name = (TextView) itemView.findViewById(R.id.tv_name);
             startDate = (TextView) itemView.findViewById(R.id.tv_start);
             endDate = (TextView) itemView.findViewById(R.id.tv_end);
+            wholeView = itemView;
         }
     }
 }

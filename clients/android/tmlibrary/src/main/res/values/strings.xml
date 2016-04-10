@@ -16,4 +16,5 @@
     <string name="to">To: </string>
     <string name="teams">Teams</string>
     <string name="point_config">Configure point gain</string>
+    <string name="vs">vs.</string>
 </resources>

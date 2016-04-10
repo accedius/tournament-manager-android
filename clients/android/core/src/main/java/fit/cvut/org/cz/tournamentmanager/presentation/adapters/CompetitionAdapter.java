@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 
@@ -66,8 +67,8 @@ public class CompetitionAdapter extends AbstractListAdapter<DCompetition, Compet
                 Intent intent = new Intent();
                 intent.setClassName(package_name, activity_detail_competition);
                 Bundle b = new Bundle();
-                // TODO string konstanta, definovat pravděpodobně někde bokem
-                b.putLong("competition_id", id);
+
+                b.putLong(CrossPackageComunicationConstants.EXTRA_ID, id);
                 intent.putExtras(b);
                 c.startActivity(intent);
             }

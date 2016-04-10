@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
@@ -53,11 +52,11 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_player_detail, container, false);
+        View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_player_detail, container, false);
 
-        name = (TextView) v.findViewById(R.id.player_name);
-        email  = (TextView) v.findViewById(R.id.player_email);
-        note = (TextView) v.findViewById(R.id.player_note);
+        name = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_name);
+        email  = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_email);
+        note = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_note);
 
         if( getArguments() != null )
             playerID = getArguments().getLong(PLAYER_KEY);

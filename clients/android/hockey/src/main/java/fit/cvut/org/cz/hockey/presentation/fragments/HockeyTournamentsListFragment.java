@@ -93,8 +93,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     public class HockeyTournamentAdapter extends TournamentAdapter {
         @Override
-        protected void setOnClickListeners(View v) {
-            super.setOnClickListeners(v);
+        protected void setOnClickListeners(View v, long tournamentId) {
+            super.setOnClickListeners(v, tournamentId);
             v.setOnClickListener(new View.OnClickListener() {
                                      @Override
                                      public void onClick(View v) {
