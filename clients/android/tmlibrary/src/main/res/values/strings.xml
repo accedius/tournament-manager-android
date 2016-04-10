@@ -17,4 +17,6 @@
     <string name="teams">Teams</string>
     <string name="point_config">Configure point gain</string>
     <string name="vs">vs.</string>
+    <string name="home">HOME</string>
+    <string name="away">AWAY</string>
 </resources>

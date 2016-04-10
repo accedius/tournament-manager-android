@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 
 import fit.cvut.org.cz.squash.presentation.fragments.MatchListFragment;
+import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -22,7 +23,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         long id = getIntent().getLongExtra(EXTRA_ID, -1);
 
         return new DefaultViewPagerAdapter(manager,
-                new Fragment[]{MatchListFragment.newInstance(id)},
+                new Fragment[]{SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class)},
                 new String[]{"Matches"});
         //return null;
     }

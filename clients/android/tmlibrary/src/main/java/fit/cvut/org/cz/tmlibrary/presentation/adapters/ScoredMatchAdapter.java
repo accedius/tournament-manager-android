@@ -15,6 +15,8 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMatchAdapter.MatchViewHolder> {
 
 
+    protected void setOnClickListeners(View v, long matchId){}
+
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -42,12 +44,14 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
             }
         }
 
+        setOnClickListeners(holder.card, m.getId());
+
     }
 
     public class MatchViewHolder extends RecyclerView.ViewHolder
     {
         public TextView home, away, score;
-        View periodSeparator, roundSeparator1, roundSeparator2;
+        View periodSeparator, roundSeparator1, roundSeparator2, card;
         public MatchViewHolder(View itemView)
         {
             super (itemView);
@@ -58,6 +62,7 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
             periodSeparator = itemView.findViewById(R.id.period_separator);
             roundSeparator1 = itemView.findViewById(R.id.round_separator);
             roundSeparator2 = itemView.findViewById(R.id.round_separator2);
+            card = itemView.findViewById(R.id.card);
         }
     }
 }
