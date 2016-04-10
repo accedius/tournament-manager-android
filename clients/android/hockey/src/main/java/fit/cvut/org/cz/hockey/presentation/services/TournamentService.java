@@ -19,7 +19,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_TOURNAMENT = "extra_tournament";
     public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_COMP_ID = "extra_id";
+    public static final String EXTRA_COMP_ID = "extra_comp_id";
     public static final String EXTRA_LIST = "extra_list";
     public static final String EXTRA_PLAYER_SUM = "extra_number_of_players";
     public static final String EXTRA_MATCHES_SUM = "extra_number_of_matches";

@@ -4,10 +4,13 @@
     <string name="email">E-mail</string>
     <string name="note">Note</string>
     <string name="type">Type</string>
+    <string name="date">Date</string>
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
     <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>
+    <string name="invalidParticipants">Participants cannot be the same!</string>
+    <string name="invalidRoundPeriod">Round or period is not set!</string>
     <string name="tours_held">Tournaments held</string>
     <string name="players">Players</string>
     <string name="finish">Finish</string>
@@ -19,4 +22,6 @@
     <string name="vs">vs.</string>
     <string name="home">HOME</string>
     <string name="away">AWAY</string>
+    <string name="round">Round</string>
+    <string name="period">Period</string>
 </resources>

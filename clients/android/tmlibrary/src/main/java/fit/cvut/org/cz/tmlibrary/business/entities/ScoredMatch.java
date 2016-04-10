@@ -49,7 +49,9 @@ public class ScoredMatch extends ShareBase {
             e.printStackTrace();
         }
 
-        type = CompetitionType.valueOf(in.readString());
+        String sType = in.readString();
+        if(sType == null) type = null;
+        else type = CompetitionType.valueOf(sType);
 
         long[] winners = in.createLongArray();
         winnersIds = new ArrayList<>();
@@ -105,14 +107,22 @@ public class ScoredMatch extends ShareBase {
 
         if (date == null) dest.writeString(null);
         else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(date));
-        dest.writeString(type.toString());
 
-        long[] winnersArray = new long[winnersIds.size()];
-        for (int i =0; i<winnersIds.size();i++) winnersArray[i] = winnersIds.get(i);
+        if(type == null) dest.writeString( null );
+        else dest.writeString(type.toString());
+
+        long[] winnersArray;
+        if( winnersIds != null ) {
+            winnersArray = new long[winnersIds.size()];
+            for (int i =0; i<winnersIds.size();i++) winnersArray[i] = winnersIds.get(i);
+        } else winnersArray = new long[0];
         dest.writeLongArray(winnersArray);
 
-        long[] losersArray = new long[lossersIds.size()];
-        for (int i =0; i<lossersIds.size();i++) losersArray[i] = lossersIds.get(i);
+        long[] losersArray;
+        if( lossersIds != null ) {
+            losersArray = new long[lossersIds.size()];
+            for (int i = 0; i < lossersIds.size(); i++) losersArray[i] = lossersIds.get(i);
+        } else losersArray = new long[0];
         dest.writeLongArray(losersArray);
 
         if (lastModified == null) dest.writeString(null);
