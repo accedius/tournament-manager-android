@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -43,7 +44,27 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new HockeyTournamentAdapter();
+        return new TournamentAdapter(){
+            @Override
+            protected void setOnClickListeners(View v, long tournamentId) {
+
+                final long tourId = tournamentId;
+
+                v.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             Intent intent = new Intent( getContext(), ShowTournamentActivity.class);
+                                             Bundle b = new Bundle();
+
+                                             b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
+                                             intent.putExtras(b);
+                                             startActivity(intent);
+                                         }
+                                     }
+                );
+                super.setOnClickListeners(v, tournamentId);
+            }
+        };
     }
 
     @Override
@@ -91,17 +112,5 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         return fab;
     }
 
-    public class HockeyTournamentAdapter extends TournamentAdapter {
-        @Override
-        protected void setOnClickListeners(View v, long tournamentId) {
-            super.setOnClickListeners(v, tournamentId);
-            v.setOnClickListener(new View.OnClickListener() {
-                                     @Override
-                                     public void onClick(View v) {
-                                         //TODO na rozkliknuti otevrit tournament, na podrzeni dalsi moznosti
-                                     }
-                                 }
-            );
-        }
-    }
+
 }

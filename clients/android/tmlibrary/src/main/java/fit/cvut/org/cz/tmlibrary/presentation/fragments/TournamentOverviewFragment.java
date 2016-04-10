@@ -122,8 +122,10 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 
         name.setText(tournament.getName());
-        start.setText(df.format(tournament.getStartDate()));
-        end.setText(df.format(tournament.getStartDate()));
+        if(tournament.getStartDate() != null )
+            start.setText(df.format(tournament.getStartDate()));
+        if(tournament.getEndDate() != null )
+            end.setText(df.format(tournament.getStartDate()));
         matchSum.setText(String.valueOf(intent.getIntExtra(getMatchesSumKey(), 0)));
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
         teamSum.setText(String.valueOf(intent.getIntExtra(getTeamsSumKey(), 0)));

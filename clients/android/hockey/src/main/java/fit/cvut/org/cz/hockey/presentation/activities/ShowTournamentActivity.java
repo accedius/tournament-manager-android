@@ -17,6 +17,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
 public class ShowTournamentActivity extends AbstractTabActivity {
 
     private static String HEADER_OVERVIEW_TOURNAMENT = "Overview";
+    public static final String TOUR_ID = "tournament_id";
 
     private long tournamentID;
 
@@ -26,7 +27,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        tournamentID = 1;
+        tournamentID = getIntent().getExtras().getLong(TOUR_ID);
 
         titles = new String[]{ HEADER_OVERVIEW_TOURNAMENT };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );

@@ -15,6 +15,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFr
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionPlayersFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
@@ -37,8 +38,9 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // TODO tahle konstanta by měla být pravděpodobně někde bokem, ne? (by Pepa)
-        competitionID = getIntent().getExtras().getLong("competition_id");
+
+        competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
+        //competitionID = 1;
 
         titles = new String[]{ HEADER_OVERVIEW_COMPETITION, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
