@@ -17,10 +17,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Competition"
             android:exported="true">
-        <intent-filter android:label="Hockey Show Activity">
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
