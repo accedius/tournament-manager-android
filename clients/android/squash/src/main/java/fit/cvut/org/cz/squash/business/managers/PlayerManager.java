@@ -4,8 +4,10 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
 /**
  * Created by Vaclav on 5. 4. 2016.
@@ -65,6 +67,12 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getAllPlayers(Context context) {
-        return null;
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        ArrayList<DPlayer> dPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        for (DPlayer player : dPlayers) players.add(new Player(player));
+
+        return players;
     }
 }

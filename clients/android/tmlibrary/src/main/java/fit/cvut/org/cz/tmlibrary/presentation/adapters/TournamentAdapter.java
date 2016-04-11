@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
     /**
      * You can overload this view to set various listeners on inflated row view
      * By default none are added
-     * @param tournamnetId
+     * @param tournamentId
      * @param v target view
      * @param tournamentId
      */
@@ -48,6 +49,8 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         setOnClickListeners(holder.wholeView, tournament.getId());
 
     }
+
+
 
     public class TournamentViewHolder extends RecyclerView.ViewHolder
     {

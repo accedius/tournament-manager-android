@@ -24,4 +24,6 @@
     <string name="away">AWAY</string>
     <string name="round">Round</string>
     <string name="period">Period</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

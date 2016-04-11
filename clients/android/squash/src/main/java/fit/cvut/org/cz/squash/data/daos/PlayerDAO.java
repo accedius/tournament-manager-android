@@ -60,6 +60,9 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<DPlayer> getAllPlayers(Context context) {
+
+
         return null;
+        //context.getContentResolver().query()
     }
 }
