@@ -20,4 +20,8 @@
     <string name="ap">AvgP</string>
     <string name="apmp">Avg+/-</string>
     <string name="atp">AvgTP</string>
+    <string name="normal_time">Normal time</string>
+    <string name="overtime">Overtime</string>
+    <string name="shootouts">Shootouts</string>
+    <string name="set_all">Everything needs to be set!</string>
 </resources>

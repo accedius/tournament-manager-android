@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -39,6 +40,24 @@ public class TournamentDAO implements ITournamentDAO {
         return cv;
     }
 
+    private ContentValues defaultConfig(Long tournamentId)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(HockeyDBConstants.cNTW, 3 );
+        cv.put(HockeyDBConstants.cNTD, 1 );
+        cv.put(HockeyDBConstants.cNTL, 0 );
+
+        cv.put(HockeyDBConstants.cOTW, 2 );
+        cv.put(HockeyDBConstants.cOTD, 1 );
+        cv.put(HockeyDBConstants.cOTL, 1 );
+
+        cv.put(HockeyDBConstants.cSOW, 2 );
+        cv.put(HockeyDBConstants.cSOL, 1 );
+        cv.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
+
+        return cv;
+    }
+
     @Override
     public void insert(Context context, DTournament tournament) {
 
@@ -46,8 +65,11 @@ public class TournamentDAO implements ITournamentDAO {
 
         ContentValues values = toContVal( tournament );
 
-        long newRowId;
+        Long newRowId;
         newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
+
+        values = defaultConfig(newRowId);
+        db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
 
     }
 

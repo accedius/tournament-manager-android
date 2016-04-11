@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -24,11 +25,14 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_PLAYER_SUM = "extra_number_of_players";
     public static final String EXTRA_MATCHES_SUM = "extra_number_of_matches";
     public static final String EXTRA_TEAMS_SUM = "extra_number_of_teams";
+    public static final String EXTRA_CONFIGURATION = "extra_configuration";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";
     public static final String ACTION_UPDATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_update";
     public static final String ACTION_GET_ALL = "fit.cvut.org.cz.hockey.presentation.services.tournament_all";
+    public static final String ACTION_GET_CONFIG_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_get_configuration_by_tournament_id";
+    public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.hockey.presentation.services.tournament_set_configuration";
 
     public TournamentService() {
         super("Hockey Tournament Service");
@@ -64,6 +68,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             {
                 Tournament t = intent.getParcelableExtra( EXTRA_TOURNAMENT );
                 ManagerFactory.getInstance().tournamentManager.insert( this, t);
+
                 break;
             }
             case ACTION_FIND_BY_ID:
@@ -94,6 +99,23 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.setAction( ACTION_GET_ALL );
                 res.putParcelableArrayListExtra(EXTRA_LIST, getData( intent.getLongExtra(EXTRA_COMP_ID, -1) ));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+
+                break;
+            }
+            case ACTION_GET_CONFIG_BY_ID:
+            {
+                Intent res = new Intent();
+                res.setAction(ACTION_GET_CONFIG_BY_ID);
+                res.putExtra(EXTRA_CONFIGURATION, ManagerFactory.getInstance().pointConfigManager.getByTournamentId(this, intent.getLongExtra(EXTRA_ID, -1)));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+
+                break;
+            }
+            case ACTION_SET_CONFIG:
+            {
+                PointConfiguration pc = intent.getParcelableExtra( EXTRA_CONFIGURATION );
+                Long tourId = intent.getLongExtra(EXTRA_ID, -1);
+                ManagerFactory.getInstance().pointConfigManager.update( this, pc, tourId );
 
                 break;
             }

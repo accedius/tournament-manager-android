@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.hockey.presentation.activities.TournamentConfigurationActivity;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
@@ -34,7 +35,8 @@ public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment
 
     @Override
     protected void pointConfigureClicked() {
-
+        Intent intent = TournamentConfigurationActivity.newStartIntent(getContext(), tournamentID);
+        startActivity( intent );
     }
 
     @Override
