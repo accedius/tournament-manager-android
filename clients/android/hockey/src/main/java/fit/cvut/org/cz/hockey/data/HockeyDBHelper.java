@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class HockeyDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMHockey.db";
-    private static final int DBVersion = 12;
+    private static final int DBVersion = 13;
 
     public HockeyDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -23,15 +23,20 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
         db.execSQL(DBScripts.CREATE_TABLE_TOURNAMENTS);
+        db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTOURNAMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tCONFIGURATIONS);
         onCreate(db);
 
     }
 
-
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
+    }
 }

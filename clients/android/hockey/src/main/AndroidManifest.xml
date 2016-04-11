@@ -28,6 +28,11 @@
             android:label="Hockey Tournament Overview"
             android:exported="true">
         </activity>
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.TournamentConfigurationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Hockey Tournament Overview"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="fit.cvut.org.cz.hockey.data.CompetitionCP"

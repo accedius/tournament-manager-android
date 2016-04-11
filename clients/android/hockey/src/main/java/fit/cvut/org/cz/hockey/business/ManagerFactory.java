@@ -1,7 +1,9 @@
 package fit.cvut.org.cz.hockey.business;
 
+import fit.cvut.org.cz.hockey.business.interfaces.IPointConfigManager;
 import fit.cvut.org.cz.hockey.business.managers.CompetitionManager;
 import fit.cvut.org.cz.hockey.business.managers.PackagePlayerManager;
+import fit.cvut.org.cz.hockey.business.managers.PointConfigManager;
 import fit.cvut.org.cz.hockey.business.managers.StatisticsManager;
 import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
@@ -18,6 +20,7 @@ public class ManagerFactory {
     public ITournamentManager tournamentManager = new TournamentManager();
     public StatisticsManager statisticsManager = new StatisticsManager();
     public IPackagePlayerManager packagePlayerManager = new PackagePlayerManager();
+    public IPointConfigManager pointConfigManager = new PointConfigManager();
 
     public static ManagerFactory getInstance()
     {
