@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
     private TextView name, start, end, matchSum, playerSum, teamSum, note;
-    private Button confBut;
     private static final String TOUR_KEY = "tournament_id_key";
     protected long tournamentID;
 
@@ -51,10 +50,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
      */
     protected abstract String getTeamsSumKey();
 
-    /**
-     * Called when the button for point gain configuration has been clicked
-     */
-    protected abstract void pointConfigureClicked();
+
 
     public static TournamentOverviewFragment newInstance(long id, Class<? extends TournamentOverviewFragment> clazz){
         TournamentOverviewFragment fragment = null;
@@ -91,18 +87,11 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         playerSum = (TextView) v.findViewById(R.id.tour_player_sum);
         teamSum = (TextView) v.findViewById(R.id.team_sum);
         note = (TextView) v.findViewById(R.id.tour_note);
-        confBut = (Button) v.findViewById(R.id.conf_but);
 
         if( getArguments() != null )
             tournamentID = getArguments().getLong( TOUR_KEY );
 
 
-        confBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pointConfigureClicked();
-            }
-        });
 
 
         return v;

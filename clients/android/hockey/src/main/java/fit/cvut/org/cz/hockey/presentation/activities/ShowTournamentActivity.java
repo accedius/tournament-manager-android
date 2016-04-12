@@ -1,10 +1,13 @@
 package fit.cvut.org.cz.hockey.presentation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
@@ -50,5 +53,34 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
 
         return res;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
+                if (tournamentID == -1) break;
+                Intent intent = CreateTournamentActivity.newStartIntent( this, tournamentID, false );
+                startActivity(intent);
+                break;
+            }
+            case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
+                Intent intent = TournamentConfigurationActivity.newStartIntent(this, tournamentID);
+                startActivity( intent );
+                break;
+            }
+            default:
+                break;
+        }
+
+        return true;
     }
 }

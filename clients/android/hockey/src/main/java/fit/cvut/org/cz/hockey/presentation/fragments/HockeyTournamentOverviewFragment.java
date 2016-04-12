@@ -33,11 +33,6 @@ public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment
         return TournamentService.EXTRA_TEAMS_SUM;
     }
 
-    @Override
-    protected void pointConfigureClicked() {
-        Intent intent = TournamentConfigurationActivity.newStartIntent(getContext(), tournamentID);
-        startActivity( intent );
-    }
 
     @Override
     protected void askForData() {
