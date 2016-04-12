@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
+import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -62,6 +64,39 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                                          }
                                      }
                 );
+                v.setOnLongClickListener( new View.OnLongClickListener(){
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        EditDeleteDialog dialog = new EditDeleteDialog(){
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch ( which )
+                                        {
+                                            case 0:
+                                            {
+                                                Intent intent = CreateTournamentActivity.newStartIntent( getContext(), tourId, false );
+                                                startActivity( intent );
+                                                break;
+                                            }
+                                            case 1:
+                                            {
+                                                //TODO implement delete tournament
+                                            }
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                };
+                            }
+                        };
+                        dialog.show(getFragmentManager(), "EDIT_DELETE");
+
+                        return false;
+                    }
+                } );
                 super.setOnClickListeners(v, tournamentId);
             }
         };
