@@ -42,7 +42,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_STATS_BY_COMPETITION:{
 
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_STATS, ManagersFactory.getInstance().statsManager.getAgregatedStatsByCompetitionId(intent.getLongExtra(EXTRA_ID, -1)));
+                result.putExtra(EXTRA_STATS, ManagersFactory.getInstance().statsManager.getAgregatedStatsByCompetitionId(this, intent.getLongExtra(EXTRA_ID, -1)));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }

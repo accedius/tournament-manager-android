@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.squash.business.interfaces;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
@@ -9,6 +11,6 @@ import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
  */
 public interface IStatsManager {
 
-    ArrayList<AgregatedStats> getAgregatedStatsByCompetitionId(long competitionId);
-    ArrayList<AgregatedStats> getAgregatedStatsByTournamentId(long tournamentId);
+    ArrayList<AgregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId);
+    ArrayList<AgregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId);
 }
