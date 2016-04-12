@@ -49,7 +49,7 @@ public abstract class AbstractDataFragment extends Fragment implements IWorkingI
      * Default receiver ready for usage
      */
     protected BroadcastReceiver receiver = new DataReceiver();
-    private IProgressInterface progressInterface;
+    protected IProgressInterface progressInterface;
 
     private void displayProgress(){
         if (progressInterface != null)

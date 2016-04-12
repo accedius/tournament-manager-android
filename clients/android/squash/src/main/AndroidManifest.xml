@@ -27,6 +27,9 @@
         <activity android:name=".presentation.activities.TournamentDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Tournament Detail"/>
+        <activity android:name=".presentation.activities.AddPlayersActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Add Players"/>
         <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Competition Detail"

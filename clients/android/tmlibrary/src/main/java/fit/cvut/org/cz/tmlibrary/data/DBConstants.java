@@ -8,6 +8,8 @@ public class DBConstants {
     public static final String tCOMPETITIONS = "competitions";
     public static final String tPLAYERS = "players";
     public static final String tTOURNAMENTS = "tournaments";
+    public static final String tPLAYERS_IN_COMPETITION = "players_in_competition";
+    public static final String tPLAYERS_IN_TOURNAMENT = "players_in_tournament";
 
     //c prefix stands for column
     public static final String cID = "_id";
@@ -21,5 +23,7 @@ public class DBConstants {
     public static final String cETAG = "etag";
     public static final String cLASTMODIFIED = "last_modified";
     public static final String cCOMPETITIONID = "competition_id";
+    public static final String cPLAYER_ID = "player_id";
+    public static final String cTOURNAMENT_ID = "tournament_id";
 
 }

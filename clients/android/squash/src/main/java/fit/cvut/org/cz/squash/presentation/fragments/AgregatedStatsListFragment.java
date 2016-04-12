@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.AgregatedStatsAdapter;
+import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
@@ -22,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedStats> {
 
     public static final String ARG_ID = "ARG_ID";
+    public static final int REQUEST_PLAYERS_FOR_COMPETITION = 1;
 
 
     public static AgregatedStatsListFragment newInstance(long competitionId){
@@ -38,7 +42,8 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO add player to competition
+                Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_COMPETITION, getArguments().getLong(ARG_ID));
+                startActivityForResult(intent, REQUEST_PLAYERS_FOR_COMPETITION);
             }
         });
 
@@ -76,5 +81,22 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != SelectableListActivity.RESULT_OK) return;
+        switch (requestCode){
+            case REQUEST_PLAYERS_FOR_COMPETITION: {
+                Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
+                intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
+                getContext().startService(intent);
+                progressInterface.showProgress();
+                break;
+            }
+            default:break;
+        }
+
     }
 }

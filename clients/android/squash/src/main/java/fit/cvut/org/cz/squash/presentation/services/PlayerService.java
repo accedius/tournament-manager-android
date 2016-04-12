@@ -21,8 +21,11 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_SELECTED = "extra_selected";
+    public static final String EXTRA_ID = "extra_id";
 
     public static final String ACTION_GET_SELECTED_FROM_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.competition_selected_players";
+    public static final String ACTION_GET_PLAYERS_FOR_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.get_players_for_competition";
+    public static final String ACTION_ADD_PLAYERS_TO_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.add_players_to_competition";
 
     @Override
     protected String getActionKey() {
@@ -40,23 +43,13 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             e.printStackTrace();
         }
 
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player(0, "Stan", null, null));
-        players.add(new Player(0, "Kyle", null, null));
-        players.add(new Player(0, "Cartman", null, null));
-        players.add(new Player(0, "Kenny", null, null));
-        players.add(new Player(0, "Butters", null, null));
+        switch (action){
+            case ACTION_GET_PLAYERS_FOR_COMPETITION:{
 
-        ArrayList<Integer> sel = new ArrayList<>();
-        sel.add(0);
-        sel.add(2);
-        sel.add(4);
 
-        Intent result = new Intent(action);
-        result.putParcelableArrayListExtra(EXTRA_PLAYERS, players);
-        result.putIntegerArrayListExtra(EXTRA_SELECTED, sel);
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+            }
+        }
     }
 
     public static Intent newStartIntent(String action, Context context){
