@@ -1,11 +1,14 @@
 package fit.cvut.org.cz.hockey.presentation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,7 +33,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     private static String HEADER_TOURNAMENTS_LIST = "Tournaments";
     private static String HEADER_COMPETITION_STANDINGS = "Players";
 
-    private long competitionID;
+    private long competitionID = -1;
 
     private Fragment[] fragments;
     private String[] titles;
@@ -67,5 +70,30 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
 
         return res;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_competition_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
+                if (competitionID == -1) break;
+                Intent intent = new Intent(this, CreateCompetitionActivity.class);
+                intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionID);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+
+        return true;
     }
 }
