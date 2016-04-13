@@ -3,12 +3,16 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
+import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by Vaclav on 5. 4. 2016.
@@ -95,13 +99,13 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
-        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
-        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByTournament(context, tournamentId);
-        ArrayList<Player> filteredPlayers = new ArrayList<>();
 
-        for (Long id : ids) players.remove(id);
-        for (Long id : players.keySet()) filteredPlayers.add(new Player(players.get(id)));
+        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, tournamentId);
+        ArrayList<Player> playersInCompetition = getPlayersByCompetition(context, t.getCompetitionId());
+        ArrayList<Player> playersInTournament = getPlayersByTournament(context, tournamentId);
 
-        return filteredPlayers;
+        for (Player p : playersInTournament) playersInCompetition.remove(p);
+
+        return playersInCompetition;
     }
 }

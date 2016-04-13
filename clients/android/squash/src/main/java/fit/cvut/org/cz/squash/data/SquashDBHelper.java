@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class SquashDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMSquash";
-    private static final int DBVersion = 14;
+    private static final int DBVersion = 1;
 
     public SquashDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -40,5 +40,14 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
     }
 }

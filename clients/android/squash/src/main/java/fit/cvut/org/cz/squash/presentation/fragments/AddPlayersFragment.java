@@ -36,7 +36,9 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
             case 0:
                 action = PlayerService.ACTION_GET_PLAYERS_FOR_COMPETITION;
                 break;
-
+            case 1:
+                action = PlayerService.ACTION_GET_PLAYERS_FOR_TOURNAMENT;
+                break;
             default:
                 break;
         }

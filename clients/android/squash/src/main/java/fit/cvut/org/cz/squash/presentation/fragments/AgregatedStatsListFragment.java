@@ -136,6 +136,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
 
         Intent intent = PlayerService.newStartIntent(addAction, getContext());
         intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
+        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
         progressInterface.showProgress();
 

@@ -87,7 +87,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
     @Override
     public ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_TOURNAMENT, DBConstants.cPLAYER_ID),
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_TOURNAMENT, DBConstants.cTOURNAMENT_ID),
                 new String[]{Long.toString(tournamentId)});
 
         ArrayList<Long> ids = new ArrayList<>();

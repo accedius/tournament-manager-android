@@ -141,4 +141,20 @@ public class Player extends ShareBase implements Parcelable {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+
+        Player player = (Player) o;
+
+        return id == player.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }
