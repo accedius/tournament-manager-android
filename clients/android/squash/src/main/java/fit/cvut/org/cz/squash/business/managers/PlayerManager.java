@@ -108,4 +108,14 @@ public class PlayerManager implements IPackagePlayerManager {
 
         return playersInCompetition;
     }
+
+    @Override
+    public void addPlayerToTeam(Context context, long playerId, long teamId) {
+
+    }
+
+    @Override
+    public void removePlayerFromTeam(Context context, long playerId, long teamId) {
+
+    }
 }
