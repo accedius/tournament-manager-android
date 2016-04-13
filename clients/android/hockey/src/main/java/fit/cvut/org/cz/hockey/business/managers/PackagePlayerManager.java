@@ -3,6 +3,7 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -69,12 +70,22 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getAllPlayers(Context context) {
-        ArrayList<DPlayer> dPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers( context );
+        Map<Long, DPlayer> dPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers( context );
         ArrayList<Player> res = new ArrayList<>();
-        for ( DPlayer dt: dPlayers )
+        for ( Map.Entry<Long, DPlayer> entry : dPlayers.entrySet() )
         {
-            res.add( new Player(dt) );
+            res.add( new Player(entry.getValue()) );
         }
         return res;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
+        return null;
     }
 }
