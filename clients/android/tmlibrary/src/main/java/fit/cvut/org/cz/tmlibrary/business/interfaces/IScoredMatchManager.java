@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -9,6 +11,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
  */
 public interface IScoredMatchManager {
 
-    ArrayList<ScoredMatch> getByTournamentId(long tournamentId);
-    ScoredMatch getById(long Id);
+    ArrayList<ScoredMatch> getByTournamentId(Context context, long tournamentId);
+    ScoredMatch getById(Context context, long Id);
 }

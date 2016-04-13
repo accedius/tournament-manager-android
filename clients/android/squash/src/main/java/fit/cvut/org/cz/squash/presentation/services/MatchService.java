@@ -42,7 +42,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_GET_MATCHES_BY_TOURNAMENT:{
 
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_MATCHES, ManagersFactory.getInstance().matchManager.getByTournamentId(intent.getLongExtra(EXTRA_ID, -1)));
+                result.putExtra(EXTRA_MATCHES, ManagersFactory.getInstance().matchManager.getByTournamentId(this, intent.getLongExtra(EXTRA_ID, -1)));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }

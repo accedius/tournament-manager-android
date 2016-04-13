@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import fit.cvut.org.cz.squash.presentation.fragments.AgregatedStatsListFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchListFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
+import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -26,10 +27,10 @@ public class TournamentDetailActivity extends AbstractTabActivity {
 
         return new DefaultViewPagerAdapter(manager,
                 new Fragment[]{
+                        SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
                         SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
                         AgregatedStatsListFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
                 },
-                new String[]{"Matches", "Players && stats"});
-        //return null;
+                new String[]{"Overview","Matches", "Players && stats"});
     }
 }

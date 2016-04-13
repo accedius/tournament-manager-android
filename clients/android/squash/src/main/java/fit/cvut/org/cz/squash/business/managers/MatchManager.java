@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.squash.business.managers;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -10,7 +12,7 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
  */
 public class MatchManager implements IScoredMatchManager {
     @Override
-    public ArrayList<ScoredMatch> getByTournamentId(long tournamentId) {
+    public ArrayList<ScoredMatch> getByTournamentId(Context context, long tournamentId) {
         ArrayList<ScoredMatch> matches = new ArrayList<>();
 
         ScoredMatch m = new ScoredMatch();
@@ -68,7 +70,7 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
-    public ScoredMatch getById(long Id) {
+    public ScoredMatch getById(Context context, long Id) {
         return null;
     }
 }

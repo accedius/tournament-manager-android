@@ -48,8 +48,9 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
         int tabMode = getIntent().getIntExtra(ARG_TABMODE, -1);
 
-        if (tabMode == TabLayout.MODE_SCROLLABLE )
+        if (tabMode == TabLayout.MODE_SCROLLABLE ) {
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
 
 
         tabLayout.setupWithViewPager(pager);
