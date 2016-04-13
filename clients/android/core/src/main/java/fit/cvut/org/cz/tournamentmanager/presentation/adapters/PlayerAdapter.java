@@ -45,7 +45,7 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
         final long id = player.getId();
 
         // TODO po spuštění aktivity zachytává AbstractListFragment akci pro získání info o hráči, což by neměl
-        /*
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +57,7 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
                 intent.putExtras(b);
                 c.startActivity(intent);
             }
-        });*/
+        });
 
         v.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override

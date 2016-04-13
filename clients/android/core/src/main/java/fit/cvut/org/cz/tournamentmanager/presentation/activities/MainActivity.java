@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +16,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
@@ -45,6 +49,19 @@ public class MainActivity extends AbstractToolbarActivity {
                     sport_packages.add(packageInfo);
                 }
             }
+        }
+
+        RoundRobinScoredMatchGenerator rr = new RoundRobinScoredMatchGenerator();
+        ArrayList<Participant> participants = new ArrayList<>();
+        participants.add(new Participant(1, "A"));
+        ArrayList<ScoredMatch> matches = rr.generateRound(participants, 1);
+        for(ScoredMatch m : matches) {
+            Log.d("MATCH", m.getHomeParticipantId()+" vs. "+m.getAwayParticipantId()+", P: "+m.getPeriod()+", R:"+m.getRound());
+        }
+
+        matches = rr.generateRound(participants, 2);
+        for(ScoredMatch m : matches) {
+            Log.d("MATCH", m.getHomeParticipantId()+" vs. "+m.getAwayParticipantId()+", P: "+m.getPeriod()+", R:"+m.getRound());
         }
 
         mMenuOptions = new String[]{"Competitions", "Players", "Settings"};

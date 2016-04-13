@@ -136,13 +136,13 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                     if (dDate != null) sDate = dDate.getTime();
                     int sPeriod = Integer.valueOf(period.getText().toString());
                     int sRound = Integer.valueOf(round.getText().toString());
-                    long homeTeamId = ((Participant) homeTeamSpinner.getSelectedItem()).getPartId();
-                    long awayTeamId = ((Participant) awayTeamSpinner.getSelectedItem()).getPartId();
+                    long homeTeamId = ((Participant) homeTeamSpinner.getSelectedItem()).getParticipantId();
+                    long awayTeamId = ((Participant) awayTeamSpinner.getSelectedItem()).getParticipantId();
 
                     if (id == -1) {
                         ScoredMatch match = new ScoredMatch();
-                        match.setHomeTeamId( homeTeamId );
-                        match.setAwayTeamId( awayTeamId );
+                        match.setHomeParticipantId(homeTeamId);
+                        match.setAwayParticipantId( awayTeamId );
                         match.setPeriod( sPeriod );
                         match.setRound( sRound );
                         match.setNote( note.getText().toString() );
@@ -254,8 +254,8 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
 
         if( match != null ) {
 
-            int hIndex = homePartAdapter.getPosition(findParticipant( participants, match.getHomeTeamId() ));
-            int aIndex = awayPartAdapter.getPosition(findParticipant(participants, match.getAwayTeamId()));
+            int hIndex = homePartAdapter.getPosition(findParticipant(participants, match.getHomeParticipantId()));
+            int aIndex = awayPartAdapter.getPosition(findParticipant(participants, match.getAwayParticipantId()));
 
             homeTeamSpinner.setSelection(hIndex);
             awayTeamSpinner.setSelection(aIndex);
@@ -265,7 +265,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private Participant findParticipant( ArrayList<Participant> participants, long id )
     {
         for( Participant part : participants )
-            if( part.getPartId() == id ) return part;
+            if( part.getParticipantId() == id ) return part;
         return null;
     }
 

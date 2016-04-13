@@ -8,11 +8,11 @@ import android.os.Parcelable;
  */
 public class Participant implements Parcelable
 {
-    private long partId;
+    private long participantId;
     private String name;
 
-    public long getPartId() { return partId; }
-    public void setPartId( long partId ) { this.partId = partId; }
+    public long getParticipantId() { return participantId; }
+    public void setParticipantId( long participantId ) { this.participantId = participantId; }
     public String getName() { return name; }
     public void setName( String name ) { this.name = name; }
 
@@ -30,13 +30,13 @@ public class Participant implements Parcelable
 
     public Participant( long id, String n )
     {
-        this.partId = id;
+        this.participantId = id;
         this.name = n;
     }
 
     protected Participant( Parcel in )
     {
-        this.partId = in.readLong();
+        this.participantId = in.readLong();
         this.name = in.readString();
     }
 
@@ -47,7 +47,7 @@ public class Participant implements Parcelable
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( partId );
+        dest.writeLong( participantId );
         dest.writeString( name );
     }
 

@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 public class ScoredMatch extends ShareBase {
 
     private long id, tournamentId;
-    private long homeTeamId, awayTeamId;
+    private long homeParticipantId, awayParticipantId;
     private CompetitionType type;
     private Date date;
     private boolean played;
@@ -30,8 +30,8 @@ public class ScoredMatch extends ShareBase {
     protected ScoredMatch(Parcel in) {
         id = in.readLong();
         tournamentId = in.readLong();
-        homeTeamId = in.readLong();
-        awayTeamId = in.readLong();
+        homeParticipantId = in.readLong();
+        awayParticipantId = in.readLong();
         played = in.readByte() != 0;
         period = in.readInt();
         round = in.readInt();
@@ -94,8 +94,8 @@ public class ScoredMatch extends ShareBase {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeLong(tournamentId);
-        dest.writeLong(homeTeamId);
-        dest.writeLong(awayTeamId);
+        dest.writeLong(homeParticipantId);
+        dest.writeLong(awayParticipantId);
         dest.writeByte((byte) (played ? 1 : 0));
         dest.writeInt(period);
         dest.writeInt(round);
@@ -147,20 +147,20 @@ public class ScoredMatch extends ShareBase {
         this.tournamentId = tournamentId;
     }
 
-    public long getHomeTeamId() {
-        return homeTeamId;
+    public long getHomeParticipantId() {
+        return homeParticipantId;
     }
 
-    public void setHomeTeamId(long homeTeamId) {
-        this.homeTeamId = homeTeamId;
+    public void setHomeParticipantId(long homeParticipantId) {
+        this.homeParticipantId = homeParticipantId;
     }
 
-    public long getAwayTeamId() {
-        return awayTeamId;
+    public long getAwayParticipantId() {
+        return awayParticipantId;
     }
 
-    public void setAwayTeamId(long awayTeamId) {
-        this.awayTeamId = awayTeamId;
+    public void setAwayParticipantId(long awayParticipantId) {
+        this.awayParticipantId = awayParticipantId;
     }
 
     public CompetitionType getType() {
