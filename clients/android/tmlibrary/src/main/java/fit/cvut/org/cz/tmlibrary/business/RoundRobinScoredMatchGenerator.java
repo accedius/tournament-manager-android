@@ -10,8 +10,11 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 
 /**
  * Created by kevin on 13.4.2016.
+ *
+ * Class serves to generate all-play-all matches
  */
 public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
+
     @Override
     public ArrayList<ScoredMatch> generateRound(ArrayList<Participant> participants, int round) {
         ArrayList<ScoredMatch> matches = new ArrayList<>();
@@ -48,8 +51,6 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
 
                 matches.add(createMatch(participants, home_idx, away_idx, period, round));
             }
-
-            // shift array
             shift(arr);
         }
         return matches;
@@ -64,7 +65,7 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
         return sm;
     }
 
-    void shift(ArrayList<Integer> arr) {
+    private void shift(ArrayList<Integer> arr) {
         int last_idx = arr.get(arr.size()-1);
         for(int i=arr.size()-1; i>1; i--) {
             arr.set(i, arr.get(i-1));

@@ -51,19 +51,6 @@ public class MainActivity extends AbstractToolbarActivity {
             }
         }
 
-        RoundRobinScoredMatchGenerator rr = new RoundRobinScoredMatchGenerator();
-        ArrayList<Participant> participants = new ArrayList<>();
-        participants.add(new Participant(1, "A"));
-        ArrayList<ScoredMatch> matches = rr.generateRound(participants, 1);
-        for(ScoredMatch m : matches) {
-            Log.d("MATCH", m.getHomeParticipantId()+" vs. "+m.getAwayParticipantId()+", P: "+m.getPeriod()+", R:"+m.getRound());
-        }
-
-        matches = rr.generateRound(participants, 2);
-        for(ScoredMatch m : matches) {
-            Log.d("MATCH", m.getHomeParticipantId()+" vs. "+m.getAwayParticipantId()+", P: "+m.getPeriod()+", R:"+m.getRound());
-        }
-
         mMenuOptions = new String[]{"Competitions", "Players", "Settings"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
