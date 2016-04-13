@@ -48,6 +48,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_OPTION, option);
+        b.putLong(ARG_ID, id);
         fragment.setArguments(b);
 
         return fragment;

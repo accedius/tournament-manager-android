@@ -3,6 +3,7 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -15,12 +16,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 public class PlayerManager implements IPackagePlayerManager {
     @Override
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
-
+        DAOFactory.getInstance().playerDAO.addPlayerToCompetition(context, playerId, competitionId);
     }
 
     @Override
     public void addPlayerToTournament(Context context, long playerId, long tournamentId) {
-
+        DAOFactory.getInstance().playerDAO.addPlayerToTournament(context, playerId, tournamentId);
     }
 
     @Override
@@ -45,19 +46,24 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersByCompetition(Context context, long competitionId) {
-        //TODO implement this mock so far
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByCompetition(context, competitionId);
+        ArrayList<Player> filteredPlayers = new ArrayList<>();
 
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player(0, "peter", "peter@douche.cz", null));
-        players.add(new Player(0, "Mike", "mike@mike.cz", null));
-        players.add(new Player(0, "Ike", "ike@spike.cz", null));
+        for (Long id : ids) filteredPlayers.add(new Player(players.get(id)));
 
-        return players;
+        return filteredPlayers;
     }
 
     @Override
     public ArrayList<Player> getPlayersByTournament(Context context, long tournamentId) {
-        return null;
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByTournament(context, tournamentId);
+        ArrayList<Player> filteredPlayers = new ArrayList<>();
+
+        for (Long id : ids) filteredPlayers.add(new Player(players.get(id)));
+
+        return filteredPlayers;
     }
 
     @Override
@@ -67,12 +73,35 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getAllPlayers(Context context) {
-
         ArrayList<Player> players = new ArrayList<>();
+        Map<Long, DPlayer> dPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
 
-        ArrayList<DPlayer> dPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
-        for (DPlayer player : dPlayers) players.add(new Player(player));
+        for (Long key : dPlayers.keySet()) players.add(new Player(dPlayers.get(key)));
 
         return players;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId) {
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByCompetition(context, competitionId);
+        ArrayList<Player> filteredPlayers = new ArrayList<>();
+
+        for (Long id : ids) players.remove(id);
+        for (Long id : players.keySet()) filteredPlayers.add(new Player(players.get(id)));
+
+        return filteredPlayers;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByTournament(context, tournamentId);
+        ArrayList<Player> filteredPlayers = new ArrayList<>();
+
+        for (Long id : ids) players.remove(id);
+        for (Long id : players.keySet()) filteredPlayers.add(new Player(players.get(id)));
+
+        return filteredPlayers;
     }
 }

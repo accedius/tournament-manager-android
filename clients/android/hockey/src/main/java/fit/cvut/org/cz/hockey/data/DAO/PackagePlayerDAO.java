@@ -3,8 +3,8 @@ package fit.cvut.org.cz.hockey.data.DAO;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 
@@ -58,7 +58,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public ArrayList<DPlayer> getAllPlayers(Context context) {
+    public Map<Long, DPlayer> getAllPlayers(Context context) {
         return null;
     }
 }
