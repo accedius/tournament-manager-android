@@ -22,8 +22,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.DummyFragment;
  */
 public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
+    public static final String ARG_TABMODE = "arg_tabmode";
+
     private ViewPager pager;
-    private PagerAdapter adapter;
 
     @Override
     protected View injectView(ViewGroup parent) {
@@ -44,6 +45,13 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
         pager.setAdapter(getAdapter(getSupportFragmentManager()));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        int tabMode = getIntent().getIntExtra(ARG_TABMODE, -1);
+
+        if (tabMode == TabLayout.MODE_SCROLLABLE )
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+
         tabLayout.setupWithViewPager(pager);
 
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
