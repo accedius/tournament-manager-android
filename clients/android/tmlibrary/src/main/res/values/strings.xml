@@ -26,4 +26,6 @@
     <string name="period">Period</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

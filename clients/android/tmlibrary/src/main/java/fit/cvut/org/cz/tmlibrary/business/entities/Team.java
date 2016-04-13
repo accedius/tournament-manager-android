@@ -17,6 +17,11 @@ public class Team implements Parcelable {
 
     public Team(){}
 
+    public Team(long tournamentId, String name) {
+        this.tournamentId = tournamentId;
+        this.name = name;
+    }
+
     protected Team(Parcel in) {
         id = in.readLong();
         name = in.readString();
