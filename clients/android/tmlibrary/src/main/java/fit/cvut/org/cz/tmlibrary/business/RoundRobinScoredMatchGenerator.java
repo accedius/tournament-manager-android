@@ -23,7 +23,7 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
         boolean oddness = participants.size() % 2 == 1 ? true : false;
         boolean round_oddness = round % 2 == 1 ? true : false;
 
-        if (participants.size() == 1)
+        if (participants.size() <= 1)
             return matches;
 
         // array of participant indices - serves to generate matches
