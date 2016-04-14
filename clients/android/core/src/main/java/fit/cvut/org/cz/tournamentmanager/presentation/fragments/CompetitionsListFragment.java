@@ -57,8 +57,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         return new CompetitionAdapter() {
             @Override
             protected void setOnClickListeners(View v, final long competitionId) {
-                final Context c = getContext();
-
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

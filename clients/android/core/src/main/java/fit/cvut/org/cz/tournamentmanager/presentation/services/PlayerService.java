@@ -22,7 +22,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_RESULT = "extra_result";
     public static final String EXTRA_PLAYER = "extra_player";
     public static final String EXTRA_PLAYERS = "extra_players";
 

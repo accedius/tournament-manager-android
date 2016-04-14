@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">TournamentManager</string>
     <string name="tournament_manager_package">TournamentManagerPackage</string>
+
     <string name="main_acc_name">Competitions</string>
+    <string name="title_activity_create_player">Create new player</string>
+    <string name="title_activity_player_detail">Player detail</string>
     <string name="title_activity_players">Players</string>
+
     <string name="title_activity_toolbar">ToolbarActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="player_cp_authority">fit.cvut.org.cz.tournamentmanager.data</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_create_player">CreatePlayerActivity</string>
-    <string name="title_activity_player_detail">PlayerDetailActivity</string>
 </resources>
