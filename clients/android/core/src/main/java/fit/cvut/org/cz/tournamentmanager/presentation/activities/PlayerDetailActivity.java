@@ -1,16 +1,16 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerCompetitionsListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -50,7 +50,25 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         return res;
     }
 
-    public long getPlayerID() {
-        return playerID;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_player_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_edit:{
+                if (playerID == -1) break;
+                Intent intent = new Intent(this, CreatePlayerActivity.class);
+                intent.putExtra(PlayerService.EXTRA_ID, playerID);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+        return true;
     }
 }
