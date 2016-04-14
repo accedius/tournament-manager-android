@@ -40,11 +40,12 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     @Override
     protected AbstractListAdapter getAdapter() {
+        return null;/*
         return new CompetitionAdapter(
                 "fit.cvut.org.cz.hockey",
                 "fit.cvut.org.cz.hockey.presentation.activites.ShowCompetitionActivity",
                 getActivity()
-        );
+        );*/
     }
 
     @Override

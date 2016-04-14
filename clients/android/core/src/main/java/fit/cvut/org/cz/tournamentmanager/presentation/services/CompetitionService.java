@@ -25,7 +25,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_PACKAGE = "extra_package";
-    public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_COMPETITION = "extra_competition";
 
     public CompetitionService() {
         super("Competition Service");
@@ -68,7 +68,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_RESULT, getData(package_name));
+        result.putParcelableArrayListExtra(EXTRA_COMPETITION, getData(package_name));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }
 }

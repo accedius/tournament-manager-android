@@ -50,13 +50,12 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
             @Override
             protected void setOnClickListeners(View v, final long tournamentId) {
                 final Context c = getContext();
-                final long id = tournamentId;
 
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(c, TournamentDetailActivity.class);
-                        intent.putExtra(TournamentDetailActivity.EXTRA_ID, id);
+                        intent.putExtra(TournamentDetailActivity.EXTRA_ID, tournamentId);
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
 
                         //TODO navazat typ

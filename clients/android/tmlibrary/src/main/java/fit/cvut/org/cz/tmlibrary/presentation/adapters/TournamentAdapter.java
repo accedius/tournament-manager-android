@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.presentation.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +49,10 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
 
     }
 
-
-
-    public class TournamentViewHolder extends RecyclerView.ViewHolder
-    {
+    public class TournamentViewHolder extends RecyclerView.ViewHolder {
         public TextView name, startDate, endDate;
         public View wholeView;
-        public TournamentViewHolder(View itemView)
-        {
+        public TournamentViewHolder(View itemView) {
             super (itemView);
             name = (TextView) itemView.findViewById(R.id.tv_name);
             startDate = (TextView) itemView.findViewById(R.id.tv_start);
