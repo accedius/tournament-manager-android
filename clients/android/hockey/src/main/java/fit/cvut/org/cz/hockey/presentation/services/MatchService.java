@@ -78,9 +78,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 m.setId(1);
                 m.setDate(new Date(2011, 11, 11));
                 m.setNote("My Note");
-                m.setAwayTeamId(1);
+                m.setAwayParticipantId(1);
                 m.setAwayName("Awaynameblabla");
-                m.setHomeTeamId(3);
+                m.setHomeParticipantId(3);
                 m.setHomeName("Homenameblabla");
                 m.setPeriod(1);
                 m.setRound(1);

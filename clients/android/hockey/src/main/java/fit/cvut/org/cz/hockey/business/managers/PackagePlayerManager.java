@@ -88,4 +88,14 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
         return null;
     }
+
+    @Override
+    public void addPlayerToTeam(Context context, long playerId, long teamId) {
+
+    }
+
+    @Override
+    public void removePlayerFromTeam(Context context, long playerId, long teamId) {
+
+    }
 }
