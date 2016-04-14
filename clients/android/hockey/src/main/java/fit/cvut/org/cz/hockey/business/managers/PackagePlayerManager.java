@@ -79,6 +79,11 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     }
 
     @Override
+    public ArrayList<Player> getPlayersByTeam(Context context, long teamId) {
+        return null;
+    }
+
+    @Override
     public ArrayList<Player> getAllPlayers(Context context) {
         Map<Long, DPlayer> dPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers( context );
         ArrayList<Player> res = new ArrayList<>();

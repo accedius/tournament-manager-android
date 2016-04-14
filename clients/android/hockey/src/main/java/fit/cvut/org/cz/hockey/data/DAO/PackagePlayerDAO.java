@@ -55,6 +55,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
+    public void addPlayerToTeam(Context context, long playerId, long teamId) {
+
+    }
+
+    @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
 
     }
@@ -66,6 +71,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
+
+    }
+
+    @Override
+    public void deletePlayerFromTeam(Context context, long playerId, long teamId) {
 
     }
 
@@ -107,6 +117,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByMatch(Context context, long matchId) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId) {
         return null;
     }
 
