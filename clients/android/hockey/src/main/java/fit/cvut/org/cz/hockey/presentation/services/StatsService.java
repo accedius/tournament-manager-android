@@ -20,6 +20,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_STATS = "extra_stats";
 
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
+    public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
 
     public StatsService() {
         super("Hockey Stats Service");
@@ -52,6 +53,18 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
                 ArrayList<AgregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID( this, compID );
+
+                res.putParcelableArrayListExtra(EXTRA_STATS, stats);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+
+                break;
+            }
+            case ACTION_GET_BY_TOUR_ID:
+            {
+                Intent res = new Intent();
+                long tourID = intent.getLongExtra(EXTRA_ID, -1);
+                res.setAction(ACTION_GET_BY_TOUR_ID);
+                ArrayList<AgregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByTournamentID( this, tourID );
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, stats);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);

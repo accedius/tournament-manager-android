@@ -6,18 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
-import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionPlayersFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -48,7 +42,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         titles = new String[]{ HEADER_OVERVIEW_COMPETITION, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
-        Fragment f3 = AgregStatsTitleFragment.newInstance( competitionID );
+        Fragment f3 = AgregStatsTitleFragment.newInstance( competitionID, true );
         fragments = new Fragment[]{ f1, f2, f3 };
 
         super.onCreate(savedInstanceState);
