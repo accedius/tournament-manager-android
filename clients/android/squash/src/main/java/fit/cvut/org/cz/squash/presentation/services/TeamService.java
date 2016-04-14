@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.ArrayList;
+
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -24,6 +26,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
     public static final String ACTION_GET_TEAMS_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_teams_by_tournament";
     public static final String ACTION_ADD_TEAM = "fit.cvut.org.cz.squash.presentation.services.add_team";
+    public static final String ACTION_EDIT_TEAM = "fit.cvut.org.cz.squash.presentation.services.edit_team";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_team_by_id";
 
     @Override
@@ -44,20 +47,15 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
         switch (action){
             case ACTION_GET_TEAMS_BY_TOURNAMENT:{
-
-                Intent result = new Intent(action);
-
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                result.putParcelableArrayListExtra(EXTRA_TEAMS, ManagersFactory.getInstance().teamsManager.getByTournamentId(this, id));
-
-                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                sendTeamsByTournament(id);
                 break;
+
             }
             case ACTION_ADD_TEAM:{
-
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
                 ManagersFactory.getInstance().teamsManager.insert(this, t);
-
+                sendTeamsByTournament(t.getTournamentId());
                 break;
             }
             case ACTION_GET_BY_ID:{
@@ -67,10 +65,24 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
+            case ACTION_EDIT_TEAM:{
+
+                Team t = intent.getParcelableExtra(EXTRA_TEAM);
+                ManagersFactory.getInstance().teamsManager.update(this, t);
+                sendTeamsByTournament(t.getTournamentId());
+                break;
+            }
 
         }
 
 
+    }
+
+    private void sendTeamsByTournament(long tournamentId){
+
+        Intent result = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
+        result.putParcelableArrayListExtra(EXTRA_TEAMS, ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }
 
     public static Intent newStartIntent(String action, Context context){

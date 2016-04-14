@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -36,7 +38,43 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new TeamAdapter();
+
+        return new TeamAdapter(){
+            @Override
+            protected void setOnClickListeners(View v, long teamId) {
+                final long ftid = teamId;
+
+                v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        EditDeleteDialog dialog = new EditDeleteDialog(){
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which){
+                                            case 0:
+                                                InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(ftid, false, SquashInsertTeamDialog.class);
+                                                insertTeamDialog.show(getFragmentManager(), "tag2");
+                                                dialog.dismiss();
+                                                break;
+                                            default:break;
+                                        }
+                                    }
+                                };
+                            }
+                        };
+                        dialog.show(getFragmentManager(), "uberTag");
+
+
+                        return true;
+                    }
+                });
+
+            }
+        };
     }
 
     @Override
