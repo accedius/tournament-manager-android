@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ShareBase;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class DPlayer extends DShareBase implements Parcelable {
+public class DPlayer extends DShareBase {
 
     private long id;
     private String name;
@@ -38,50 +38,6 @@ public class DPlayer extends DShareBase implements Parcelable {
         this.email = email;
         this.note = note;
     }
-
-    protected DPlayer(Parcel in) {
-        id = in.readLong();
-        name = in.readString();
-        email = in.readString();
-        note = in.readString();
-
-        try{
-            String text = in.readString();
-            if (text == null) lastModified = null;
-            else lastModified = dateFormat.parse(text);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        uid = in.readString();
-        etag = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(name);
-        dest.writeString(email);
-        dest.writeString(note);
-
-        //shared base parcelable
-        if (lastModified == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(lastModified));
-        dest.writeString(uid);
-        dest.writeString(etag);
-    }
-
-    public static final Creator<DPlayer> CREATOR = new Creator<DPlayer>() {
-        @Override
-        public DPlayer createFromParcel(Parcel in) {
-            return new DPlayer(in);
-        }
-
-        @Override
-        public DPlayer[] newArray(int size) {
-            return new DPlayer[size];
-        }
-    };
 
     public long getId() {
         return id;
@@ -115,8 +71,4 @@ public class DPlayer extends DShareBase implements Parcelable {
         this.email = email;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 }

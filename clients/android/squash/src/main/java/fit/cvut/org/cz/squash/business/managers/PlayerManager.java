@@ -76,6 +76,18 @@ public class PlayerManager implements IPackagePlayerManager {
     }
 
     @Override
+    public ArrayList<Player> getPlayersByTeam(Context context, long teamId) {
+
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByTeam(context, teamId);
+        ArrayList<Player> filteredPlayers = new ArrayList<>();
+
+        for (Long id : ids) filteredPlayers.add(new Player(players.get(id)));
+
+        return filteredPlayers;
+    }
+
+    @Override
     public ArrayList<Player> getAllPlayers(Context context) {
         ArrayList<Player> players = new ArrayList<>();
         Map<Long, DPlayer> dPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);

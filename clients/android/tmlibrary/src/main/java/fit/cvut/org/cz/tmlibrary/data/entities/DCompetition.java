@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class DCompetition extends DShareBase implements Parcelable {
+public class DCompetition extends DShareBase {
 
     private long id;
     private String name;
@@ -45,63 +45,6 @@ public class DCompetition extends DShareBase implements Parcelable {
         this.note = note;
         this.type = type;
     }
-
-
-    protected DCompetition(Parcel in) {
-        id = in.readLong();
-        name = in.readString();
-        note = in.readString();
-        type = in.readString();
-
-        try{
-            String text = in.readString();
-            if (text == null) startDate = null;
-            else startDate = dateFormat.parse(text);
-
-            text = in.readString();
-            if (text == null) endDate = null;
-            else endDate = dateFormat.parse(text);
-
-            text = in.readString();
-            if (text == null) lastModified = null;
-            else lastModified = dateFormat.parse(text);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        uid = in.readString();
-        etag = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(name);
-        dest.writeString(note);
-        dest.writeString(type);
-        if (startDate == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(startDate));
-        if (endDate == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(endDate));
-
-        //shared base parcelable
-        if (lastModified == null) dest.writeString(null);
-        else dest.writeString(dateFormat.format(lastModified));
-        dest.writeString(uid);
-        dest.writeString(etag);
-    }
-
-    public static final Creator<DCompetition> CREATOR = new Creator<DCompetition>() {
-        @Override
-        public DCompetition createFromParcel(Parcel in) {
-            return new DCompetition(in);
-        }
-
-        @Override
-        public DCompetition[] newArray(int size) {
-            return new DCompetition[size];
-        }
-    };
 
     public long getId() {
         return id;
@@ -149,10 +92,5 @@ public class DCompetition extends DShareBase implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 }

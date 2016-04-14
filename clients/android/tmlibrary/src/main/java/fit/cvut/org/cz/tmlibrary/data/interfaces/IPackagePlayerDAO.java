@@ -16,14 +16,17 @@ public interface IPackagePlayerDAO {
     void addPlayerToCompetition(Context context, long playerId, long competitionId);
     void addPlayerToTournament(Context context, long playerId, long tournamentId);
     void addPlayerToMatch(Context context, long playerId, long matchId);
+    void addPlayerToTeam(Context context, long playerId, long teamId);
 
     void deletePlayerFromCompetition(Context context, long playerId, long competitionId);
     void deletePlayerFromTournament(Context context, long playerId, long tournamentId);
     void deletePlayerFromMatch(Context context, long playerId, long matchId);
+    void deletePlayerFromTeam(Context context, long playerId, long teamId);
 
     ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId);
     ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId);
     ArrayList<Long> getPlayerIdsByMatch(Context context, long matchId);
+    ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId);
 
     Map<Long, DPlayer> getAllPlayers(Context context);
 

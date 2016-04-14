@@ -15,7 +15,12 @@ public class DTeam {
     private long id;
     private long tournamentId;
     private String name;
-    ArrayList<Player> players;
+
+    public DTeam(long id, long tournamentId, String name) {
+        this.id = id;
+        this.tournamentId = tournamentId;
+        this.name = name;
+    }
 
     public long getId() {
         return id;
@@ -39,13 +44,5 @@ public class DTeam {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
     }
 }

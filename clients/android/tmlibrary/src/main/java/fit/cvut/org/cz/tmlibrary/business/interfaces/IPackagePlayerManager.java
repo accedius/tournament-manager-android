@@ -22,6 +22,7 @@ public interface IPackagePlayerManager {
     ArrayList<Player> getPlayersByCompetition(Context context, long competitionId);
     ArrayList<Player> getPlayersByTournament(Context context, long tournamentId);
     ArrayList<Player> getPlayersByMatch(Context context, long matchId);
+    ArrayList<Player> getPlayersByTeam(Context context, long teamId);
     ArrayList<Player> getAllPlayers(Context context);
 
     ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId);

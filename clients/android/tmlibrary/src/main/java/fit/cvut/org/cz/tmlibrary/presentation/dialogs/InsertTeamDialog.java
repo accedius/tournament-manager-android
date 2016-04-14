@@ -94,7 +94,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
                 dialog.dismiss();
             }
         });
-        View v = getLayoutInflater(savedInstanceState).inflate(R.layout.dialog_insert_team, null);
+        View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_insert_team, null);
 
         builder.setView(v);
         name = (TextView) v.findViewById(R.id.tv_name);
@@ -103,7 +103,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
         teamId = getArguments().getLong(ARG_ID, -1);
         tournamentId = getArguments().getLong(ARG_TOURNAMENT_ID, -1);
 
-        if (tournamentId != -1){
+        if (teamId != -1){
             registerReceiver();
             askForData();
             progressBar.setVisibility(View.VISIBLE);
@@ -115,7 +115,8 @@ public abstract class InsertTeamDialog extends DialogFragment{
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        unregisterReceiver();
+        if (teamId != -1)
+            unregisterReceiver();
         super.onDismiss(dialog);
     }
 

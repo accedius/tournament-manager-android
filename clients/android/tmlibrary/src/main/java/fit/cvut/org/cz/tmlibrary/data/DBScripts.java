@@ -41,6 +41,18 @@ public class DBScripts {
             + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
 
 
+    public static final String CREATE_TABLE_TEAMS = "create table " + DBConstants.tTEAMS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cNAME + " TEXT NOT NULL, "
+            + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
+            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
+
+    public static final String CREATE_TABLE_PLAYERS_IN_TEAM = "create table " + DBConstants.tPLAYERS_IN_TEAM + " ("
+            + DBConstants.cTEAM_ID + " INTEGER NOT NULL, "
+            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
+            + "PRIMARY KEY ( " + DBConstants.cTEAM_ID + ", " + DBConstants.cPLAYER_ID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ));";
+
 
 
 

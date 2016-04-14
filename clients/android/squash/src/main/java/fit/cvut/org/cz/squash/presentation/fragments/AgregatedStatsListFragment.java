@@ -153,8 +153,8 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
                 case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
                     if (mainAction == null) return;
-                    Intent startIntent = StatsService.newStartIntent(mainAction, getContext());
-                    getContext().startService(startIntent);
+//                    Intent startIntent = StatsService.newStartIntent(mainAction, getContext());
+//                    getContext().startService(startIntent);
                     break;
                 case StatsService.ACTION_GET_STATS_BY_COMPETITION:
                 case StatsService.ACTION_GET_STATS_BY_TOURNAMENT:

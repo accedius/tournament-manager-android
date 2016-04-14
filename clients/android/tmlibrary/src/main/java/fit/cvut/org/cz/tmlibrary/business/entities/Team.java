@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
+
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
@@ -20,6 +22,13 @@ public class Team implements Parcelable {
     public Team(long tournamentId, String name) {
         this.tournamentId = tournamentId;
         this.name = name;
+    }
+
+    public Team(DTeam dTeam){
+        id = dTeam.getId();
+        tournamentId = dTeam.getTournamentId();
+        name = dTeam.getName();
+        players = new ArrayList<>();
     }
 
     protected Team(Parcel in) {
@@ -84,5 +93,9 @@ public class Team implements Parcelable {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public static DTeam convertToDTeam(Team t){
+        return new DTeam(t.getId(), t.getTournamentId(), t.getName());
     }
 }

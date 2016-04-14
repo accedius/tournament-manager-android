@@ -8,6 +8,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
@@ -94,5 +95,12 @@ public class CursorParser {
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
         return new DTournament(id, name, startDate, endDate, note, etag, uid, lastModified, competitionId);
+    }
+
+    public DTeam parseDTeam(Cursor c){
+        return new DTeam(
+                c.getLong(c.getColumnIndex(DBConstants.cID)),
+                c.getLong(c.getColumnIndex(DBConstants.cTOURNAMENT_ID)),
+                c.getString(c.getColumnIndex(DBConstants.cNAME)));
     }
 }

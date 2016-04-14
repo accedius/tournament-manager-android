@@ -53,17 +53,55 @@ public class PlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
+    public void addPlayerToTeam(Context context, long playerId, long teamId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.cTEAM_ID, teamId);
+        cv.put(DBConstants.cPLAYER_ID, playerId);
+
+        db.insert(DBConstants.tPLAYERS_IN_TEAM, null, cv);
+        db.close();
+
+    }
+
+    @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cCOMPETITIONID, DBConstants.cPLAYER_ID);
+        String[] args = new String[]{Long.toString(competitionId), Long.toString(playerId)};
+
+        db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, args);
+        db.close();
 
     }
 
     @Override
     public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cTOURNAMENT_ID, DBConstants.cPLAYER_ID);
+        String[] args = new String[]{Long.toString(tournamentId), Long.toString(playerId)};
+
+        db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, args);
+        db.close();
     }
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
+
+    }
+
+    @Override
+    public void deletePlayerFromTeam(Context context, long playerId, long teamId) {
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cTEAM_ID, DBConstants.cPLAYER_ID);
+        String[] args = new String[]{Long.toString(teamId), Long.toString(playerId)};
+
+        db.delete(DBConstants.tPLAYERS_IN_TEAM, where, args);
+        db.close();
 
     }
 
@@ -103,6 +141,22 @@ public class PlayerDAO implements IPackagePlayerDAO {
     @Override
     public ArrayList<Long> getPlayerIdsByMatch(Context context, long matchId) {
         return null;
+    }
+
+    @Override
+    public ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_TEAM, DBConstants.cTEAM_ID),
+                new String[]{Long.toString(teamId)});
+
+        ArrayList<Long> ids = new ArrayList<>();
+
+        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+
+        c.close();
+        db.close();
+
+        return ids;
     }
 
 
