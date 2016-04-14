@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -30,8 +31,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         super("Competition Service");
     }
 
-    private ArrayList<DCompetition> getData(String package_name) {
-        ArrayList<DCompetition> data = new ArrayList<>();
+    private ArrayList<Competition> getData(String package_name) {
+        ArrayList<Competition> data = new ArrayList<>();
 
         Uri myUri = Uri.parse("content://"+package_name+".data/competitions");
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
@@ -43,7 +44,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         CursorParser cp = CursorParser.getInstance();
         if (cur.moveToFirst()) {
             do {
-                data.add(cp.parseDCompetition(cur));
+                data.add(new Competition(cp.parseDCompetition(cur)));
             } while (cur.moveToNext());
         }
         return data;

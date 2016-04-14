@@ -21,7 +21,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class CompetitionAdapter extends AbstractListAdapter<DCompetition, CompetitionAdapter.CompetitionViewHolder> {
+public class CompetitionAdapter extends AbstractListAdapter<Competition, CompetitionAdapter.CompetitionViewHolder> {
 
     private View v;
     private Context c;
@@ -47,7 +47,7 @@ public class CompetitionAdapter extends AbstractListAdapter<DCompetition, Compet
 
     @Override
     public void onBindViewHolder(CompetitionViewHolder holder, int position) {
-        Competition competition = new Competition(data.get(position));
+        Competition competition = data.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(competition.getName());
