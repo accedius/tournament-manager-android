@@ -93,16 +93,14 @@ public class PlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public void deletePlayerFromTeam(Context context, long playerId, long teamId) {
-
+    public void deleteAllPlayersFromTeam(Context context, long teamId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format("%s = ? AND %s = ?", DBConstants.cTEAM_ID, DBConstants.cPLAYER_ID);
-        String[] args = new String[]{Long.toString(teamId), Long.toString(playerId)};
+        String where = String.format("%s = ?", DBConstants.cTEAM_ID);
+        String[] args = new String[]{Long.toString(teamId)};
 
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, args);
         db.close();
-
     }
 
     @Override

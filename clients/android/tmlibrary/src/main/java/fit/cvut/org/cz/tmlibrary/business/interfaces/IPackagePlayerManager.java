@@ -28,9 +28,6 @@ public interface IPackagePlayerManager {
     ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId);
     ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId);
 
-    void addPlayerToTeam(Context context, long playerId, long teamId);
-    void removePlayerFromTeam(Context context, long playerId, long teamId);
-
-
-
+    void updatePlayersInTeam(Context context, long teamId, ArrayList<Player> players);
+    ArrayList<Player> getPlayersNotInTeams(Context context, long tournamentId);
 }

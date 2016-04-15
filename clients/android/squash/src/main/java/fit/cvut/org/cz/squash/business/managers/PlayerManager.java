@@ -9,6 +9,7 @@ import java.util.Map;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
@@ -122,12 +123,22 @@ public class PlayerManager implements IPackagePlayerManager {
     }
 
     @Override
-    public void addPlayerToTeam(Context context, long playerId, long teamId) {
+    public void updatePlayersInTeam(Context context, long teamId, ArrayList<Player> players) {
 
+        DAOFactory.getInstance().playerDAO.deleteAllPlayersFromTeam(context, teamId);
+        for (Player p : players) DAOFactory.getInstance().playerDAO.addPlayerToTeam(context, p.getId(), teamId);
     }
 
     @Override
-    public void removePlayerFromTeam(Context context, long playerId, long teamId) {
+    public ArrayList<Player> getPlayersNotInTeams(Context context, long tournamentId) {
 
+        ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
+        ArrayList<Player> players = getPlayersByTournament(context, tournamentId);
+
+        for (Team t : teams)
+            for (Player p : t.getPlayers())
+                players.remove(p);
+
+        return players;
     }
 }

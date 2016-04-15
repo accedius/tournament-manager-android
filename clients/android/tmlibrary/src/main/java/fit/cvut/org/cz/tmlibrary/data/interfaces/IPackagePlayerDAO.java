@@ -21,7 +21,7 @@ public interface IPackagePlayerDAO {
     void deletePlayerFromCompetition(Context context, long playerId, long competitionId);
     void deletePlayerFromTournament(Context context, long playerId, long tournamentId);
     void deletePlayerFromMatch(Context context, long playerId, long matchId);
-    void deletePlayerFromTeam(Context context, long playerId, long teamId);
+    void deleteAllPlayersFromTeam(Context context, long teamId);
 
     ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId);
     ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId);

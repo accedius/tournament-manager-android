@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/aView"
-            android:src="@drawable/ic_get_app_white_24dp"
+            android:src="@drawable/ic_delete_sweep_white_24dp"
             android:layout_weight="1"/>
         <Space
             android:layout_width="0dp"

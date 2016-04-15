@@ -62,8 +62,9 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
                     if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                        fab.setVisibility(View.VISIBLE);
-                    else fab.setVisibility(View.INVISIBLE);
+                        fab.show();
+
+                    else fab.hide();
                 }
 
 
@@ -77,7 +78,7 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        List<T> data = intent.getParcelableArrayListExtra(getDataKey());
+        ArrayList<T> data = intent.getParcelableArrayListExtra(getDataKey());
         Log.d("ADF", "Received data, len: "+data.size());
         adapter.swapData(data);
     }

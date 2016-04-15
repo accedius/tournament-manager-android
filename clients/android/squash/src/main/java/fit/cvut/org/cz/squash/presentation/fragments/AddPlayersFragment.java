@@ -25,6 +25,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     private static final String ARG_ID = "arg_id";
     public static final int OPTION_COMPETITION = 0;
     public static final int OPTION_TOURNAMENT = 1;
+    public static final int OPTION_TEAM = 2;
 
     private String action = null;
 
@@ -38,6 +39,9 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
                 break;
             case 1:
                 action = PlayerService.ACTION_GET_PLAYERS_FOR_TOURNAMENT;
+                break;
+            case 2:
+                action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
                 break;
             default:
                 break;

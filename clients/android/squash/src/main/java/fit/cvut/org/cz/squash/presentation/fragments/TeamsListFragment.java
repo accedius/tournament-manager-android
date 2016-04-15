@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.squash.presentation.activities.TeamDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
@@ -67,9 +68,14 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                             }
                         };
                         dialog.show(getFragmentManager(), "uberTag");
-
-
                         return true;
+                    }
+                });
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = TeamDetailActivity.newStartIntent(ftid, getContext());
+                        startActivity(intent);
                     }
                 });
 

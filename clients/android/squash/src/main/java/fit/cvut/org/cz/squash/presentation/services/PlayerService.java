@@ -31,6 +31,12 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_ADD_PLAYERS_TO_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.add_players_to_tournament";
     public static final String ACTION_GET_PLAYERS_FOR_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_players_for_tournament";
 
+
+    public static final String UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
+    public static final String ACTION_GET_PLAYERS_FOR_TEAM = "fit.cvut.org.cz.squash.presentation.services.get_players_for_team";
+
+
+
     @Override
     protected String getActionKey() {
         return EXTRA_ACTION;
@@ -80,6 +86,24 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 for (Player p: players) ManagersFactory.getInstance().playerManager.addPlayerToTournament(this, p.getId(), id);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case UPDATE_PLAYERS_IN_TEAM:{
+                Intent result = new Intent(action);
+
+                ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                ManagersFactory.getInstance().playerManager.updatePlayersInTeam(this, id, players);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_PLAYERS_FOR_TEAM:{
+                Intent result = new Intent(action);
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(this, intent.getLongExtra(EXTRA_ID, -1)));
+                result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

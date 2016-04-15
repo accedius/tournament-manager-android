@@ -11,9 +11,9 @@ import java.util.List;
  */
 public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
-    protected final List<T> data = new ArrayList<>();
+    protected final ArrayList<T> data = new ArrayList<>();
 
-    public void swapData(List<T> list){
+    public void swapData(ArrayList<T> list){
         this.data.clear();
         this.data.addAll(list);
         notifyDataSetChanged();
@@ -23,4 +23,6 @@ public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder>
     public int getItemCount() {
         return data.size();
     }
+
+    public ArrayList<T> getData() {return new ArrayList<>(data);}
 }
