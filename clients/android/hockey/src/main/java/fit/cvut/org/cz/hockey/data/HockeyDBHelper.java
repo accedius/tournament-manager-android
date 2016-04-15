@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class HockeyDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMHockey.db";
-    private static final int DBVersion = 14;
+    private static final int DBVersion = 15;
 
     public HockeyDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -26,6 +26,13 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
         db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
+        db.execSQL(DBScripts.CREATE_TABLE_MATCHES);
+        db.execSQL(DBScripts.CREATE_TABLE_PARTICIPANTS);
+        db.execSQL(DBScripts.CREATE_TABLE_PLAYER_IN_PARTICIPANT);
+        db.execSQL(DBScripts.CREATE_TABLE_STATS_ENUM);
+        db.execSQL(DBScripts.CREATE_TABLE_STATS);
+        db.execSQL(DBScripts.CREATE_TABLE_TEAMS);
+        db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
     }
 
     @Override
@@ -35,6 +42,13 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tCONFIGURATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_COMPETITION);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TOURNAMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTEAMS);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tMATCHES);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPARTICIPANTS);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYER_IN_PARTICIPANT);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS_ENUM);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS);
+        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TEAM);
         onCreate(db);
 
     }

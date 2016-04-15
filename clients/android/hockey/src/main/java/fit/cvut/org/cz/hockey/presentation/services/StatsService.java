@@ -42,6 +42,12 @@ public class StatsService extends AbstractIntentServiceWProgress {
     @Override
     protected void doWork(Intent intent) {
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action)

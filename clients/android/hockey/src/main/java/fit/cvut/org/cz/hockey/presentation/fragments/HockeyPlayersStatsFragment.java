@@ -195,7 +195,13 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
                     break;
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
                 case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
+                {
+                    //TODO opravit refresh
+//                    Intent startIntent = StatsService.newStartIntent(getAction, getContext());
+//                    getContext().startService(startIntent);
                     break;
+                }
+
 
             }
         }
