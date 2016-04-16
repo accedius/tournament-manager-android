@@ -29,12 +29,16 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
 
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_ACTION = "ARG_ACTION";
+    public static final String SAVE_MAIN = "SAVE_MAIN";
+    public static final String SAVE_ADD = "SAVE_ADD";
+    public static final String SAVE_SEND = "SAVE_SEND";
     public static final int REQUEST_PLAYERS_FOR_COMPETITION = 1;
     public static final int REQUEST_PLAYERS_FOR_TOURNAMENT = 2;
 
     private String mainAction = null;
     private String addAction = null;
     private int requestCode = 0;
+    private boolean sendForData = true;
 
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
@@ -49,10 +53,25 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVE_SEND, sendForData);
+        outState.putString(SAVE_MAIN, mainAction);
+        outState.putString(SAVE_ADD, addAction);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mainAction = getArguments().getString(ARG_ACTION, null);
+
+        if (savedInstanceState != null){
+            mainAction = savedInstanceState.getString(SAVE_MAIN);
+            addAction = savedInstanceState.getString(SAVE_ADD);
+            sendForData = savedInstanceState.getBoolean(SAVE_SEND);
+        }
+
         switch (mainAction){
             case StatsService.ACTION_GET_STATS_BY_COMPETITION:
                 requestCode = 1;
@@ -73,6 +92,8 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
             @Override
             public void onClick(View v) {
                 Intent intent = null;
+                if (isDataSourceWorking()) return;
+                sendForData = false;
                 switch (requestCode){
                     case REQUEST_PLAYERS_FOR_COMPETITION:
                         intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_COMPETITION, getArguments().getLong(ARG_ID));
@@ -103,7 +124,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
     @Override
     protected void askForData() {
 
-        if (mainAction != null) {
+        if (mainAction != null && sendForData) {
             Intent intent = StatsService.newStartIntent(mainAction, getContext());
             intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_ID));
 
@@ -131,7 +152,11 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != SelectableListActivity.RESULT_OK) return;
+        if (resultCode != SelectableListActivity.RESULT_OK){
+            sendForData = true;
+            askForData();
+            return;
+        }
         if (addAction == null) return;
 
         Intent intent = PlayerService.newStartIntent(addAction, getContext());
@@ -148,19 +173,15 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-
             switch (action){
                 case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
-                    if (mainAction == null) return;
-//                    Intent startIntent = StatsService.newStartIntent(mainAction, getContext());
-//                    getContext().startService(startIntent);
+                    sendForData = true;
+                    askForData();
                     break;
                 case StatsService.ACTION_GET_STATS_BY_COMPETITION:
                 case StatsService.ACTION_GET_STATS_BY_TOURNAMENT:
                     AgregatedStatsListFragment.super.bindDataOnView(intent);
-                    if (!PlayerService.isWorking(addAction) && !StatsService.isWorking(mainAction))
-                        progressInterface.hideProgress();
                     break;
                 default:break;
             }

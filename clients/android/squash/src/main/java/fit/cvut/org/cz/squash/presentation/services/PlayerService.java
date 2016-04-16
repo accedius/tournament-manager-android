@@ -91,13 +91,11 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_UPDATE_PLAYERS_IN_TEAM:{
-                Intent result = new Intent(action);
 
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().playerManager.updatePlayersInTeam(this, id, players);
 
-                //LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_PLAYERS_FOR_TEAM:{
