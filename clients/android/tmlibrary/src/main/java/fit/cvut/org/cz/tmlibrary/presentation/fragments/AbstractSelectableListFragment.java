@@ -50,8 +50,22 @@ public abstract class AbstractSelectableListFragment<T extends Parcelable> exten
         return fragment;
     }
 
+    /**
+     *
+     * @return Adapter that will be used for this list
+     */
     protected abstract AbstractSelectableListAdapter<T, ? extends OneActionViewHolder> getAdapter();
+
+    /**
+     *
+     * @return key of data passed in intent
+     */
     protected abstract String getDataKey();
+
+    /**
+     *
+     * @return Key of arraylist of ints that determines which items should be selected
+     */
     protected abstract String getDataSelectedKey();
 
     private AbstractSelectableListAdapter<T, ? extends OneActionViewHolder> adapter;

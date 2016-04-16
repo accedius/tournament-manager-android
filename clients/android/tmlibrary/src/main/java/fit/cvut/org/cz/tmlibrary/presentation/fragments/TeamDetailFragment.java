@@ -62,11 +62,41 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     protected long teamId = -1;
 
+    /**
+     *
+     * @return Key of Team saved as Extra
+     */
     protected abstract String getTeamKey();
+
+    /**
+     *
+     * @return Key of ArrayList<Player> delivered from activity when adding players to the team
+     */
     protected abstract String getExtraPlayersKey();
+
+    /**
+     * Called when team in parameter should be updated
+     * @param t
+     */
     protected abstract void updatePlayers(Team t);
+
+    /**
+     *
+     * @param t team is suplied for getting teamId easily
+     * @return start Intent of activity that returns players that should be added to this team
+     */
     protected abstract Intent getSelectActivityStartIntent(Team t);
+
+    /**
+     *
+     * @return request code for startActivity for result
+     */
     protected abstract int getRequestCode();
+
+    /**
+     *
+     * @return code that activity return when players were selected properly
+     */
     protected abstract int getOKResultCode();
 
 

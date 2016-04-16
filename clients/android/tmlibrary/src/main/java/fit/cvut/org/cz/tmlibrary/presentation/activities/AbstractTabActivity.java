@@ -32,12 +32,6 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
     }
 
     @Override
-    protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
-        //We dont want FAB in tab activity individual fragments will have FABS if needed
-        return null;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

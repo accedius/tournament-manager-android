@@ -25,10 +25,24 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     private static final String COMP_KEY = "competition_id_key";
     protected long competitionID;
 
+    /**
+     *
+     * @return Key of Comeptition saved as extra
+     */
     protected abstract String getCompetitionKey();
 
     //U těchhle by se dalo nahoru předat competition. To by ale nemělo být potřeba, protože fragment ví competitionID
+
+    /**
+     *
+     * @return Key of int tournaments sum saved as extra
+     */
     protected abstract String getTournamentsSumKey();
+
+    /**
+     *
+     * @return Key of int palyers sum saved as extra
+     */
     protected abstract String getPlayersSumKey();
 
 
