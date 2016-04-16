@@ -75,7 +75,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public void deletePlayerFromTeam(Context context, long playerId, long teamId) {
+    public void deleteAllPlayersFromTeam(Context context, long teamId) {
 
     }
 

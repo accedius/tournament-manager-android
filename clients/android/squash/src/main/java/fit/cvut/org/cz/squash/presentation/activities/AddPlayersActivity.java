@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -30,6 +32,8 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
 
         long id = getIntent().getLongExtra(EXTRA_ID, -1);
         int option = getIntent().getIntExtra(EXTRA_OPTION, -1);
+        ArrayList<Player> players = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
+        if (players != null) return AddPlayersFragment.newInstance(option, id, players);
 
         return AddPlayersFragment.newInstance(option, id);
     }

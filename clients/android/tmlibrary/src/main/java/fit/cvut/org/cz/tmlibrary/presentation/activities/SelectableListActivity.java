@@ -22,6 +22,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
 public abstract class SelectableListActivity<T extends Parcelable> extends AbstractToolbarActivity {
 
     public static final String EXTRA_DATA = "extra_data";
+    public static final String EXTRA_OMIT_DATA = "extra_omit_data";
     public static final String EXTRA_ID = "extra_id";
 
 
@@ -61,8 +62,9 @@ public abstract class SelectableListActivity<T extends Parcelable> extends Abstr
             AbstractSelectableListFragment<T> frag = (AbstractSelectableListFragment<T>) (getSupportFragmentManager().findFragmentById(R.id.fragment_container));
             ArrayList<T> data = null;
 
-            if (frag != null)
+            if (frag != null) {
                 data = frag.getSelectedData();
+            }
             Intent intent = new Intent();
             intent.putParcelableArrayListExtra(EXTRA_DATA, data);
 

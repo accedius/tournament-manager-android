@@ -32,7 +32,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PLAYERS_FOR_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_players_for_tournament";
 
 
-    public static final String UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
+    public static final String ACTION_UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
     public static final String ACTION_GET_PLAYERS_FOR_TEAM = "fit.cvut.org.cz.squash.presentation.services.get_players_for_team";
 
 
@@ -90,14 +90,14 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-            case UPDATE_PLAYERS_IN_TEAM:{
+            case ACTION_UPDATE_PLAYERS_IN_TEAM:{
                 Intent result = new Intent(action);
 
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().playerManager.updatePlayersInTeam(this, id, players);
 
-                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                //LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_PLAYERS_FOR_TEAM:{

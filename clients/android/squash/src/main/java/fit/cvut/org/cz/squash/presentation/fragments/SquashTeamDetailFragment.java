@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -26,12 +27,17 @@ public class SquashTeamDetailFragment extends TeamDetailFragment {
 
     @Override
     protected void updatePlayers(Team t) {
-
+        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE_PLAYERS_IN_TEAM, getContext());
+        intent.putExtra(PlayerService.EXTRA_ID, t.getId());
+        intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, t.getPlayers());
+        getContext().startService(intent);
     }
 
     @Override
     protected Intent getSelectActivityStartIntent(Team t) {
-        return AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getTournamentId());
+        Intent intent =  AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getTournamentId());
+        intent.putParcelableArrayListExtra(SelectableListActivity.EXTRA_OMIT_DATA, t.getPlayers());
+        return intent;
     }
 
     @Override
