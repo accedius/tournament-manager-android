@@ -53,9 +53,44 @@ public class DBScripts {
             + "PRIMARY KEY ( " + DBConstants.cTEAM_ID + ", " + DBConstants.cPLAYER_ID + " ) "
             + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ));";
 
+    public static final String CREATE_TABLE_MATCHES = "create table " + DBConstants.tMATCHES + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cROUND + " INTEGER NOT NULL, "
+            + DBConstants.cPERIOD + " INTEGER NOT NULL, "
+            + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
+            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
 
+    public static final String CREATE_TABLE_PARTICIPANTS = "create table " + DBConstants.tPARTICIPANTS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cTEAM_ID + " INTEGER, "
+            + DBConstants.cMATCH_ID + " INTEGER NOT NULL, "
+            + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
 
+    public static final String CREATE_TABLE_PLAYER_IN_PARTICIPANT = "create table " + DBConstants.tPLAYER_IN_PARTICIPANT + " ("
+            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
+            + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
+            + "PRIMARY KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
 
+    public static final String CREATE_TABLE_STATS_ENUM = "create table " + DBConstants.tSTATS_ENUM + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cNAME + " TEXT);";
+
+    public static final String CREATE_TABLE_STATS = "create table " + DBConstants.tSTATS + " ("
+            + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
+            + DBConstants.cSTATS_ENUM_ID + " INTEGER NOT NULL, "
+            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
+            + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
+            + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
+            + DBConstants.cVALUE + " INTEGER, "
+            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) REFERENCES " + DBConstants.tPLAYER_IN_PARTICIPANT + " ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ) "
+            + "FOREIGN KEY ( " + DBConstants.cSTATS_ENUM_ID + " ) REFERENCES " + DBConstants.tSTATS_ENUM + " ( " + DBConstants.cID + " ));";
 
 
 
