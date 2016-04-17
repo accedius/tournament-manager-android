@@ -41,5 +41,6 @@ public class DBConstants {
     public static final String cSTATS_ENUM_ID = "stats_enum_id";
     public static final String cVALUE = "value";
     public static final String cROLE = "role";
+    public static final String cDATE = "date";
 
 }

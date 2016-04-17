@@ -58,6 +58,7 @@ public class DBScripts {
             + DBConstants.cUID + " TEXT, "
             + DBConstants.cETAG + " TEXT, "
             + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cDATE + " TEXT, "
             + DBConstants.cROUND + " INTEGER NOT NULL, "
             + DBConstants.cPERIOD + " INTEGER NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
