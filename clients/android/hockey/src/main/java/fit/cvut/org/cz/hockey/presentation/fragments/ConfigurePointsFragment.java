@@ -41,53 +41,6 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_config_points, container, false );
-
-        ntW = (EditText) v.findViewById( R.id.et_nt_w );
-        ntD = (EditText) v.findViewById( R.id.et_nt_d );
-        ntL = (EditText) v.findViewById( R.id.et_nt_l );
-
-        otW = (EditText) v.findViewById( R.id.et_ot_w );
-        otD = (EditText) v.findViewById( R.id.et_ot_d );
-        otL = (EditText) v.findViewById( R.id.et_ot_l );
-
-        soW = (EditText) v.findViewById( R.id.et_so_w );
-        soL = (EditText) v.findViewById( R.id.et_so_l );
-
-        fab = (FloatingActionButton) v.findViewById( R.id.fab_save );
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDataSourceWorking() && validate(v)) {
-                    Long nW = Long.valueOf(ntW.getText().toString());
-                    Long nD = Long.valueOf(ntD.getText().toString());
-                    Long nL = Long.valueOf(ntL.getText().toString());
-
-                    Long oW = Long.valueOf(otW.getText().toString());
-                    Long oD = Long.valueOf(otD.getText().toString());
-                    Long oL = Long.valueOf(otL.getText().toString());
-
-                    Long sW = Long.valueOf(soW.getText().toString());
-                    Long sL = Long.valueOf(soL.getText().toString());
-
-                    PointConfiguration pointConfiguration = new PointConfiguration(nW, nD, nL, oW, oD, oL, sW, sL);
-
-                    saveConfig(pointConfiguration);
-
-                    getActivity().finish();
-                }
-            }
-        });
-
-
-        return v;
-    }
-
     private boolean validate( View v )
     {
         if(     ntW.getText().toString().isEmpty() ||
@@ -156,5 +109,50 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        View v = inflater.inflate(R.layout.fragment_config_points, container, false );
+
+        ntW = (EditText) v.findViewById( R.id.et_nt_w );
+        ntD = (EditText) v.findViewById( R.id.et_nt_d );
+        ntL = (EditText) v.findViewById( R.id.et_nt_l );
+
+        otW = (EditText) v.findViewById( R.id.et_ot_w );
+        otD = (EditText) v.findViewById( R.id.et_ot_d );
+        otL = (EditText) v.findViewById( R.id.et_ot_l );
+
+        soW = (EditText) v.findViewById( R.id.et_so_w );
+        soL = (EditText) v.findViewById( R.id.et_so_l );
+
+        fab = (FloatingActionButton) v.findViewById( R.id.fab_save );
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isDataSourceWorking() && validate(v)) {
+                    Long nW = Long.valueOf(ntW.getText().toString());
+                    Long nD = Long.valueOf(ntD.getText().toString());
+                    Long nL = Long.valueOf(ntL.getText().toString());
+
+                    Long oW = Long.valueOf(otW.getText().toString());
+                    Long oD = Long.valueOf(otD.getText().toString());
+                    Long oL = Long.valueOf(otL.getText().toString());
+
+                    Long sW = Long.valueOf(soW.getText().toString());
+                    Long sL = Long.valueOf(soL.getText().toString());
+
+                    PointConfiguration pointConfiguration = new PointConfiguration(nW, nD, nL, oW, oD, oL, sW, sL);
+
+                    saveConfig(pointConfiguration);
+
+                    getActivity().finish();
+                }
+            }
+        });
+
+
+        return v;
     }
 }

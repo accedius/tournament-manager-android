@@ -3,7 +3,6 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,21 +48,6 @@ public class PlayerDetailFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_player_detail, container, false);
-
-        name = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_name);
-        email  = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_email);
-        note = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_note);
-
-        if( getArguments() != null )
-            playerID = getArguments().getLong(PLAYER_KEY);
-
-        return v;
-    }
-
     @Override
     protected void bindDataOnView(Intent intent) {
         Log.d("PDF", "Get parcelable at: "+PLAYER_KEY);
@@ -98,11 +82,26 @@ public class PlayerDetailFragment extends AbstractDataFragment {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter(PlayerService.ACTION_GET_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_BY_ID));
     }
 
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_player_detail, container, false);
+
+        name = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_name);
+        email  = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_email);
+        note = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.player_note);
+
+        if( getArguments() != null )
+            playerID = getArguments().getLong(PLAYER_KEY);
+
+        return v;
+    }
+
 }

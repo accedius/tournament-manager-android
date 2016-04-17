@@ -71,11 +71,8 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
 
     private Tournament tournament = null;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_new_tournament, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
@@ -89,8 +86,6 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             tournamentId = getArguments().getLong(ARG_ID, -1);
             competitionId = getArguments().getLong(ARG_COMPETIITON_ID, -1);
         }
-
-
 
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);

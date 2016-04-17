@@ -99,11 +99,8 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
      */
     protected abstract int getOKResultCode();
 
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_team_detail, container, false);
         name = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.tv_name);
         teamId = getArguments().getLong(ARG_ID, -1);

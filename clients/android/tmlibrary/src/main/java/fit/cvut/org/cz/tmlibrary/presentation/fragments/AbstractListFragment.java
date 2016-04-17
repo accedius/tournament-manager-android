@@ -39,10 +39,8 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
     protected abstract AbstractListAdapter getAdapter();
     protected abstract String getDataKey();
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         // Inflate the layout for this fragment
 
         View fragmentView = inflater.inflate(R.layout.fragment_abstract_list, container, false);

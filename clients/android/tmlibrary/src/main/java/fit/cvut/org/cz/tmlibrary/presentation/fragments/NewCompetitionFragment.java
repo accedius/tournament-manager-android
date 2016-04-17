@@ -71,12 +71,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
     private Competition competition = null;
 
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_newcompetition, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
@@ -97,9 +93,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
-
-
-
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);
         endDate.setKeyListener(null);
@@ -110,8 +103,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         type.setAdapter(adapter);
-
-
 
         //Instead we show dialog with date picker when the focus is gained
         startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -179,10 +170,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                 }
             }
         });
-
-
-
-
         return v;
     }
 

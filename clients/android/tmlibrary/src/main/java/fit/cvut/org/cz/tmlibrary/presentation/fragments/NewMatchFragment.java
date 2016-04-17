@@ -37,9 +37,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private static final String ARG_ID = "arg_id";
     private static final String ARG_TOUR_ID = "arg_tour_id";
 
-
-
-
     /**
      * Constructor for this fragment with id of competition that needs to update
      * @param id
@@ -79,10 +76,8 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
 
     private ScoredMatch ourMatch = null;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_new_match, container, false);
 
         mDate = (EditText) v.findViewById( R.id.et_date );
@@ -161,8 +156,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                 }
             }
         });
-
-
 
         return v;
     }

@@ -163,7 +163,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
         intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
         intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
-        progressInterface.showProgress();
+        progressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -182,6 +182,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
                 case StatsService.ACTION_GET_STATS_BY_COMPETITION:
                 case StatsService.ACTION_GET_STATS_BY_TOURNAMENT:
                     AgregatedStatsListFragment.super.bindDataOnView(intent);
+                    progressBar.setVisibility(View.GONE);
                     break;
                 default:break;
             }

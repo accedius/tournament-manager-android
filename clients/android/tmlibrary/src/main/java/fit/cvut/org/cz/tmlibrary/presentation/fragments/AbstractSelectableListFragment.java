@@ -70,9 +70,8 @@ public abstract class AbstractSelectableListFragment<T extends Parcelable> exten
 
     private AbstractSelectableListAdapter<T, ? extends OneActionViewHolder> adapter;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View fragmetview = inflater.inflate(R.layout.fragment_abstract_list, container, false);
 
         RecyclerView recyclerView = (RecyclerView) fragmetview.findViewById(R.id.recycler_view);

@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
  * forget to call super.OnCreate or it won't work
  *
  */
-public abstract class AbstractToolbarActivity extends AppCompatActivity implements IProgressInterface {
+public abstract class AbstractToolbarActivity extends AppCompatActivity {
 
     /**
      * This activity uses coordinator layout as top level layout in order for Toolbar
@@ -64,16 +64,6 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity implemen
 
         if (fab != null)
             topLevelLayout.addView(fab);
-    }
-
-    @Override
-    public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
     }
 }
 

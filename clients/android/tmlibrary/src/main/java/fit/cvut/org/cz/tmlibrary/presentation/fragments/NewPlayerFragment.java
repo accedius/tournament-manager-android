@@ -56,14 +56,8 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
     private FloatingActionButton fab;
     protected long PlayerId = -1;
 
-    private Player Player = null;
-
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_new_player, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
@@ -97,6 +91,8 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
 
         return v;
     }
+
+    private Player Player = null;
 
     private boolean validate(View v){
         if (name.getText().toString().isEmpty()){

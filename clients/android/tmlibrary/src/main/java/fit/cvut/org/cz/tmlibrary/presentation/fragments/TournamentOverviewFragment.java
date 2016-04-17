@@ -74,10 +74,8 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_tournament_overview, container, false);
 
         name = (TextView) v.findViewById(R.id.tour_name);
@@ -90,9 +88,6 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
         if( getArguments() != null )
             tournamentID = getArguments().getLong( TOUR_KEY );
-
-
-
 
         return v;
     }
