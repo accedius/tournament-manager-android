@@ -188,7 +188,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
             intent.putExtra(PlayerService.EXTRA_ID, tournamentID);
             getContext().startService(intent);
         }
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     public class StatsReceiver extends BroadcastReceiver
@@ -201,9 +201,11 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
             switch (action)
             {
                 case StatsService.ACTION_GET_BY_TOUR_ID:
-                case StatsService.ACTION_GET_BY_COMP_ID:
+                case StatsService.ACTION_GET_BY_COMP_ID: {
                     HockeyPlayersStatsFragment.super.bindDataOnView(intent);
+                    progressBar.setVisibility(View.GONE);
                     break;
+                }
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
                 case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
                 {

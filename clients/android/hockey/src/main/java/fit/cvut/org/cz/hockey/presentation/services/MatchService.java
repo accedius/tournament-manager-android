@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -21,8 +22,10 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TOUR_ID = "extra_tour_id";
     public static final String EXTRA_PART_LIST = "extra_participants_list";
+    public static final String EXTRA_MATCH_LIST = "extra_match_list";
 
     public static final String ACTION_FIND_BY_ID = "action_find_match_by_id";
+    public static final String ACTION_FIND_BY_TOURNAMENT_ID = "action_find_match_by_tournament_id";
     public static final String ACTION_CREATE = "action_create_match";
     public static final String ACTION_UPDATE = "action_update_match";
 
@@ -96,6 +99,18 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
+                break;
+            }
+            case ACTION_FIND_BY_TOURNAMENT_ID:
+            {
+                Intent res = new Intent(ACTION_FIND_BY_TOURNAMENT_ID);
+                //TODO remove mock
+
+                long tourId = intent.getLongExtra( EXTRA_TOUR_ID, -1 );
+                ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( this, tourId );
+                res.putParcelableArrayListExtra( EXTRA_MATCH_LIST, matches );
+
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
                 break;
             }
         }
