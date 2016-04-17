@@ -4,6 +4,19 @@
     <string name="title_activity_main">Squash Main Activity</string>
     <string name="squashpcg">Squash PCG</string>
     <string name="dateFirmat">yyyy-MM-dd</string>
+    <string name="wins">W</string>
+    <string name="loses">L</string>
+    <string name="draws">D</string>
+    <string name="winsPer">W%</string>
+    <string name="setsWon">SW</string>
+    <string name="setsLost">SL</string>
+    <string name="setsWonAvg">SW AVG</string>
+    <string name="setsLostAvg">SL AVG</string>
+    <string name="setsPer">S%</string>
+    <string name="ballsWon">BW</string>
+    <string name="ballsLost">BL</string>
+    <string name="ballsWonAvg">BW AVG</string>
+    <string name="ballsLostAvg">BL AVG</string>
 
     <string name="package_name">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
