@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class HockeyDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMHockey.db";
-    private static final int DBVersion = 15;
+    private static final int DBVersion = 16;
 
     public HockeyDBHelper(Context context) {
         super(context, DBName, null, DBVersion);

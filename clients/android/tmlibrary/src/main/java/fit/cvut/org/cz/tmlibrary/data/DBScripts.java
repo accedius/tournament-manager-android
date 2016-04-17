@@ -66,6 +66,7 @@ public class DBScripts {
     public static final String CREATE_TABLE_PARTICIPANTS = "create table " + DBConstants.tPARTICIPANTS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cTEAM_ID + " INTEGER, "
+            + DBConstants.cROLE + " TEXT, "
             + DBConstants.cMATCH_ID + " INTEGER NOT NULL, "
             + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ) "
             + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
