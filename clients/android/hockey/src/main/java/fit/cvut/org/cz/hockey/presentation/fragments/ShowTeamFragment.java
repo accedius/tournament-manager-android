@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.TeamService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
@@ -28,13 +32,18 @@ public class ShowTeamFragment extends TeamDetailFragment {
 
     @Override
     protected void updatePlayers(Team t) {
-        //TODO
+        Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_UPDATE_TEAM_PLAYERS, getContext() );
+        intent.putExtra( PlayerService.EXTRA_ID, t.getId() );
+        intent.putExtra(PlayerService.EXTRA_PLAYERS, t.getPlayers());
+
+        getContext().startService( intent );
     }
 
     @Override
     protected Intent getSelectActivityStartIntent(Team t) {
-        //TODO
-        return null;
+        Intent intent =  AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getTournamentId());
+        intent.putParcelableArrayListExtra(SelectableListActivity.EXTRA_OMIT_DATA, t.getPlayers());
+        return intent;
     }
 
     @Override

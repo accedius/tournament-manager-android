@@ -63,8 +63,10 @@ public class TeamService extends AbstractIntentServiceWProgress {
             {
                 long id = intent.getLongExtra( EXTRA_ID, -1 );
                 Team t = ManagerFactory.getInstance().teamManager.getById(this, id);
+                t.setPlayers( ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam( this, t.getId() ) );
                 Intent res = new Intent( ACTION_GET_BY_ID );
-                res.putExtra( EXTRA_TEAM, t );
+                res.putExtra(EXTRA_TEAM, t);
+
 
                 LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
 

@@ -26,6 +26,9 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_ADD_PLAYERS_TO_COMPETITION = "action_add_players_to_competition";
     public static final String ACTION_ADD_PLAYERS_TO_TOURNAMENT = "action_add_players_to_tournament";
 
+    public static final String ACTION_GET_PLAYERS_NOT_IN_TEAMS = "action_get_players_not_in_teams";
+    public static final String ACTION_UPDATE_TEAM_PLAYERS = "action_update_team_players";
+
     public PlayerService() {
         super("Hockey Player Service");
     }
@@ -98,6 +101,26 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                     ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, p.getId(), id);
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+
+                break;
+            }
+            case ACTION_GET_PLAYERS_NOT_IN_TEAMS:
+            {
+                Intent result = new Intent(action);
+                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInTeams( this, intent.getLongExtra(EXTRA_ID, -1));
+
+                result.putParcelableArrayListExtra( EXTRA_PLAYERS, players );
+                result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
+
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( result );
+
+                break;
+            }
+            case ACTION_UPDATE_TEAM_PLAYERS:
+            {
+                long id = intent.getLongExtra( EXTRA_ID, -1 );
+                ArrayList<Player> players = intent.getParcelableArrayListExtra( EXTRA_PLAYERS );
+                ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam( this, id, players );
 
                 break;
             }

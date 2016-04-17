@@ -56,7 +56,14 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToTeam(Context context, long playerId, long teamId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
+        ContentValues values = new ContentValues();
+        values.put( DBConstants.cTEAM_ID, teamId );
+        values.put( DBConstants.cPLAYER_ID, playerId);
+
+        Long newRowId;
+        newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
     }
 
     @Override
@@ -76,7 +83,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deleteAllPlayersFromTeam(Context context, long teamId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
+        String where = String.format( "%s = ?", DBConstants.cTEAM_ID );
+        String[] projection = new String[]{ Long.toString( teamId ) };
+        db.delete(DBConstants.tPLAYERS_IN_TEAM, where, projection);
     }
 
     @Override
@@ -122,7 +133,22 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId) {
-        return null;
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        String[] selArgs = { String.valueOf( teamId ) };
+        Cursor cursor = db.query(DBConstants.tPLAYERS_IN_TEAM, null, DBConstants.cTEAM_ID + "=?", selArgs, null, null, null);
+
+        ArrayList<Long> res = new ArrayList<>();
+
+        while (cursor.moveToNext())
+        {
+            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+        }
+
+        cursor.close();
+
+        return res;
+
     }
 
     @Override

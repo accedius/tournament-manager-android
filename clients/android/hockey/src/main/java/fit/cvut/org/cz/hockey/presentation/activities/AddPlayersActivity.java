@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -34,7 +36,9 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
     protected AbstractSelectableListFragment<Player> getListFragment() {
 
         int option = getIntent().getIntExtra( ARG_OPTION, -1 );
-        long id = getIntent().getLongExtra( ARG_ID, -1 );
+        long id = getIntent().getLongExtra(ARG_ID, -1);
+        ArrayList<Player> players = getIntent().getParcelableArrayListExtra( EXTRA_OMIT_DATA );
+        if( players != null ) return AddPlayersFragment.newInstance( option, id, players );
 
         return AddPlayersFragment.newInstance(option, id);
     }

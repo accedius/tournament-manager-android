@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
@@ -47,7 +48,9 @@ public class TeamManager implements ITeamManager {
 
         for( DTeam i : dts )
         {
-            ts.add( new Team( i ) );
+            Team t = new Team(i);
+            t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, t.getId()));
+            ts.add(t);
         }
 
         return ts;

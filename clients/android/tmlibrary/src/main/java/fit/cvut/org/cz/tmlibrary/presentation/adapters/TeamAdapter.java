@@ -30,6 +30,7 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
         holder.teamName.setText(t.getName());
         if (t.getPlayers().size() > 0){
             holder.playerNames.setVisibility(View.VISIBLE);
+            holder.playerNames.setText( "" );
             holder.playerNames.append(t.getPlayers().get(0).getName());
             for (int i = 1; i<t.getPlayers().size();i++)
                 holder.playerNames.append(String.format(", %s", t.getPlayers().get(i).getName()));

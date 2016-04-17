@@ -8,9 +8,11 @@ import java.util.Map;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
@@ -80,7 +82,15 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersByTeam(Context context, long teamId) {
-        return null;
+        ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
+        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        ArrayList<Player> res = new ArrayList<>();
+        for (Long pId : playerIds) {
+            res.add( new Player(allPlayers.get( pId )) );
+        }
+
+        return res;
+
     }
 
     @Override
@@ -121,12 +131,24 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public void updatePlayersInTeam(Context context, long teamId, ArrayList<Player> players) {
+        DAOFactory.getInstance().packagePlayerDAO.deleteAllPlayersFromTeam(context, teamId);
+
+        for( Player pl : players )
+            DAOFactory.getInstance().packagePlayerDAO.addPlayerToTeam( context, pl.getId(), teamId );
 
     }
 
     @Override
     public ArrayList<Player> getPlayersNotInTeams(Context context, long tournamentId) {
-        return null;
+
+        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( context, tournamentId );
+        ArrayList<Player> players = getPlayersByTournament( context, tournamentId );
+
+        for (Team t : teams)
+            for (Player p : t.getPlayers())
+                players.remove(p);
+
+        return players;
     }
 }
 
