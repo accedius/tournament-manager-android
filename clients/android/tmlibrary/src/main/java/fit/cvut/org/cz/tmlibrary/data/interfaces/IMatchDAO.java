@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
@@ -16,5 +17,7 @@ public interface IMatchDAO {
     void delete(Context context, long id);
 
     ArrayList<DMatch> getByTournamentId( Context context, long tournamentId );
+
+    ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );
 
 }

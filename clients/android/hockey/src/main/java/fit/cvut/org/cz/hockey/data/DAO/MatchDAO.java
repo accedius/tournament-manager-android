@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 
 /**
@@ -28,6 +29,11 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
         return null;
     }
 }
