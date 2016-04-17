@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
+import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment;
@@ -25,6 +26,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     private static String HEADER_OVERVIEW_TOURNAMENT = "Overview";
     private static String HEADER_STANDINGS_TOURNAMENT = "Players";
+    private static String HEADER_TEAMS_TOURNAMENT = "Teams";
     public static final String TOUR_ID = "tournament_id";
 
     private long tournamentID;
@@ -38,11 +40,12 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
         //tournamentID = 1;
 
-        titles = new String[]{ HEADER_OVERVIEW_TOURNAMENT, HEADER_STANDINGS_TOURNAMENT };
+        titles = new String[]{ HEADER_OVERVIEW_TOURNAMENT, HEADER_STANDINGS_TOURNAMENT, HEADER_TEAMS_TOURNAMENT };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );
         Fragment f2 = AgregStatsTitleFragment.newInstance( tournamentID, false );
         //Fragment f2 = NewMatchFragment.newInstance( tournamentID, true, NewHockeyMatchFragment.class );
-        fragments = new Fragment[]{ f1, f2 };
+        Fragment f3 = HockeyTeamsListFragment.newInstance( tournamentID );
+        fragments = new Fragment[]{ f1, f2, f3 };
 
         super.onCreate(savedInstanceState);
 

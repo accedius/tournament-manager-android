@@ -38,6 +38,11 @@
             android:label="Add Players"
             android:exported="true">
         </activity>
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowTeamActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Team"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="fit.cvut.org.cz.hockey.data.CompetitionCP"
@@ -54,6 +59,8 @@
         <service android:name=".presentation.services.MatchService"
             />
         <service android:name=".presentation.services.PlayerService"
+            />
+        <service android:name=".presentation.services.TeamService"
             />
 
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>

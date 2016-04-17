@@ -188,8 +188,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
             intent.putExtra(PlayerService.EXTRA_ID, tournamentID);
             getContext().startService(intent);
         }
-        if( progressInterface != null )
-            progressInterface.showProgress();
+
     }
 
     public class StatsReceiver extends BroadcastReceiver
