@@ -5,8 +5,10 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Map;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
@@ -107,16 +109,14 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
-        ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTournament(context, tournamentId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
-        ArrayList<Player> res = new ArrayList<>();
-        for (Long pId : playerIds) {
-            allPlayers.remove(pId);
-        }
-        for (Map.Entry<Long, DPlayer> entry : allPlayers.entrySet()) {
-            res.add(new Player(entry.getValue()));
-        }
-        return res;
+        Tournament t = ManagerFactory.getInstance().tournamentManager.getById( context, tournamentId );
+
+        ArrayList<Player> compPlayer = getPlayersByCompetition(context, t.getCompetitionId());
+        ArrayList<Player> tourPlayer = getPlayersByTournament( context, tournamentId );
+
+        for( Player p : tourPlayer ) compPlayer.remove( p );
+
+        return compPlayer;
     }
 
     @Override

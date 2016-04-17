@@ -31,6 +31,11 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
     private long tournamentID;
     private static String ARG_COMP_ID = "competition_id";
     private static String ARG_TOUR_ID = "tournament_id";
+    public static final String SAVE_COMP_ID = "SAVE_COMP_ID";
+    public static final String SAVE_TOUR_ID = "SAVE_TOUR_ID";
+    public static final String SAVE_SEND = "SAVE_SEND";
+
+    private boolean sendForData = true;
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
@@ -46,10 +51,23 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
         return fragment;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVE_SEND, sendForData);
+        outState.putLong(SAVE_COMP_ID, competitionID);
+        outState.putLong(SAVE_TOUR_ID, tournamentID);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null){
+            tournamentID = savedInstanceState.getLong(SAVE_TOUR_ID);
+            competitionID = savedInstanceState.getLong(SAVE_COMP_ID);
+            sendForData = savedInstanceState.getBoolean(SAVE_SEND);
+        }
 
         if( getArguments() != null ) {
             competitionID = getArguments().getLong(ARG_COMP_ID, -1);
@@ -70,6 +88,8 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
 
     @Override
     protected void askForData() {
+        if( !sendForData ) return;
+
         Intent intent;
         if( competitionID != -1 ) {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_COMP_ID, getContext());
@@ -126,6 +146,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
                                        int requestCode;
                                        int option;
                                        long id;
+                                       sendForData = false;
                                        if (competitionID != -1) {
                                            option = AddPlayersFragment.OPTION_COMPETITION;
                                            id = competitionID;
@@ -149,7 +170,11 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != SelectableListActivity.RESULT_OK) return;
+        if (resultCode != SelectableListActivity.RESULT_OK){
+            sendForData = true;
+            askForData();
+            return;
+        }
 
         if( competitionID != -1 ) {
             Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
@@ -173,35 +198,21 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            String getAction;
-            String addAction;
-
-            if( competitionID != -1 ) {
-                getAction = StatsService.ACTION_GET_BY_COMP_ID;
-                addAction = PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION;
-            }
-            else {
-                getAction = StatsService.ACTION_GET_BY_TOUR_ID;
-                addAction = PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT;
-            }
 
             switch (action)
             {
                 case StatsService.ACTION_GET_BY_TOUR_ID:
                 case StatsService.ACTION_GET_BY_COMP_ID:
                     HockeyPlayersStatsFragment.super.bindDataOnView(intent);
-                    if (!PlayerService.isWorking(addAction) && !StatsService.isWorking(getAction) && progressInterface != null)
-                        progressInterface.hideProgress();
                     break;
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
                 case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
                 {
-                    //TODO opravit refresh
-//                    Intent startIntent = StatsService.newStartIntent(getAction, getContext());
-//                    getContext().startService(startIntent);
+                    sendForData = true;
+                    askForData();
                     break;
                 }
-
+                default: break;
 
             }
         }
