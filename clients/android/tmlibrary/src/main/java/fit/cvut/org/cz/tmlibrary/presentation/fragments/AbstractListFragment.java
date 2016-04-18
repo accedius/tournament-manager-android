@@ -31,6 +31,7 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 
     private AbstractListAdapter adapter;
     protected RecyclerView recyclerView;
+    protected FloatingActionButton fab = null;
 
     public AbstractListFragment() {
         // Required empty public constructor
@@ -54,6 +55,8 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 
         final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
         if (fab != null){
+            this.fab = fab;
+            fab.hide();
             ((ViewGroup) fragmentView).addView(fab);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -73,6 +76,18 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
     }
 
     protected FloatingActionButton getFAB(ViewGroup parent){return null;}
+
+    @Override
+    protected void customOnResume() {
+        if (fab != null) fab.show();
+        super.customOnResume();
+    }
+
+    @Override
+    protected void customOnPause() {
+        if (fab != null) fab.hide();
+        super.customOnPause();
+    }
 
     @Override
     protected void bindDataOnView(Intent intent) {

@@ -17,6 +17,8 @@
     <string name="ballsLost">BL</string>
     <string name="ballsWonAvg">BW AVG</string>
     <string name="ballsLostAvg">BL AVG</string>
+    <string name="score">Score</string>
+    <string name="points">Points</string>
 
     <string name="package_name">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>

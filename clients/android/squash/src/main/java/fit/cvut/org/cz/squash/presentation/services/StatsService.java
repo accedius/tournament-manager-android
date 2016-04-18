@@ -22,6 +22,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
     public static final String ACTION_GET_STATS_BY_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.get_stats_by_competition";
     public static final String ACTION_GET_STATS_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_stats_by_tournament";
+    public static final String ACTION_GET_STANDINGS = "fit.cvut.org.cz.squash.presentation.services.get_standings";
 
     @Override
     protected String getActionKey() {
@@ -51,6 +52,13 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_STATS_BY_TOURNAMENT:{
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_STATS, ManagersFactory.getInstance().statsManager.getAgregatedStatsByTournamentId(this, intent.getLongExtra(EXTRA_ID, -1)));
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_STANDINGS:{
+                Intent result = new Intent(action);
+                result.putExtra(EXTRA_STATS, ManagersFactory.getInstance().statsManager.getStandingsByTournament(this, intent.getLongExtra(EXTRA_ID, -1)));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
