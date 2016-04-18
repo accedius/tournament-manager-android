@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -133,5 +134,36 @@ public class CursorParser {
                 cursor.getLong(cursor.getColumnIndex(DBConstants.cID)),
                 cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID)),
                 cursor.getString(cursor.getColumnIndex(DBConstants.cNAME)), etag, uid, lastModified, lastSynchronized);
+    }
+
+    public DMatch parseDMatch( Cursor cursor )
+    {
+        long id, tournamentId;
+        int period, round;
+        String uid, name, note, etag;
+        Date date = null;
+        Date lastModified = null;
+        Date lastSynchronized = null;
+
+        id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
+        uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
+        period = cursor.getInt(cursor.getColumnIndex(DBConstants.cPERIOD));
+        round = cursor.getInt(cursor.getColumnIndex(DBConstants.cROUND));
+
+        try {
+            if (cursor.getString(cursor.getColumnIndex(DBConstants.cDATE)) != null)
+                date = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cDATE)));
+            if (cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null)
+                lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
+
+        return new DMatch(id, tournamentId, period, round, date, etag, uid, lastModified, lastSynchronized);
     }
 }

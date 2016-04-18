@@ -27,7 +27,7 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public void delete(Context context, long id) {
-        //TODO odstranit shity pod competitionem
+        //TODO chytit vyjimku z databaze kdyz chci mazat competition pod kterou neco je
         DAOFactory.getInstance().competitionDAO.delete( context, id );
     }
 

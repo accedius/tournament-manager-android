@@ -21,8 +21,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class ShowCompetitionActivity extends AbstractTabActivity {
-    //TODO Zjistit jak to je s manifestem u týhle aktivity
-    //Ani nevim, proč tu tyhle mám, zatim jsou stejně jen na jednom místě... ale může se to hodit
     private static String HEADER_OVERVIEW_COMPETITION = "Overview";
     private static String HEADER_TOURNAMENTS_LIST = "Tournaments";
     private static String HEADER_COMPETITION_STANDINGS = "Players";
