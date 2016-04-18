@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
@@ -42,5 +44,36 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public ScoredMatch getById(Context context, long Id) {
         return null;
+    }
+
+    @Override
+    public void insert(Context context, ScoredMatch match) {
+        DMatch dMatch = new DMatch();
+        dMatch.setDate(match.getDate());
+        dMatch.setPeriod(match.getPeriod());
+        dMatch.setRound(match.getRound());
+        dMatch.setTournamentId(match.getTournamentId());
+        long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
+
+        //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id
+        DParticipant homeParticipant = new DParticipant( -1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString() );
+        homeParticipant.setPlayerIds( match.getHomeIds() );
+        DParticipant awayParticipant = new DParticipant( -1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString() );
+        awayParticipant.setPlayerIds( match.getAwayIds() );
+
+        DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
+        DAOFactory.getInstance().participantDAO.insert( context, awayParticipant);
+
+
+    }
+
+    @Override
+    public void update(Context context, ScoredMatch match) {
+
+    }
+
+    @Override
+    public void delete(Context context, long id) {
+
     }
 }

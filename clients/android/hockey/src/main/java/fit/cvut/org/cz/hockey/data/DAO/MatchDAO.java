@@ -32,20 +32,22 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cPERIOD, match.getPeriod());
         if ( match.getDate() != null )
             cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+        if ( match.getLastSynchronized() != null )
+            cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
         cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(new Date()));
-        cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(new Date()));
 
         return cv;
     }
 
     @Override
-    public void insert(Context context, DMatch match) {
+    public long insert(Context context, DMatch match) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         ContentValues values = toContVal( match );
 
         long newRowId;
         newRowId = db.insert(DBConstants.tMATCHES, null, values);
+        return newRowId;
     }
 
     @Override
@@ -84,7 +86,7 @@ public class MatchDAO implements IMatchDAO {
 
         while (cursor.moveToNext())
         {
-            res.add( CursorParser.getInstance().parseDMatch( cursor ));
+            res.add( CursorParser.getInstance().parseDMatch(cursor));
         }
 
         cursor.close();
@@ -95,5 +97,20 @@ public class MatchDAO implements IMatchDAO {
     @Override
     public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
         return null;
+    }
+
+    @Override
+    public DMatch getById(Context context, long id) {
+        String[] selArgs = { String.valueOf( id ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        Cursor cursor = db.query( DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null );
+        cursor.moveToFirst();
+        if( cursor.getCount() <= 0 )
+            return null;
+        DMatch res = CursorParser.getInstance().parseDMatch( cursor );
+
+        cursor.close();
+
+        return res;
     }
 }

@@ -13,4 +13,8 @@ public interface IScoredMatchManager {
 
     ArrayList<ScoredMatch> getByTournamentId(Context context, long tournamentId);
     ScoredMatch getById(Context context, long Id);
+
+    void insert( Context context, ScoredMatch match);
+    void update( Context context, ScoredMatch match );
+    void delete( Context context, long id);
 }

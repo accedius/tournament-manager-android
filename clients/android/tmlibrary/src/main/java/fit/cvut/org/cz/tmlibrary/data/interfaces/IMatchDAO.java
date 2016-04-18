@@ -12,12 +12,14 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
  */
 public interface IMatchDAO {
 
-    void insert(Context context, DMatch match);
+    long insert(Context context, DMatch match);
     void update(Context context, DMatch match);
     void delete(Context context, long id);
 
     ArrayList<DMatch> getByTournamentId( Context context, long tournamentId );
 
     ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );
+
+    DMatch getById( Context context, long id );
 
 }

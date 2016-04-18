@@ -19,7 +19,7 @@ public class ScoredMatch extends ShareBase {
     private CompetitionType type;
     private Date date;
     private boolean played;
-    private ArrayList<Long> winnersIds, lossersIds;
+    private ArrayList<Long> homeIds, awayIds;
     private int period, round;
     private int homeScore, awayScore;
     private String note, homeName, awayName;
@@ -54,12 +54,12 @@ public class ScoredMatch extends ShareBase {
         else type = CompetitionType.valueOf(sType);
 
         long[] winners = in.createLongArray();
-        winnersIds = new ArrayList<>();
-        for (long winner : winners) winnersIds.add(winner);
+        homeIds = new ArrayList<>();
+        for (long winner : winners) homeIds.add(winner);
 
         long[] losers = in.createLongArray();
-        lossersIds = new ArrayList<>();
-        for (long loser : losers) lossersIds.add(loser);
+        awayIds = new ArrayList<>();
+        for (long loser : losers) awayIds.add(loser);
 
         try{
             String text = in.readString();
@@ -115,16 +115,16 @@ public class ScoredMatch extends ShareBase {
         else dest.writeString(type.toString());
 
         long[] winnersArray;
-        if( winnersIds != null ) {
-            winnersArray = new long[winnersIds.size()];
-            for (int i =0; i<winnersIds.size();i++) winnersArray[i] = winnersIds.get(i);
+        if( homeIds != null ) {
+            winnersArray = new long[homeIds.size()];
+            for (int i =0; i<homeIds.size();i++) winnersArray[i] = homeIds.get(i);
         } else winnersArray = new long[0];
         dest.writeLongArray(winnersArray);
 
         long[] losersArray;
-        if( lossersIds != null ) {
-            losersArray = new long[lossersIds.size()];
-            for (int i = 0; i < lossersIds.size(); i++) losersArray[i] = lossersIds.get(i);
+        if( awayIds != null ) {
+            losersArray = new long[awayIds.size()];
+            for (int i = 0; i < awayIds.size(); i++) losersArray[i] = awayIds.get(i);
         } else losersArray = new long[0];
         dest.writeLongArray(losersArray);
 
@@ -192,20 +192,20 @@ public class ScoredMatch extends ShareBase {
         this.played = played;
     }
 
-    public ArrayList<Long> getWinnersIds() {
-        return winnersIds;
+    public ArrayList<Long> getHomeIds() {
+        return homeIds;
     }
 
-    public void setWinnersIds(ArrayList<Long> winnersIds) {
-        this.winnersIds = winnersIds;
+    public void setHomeIds(ArrayList<Long> winnersIds) {
+        this.homeIds = winnersIds;
     }
 
-    public ArrayList<Long> getLossersIds() {
-        return lossersIds;
+    public ArrayList<Long> getAwayIds() {
+        return awayIds;
     }
 
-    public void setLossersIds(ArrayList<Long> lossersIds) {
-        this.lossersIds = lossersIds;
+    public void setAwayIds(ArrayList<Long> lossersIds) {
+        this.awayIds = lossersIds;
     }
 
     public int getPeriod() {
