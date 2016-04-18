@@ -38,6 +38,9 @@ public class Player extends ShareBase implements Parcelable {
             String text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = dateFormat.parse(text);
+            text = in.readString();
+            if (text == null) lastSynchronized = null;
+            else lastSynchronized = dateFormat.parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -78,12 +81,13 @@ public class Player extends ShareBase implements Parcelable {
         this.uid = p.getUid();
         this.etag = p.getEtag();
         this.lastModified = p.getLastModified();
+        this.lastSynchronized = p.getLastSynchronized();
     }
 
     public static DPlayer convertToDPlayer(Player p){
 
         return new DPlayer(p.getId(), p.getName(), p.getEmail(),p.getNote(),
-                p.getEtag(), p.getUid(), p.getLastModified());
+                p.getEtag(), p.getUid(), p.getLastModified(), p.getLastSynchronized());
     }
 
     public static final Creator<Player> CREATOR = new Creator<Player>() {
@@ -113,6 +117,8 @@ public class Player extends ShareBase implements Parcelable {
         //shared base parcelable
         if (lastModified == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(lastModified));
+        if (lastSynchronized == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
     }

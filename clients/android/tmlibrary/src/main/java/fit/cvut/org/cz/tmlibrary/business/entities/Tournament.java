@@ -26,7 +26,7 @@ public class Tournament extends ShareBase implements Parcelable {
     public static DTournament convertToDTournament(Tournament c){
 
         return new DTournament(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified(), c.getCompetitionId());
+                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized(), c.getCompetitionId());
     }
 
     public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note) {
@@ -59,6 +59,7 @@ public class Tournament extends ShareBase implements Parcelable {
         this.uid = c.getUid();
         this.etag = c.getEtag();
         this.lastModified = c.getLastModified();
+        this.lastSynchronized = c.getLastSynchronized();
     }
 
     protected Tournament(Parcel in) {
@@ -78,6 +79,10 @@ public class Tournament extends ShareBase implements Parcelable {
             text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = dateFormat.parse(text);
+
+            text = in.readString();
+            if (text == null) lastSynchronized = null;
+            else lastSynchronized = dateFormat.parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -100,6 +105,8 @@ public class Tournament extends ShareBase implements Parcelable {
         //shared base parcelable
         if (lastModified == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(lastModified));
+        if (lastSynchronized == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
         dest.writeLong(competitionId);

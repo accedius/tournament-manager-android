@@ -3,14 +3,16 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class Team implements Parcelable {
+public class Team extends ShareBase implements Parcelable {
 
     private long id;
     private long tournamentId;
@@ -29,6 +31,10 @@ public class Team implements Parcelable {
         tournamentId = dTeam.getTournamentId();
         name = dTeam.getName();
         players = new ArrayList<>();
+        this.uid = dTeam.getUid();
+        this.etag = dTeam.getEtag();
+        this.lastModified = dTeam.getLastModified();
+        this.lastSynchronized = dTeam.getLastSynchronized();
     }
 
     protected Team(Parcel in) {
@@ -36,6 +42,19 @@ public class Team implements Parcelable {
         name = in.readString();
         players = in.createTypedArrayList(Player.CREATOR);
         tournamentId = in.readLong();
+        try{
+            String text = in.readString();
+            if (text == null) lastModified = null;
+            else lastModified = DateFormatFactory.getInstance().getDateFormat().parse(text);
+            text = in.readString();
+            if (text == null) lastSynchronized = null;
+            else lastSynchronized = DateFormatFactory.getInstance().getDateFormat().parse(text);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        uid = in.readString();
+        etag = in.readString();
     }
 
     public static final Creator<Team> CREATOR = new Creator<Team>() {
@@ -50,6 +69,7 @@ public class Team implements Parcelable {
         }
     };
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -61,6 +81,12 @@ public class Team implements Parcelable {
         dest.writeString(name);
         dest.writeTypedList(players);
         dest.writeLong(tournamentId);
+        if (lastModified == null) dest.writeString(null);
+        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastModified));
+        if (lastSynchronized == null) dest.writeString(null);
+        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastSynchronized));
+        dest.writeString(uid);
+        dest.writeString(etag);
     }
 
     public long getId() {
@@ -96,6 +122,6 @@ public class Team implements Parcelable {
     }
 
     public static DTeam convertToDTeam(Team t){
-        return new DTeam(t.getId(), t.getTournamentId(), t.getName());
+        return new DTeam(t.getId(), t.getTournamentId(), t.getName(), t.getEtag(), t.getUid(), t.getLastModified(), t.getLastSynchronized());
     }
 }

@@ -65,6 +65,9 @@ public class ScoredMatch extends ShareBase {
             String text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = DateFormatFactory.getInstance().getDateFormat().parse(text);
+            text = in.readString();
+            if (text == null) lastSynchronized = null;
+            else lastSynchronized = DateFormatFactory.getInstance().getDateFormat().parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -127,6 +130,8 @@ public class ScoredMatch extends ShareBase {
 
         if (lastModified == null) dest.writeString(null);
         else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastModified));
+        if (lastSynchronized == null) dest.writeString(null);
+        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
     }

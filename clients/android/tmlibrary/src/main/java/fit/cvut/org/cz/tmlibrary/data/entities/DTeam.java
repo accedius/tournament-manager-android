@@ -4,13 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-public class DTeam {
+public class DTeam extends DShareBase {
 
     private long id;
     private long tournamentId;
@@ -20,6 +21,16 @@ public class DTeam {
         this.id = id;
         this.tournamentId = tournamentId;
         this.name = name;
+    }
+
+    public DTeam(long id, long tournamentId, String name, String etag, String uid, Date lastModified, Date lastSynchronized) {
+        this.id = id;
+        this.tournamentId = tournamentId;
+        this.name = name;
+        this.uid = uid;
+        this.etag = etag;
+        this.lastModified = lastModified;
+        this.lastSynchronized = lastSynchronized;
     }
 
     public long getId() {

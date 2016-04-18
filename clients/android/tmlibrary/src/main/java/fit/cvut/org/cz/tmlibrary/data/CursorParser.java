@@ -30,6 +30,7 @@ public class CursorParser {
         Date startDate = null;
         Date endDate = null;
         Date lastModified = null;
+        Date lastSynchronized = null;
 
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
@@ -42,6 +43,8 @@ public class CursorParser {
                 endDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cEND)));
             if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null )
                 lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -50,13 +53,14 @@ public class CursorParser {
         type = cursor.getString(cursor.getColumnIndex(DBConstants.cTYPE));
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DCompetition(id, name, startDate, endDate, note, type, etag, uid, lastModified);
+        return new DCompetition(id, name, startDate, endDate, note, type, etag, uid, lastModified, lastSynchronized);
     }
 
     public DPlayer parseDPlayer(Cursor cursor) {
         long id;
         String uid, name, email, note, etag;
         Date lastModified = null;
+        Date lastSynchronized = null;
 
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
@@ -64,8 +68,16 @@ public class CursorParser {
         email = cursor.getString(cursor.getColumnIndex(DBConstants.cEMAIL));
         note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
+        try {
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null )
+                lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        return new DPlayer(id, name, email, note, etag, uid, lastModified);
+        return new DPlayer(id, name, email, note, etag, uid, lastModified, lastSynchronized);
     }
 
     public DTournament parseDTournament(Cursor cursor) {
@@ -74,6 +86,7 @@ public class CursorParser {
         Date startDate = null;
         Date endDate = null;
         Date lastModified = null;
+        Date lastSynchronized = null;
 
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
@@ -87,6 +100,8 @@ public class CursorParser {
                 endDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cEND)));
             if (cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null)
                 lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -94,13 +109,29 @@ public class CursorParser {
         note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DTournament(id, name, startDate, endDate, note, etag, uid, lastModified, competitionId);
+        return new DTournament(id, name, startDate, endDate, note, etag, uid, lastModified, lastSynchronized, competitionId);
     }
 
-    public DTeam parseDTeam(Cursor c){
+    public DTeam parseDTeam(Cursor cursor){
+
+        String uid, etag;
+        Date lastModified = null;
+        Date lastSynchronized = null;
+
+        uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        try {
+            if (cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null)
+                lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
+
         return new DTeam(
-                c.getLong(c.getColumnIndex(DBConstants.cID)),
-                c.getLong(c.getColumnIndex(DBConstants.cTOURNAMENT_ID)),
-                c.getString(c.getColumnIndex(DBConstants.cNAME)));
+                cursor.getLong(cursor.getColumnIndex(DBConstants.cID)),
+                cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID)),
+                cursor.getString(cursor.getColumnIndex(DBConstants.cNAME)), etag, uid, lastModified, lastSynchronized);
     }
 }

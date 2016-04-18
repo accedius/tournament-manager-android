@@ -29,7 +29,7 @@ public class Competition extends ShareBase implements Parcelable {
     public static DCompetition convertToDCompetition(Competition c){
 
         return new DCompetition(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getType().toString(), c.getEtag(), c.getUid(), c.getLastModified());
+                c.getEndDate(), c.getNote(), c.getType().toString(), c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized());
     }
 
 
@@ -64,6 +64,7 @@ public class Competition extends ShareBase implements Parcelable {
         this.uid = c.getUid();
         this.etag = c.getEtag();
         this.lastModified = c.getLastModified();
+        this.lastSynchronized = c.getLastSynchronized();
     }
 
     public Competition(Cursor cursor)  {
@@ -104,6 +105,10 @@ public class Competition extends ShareBase implements Parcelable {
             text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = dateFormat.parse(text);
+
+            text = in.readString();
+            if (text == null) lastSynchronized = null;
+            else lastSynchronized = dateFormat.parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -126,6 +131,8 @@ public class Competition extends ShareBase implements Parcelable {
         //shared base parcelable
         if (lastModified == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(lastModified));
+        if (lastSynchronized == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
     }

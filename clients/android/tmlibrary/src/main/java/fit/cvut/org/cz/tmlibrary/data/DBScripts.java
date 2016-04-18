@@ -5,12 +5,12 @@ package fit.cvut.org.cz.tmlibrary.data;
  */
 public class DBScripts {
     public static final String CREATE_TABLE_PLAYERS =
-            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
-                    DBConstants.tPLAYERS, DBConstants.cID, DBConstants.cNAME, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED);
+            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+                    DBConstants.tPLAYERS, DBConstants.cID, DBConstants.cNAME, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED, DBConstants.cLASTSYNCHRONIZED);
 
     public static final String CREATE_TABLE_COMPETITIONS =
-            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
-                    DBConstants.tCOMPETITIONS, DBConstants.cID, DBConstants.cNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED);
+            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+                    DBConstants.tCOMPETITIONS, DBConstants.cID, DBConstants.cNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED, DBConstants.cLASTSYNCHRONIZED);
 
 
 
@@ -24,6 +24,7 @@ public class DBScripts {
             + DBConstants.cUID + " TEXT, "
             + DBConstants.cETAG + " TEXT, "
             + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
             + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
 
@@ -43,6 +44,10 @@ public class DBScripts {
 
     public static final String CREATE_TABLE_TEAMS = "create table " + DBConstants.tTEAMS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cNAME + " TEXT NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
@@ -58,6 +63,7 @@ public class DBScripts {
             + DBConstants.cUID + " TEXT, "
             + DBConstants.cETAG + " TEXT, "
             + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cDATE + " TEXT, "
             + DBConstants.cROUND + " INTEGER NOT NULL, "
             + DBConstants.cPERIOD + " INTEGER NOT NULL, "
@@ -66,33 +72,34 @@ public class DBScripts {
 
     public static final String CREATE_TABLE_PARTICIPANTS = "create table " + DBConstants.tPARTICIPANTS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cTEAM_ID + " INTEGER, "
             + DBConstants.cROLE + " TEXT, "
             + DBConstants.cMATCH_ID + " INTEGER NOT NULL, "
             + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ) "
             + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
 
-    public static final String CREATE_TABLE_PLAYER_IN_PARTICIPANT = "create table " + DBConstants.tPLAYER_IN_PARTICIPANT + " ("
-            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-            + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
-            + "PRIMARY KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
+//    public static final String CREATE_TABLE_PLAYER_IN_PARTICIPANT = "create table " + DBConstants.tPLAYER_IN_PARTICIPANT + " ("
+//            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
+//            + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
+//            + "PRIMARY KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
+//            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
 
-    public static final String CREATE_TABLE_STATS_ENUM = "create table " + DBConstants.tSTATS_ENUM + " ("
-            + DBConstants.cID + " INTEGER PRIMARY KEY, "
-            + DBConstants.cNAME + " TEXT);";
 
     public static final String CREATE_TABLE_STATS = "create table " + DBConstants.tSTATS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
             + DBConstants.cSTATS_ENUM_ID + " INTEGER NOT NULL, "
             + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
-            + DBConstants.cVALUE + " INTEGER, "
-            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) REFERENCES " + DBConstants.tPLAYER_IN_PARTICIPANT + " ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
+            + DBConstants.cVALUE + " TEXT, "
             + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cSTATS_ENUM_ID + " ) REFERENCES " + DBConstants.tSTATS_ENUM + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
+
 
 
 
@@ -127,12 +134,12 @@ public class DBScripts {
                     DBConstants.tCOMPETITIONS, 33, "18742", "NHL", "2016-01-01", "2016-02-29", "team", "no, its team :D");
 
     public static final String INSERT_INTO_PLAYERS =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04");
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_1 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 2, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04");
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 2, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_2 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 3, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04");
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 3, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
 }

@@ -14,6 +14,19 @@ public class DMatch extends DShareBase {
 
     public DMatch(){}
 
+    public DMatch( long id, long tourId, int per, int rnd, Date date, String etag, String uid, Date lastModified, Date lastSynchronized )
+    {
+        this.id = id;
+        this.tournamentId = tourId;
+        this.period = per;
+        this.round = rnd;
+        this.date = date;
+        this.uid = uid;
+        this.etag = etag;
+        this.lastModified = lastModified;
+        this.lastSynchronized = lastSynchronized;
+    }
+
     public DMatch( long id, long tourId, int per, int rnd, Date date )
     {
         this.id = id;

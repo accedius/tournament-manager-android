@@ -29,7 +29,9 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
-        return null;
+
+        //TODO
+        return new ArrayList<>();
     }
 
     @Override

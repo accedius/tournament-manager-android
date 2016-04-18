@@ -12,6 +12,15 @@ public abstract class DShareBase {
     protected String uid;
     protected String etag;
     protected Date lastModified;
+    protected Date lastSynchronized;
+
+    public Date getLastSynchronized() {
+        return lastSynchronized;
+    }
+
+    public void setLastSynchronized(Date lastSynchronized) {
+        this.lastSynchronized = lastSynchronized;
+    }
 
 
     public String getUid() {

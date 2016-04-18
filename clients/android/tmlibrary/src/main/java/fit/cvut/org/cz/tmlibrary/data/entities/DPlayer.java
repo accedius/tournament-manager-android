@@ -22,7 +22,7 @@ public class DPlayer extends DShareBase {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public DPlayer(long id, String name, String email, String note, String etag, String uid, Date lastModified) {
+    public DPlayer(long id, String name, String email, String note, String etag, String uid, Date lastModified, Date lastSynchronized) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -30,6 +30,7 @@ public class DPlayer extends DShareBase {
         this.uid = uid;
         this.etag = etag;
         this.lastModified = lastModified;
+        this.lastSynchronized = lastSynchronized;
     }
 
     public DPlayer(long id, String name, String email, String note) {

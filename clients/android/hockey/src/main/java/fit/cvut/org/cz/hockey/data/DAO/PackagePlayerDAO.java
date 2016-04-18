@@ -160,7 +160,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
             ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
             String cpUri = ai.metaData.getString("player_cp_authority");
 
-            String[] projection = new String[] {DBConstants.cID, DBConstants.cNAME, DBConstants.cETAG, DBConstants.cUID, DBConstants.cLASTMODIFIED, DBConstants.cEMAIL, DBConstants.cNOTE};
+            String[] projection = new String[] {DBConstants.cID, DBConstants.cNAME, DBConstants.cETAG, DBConstants.cUID, DBConstants.cLASTMODIFIED, DBConstants.cLASTSYNCHRONIZED, DBConstants.cEMAIL, DBConstants.cNOTE};
 
             Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers);
 

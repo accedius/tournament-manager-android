@@ -23,7 +23,7 @@ public class DTournament extends DShareBase {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified, long competitionId) {
+    public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified, Date lastSynchronized, long competitionId) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -32,7 +32,9 @@ public class DTournament extends DShareBase {
         this.uid = uid;
         this.etag = etag;
         this.lastModified = lastModified;
+        this.lastSynchronized = lastSynchronized;
         this.competitionId  = competitionId;
+
     }
 
     public DTournament(long id, String name, Date startDate, Date endDate, String note) {
