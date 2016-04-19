@@ -18,8 +18,6 @@ public interface IMatchDAO {
 
     ArrayList<DMatch> getByTournamentId( Context context, long tournamentId );
 
-    ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );
-
     DMatch getById( Context context, long id );
 
 }

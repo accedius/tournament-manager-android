@@ -55,7 +55,7 @@ public class ParticipantDAO implements IParticipantDAO {
     private void removeStatistics( long playerId, long particId, SQLiteDatabase db )
     {
         String where = String.format( "%s = ? AND %s = ? ", DBConstants.cPLAYER_ID, DBConstants.cPARTICIPANT_ID );
-        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( particId ) };
+        String[] projection = new String[]{ Long.toString( playerId ), Long.toString(particId) };
         db.delete(DBConstants.tSTATS, where, projection);
     }
 
@@ -63,10 +63,10 @@ public class ParticipantDAO implements IParticipantDAO {
     {
         ArrayList<Long> currentPlayers = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, particId );
 
-        ArrayList<Long> toDelete = currentPlayers;
+        ArrayList<Long> toDelete = new ArrayList<>(currentPlayers);
         toDelete.removeAll(playerIds);
 
-        ArrayList<Long> toAdd = playerIds;
+        ArrayList<Long> toAdd = new ArrayList<>(playerIds);
         toAdd.removeAll(currentPlayers);
 
         for ( Long id : toAdd )

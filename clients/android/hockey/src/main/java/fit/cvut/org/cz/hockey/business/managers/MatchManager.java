@@ -5,7 +5,9 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
@@ -47,7 +49,7 @@ public class MatchManager implements IScoredMatchManager {
                     match.setAwayParticipantId(dp.getTeamId());
                     DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                     match.setAwayName( dt.getName() );
-                    match.setAwayIds( dp.getPlayerIds() );
+                    match.setAwayIds(dp.getPlayerIds());
                 }
             }
             //TODO skore podle participantu do scoredMatch
@@ -62,8 +64,21 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public ScoredMatch getById(Context context, long Id) {
-        //TODO musi se naplnit i homeName a awayName
+        //TODO musi se naplnit i homeName a awayName -- CELY DODELAT
         return null;
+    }
+
+    @Override
+    public void beginMatch(Context context, long matchId) {
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId );
+        //TODO udelat pouze pokud ten match jeste nebyl odehrany (played == false)
+        for( DParticipant dp : participants )
+        {
+            long teamId = dp.getTeamId();
+            ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam( context, teamId );
+            dp.setPlayerIds( plIds );
+            DAOFactory.getInstance().participantDAO.update( context, dp, true );
+        }
     }
 
     @Override
@@ -90,6 +105,14 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void update(Context context, ScoredMatch match) {
+        DMatch dMatch = new DMatch();
+        dMatch.setId(match.getId());
+        dMatch.setDate(match.getDate());
+        dMatch.setPeriod(match.getPeriod());
+        dMatch.setRound(match.getRound());
+        dMatch.setTournamentId(match.getTournamentId());
+        dMatch.setNote(match.getNote());
+        DAOFactory.getInstance().matchDAO.update(context, dMatch);
 
     }
 

@@ -94,10 +94,6 @@ public class MatchDAO implements IMatchDAO {
         return res;
     }
 
-    @Override
-    public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
-        return null;
-    }
 
     @Override
     public DMatch getById(Context context, long id) {

@@ -156,7 +156,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
         String[] selArgs = { String.valueOf( participantId ), Long.toString(StatsEnum.participates.getId())};
-        Cursor cursor = db.query(DBConstants.tPLAYER_IN_PARTICIPANT, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
+        Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();
 

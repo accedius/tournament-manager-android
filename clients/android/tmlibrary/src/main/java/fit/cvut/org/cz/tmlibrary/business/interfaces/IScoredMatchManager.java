@@ -14,6 +14,8 @@ public interface IScoredMatchManager {
     ArrayList<ScoredMatch> getByTournamentId(Context context, long tournamentId);
     ScoredMatch getById(Context context, long Id);
 
+    void beginMatch( Context context, long matchId ); //register players to match and other things needed when match is begun
+
     void insert( Context context, ScoredMatch match);
     void update( Context context, ScoredMatch match );
     void delete( Context context, long id);

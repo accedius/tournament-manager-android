@@ -29,7 +29,8 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_FIND_BY_TOURNAMENT_ID = "action_find_match_by_tournament_id";
     public static final String ACTION_CREATE = "action_create_match";
     public static final String ACTION_UPDATE = "action_update_match";
-    //TODO neco jako activate match, co by melo pretahnout lidi z tech tymu do participantu
+    public static final String ACTION_BEGIN = "action_begin_match";
+
 
     public MatchService() {
         super("Hockey Match Service");
@@ -107,6 +108,16 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
                 ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( this, tourId );
                 res.putParcelableArrayListExtra( EXTRA_MATCH_LIST, matches );
+
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+                break;
+            }
+            case ACTION_BEGIN:
+            {
+                Intent res = new Intent(ACTION_BEGIN);
+
+                long matchId = intent.getLongExtra(EXTRA_ID, -1);
+                ManagerFactory.getInstance().matchManager.beginMatch( this, matchId );
 
                 LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
                 break;

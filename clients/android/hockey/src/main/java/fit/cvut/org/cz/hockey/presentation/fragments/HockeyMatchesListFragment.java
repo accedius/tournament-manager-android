@@ -51,7 +51,25 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new ScoredMatchAdapter();
+        return new ScoredMatchAdapter() {
+            @Override
+            protected void setOnClickListeners(View v, long matchId) {
+                super.setOnClickListeners(v, matchId);
+                final long fmId = matchId;
+
+                v.setOnClickListener( new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        //TODO match begin bude nejlepsi ukotvit v nove nastartovane aktivite, kdyz si fragment posle pro data -> udelam begin a pak mu teprv poslu data ze service zpatky
+                        Intent intent = MatchService.newStartIntent( MatchService.ACTION_BEGIN, getContext() );
+                        intent.putExtra( MatchService.EXTRA_ID, fmId );
+
+                        getContext().startService( intent );
+                    }
+                });
+            }
+        };
     }
 
     @Override
