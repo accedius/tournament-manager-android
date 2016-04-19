@@ -10,6 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -45,14 +46,41 @@ public class ParticipantDAO implements IParticipantDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
         cv.put( DBConstants.cTOURNAMENT_ID, tournamentId);
         cv.put( DBConstants.cCOMPETITIONID, competitionId);
-        cv.put( DBConstants.cSTATS_ENUM_ID, 1 );
-        cv.put( DBConstants.cVALUE, Long.toString( 0 ) );
-        db.insert( DBConstants.tSTATS, null, cv );
+        cv.put( DBConstants.cSTATS_ENUM_ID, StatsEnum.participates.getId());
+        cv.put( DBConstants.cVALUE, Long.toString(0) );
+        db.insert(DBConstants.tSTATS, null, cv);
 
     }
 
+    private void removeStatistics( long playerId, long particId, SQLiteDatabase db )
+    {
+        String where = String.format( "%s = ? AND %s = ? ", DBConstants.cPLAYER_ID, DBConstants.cPARTICIPANT_ID );
+        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( particId ) };
+        db.delete(DBConstants.tSTATS, where, projection);
+    }
+
+    private void updateParticipantPlayers( Context context, SQLiteDatabase db, Long particId, Long tourId, long compId, ArrayList<Long> playerIds )
+    {
+        ArrayList<Long> currentPlayers = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, particId );
+
+        ArrayList<Long> toDelete = currentPlayers;
+        toDelete.removeAll(playerIds);
+
+        ArrayList<Long> toAdd = playerIds;
+        toAdd.removeAll(currentPlayers);
+
+        for ( Long id : toAdd )
+        {
+            createStatistics( id, particId, tourId, compId, db );
+        }
+        for ( Long id : toDelete )
+        {
+            removeStatistics( id, particId, db );
+        }
+    }
+
     @Override
-    public long insert(Context context, DParticipant participant) {
+    public long insert(Context context, DParticipant participant, boolean playersToo) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         ContentValues values = toContVal( participant );
@@ -63,17 +91,31 @@ public class ParticipantDAO implements IParticipantDAO {
         long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, participant.getMatchId() ).getTournamentId();
         long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
 
-        for( Long pId : participant.getPlayerIds() )
-        {
-            createStatistics( pId, newRowId, tournamentId, competitionId, db );
+        if( playersToo ) {
+            updateParticipantPlayers( context, db, newRowId, tournamentId, competitionId, participant.getPlayerIds() );
         }
 
         return newRowId;
     }
 
     @Override
-    public void update(Context context, DParticipant participant) {
+    public void update(Context context, DParticipant participant, boolean playersToo) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
+        ContentValues values = toContVal( participant );
+
+        values.put(DBConstants.cID, participant.getId());
+
+        String where = String.format( "%s = ?", DBConstants.cID );
+        String[] projection = new String[]{ Long.toString(participant.getId()) };
+        db.update(DBConstants.tPARTICIPANTS, values, where, projection );
+
+        long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, participant.getMatchId() ).getTournamentId();
+        long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
+
+        if( playersToo ) {
+            updateParticipantPlayers( context, db, participant.getId(), tournamentId, competitionId, participant.getPlayerIds() );
+        }
     }
 
     @Override
@@ -92,7 +134,7 @@ public class ParticipantDAO implements IParticipantDAO {
         while (cursor.moveToNext())
         {
             DParticipant dp = CursorParser.getInstance().parseDParticipant( cursor );
-            //TODO add playerIds to DParticipant
+            dp.setPlayerIds( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dp.getId() ) );
             res.add( dp );
         }
 

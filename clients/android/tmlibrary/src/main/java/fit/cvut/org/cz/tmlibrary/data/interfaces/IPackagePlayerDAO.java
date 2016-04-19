@@ -27,6 +27,7 @@ public interface IPackagePlayerDAO {
     ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId);
     ArrayList<Long> getPlayerIdsByMatch(Context context, long matchId);
     ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId);
+    ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId);
 
     Map<Long, DPlayer> getAllPlayers(Context context);
 

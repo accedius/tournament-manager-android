@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -149,6 +150,24 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         return res;
 
+    }
+
+    @Override
+    public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        String[] selArgs = { String.valueOf( participantId ), Long.toString(StatsEnum.participates.getId())};
+        Cursor cursor = db.query(DBConstants.tPLAYER_IN_PARTICIPANT, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
+
+        ArrayList<Long> res = new ArrayList<>();
+
+        while (cursor.moveToNext())
+        {
+            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+        }
+
+        cursor.close();
+
+        return res;
     }
 
     @Override

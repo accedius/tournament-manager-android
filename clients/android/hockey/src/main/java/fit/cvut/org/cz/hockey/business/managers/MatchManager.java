@@ -40,15 +40,17 @@ public class MatchManager implements IScoredMatchManager {
                     match.setHomeParticipantId( dp.getTeamId() );
                     DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                     match.setHomeName( dt.getName() );
+                    match.setHomeIds( dp.getPlayerIds() );
                 }
                 if( dp.getRole().equals(ParticipantType.away.toString()) )
                 {
                     match.setAwayParticipantId(dp.getTeamId());
                     DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                     match.setAwayName( dt.getName() );
+                    match.setAwayIds( dp.getPlayerIds() );
                 }
             }
-            //TODO pridat nahrani hracu a skore podle participantu do scoredMatch
+            //TODO skore podle participantu do scoredMatch
 
 
             res.add(match);
@@ -80,8 +82,8 @@ public class MatchManager implements IScoredMatchManager {
         DParticipant awayParticipant = new DParticipant( -1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString() );
         awayParticipant.setPlayerIds( match.getAwayIds() );
 
-        DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
-        DAOFactory.getInstance().participantDAO.insert( context, awayParticipant);
+        DAOFactory.getInstance().participantDAO.insert(context, homeParticipant, false);
+        DAOFactory.getInstance().participantDAO.insert( context, awayParticipant, false);
 
 
     }
