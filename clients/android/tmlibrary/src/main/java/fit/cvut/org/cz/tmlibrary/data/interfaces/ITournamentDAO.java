@@ -12,7 +12,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  */
 public interface ITournamentDAO {
 
-    void insert(Context context, DTournament tournament);
+    long insert(Context context, DTournament tournament);
     void update(Context context, DTournament tournament);
     void delete(Context context, long id);
 

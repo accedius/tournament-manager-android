@@ -12,7 +12,6 @@ import java.util.Date;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
@@ -40,14 +39,15 @@ public class TournamentDAO implements ITournamentDAO {
 
 
     @Override
-    public void insert(Context context, DTournament tournament) {
+    public long insert(Context context, DTournament tournament) {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = serializeTournament(tournament);
 
-        db.insert(DBConstants.tTOURNAMENTS, null, cv);
+        long id = db.insert(DBConstants.tTOURNAMENTS, null, cv);
         db.close();
+        return id;
     }
 
     @Override

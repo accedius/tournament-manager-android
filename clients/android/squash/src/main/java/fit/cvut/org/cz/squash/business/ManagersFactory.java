@@ -1,9 +1,11 @@
 package fit.cvut.org.cz.squash.business;
 
+import fit.cvut.org.cz.squash.business.interfaces.IPointConfigManager;
 import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;
 import fit.cvut.org.cz.squash.business.managers.CompetitionManager;
 import fit.cvut.org.cz.squash.business.managers.MatchManager;
 import fit.cvut.org.cz.squash.business.managers.PlayerManager;
+import fit.cvut.org.cz.squash.business.managers.PointConfigManager;
 import fit.cvut.org.cz.squash.business.managers.StatsManager;
 import fit.cvut.org.cz.squash.business.managers.TeamsManager;
 import fit.cvut.org.cz.squash.business.managers.TournamentManager;
@@ -32,4 +34,5 @@ public class ManagersFactory {
     public IStatsManager statsManager = new StatsManager();
     public IScoredMatchManager matchManager = new MatchManager();
     public ITeamManager teamsManager = new TeamsManager();
+    public IPointConfigManager pointConfigManager = new PointConfigManager();
 }

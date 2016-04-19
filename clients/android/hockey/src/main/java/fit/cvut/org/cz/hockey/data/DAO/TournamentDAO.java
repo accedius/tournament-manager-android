@@ -59,7 +59,7 @@ public class TournamentDAO implements ITournamentDAO {
     }
 
     @Override
-    public void insert(Context context, DTournament tournament) {
+    public long insert(Context context, DTournament tournament) {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
@@ -71,6 +71,7 @@ public class TournamentDAO implements ITournamentDAO {
         values = defaultConfig(newRowId);
         db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
 
+        return newRowId;
     }
 
     @Override
