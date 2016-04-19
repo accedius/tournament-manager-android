@@ -55,7 +55,7 @@ public class ParticipantDAO implements IParticipantDAO {
         ContentValues values = toContVal( participant );
 
         long newRowId;
-        newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
+        newRowId = db.insert(DBConstants.tPARTICIPANTS, null, values);
 
         long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, participant.getMatchId() ).getTournamentId();
         long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();

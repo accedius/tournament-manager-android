@@ -10,6 +10,7 @@ import java.util.Date;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -28,6 +29,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_FIND_BY_TOURNAMENT_ID = "action_find_match_by_tournament_id";
     public static final String ACTION_CREATE = "action_create_match";
     public static final String ACTION_UPDATE = "action_update_match";
+    //TODO neco jako activate match, co by melo pretahnout lidi z tech tymu do participantu
 
     public MatchService() {
         super("Hockey Match Service");
@@ -57,7 +59,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
             {
                 ScoredMatch m = intent.getParcelableExtra( EXTRA_MATCH );
 
-                //TODO
+                ManagerFactory.getInstance().matchManager.insert( this, m );
 
                 break;
             }
@@ -73,26 +75,22 @@ public class MatchService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent();
                 res.setAction(ACTION_FIND_BY_ID);
+                long matchId = intent.getLongExtra( EXTRA_ID, -1 );
+                long tourId = intent.getLongExtra( EXTRA_TOUR_ID, -1);
 
-//                if( intent.getLongExtra( EXTRA_ID, -1 ) != 1 )
-//                    break;
+                if( matchId != -1 ) {
+                    ScoredMatch m = ManagerFactory.getInstance().matchManager.getById( this, matchId );
+                    res.putExtra(EXTRA_MATCH, m);
+                }
 
-                ScoredMatch m = new ScoredMatch();
-                m.setId(1);
-                m.setDate(new Date(2011, 11, 11));
-                m.setNote("My Note");
-                m.setAwayParticipantId(1);
-                m.setAwayName("Awaynameblabla");
-                m.setHomeParticipantId(3);
-                m.setHomeName("Homenameblabla");
-                m.setPeriod(1);
-                m.setRound(1);
-                res.putExtra(EXTRA_MATCH, m);
+                ArrayList<Team> tourTeams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, tourId );
 
                 ArrayList<Participant> participants = new ArrayList<>();
-                participants.add( new Participant(1, "Awaynameblabla" ) );
-                participants.add( new Participant(3, "Homenameblabla" ) );
-                participants.add( new Participant(2, "NotSelcttedParticipant" ) );
+
+                for( Team t : tourTeams )
+                {
+                    participants.add( new Participant(t.getId(), t.getName()) );
+                }
 
                 res.putParcelableArrayListExtra( EXTRA_PART_LIST, participants );
 
@@ -106,7 +104,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(ACTION_FIND_BY_TOURNAMENT_ID);
                 //TODO remove mock
 
-                long tourId = intent.getLongExtra( EXTRA_TOUR_ID, -1 );
+                long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
                 ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( this, tourId );
                 res.putParcelableArrayListExtra( EXTRA_MATCH_LIST, matches );
 

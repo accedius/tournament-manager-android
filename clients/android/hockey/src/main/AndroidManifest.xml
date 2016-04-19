@@ -43,6 +43,11 @@
             android:label="Team"
             android:exported="true">
         </activity>
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="New Hockey Match"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="fit.cvut.org.cz.hockey.data.CompetitionCP"

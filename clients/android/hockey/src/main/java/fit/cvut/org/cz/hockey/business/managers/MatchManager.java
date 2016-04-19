@@ -43,6 +43,7 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public ScoredMatch getById(Context context, long Id) {
+        //TODO musi se naplnit i homeName a awayName
         return null;
     }
 

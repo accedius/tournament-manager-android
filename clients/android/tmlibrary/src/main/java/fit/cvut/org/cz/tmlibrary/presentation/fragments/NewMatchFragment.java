@@ -146,6 +146,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
 
                     } else {
                         ScoredMatch match = new ScoredMatch();
+                        match.setId( id );
                         match.setPeriod(sPeriod);
                         match.setRound(sRound);
                         match.setNote(note.getText().toString());
