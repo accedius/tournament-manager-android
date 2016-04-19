@@ -53,6 +53,7 @@ public class MatchManager implements IScoredMatchManager {
         dMatch.setPeriod(match.getPeriod());
         dMatch.setRound(match.getRound());
         dMatch.setTournamentId(match.getTournamentId());
+        dMatch.setNote(match.getNote());
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
         //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id

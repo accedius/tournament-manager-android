@@ -147,6 +147,7 @@ public class CursorParser {
 
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
         tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
         period = cursor.getInt(cursor.getColumnIndex(DBConstants.cPERIOD));
         round = cursor.getInt(cursor.getColumnIndex(DBConstants.cROUND));
@@ -164,6 +165,6 @@ public class CursorParser {
 
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DMatch(id, tournamentId, period, round, date, etag, uid, lastModified, lastSynchronized);
+        return new DMatch(id, tournamentId, period, round, date, note, etag, uid, lastModified, lastSynchronized);
     }
 }

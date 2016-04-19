@@ -65,6 +65,7 @@ public class DBScripts {
             + DBConstants.cLASTMODIFIED + " TEXT, "
             + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cDATE + " TEXT, "
+            + DBConstants.cNOTE + " TEXT, "
             + DBConstants.cROUND + " INTEGER NOT NULL, "
             + DBConstants.cPERIOD + " INTEGER NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
