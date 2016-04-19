@@ -3,6 +3,7 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
@@ -27,12 +28,18 @@ public class MatchManager implements IScoredMatchManager {
 
         for( DMatch dm : dMatches )
         {
+            //TODO predelat na convertToDMatch
             ScoredMatch match = new ScoredMatch();
             match.setRound(dm.getRound());
             match.setPeriod(dm.getPeriod());
             match.setId(dm.getId());
             match.setTournamentId(dm.getTournamentId());
             match.setDate(dm.getDate());
+            match.setPlayed(dm.isPlayed());
+            match.setUid(dm.getUid());
+            match.setEtag(dm.getEtag());
+            match.setLastModified(dm.getLastModified());
+            match.setLastSynchronized(dm.getLastSynchronized());
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
             for( DParticipant dp : participants )
@@ -64,20 +71,60 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public ScoredMatch getById(Context context, long Id) {
-        //TODO musi se naplnit i homeName a awayName -- CELY DODELAT
-        return null;
+
+        DMatch dm = DAOFactory.getInstance().matchDAO.getById( context, Id );
+        //TODO predelat na convert to DMatch
+        ScoredMatch match = new ScoredMatch();
+        match.setRound(dm.getRound());
+        match.setPeriod(dm.getPeriod());
+        match.setId(dm.getId());
+        match.setTournamentId(dm.getTournamentId());
+        match.setDate(dm.getDate());
+        match.setPlayed( dm.isPlayed() );
+        match.setUid( dm.getUid());
+        match.setEtag( dm.getEtag());
+        match.setLastModified( dm.getLastModified());
+        match.setLastSynchronized( dm.getLastSynchronized());
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
+
+        for( DParticipant dp : participants )
+        {
+            if( dp.getRole().equals( ParticipantType.home.toString()) )
+            {
+                match.setHomeParticipantId( dp.getTeamId() );
+                DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
+                match.setHomeName( dt.getName() );
+                match.setHomeIds( dp.getPlayerIds() );
+            }
+            if( dp.getRole().equals(ParticipantType.away.toString()) )
+            {
+                match.setAwayParticipantId(dp.getTeamId());
+                DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
+                match.setAwayName( dt.getName() );
+                match.setAwayIds(dp.getPlayerIds());
+            }
+        }
+        //TODO doplnit skore od Participant statistik
+        return match;
     }
 
     @Override
     public void beginMatch(Context context, long matchId) {
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId );
-        //TODO udelat pouze pokud ten match jeste nebyl odehrany (played == false)
-        for( DParticipant dp : participants )
-        {
-            long teamId = dp.getTeamId();
-            ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam( context, teamId );
-            dp.setPlayerIds( plIds );
-            DAOFactory.getInstance().participantDAO.update( context, dp, true );
+
+        ScoredMatch match = getById( context, matchId );
+
+        if( !(match.isPlayed())) {
+            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
+            for (DParticipant dp : participants) {
+                long teamId = dp.getTeamId();
+                ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
+                dp.setPlayerIds(plIds);
+                DAOFactory.getInstance().participantDAO.update(context, dp, true);
+            }
+            match.setPlayed( true );
+            match.setLastModified( new Date());
+            update( context, match);
+
         }
     }
 
@@ -89,6 +136,7 @@ public class MatchManager implements IScoredMatchManager {
         dMatch.setRound(match.getRound());
         dMatch.setTournamentId(match.getTournamentId());
         dMatch.setNote(match.getNote());
+        dMatch.setPlayed( false );
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
         //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id
@@ -112,6 +160,11 @@ public class MatchManager implements IScoredMatchManager {
         dMatch.setRound(match.getRound());
         dMatch.setTournamentId(match.getTournamentId());
         dMatch.setNote(match.getNote());
+        dMatch.setPlayed(match.isPlayed());
+        dMatch.setUid(match.getUid());
+        dMatch.setEtag(match.getEtag());
+        dMatch.setLastSynchronized(match.getLastSynchronized());
+        dMatch.setLastModified( match.getLastModified());
         DAOFactory.getInstance().matchDAO.update(context, dMatch);
 
     }

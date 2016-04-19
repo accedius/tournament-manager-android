@@ -145,6 +145,7 @@ public class CursorParser {
         Date date = null;
         Date lastModified = null;
         Date lastSynchronized = null;
+        boolean played;
 
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
@@ -152,6 +153,7 @@ public class CursorParser {
         tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
         period = cursor.getInt(cursor.getColumnIndex(DBConstants.cPERIOD));
         round = cursor.getInt(cursor.getColumnIndex(DBConstants.cROUND));
+        played = !(0 == cursor.getInt(cursor.getColumnIndex(DBConstants.cPLAYED)));
 
         try {
             if (cursor.getString(cursor.getColumnIndex(DBConstants.cDATE)) != null)
@@ -166,7 +168,7 @@ public class CursorParser {
 
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DMatch(id, tournamentId, period, round, date, note, etag, uid, lastModified, lastSynchronized);
+        return new DMatch(id, tournamentId, period, round, date, note, played, etag, uid, lastModified, lastSynchronized);
     }
 
     public DParticipant parseDParticipant( Cursor cursor )

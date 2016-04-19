@@ -30,6 +30,7 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cETAG, match.getEtag());
         cv.put(DBConstants.cROUND, match.getRound());
         cv.put(DBConstants.cPERIOD, match.getPeriod());
+        cv.put(DBConstants.cPLAYED, match.isPlayed());
         if ( match.getDate() != null )
             cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
         if ( match.getLastSynchronized() != null )
@@ -41,9 +42,9 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public long insert(Context context, DMatch match) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        ContentValues values = toContVal( match );
+        ContentValues values = toContVal(match);
 
         long newRowId;
         newRowId = db.insert(DBConstants.tMATCHES, null, values);
@@ -54,13 +55,13 @@ public class MatchDAO implements IMatchDAO {
     public void update(Context context, DMatch match) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        ContentValues values = toContVal( match );
+        ContentValues values = toContVal(match);
 
         values.put(DBConstants.cID, match.getId());
 
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(match.getId()) };
-        db.update(DBConstants.tMATCHES, values, where, projection );
+        db.update(DBConstants.tMATCHES, values, where, projection);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class MatchDAO implements IMatchDAO {
         cursor.moveToFirst();
         if( cursor.getCount() <= 0 )
             return null;
-        DMatch res = CursorParser.getInstance().parseDMatch( cursor );
+        DMatch res = CursorParser.getInstance().parseDMatch(cursor);
 
         cursor.close();
 

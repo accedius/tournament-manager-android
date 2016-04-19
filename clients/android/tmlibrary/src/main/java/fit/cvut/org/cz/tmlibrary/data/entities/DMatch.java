@@ -12,10 +12,11 @@ public class DMatch extends DShareBase {
     private int period, round;
     private String note;
     private Date date;
+    private boolean played;
 
     public DMatch(){}
 
-    public DMatch( long id, long tourId, int per, int rnd, Date date, String note, String etag, String uid, Date lastModified, Date lastSynchronized )
+    public DMatch( long id, long tourId, int per, int rnd, Date date, String note, boolean played, String etag, String uid, Date lastModified, Date lastSynchronized )
     {
         this.id = id;
         this.tournamentId = tourId;
@@ -23,13 +24,14 @@ public class DMatch extends DShareBase {
         this.round = rnd;
         this.date = date;
         this.note = note;
+        this.played = played;
         this.uid = uid;
         this.etag = etag;
         this.lastModified = lastModified;
         this.lastSynchronized = lastSynchronized;
     }
 
-    public DMatch( long id, long tourId, int per, int rnd, Date date, String note )
+    public DMatch( long id, long tourId, int per, int rnd, Date date, String note, boolean played )
     {
         this.id = id;
         this.tournamentId = tourId;
@@ -37,6 +39,7 @@ public class DMatch extends DShareBase {
         this.round = rnd;
         this.date = date;
         this.note = note;
+        this.played = played;
     }
 
     public long getId() {
@@ -73,5 +76,13 @@ public class DMatch extends DShareBase {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
     }
 }

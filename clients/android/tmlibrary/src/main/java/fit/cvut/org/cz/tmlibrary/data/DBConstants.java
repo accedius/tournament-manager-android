@@ -43,5 +43,6 @@ public class DBConstants {
     public static final String cROLE = "role";
     public static final String cDATE = "date";
     public static final String cLASTSYNCHRONIZED = "last_synchronized";
+    public static final String cPLAYED = "played";
 
 }
