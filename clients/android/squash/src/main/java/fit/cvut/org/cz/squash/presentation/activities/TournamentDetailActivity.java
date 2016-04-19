@@ -1,8 +1,11 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.presentation.fragments.AgregatedStatsListFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchListFragment;
@@ -37,5 +40,27 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                         StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
                 },
                 new String[]{"Overview", "standings", "Matches", "Teams", "Players && stats"});
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
+                Intent intent = new Intent(this, PointConfigActivity.class);
+                intent.putExtra(PointConfigActivity.ARG_ID, getIntent().getLongExtra(EXTRA_ID, -1));
+                startActivity(intent);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

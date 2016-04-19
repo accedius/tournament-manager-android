@@ -57,13 +57,15 @@ public abstract class AbstractDataFragment extends Fragment {
     protected abstract View injectView(LayoutInflater inflater, ViewGroup container);
 
     protected ProgressBar progressBar;
+    protected View contentView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         CoordinatorLayout v = (CoordinatorLayout) inflater.inflate(R.layout.fragment_abstract_data, container, false);
         progressBar = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        v.addView(injectView(inflater, v));
+        contentView = injectView(inflater, v);
+        v.addView(contentView);
         return v;
     }
 
@@ -77,6 +79,7 @@ public abstract class AbstractDataFragment extends Fragment {
         if (!isDataSourceWorking())
             askForData();
         progressBar.setVisibility(View.VISIBLE);
+        contentView.setVisibility(View.GONE);
     }
 
     protected void customOnPause(){
@@ -104,6 +107,7 @@ public abstract class AbstractDataFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             progressBar.setVisibility(View.GONE);
+            contentView.setVisibility(View.VISIBLE);
             bindDataOnView(intent);
             //Toast.makeText(context, "DataReceived", Toast.LENGTH_SHORT).show();
         }

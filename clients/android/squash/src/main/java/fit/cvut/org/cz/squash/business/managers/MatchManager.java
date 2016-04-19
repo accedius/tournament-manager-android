@@ -73,4 +73,24 @@ public class MatchManager implements IScoredMatchManager {
     public ScoredMatch getById(Context context, long Id) {
         return null;
     }
+
+    @Override
+    public void beginMatch(Context context, long matchId) {
+
+    }
+
+    @Override
+    public void insert(Context context, ScoredMatch match) {
+
+    }
+
+    @Override
+    public void update(Context context, ScoredMatch match) {
+
+    }
+
+    @Override
+    public void delete(Context context, long id) {
+
+    }
 }

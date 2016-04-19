@@ -157,6 +157,11 @@ public class PlayerDAO implements IPackagePlayerDAO {
         return ids;
     }
 
+    @Override
+    public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
+        return null;
+    }
+
 
     @Override
     public Map<Long, DPlayer> getAllPlayers(Context context) {
@@ -167,7 +172,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
             ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
             String cpUri = ai.metaData.getString("player_cp_authority");
 
-            String[] projection = new String[] {DBConstants.cID, DBConstants.cNAME, DBConstants.cETAG, DBConstants.cUID, DBConstants.cLASTMODIFIED, DBConstants.cEMAIL, DBConstants.cNOTE};
+            String[] projection = new String[] {DBConstants.cID, DBConstants.cNAME, DBConstants.cETAG, DBConstants.cUID, DBConstants.cLASTMODIFIED, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cLASTSYNCHRONIZED};
 
             Cursor c = context.getContentResolver().query(Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers), projection, null, null, null);
             Map<Long, DPlayer> players = new HashMap<>();

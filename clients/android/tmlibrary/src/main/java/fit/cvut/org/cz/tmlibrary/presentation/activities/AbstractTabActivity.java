@@ -37,6 +37,7 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
         pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(getAdapter(getSupportFragmentManager()));
+        pager.setOffscreenPageLimit(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 

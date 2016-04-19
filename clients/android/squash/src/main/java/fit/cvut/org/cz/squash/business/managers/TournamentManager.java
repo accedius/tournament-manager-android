@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
@@ -15,7 +16,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 public class TournamentManager implements ITournamentManager {
     @Override
     public void insert(Context context, Tournament tournament) {
-        DAOFactory.getInstance().tournamentDAO.insert(context, Tournament.convertToDTournament(tournament));
+        long id = DAOFactory.getInstance().tournamentDAO.insert(context, Tournament.convertToDTournament(tournament));
+        ManagersFactory.getInstance().pointConfigManager.insert(context, id);
     }
 
     @Override
