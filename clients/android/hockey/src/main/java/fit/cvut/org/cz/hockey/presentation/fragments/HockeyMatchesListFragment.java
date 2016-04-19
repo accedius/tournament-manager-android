@@ -89,6 +89,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
+                                       //TODO pridat kontrolu poctu tymu (musi byt aspon 2)
                                        long tourId = getArguments().getLong(ARG_ID, -1);
                                        Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId, true);
 

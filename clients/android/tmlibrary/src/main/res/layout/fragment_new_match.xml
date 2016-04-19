@@ -7,39 +7,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/home"
+            android:id="@+id/tv_home_label"/>
         <android.support.v7.widget.AppCompatSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/m_home"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_below="@+id/tv_home_label"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/away"
+            android:id="@+id/tv_away_label"
+            android:layout_below="@+id/m_home"/>
         <android.support.v7.widget.AppCompatSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/m_away"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_below="@+id/m_home"/>
+            android:layout_below="@+id/tv_away_label"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/til_date"
-            android:layout_below="@id/m_away">
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/et_date"
-                android:hint="@string/date"/>
-
-        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/til_period"
-            android:layout_below="@id/til_date">
+            android:layout_below="@id/m_away">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
@@ -67,9 +68,23 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/til_date"
+            android:layout_below="@id/til_round">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/et_date"
+                android:hint="@string/date"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/til_note"
-            android:layout_below="@id/til_round">
+            android:layout_below="@id/til_date">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
