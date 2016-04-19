@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -18,9 +19,11 @@ public class StatsService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_STATS = "extra_stats";
+    public static final String EXTRA_STANDINGS = "extra_standings";
 
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
+    public static final String ACTION_GET_STANDINGS_BY_TOURNAMENT = "get__standings_by_tour_id";
 
     public StatsService() {
         super("Hockey Stats Service");
@@ -74,6 +77,17 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, stats);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+
+                break;
+            }
+            case ACTION_GET_STANDINGS_BY_TOURNAMENT:
+            {
+                Intent res = new Intent(action);
+                long tourID = intent.getLongExtra( EXTRA_ID, -1);
+                ArrayList<Standing> standings = ManagerFactory.getInstance().statisticsManager.getStandingsByTournamentId( this, tourID);
+
+                res.putParcelableArrayListExtra( EXTRA_STANDINGS, standings );
+                LocalBroadcastManager.getInstance(this).sendBroadcast( res );
 
                 break;
             }

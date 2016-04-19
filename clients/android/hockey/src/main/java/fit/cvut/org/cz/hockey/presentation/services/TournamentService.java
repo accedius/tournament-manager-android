@@ -10,6 +10,7 @@ import java.util.Date;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -83,10 +84,10 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.putExtra(EXTRA_TOURNAMENT, c);
 
                 ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, id );
-                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament( this, id );
+                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(this, id);
+                ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( this, id );
 
-                //TODO remove mock
-                res.putExtra(EXTRA_MATCHES_SUM, 0);
+                res.putExtra(EXTRA_MATCHES_SUM, matches.size());
                 res.putExtra(EXTRA_TEAMS_SUM, teams.size());
                 res.putExtra(EXTRA_PLAYER_SUM, players.size());
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);

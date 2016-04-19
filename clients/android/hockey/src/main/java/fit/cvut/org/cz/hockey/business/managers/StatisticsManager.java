@@ -3,10 +3,14 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
@@ -41,15 +45,36 @@ public class StatisticsManager {
 
     public ArrayList<AgregatedStatistics> getByTournamentID( Context context, long tourId )
     {
-        ArrayList<Player> tourPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament( context, tourId );
+        ArrayList<Player> tourPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tourId);
 
         ArrayList<AgregatedStatistics> res = new ArrayList<>();
 
         for( Player p : tourPlayers )
         {
-            res.add( playerStatsInTourn( context, p.getId(), p.getName(), tourId ) );
+            res.add( playerStatsInTourn(context, p.getId(), p.getName(), tourId) );
         }
 
         return res;
+    }
+
+    public ArrayList<Standing> getStandingsByTournamentId( Context context, long tourId)
+    {
+        //TODO remove mock
+        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( context, tourId );
+
+        ArrayList<Standing> standings = new ArrayList<>();
+
+        for( Team t : teams )
+        {
+            standings.add( new Standing(t.getName(), 1L, 1L, 1L, 1L, 1L, 1L));
+        }
+
+        Collections.sort(standings, new Comparator<Standing>() {
+            @Override
+            public int compare(Standing lhs, Standing rhs) {
+                return (int)(lhs.getPoints() - rhs.getPoints());
+            }
+        });
+        return standings;
     }
 }
