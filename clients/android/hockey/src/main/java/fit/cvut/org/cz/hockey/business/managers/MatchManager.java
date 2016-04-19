@@ -10,6 +10,7 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
@@ -25,16 +26,32 @@ public class MatchManager implements IScoredMatchManager {
         for( DMatch dm : dMatches )
         {
             ScoredMatch match = new ScoredMatch();
-            match.setRound( dm.getRound() );
-            match.setPeriod( dm.getPeriod() );
-            match.setId( dm.getId() );
-            match.setTournamentId( dm.getTournamentId() );
-            match.setDate( dm.getDate() );
+            match.setRound(dm.getRound());
+            match.setPeriod(dm.getPeriod());
+            match.setId(dm.getId());
+            match.setTournamentId(dm.getTournamentId());
+            match.setDate(dm.getDate());
+            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
+            for( DParticipant dp : participants )
+            {
+                if( dp.getRole().equals( ParticipantType.home.toString()) )
+                {
+                    match.setHomeParticipantId( dp.getTeamId() );
+                    DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
+                    match.setHomeName( dt.getName() );
+                }
+                if( dp.getRole().equals(ParticipantType.away.toString()) )
+                {
+                    match.setAwayParticipantId(dp.getTeamId());
+                    DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
+                    match.setAwayName( dt.getName() );
+                }
+            }
             //TODO pridat nahrani hracu a skore podle participantu do scoredMatch
 
 
-            res.add( match );
+            res.add(match);
         }
 
 

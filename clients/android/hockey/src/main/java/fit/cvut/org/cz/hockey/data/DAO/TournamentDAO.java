@@ -40,23 +40,7 @@ public class TournamentDAO implements ITournamentDAO {
         return cv;
     }
 
-    private ContentValues defaultConfig(Long tournamentId)
-    {
-        ContentValues cv = new ContentValues();
-        cv.put(HockeyDBConstants.cNTW, 3 );
-        cv.put(HockeyDBConstants.cNTD, 1 );
-        cv.put(HockeyDBConstants.cNTL, 0 );
 
-        cv.put(HockeyDBConstants.cOTW, 2 );
-        cv.put(HockeyDBConstants.cOTD, 1 );
-        cv.put(HockeyDBConstants.cOTL, 1 );
-
-        cv.put(HockeyDBConstants.cSOW, 2 );
-        cv.put(HockeyDBConstants.cSOL, 1 );
-        cv.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
-
-        return cv;
-    }
 
     @Override
     public long insert(Context context, DTournament tournament) {
@@ -67,9 +51,6 @@ public class TournamentDAO implements ITournamentDAO {
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
-
-        values = defaultConfig(newRowId);
-        db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
 
         return newRowId;
     }

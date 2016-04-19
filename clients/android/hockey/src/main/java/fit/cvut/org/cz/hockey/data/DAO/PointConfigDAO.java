@@ -52,6 +52,38 @@ public class PointConfigDAO implements IPointConfigDAO {
         return dp;
     }
 
+    private ContentValues defaultConfig(Long tournamentId)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(HockeyDBConstants.cNTW, 3 );
+        cv.put(HockeyDBConstants.cNTD, 1 );
+        cv.put(HockeyDBConstants.cNTL, 0 );
+
+        cv.put(HockeyDBConstants.cOTW, 2 );
+        cv.put(HockeyDBConstants.cOTD, 1 );
+        cv.put(HockeyDBConstants.cOTL, 1 );
+
+        cv.put(HockeyDBConstants.cSOW, 2 );
+        cv.put(HockeyDBConstants.cSOL, 1 );
+        cv.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
+
+        return cv;
+    }
+
+    public long insertDefault( Context context, long tournamentId )
+    {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        ContentValues values;
+
+        Long newRowId;
+
+
+        values = defaultConfig(tournamentId);
+        newRowId = db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
+
+        return newRowId;
+    }
+
     @Override
     public void update(Context context, DPointConfiguration dPointConfiguration, Long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);

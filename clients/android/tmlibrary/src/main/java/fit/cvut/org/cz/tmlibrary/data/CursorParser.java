@@ -8,6 +8,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -166,5 +167,32 @@ public class CursorParser {
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
         return new DMatch(id, tournamentId, period, round, date, note, etag, uid, lastModified, lastSynchronized);
+    }
+
+    public DParticipant parseDParticipant( Cursor cursor )
+    {
+        long id, teamId, matchId;
+        String uid, role, etag;
+        Date lastModified = null;
+        Date lastSynchronized = null;
+
+        id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
+        uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
+        role = cursor.getString(cursor.getColumnIndex(DBConstants.cROLE));
+        teamId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTEAM_ID));
+        matchId = cursor.getLong(cursor.getColumnIndex(DBConstants.cMATCH_ID));
+
+        try {
+            if (cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)) != null)
+                lastModified = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTMODIFIED)));
+            if( cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)) != null )
+                lastSynchronized = dateTimeFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cLASTSYNCHRONIZED)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
+
+        return new DParticipant(id, teamId, matchId, role, etag, uid, lastModified, lastSynchronized);
     }
 }

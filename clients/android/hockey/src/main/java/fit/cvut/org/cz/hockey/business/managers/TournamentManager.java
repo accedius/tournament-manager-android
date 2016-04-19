@@ -16,7 +16,8 @@ public class TournamentManager implements ITournamentManager {
     @Override
     public void insert(Context context, Tournament tournament) {
         DTournament dt = Tournament.convertToDTournament( tournament );
-        DAOFactory.getInstance().tournamentDAO.insert( context, dt );
+        long tourId = DAOFactory.getInstance().tournamentDAO.insert( context, dt );
+        DAOFactory.getInstance().pointConfigDAO.insertDefault( context, tourId );
     }
 
     @Override

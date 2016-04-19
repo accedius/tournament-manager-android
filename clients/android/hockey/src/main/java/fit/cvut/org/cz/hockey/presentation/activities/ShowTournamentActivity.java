@@ -40,8 +40,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        //tournamentID = getIntent().getExtras().getLong(TOUR_ID);
-        tournamentID = 1;
+        tournamentID = getIntent().getExtras().getLong(TOUR_ID);
+        //tournamentID = 1;
 
         titles = new String[]{ HEADER_OVERVIEW_TOURNAMENT, HEADER_STANDINGS_TOURNAMENT, HEADER_TEAMS_TOURNAMENT, HEADER_MATCHES_TOURNAMENT };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );

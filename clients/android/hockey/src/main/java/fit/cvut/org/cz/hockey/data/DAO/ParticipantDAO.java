@@ -2,13 +2,16 @@ package fit.cvut.org.cz.hockey.data.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
@@ -76,5 +79,25 @@ public class ParticipantDAO implements IParticipantDAO {
     @Override
     public void delete(Context context, long id) {
 
+    }
+
+    @Override
+    public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        String[] selArgs = { String.valueOf( matchId ) };
+        Cursor cursor = db.query(DBConstants.tPARTICIPANTS, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null);
+
+        ArrayList<DParticipant> res = new ArrayList<>();
+
+        while (cursor.moveToNext())
+        {
+            DParticipant dp = CursorParser.getInstance().parseDParticipant( cursor );
+            //TODO add playerIds to DParticipant
+            res.add( dp );
+        }
+
+        cursor.close();
+
+        return res;
     }
 }
