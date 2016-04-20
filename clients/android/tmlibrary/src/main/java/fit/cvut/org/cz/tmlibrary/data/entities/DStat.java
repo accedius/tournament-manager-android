@@ -19,6 +19,20 @@ public class DStat {
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+
+        if( !DStat.class.isAssignableFrom( o.getClass()) ) return false;
+
+        final DStat other = (DStat) o;
+        if( (this.value == null) ? (other.value != null) : !this.value.equals(other.getValue()) ) return false;
+
+        if( this.id != other.getId() || this.playerId != other.getPlayerId() || this.participantId != other.getParticipantId()
+                || this.statsEnumId != other.getStatsEnumId() || this.tournamentId != other.getTournamentId()
+                || this.competitionId != other.getCompetitionId()) return false;
+        return true;
+    }
 
     public long getId() {
         return id;

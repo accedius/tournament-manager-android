@@ -9,25 +9,77 @@ import java.util.Comparator;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class StatisticsManager {
 
-    private AgregatedStatistics playerStatsInComp( Context context, long plId, String pName,  long compId )
+    private AgregatedStatistics agregateStats( Context context, long plId, String pName,  long compId, ArrayList<DStat> allStats )
     {
-        //TODO remove mock
-        return new AgregatedStatistics( plId, pName, 10, 10, 10, 10, 10, 10, 10, 10 );
+        ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
+        playerStats.retainAll( allStats ); //common elements -> players stats in competition
+        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0;
+        for(DStat stat : playerStats)
+        {
+            long value = Long.parseLong(stat.getValue());
+            switch (StatsEnum.getById(stat.getStatsEnumId()))
+            {
+                case goals:
+                {
+                    goals += value;
+                    break;
+                }
+                case participates:
+                {
+                    matches++;
+                    break;
+                }
+                case assists:
+                {
+                    assists += value;
+                    break;
+                }
+                case plus_minus_points:
+                {
+                    plusMinusPoints += value;
+                    break;
+                }
+                case team_points:
+                {
+                    teamPoints += value;
+                    break;
+                }
+                case outcome:
+                {
+                    switch ((int)value)
+                    {
+                        case 1: {
+                            wins++;
+                            break;
+                        }
+                        case 2: {
+                            draws++;
+                            break;
+                        }
+                        case 3: {
+                            losses++;
+                            break;
+                        }
+                        default: break;
+                    }
+                }
+            }
+        }
+
+        return new AgregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints);
     }
 
-    private AgregatedStatistics playerStatsInTourn( Context context, long plId, String pName,  long tourId )
-    {
-        //TODO remove mock
-        return new AgregatedStatistics( plId, pName, 10, 10, 10, 10, 10, 10, 10, 10 );
-    }
 
     public ArrayList<AgregatedStatistics> getByCompetitionID( Context context, long compId )
     {
@@ -35,9 +87,11 @@ public class StatisticsManager {
 
         ArrayList<AgregatedStatistics> res = new ArrayList<>();
 
+        ArrayList<DStat> competitionStats = DAOFactory.getInstance().statDAO.getStatsByCompetitionId( context, compId );
+
         for( Player p : compPlayers )
         {
-            res.add( playerStatsInComp( context, p.getId(), p.getName(), compId ) );
+            res.add( agregateStats(context, p.getId(), p.getName(), compId, competitionStats) );
         }
 
         return res;
@@ -49,9 +103,11 @@ public class StatisticsManager {
 
         ArrayList<AgregatedStatistics> res = new ArrayList<>();
 
+        ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId( context, tourId);
+
         for( Player p : tourPlayers )
         {
-            res.add( playerStatsInTourn(context, p.getId(), p.getName(), tourId) );
+            res.add( agregateStats(context, p.getId(), p.getName(), tourId, tournamentStats) );
         }
 
         return res;

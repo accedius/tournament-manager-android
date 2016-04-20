@@ -197,7 +197,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
+            contentView.setVisibility(View.VISIBLE);
             switch (action)
             {
                 case StatsService.ACTION_GET_BY_TOUR_ID:

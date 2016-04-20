@@ -50,12 +50,12 @@ public class TeamDAO implements ITeamDAO {
 
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(team.getId()) };
-        db.update(DBConstants.tTOURNAMENTS, values, where, projection );
+        db.update(DBConstants.tTEAMS, values, where, projection );
     }
 
     @Override
     public void delete(Context context, long id) {
-
+        //TODO
     }
 
     @Override
