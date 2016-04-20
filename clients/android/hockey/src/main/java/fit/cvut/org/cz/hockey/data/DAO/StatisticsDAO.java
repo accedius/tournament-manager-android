@@ -10,7 +10,6 @@ import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 
@@ -33,6 +32,7 @@ public class StatisticsDAO {
 
     public void createStatsForMatch( Context context, long matchId )
     {
+        //TODO tohle bych mel nejak presunout do manazera
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         ContentValues values = new ContentValues();
@@ -55,5 +55,7 @@ public class StatisticsDAO {
 
         return;
     }
+
+
 
 }

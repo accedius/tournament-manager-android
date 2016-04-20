@@ -10,6 +10,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
@@ -196,5 +197,22 @@ public class CursorParser {
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
         return new DParticipant(id, teamId, matchId, role, etag, uid, lastModified, lastSynchronized);
+    }
+
+    public DStat parseDStat( Cursor cursor )
+    {
+        long id, participantId, playerId, statsEnumId, tournamentId, competitionId;
+        String value;
+
+        id = cursor.getLong(cursor.getColumnIndex(DBConstants.cID));
+        participantId = cursor.getLong(cursor.getColumnIndex(DBConstants.cPARTICIPANT_ID));
+        playerId = cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID));
+        statsEnumId = cursor.getLong(cursor.getColumnIndex(DBConstants.cSTATS_ENUM_ID));
+        tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
+        competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITIONID));
+        value = cursor.getString(cursor.getColumnIndex(DBConstants.cVALUE));
+
+
+        return new DStat( id, playerId, participantId, statsEnumId, tournamentId, competitionId, value);
     }
 }

@@ -40,16 +40,32 @@ public class ParticipantDAO implements IParticipantDAO {
 
     private void createStatistics( long playerId, long participantId, long tournamentId, long competitionId, SQLiteDatabase db )
     {
-        //TODO dodelat vkladani vsech statistik
         ContentValues cv = new ContentValues();
         cv.put( DBConstants.cPARTICIPANT_ID, participantId );
         cv.put(DBConstants.cPLAYER_ID, playerId);
         cv.put( DBConstants.cTOURNAMENT_ID, tournamentId);
         cv.put( DBConstants.cCOMPETITIONID, competitionId);
-        cv.put( DBConstants.cSTATS_ENUM_ID, StatsEnum.participates.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.participates.getId());
         cv.put( DBConstants.cVALUE, Long.toString(0) );
         db.insert(DBConstants.tSTATS, null, cv);
 
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.goals.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
+
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.assists.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
+
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.plus_minus_points.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
+
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.outcome.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
+
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.team_points.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
+
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.interventions.getId());
+        db.insert(DBConstants.tSTATS, null, cv);
     }
 
     private void removeStatistics( long playerId, long particId, SQLiteDatabase db )
