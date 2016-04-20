@@ -8,6 +8,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
 /**
  * Created by Vaclav on 9. 4. 2016.
@@ -25,6 +26,13 @@ public class ScoredMatch extends ShareBase {
     private String note, homeName, awayName;
 
     public ScoredMatch(){}
+
+    public static DMatch convertToDMatch( ScoredMatch sm )
+    {
+        return new DMatch( sm.getId(), sm.getTournamentId(), sm.getPeriod(), sm.getRound(),
+                sm.getDate(), sm.getNote(), sm.isPlayed(), sm.getEtag(), sm.getUid(), sm.getLastModified(),
+                sm.getLastSynchronized() );
+    }
 
 
     protected ScoredMatch(Parcel in) {
@@ -134,6 +142,21 @@ public class ScoredMatch extends ShareBase {
         else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
+    }
+
+    public ScoredMatch( DMatch dm )
+    {
+        this.id = dm.getId();
+        this.tournamentId = dm.getTournamentId();
+        this.period = dm.getPeriod();
+        this.round = dm.getRound();
+        this.note = dm.getNote();
+        this.date = dm.getDate();
+        this.played = dm.isPlayed();
+        this.uid = dm.getUid();
+        this.etag = dm.getEtag();
+        this.lastSynchronized = dm.getLastSynchronized();
+        this.lastModified = dm.getLastModified();
     }
 
     public long getId() {
