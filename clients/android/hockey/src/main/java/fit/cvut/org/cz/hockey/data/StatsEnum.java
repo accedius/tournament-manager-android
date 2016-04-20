@@ -4,7 +4,8 @@ package fit.cvut.org.cz.hockey.data;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public enum StatsEnum {
-    participates(1L);
+    participates(1L),
+    team_goals(2L);
 
     private Long id;
 

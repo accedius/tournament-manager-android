@@ -20,8 +20,16 @@ public class HockeyDBScripts {
             + HockeyDBConstants.cTOURNAMENTID + " INTEGER NOT NULL, "
             + "FOREIGN KEY ( " + HockeyDBConstants.cTOURNAMENTID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
 
-    public static final String CREATE_TABLE_PARTICIPANT_SCORE = "create table " + HockeyDBConstants.tPARTICIPANT_SCORE + " ("
-            + DBConstants.cPARTICIPANT_ID + " INTEGER PRIMARY KEY, "
-            + HockeyDBConstants.cSCORE + " INTEGER, "
-            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
+//    public static final String CREATE_TABLE_PARTICIPANT_SCORE = "create table " + HockeyDBConstants.tPARTICIPANT_SCORE + " ("
+//            + DBConstants.cPARTICIPANT_ID + " INTEGER PRIMARY KEY, "
+//            + HockeyDBConstants.cSCORE + " INTEGER, "
+//            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
+
+    public static final String CREATE_TABLE_MATCH_SCORE = "create table " + HockeyDBConstants.tMATCH_SCORE + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cMATCH_ID + " INTEGER, "
+            + HockeyDBConstants.cSHOOTOUTS + " INTEGER, "
+            + HockeyDBConstants.cOVERTIME + " INTEGER, "
+            + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
+
 }

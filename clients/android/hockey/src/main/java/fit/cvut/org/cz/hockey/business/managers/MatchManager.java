@@ -29,17 +29,8 @@ public class MatchManager implements IScoredMatchManager {
         for( DMatch dm : dMatches )
         {
             //TODO predelat na convertToDMatch
-            ScoredMatch match = new ScoredMatch();
-            match.setRound(dm.getRound());
-            match.setPeriod(dm.getPeriod());
-            match.setId(dm.getId());
-            match.setTournamentId(dm.getTournamentId());
-            match.setDate(dm.getDate());
-            match.setPlayed(dm.isPlayed());
-            match.setUid(dm.getUid());
-            match.setEtag(dm.getEtag());
-            match.setLastModified(dm.getLastModified());
-            match.setLastSynchronized(dm.getLastSynchronized());
+            ScoredMatch match = new ScoredMatch( dm );
+
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
             for( DParticipant dp : participants )
@@ -73,18 +64,9 @@ public class MatchManager implements IScoredMatchManager {
     public ScoredMatch getById(Context context, long Id) {
 
         DMatch dm = DAOFactory.getInstance().matchDAO.getById( context, Id );
-        //TODO predelat na convert to DMatch
-        ScoredMatch match = new ScoredMatch();
-        match.setRound(dm.getRound());
-        match.setPeriod(dm.getPeriod());
-        match.setId(dm.getId());
-        match.setTournamentId(dm.getTournamentId());
-        match.setDate(dm.getDate());
-        match.setPlayed( dm.isPlayed() );
-        match.setUid( dm.getUid());
-        match.setEtag( dm.getEtag());
-        match.setLastModified( dm.getLastModified());
-        match.setLastSynchronized( dm.getLastSynchronized());
+
+        ScoredMatch match = new ScoredMatch( dm );
+
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
         for( DParticipant dp : participants )
@@ -104,7 +86,7 @@ public class MatchManager implements IScoredMatchManager {
                 match.setAwayIds(dp.getPlayerIds());
             }
         }
-        //TODO doplnit skore od Participant statistik
+        //TODO doplnit skore od Participantu statistik
         return match;
     }
 
@@ -122,20 +104,16 @@ public class MatchManager implements IScoredMatchManager {
                 DAOFactory.getInstance().participantDAO.update(context, dp, true);
             }
             match.setPlayed( true );
-            match.setLastModified( new Date());
-            update( context, match);
+            match.setLastModified(new Date());
+            update(context, match);
+            DAOFactory.getInstance().statisticsDAO.createStatsForMatch( context, matchId );
 
         }
     }
 
     @Override
     public void insert(Context context, ScoredMatch match) {
-        DMatch dMatch = new DMatch();
-        dMatch.setDate(match.getDate());
-        dMatch.setPeriod(match.getPeriod());
-        dMatch.setRound(match.getRound());
-        dMatch.setTournamentId(match.getTournamentId());
-        dMatch.setNote(match.getNote());
+        DMatch dMatch = ScoredMatch.convertToDMatch( match );
         dMatch.setPlayed( false );
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
@@ -153,18 +131,8 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void update(Context context, ScoredMatch match) {
-        DMatch dMatch = new DMatch();
-        dMatch.setId(match.getId());
-        dMatch.setDate(match.getDate());
-        dMatch.setPeriod(match.getPeriod());
-        dMatch.setRound(match.getRound());
-        dMatch.setTournamentId(match.getTournamentId());
-        dMatch.setNote(match.getNote());
-        dMatch.setPlayed(match.isPlayed());
-        dMatch.setUid(match.getUid());
-        dMatch.setEtag(match.getEtag());
-        dMatch.setLastSynchronized(match.getLastSynchronized());
-        dMatch.setLastModified( match.getLastModified());
+        DMatch dMatch = ScoredMatch.convertToDMatch( match );
+
         DAOFactory.getInstance().matchDAO.update(context, dMatch);
 
     }

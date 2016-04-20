@@ -120,7 +120,7 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void delete(Context context, long id) {
-
+        //TODO nebo ne todo? --> ANO, protoze delete matche
     }
 
     @Override

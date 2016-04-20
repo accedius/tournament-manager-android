@@ -8,6 +8,7 @@ public class HockeyDBConstants {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
     public static final String tPARTICIPANT_SCORE = "participants_score";
+    public static final String tMATCH_SCORE = "match_score";
 
     //c prefix stands for column
     public static final String cID = "_id";
@@ -21,4 +22,6 @@ public class HockeyDBConstants {
     public static final String cSOW = "shootout_win";
     public static final String cSOL = "shootout_loss";
     public static final String cSCORE = "score";
+    public static final String cSHOOTOUTS = "shootouts";
+    public static final String cOVERTIME = "overtime";
 }
