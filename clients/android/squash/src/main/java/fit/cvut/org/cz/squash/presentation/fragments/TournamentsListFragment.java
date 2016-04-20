@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +20,9 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -33,6 +36,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     public static final String ARG_ID = "arg_id";
+    private CompetitionType type = null;
 
     public static TournamentsListFragment newInstance(long competitionId){
         TournamentsListFragment fragment = new TournamentsListFragment();
@@ -57,8 +61,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                         Intent intent = new Intent(c, TournamentDetailActivity.class);
                         intent.putExtra(TournamentDetailActivity.EXTRA_ID, tournamentId);
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-
-                        //TODO navazat typ
+                        intent.putExtra(TournamentDetailActivity.EXTRA_TYPE, type);
 
                         startActivity(intent);
                     }
@@ -122,12 +125,12 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_GET_BY_COMPETITION_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, new IntentFilter(TournamentService.ACTION_GET_BY_COMPETITION_ID));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(tReceiver);
     }
 
     @Override
@@ -144,5 +147,17 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
         });
 
         return fab;
+    }
+    private BroadcastReceiver tReceiver = new TournamentsReceiver();
+    public class TournamentsReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            progressBar.setVisibility(View.GONE);
+            contentView.setVisibility(View.VISIBLE);
+            TournamentsListFragment.super.bindDataOnView(intent);
+            type = CompetitionType.valueOf(intent.getStringExtra(TournamentService.EXTRA_TYPE));
+        }
     }
 }

@@ -15,6 +15,7 @@ import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TeamsListFragment;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -24,22 +25,35 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 public class TournamentDetailActivity extends AbstractTabActivity {
 
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_TYPE = "extra_type";
 
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
 
         long id = getIntent().getLongExtra(EXTRA_ID, -1);
+        CompetitionType type = (CompetitionType) getIntent().getSerializableExtra(EXTRA_TYPE);
 
-        return new DefaultViewPagerAdapter(manager,
-                new Fragment[]{
-                        SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
-                        StandingsWrapperFragment.newInstance(id),
-                        SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
-                        TeamsListFragment.newInstance(id),
-                        StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
-                },
-                new String[]{"Overview", "standings", "Matches", "Teams", "Players && stats"});
+        if (type == CompetitionType.Teams) {
+            return new DefaultViewPagerAdapter(manager,
+                    new Fragment[]{
+                            SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
+                            StandingsWrapperFragment.newInstance(id),
+                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
+                            TeamsListFragment.newInstance(id),
+                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
+                    },
+                    new String[]{"Overview", "standings", "Matches", "Teams", "Players && stats"});
+        } else {
+            return new DefaultViewPagerAdapter(manager,
+                    new Fragment[]{
+                            SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
+                            StandingsWrapperFragment.newInstance(id),
+                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
+                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
+                    },
+                    new String[]{"Overview", "standings", "Matches", "Players && stats"});
+        }
     }
 
     @Override

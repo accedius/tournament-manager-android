@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -86,11 +85,11 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 ArrayList<Team> tourTeams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, tourId );
 
-                ArrayList<Participant> participants = new ArrayList<>();
+                ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
 
                 for( Team t : tourTeams )
                 {
-                    participants.add( new Participant(t.getId(), t.getName()) );
+                    participants.add( new NewMatchSpinnerParticipant(t.getId(), t.getName()) );
                 }
 
                 res.putParcelableArrayListExtra( EXTRA_PART_LIST, participants );

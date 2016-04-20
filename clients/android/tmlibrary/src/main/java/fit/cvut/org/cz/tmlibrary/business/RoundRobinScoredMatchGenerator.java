@@ -1,10 +1,8 @@
 package fit.cvut.org.cz.tmlibrary.business;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 
@@ -16,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
 
     @Override
-    public ArrayList<ScoredMatch> generateRound(ArrayList<Participant> participants, int round) {
+    public ArrayList<ScoredMatch> generateRound(ArrayList<NewMatchSpinnerParticipant> participants, int round) {
         ArrayList<ScoredMatch> matches = new ArrayList<>();
         int periods_number = participants.size() - (participants.size() + 1) % 2;
         int participants_even_number = participants.size() + participants.size() % 2;
@@ -56,7 +54,7 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
         return matches;
     }
 
-    private ScoredMatch createMatch(ArrayList<Participant> participants, int home_idx, int away_idx, int period, int round) {
+    private ScoredMatch createMatch(ArrayList<NewMatchSpinnerParticipant> participants, int home_idx, int away_idx, int period, int round) {
         ScoredMatch sm = new ScoredMatch();
         sm.setPeriod(period);
         sm.setRound(round);

@@ -16,6 +16,9 @@
         <activity android:name=".presentation.activities.CreateTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="New Tournament"/>
+        <activity android:name=".presentation.activities.CreateMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="New Match"/>
         <activity android:name=".presentation.activities.TournamentDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Tournament Detail"/>

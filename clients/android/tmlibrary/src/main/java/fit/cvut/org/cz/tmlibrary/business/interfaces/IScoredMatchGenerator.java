@@ -2,7 +2,7 @@ package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 
 /**
@@ -10,5 +10,5 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
  */
 public interface IScoredMatchGenerator {
 
-    ArrayList<ScoredMatch> generateRound(ArrayList<Participant> participants, int round);
+    ArrayList<ScoredMatch> generateRound(ArrayList<NewMatchSpinnerParticipant> participants, int round);
 }

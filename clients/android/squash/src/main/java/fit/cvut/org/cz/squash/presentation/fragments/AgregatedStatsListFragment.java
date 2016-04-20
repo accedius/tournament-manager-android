@@ -183,6 +183,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
                 case StatsService.ACTION_GET_STATS_BY_TOURNAMENT:
                     AgregatedStatsListFragment.super.bindDataOnView(intent);
                     progressBar.setVisibility(View.GONE);
+                    contentView.setVisibility(View.VISIBLE);
                     break;
                 default:break;
             }

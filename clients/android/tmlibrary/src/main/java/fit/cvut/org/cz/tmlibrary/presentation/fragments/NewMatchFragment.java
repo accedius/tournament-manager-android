@@ -3,9 +3,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSpinner;
@@ -18,14 +15,13 @@ import android.widget.EditText;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -69,10 +65,10 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private AppCompatSpinner homeTeamSpinner, awayTeamSpinner;
     private FloatingActionButton fab;
     private Calendar dDate = null;
-    protected long id = -1, tournamentId;
+    protected long id = -1, tournamentId = -1;
     private EditText mDate, period, round, note;
 
-    private ArrayAdapter<Participant> homePartAdapter, awayPartAdapter;
+    private ArrayAdapter<NewMatchSpinnerParticipant> homePartAdapter, awayPartAdapter;
 
     private ScoredMatch ourMatch = null;
 
@@ -131,8 +127,8 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                     if (dDate != null) sDate = dDate.getTime();
                     int sPeriod = Integer.valueOf(period.getText().toString());
                     int sRound = Integer.valueOf(round.getText().toString());
-                    long homeTeamId = ((Participant) homeTeamSpinner.getSelectedItem()).getParticipantId();
-                    long awayTeamId = ((Participant) awayTeamSpinner.getSelectedItem()).getParticipantId();
+                    long homeTeamId = ((NewMatchSpinnerParticipant) homeTeamSpinner.getSelectedItem()).getParticipantId();
+                    long awayTeamId = ((NewMatchSpinnerParticipant) awayTeamSpinner.getSelectedItem()).getParticipantId();
 
                     if (id == -1) {
                         ScoredMatch match = new ScoredMatch();
@@ -220,7 +216,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
             smatch = intent.getParcelableExtra(getMatchKey());
             bindMatchOnView(smatch);
         }
-        ArrayList<Participant> participants = intent.getParcelableArrayListExtra( getTournamentParticipantsKey() );
+        ArrayList<NewMatchSpinnerParticipant> participants = intent.getParcelableArrayListExtra( getTournamentParticipantsKey() );
         bindParticipantsOnView( participants, smatch );
     }
 
@@ -236,13 +232,13 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         note.setText(match.getNote());
     }
 
-    private void bindParticipantsOnView( ArrayList<Participant> participants, ScoredMatch match )
+    private void bindParticipantsOnView( ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match )
     {
-        homePartAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, participants );
+        homePartAdapter = new ArrayAdapter<NewMatchSpinnerParticipant>(getContext(), android.R.layout.simple_spinner_item, participants );
         homePartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         homeTeamSpinner.setAdapter( homePartAdapter );
 
-        awayPartAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, participants );
+        awayPartAdapter = new ArrayAdapter<NewMatchSpinnerParticipant>(getContext(), android.R.layout.simple_spinner_item, participants );
         awayPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         awayTeamSpinner.setAdapter(awayPartAdapter);
 
@@ -256,9 +252,9 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
     }
 
-    private Participant findParticipant( ArrayList<Participant> participants, long id )
+    private NewMatchSpinnerParticipant findParticipant( ArrayList<NewMatchSpinnerParticipant> participants, long id )
     {
-        for( Participant part : participants )
+        for( NewMatchSpinnerParticipant part : participants )
             if( part.getParticipantId() == id ) return part;
         return null;
     }
