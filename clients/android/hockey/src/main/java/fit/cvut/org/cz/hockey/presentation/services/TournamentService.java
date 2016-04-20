@@ -29,6 +29,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_MATCHES_SUM = "extra_number_of_matches";
     public static final String EXTRA_TEAMS_SUM = "extra_number_of_teams";
     public static final String EXTRA_CONFIGURATION = "extra_configuration";
+    public static final String EXTRA_RESULT = "extra_result";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";
@@ -36,6 +37,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_ALL = "fit.cvut.org.cz.hockey.presentation.services.tournament_all";
     public static final String ACTION_GET_CONFIG_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_get_configuration_by_tournament_id";
     public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.hockey.presentation.services.tournament_set_configuration";
+    public static final String ACTION_DELETE = "fit.cvut.org.cz.hockey.presentation.services.tournament_delete";
 
     public TournamentService() {
         super("Hockey Tournament Service");
@@ -125,6 +127,15 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 Long tourId = intent.getLongExtra(EXTRA_ID, -1);
                 ManagerFactory.getInstance().pointConfigManager.update( this, pc, tourId );
 
+                break;
+            }
+            case ACTION_DELETE:
+            {
+                Intent res = new Intent(ACTION_DELETE);
+                long tourId = intent.getLongExtra( EXTRA_ID, -1 );
+                if( ManagerFactory.getInstance().tournamentManager.delete( this, tourId)) res.putExtra( EXTRA_RESULT, 0 );
+                else res.putExtra( EXTRA_RESULT, 1 );
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
                 break;
             }
         }

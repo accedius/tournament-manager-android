@@ -1,10 +1,13 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     private long competitionID;
     private static String ARG_ID = "competition_id";
+
+    private TournamentsListReceiver myReceiver = new TournamentsListReceiver();
 
     public static HockeyTournamentsListFragment newInstance(long id) {
         HockeyTournamentsListFragment fragment = new HockeyTournamentsListFragment();
@@ -84,7 +89,10 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                                             }
                                             case 1:
                                             {
-                                                //TODO implement delete tournament
+                                                Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_DELETE, getContext() );
+                                                intent.putExtra( TournamentService.EXTRA_ID, tourId);
+                                                getContext().startService( intent );
+                                                break;
                                             }
                                         }
                                         dialog.dismiss();
@@ -121,12 +129,14 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_GET_ALL));
+        IntentFilter filter = new IntentFilter( TournamentService.ACTION_GET_ALL);
+        filter.addAction( TournamentService.ACTION_DELETE );
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(myReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myReceiver);
     }
 
     @Override
@@ -145,6 +155,44 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         );
 
         return fab;
+    }
+
+    public class TournamentsListReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            contentView.setVisibility(View.VISIBLE);
+
+            switch (action)
+            {
+                case TournamentService.ACTION_GET_ALL: {
+                    HockeyTournamentsListFragment.super.bindDataOnView(intent);
+                    progressBar.setVisibility(View.GONE);
+                    break;
+                }
+                case TournamentService.ACTION_DELETE:
+                {
+                    int result = intent.getIntExtra( TournamentService.EXTRA_RESULT, -1);
+                    if( result == 0 ) //turnaj byl vymazan
+                    {
+                        contentView.setVisibility( View.GONE );
+                        progressBar.setVisibility(View.VISIBLE);
+                        askForData();
+                    }
+                    else
+                    {
+                        View v = getView();
+                        if( v != null ) Snackbar.make(v, R.string.tour_not_deleted, Snackbar.LENGTH_LONG).show();
+                    }
+
+                    break;
+                }
+                default: break;
+
+            }
+        }
     }
 
 

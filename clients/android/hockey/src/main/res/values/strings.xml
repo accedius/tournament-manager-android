@@ -26,4 +26,5 @@
     <string name="overtime">Overtime</string>
     <string name="shootouts">Shootouts</string>
     <string name="set_all">Everything needs to be set!</string>
+    <string name="tour_not_deleted">Tournament is not empty, could not be deleted!</string>
 </resources>

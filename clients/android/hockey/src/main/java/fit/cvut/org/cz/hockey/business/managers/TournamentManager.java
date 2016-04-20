@@ -5,8 +5,11 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
@@ -27,8 +30,16 @@ public class TournamentManager implements ITournamentManager {
     }
 
     @Override
-    public void delete(Context context, long id) {
-        DAOFactory.getInstance().tournamentDAO.delete( context, id );
+    public boolean delete(Context context, long id) {
+
+        ArrayList<DTeam> teams = DAOFactory.getInstance().teamDAO.getByTournamentId( context, id );
+        ArrayList<Long> players = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTournament(context, id);
+        ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, id);
+        if( teams.size() == 0 && players.size() == 0 && matches.size() == 0 ) {
+            DAOFactory.getInstance().tournamentDAO.delete(context, id);
+            return true;
+        }
+        return false;
     }
 
     @Override
