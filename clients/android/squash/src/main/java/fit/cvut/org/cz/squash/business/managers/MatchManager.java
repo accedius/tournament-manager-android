@@ -6,10 +6,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
-import fit.cvut.org.cz.squash.data.daos.ParticipantDAO;
-import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
@@ -57,16 +54,13 @@ public class MatchManager implements IScoredMatchManager {
         if (type == CompetitionType.Individuals){
             home = new DParticipant(-1, -1, matchId, "home");
             away = new DParticipant(-1, -1, matchId, "away");
-            //DStat hStat =
         } else {
             home = new DParticipant(-1, match.getHomeParticipantId(), matchId, "home");
             away = new DParticipant(-1, match.getAwayParticipantId(), matchId, "away");
         }
 
-        //TODO insert participation
-
-        DAOFactory.getInstance().participantDAO.insert(context, home, false);
-        DAOFactory.getInstance().participantDAO.insert(context, away, false);
+        DAOFactory.getInstance().participantDAO.insert(context, home);
+        DAOFactory.getInstance().participantDAO.insert(context, away);
     }
 
     @Override

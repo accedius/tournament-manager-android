@@ -45,14 +45,14 @@ public class MatchManager implements IScoredMatchManager {
                     match.setHomeParticipantId( dp.getTeamId() );
                     DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                     match.setHomeName( dt.getName() );
-                    match.setHomeIds( dp.getPlayerIds() );
+                    //match.setHomeIds( dp.getPlayerIds() );
                 }
                 if( dp.getRole().equals(ParticipantType.away.toString()) )
                 {
                     match.setAwayParticipantId(dp.getTeamId());
                     DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                     match.setAwayName( dt.getName() );
-                    match.setAwayIds(dp.getPlayerIds());
+                    //match.setAwayIds(dp.getPlayerIds());
                 }
             }
             //TODO skore podle participantu do scoredMatch
@@ -88,14 +88,14 @@ public class MatchManager implements IScoredMatchManager {
                 match.setHomeParticipantId( dp.getTeamId() );
                 DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                 match.setHomeName( dt.getName() );
-                match.setHomeIds( dp.getPlayerIds() );
+                //match.setHomeIds( dp.getPlayerIds() );
             }
             if( dp.getRole().equals(ParticipantType.away.toString()) )
             {
                 match.setAwayParticipantId(dp.getTeamId());
                 DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, dp.getTeamId() );
                 match.setAwayName( dt.getName() );
-                match.setAwayIds(dp.getPlayerIds());
+               // match.setAwayIds(dp.getPlayerIds());
             }
         }
         //TODO doplnit skore od Participantu statistik
@@ -112,8 +112,8 @@ public class MatchManager implements IScoredMatchManager {
             for (DParticipant dp : participants) {
                 long teamId = dp.getTeamId();
                 ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
-                dp.setPlayerIds(plIds);
-                DAOFactory.getInstance().participantDAO.update(context, dp, true);
+               // dp.setPlayerIds(plIds);
+                DAOFactory.getInstance().participantDAO.update(context, dp);
             }
             match.setPlayed( true );
             match.setLastModified(new Date());
@@ -140,12 +140,12 @@ public class MatchManager implements IScoredMatchManager {
 
         //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id
         DParticipant homeParticipant = new DParticipant( -1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString() );
-        homeParticipant.setPlayerIds( match.getHomeIds() );
+        //homeParticipant.setPlayerIds( match.getHomeIds() );
         DParticipant awayParticipant = new DParticipant( -1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString() );
-        awayParticipant.setPlayerIds( match.getAwayIds() );
+        //awayParticipant.setPlayerIds( match.getAwayIds() );
 
-        DAOFactory.getInstance().participantDAO.insert(context, homeParticipant, false);
-        DAOFactory.getInstance().participantDAO.insert( context, awayParticipant, false);
+        DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
+        DAOFactory.getInstance().participantDAO.insert( context, awayParticipant);
 
 
     }

@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.squash.data.interfaces;
 
+import android.content.Context;
+
 import fit.cvut.org.cz.squash.data.entities.DStat;
 
 /**
@@ -7,5 +9,5 @@ import fit.cvut.org.cz.squash.data.entities.DStat;
  */
 public interface IStatDAO {
 
-    void insert(DStat stat);
+    void insert(Context context, DStat stat);
 }

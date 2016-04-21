@@ -11,8 +11,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
  */
 public interface IParticipantDAO {
 
-    long insert( Context context, DParticipant participant, boolean playersToo );
-    void update( Context context, DParticipant participant, boolean playersToo );
+    long insert(Context context, DParticipant participant);
+    void update(Context context, DParticipant participant);
     void delete( Context context, long id );
 
     ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );

@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
@@ -16,7 +17,11 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
 
     @Override
     protected void saveMatch(ScoredMatch match) {
-
+        Intent i = MatchService.newStartIntent(MatchService.ACTION_CREATE_MATCH, getContext());
+        i.setAction(MatchService.ACTION_CREATE_MATCH);
+        match.setTournamentId(tournamentId);
+        i.putExtra(MatchService.EXTRA_MATCH, match);
+        getContext().startService(i);
     }
 
     @Override

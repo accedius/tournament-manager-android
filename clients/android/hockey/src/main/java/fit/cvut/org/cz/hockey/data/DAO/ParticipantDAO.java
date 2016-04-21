@@ -96,7 +96,7 @@ public class ParticipantDAO implements IParticipantDAO {
     }
 
     @Override
-    public long insert(Context context, DParticipant participant, boolean playersToo) {
+    public long insert(Context context, DParticipant participant) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         ContentValues values = toContVal( participant );
@@ -107,15 +107,15 @@ public class ParticipantDAO implements IParticipantDAO {
         long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, participant.getMatchId() ).getTournamentId();
         long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
 
-        if( playersToo ) {
-            updateParticipantPlayers( context, db, newRowId, tournamentId, competitionId, participant.getPlayerIds() );
-        }
+//        if( playersToo ) {
+//            updateParticipantPlayers( context, db, newRowId, tournamentId, competitionId, participant.getPlayerIds() );
+//        }
 
         return newRowId;
     }
 
     @Override
-    public void update(Context context, DParticipant participant, boolean playersToo) {
+    public void update(Context context, DParticipant participant) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
 
         ContentValues values = toContVal( participant );
@@ -129,9 +129,9 @@ public class ParticipantDAO implements IParticipantDAO {
         long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, participant.getMatchId() ).getTournamentId();
         long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
 
-        if( playersToo ) {
-            updateParticipantPlayers( context, db, participant.getId(), tournamentId, competitionId, participant.getPlayerIds() );
-        }
+//        if( playersToo ) {
+//            updateParticipantPlayers( context, db, participant.getId(), tournamentId, competitionId, participant.getPlayerIds() );
+//        }
     }
 
     @Override
@@ -150,7 +150,7 @@ public class ParticipantDAO implements IParticipantDAO {
         while (cursor.moveToNext())
         {
             DParticipant dp = CursorParser.getInstance().parseDParticipant( cursor );
-            dp.setPlayerIds( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dp.getId() ) );
+            //dp.setPlayerIds( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dp.getId() ) );
             res.add( dp );
         }
 
