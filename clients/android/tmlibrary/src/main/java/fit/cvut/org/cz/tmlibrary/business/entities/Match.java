@@ -10,6 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
 /**
  * Created by Vaclav on 20. 4. 2016.
@@ -25,7 +26,38 @@ public class Match extends ShareBase {
 
     private ArrayList<Participant> participants;
 
+    public static DMatch convertToDMatch(Match m){
+        return new DMatch(m.getId(), m.getTournamentId(), m.getPeriod(), m.getRound(), m.getDate(), m.getNote(), m.isPlayed(), m.getEtag(),
+                m.getUid(), m.getLastModified(), m.getLastSynchronized());
+    }
+
     public Match() {}
+
+    public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round) {
+        this.id = id;
+        this.tournamentId = tournamentId;
+        this.type = type;
+        this.date = date;
+        this.played = played;
+        this.note = note;
+        this.period = period;
+        this.round = round;
+    }
+
+    public Match(DMatch match){
+        this.id = match.getId();
+        this.tournamentId = match.getTournamentId();
+        this.type = null;
+        this.date = match.getDate();
+        this.played = match.isPlayed();
+        this.note = match.getNote();
+        this.period = match.getPeriod();
+        this.round = match.getRound();
+        this.etag = match.getEtag();
+        this.uid = match.getUid();
+        this.lastModified = match.getLastModified();
+        this.lastSynchronized = match.getLastSynchronized();
+    }
 
     protected Match(Parcel in) {
         id = in.readLong();

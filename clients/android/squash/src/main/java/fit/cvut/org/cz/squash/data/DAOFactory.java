@@ -1,13 +1,19 @@
 package fit.cvut.org.cz.squash.data;
 
 import fit.cvut.org.cz.squash.data.daos.CompetitionDAO;
+import fit.cvut.org.cz.squash.data.daos.MatchDAO;
+import fit.cvut.org.cz.squash.data.daos.ParticipantDAO;
 import fit.cvut.org.cz.squash.data.daos.PlayerDAO;
 import fit.cvut.org.cz.squash.data.daos.PointConfigDAO;
+import fit.cvut.org.cz.squash.data.daos.StatDAO;
 import fit.cvut.org.cz.squash.data.daos.TeamDAO;
 import fit.cvut.org.cz.squash.data.daos.TournamentDAO;
 import fit.cvut.org.cz.squash.data.interfaces.IPointConfigDAO;
+import fit.cvut.org.cz.squash.data.interfaces.IStatDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
@@ -30,4 +36,7 @@ public class DAOFactory {
     public IPackagePlayerDAO playerDAO = new PlayerDAO();
     public ITeamDAO teamDAO = new TeamDAO();
     public IPointConfigDAO pointCfgDAO = new PointConfigDAO();
+    public IMatchDAO matchDAO = new MatchDAO();
+    public IParticipantDAO participantDAO = new ParticipantDAO();
+    public IStatDAO statDAO = new StatDAO();
 }

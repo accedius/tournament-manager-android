@@ -22,6 +22,7 @@ public class ScoredMatch extends Match {
     private String homeName, awayName;
 
     public ScoredMatch() {}
+    public ScoredMatch(DMatch match) {super(match);}
 
     protected ScoredMatch(Parcel in) {
         super(in);

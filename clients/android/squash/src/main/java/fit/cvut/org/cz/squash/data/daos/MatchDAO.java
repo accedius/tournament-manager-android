@@ -1,0 +1,81 @@
+package fit.cvut.org.cz.squash.data.daos;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+
+import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.squash.data.SDBConstants;
+import fit.cvut.org.cz.squash.data.entities.DPointConfig;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
+
+/**
+ * Created by Vaclav on 21. 4. 2016.
+ */
+public class MatchDAO implements IMatchDAO {
+
+    public ContentValues convert(DMatch match){
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.cROUND, match.getRound());
+        cv.put(DBConstants.cPERIOD, match.getPeriod());
+        cv.put(DBConstants.cPLAYED, match.isPlayed());
+        cv.put(DBConstants.cTOURNAMENT_ID, match.getTournamentId());
+        cv.put(DBConstants.cNOTE, match.getNote());
+        if (match.getDate() != null)
+            cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+        return cv;
+    }
+
+    @Override
+    public long insert(Context context, DMatch match) {
+        ContentValues cv = convert(match);
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        long id = db.insert(DBConstants.tMATCHES, null, cv);
+        db.close();
+        return id;
+    }
+
+    @Override
+    public void update(Context context, DMatch match) {
+
+    }
+
+    @Override
+    public void delete(Context context, long id) {
+
+    }
+
+    @Override
+    public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String selection = String.format("select * from %s where %s = ?", DBConstants.tMATCHES, DBConstants.cTOURNAMENT_ID);
+
+        Cursor c = db.rawQuery(selection, new String[]{Long.toString(tournamentId)});
+
+        ArrayList<DMatch> matches = new ArrayList<>();
+
+        while (c.moveToNext())
+            matches.add(CursorParser.getInstance().parseDMatch(c));
+
+        c.close();
+        db.close();
+
+        return matches;
+    }
+
+    @Override
+    public DMatch getById(Context context, long id) {
+        return null;
+    }
+}

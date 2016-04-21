@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -33,6 +35,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_MATCHES_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_matches_by_tournament";
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
     public static final String ACTION_GET_MATCH_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_match_by_id";
+    public static final String ACTION_CREATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.create_match";
 
     @Override
     protected String getActionKey() {
@@ -77,6 +80,11 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 Intent result = new Intent(action);
                 result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, participants);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_CREATE_MATCH:{
+                ScoredMatch match = intent.getParcelableExtra(EXTRA_MATCH);
+                ManagersFactory.getInstance().matchManager.insert(this, match);
                 break;
             }
         }
