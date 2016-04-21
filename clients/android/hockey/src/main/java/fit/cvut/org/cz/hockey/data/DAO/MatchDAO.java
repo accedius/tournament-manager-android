@@ -57,7 +57,7 @@ public class MatchDAO implements IMatchDAO {
 
         ContentValues values = toContVal(match);
 
-        values.put(DBConstants.cID, match.getId());
+        //values.put(DBConstants.cID, match.getId());
 
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(match.getId()) };

@@ -27,7 +27,14 @@ public class MatchManager implements IScoredMatchManager {
         for( DMatch dm : dMatches )
         {
             //TODO predelat na convertToDMatch
-            ScoredMatch match = new ScoredMatch( dm );
+            ScoredMatch match = new ScoredMatch(  );
+            match.setId( dm.getId());
+            match.setTournamentId(dm.getTournamentId());
+            match.setPeriod(dm.getPeriod());
+            match.setRound(dm.getRound());
+            match.setNote(dm.getNote());
+            match.setDate(dm.getDate());
+            match.setPlayed( dm.isPlayed());
 
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
@@ -63,7 +70,14 @@ public class MatchManager implements IScoredMatchManager {
 
         DMatch dm = DAOFactory.getInstance().matchDAO.getById( context, Id );
 
-        ScoredMatch match = new ScoredMatch( dm );
+        ScoredMatch match = new ScoredMatch(  );
+        match.setId( dm.getId());
+        match.setTournamentId( dm.getTournamentId());
+        match.setPeriod( dm.getPeriod());
+        match.setRound( dm.getRound());
+        match.setNote( dm.getNote());
+        match.setDate( dm.getDate());
+        match.setPlayed( dm.isPlayed());
 
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, dm.getId());
 
@@ -111,7 +125,16 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void insert(Context context, ScoredMatch match) {
-        DMatch dMatch = ScoredMatch.convertToDMatch( match );
+        DMatch dMatch = new DMatch();
+        dMatch.setTournamentId( match.getTournamentId());
+        dMatch.setDate(match.getDate());
+        dMatch.setRound(match.getRound());
+        dMatch.setPeriod(match.getPeriod());
+        dMatch.setNote(match.getNote());
+        dMatch.setLastModified(new Date());
+        dMatch.setLastSynchronized(match.getLastSynchronized());
+        dMatch.setUid(match.getUid());
+        dMatch.setEtag( match.getEtag());
         dMatch.setPlayed( false );
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
@@ -129,7 +152,18 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void update(Context context, ScoredMatch match) {
-        DMatch dMatch = ScoredMatch.convertToDMatch( match );
+        DMatch dMatch = new DMatch();
+        dMatch.setId( match.getId());
+        dMatch.setTournamentId( match.getTournamentId());
+        dMatch.setDate(match.getDate());
+        dMatch.setRound(match.getRound());
+        dMatch.setPeriod(match.getPeriod());
+        dMatch.setNote(match.getNote());
+        dMatch.setLastModified( match.getLastModified());
+        dMatch.setLastSynchronized( match.getLastSynchronized());
+        dMatch.setUid( match.getUid());
+        dMatch.setEtag( match.getEtag());
+        dMatch.setPlayed( match.isPlayed() );
 
         DAOFactory.getInstance().matchDAO.update(context, dMatch);
 
