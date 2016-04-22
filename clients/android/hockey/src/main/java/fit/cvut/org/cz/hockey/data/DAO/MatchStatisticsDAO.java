@@ -2,6 +2,7 @@ package fit.cvut.org.cz.hockey.data.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -41,6 +42,26 @@ public class MatchStatisticsDAO {
         return newRowId;
     }
 
+    public DMatchStat getByMatchId( Context context, long matchId)
+    {
+        String[] selArgs = { String.valueOf( matchId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        Cursor cursor = db.query( HockeyDBConstants.tMATCH_SCORE, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null );
+        cursor.moveToFirst();
+        if( cursor.getCount() <= 0 )
+            return null;
+        DMatchStat res = new DMatchStat();
+        boolean ot, so;
+        ot = !(0 == cursor.getInt(cursor.getColumnIndex(HockeyDBConstants.cOVERTIME)));
+        so = !(0 == cursor.getInt(cursor.getColumnIndex(HockeyDBConstants.cSHOOTOUTS)));
+        res.setMatchId( matchId );
+        res.setOvertime( ot );
+        res.setShootouts( so );
+
+        cursor.close();
+
+        return res;
+    }
 
 
 }

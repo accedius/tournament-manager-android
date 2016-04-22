@@ -146,7 +146,7 @@ public class MatchManager implements IScoredMatchManager {
             partsForGenerator.add( new NewMatchSpinnerParticipant( dTeam.getId(), dTeam.getName() ) );
         }
 
-        int lastRound = 1;
+        int lastRound = 0;
 
         ArrayList<DMatch> tournMatches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, tournamentId );
 

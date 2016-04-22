@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
@@ -69,11 +70,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
 
                     @Override
                     public void onClick(View v) {
-                        //TODO match begin bude nejlepsi ukotvit v nove nastartovane aktivite, kdyz si fragment posle pro data -> udelam begin a pak mu teprv poslu data ze service zpatky
-                        Intent intent = MatchService.newStartIntent( MatchService.ACTION_BEGIN, getContext() );
-                        intent.putExtra( MatchService.EXTRA_ID, fmId );
-
-                        getContext().startService( intent );
+                        Intent intent = ShowMatchActivity.newStartIntent( getContext(), fmId );
+                        startActivity( intent );
                     }
                 });
             }

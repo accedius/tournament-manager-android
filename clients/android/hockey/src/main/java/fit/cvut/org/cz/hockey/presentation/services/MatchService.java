@@ -7,6 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -20,6 +22,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_MATCH = "extra_match";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_MATCH_SCORE = "extra_match_score";
     public static final String EXTRA_TOUR_ID = "extra_tour_id";
     public static final String EXTRA_PART_LIST = "extra_participants_list";
     public static final String EXTRA_MATCH_LIST = "extra_match_list";
@@ -30,6 +33,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_UPDATE = "action_update_match";
     public static final String ACTION_BEGIN = "action_begin_match";
     public static final String ACTION_GENERATE_ROUND = "action_generate_round";
+    public static final String ACTION_FIND_BY_ID_FOR_OVERVIEW = "action_find_match_for_match_overview";
 
 
     public MatchService() {
@@ -130,6 +134,26 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 ManagerFactory.getInstance().matchManager.generateRound( this, tourId );
 
                 LocalBroadcastManager.getInstance( this ).sendBroadcast(res);
+                break;
+            }
+            case ACTION_FIND_BY_ID_FOR_OVERVIEW:
+            {
+                Intent res = new Intent();
+                res.setAction(ACTION_FIND_BY_ID_FOR_OVERVIEW);
+                long matchId = intent.getLongExtra( EXTRA_ID, -1 );
+
+                ScoredMatch m = ManagerFactory.getInstance().matchManager.getById(this, matchId);
+                if( !m.isPlayed() ){
+                    ManagerFactory.getInstance().matchManager.beginMatch( this, matchId );
+                    m = ManagerFactory.getInstance().matchManager.getById(this, matchId);
+                }
+                res.putExtra(EXTRA_MATCH, m);
+
+                MatchScore score = ManagerFactory.getInstance().statisticsManager.getMatchScoreByMatchId( this, matchId );
+                res.putExtra( EXTRA_MATCH_SCORE, score );
+
+
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
                 break;
             }
         }

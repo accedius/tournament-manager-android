@@ -8,9 +8,11 @@ import java.util.Comparator;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
+import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
@@ -103,7 +105,7 @@ public class StatisticsManager {
 
         ArrayList<AgregatedStatistics> res = new ArrayList<>();
 
-        ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId( context, tourId);
+        ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId(context, tourId);
 
         for( Player p : tourPlayers )
         {
@@ -132,6 +134,15 @@ public class StatisticsManager {
             }
         });
         return standings;
+    }
+    public MatchScore getMatchScoreByMatchId( Context context, long id )
+    {
+        DMatchStat stat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, id);
+        MatchScore score = new MatchScore();
+        score.setMatchId( stat.getMatchId() );
+        score.setShootouts( stat.isShootouts() );
+        score.setOvertime( stat.isOvertime() );
+        return score;
     }
 
 

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -90,6 +92,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                                             case 1:
                                             {
                                                 Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_DELETE, getContext() );
+                                                intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                                                 intent.putExtra( TournamentService.EXTRA_ID, tourId);
                                                 getContext().startService( intent );
                                                 break;

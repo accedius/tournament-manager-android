@@ -23,14 +23,4 @@ public enum StatsEnum {
         return forPlayer;
     }
 
-
-//    public long getId() { return id; }
-//
-//    public static StatsEnum getById( Long id )
-//    {
-//        for( StatsEnum e : values() ){
-//            if (e.id.equals( id )) return e;
-//        }
-//        return null;
-//    }
 }
