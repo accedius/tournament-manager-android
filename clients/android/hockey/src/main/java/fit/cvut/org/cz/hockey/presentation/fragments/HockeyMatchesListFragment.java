@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,6 +18,7 @@ import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
@@ -29,6 +31,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
 
     private long tournamentID;
     private static String ARG_ID = "tournament_id";
+
+    private MatchReceiver matchReceiver = new MatchReceiver();
 
 
     public static HockeyMatchesListFragment newInstance( long id )
@@ -96,12 +100,16 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter( MatchService.ACTION_FIND_BY_TOURNAMENT_ID ));
+        IntentFilter filter = new IntentFilter( MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
+        filter.addAction( MatchService.ACTION_CREATE);
+        filter.addAction(MatchService.ACTION_GENERATE_ROUND);
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver( matchReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(matchReceiver);
     }
 
     @Override
@@ -131,7 +139,11 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                                            }
                                                            case 1:
                                                            {
-                                                               //TODO prida cely kolo
+                                                               Intent intent = MatchService.newStartIntent( MatchService.ACTION_GENERATE_ROUND, getContext());
+                                                               intent.putExtra( MatchService.EXTRA_TOUR_ID, tourId );
+
+                                                               getContext().startService( intent );
+                                                               //TODO bude se zase muset udelat specialni receiver, aby refreshnul seznam zapasu potom, co se vygenerujou
                                                                break;
                                                            }
                                                        }
@@ -149,6 +161,34 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
         );
 
         return fab;
+    }
+
+    public class MatchReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            switch (action)
+            {
+                case MatchService.ACTION_FIND_BY_TOURNAMENT_ID: {
+                    HockeyMatchesListFragment.super.bindDataOnView(intent);
+                    progressBar.setVisibility(View.GONE);
+                    contentView.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case MatchService.ACTION_GENERATE_ROUND:
+                case MatchService.ACTION_CREATE:
+                {
+                    contentView.setVisibility( View.GONE );
+                    progressBar.setVisibility(View.VISIBLE);
+                    askForData();
+                }
+                default: break;
+
+            }
+        }
     }
 
 

@@ -3,12 +3,17 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
+import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
@@ -72,6 +77,14 @@ public class MatchManager implements IScoredMatchManager {
             res.add( fillMatch(context, dm));
         }
 
+        Collections.sort(res, new Comparator<ScoredMatch>() {
+            @Override
+            public int compare(ScoredMatch lhs, ScoredMatch rhs) {
+                if( lhs.getRound() != rhs.getRound() ) return lhs.getRound() - rhs.getRound();
+                return lhs.getPeriod() - rhs.getPeriod();
+            }
+        });
+
 
         return res;
     }
@@ -120,6 +133,38 @@ public class MatchManager implements IScoredMatchManager {
             DMatchStat matchStat = new DMatchStat(matchId, false, false);
             DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(context, matchStat);
 
+        }
+    }
+
+    @Override
+    public void generateRound(Context context, long tournamentId) {
+        ArrayList<DTeam> teamsInTournament = DAOFactory.getInstance().teamDAO.getByTournamentId( context, tournamentId );
+        ArrayList<NewMatchSpinnerParticipant> partsForGenerator = new ArrayList<>();
+
+        for( DTeam dTeam : teamsInTournament )
+        {
+            partsForGenerator.add( new NewMatchSpinnerParticipant( dTeam.getId(), dTeam.getName() ) );
+        }
+
+        int lastRound = 1;
+
+        ArrayList<DMatch> tournMatches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, tournamentId );
+
+        for( DMatch match : tournMatches )
+        {
+            if( match.getRound() > lastRound ) lastRound = match.getRound();
+        }
+
+
+        IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
+
+        ArrayList<ScoredMatch> matchList = generator.generateRound( partsForGenerator, lastRound + 1 );
+
+        for( ScoredMatch match : matchList ){ // prepare matches for insert and insert them
+            match.setDate( new Date());
+            match.setNote("");
+            match.setTournamentId(tournamentId);
+            insert( context, match );
         }
     }
 

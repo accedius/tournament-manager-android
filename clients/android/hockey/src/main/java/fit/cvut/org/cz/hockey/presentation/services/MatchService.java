@@ -29,6 +29,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_CREATE = "action_create_match";
     public static final String ACTION_UPDATE = "action_update_match";
     public static final String ACTION_BEGIN = "action_begin_match";
+    public static final String ACTION_GENERATE_ROUND = "action_generate_round";
 
 
     public MatchService() {
@@ -103,7 +104,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_FIND_BY_TOURNAMENT_ID:
             {
                 Intent res = new Intent(ACTION_FIND_BY_TOURNAMENT_ID);
-                //TODO remove mock
 
                 long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
                 ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( this, tourId );
@@ -120,6 +120,16 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 ManagerFactory.getInstance().matchManager.beginMatch( this, matchId );
 
                 LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+                break;
+            }
+            case ACTION_GENERATE_ROUND:
+            {
+                Intent res = new Intent(ACTION_GENERATE_ROUND);
+                long tourId = intent.getLongExtra( EXTRA_TOUR_ID, -1 );
+
+                ManagerFactory.getInstance().matchManager.generateRound( this, tourId );
+
+                LocalBroadcastManager.getInstance( this ).sendBroadcast(res);
                 break;
             }
         }

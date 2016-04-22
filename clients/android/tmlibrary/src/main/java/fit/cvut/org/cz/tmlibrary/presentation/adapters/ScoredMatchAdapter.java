@@ -35,7 +35,9 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
         else holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
 
         if (position > 0){
-
+            holder.roundSeparator1.setVisibility(View.GONE);
+            holder.roundSeparator2.setVisibility(View.GONE);
+            holder.periodSeparator.setVisibility(View.GONE);
             if (data.get(position-1).getRound() != m.getRound()){
                 holder.roundSeparator1.setVisibility(View.VISIBLE);
                 holder.roundSeparator2.setVisibility(View.VISIBLE);
