@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
+import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
+import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
@@ -107,11 +111,39 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
-                                       //TODO pridat kontrolu poctu tymu (musi byt aspon 2)
-                                       long tourId = getArguments().getLong(ARG_ID, -1);
-                                       Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId, true);
+                                       final long tourId = getArguments().getLong(ARG_ID, -1);
 
-                                       startActivity(intent);
+                                       AddMatchDialog dialog = new AddMatchDialog(){
+                                           @Override
+                                           protected DialogInterface.OnClickListener supplyListener() {
+                                               return new DialogInterface.OnClickListener(){
+                                                   @Override
+                                                   public void onClick(DialogInterface dialog, int which) {
+                                                       switch ( which )
+                                                       {
+                                                           case 0:
+                                                           {
+                                                               //TODO pridat kontrolu poctu tymu (musi byt aspon 2)
+                                                               Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId, true);
+
+                                                               startActivity(intent);
+                                                               break;
+                                                           }
+                                                           case 1:
+                                                           {
+                                                               //TODO prida cely kolo
+                                                               break;
+                                                           }
+                                                       }
+                                                       dialog.dismiss();
+                                                   }
+                                               };
+                                           }
+                                       };
+
+                                       dialog.show(getFragmentManager(), "Add Match");
+
+
                                    }
                                }
         );
