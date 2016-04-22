@@ -2,11 +2,15 @@ package fit.cvut.org.cz.squash.data.daos;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SDBConstants;
 import fit.cvut.org.cz.squash.data.entities.DStat;
+import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.squash.data.interfaces.IStatDAO;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
@@ -36,5 +40,21 @@ public class StatDAO implements IStatDAO {
 
         db.insert(SDBConstants.tSTATS, null, cv);
         db.close();
+    }
+
+    @Override
+    public ArrayList<Long> getPlayerIdsForParticipant(Context context, long id) {
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<Long> ids = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select %s from %s where %s = ? and %s = ?", DBConstants.cPLAYER_ID, SDBConstants.tSTATS, DBConstants.cPARTICIPANT_ID, SDBConstants.cTYPE), new String[]{Long.toString(id), StatsEnum.MATCH_PARTICIPATION.toString()});
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+
+        c.close();
+        db.close();
+
+        return ids;
     }
 }

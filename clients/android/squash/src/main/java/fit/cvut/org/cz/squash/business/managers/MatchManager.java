@@ -6,12 +6,17 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
+import fit.cvut.org.cz.squash.data.entities.DStat;
+import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -25,8 +30,29 @@ public class MatchManager implements IScoredMatchManager {
         for (DMatch dMatch : dMatches){
 
             ScoredMatch match = new ScoredMatch(dMatch);
+            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, dMatch.getId());
+            DParticipant home = null;
+            DParticipant away = null;
+            for (DParticipant participant : participants){
+                if (participant.getRole().equals("home")) home = participant;
+                else away = participant;
+            }
+            if (home.getTeamId() != -1){
+                DTeam t = DAOFactory.getInstance().teamDAO.getById(context, home.getTeamId());
+                match.setHomeName(t.getName());
+                t = DAOFactory.getInstance().teamDAO.getById(context, away.getTeamId());
+                match.setAwayName(t.getName());
+            } else {
+                String homeName = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0).getName();
+                String awayName = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0).getName();
+                match.setHomeName(homeName);
+                match.setAwayName(awayName);
+            }
+
+            //TODO score
 
 
+            matches.add(match);
         }
 
 
@@ -54,13 +80,18 @@ public class MatchManager implements IScoredMatchManager {
         if (type == CompetitionType.Individuals){
             home = new DParticipant(-1, -1, matchId, "home");
             away = new DParticipant(-1, -1, matchId, "away");
+            long homePartipId = DAOFactory.getInstance().participantDAO.insert(context, home);
+            long awayPartipId = DAOFactory.getInstance().participantDAO.insert(context, away);
+            //for individuals we have to insert match participation as well else we could not link match to player
+            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), match.getHomeParticipantId(), homePartipId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
+            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), match.getAwayParticipantId(), awayPartipId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
         } else {
             home = new DParticipant(-1, match.getHomeParticipantId(), matchId, "home");
             away = new DParticipant(-1, match.getAwayParticipantId(), matchId, "away");
+            DAOFactory.getInstance().participantDAO.insert(context, home);
+            DAOFactory.getInstance().participantDAO.insert(context, away);
         }
 
-        DAOFactory.getInstance().participantDAO.insert(context, home);
-        DAOFactory.getInstance().participantDAO.insert(context, away);
     }
 
     @Override

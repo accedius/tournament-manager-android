@@ -11,6 +11,18 @@ public class DStat {
 
     public DStat() {}
 
+    public DStat(long id, long competitionId, long tournamentId, long playerId, long participantId, int status, int number, int value, StatsEnum type) {
+        this.id = id;
+        this.competitionId = competitionId;
+        this.tournamentId = tournamentId;
+        this.playerId = playerId;
+        this.participantId = participantId;
+        this.status = status;
+        this.number = number;
+        this.value = value;
+        this.type = type;
+    }
+
     public long getId() {
         return id;
     }

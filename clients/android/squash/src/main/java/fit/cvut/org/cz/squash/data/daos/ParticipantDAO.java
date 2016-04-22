@@ -2,13 +2,16 @@ package fit.cvut.org.cz.squash.data.daos;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 
 /**
@@ -48,6 +51,18 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
-        return null;
+
+        ArrayList<DParticipant> participants = new ArrayList<>();
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPARTICIPANTS, DBConstants.cMATCH_ID), new String[]{Long.toString(matchId)});
+
+        while (c.moveToNext())
+            participants.add(CursorParser.getInstance().parseDParticipant(c));
+        c.close();
+        db.close();
+
+        return participants;
     }
 }

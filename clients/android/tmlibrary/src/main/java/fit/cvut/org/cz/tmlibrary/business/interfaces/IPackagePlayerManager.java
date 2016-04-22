@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 
 /**
@@ -13,15 +14,13 @@ public interface IPackagePlayerManager {
 
     void addPlayerToCompetition(Context context, long playerId, long competitionId);
     void addPlayerToTournament(Context context, long playerId, long tournamentId);
-    void addPlayerToMatch(Context context, long playerId, long matchId);
 
     void deletePlayerFromCompetition(Context context, long playerId, long competitionId);
     void deletePlayerFromTournament(Context context, long playerId, long tournamentId);
-    void deletePlayerFromMatch(Context context, long playerId, long matchId);
 
     ArrayList<Player> getPlayersByCompetition(Context context, long competitionId);
     ArrayList<Player> getPlayersByTournament(Context context, long tournamentId);
-    ArrayList<Player> getPlayersByMatch(Context context, long matchId);
+    ArrayList<Player> getPlayersByParticipant(Context context, long participantId);
     ArrayList<Player> getPlayersByTeam(Context context, long teamId);
     ArrayList<Player> getAllPlayers(Context context);
 
@@ -30,4 +29,7 @@ public interface IPackagePlayerManager {
 
     void updatePlayersInTeam(Context context, long teamId, ArrayList<Player> players);
     ArrayList<Player> getPlayersNotInTeams(Context context, long tournamentId);
+
+    void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, ArrayList<Player> players);
+    ArrayList<Player> getPlayersNotInParticipant(Context context, long participantId);
 }

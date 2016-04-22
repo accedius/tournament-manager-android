@@ -20,6 +20,7 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
         Intent i = MatchService.newStartIntent(MatchService.ACTION_CREATE_MATCH, getContext());
         i.setAction(MatchService.ACTION_CREATE_MATCH);
         match.setTournamentId(tournamentId);
+        match.setPlayed(false);
         i.putExtra(MatchService.EXTRA_MATCH, match);
         getContext().startService(i);
     }

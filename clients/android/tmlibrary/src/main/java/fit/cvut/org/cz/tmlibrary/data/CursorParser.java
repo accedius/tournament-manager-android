@@ -174,7 +174,7 @@ public class CursorParser {
 
     public DParticipant parseDParticipant( Cursor cursor )
     {
-        long id, teamId, matchId;
+        long id, teamId = -1, matchId;
         String uid, role, etag;
         Date lastModified = null;
         Date lastSynchronized = null;
@@ -182,7 +182,8 @@ public class CursorParser {
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
         role = cursor.getString(cursor.getColumnIndex(DBConstants.cROLE));
-        teamId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTEAM_ID));
+        if (!cursor.isNull(cursor.getColumnIndex(DBConstants.cTEAM_ID)))
+            teamId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTEAM_ID));
         matchId = cursor.getLong(cursor.getColumnIndex(DBConstants.cMATCH_ID));
 
         try {

@@ -29,10 +29,6 @@ public class PlayerManager implements IPackagePlayerManager {
         DAOFactory.getInstance().playerDAO.addPlayerToTournament(context, playerId, tournamentId);
     }
 
-    @Override
-    public void addPlayerToMatch(Context context, long playerId, long matchId) {
-
-    }
 
     @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
@@ -44,10 +40,6 @@ public class PlayerManager implements IPackagePlayerManager {
 
     }
 
-    @Override
-    public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
-
-    }
 
     @Override
     public ArrayList<Player> getPlayersByCompetition(Context context, long competitionId) {
@@ -72,8 +64,15 @@ public class PlayerManager implements IPackagePlayerManager {
     }
 
     @Override
-    public ArrayList<Player> getPlayersByMatch(Context context, long matchId) {
-        return null;
+    public ArrayList<Player> getPlayersByParticipant(Context context, long participantId) {
+
+        Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+        ArrayList<Long> ids = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, participantId);
+        ArrayList<Player> filtered = new ArrayList<>();
+
+        for (long id : ids) filtered.add(new Player(players.get(id)));
+
+        return filtered;
     }
 
     @Override
@@ -140,5 +139,15 @@ public class PlayerManager implements IPackagePlayerManager {
                 players.remove(p);
 
         return players;
+    }
+
+    @Override
+    public void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, ArrayList<Player> players) {
+
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInParticipant(Context context, long participantId) {
+        return null;
     }
 }
