@@ -22,7 +22,7 @@ public class StatDAO implements IStatDAO {
     {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cVALUE, stat.getValue());
-        cv.put(DBConstants.cPLAYER_ID, stat.getPlayerId());
+        if( stat.getPlayerId() != -1 ) cv.put(DBConstants.cPLAYER_ID, stat.getPlayerId());
         cv.put(DBConstants.cPARTICIPANT_ID, stat.getParticipantId());
         cv.put(DBConstants.cSTATS_ENUM_ID, stat.getStatsEnumId());
         cv.put(DBConstants.cTOURNAMENT_ID, stat.getTournamentId());

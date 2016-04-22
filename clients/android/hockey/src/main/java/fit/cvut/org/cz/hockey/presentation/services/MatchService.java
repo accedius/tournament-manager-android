@@ -52,6 +52,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     protected void doWork(Intent intent) {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
+        if(action == null) action = intent.getAction();
 
         switch (action)
         {

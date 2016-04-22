@@ -45,26 +45,26 @@ public class ParticipantDAO implements IParticipantDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
         cv.put( DBConstants.cTOURNAMENT_ID, tournamentId);
         cv.put( DBConstants.cCOMPETITIONID, competitionId);
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.participates.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.participates.toString());
         cv.put( DBConstants.cVALUE, Long.toString(0) );
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.goals.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.goals.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.assists.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.assists.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.plus_minus_points.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.plus_minus_points.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.outcome.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.outcome.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.team_points.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.team_points.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.interventions.getId());
+        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.interventions.toString());
         db.insert(DBConstants.tSTATS, null, cv);
     }
 

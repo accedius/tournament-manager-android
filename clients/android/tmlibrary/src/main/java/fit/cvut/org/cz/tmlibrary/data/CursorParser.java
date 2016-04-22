@@ -201,13 +201,13 @@ public class CursorParser {
 
     public DStat parseDStat( Cursor cursor )
     {
-        long id, participantId, playerId, statsEnumId, tournamentId, competitionId;
-        String value;
+        long id, participantId, playerId, tournamentId, competitionId;
+        String value, statsEnumId;
 
         id = cursor.getLong(cursor.getColumnIndex(DBConstants.cID));
         participantId = cursor.getLong(cursor.getColumnIndex(DBConstants.cPARTICIPANT_ID));
         playerId = cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID));
-        statsEnumId = cursor.getLong(cursor.getColumnIndex(DBConstants.cSTATS_ENUM_ID));
+        statsEnumId = cursor.getString(cursor.getColumnIndex(DBConstants.cSTATS_ENUM_ID));
         tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
         competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITIONID));
         value = cursor.getString(cursor.getColumnIndex(DBConstants.cVALUE));

@@ -4,12 +4,12 @@ package fit.cvut.org.cz.tmlibrary.data.entities;
  * Created by atgot_000 on 20. 4. 2016.
  */
 public class DStat {
-    private long id, playerId, participantId, statsEnumId, tournamentId, competitionId;
-    private String value;
+    private long id, playerId, participantId, tournamentId, competitionId;
+    private String value, statsEnumId;
 
     public DStat() {}
 
-    public DStat(long id, long playerId, long participantId, long statsEnumId, long tournamentId, long competitionId, String value) {
+    public DStat(long id, long playerId, long participantId, String statsEnumId, long tournamentId, long competitionId, String value) {
         this.id = id;
         this.playerId = playerId;
         this.participantId = participantId;
@@ -28,8 +28,10 @@ public class DStat {
         final DStat other = (DStat) o;
         if( (this.value == null) ? (other.value != null) : !this.value.equals(other.getValue()) ) return false;
 
+        if( (this.statsEnumId == null) ? (other.statsEnumId != null) : !this.statsEnumId.equals(other.getStatsEnumId()) ) return false;
+
         if( this.id != other.getId() || this.playerId != other.getPlayerId() || this.participantId != other.getParticipantId()
-                || this.statsEnumId != other.getStatsEnumId() || this.tournamentId != other.getTournamentId()
+                || this.tournamentId != other.getTournamentId()
                 || this.competitionId != other.getCompetitionId()) return false;
         return true;
     }
@@ -58,11 +60,11 @@ public class DStat {
         this.participantId = participantId;
     }
 
-    public long getStatsEnumId() {
+    public String getStatsEnumId() {
         return statsEnumId;
     }
 
-    public void setStatsEnumId(long statsEnumId) {
+    public void setStatsEnumId(String statsEnumId) {
         this.statsEnumId = statsEnumId;
     }
 

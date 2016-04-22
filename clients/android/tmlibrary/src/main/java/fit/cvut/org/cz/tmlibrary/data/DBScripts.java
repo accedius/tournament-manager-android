@@ -94,7 +94,7 @@ public class DBScripts {
     public static final String CREATE_TABLE_STATS = "create table " + DBConstants.tSTATS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
-            + DBConstants.cSTATS_ENUM_ID + " INTEGER NOT NULL, "
+            + DBConstants.cSTATS_ENUM_ID + " TEXT, "
             + DBConstants.cPLAYER_ID + " INTEGER, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "

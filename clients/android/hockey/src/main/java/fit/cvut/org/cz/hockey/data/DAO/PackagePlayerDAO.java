@@ -155,7 +155,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     @Override
     public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( participantId ), Long.toString(StatsEnum.participates.getId())};
+        String[] selArgs = { String.valueOf( participantId ), StatsEnum.participates.toString()};
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();

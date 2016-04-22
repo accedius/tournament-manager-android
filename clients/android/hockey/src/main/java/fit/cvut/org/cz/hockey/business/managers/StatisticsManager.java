@@ -28,7 +28,7 @@ public class StatisticsManager {
         for(DStat stat : playerStats)
         {
             long value = Long.parseLong(stat.getValue());
-            switch (StatsEnum.getById(stat.getStatsEnumId()))
+            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
             {
                 case goals:
                 {
