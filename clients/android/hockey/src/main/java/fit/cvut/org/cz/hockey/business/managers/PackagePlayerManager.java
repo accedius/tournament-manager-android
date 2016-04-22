@@ -28,10 +28,6 @@ public class PackagePlayerManager implements IPackagePlayerManager {
         DAOFactory.getInstance().packagePlayerDAO.addPlayerToTournament(context, playerId, tournamentId);
     }
 
-    @Override
-    public void addPlayerToMatch(Context context, long playerId, long matchId) {
-        DAOFactory.getInstance().packagePlayerDAO.addPlayerToMatch(context, playerId, matchId);
-    }
 
     @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
@@ -43,10 +39,6 @@ public class PackagePlayerManager implements IPackagePlayerManager {
         DAOFactory.getInstance().packagePlayerDAO.deletePlayerFromTournament(context, playerId, tournamentId);
     }
 
-    @Override
-    public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
-        DAOFactory.getInstance().packagePlayerDAO.deletePlayerFromMatch(context, playerId, matchId);
-    }
 
     @Override
     public ArrayList<Player> getPlayersByCompetition(Context context, long competitionId) {
@@ -73,11 +65,8 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     }
 
     @Override
-    public ArrayList<Player> getPlayersByMatch(Context context, long matchId) {
-        ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByMatch(context, matchId);
-        ArrayList<Player> res = new ArrayList<>();
-        //TODO fill res from Core content provider
-        return res;
+    public ArrayList<Player> getPlayersByParticipant(Context context, long participantId) {
+        return null;
     }
 
     @Override
@@ -149,6 +138,16 @@ public class PackagePlayerManager implements IPackagePlayerManager {
                 players.remove(p);
 
         return players;
+    }
+
+    @Override
+    public void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, ArrayList<Player> players) {
+
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersNotInParticipant(Context context, long participantId) {
+        return null;
     }
 }
 
