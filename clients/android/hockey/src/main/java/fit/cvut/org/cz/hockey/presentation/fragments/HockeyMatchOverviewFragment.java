@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.logging.Logger;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
@@ -26,7 +29,13 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     private TextView homeName, awayName, homeScore, awayScore, round, period, date, note;
     private ImageButton homePlus, homeMinus, awayPlus, awayMinus;
     private CheckBox overtime, shootouts;
-    private int intHomeScore, intAwayScore;
+    private int intHomeScore = -1, intAwayScore = -1;
+    private int ot, so;
+
+    private static String SAVE_HOME_SCORE = "save_home_score";
+    private static String SAVE_AWAY_SCORE = "save_away_score";
+    private static String SAVE_OVERTIME = "save_overtime";
+    private static String SAVE_SHOOTOUTS = "save_shootouts";
 
     private static String ARG_ID = "arg_id";
 
@@ -36,7 +45,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         Bundle args = new Bundle();
         args.putLong(ARG_ID, matchId);
 
-        fragment.setArguments( args );
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -49,6 +58,26 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null)
+        {
+            intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
+            intAwayScore = savedInstanceState.getInt(SAVE_AWAY_SCORE);
+            ot = savedInstanceState.getInt(SAVE_OVERTIME);
+            so = savedInstanceState.getInt(SAVE_SHOOTOUTS);
+        }
+        else
+        {
+            intHomeScore = -1;
+            intAwayScore = -1;
+            ot = -1;
+            so = -1;
+        }
+    }
+
+    @Override
     protected boolean isDataSourceWorking() {
         return MatchService.isWorking( MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW);
     }
@@ -57,26 +86,45 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
 
-        intHomeScore = match.getHomeScore();
-        intAwayScore = match.getAwayScore();
+        //TODO ohlidat co to ma zobrazovat, kdye je match jeste neodehranej
+
+        if( intHomeScore == -1 && intAwayScore == -1) {
+            intHomeScore = match.getHomeScore();
+            intAwayScore = match.getAwayScore();
+        }
         homeName.setText( match.getHomeName() );
         awayName.setText( match.getAwayName() );
         homeScore.setText( String.valueOf(intHomeScore) );
         awayScore.setText( String.valueOf(intAwayScore) );
         round.setText( String.valueOf(match.getRound()) );
         period.setText( String.valueOf(match.getPeriod()) );
-        date.setText(DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
-        note.setText( match.getNote() );
+        if( match.getDate()!= null ) date.setText(DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+        else date.setText( "--" );
+        note.setText(match.getNote());
 
-        MatchScore matchScore = intent.getParcelableExtra( MatchService.EXTRA_MATCH_SCORE );
-
-        if( matchScore.isOvertime() ) overtime.setChecked( true );
-        if( matchScore.isShootouts()) shootouts.setChecked( true );
+        if( ot == -1 && so == -1 ) {
+            MatchScore matchScore = intent.getParcelableExtra(MatchService.EXTRA_MATCH_SCORE);
+            if (matchScore.isOvertime()) {
+                overtime.setChecked(true);
+                ot = 1;
+            }
+            else ot = 0;
+            if (matchScore.isShootouts()) {
+                shootouts.setChecked(true);
+                so = 1;
+            }
+            else so = 0;
+        }
+        else
+        {
+            overtime.setChecked( ot != 0 );
+            shootouts.setChecked( so != 0 );
+        }
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW));
     }
 
     @Override
@@ -108,6 +156,16 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         setOnClickListeners();
 
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(SAVE_OVERTIME, ot);
+        outState.putInt(SAVE_SHOOTOUTS, so);
+        outState.putInt(SAVE_HOME_SCORE, intHomeScore);
+        outState.putInt(SAVE_AWAY_SCORE, intAwayScore);
     }
 
     private void setOnClickListeners()
@@ -142,5 +200,24 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
                 awayScore.setText( String.valueOf( intAwayScore ) );
             }
         });
+        overtime.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(overtime.isChecked()) ot = 1;
+                else ot = 0;
+            }
+        });
+        shootouts.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(shootouts.isChecked()) so = 1;
+                else so = 0;
+            }
+        });
+    }
+
+    public void testMethod()
+    {
+        Log.v("MatchOverviewFragment", "testMethodCalled - " + intHomeScore + ":" + intAwayScore);
     }
 }

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,6 +29,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     private long matchId;
 
+    private ViewPager pager;
+
     private Fragment[] fragments;
     private String[] titles;
 
@@ -40,17 +45,30 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return intent;
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         matchId = getIntent().getExtras().getLong(MATCH_ID);
 
-        titles = new String[]{ HEADER_OVERVIEW_MATCH };
+        titles = new String[]{ HEADER_OVERVIEW_MATCH, HEADER_OVERVIEW_MATCH,HEADER_OVERVIEW_MATCH,HEADER_OVERVIEW_MATCH };
         Fragment f1 = HockeyMatchOverviewFragment.newInstance( matchId );
-        fragments = new Fragment[]{ f1 };
+        Fragment f2 = HockeyMatchOverviewFragment.newInstance( matchId );
+        Fragment f3 = HockeyMatchOverviewFragment.newInstance( matchId );
+        Fragment f4 = HockeyMatchOverviewFragment.newInstance( matchId );
+        fragments = new Fragment[]{ f1, f2, f3, f4 };
 
         super.onCreate(savedInstanceState);
 
+        pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
+        pager.setAdapter(getAdapter(getSupportFragmentManager()));
+        pager.setOffscreenPageLimit(1);
+
+        TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
+
+        tabLayout.setupWithViewPager(pager);
+
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     }
 
@@ -74,9 +92,27 @@ public class ShowMatchActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish){
-
+            for( int i = 0; i < pager.getAdapter().getCount(); i++ ) {
+                ((HockeyMatchOverviewFragment)((DefaultViewPagerAdapter)(pager.getAdapter())).getItem( i )).testMethod();
+            }
         }
+        finish();
 
         return super.onOptionsItemSelected(item);
     }
+
+//    public class MatchPagerAdapter extends FragmentStatePagerAdapter
+//    {
+//
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//            return null;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return 0;
+//        }
+//    }
 }
