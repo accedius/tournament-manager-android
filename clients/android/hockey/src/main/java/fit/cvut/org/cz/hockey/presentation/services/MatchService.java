@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.managers.MatchManager;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -33,6 +34,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_UPDATE = "action_update_match";
     public static final String ACTION_GENERATE_ROUND = "action_generate_round";
     public static final String ACTION_FIND_BY_ID_FOR_OVERVIEW = "action_find_match_for_match_overview";
+    public static final String ACTION_UPDATE_FOR_OVERVIEW = "action_update_match_for_overview";
 
 
     public MatchService() {
@@ -68,12 +70,19 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 break;
             }
-            case ACTION_UPDATE:
+            case ACTION_UPDATE_FOR_OVERVIEW:
             {
-                ScoredMatch m = intent.getParcelableExtra( EXTRA_MATCH );
+                Intent res = new Intent(ACTION_UPDATE_FOR_OVERVIEW);
+                MatchScore m = intent.getParcelableExtra( EXTRA_MATCH_SCORE );
+                if( !ManagerFactory.getInstance().matchManager.getById( this, m.getMatchId() ).isPlayed() )
+                {
+                    ManagerFactory.getInstance().matchManager.beginMatch( this, m.getMatchId() );
+                }
+                ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId( this, m.getMatchId(), m );
 
                 //TODO tady bude ukotveny begin match, protoze se stejne beginuje az po tom, co je zapas ulozen
 
+                LocalBroadcastManager.getInstance( this).sendBroadcast( res );
                 break;
             }
             case ACTION_FIND_BY_ID:
@@ -132,13 +141,10 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra( EXTRA_ID, -1 );
 
                 ScoredMatch m = ManagerFactory.getInstance().matchManager.getById(this, matchId);
-                if( !m.isPlayed() ){
-                    ManagerFactory.getInstance().matchManager.beginMatch( this, matchId );
-                    m = ManagerFactory.getInstance().matchManager.getById(this, matchId);
-                }
                 res.putExtra(EXTRA_MATCH, m);
 
                 MatchScore score = ManagerFactory.getInstance().statisticsManager.getMatchScoreByMatchId( this, matchId );
+                if( score != null )
                 res.putExtra( EXTRA_MATCH_SCORE, score );
 
 

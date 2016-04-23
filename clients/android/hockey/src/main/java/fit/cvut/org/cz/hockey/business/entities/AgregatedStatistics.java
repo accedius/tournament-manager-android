@@ -19,10 +19,10 @@ public class AgregatedStatistics implements Parcelable {
         this.points = this.goals + this.assists;
         if( this.matches > 0 )
         {
-            this.avgGoals = this.goals/this.matches;
-            this.avgPoints = this.points/this.matches;
-            this.avgPlusMinus = this.plusMinusPoints/this.matches;
-            this.avgTeamPoints = this.teamPoints/this.matches;
+            this.avgGoals = (double)this.goals/(double)this.matches;
+            this.avgPoints = (double)this.points/(double)this.matches;
+            this.avgPlusMinus = (double)this.plusMinusPoints/(double)this.matches;
+            this.avgTeamPoints = (double)this.teamPoints/(double)this.matches;
         }
         else
         {

@@ -178,6 +178,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                 }
                 case MatchService.ACTION_GENERATE_ROUND:
                 case MatchService.ACTION_CREATE:
+                case MatchService.ACTION_UPDATE_FOR_OVERVIEW:
                 {
                     contentView.setVisibility( View.GONE );
                     progressBar.setVisibility(View.VISIBLE);

@@ -45,7 +45,7 @@ public class MatchStatisticsDAO {
     public DMatchStat getByMatchId( Context context, long matchId)
     {
         String[] selArgs = { String.valueOf( matchId ) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query( HockeyDBConstants.tMATCH_SCORE, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null );
         cursor.moveToFirst();
         if( cursor.getCount() <= 0 )
@@ -63,5 +63,24 @@ public class MatchStatisticsDAO {
         return res;
     }
 
+    public void update( Context context, DMatchStat matchStat )
+    {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        ContentValues values = toContVal(matchStat);
+
+        String where = String.format("%s = ?", DBConstants.cMATCH_ID);
+        String[] projection = new String[]{ Long.toString(matchStat.getMatchId()) };
+        db.update(HockeyDBConstants.tMATCH_SCORE, values, where, projection);
+    }
+
+    public void delete(Context context, long matchId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format( "%s = ?", DBConstants.cMATCH_ID );
+        String[] projection = new String[]{ Long.toString( matchId ) };
+        db.delete(HockeyDBConstants.tMATCH_SCORE, where, projection);
+
+    }
 
 }

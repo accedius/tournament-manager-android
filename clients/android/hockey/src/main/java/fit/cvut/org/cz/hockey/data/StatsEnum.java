@@ -9,7 +9,6 @@ public enum StatsEnum {
     goals(true),
     assists(true),
     plus_minus_points(true),
-    team_points(true),
     outcome(true),
     interventions(true);
 

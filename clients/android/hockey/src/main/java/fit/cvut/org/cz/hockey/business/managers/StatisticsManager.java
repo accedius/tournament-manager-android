@@ -13,8 +13,11 @@ import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
+import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 
 /**
@@ -22,7 +25,34 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
  */
 public class StatisticsManager {
 
-    private AgregatedStatistics agregateStats( Context context, long plId, String pName,  long compId, ArrayList<DStat> allStats )
+    private long calculatePoints( int outcome, DPointConfiguration pointConfig, DMatchStat matchStat )
+    {
+        switch (outcome)
+        {
+            case 1:{
+                if(matchStat.isShootouts())
+                    return pointConfig.soW;
+                if(matchStat.isOvertime())
+                    return pointConfig.otW;
+                return pointConfig.ntW;
+            }
+            case 2:{
+                if(matchStat.isOvertime())
+                    return pointConfig.otD;
+                return pointConfig.ntD;
+            }
+            case 3:{
+                if(matchStat.isShootouts())
+                    return pointConfig.soL;
+                if(matchStat.isOvertime())
+                    return pointConfig.otL;
+                return pointConfig.ntL;
+            }
+        }
+        return 0;
+    }
+
+    private AgregatedStatistics agregateStats( Context context, long plId, String pName,  long tourId, ArrayList<DStat> allStats )
     {
         ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
         playerStats.retainAll( allStats ); //common elements -> players stats in competition
@@ -52,13 +82,13 @@ public class StatisticsManager {
                     plusMinusPoints += value;
                     break;
                 }
-                case team_points:
-                {
-                    teamPoints += value;
-                    break;
-                }
                 case outcome:
                 {
+                    DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, stat.getTournamentId() );
+                    DParticipant participant = DAOFactory.getInstance().participantDAO.getById( context, stat.getParticipantId() );
+                    DMatchStat matchStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, participant.getMatchId() );
+
+                    teamPoints += calculatePoints( (int)value, pointConfiguration, matchStat );
                     switch ((int)value)
                     {
                         case 1: {
@@ -137,12 +167,65 @@ public class StatisticsManager {
     }
     public MatchScore getMatchScoreByMatchId( Context context, long id )
     {
-        DMatchStat stat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, id);
+        DMatchStat stat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId(context, id);
+        if( stat == null )return null;
         MatchScore score = new MatchScore();
         score.setMatchId( stat.getMatchId() );
         score.setShootouts( stat.isShootouts() );
-        score.setOvertime( stat.isOvertime() );
+        score.setOvertime(stat.isOvertime());
         return score;
+    }
+
+    public void setMatchScoreByMatchId( Context context, long id, MatchScore score )
+    {
+        DMatchStat matchStat = new DMatchStat( id, score.isOvertime(), score.isShootouts() );
+        DAOFactory.getInstance().matchStatisticsDAO.update( context, matchStat );
+
+//        long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, score.getMatchId() ).getTournamentId();
+//        long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
+        int homeOutcome = 0, awayOutcome = 0;
+        if( score.getHomeScore() > score.getAwayScore() ) {
+            homeOutcome = 1;
+            awayOutcome = 3;
+        }
+        else if (score.getHomeScore() == score.getAwayScore()){
+            homeOutcome = 2;
+            awayOutcome = 2;
+        }
+        else{
+            homeOutcome = 3;
+            awayOutcome = 1;
+        }
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, id);
+        DStat homeScoreStat = new DStat();
+        DStat awayScoreStat = new DStat();
+        for( DParticipant dp : participants ) {
+            ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, dp.getId() );
+            if( dp.getRole().equals(ParticipantType.home.toString())){
+                for( DStat ds : stats ) if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {homeScoreStat = ds; break;}
+                homeScoreStat.setValue( Integer.toString( score.getHomeScore() ) );
+                giveOutcome( context, homeOutcome, stats );
+            }
+            else if ( dp.getRole().equals(ParticipantType.away.toString())){
+                for( DStat ds : stats ) if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {awayScoreStat = ds; break;}
+                awayScoreStat.setValue( Integer.toString( score.getAwayScore() ) );
+                giveOutcome( context, awayOutcome, stats );
+            }
+        }
+        DAOFactory.getInstance().statDAO.update(context, homeScoreStat);
+        DAOFactory.getInstance().statDAO.update(context, awayScoreStat);
+    }
+
+    private void giveOutcome( Context context, int outcome, ArrayList<DStat> participantStats )
+    {
+        for( DStat stat : participantStats )
+        {
+            if(StatsEnum.outcome.toString().equals(stat.getStatsEnumId()))
+            {
+                stat.setValue( String.valueOf(outcome));
+                DAOFactory.getInstance().statDAO.update( context, stat );
+            }
+        }
     }
 
 

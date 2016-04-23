@@ -94,9 +94,9 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         }
         homeName.setText( match.getHomeName() );
         awayName.setText( match.getAwayName() );
-        homeScore.setText( String.valueOf(intHomeScore) );
+        homeScore.setText(String.valueOf(intHomeScore));
         awayScore.setText( String.valueOf(intAwayScore) );
-        round.setText( String.valueOf(match.getRound()) );
+        round.setText(String.valueOf(match.getRound()));
         period.setText( String.valueOf(match.getPeriod()) );
         if( match.getDate()!= null ) date.setText(DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
         else date.setText( "--" );
@@ -104,6 +104,11 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
         if( ot == -1 && so == -1 ) {
             MatchScore matchScore = intent.getParcelableExtra(MatchService.EXTRA_MATCH_SCORE);
+            if( matchScore == null ){
+                ot = 0;
+                so = 0;
+                return;
+            }
             if (matchScore.isOvertime()) {
                 overtime.setChecked(true);
                 ot = 1;
@@ -203,6 +208,12 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         overtime.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(!overtime.isChecked())
+                {
+                    shootouts.setChecked(false);
+                    ot = 0;
+                    so = 0;
+                }
                 if(overtime.isChecked()) ot = 1;
                 else ot = 0;
             }
@@ -210,14 +221,19 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         shootouts.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(shootouts.isChecked()) so = 1;
+                if(shootouts.isChecked()) {
+                    so = 1;
+                    overtime.setChecked(true);
+                    ot = 1;
+                }
                 else so = 0;
             }
         });
     }
 
-    public void testMethod()
+    public MatchScore getScore()
     {
-        Log.v("MatchOverviewFragment", "testMethodCalled - " + intHomeScore + ":" + intAwayScore);
+        MatchScore res = new MatchScore( getArguments().getLong(ARG_ID), intHomeScore, intAwayScore, so != 0, ot != 0 );
+        return res;
     }
 }

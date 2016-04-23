@@ -61,9 +61,6 @@ public class ParticipantDAO implements IParticipantDAO {
         cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.outcome.toString());
         db.insert(DBConstants.tSTATS, null, cv);
 
-        cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.team_points.toString());
-        db.insert(DBConstants.tSTATS, null, cv);
-
         cv.put(DBConstants.cSTATS_ENUM_ID, StatsEnum.interventions.toString());
         db.insert(DBConstants.tSTATS, null, cv);
     }
@@ -85,14 +82,14 @@ public class ParticipantDAO implements IParticipantDAO {
         ArrayList<Long> toAdd = new ArrayList<>(playerIds);
         toAdd.removeAll(currentPlayers);
 
-        for ( Long id : toAdd )
-        {
-            createStatistics( id, particId, tourId, compId, db );
-        }
-        for ( Long id : toDelete )
-        {
-            removeStatistics( id, particId, db );
-        }
+//        for ( Long id : toAdd )
+//        {
+//            createStatistics( id, particId, tourId, compId, db );
+//        }
+//        for ( Long id : toDelete )
+//        {
+//            removeStatistics( id, particId, db );
+//        }
     }
 
     @Override
@@ -153,6 +150,21 @@ public class ParticipantDAO implements IParticipantDAO {
             //dp.setPlayerIds( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dp.getId() ) );
             res.add( dp );
         }
+
+        cursor.close();
+
+        return res;
+    }
+
+    @Override
+    public DParticipant getById(Context context, long id) {
+        String[] selArgs = { String.valueOf( id ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        Cursor cursor = db.query( DBConstants.tPARTICIPANTS, null, DBConstants.cID + "=?", selArgs, null, null, null );
+        cursor.moveToFirst();
+        if( cursor.getCount() <= 0 )
+            return null;
+        DParticipant res = CursorParser.getInstance().parseDParticipant( cursor );
 
         cursor.close();
 
