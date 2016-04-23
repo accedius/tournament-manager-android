@@ -78,9 +78,13 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 {
                     ManagerFactory.getInstance().matchManager.beginMatch( this, m.getMatchId() );
                 }
+
+                //TODO tady bude update ucastniku v participantech
+                //TODO tady bude update statistik participantu
+
                 ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId( this, m.getMatchId(), m );
 
-                //TODO tady bude ukotveny begin match, protoze se stejne beginuje az po tom, co je zapas ulozen
+
 
                 LocalBroadcastManager.getInstance( this).sendBroadcast( res );
                 break;

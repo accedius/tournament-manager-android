@@ -20,10 +20,13 @@ public class StatsService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_STANDINGS = "extra_standings";
+    public static final String EXTRA_HOME_STATS = "extra_home_statistics";
+    public static final String EXTRA_AWAY_STATS = "extra_away_statistics";
 
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
     public static final String ACTION_GET_STANDINGS_BY_TOURNAMENT = "get__standings_by_tour_id";
+    public static final String ACTION_GET_MATCH_PLAYER_STATISTICS = "get_match_player_statistics";
 
     public StatsService() {
         super("Hockey Stats Service");
@@ -44,12 +47,6 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         String action = intent.getStringExtra(EXTRA_ACTION);
 
@@ -89,6 +86,11 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 res.putParcelableArrayListExtra( EXTRA_STANDINGS, standings );
                 LocalBroadcastManager.getInstance(this).sendBroadcast( res );
 
+                break;
+            }
+            case ACTION_GET_MATCH_PLAYER_STATISTICS:
+            {
+                //TODO
                 break;
             }
 
