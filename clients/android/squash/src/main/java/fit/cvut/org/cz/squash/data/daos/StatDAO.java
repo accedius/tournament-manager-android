@@ -24,13 +24,34 @@ public class StatDAO implements IStatDAO {
         cv.put(DBConstants.cCOMPETITIONID, stat.getCompetitionId());
         cv.put(DBConstants.cTOURNAMENT_ID, stat.getTournamentId());
         cv.put(DBConstants.cPARTICIPANT_ID, stat.getParticipantId());
-        cv.put(DBConstants.cPLAYER_ID, stat.getPlayerId());
+        if (stat.getPlayerId() != -1)
+            cv.put(DBConstants.cPLAYER_ID, stat.getPlayerId());
         cv.put(SDBConstants.cTYPE, stat.getType().toString());
         cv.put(SDBConstants.cSTATUS, stat.getStatus());
         if (stat.getValue() != -1) cv.put(SDBConstants.cVALUE, stat.getValue());
         if (stat.getNumber() != -1) cv.put(SDBConstants.cNUMBER, stat.getNumber());
 
         return cv;
+    }
+
+    private DStat parse(Cursor c){
+
+        long playerId = -1;
+        int number = -1;
+        int value = -1;
+
+        if (!c.isNull(c.getColumnIndex(DBConstants.cPLAYER_ID))) playerId = c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID));
+        if (!c.isNull(c.getColumnIndex(SDBConstants.cNUMBER))) number = c.getInt(c.getColumnIndex(SDBConstants.cNUMBER));
+        if (!c.isNull(c.getColumnIndex(SDBConstants.cVALUE))) value = c.getInt(c.getColumnIndex(SDBConstants.cVALUE));
+
+        long id = c.getLong(c.getColumnIndex(DBConstants.cID));
+        long competitionId = c.getLong(c.getColumnIndex(DBConstants.cCOMPETITIONID));
+        long tournamentId = c.getLong(c.getColumnIndex(DBConstants.cTOURNAMENT_ID));
+        long participantId = c.getLong(c.getColumnIndex(DBConstants.cPARTICIPANT_ID));
+        StatsEnum type = StatsEnum.valueOf(c.getString(c.getColumnIndex(SDBConstants.cTYPE)));
+        int status = c.getInt(c.getColumnIndex(SDBConstants.cSTATUS));
+
+       return new DStat(id, competitionId, tournamentId, playerId, participantId, status, number, value, type);
     }
 
     @Override
@@ -57,4 +78,33 @@ public class StatDAO implements IStatDAO {
 
         return ids;
     }
+
+    @Override
+    public void delete(Context context, long participantId, StatsEnum type) {
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format("%s = ? and %s =?", DBConstants.cPARTICIPANT_ID, SDBConstants.cTYPE);
+        db.delete(SDBConstants.tSTATS, where, new String[] { Long.toString(participantId), type.toString()});
+
+        db.close();
+    }
+
+    @Override
+    public ArrayList<DStat> getByParticipant(Context context, long participantId, StatsEnum type) {
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<DStat> stats = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cPARTICIPANT_ID, SDBConstants.cTYPE), new String[]{Long.toString(participantId), type.toString()});
+        while (c.moveToNext())
+            stats.add(parse(c));
+
+        c.close();
+        db.close();
+
+        return stats;
+    }
+
+
 }

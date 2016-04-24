@@ -49,8 +49,16 @@ public class MatchManager implements IScoredMatchManager {
                 match.setAwayName(awayName);
             }
 
-            //TODO score
-
+            if (match.isPlayed()){
+                int homeScore = 0, awayScore = 0;
+                ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, home.getId(), StatsEnum.SET);
+                for (DStat stat : stats){
+                    if (stat.getStatus() > 0) homeScore++;
+                    else awayScore++;
+                }
+                match.setHomeScore(homeScore);
+                match.setAwayScore(awayScore);
+            }
 
             matches.add(match);
         }

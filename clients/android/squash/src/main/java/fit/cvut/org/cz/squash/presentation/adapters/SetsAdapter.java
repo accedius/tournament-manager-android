@@ -117,6 +117,9 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
                 }
                 if (home) data.get(position).setHomeScore(value);
                 else  data.get(position).setAwayScore(value);
+                if (data.get(position).getHomeScore() > data.get(position).getAwayScore()) data.get(position).setWinner(1);
+                else if (data.get(position).getHomeScore() < data.get(position).getAwayScore()) data.get(position).setWinner(-1);
+                    else data.get(position).setWinner(0);
             } catch (NumberFormatException e){
                 errorCount++;
                 editText.setError(editText.getResources().getText(R.string.parse_number_error));

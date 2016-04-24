@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,17 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchDetailActivity extends AbstractTabActivity {
+
+    public static final String ARG_PLAYED = "arg_played";
+    public static final String ARG_ID = "arg_id";
+
+    public static Intent newStartIntent(Context context, long id, boolean played){
+        Intent i = new Intent(context, MatchDetailActivity.class);
+        i.putExtra(ARG_ID, id);
+        i.putExtra(ARG_PLAYED, played);
+
+        return i;
+    }
 
     private DefaultViewPagerAdapter adapter = null;
 
@@ -49,6 +61,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
                 ArrayList<SetRowItem> list = fr.getSets();
                 intent.putExtra(MatchService.EXTRA_MATCHES, list);
+                intent.putExtra(MatchService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
                 startService(intent);
             }
 
@@ -58,10 +71,9 @@ public class MatchDetailActivity extends AbstractTabActivity {
                 if (mfr != null && !mfr.isWorking()){
                     ArrayList<Player> players = mfr.getPlayers();
                 }
-
             }
-
-
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

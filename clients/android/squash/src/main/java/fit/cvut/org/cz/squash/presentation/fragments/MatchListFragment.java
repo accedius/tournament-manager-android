@@ -37,11 +37,11 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
     protected AbstractListAdapter getAdapter() {
         return new ScoredMatchAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long matchId) {
+            protected void setOnClickListeners(View v, final ScoredMatch match) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), MatchDetailActivity.class);
+                        Intent intent = MatchDetailActivity.newStartIntent(getContext(), match.getId(), match.isPlayed());
                         startActivity(intent);
                     }
                 });

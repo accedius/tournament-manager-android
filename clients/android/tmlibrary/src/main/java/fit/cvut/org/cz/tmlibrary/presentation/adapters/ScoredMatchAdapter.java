@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMatchAdapter.MatchViewHolder> {
 
 
-    protected void setOnClickListeners(View v, long matchId){}
+    protected void setOnClickListeners(View v, ScoredMatch match){}
 
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,7 +46,7 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
             }
         }
 
-        setOnClickListeners(holder.card, m.getId());
+        setOnClickListeners(holder.card, m);
 
     }
 

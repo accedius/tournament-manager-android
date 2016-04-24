@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
-import fit.cvut.org.cz.squash.presentation.IGetSetsInterface;
-import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -18,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by Vaclav on 24. 4. 2016.
  */
-public class SetsFragment extends AbstractListFragment<SetRowItem> implements IGetSetsInterface {
+public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     private SetsAdapter adapter;
 
@@ -76,7 +74,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> implements IG
         return fab;
     }
 
-    @Override
+
     public ArrayList<SetRowItem> getSets() {
         return adapter.getData();
     }

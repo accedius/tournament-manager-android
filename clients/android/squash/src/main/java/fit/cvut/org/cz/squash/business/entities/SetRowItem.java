@@ -8,16 +8,18 @@ import android.os.Parcelable;
  */
 public class SetRowItem implements Parcelable {
 
-    private int homeScore, awayScore;
+    private int homeScore, awayScore, winner;
 
     public SetRowItem() {
         homeScore = 0;
         awayScore = 0;
+        winner = 0;
     }
 
     protected SetRowItem(Parcel in) {
         homeScore = in.readInt();
         awayScore = in.readInt();
+        winner = in.readInt();
     }
 
     public static final Creator<SetRowItem> CREATOR = new Creator<SetRowItem>() {
@@ -42,6 +44,7 @@ public class SetRowItem implements Parcelable {
 
         dest.writeInt(homeScore);
         dest.writeInt(awayScore);
+        dest.writeInt(winner);
     }
 
     public int getHomeScore() {
@@ -58,5 +61,13 @@ public class SetRowItem implements Parcelable {
 
     public void setAwayScore(int awayScore) {
         this.awayScore = awayScore;
+    }
+
+    public int getWinner() {
+        return winner;
+    }
+
+    public void setWinner(int winner) {
+        this.winner = winner;
     }
 }

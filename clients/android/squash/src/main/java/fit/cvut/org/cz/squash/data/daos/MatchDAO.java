@@ -31,6 +31,11 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cNOTE, match.getNote());
         if (match.getDate() != null)
             cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+        cv.put(DBConstants.cUID, match.getUid());
+        cv.put(DBConstants.cETAG, match.getEtag());
+        if (match.getLastModified() != null) cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastModified()));
+        if (match.getLastSynchronized() != null) cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
+
         return cv;
     }
 
@@ -46,6 +51,11 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public void update(Context context, DMatch match) {
+        ContentValues cv = convert(match);
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        db.update(DBConstants.tMATCHES, cv, String.format("%s = ?", DBConstants.cID), new String[] {Long.toString(match.getId())});
+        db.close();
 
     }
 
@@ -76,6 +86,18 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public DMatch getById(Context context, long id) {
-        return null;
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String selection = String.format("select * from %s where %s = ?", DBConstants.tMATCHES, DBConstants.cID);
+
+        Cursor c = db.rawQuery(selection, new String[]{Long.toString(id)});
+        DMatch match = null;
+
+        if (c.moveToNext())
+            match = CursorParser.getInstance().parseDMatch(c);
+
+        c.close();
+        db.close();
+
+        return match;
     }
 }

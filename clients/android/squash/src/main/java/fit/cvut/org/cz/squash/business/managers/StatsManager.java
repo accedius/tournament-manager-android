@@ -8,12 +8,20 @@ import java.util.Comparator;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;
+import fit.cvut.org.cz.squash.data.DAOFactory;
+import fit.cvut.org.cz.squash.data.entities.DStat;
+import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
@@ -65,5 +73,43 @@ public class StatsManager implements IStatsManager {
             }
         });
         return standings;
+    }
+
+    @Override
+    public void updateStatsForMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
+
+        DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);
+        m.setPlayed(true);
+        DAOFactory.getInstance().matchDAO.update(context, m);
+
+        ArrayList<DParticipant> dparticipants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
+        DParticipant home = null, away = null;
+
+        for (DParticipant participant : dparticipants){
+            DAOFactory.getInstance().statDAO.delete(context, participant.getId(), StatsEnum.SET);
+            DAOFactory.getInstance().statDAO.delete(context, participant.getId(), StatsEnum.MATCH);
+            if (participant.getRole().equals("home")) home = participant;
+            else away = participant;
+        }
+
+        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, m.getTournamentId());
+
+        int setswon = 0;
+
+        for (int i = 0; i< sets.size(); i++) {
+            SetRowItem item = sets.get(i);
+            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, home.getId(),
+                    item.getWinner(), i + 1, item.getHomeScore(), StatsEnum.SET));
+            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, away.getId(),
+                    item.getWinner() * -1, i + 1, item.getAwayScore(), StatsEnum.SET));
+            setswon += item.getWinner();
+        }
+        int result = 0;
+        if (setswon > 0) result = 1;
+        if (setswon < 0) result = -1;
+        DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, home.getId(),
+                result, -1, -1, StatsEnum.MATCH));
+        DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, away.getId(),
+                result * -1, -1, -1, StatsEnum.MATCH));
     }
 }

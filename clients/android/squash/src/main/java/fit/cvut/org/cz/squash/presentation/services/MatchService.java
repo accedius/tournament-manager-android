@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
@@ -88,6 +89,10 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 ScoredMatch match = intent.getParcelableExtra(EXTRA_MATCH);
                 ManagersFactory.getInstance().matchManager.insert(this, match);
                 break;
+            }
+            case ACTION_UPDATE_MATCH_DETAIL:{
+                ArrayList<SetRowItem> sets = intent.getParcelableArrayListExtra(EXTRA_MATCHES);
+                ManagersFactory.getInstance().statsManager.updateStatsForMatch(this, intent.getLongExtra(EXTRA_ID, -1), sets);
             }
         }
 
