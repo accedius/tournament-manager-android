@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchOverviewFragment;
+import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -30,6 +31,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 public class ShowMatchActivity extends AbstractTabActivity {
 
     private static String HEADER_OVERVIEW_MATCH = "Overview";
+    private static String HEADER_PLAYER_STATS_MATCH = "Player statistics";
 
     private static final String MATCH_ID = "match_id";
 
@@ -64,15 +66,18 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         matchId = getIntent().getExtras().getLong(MATCH_ID);
 
-        titles = new String[]{ HEADER_OVERVIEW_MATCH };
+        titles = new String[]{ HEADER_OVERVIEW_MATCH,HEADER_OVERVIEW_MATCH,HEADER_OVERVIEW_MATCH, HEADER_PLAYER_STATS_MATCH };
         Fragment f1 = HockeyMatchOverviewFragment.newInstance( matchId );
-        fragments = new Fragment[]{ f1 };
+        Fragment f3 = HockeyMatchOverviewFragment.newInstance( matchId );
+        Fragment f4 = HockeyMatchOverviewFragment.newInstance( matchId );
+        Fragment f2 = HockeyMatchStatsFragment.newInstance( matchId );
+        fragments = new Fragment[]{ f1, f3, f4, f2 };
 
         super.onCreate(savedInstanceState);
 
         pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
         pager.setAdapter(getAdapter(getSupportFragmentManager()));
-        pager.setOffscreenPageLimit(1);
+        pager.setOffscreenPageLimit(0);
 
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
 

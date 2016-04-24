@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
@@ -35,9 +36,14 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
     @Override
     protected AbstractSelectableListFragment<Player> getListFragment() {
 
-        int option = getIntent().getIntExtra( ARG_OPTION, -1 );
+        int option = getIntent().getIntExtra(ARG_OPTION, -1);
         long id = getIntent().getLongExtra(ARG_ID, -1);
-        ArrayList<Player> players = getIntent().getParcelableArrayListExtra( EXTRA_OMIT_DATA );
+        if( option == AddPlayersFragment.OPTION_PARTICIPANT ) {
+            ArrayList<MatchPlayerStatistic> playerStatistics = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
+            if(playerStatistics != null) return AddPlayersFragment.newInstance(option, id, playerStatistics, 1);
+            return AddPlayersFragment.newInstance(option, id);
+        }
+        ArrayList<Player> players = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
         if( players != null ) return AddPlayersFragment.newInstance( option, id, players );
 
         return AddPlayersFragment.newInstance(option, id);

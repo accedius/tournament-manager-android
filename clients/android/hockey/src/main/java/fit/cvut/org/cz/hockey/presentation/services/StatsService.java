@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -22,6 +23,8 @@ public class StatsService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_STANDINGS = "extra_standings";
     public static final String EXTRA_HOME_STATS = "extra_home_statistics";
     public static final String EXTRA_AWAY_STATS = "extra_away_statistics";
+    public static final String EXTRA_HOME_NAME = "extra_home_name";
+    public static final String EXTRA_AWAY_NAME = "extra_away_name";
 
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
@@ -90,7 +93,22 @@ public class StatsService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_PLAYER_STATISTICS:
             {
-                //TODO
+                //TODO remove mock
+                Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
+
+                ArrayList<MatchPlayerStatistic> homeStats = new ArrayList<>();
+                homeStats.add( new MatchPlayerStatistic(1, "Pepa", 5, 4, 2, 1));
+                res.putParcelableArrayListExtra( EXTRA_HOME_STATS, homeStats );
+
+                ArrayList<MatchPlayerStatistic> awayStats = new ArrayList<>();
+                awayStats.add( new MatchPlayerStatistic(3, "Jirka", 5, 4, 2, 1));
+                res.putParcelableArrayListExtra(EXTRA_AWAY_STATS, awayStats);
+
+                res.putExtra(EXTRA_HOME_NAME, "NameOfHometeam");
+                res.putExtra(EXTRA_AWAY_NAME, "NameOfAwayteam");
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+
                 break;
             }
 
