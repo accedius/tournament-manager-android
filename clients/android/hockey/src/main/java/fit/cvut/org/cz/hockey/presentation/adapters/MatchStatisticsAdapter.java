@@ -69,8 +69,6 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
                                     }
                                     case 1:
                                     {
-//                                        MatchPlayerStatistic toDel = null;
-//                                        for(MatchPlayerStatistic stat : data) if(stat.getPlayerId() == finPlId) toDel = stat;
                                         data.remove(position);
                                         notifyDataSetChanged();
                                         break;
