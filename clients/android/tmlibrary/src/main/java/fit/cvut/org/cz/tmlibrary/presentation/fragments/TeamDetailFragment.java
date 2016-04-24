@@ -56,9 +56,9 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     }
 
     private TextView name;
-    private Team t = null;
+    protected Team t = null;
     private RecyclerView recyclerView;
-    private AbstractDeletableListAdapter<Player, ? extends OneActionViewHolder> adapter;
+    protected AbstractDeletableListAdapter<Player, ? extends OneActionViewHolder> adapter;
 
     protected long teamId = -1;
 

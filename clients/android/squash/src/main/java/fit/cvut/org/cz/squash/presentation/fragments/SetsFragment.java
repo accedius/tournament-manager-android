@@ -80,22 +80,4 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> implements IG
     public ArrayList<SetRowItem> getSets() {
         return adapter.getData();
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof MatchDetailActivity){
-            MatchDetailActivity a = (MatchDetailActivity) context;
-            a.setSetsInterface(this);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if (getContext() instanceof MatchDetailActivity) {
-            MatchDetailActivity a = (MatchDetailActivity) getContext();
-            a.setSetsInterface(null);
-        }
-    }
 }

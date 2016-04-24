@@ -36,6 +36,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
     public static final String ACTION_GET_MATCH_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_match_by_id";
     public static final String ACTION_CREATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.create_match";
+    public static final String ACTION_UPDATE_MATCH_DETAIL= "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
 
     @Override
     protected String getActionKey() {
