@@ -70,6 +70,11 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
+    public void generateRound(Context context, long tournamentId) {
+
+    }
+
+    @Override
     public void insert(Context context, ScoredMatch match) {
 
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));

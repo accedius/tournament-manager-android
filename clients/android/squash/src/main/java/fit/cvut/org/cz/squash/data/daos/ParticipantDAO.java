@@ -65,4 +65,9 @@ public class ParticipantDAO implements IParticipantDAO {
 
         return participants;
     }
+
+    @Override
+    public DParticipant getById(Context context, long id) {
+        return null;
+    }
 }

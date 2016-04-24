@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
+import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -34,7 +35,18 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new ScoredMatchAdapter();
+        return new ScoredMatchAdapter(){
+            @Override
+            protected void setOnClickListeners(View v, long matchId) {
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), MatchDetailActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
     }
 
     @Override
