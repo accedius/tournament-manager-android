@@ -5,9 +5,11 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
@@ -18,6 +20,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 
 /**
@@ -226,6 +229,78 @@ public class StatisticsManager {
                 DAOFactory.getInstance().statDAO.update( context, stat );
             }
         }
+    }
+
+    public MatchPlayerStatistic getPlayerStatsInMatch( Context context, long playerId, long matchId )
+    {
+        MatchPlayerStatistic res = new MatchPlayerStatistic();
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId );
+        long partId = -1;
+        for(DParticipant dParticipant : participants){
+            if( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dParticipant.getId()).contains( playerId ) ){
+                partId = dParticipant.getId();
+                break;
+            }
+        }
+        if( partId == -1 ) return null;
+
+        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByParticipant( context, partId );
+        Player curPlayer = null;
+        for( Player p : players ) if( p.getId() == playerId ) curPlayer = p;
+        if( curPlayer == null ) return null;
+
+        ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, partId );
+        res.setPlayerId(playerId);
+        res.setName( curPlayer.getName() );
+
+        for( DStat stat : partStats )
+        {
+            if( stat.getPlayerId() != playerId ) continue;
+            int value = Integer.parseInt(stat.getValue());
+            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
+            {
+                case goals:
+                    res.setGoals( value );
+                    break;
+                case assists:
+                    res.setAssists( value );
+                    break;
+                case plus_minus_points:
+                    res.setPlusMinusPoints( value );
+                    break;
+                case interventions:
+                    res.setInterventions( value );
+                    break;
+                default: break;
+            }
+        }
+        return res;
+    }
+
+    public void updatePlayersInMatch( Context context, long matchId, ParticipantType parType, ArrayList<Long> playerIds )
+    {
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId);
+        DParticipant currentPart = null;
+        for( DParticipant part : participants ) {
+            if(part.getRole().equals( parType.toString() )){
+                currentPart = part;
+                break;
+            }
+        }
+        if( currentPart == null ) return;
+
+        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        ArrayList<Player> playerListToUpdate = new ArrayList<>();
+        for (Long pId : playerIds) {
+            playerListToUpdate.add( new Player(allPlayers.get( pId )) );
+        }
+
+        long tourId = DAOFactory.getInstance().matchDAO.getById( context, matchId ).getTournamentId();
+        long compId = DAOFactory.getInstance().tournamentDAO.getById(context, tourId).getCompetitionId();
+
+        ManagerFactory.getInstance().packagePlayerManager.updatePlayersInParticipant( context, currentPart.getId(), compId, tourId, playerListToUpdate );
+
+
     }
 
 

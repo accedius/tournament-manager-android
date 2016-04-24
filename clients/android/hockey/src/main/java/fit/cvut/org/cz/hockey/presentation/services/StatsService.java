@@ -10,6 +10,9 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -93,19 +96,32 @@ public class StatsService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_PLAYER_STATISTICS:
             {
-                //TODO remove mock
                 Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
-
+                long matchId = intent.getLongExtra( EXTRA_ID, -1 );
+                ScoredMatch match = ManagerFactory.getInstance().matchManager.getById(this, matchId);
                 ArrayList<MatchPlayerStatistic> homeStats = new ArrayList<>();
-                homeStats.add( new MatchPlayerStatistic(1, "Pepa", 5, 4, 2, 1));
-                res.putParcelableArrayListExtra( EXTRA_HOME_STATS, homeStats );
-
                 ArrayList<MatchPlayerStatistic> awayStats = new ArrayList<>();
-                awayStats.add( new MatchPlayerStatistic(3, "Jirka", 5, 4, 2, 1));
+
+                if( !match.isPlayed() ){
+                    Team homeTeam = ManagerFactory.getInstance().teamManager.getById( this, match.getHomeParticipantId());
+                    for(Player p : homeTeam.getPlayers()) homeStats.add( new MatchPlayerStatistic(p.getId(), p.getName(), 0, 0, 0, 0) );
+                    Team awayTeam = ManagerFactory.getInstance().teamManager.getById( this, match.getAwayParticipantId());
+                    for(Player p : awayTeam.getPlayers()) awayStats.add( new MatchPlayerStatistic(p.getId(), p.getName(), 0, 0, 0, 0) );
+                }
+                else
+                {
+                    for( Long plId : match.getHomeIds() )
+                        homeStats.add( ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch( this, plId, matchId ) );
+                    for( Long plId : match.getAwayIds() )
+                        awayStats.add( ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch( this, plId, matchId ) );
+                }
+
+                res.putParcelableArrayListExtra(EXTRA_HOME_STATS, homeStats);
+
                 res.putParcelableArrayListExtra(EXTRA_AWAY_STATS, awayStats);
 
-                res.putExtra(EXTRA_HOME_NAME, "NameOfHometeam");
-                res.putExtra(EXTRA_AWAY_NAME, "NameOfAwayteam");
+                res.putExtra(EXTRA_HOME_NAME, match.getHomeName());
+                res.putExtra(EXTRA_AWAY_NAME, match.getAwayName());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 

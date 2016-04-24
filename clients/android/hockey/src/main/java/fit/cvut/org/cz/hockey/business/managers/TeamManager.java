@@ -36,7 +36,7 @@ public class TeamManager implements ITeamManager {
 
         DTeam dt = DAOFactory.getInstance().teamDAO.getById( context, id );
         Team t = new Team( dt );
-
+        t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, t.getId()));
         return t;
     }
 
