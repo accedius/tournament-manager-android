@@ -143,8 +143,8 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         tvHome = (TextView) fragmentView.findViewById(R.id.tv_home);
         tvAway = (TextView) fragmentView.findViewById(R.id.tv_away);
 
-        homeAdapter = new MatchStatisticsAdapter();
-        awayAdapter = new MatchStatisticsAdapter();
+        homeAdapter = new MatchStatisticsAdapter( this );
+        awayAdapter = new MatchStatisticsAdapter( this );
         homeRecyclerView.setAdapter(homeAdapter);
         awayRecyclerView.setAdapter(awayAdapter);
 
