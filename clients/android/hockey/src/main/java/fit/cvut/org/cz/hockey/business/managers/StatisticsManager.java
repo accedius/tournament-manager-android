@@ -231,10 +231,9 @@ public class StatisticsManager {
         }
     }
 
-    public MatchPlayerStatistic getPlayerStatsInMatch( Context context, long playerId, long matchId )
+    private long getParticipantIdByPlayerAndMatch( Context context, long playerId, long matchId )
     {
-        MatchPlayerStatistic res = new MatchPlayerStatistic();
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId );
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
         long partId = -1;
         for(DParticipant dParticipant : participants){
             if( DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant( context, dParticipant.getId()).contains( playerId ) ){
@@ -242,7 +241,14 @@ public class StatisticsManager {
                 break;
             }
         }
-        if( partId == -1 ) return null;
+        return partId;
+    }
+
+    public MatchPlayerStatistic getPlayerStatsInMatch( Context context, long playerId, long matchId )
+    {
+        MatchPlayerStatistic res = new MatchPlayerStatistic();
+
+        long partId = getParticipantIdByPlayerAndMatch( context, playerId, matchId );
 
         ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByParticipant( context, partId );
         Player curPlayer = null;
@@ -299,8 +305,35 @@ public class StatisticsManager {
         long compId = DAOFactory.getInstance().tournamentDAO.getById(context, tourId).getCompetitionId();
 
         ManagerFactory.getInstance().packagePlayerManager.updatePlayersInParticipant( context, currentPart.getId(), compId, tourId, playerListToUpdate );
+    }
 
+    public void updatePlayerStatsInMatch( Context context, MatchPlayerStatistic statistic, long matchId )
+    {
+        long partId = getParticipantIdByPlayerAndMatch( context, statistic.getPlayerId(), matchId );
+        ArrayList<DStat> participantStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(context, partId);
 
+        for( DStat stat : participantStats )
+        {
+            if( stat.getPlayerId() != statistic.getPlayerId() ) continue;
+            //int value = Integer.parseInt(stat.getValue());
+            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
+            {
+                case goals:
+                    stat.setValue(String.valueOf(statistic.getGoals()));
+                    break;
+                case assists:
+                    stat.setValue(String.valueOf(statistic.getAssists()));
+                    break;
+                case plus_minus_points:
+                    stat.setValue(String.valueOf(statistic.getPlusMinusPoints()));
+                    break;
+                case interventions:
+                    stat.setValue(String.valueOf(statistic.getInterventions()));
+                    break;
+                default: break;
+            }
+            DAOFactory.getInstance().statDAO.update( context, stat );
+        }
     }
 
 

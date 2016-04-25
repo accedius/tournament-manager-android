@@ -95,12 +95,10 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch( this, m.getMatchId(), ParticipantType.home, homePlayerIds);
                 ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch( this, m.getMatchId(), ParticipantType.away, awayPlayerIds);
                 //-----------------
-
-                //TODO tady bude update statistik participantu
+                for(MatchPlayerStatistic statistic : homeStats ) ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch( this, statistic, m.getMatchId());
+                for(MatchPlayerStatistic statistic : awayStats ) ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch( this, statistic, m.getMatchId());
 
                 ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId( this, m.getMatchId(), m );
-
-
 
                 LocalBroadcastManager.getInstance( this).sendBroadcast( res );
                 break;
