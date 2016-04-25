@@ -62,9 +62,9 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
     protected AbstractListAdapter getAdapter() {
         return new ScoredMatchAdapter() {
             @Override
-            protected void setOnClickListeners(View v, long matchId) {
-                super.setOnClickListeners(v, matchId);
-                final long fmId = matchId;
+            protected void setOnClickListeners(View v, ScoredMatch match) {
+                super.setOnClickListeners(v, match);
+                final long fmId = match.getId();
 
                 v.setOnClickListener( new View.OnClickListener(){
 
