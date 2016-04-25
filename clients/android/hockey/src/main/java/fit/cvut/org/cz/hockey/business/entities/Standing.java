@@ -9,10 +9,11 @@ import android.os.Parcelable;
 public class Standing implements Parcelable {
     private String name;
     private Long wins, losses, draws, points, goalsGiven, goalsReceived;
+    private long teamId;
 
     public Standing() {}
 
-    public Standing(String name, Long wins, Long losses, Long draws, Long points, Long goalsGiven, Long goalsReceived) {
+    public Standing(String name, Long wins, Long losses, Long draws, Long points, Long goalsGiven, Long goalsReceived, long teamId) {
         this.name = name;
         this.wins = wins;
         this.losses = losses;
@@ -20,7 +21,14 @@ public class Standing implements Parcelable {
         this.points = points;
         this.goalsGiven = goalsGiven;
         this.goalsReceived = goalsReceived;
+        this.teamId = teamId;
     }
+    public void addWin() { this.wins++; }
+    public void addLoss() { this.losses++; }
+    public void addDraw() { this.draws++; }
+    public void addPoints( long points ) { this.points += points; }
+    public void addGoalsGiven( long gg ) { this.goalsGiven += gg; }
+    public void addGoalsReceived( long gr ) { this.goalsReceived += gr; }
 
     public String getName() {
         return name;
@@ -116,4 +124,12 @@ public class Standing implements Parcelable {
             return new Standing[size];
         }
     };
+
+    public long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(long teamId) {
+        this.teamId = teamId;
+    }
 }

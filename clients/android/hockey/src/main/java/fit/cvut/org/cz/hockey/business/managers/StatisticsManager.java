@@ -17,8 +17,10 @@ import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
@@ -155,15 +157,59 @@ public class StatisticsManager {
 
         ArrayList<Standing> standings = new ArrayList<>();
 
+        DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, tourId );
+
         for( Team t : teams )
         {
-            standings.add( new Standing(t.getName(), 1L, 1L, 1L, 1L, 1L, 1L));
+            standings.add( new Standing(t.getName(), 0L, 0L, 0L, 0L, 0L, 0L, t.getId()));
+        }
+        ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, tourId );
+        for( DMatch dMatch : matches )
+        {
+            if(!dMatch.isPlayed()) continue;
+            ScoredMatch match = ManagerFactory.getInstance().matchManager.getById( context, dMatch.getId() );
+            Standing standingH = null;
+            Standing standingA = null;
+            for( Standing s : standings ){
+                if( s.getTeamId() == match.getHomeParticipantId() ) standingH = s;
+                else if ( s.getTeamId() == match.getAwayParticipantId() ) standingA = s;
+            }
+            if(standingA == null || standingH == null)continue;
+            DMatchStat matchStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, match.getId() );
+            int homeOutcome, awayOutcome;
+            if( match.getHomeScore() > match.getAwayScore() ) {
+                homeOutcome = 1;
+                standingH.addWin();
+                awayOutcome = 3;
+                standingA.addLoss();
+            }
+            else if (match.getHomeScore() == match.getAwayScore()){
+                homeOutcome = 2;
+                standingH.addDraw();
+                awayOutcome = 2;
+                standingA.addDraw();
+            }
+            else{
+                homeOutcome = 3;
+                standingH.addLoss();
+                awayOutcome = 1;
+                standingA.addWin();
+            }
+            standingH.addPoints( calculatePoints( homeOutcome, pointConfiguration, matchStat ) );
+            standingA.addPoints( calculatePoints( awayOutcome, pointConfiguration, matchStat ) );
+
+            standingH.addGoalsGiven( match.getHomeScore() );
+            standingA.addGoalsGiven( match.getAwayScore() );
+
+            standingH.addGoalsReceived( match.getAwayScore() );
+            standingA.addGoalsReceived( match.getHomeScore() );
+
         }
 
         Collections.sort(standings, new Comparator<Standing>() {
             @Override
             public int compare(Standing lhs, Standing rhs) {
-                return (int)(lhs.getPoints() - rhs.getPoints());
+                return (int)(rhs.getPoints() - lhs.getPoints());
             }
         });
         return standings;
@@ -184,8 +230,6 @@ public class StatisticsManager {
         DMatchStat matchStat = new DMatchStat( id, score.isOvertime(), score.isShootouts() );
         DAOFactory.getInstance().matchStatisticsDAO.update( context, matchStat );
 
-//        long tournamentId = DAOFactory.getInstance().matchDAO.getById( context, score.getMatchId() ).getTournamentId();
-//        long competitionId = DAOFactory.getInstance().tournamentDAO.getById( context, tournamentId ).getCompetitionId();
         int homeOutcome = 0, awayOutcome = 0;
         if( score.getHomeScore() > score.getAwayScore() ) {
             homeOutcome = 1;
