@@ -156,7 +156,12 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void resetMatch(Context context, long matchId) {
+        ScoredMatch match = getById( context, matchId );
 
+        if( !match.isPlayed() ) return;
+
+        delete( context, matchId );
+        insert( context, match );
     }
 
     @Override
@@ -167,7 +172,6 @@ public class MatchManager implements IScoredMatchManager {
         dMatch.setPlayed( false );
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
-        //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id
         DParticipant homeParticipant = new DParticipant( -1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString() );
 
         DParticipant awayParticipant = new DParticipant( -1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString() );

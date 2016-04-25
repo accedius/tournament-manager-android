@@ -103,7 +103,10 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                             }
                                             case 2:
                                             {
+                                                Intent intent = MatchService.newStartIntent( MatchService.ACTION_RESTART, getContext() );
+                                                intent.putExtra( MatchService.EXTRA_ID, fmId );
 
+                                                getContext().startService( intent );
                                                 break;
                                             }
                                         }
@@ -146,6 +149,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
         filter.addAction( MatchService.ACTION_CREATE);
         filter.addAction(MatchService.ACTION_GENERATE_ROUND);
         filter.addAction( MatchService.ACTION_DELETE);
+        filter.addAction( MatchService.ACTION_RESTART);
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver( matchReceiver, filter);
     }
@@ -224,6 +228,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                 case MatchService.ACTION_CREATE:
                 case MatchService.ACTION_UPDATE_FOR_OVERVIEW:
                 case MatchService.ACTION_DELETE:
+                case MatchService.ACTION_RESTART:
                 {
                     contentView.setVisibility( View.GONE );
                     progressBar.setVisibility(View.VISIBLE);
