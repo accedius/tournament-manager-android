@@ -98,6 +98,8 @@ public class PlayerDAO implements IPlayerDAO {
         ArrayList<DPlayer> players = new ArrayList<>();
 
         c.moveToFirst();
+        if (c.getCount() == 0)
+            return players;
         do {
             players.add(CursorParser.getInstance().parseDPlayer(c));
         } while (c.moveToNext());
