@@ -66,7 +66,11 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void delete(Context context, long id) {
-        //TODO nebo ne todo? --> ANO, protoze delete matche
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format( "%s = ?", DBConstants.cID );
+        String[] projection = new String[]{ Long.toString( id ) };
+        db.delete(DBConstants.tPARTICIPANTS, where, projection);
     }
 
     @Override

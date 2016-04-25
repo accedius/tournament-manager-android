@@ -101,25 +101,11 @@ public class MatchManager implements IScoredMatchManager {
     public void beginMatch(Context context, long matchId) {
 
         ScoredMatch match = getById( context, matchId );
-        //TODO nemusi presouvat hrace z tymu!! az se udela update podle seznamu, tak staci nechat aby se to ulozilo pri tom updatu
+
         if( !(match.isPlayed())) {
             DTournament tour = DAOFactory.getInstance().tournamentDAO.getById( context, match.getTournamentId());
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
             for (DParticipant dp : participants) {
-//                long teamId = dp.getTeamId();
-//                ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
-//
-//                DAOFactory.getInstance().participantDAO.update(context, dp);
-//
-//                //Create stats for each participating player
-//                for( Long id : plIds ){
-//                    for( StatsEnum statEn : StatsEnum.values() ) {
-//                        if( !statEn.isForPlayer() ) continue;
-//                        DStat statToAdd = new DStat(-1, id, dp.getId(), statEn.toString(), match.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
-//                        DAOFactory.getInstance().statDAO.insert( context, statToAdd );
-//                    }
-//
-//                }
                 for( StatsEnum statEn : StatsEnum.values() ) {
                     if( statEn.isForPlayer() ) continue;
                     DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), match.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
@@ -169,6 +155,11 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
+    public void resetMatch(Context context, long matchId) {
+
+    }
+
+    @Override
     public void insert(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch( match);
 
@@ -201,5 +192,13 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void delete(Context context, long id) {
 
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, id );
+        for( DParticipant dp : participants )
+        {
+            ArrayList<DStat> participantStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, dp.getId() );
+            for( DStat ds : participantStats ) DAOFactory.getInstance().statDAO.delete( context, ds.getId() );
+            DAOFactory.getInstance().participantDAO.delete( context, dp.getId() );
+        }
+        DAOFactory.getInstance().matchDAO.delete( context, id );
     }
 }
