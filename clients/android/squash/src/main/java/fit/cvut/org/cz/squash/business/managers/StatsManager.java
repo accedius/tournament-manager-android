@@ -76,6 +76,33 @@ public class StatsManager implements IStatsManager {
     }
 
     @Override
+    public ArrayList<SetRowItem> getSetsForMatch(Context context, long matchId) {
+        ArrayList<SetRowItem> sets = new ArrayList<>();
+
+        ArrayList<DParticipant> dparticipants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
+        DParticipant home = null, away = null;
+
+        for (DParticipant participant : dparticipants){
+            if (participant.getRole().equals("home")) home = participant;
+            else away = participant;
+        }
+
+        ArrayList<DStat> homeSets = DAOFactory.getInstance().statDAO.getByParticipant(context, home.getId(), StatsEnum.SET);
+        ArrayList<DStat> awaySets = DAOFactory.getInstance().statDAO.getByParticipant(context, away.getId(), StatsEnum.SET);
+
+        for (int i = 0; i< homeSets.size(); i++){
+            SetRowItem item = new SetRowItem();
+            item.setHomeScore(homeSets.get(i).getValue());
+            item.setAwayScore(awaySets.get(i).getValue());
+            item.setWinner(homeSets.get(i).getStatus());
+
+            sets.add(item);
+        }
+
+        return sets;
+    }
+
+    @Override
     public void updateStatsForMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
 
         DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);

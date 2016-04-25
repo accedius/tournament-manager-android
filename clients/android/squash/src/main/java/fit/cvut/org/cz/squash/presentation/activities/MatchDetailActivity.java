@@ -39,7 +39,11 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{new SetsFragment()}, new String[]{"Sets"});
+
+        long id = getIntent().getLongExtra(ARG_ID, -1);
+        boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
+
+        adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{"Sets"});
         return adapter;
     }
 

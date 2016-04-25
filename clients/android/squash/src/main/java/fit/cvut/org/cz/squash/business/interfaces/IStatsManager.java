@@ -16,6 +16,7 @@ public interface IStatsManager {
     ArrayList<AgregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId);
     ArrayList<AgregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId);
     ArrayList<StandingItem> getStandingsByTournament(Context context, long tournamentId);
+    ArrayList<SetRowItem> getSetsForMatch(Context context, long matchId);
 
     void updateStatsForMatch(Context context, long matchId, ArrayList<SetRowItem> sets);
 

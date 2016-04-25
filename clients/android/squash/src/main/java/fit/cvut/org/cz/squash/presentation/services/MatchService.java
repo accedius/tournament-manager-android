@@ -37,7 +37,8 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
     public static final String ACTION_GET_MATCH_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_match_by_id";
     public static final String ACTION_CREATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.create_match";
-    public static final String ACTION_UPDATE_MATCH_DETAIL= "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
+    public static final String ACTION_UPDATE_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
+    public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
 
     @Override
     protected String getActionKey() {
@@ -93,6 +94,14 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_UPDATE_MATCH_DETAIL:{
                 ArrayList<SetRowItem> sets = intent.getParcelableArrayListExtra(EXTRA_MATCHES);
                 ManagersFactory.getInstance().statsManager.updateStatsForMatch(this, intent.getLongExtra(EXTRA_ID, -1), sets);
+                break;
+            }
+            case ACTION_GET_MATCH_DETAIL:{
+                Intent result = new Intent(action);
+                ArrayList<SetRowItem> sets =  ManagersFactory.getInstance().statsManager.getSetsForMatch(this, intent.getLongExtra(EXTRA_ID, -1));
+                result.putParcelableArrayListExtra(EXTRA_MATCHES, sets);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
             }
         }
 
