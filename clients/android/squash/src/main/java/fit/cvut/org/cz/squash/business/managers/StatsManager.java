@@ -5,9 +5,12 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.PointConfig;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;
@@ -22,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
@@ -53,23 +57,76 @@ public class StatsManager implements IStatsManager {
 
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
+        Map<Long, StandingItem> mappedStandings = new HashMap<>();
 
         ArrayList<StandingItem> standings = new ArrayList<>();
+        ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByTournament(context, t.getId(), StatsEnum.MATCH);
+        PointConfig cfg = ManagersFactory.getInstance().pointConfigManager.getById(context, tournamentId);
 
         if (type == CompetitionType.Individuals){
 
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
+            for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getName()));
+            for (DStat stat : stats){
+                DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
+                long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, p.getId()).get(0);
+                ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
+                for (DStat set : sets){
+                    if (set.getStatus() == 1) mappedStandings.get(playerId).setSetsWon(mappedStandings.get(playerId).getSetsWon() + 1);
+                    else mappedStandings.get(playerId).setSetsLost(mappedStandings.get(playerId).getSetsLost() + 1);
+                }
+                switch (stat.getStatus()){
+                    case 0:
+                        mappedStandings.get(playerId).setDraws(mappedStandings.get(playerId).getDraws() + 1);
+                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getDraw());
+                        break;
+                    case -1:
+                        mappedStandings.get(playerId).setLoses(mappedStandings.get(playerId).getLoses() + 1);
+                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getLoss());
+                        break;
+                    case 1:
+                        mappedStandings.get(playerId).setWins(mappedStandings.get(playerId).getWins() + 1);
+                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getWin());
+                        break;
+                }
 
-            for (Player p : players) standings.add(new StandingItem(p.getName(), 3, 1, 0, 12, 6, 9));
+            }
         } else {
             //team competition
-            ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
-            for (Team team : teams) standings.add(new StandingItem(team.getName(), 2, 1, 2, 6, 5, 7));
+            ArrayList<DTeam> teams = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
+            for (DTeam team : teams) mappedStandings.put(team.getId(), new StandingItem(team.getName()));
+
+            for (DStat stat : stats){
+                DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
+                ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
+                for (DStat set : sets){
+                    if (set.getStatus() == 1) mappedStandings.get(p.getTeamId()).setSetsWon(mappedStandings.get(p.getTeamId()).getSetsWon() + 1);
+                    else mappedStandings.get(p.getTeamId()).setSetsLost(mappedStandings.get(p.getTeamId()).getSetsLost() + 1);
+                }
+                switch (stat.getStatus()){
+                    case 0:
+                        mappedStandings.get(p.getTeamId()).setDraws(mappedStandings.get(p.getTeamId()).getDraws() + 1);
+                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getDraw());
+                        break;
+                    case -1:
+                        mappedStandings.get(p.getTeamId()).setLoses(mappedStandings.get(p.getTeamId()).getLoses() + 1);
+                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getLoss());
+                        break;
+                    case 1:
+                        mappedStandings.get(p.getTeamId()).setWins(mappedStandings.get(p.getTeamId()).getWins() + 1);
+                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getWin());
+                        break;
+                }
+
+            }
         }
+        for (Long key : mappedStandings.keySet()) standings.add(mappedStandings.get(key));
         Collections.sort(standings, new Comparator<StandingItem>() {
             @Override
             public int compare(StandingItem lhs, StandingItem rhs) {
-                return lhs.getPoints() - rhs.getPoints();
+                if (rhs.getPoints() - lhs.getPoints() == 0 )
+                    return (rhs.getSetsWon() - rhs.getSetsLost() - lhs.getSetsWon() + lhs.getSetsLost());
+                return rhs.getPoints() - lhs.getPoints();
             }
         });
         return standings;

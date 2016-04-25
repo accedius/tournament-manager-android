@@ -106,5 +106,20 @@ public class StatDAO implements IStatDAO {
         return stats;
     }
 
+    @Override
+    public ArrayList<DStat> getByTournament(Context context, long tournamentId, StatsEnum type) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<DStat> stats = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cTOURNAMENT_ID, SDBConstants.cTYPE), new String[]{Long.toString(tournamentId), type.toString()});
+        while (c.moveToNext())
+            stats.add(parse(c));
+
+        c.close();
+        db.close();
+
+        return stats;
+    }
+
 
 }

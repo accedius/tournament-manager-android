@@ -16,4 +16,5 @@ public interface IStatDAO {
     ArrayList<Long> getPlayerIdsForParticipant(Context context, long id);
     void delete(Context context, long participantId, StatsEnum type);
     ArrayList<DStat> getByParticipant(Context context, long participantId, StatsEnum type);
+    ArrayList<DStat> getByTournament(Context context, long tournamentId, StatsEnum type);
 }
