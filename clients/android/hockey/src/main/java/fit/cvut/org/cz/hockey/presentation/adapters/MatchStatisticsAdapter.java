@@ -2,6 +2,7 @@ package fit.cvut.org.cz.hockey.presentation.adapters;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.presentation.dialogs.EditStatsDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.PlayerMatchStatDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -64,7 +66,18 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
                                 {
                                     case 0:
                                     {
-                                        //TODO
+                                        EditStatsDialog editDial = new EditStatsDialog() {
+                                            @Override
+                                            protected void saveStats(MatchPlayerStatistic statistic) {
+                                                data.remove( position );
+                                                data.add(position, statistic);
+                                                notifyDataSetChanged();
+                                            }
+                                        };
+                                        Bundle b = new Bundle();
+                                        b.putParcelable( EditStatsDialog.ARG_STATS, data.get(position) );
+                                        editDial.setArguments( b );
+                                        editDial.show(parentFrag.getFragmentManager(), "EDIT_STATS_DIAL");
                                         break;
                                     }
                                     case 1:
