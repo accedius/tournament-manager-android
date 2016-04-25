@@ -34,27 +34,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         super("Player Service");
     }
 
-    private ArrayList<DPlayer> getData() {
-        ArrayList<DPlayer> data = new ArrayList<>();
-
-        Uri myUri = Uri.parse("content://fit.cvut.org.cz.tournamentmanager.data/players");
-        Cursor cur = getContentResolver().query(myUri, null, null, null, null);
-        if (cur == null) {
-            return data;
-        }
-        else {
-            Log.d("DB", "Total rows " + cur.getCount());
-            CursorParser cp = CursorParser.getInstance();
-            if (cur.moveToFirst()) {
-                do {
-                    data.add(cp.parseDPlayer(cur));
-                } while (cur.moveToNext());
-            }
-        }
-
-        return data;
-    }
-
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
         intent.putExtra(EXTRA_ACTION, action);
