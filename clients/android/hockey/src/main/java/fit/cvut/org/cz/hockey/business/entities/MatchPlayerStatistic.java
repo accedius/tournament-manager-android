@@ -26,6 +26,15 @@ public class MatchPlayerStatistic implements Parcelable {
         }
     };
 
+    public MatchPlayerStatistic(long playerId, String name, int goals, int assists, int plusMinusPoints, int interventions) {
+        this.playerId = playerId;
+        this.name = name;
+        this.goals = goals;
+        this.assists = assists;
+        this.plusMinusPoints = plusMinusPoints;
+        this.interventions = interventions;
+    }
+
 
     @Override
     public int describeContents() {

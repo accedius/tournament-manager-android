@@ -17,6 +17,7 @@ public interface IScoredMatchManager {
     void beginMatch( Context context, long matchId ); //register players to match and other things needed when match is begun
 
     void generateRound(Context context, long tournamentId);
+    void resetMatch( Context context, long matchId );
 
     void insert( Context context, ScoredMatch match);
     void update( Context context, ScoredMatch match );

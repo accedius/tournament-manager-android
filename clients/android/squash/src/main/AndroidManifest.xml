@@ -31,6 +31,9 @@
         <activity android:name=".presentation.activities.PointConfigActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Configure Point Gain"/>
+        <activity android:name=".presentation.activities.MatchDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Match Detail"/>
         <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Competition Detail"

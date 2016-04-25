@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -28,6 +29,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static final String ACTION_GET_PLAYERS_NOT_IN_TEAMS = "action_get_players_not_in_teams";
     public static final String ACTION_UPDATE_TEAM_PLAYERS = "action_update_team_players";
+
+    public static final String ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID = "action_get_players_in_tournament_by_match_id";
 
     public PlayerService() {
         super("Hockey Player Service");
@@ -122,6 +125,18 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 ArrayList<Player> players = intent.getParcelableArrayListExtra( EXTRA_PLAYERS );
                 ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam( this, id, players );
 
+                break;
+            }
+            case ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID:
+            {
+                Intent res = new Intent(action);
+                ScoredMatch match = ManagerFactory.getInstance().matchManager.getById( this, intent.getLongExtra( EXTRA_ID, -1 ));
+                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament( this, match.getTournamentId());
+
+                res.putParcelableArrayListExtra( EXTRA_PLAYERS, players);
+                res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
         }

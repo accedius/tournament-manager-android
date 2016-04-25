@@ -106,20 +106,6 @@ public class MatchManager implements IScoredMatchManager {
             DTournament tour = DAOFactory.getInstance().tournamentDAO.getById( context, match.getTournamentId());
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
             for (DParticipant dp : participants) {
-                long teamId = dp.getTeamId();
-                ArrayList<Long> plIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
-
-                DAOFactory.getInstance().participantDAO.update(context, dp);
-
-                //Create stats for each participating player
-                for( Long id : plIds ){
-                    for( StatsEnum statEn : StatsEnum.values() ) {
-                        if( !statEn.isForPlayer() ) continue;
-                        DStat statToAdd = new DStat(-1, id, dp.getId(), statEn.toString(), match.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
-                        DAOFactory.getInstance().statDAO.insert( context, statToAdd );
-                    }
-
-                }
                 for( StatsEnum statEn : StatsEnum.values() ) {
                     if( statEn.isForPlayer() ) continue;
                     DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), match.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
@@ -169,6 +155,16 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
+    public void resetMatch(Context context, long matchId) {
+        ScoredMatch match = getById( context, matchId );
+
+        if( !match.isPlayed() ) return;
+
+        delete( context, matchId );
+        insert( context, match );
+    }
+
+    @Override
     public void insert(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch( match);
 
@@ -176,7 +172,6 @@ public class MatchManager implements IScoredMatchManager {
         dMatch.setPlayed( false );
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
-        //TODO pozor na participant ID, chces si tam predavat team id, tak v tom scored match musi byt jako participant id team id
         DParticipant homeParticipant = new DParticipant( -1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString() );
 
         DParticipant awayParticipant = new DParticipant( -1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString() );
@@ -201,5 +196,13 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void delete(Context context, long id) {
 
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, id );
+        for( DParticipant dp : participants )
+        {
+            ArrayList<DStat> participantStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, dp.getId() );
+            for( DStat ds : participantStats ) DAOFactory.getInstance().statDAO.delete( context, ds.getId() );
+            DAOFactory.getInstance().participantDAO.delete( context, dp.getId() );
+        }
+        DAOFactory.getInstance().matchDAO.delete( context, id );
     }
 }

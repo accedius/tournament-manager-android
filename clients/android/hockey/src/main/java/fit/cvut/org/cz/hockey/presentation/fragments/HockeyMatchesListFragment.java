@@ -17,6 +17,7 @@ import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
+import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;
@@ -62,9 +63,9 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
     protected AbstractListAdapter getAdapter() {
         return new ScoredMatchAdapter() {
             @Override
-            protected void setOnClickListeners(View v, long matchId) {
-                super.setOnClickListeners(v, matchId);
-                final long fmId = matchId;
+            protected void setOnClickListeners(View v, ScoredMatch match) {
+                super.setOnClickListeners(v, match);
+                final long fmId = match.getId();
 
                 v.setOnClickListener( new View.OnClickListener(){
 
@@ -72,6 +73,52 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                     public void onClick(View v) {
                         Intent intent = ShowMatchActivity.newStartIntent( getContext(), fmId );
                         startActivity( intent );
+                    }
+                });
+                v.setOnLongClickListener( new View.OnLongClickListener(){
+
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        EditDeleteResetDialog dialog = new EditDeleteResetDialog(){
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch ( which )
+                                        {
+                                            case 0:
+                                            {
+
+                                                break;
+                                            }
+                                            case 1:
+                                            {
+                                                Intent intent = MatchService.newStartIntent( MatchService.ACTION_DELETE, getContext() );
+                                                intent.putExtra( MatchService.EXTRA_ID, fmId );
+
+                                                getContext().startService( intent );
+                                                break;
+                                            }
+                                            case 2:
+                                            {
+                                                Intent intent = MatchService.newStartIntent( MatchService.ACTION_RESTART, getContext() );
+                                                intent.putExtra( MatchService.EXTRA_ID, fmId );
+
+                                                getContext().startService( intent );
+                                                break;
+                                            }
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                };
+                            }
+                        };
+
+                        dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
+
+                        return false;
                     }
                 });
             }
@@ -101,6 +148,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
         IntentFilter filter = new IntentFilter( MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
         filter.addAction( MatchService.ACTION_CREATE);
         filter.addAction(MatchService.ACTION_GENERATE_ROUND);
+        filter.addAction( MatchService.ACTION_DELETE);
+        filter.addAction( MatchService.ACTION_RESTART);
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver( matchReceiver, filter);
     }
@@ -141,7 +190,6 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                                                intent.putExtra( MatchService.EXTRA_TOUR_ID, tourId );
 
                                                                getContext().startService( intent );
-                                                               //TODO bude se zase muset udelat specialni receiver, aby refreshnul seznam zapasu potom, co se vygenerujou
                                                                break;
                                                            }
                                                        }
@@ -179,6 +227,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                 case MatchService.ACTION_GENERATE_ROUND:
                 case MatchService.ACTION_CREATE:
                 case MatchService.ACTION_UPDATE_FOR_OVERVIEW:
+                case MatchService.ACTION_DELETE:
+                case MatchService.ACTION_RESTART:
                 {
                     contentView.setVisibility( View.GONE );
                     progressBar.setVisibility(View.VISIBLE);

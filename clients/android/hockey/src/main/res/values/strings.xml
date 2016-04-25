@@ -29,4 +29,8 @@
     <string name="tour_not_deleted">Tournament is not empty, could not be deleted!</string>
     <string name="add_player">Add player</string>
     <string name="i">I</string>
+    <string name="goals">Goals</string>
+    <string name="assists">Assists</string>
+    <string name="plus_minus_points">+/- points</string>
+    <string name="interventions">Interventions</string>
 </resources>

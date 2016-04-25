@@ -11,6 +11,11 @@ public class StandingItem implements Parcelable {
     private String name;
     private int wins, loses, draws, setsWon, setsLost, points;
 
+    public StandingItem(String name){
+        this.name = name;
+        wins = loses = draws = setsWon = setsLost = points = 0;
+    }
+
     public StandingItem(String name, int wins, int loses, int draws, int setsWon, int setsLost, int points) {
         this.name = name;
         this.wins = wins;

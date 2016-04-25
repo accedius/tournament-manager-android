@@ -57,8 +57,6 @@ public class MatchDAO implements IMatchDAO {
 
         ContentValues values = toContVal(match);
 
-        //values.put(DBConstants.cID, match.getId());
-
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(match.getId()) };
         db.update(DBConstants.tMATCHES, values, where, projection);
@@ -71,9 +69,6 @@ public class MatchDAO implements IMatchDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tMATCHES, where, projection);
-
-        //TODO vymazat participanty (zavolat participantDAO, at to vyresi)
-
     }
 
     @Override
