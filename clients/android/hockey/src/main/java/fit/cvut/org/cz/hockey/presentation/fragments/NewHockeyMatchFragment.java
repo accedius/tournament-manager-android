@@ -17,7 +17,7 @@ public class NewHockeyMatchFragment extends NewMatchFragment {
     protected void saveMatch(ScoredMatch match) {
         Intent intent = MatchService.newStartIntent( MatchService.ACTION_CREATE, getContext() );
         intent.setAction( MatchService.ACTION_CREATE );
-        match.setTournamentId( tournamentId );
+        //match.setTournamentId( tournamentId );
         intent.putExtra(MatchService.EXTRA_MATCH, match);
 
         getContext().startService( intent );
@@ -26,6 +26,8 @@ public class NewHockeyMatchFragment extends NewMatchFragment {
     @Override
     protected void updateMatch(ScoredMatch match) {
         Intent intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE, getContext() );
+        intent.setAction(MatchService.ACTION_UPDATE);
+        //match.setTournamentId( tournamentId );
         intent.putExtra(MatchService.EXTRA_MATCH, match);
 
         getContext().startService( intent );

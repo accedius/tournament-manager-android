@@ -39,7 +39,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
      * @param clazz
      * @return
      */
-    public static NewMatchFragment newInstance(long id, boolean forTournament, Class<? extends NewMatchFragment> clazz){
+    public static NewMatchFragment newInstance(long id, long tournamentId, Class<? extends NewMatchFragment> clazz){
         NewMatchFragment fragment = null;
         try {
             Constructor<? extends NewMatchFragment> c = clazz.getConstructor();
@@ -55,8 +55,30 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
 
         Bundle args = new Bundle();
-        if (forTournament) args.putLong(ARG_TOUR_ID, id);
-        else args.putLong(ARG_ID, id);
+        args.putLong(ARG_ID, id);
+        args.putLong(ARG_TOUR_ID, tournamentId);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static NewMatchFragment newInstance(long tournamentId, Class<? extends NewMatchFragment> clazz){
+        NewMatchFragment fragment = null;
+        try {
+            Constructor<? extends NewMatchFragment> c = clazz.getConstructor();
+            fragment = c.newInstance();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        Bundle args = new Bundle();
+        args.putLong(ARG_TOUR_ID, tournamentId);
 
         fragment.setArguments(args);
         return fragment;
@@ -133,12 +155,13 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                     if (id == -1) {
                         ScoredMatch match = new ScoredMatch();
                         match.setHomeParticipantId(homeTeamId);
-                        match.setAwayParticipantId( awayTeamId );
-                        match.setPeriod( sPeriod );
-                        match.setRound( sRound );
-                        match.setNote( note.getText().toString() );
-                        match.setDate( sDate );
-                        saveMatch( match );
+                        match.setAwayParticipantId(awayTeamId);
+                        match.setPeriod(sPeriod);
+                        match.setRound(sRound);
+                        match.setNote(note.getText().toString());
+                        match.setDate(sDate);
+                        match.setTournamentId( tournamentId );
+                        saveMatch(match);
 
                     } else {
                         ScoredMatch match = new ScoredMatch();
@@ -147,6 +170,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                         match.setRound(sRound);
                         match.setNote(note.getText().toString());
                         match.setDate(sDate);
+                        match.setTournamentId( tournamentId );
                         updateMatch(match);
                     }
                     getActivity().finish();

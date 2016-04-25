@@ -31,10 +31,11 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cROUND, match.getRound());
         cv.put(DBConstants.cPERIOD, match.getPeriod());
         cv.put(DBConstants.cPLAYED, match.isPlayed());
+        cv.put(DBConstants.cNOTE, match.getNote());
         if ( match.getDate() != null )
             cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
         if ( match.getLastSynchronized() != null )
-            cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
         cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(new Date()));
 
         return cv;

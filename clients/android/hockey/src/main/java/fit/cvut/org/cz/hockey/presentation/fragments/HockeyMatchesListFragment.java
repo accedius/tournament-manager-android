@@ -90,6 +90,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                         {
                                             case 0:
                                             {
+                                                Intent intent = CreateMatchActivity.newStartIntent( getContext(), fmId, tournamentID);
+                                                startActivity( intent );
 
                                                 break;
                                             }
@@ -147,9 +149,10 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
     protected void registerReceivers() {
         IntentFilter filter = new IntentFilter( MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
         filter.addAction( MatchService.ACTION_CREATE);
-        filter.addAction(MatchService.ACTION_GENERATE_ROUND);
+        filter.addAction( MatchService.ACTION_GENERATE_ROUND);
         filter.addAction( MatchService.ACTION_DELETE);
         filter.addAction( MatchService.ACTION_RESTART);
+        filter.addAction( MatchService.ACTION_UPDATE);
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver( matchReceiver, filter);
     }
@@ -179,7 +182,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                                            case 0:
                                                            {
                                                                //TODO pridat kontrolu poctu tymu (musi byt aspon 2)
-                                                               Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId, true);
+                                                               Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId);
 
                                                                startActivity(intent);
                                                                break;
@@ -229,6 +232,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                 case MatchService.ACTION_UPDATE_FOR_OVERVIEW:
                 case MatchService.ACTION_DELETE:
                 case MatchService.ACTION_RESTART:
+                case MatchService.ACTION_UPDATE:
                 {
                     contentView.setVisibility( View.GONE );
                     progressBar.setVisibility(View.VISIBLE);

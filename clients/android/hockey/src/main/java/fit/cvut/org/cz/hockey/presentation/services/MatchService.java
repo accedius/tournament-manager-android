@@ -112,12 +112,17 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra( EXTRA_ID, -1 );
                 long tourId = intent.getLongExtra( EXTRA_TOUR_ID, -1);
 
+
+
+                ArrayList<Team> tourTeams;
+
+                tourTeams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, tourId );
                 if( matchId != -1 ) {
                     ScoredMatch m = ManagerFactory.getInstance().matchManager.getById( this, matchId );
                     res.putExtra(EXTRA_MATCH, m);
                 }
 
-                ArrayList<Team> tourTeams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, tourId );
+
 
                 ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
 
@@ -191,6 +196,18 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
+                break;
+            }
+            case ACTION_UPDATE:
+            {
+                Intent res = new Intent( action );
+                ScoredMatch match = intent.getParcelableExtra( EXTRA_MATCH );
+                ScoredMatch originalMatch = ManagerFactory.getInstance().matchManager.getById( this, match.getId());
+                match.setPlayed( originalMatch.isPlayed() );
+
+                ManagerFactory.getInstance().matchManager.update(this, match);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
         }

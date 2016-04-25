@@ -187,6 +187,7 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void update(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch( match );
+        dMatch.setLastModified( new Date() );
 
 
         DAOFactory.getInstance().matchDAO.update(context, dMatch);

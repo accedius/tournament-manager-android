@@ -20,12 +20,19 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     public static final String EXTRA_MATCH_ID = "match_id";
     public static final String EXTRA_TOUR_ID = "tour_id";
 
-    public static Intent newStartIntent( Context context, long id, boolean tourId  )
+    public static Intent newStartIntent( Context context, long tourId  )
     {
         Intent res = new Intent(context, CreateMatchActivity.class);
-        if( tourId )
-            res.putExtra(EXTRA_TOUR_ID, id);
-        else res.putExtra(EXTRA_MATCH_ID, id);
+        res.putExtra(EXTRA_TOUR_ID, tourId);
+
+        return res;
+    }
+
+    public static Intent newStartIntent( Context context, long id, long tourId  )
+    {
+        Intent res = new Intent(context, CreateMatchActivity.class);
+        res.putExtra(EXTRA_TOUR_ID, tourId);
+        res.putExtra(EXTRA_MATCH_ID, id);
 
         return res;
     }
@@ -49,10 +56,10 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         matchId = getIntent().getLongExtra( EXTRA_MATCH_ID, -1 );
 
         if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
-            if( tourId != -1)
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyMatchFragment.newInstance(tourId, true, NewHockeyMatchFragment.class)).commit();
+            if( matchId == -1)
+                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyMatchFragment.newInstance(tourId, NewHockeyMatchFragment.class)).commit();
             else
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyMatchFragment.newInstance(matchId, false, NewHockeyMatchFragment.class)).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyMatchFragment.newInstance(matchId, tourId, NewHockeyMatchFragment.class)).commit();
         }
     }
 }

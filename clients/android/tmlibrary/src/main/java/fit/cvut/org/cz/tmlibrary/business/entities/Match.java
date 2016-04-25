@@ -71,6 +71,10 @@ public class Match extends ShareBase {
 
         try{
             String  text = in.readString();
+            if (text == null) date = null;
+            else date = dateFormat.parse(text);
+
+            text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = dateFormat.parse(text);
 
@@ -113,6 +117,8 @@ public class Match extends ShareBase {
 
         SimpleDateFormat dateFormat = DateFormatFactory.getInstance().getDateFormat();
 
+        if (date == null) dest.writeString(null);
+        else dest.writeString(dateFormat.format(date));
         if (lastModified == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(lastModified));
         if (lastSynchronized == null) dest.writeString(null);
