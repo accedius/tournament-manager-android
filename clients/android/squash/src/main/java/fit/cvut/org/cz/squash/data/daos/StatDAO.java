@@ -91,6 +91,19 @@ public class StatDAO implements IStatDAO {
     }
 
     @Override
+    public void update(Context context, DStat stat) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        ContentValues cv = convert(stat);
+        cv.put(DBConstants.cID, stat.getId());
+
+        String where = String.format("%s = ?", DBConstants.cID);
+        db.update(SDBConstants.tSTATS, cv, where, new String[]{Long.toString(stat.getId())});
+        db.close();
+    }
+
+
+    @Override
     public void deleteByParticipant(Context context, long participantId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cPARTICIPANT_ID);

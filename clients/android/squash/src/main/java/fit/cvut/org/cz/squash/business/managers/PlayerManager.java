@@ -8,6 +8,8 @@ import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
+import fit.cvut.org.cz.squash.data.entities.DStat;
+import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
@@ -143,7 +145,10 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, ArrayList<Player> players) {
-
+        DAOFactory.getInstance().statDAO.delete(context, participantId, StatsEnum.MATCH_PARTICIPATION);
+        for (Player p : players){
+            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, competitionId, tournamentId, p.getId(), participantId, 1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
+        }
     }
 
     @Override

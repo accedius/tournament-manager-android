@@ -90,9 +90,27 @@ public class MatchDetailActivity extends AbstractTabActivity {
             if (adapter.getCount() > 1){
 
                 MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
-                if (mfr != null && !mfr.isWorking()){
+                if (mfr != null){
                     ArrayList<Player> players = mfr.getPlayers();
+                    Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
+                    intent.putExtra(PlayerService.EXTRA_ROLE, "home");
+                    intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
+                    intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, players);
+                    startService(intent);
                 }
+                mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(2));
+                if (mfr != null){
+                    ArrayList<Player> players = mfr.getPlayers();
+                    Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
+                    intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
+                    intent.putExtra(PlayerService.EXTRA_ROLE, "away");
+                    intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, players);
+                    startService(intent);
+                }
+            } else {
+                Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
+                intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
+                startService(intent);
             }
             finish();
             return true;

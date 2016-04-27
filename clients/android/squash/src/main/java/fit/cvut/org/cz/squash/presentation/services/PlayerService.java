@@ -40,6 +40,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_AWAY_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_away_players_in_match";
     public static final String ACTION_GET_HOME_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_in_match";
     public static final String ACTION_GET_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_for_match";
+    public static final String ACTION_UDATE_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.update_players_for_match";
 
 
 
@@ -134,6 +135,15 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
+            }
+            case ACTION_UDATE_PLAYERS_FOR_MATCH:{
+                long matchId = intent.getLongExtra(EXTRA_ID, -1);
+                String role = intent.getStringExtra(EXTRA_ROLE);
+                ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
+                if (players != null){
+                    ManagersFactory.getInstance().participantManager.updatePlayersForMatch(this, matchId, role, players);
+                } else ManagersFactory.getInstance().participantManager.setParticipationValid(this, matchId);
+
             }
         }
     }
