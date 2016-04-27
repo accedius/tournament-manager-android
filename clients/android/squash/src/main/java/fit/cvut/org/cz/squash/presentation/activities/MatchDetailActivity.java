@@ -10,11 +10,12 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
+import fit.cvut.org.cz.squash.presentation.services.PlayerService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -26,11 +27,13 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
     public static final String ARG_PLAYED = "arg_played";
     public static final String ARG_ID = "arg_id";
+    public static final String ARG_TYPE = "arg_type";
 
-    public static Intent newStartIntent(Context context, long id, boolean played){
+    public static Intent newStartIntent(Context context, long id, boolean played, CompetitionType type){
         Intent i = new Intent(context, MatchDetailActivity.class);
         i.putExtra(ARG_ID, id);
         i.putExtra(ARG_PLAYED, played);
+        i.putExtra(ARG_TYPE, type.toString());
 
         return i;
     }
@@ -42,15 +45,26 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
         long id = getIntent().getLongExtra(ARG_ID, -1);
         boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
-
-        adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{"Sets"});
+        CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
+        if (type == CompetitionType.Individuals)
+            adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{"Sets"});
+        else{
+            adapter = new DefaultViewPagerAdapter(manager,
+                    new Fragment[] {MatchPlayersFragment.newInstance(id, PlayerService.ACTION_GET_HOME_PLAYERS_IN_MATCH),
+                                    SetsFragment.newInstance(id, played),
+                                    MatchPlayersFragment.newInstance(id, PlayerService.ACTION_GET_AWAY_PLAYERS_IN_MATCH)
+                    },
+                    new String[] {"Home", "Sets",
+                            "Away"
+                    } );
+            pager.setOffscreenPageLimit(2);
+        }
         return adapter;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_finish, menu);
-
         return true;
     }
 
@@ -59,7 +73,11 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish){
 
-            SetsFragment fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+            CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
+
+            SetsFragment fr =  null;
+            if (type == CompetitionType.Individuals) fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+            else fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
 
             if (fr != null && !fr.isWorking()){
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
@@ -71,7 +89,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
             if (adapter.getCount() > 1){
 
-                MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
+                MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
                 if (mfr != null && !mfr.isWorking()){
                     ArrayList<Player> players = mfr.getPlayers();
                 }

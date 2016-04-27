@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
+import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.SelectPlayersAdapter;
@@ -28,6 +29,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public static final int OPTION_COMPETITION = 0;
     public static final int OPTION_TOURNAMENT = 1;
     public static final int OPTION_TEAM = 2;
+    public static final int OPTION_MATCH = 3;
 
     private String action = null;
 
@@ -44,6 +46,9 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
                 break;
             case 2:
                 action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
+                break;
+            case 3:
+                action = PlayerService.ACTION_GET_PLAYERS_FOR_MATCH;
                 break;
             default:
                 break;

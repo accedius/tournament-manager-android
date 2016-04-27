@@ -52,13 +52,10 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
 
-            if (tournamentid != -1){
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewMatchFragment.newInstance(tournamentid, true, CreateSquashMatchFragment.class)).commit();
-            } else if (matchId != -1){
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewMatchFragment.newInstance(matchId, false, CreateSquashMatchFragment.class)).commit();
-            }
-
-
+            if (matchId == -1)
+                getSupportFragmentManager().beginTransaction().add(R.id.container, CreateSquashMatchFragment.newInstance(tournamentid, CreateSquashMatchFragment.class)).commit();
+            else
+                getSupportFragmentManager().beginTransaction().add(R.id.container, CreateSquashMatchFragment.newInstance(matchId, tournamentid, CreateSquashMatchFragment.class)).commit();
         }
     }
 }

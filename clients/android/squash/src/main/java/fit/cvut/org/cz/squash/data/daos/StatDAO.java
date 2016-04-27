@@ -91,6 +91,14 @@ public class StatDAO implements IStatDAO {
     }
 
     @Override
+    public void deleteByParticipant(Context context, long participantId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String where = String.format("%s = ?", DBConstants.cPARTICIPANT_ID);
+        db.delete(SDBConstants.tSTATS, where, new String[]{Long.toString(participantId)});
+        db.close();
+    }
+
+    @Override
     public ArrayList<DStat> getByParticipant(Context context, long participantId, StatsEnum type) {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);

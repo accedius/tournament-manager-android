@@ -39,6 +39,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_CREATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.create_match";
     public static final String ACTION_UPDATE_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
     public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
+    public static final String ACTION_DELETE_MATCH = "fit.cvut.org.cz.squash.presentation.services.delete_match";
 
     @Override
     protected String getActionKey() {
@@ -59,10 +60,12 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
         switch (action){
             case ACTION_GET_MATCHES_BY_TOURNAMENT:{
-
+                Long id = intent.getLongExtra(EXTRA_ID, -1);
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_MATCHES, ManagersFactory.getInstance().matchManager.getByTournamentId(this, intent.getLongExtra(EXTRA_ID, -1)));
-
+                result.putExtra(EXTRA_MATCHES, ManagersFactory.getInstance().matchManager.getByTournamentId(this, id));
+                Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, id);
+                CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, t.getCompetitionId()).getType();
+                result.putExtra(EXTRA_TYPE, type.toString());
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
@@ -101,6 +104,11 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 ArrayList<SetRowItem> sets =  ManagersFactory.getInstance().statsManager.getSetsForMatch(this, intent.getLongExtra(EXTRA_ID, -1));
                 result.putParcelableArrayListExtra(EXTRA_MATCHES, sets);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_DELETE_MATCH:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                ManagersFactory.getInstance().matchManager.delete(this, id);
                 break;
             }
         }

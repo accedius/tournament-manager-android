@@ -24,7 +24,7 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
     public static final String ARG_TABMODE = "arg_tabmode";
 
-    private ViewPager pager;
+    protected ViewPager pager;
 
     @Override
     protected View injectView(ViewGroup parent) {

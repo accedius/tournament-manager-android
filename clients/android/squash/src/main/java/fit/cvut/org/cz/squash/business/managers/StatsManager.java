@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
@@ -195,5 +196,28 @@ public class StatsManager implements IStatsManager {
                 result, -1, -1, StatsEnum.MATCH));
         DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, away.getId(),
                 result * -1, -1, -1, StatsEnum.MATCH));
+    }
+
+    @Override
+    public ArrayList<Player> getPlayersForMatch(Context context, long matchId, String role) {
+        ArrayList<Player> players = new ArrayList<>();
+
+        DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
+
+        DParticipant participant = null;
+        for (DParticipant p : participants) if (p.getRole().equals(role)) participant = p;
+
+        if (!m.isPlayed()){
+            return ManagersFactory.getInstance().teamsManager.getById(context, participant.getTeamId()).getPlayers();
+        } else {
+            ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, participant.getId(), StatsEnum.MATCH_PARTICIPATION);
+            Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+            for (DStat stat : stats){
+                players.add(new Player(allPlayers.get(stat.getPlayerId())));
+            }
+        }
+
+        return players;
     }
 }

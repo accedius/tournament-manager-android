@@ -46,7 +46,10 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void delete(Context context, long id) {
-
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String where = String.format("%s = ?", DBConstants.cID);
+        db.delete(DBConstants.tPARTICIPANTS, where, new String[]{Long.toString(id)});
+        db.close();
     }
 
     @Override

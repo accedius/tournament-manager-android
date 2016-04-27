@@ -32,7 +32,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     public static final String ARG_ID = "arg_id";
     public static final String SAVE_TEAM = "save_team";
     public static final String SAVE_SEND = "save_send";
-    private boolean sendForData = true;
+    protected boolean sendForData = true;
 
 
     public static TeamDetailFragment newInstance(long id, Class<? extends TeamDetailFragment> clazz){
@@ -128,6 +128,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
                 @Override
                 public void onClick(View v) {
                     if (isDataSourceWorking()) return;
+                    t.setPlayers(adapter.getData());
                     Intent intent = getSelectActivityStartIntent(t);
                     sendForData = false;
                     startActivityForResult(intent, getRequestCode());
@@ -144,6 +145,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
         name.setText(t.getName());
         adapter.swapData(t.getPlayers());
         this.t = t;
+        super.customOnPause();
     }
 
     @Override
@@ -159,8 +161,6 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     @Override
     protected void customOnPause() {
-        if (sendForData)
-            super.customOnPause();
     }
 
     @Override
@@ -173,10 +173,12 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
             super.customOnResume();
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (t != null){
+            t.setPlayers(adapter.getData());
             outState.putParcelable(SAVE_TEAM, t);
         }
         outState.putBoolean(SAVE_SEND, sendForData);

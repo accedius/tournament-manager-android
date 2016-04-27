@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.squash.business.entities.PointConfig;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
@@ -83,6 +84,11 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
+    public void resetMatch(Context context, long matchId) {
+
+    }
+
+    @Override
     public void insert(Context context, ScoredMatch match) {
 
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));
@@ -115,5 +121,14 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void delete(Context context, long id) {
 
+
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, id);
+        for (DParticipant participant : participants)
+        {
+            DAOFactory.getInstance().statDAO.deleteByParticipant(context, participant.getId());
+            DAOFactory.getInstance().participantDAO.delete(context, participant.getId());
+        }
+
+        DAOFactory.getInstance().matchDAO.delete(context, id);
     }
 }

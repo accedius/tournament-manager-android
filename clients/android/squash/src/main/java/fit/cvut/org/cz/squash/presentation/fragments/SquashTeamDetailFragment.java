@@ -35,7 +35,7 @@ public class SquashTeamDetailFragment extends TeamDetailFragment {
 
     @Override
     protected Intent getSelectActivityStartIntent(Team t) {
-        Intent intent =  AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getTournamentId());
+        Intent intent =  AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getId());
         intent.putParcelableArrayListExtra(SelectableListActivity.EXTRA_OMIT_DATA, t.getPlayers());
         return intent;
     }

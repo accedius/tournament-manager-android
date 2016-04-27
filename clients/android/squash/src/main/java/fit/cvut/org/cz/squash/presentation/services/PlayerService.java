@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -23,6 +24,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_SELECTED = "extra_selected";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_ROLE = "extra_role";
 
     public static final String ACTION_GET_SELECTED_FROM_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.competition_selected_players";
     public static final String ACTION_GET_PLAYERS_FOR_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.get_players_for_competition";
@@ -34,6 +36,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static final String ACTION_UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
     public static final String ACTION_GET_PLAYERS_FOR_TEAM = "fit.cvut.org.cz.squash.presentation.services.get_players_for_team";
+
+    public static final String ACTION_GET_AWAY_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_away_players_in_match";
+    public static final String ACTION_GET_HOME_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_in_match";
+    public static final String ACTION_GET_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_for_match";
 
 
 
@@ -94,7 +100,36 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_PLAYERS_FOR_TEAM:{
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(this, intent.getLongExtra(EXTRA_ID, -1)));
+                Team t = ManagersFactory.getInstance().teamsManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                t.getPlayers().addAll(ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(this, t.getTournamentId()));
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
+                result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_AWAY_PLAYERS_IN_MATCH:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                Intent result = new Intent(action);
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().statsManager.getPlayersForMatch(this, id, "away"));
+                long teamID = ManagersFactory.getInstance().participantManager.getTeamIdForMatchParticipant(this, id, "away");
+                result.putExtra(EXTRA_ID, teamID);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_HOME_PLAYERS_IN_MATCH: {
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                Intent result = new Intent(action);
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().statsManager.getPlayersForMatch(this, id, "home"));
+                long teamID = ManagersFactory.getInstance().participantManager.getTeamIdForMatchParticipant(this, id, "home");
+                result.putExtra(EXTRA_ID, teamID);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_PLAYERS_FOR_MATCH:{
+                Intent result = new Intent(action);
+                Team t = ManagersFactory.getInstance().teamsManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
