@@ -82,7 +82,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
             }
             case OPTION_TEAM:
             {
-                action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_TEAMS;
+                action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
                 break;
             }
             case OPTION_PARTICIPANT:
@@ -100,7 +100,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        if( intent.getAction() == PlayerService.ACTION_GET_PLAYERS_NOT_IN_TEAMS )
+        if( intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_TEAM)
         {
             ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList( ARG_OMIT );
             if( omitPlayers != null ) {

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -27,7 +28,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_ADD_PLAYERS_TO_COMPETITION = "action_add_players_to_competition";
     public static final String ACTION_ADD_PLAYERS_TO_TOURNAMENT = "action_add_players_to_tournament";
 
-    public static final String ACTION_GET_PLAYERS_NOT_IN_TEAMS = "action_get_players_not_in_teams";
+    public static final String ACTION_GET_PLAYERS_FOR_TEAM = "action_get_players_for_team";
     public static final String ACTION_UPDATE_TEAM_PLAYERS = "action_update_team_players";
 
     public static final String ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID = "action_get_players_in_tournament_by_match_id";
@@ -107,12 +108,12 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 break;
             }
-            case ACTION_GET_PLAYERS_NOT_IN_TEAMS:
+            case ACTION_GET_PLAYERS_FOR_TEAM:
             {
                 Intent result = new Intent(action);
-                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInTeams( this, intent.getLongExtra(EXTRA_ID, -1));
-
-                result.putParcelableArrayListExtra( EXTRA_PLAYERS, players );
+                Team t = ManagerFactory.getInstance().teamManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                t.getPlayers().addAll(ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInTeams(this, t.getTournamentId()));
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance( this ).sendBroadcast( result );
