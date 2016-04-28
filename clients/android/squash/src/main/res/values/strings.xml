@@ -23,7 +23,7 @@
     <string name="draw">Draw</string>
     <string name="loss">Loss</string>
     <string name="set_divider">:</string>
-    <string name="parse_number_error">Could not parse number</string>
+    <string name="parse_number_error">Could not parse lostValue</string>
     <string name="zero_score">Score cannot be lower than zero</string>
 
     <string name="package_name">fit.cvut.org.cz.squash</string>

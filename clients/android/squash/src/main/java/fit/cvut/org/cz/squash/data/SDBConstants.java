@@ -14,7 +14,7 @@ public class SDBConstants {
     public static final String cLOSS = "loss";
     public static final String cTYPE = "type";
     public static final String cSTATUS = "status";
-    public static final String cNUMBER = "number";
+    public static final String cLOSTVALUE = "lost_value";
     public static final String cVALUE = "value";
 
 

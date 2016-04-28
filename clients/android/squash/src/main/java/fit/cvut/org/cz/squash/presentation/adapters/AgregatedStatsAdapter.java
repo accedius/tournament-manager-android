@@ -25,21 +25,21 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
     public void onBindViewHolder(AgregatedStatsViewHolder holder, int position) {
 
         AgregatedStats stats = data.get(position);
-        holder.name.setText(stats.getPlayerName());
-        holder.W.append(Integer.toString(stats.getWon()));
-        holder.L.append(Integer.toString(stats.getLost()));
-        holder.D.append(Integer.toString(stats.getDraws()));
+        holder.name.setText(stats.playerName);
+        holder.W.setText(Integer.toString(stats.won));
+        holder.L.setText(Integer.toString(stats.lost));
+        holder.D.setText(Integer.toString(stats.draws));
         if (holder.SW != null){
-            holder.SW.append(Integer.toString(stats.getSetsWon()));
-            holder.SL.append(Integer.toString(stats.getSetsLost()));
-            holder.BW.append(Integer.toString(stats.getBallsWon()));
-            holder.BL.append(Integer.toString(stats.getBallsLost()));
-            holder.SWAVG.append(String.format("%.2f", stats.getSetsWonAvg()));
-            holder.SLAVG.append(String.format("%.2f", stats.getSetsLostAvg()));
-            holder.BWAVG.append(String.format("%.2f", stats.getBallsWonAvg()));
-            holder.BLAVG.append(String.format("%.2f", stats.getBallsLostAvg()));
-            holder.WPER.append(String.format("%.2f", stats.getMatchWinRate()));
-            holder.SWPER.append(String.format("%.2f", stats.getSetsWinRate()));
+            holder.SW.setText(Integer.toString(stats.setsWon));
+            holder.SL.setText(Integer.toString(stats.setsLost));
+            holder.BW.setText(Integer.toString(stats.ballsWon));
+            holder.BL.setText(Integer.toString(stats.ballsLost));
+            holder.SWAVG.setText(String.format("%.2f", stats.setsWonAvg));
+            holder.SLAVG.setText(String.format("%.2f", stats.setsLostAvg));
+            holder.BWAVG.setText(String.format("%.2f", stats.ballsWonAvg));
+            holder.BLAVG.setText(String.format("%.2f", stats.ballsLostAvg));
+            holder.WPER.setText(String.format("%.2f", stats.matchWinRate));
+            holder.SWPER.setText(String.format("%.2f", stats.setsWinRate));
         }
 
 

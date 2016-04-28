@@ -25,12 +25,12 @@ public class StandingsAdapter extends AbstractListAdapter<StandingItem, Standing
     @Override
     public void onBindViewHolder(StandingItemViewHolder holder, int position) {
         StandingItem item = data.get(position);
-        holder.name.setText(item.getName());
-        holder.W.setText(Integer.toString(item.getWins()));
-        holder.L.setText(Integer.toString(item.getLoses()));;
-        holder.D.setText(Integer.toString(item.getDraws()));
-        holder.points.setText(Integer.toString(item.getPoints()));
-        holder.score.setText(String.format("%d:%d", item.getSetsWon(), item.getSetsLost()));
+        holder.name.setText(item.name);
+        holder.W.setText(Integer.toString(item.wins));
+        holder.L.setText(Integer.toString(item.loses));
+        holder.D.setText(Integer.toString(item.draws));
+        holder.points.setText(Integer.toString(item.points));
+        holder.score.setText(String.format("%d:%d", item.setsWon, item.setsLost));
     }
 
     public class StandingItemViewHolder extends RecyclerView.ViewHolder{

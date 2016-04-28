@@ -29,7 +29,7 @@ public class StatDAO implements IStatDAO {
         cv.put(SDBConstants.cTYPE, stat.getType().toString());
         cv.put(SDBConstants.cSTATUS, stat.getStatus());
         if (stat.getValue() != -1) cv.put(SDBConstants.cVALUE, stat.getValue());
-        if (stat.getNumber() != -1) cv.put(SDBConstants.cNUMBER, stat.getNumber());
+        if (stat.getLostValue() != -1) cv.put(SDBConstants.cLOSTVALUE, stat.getLostValue());
 
         return cv;
     }
@@ -41,7 +41,7 @@ public class StatDAO implements IStatDAO {
         int value = -1;
 
         if (!c.isNull(c.getColumnIndex(DBConstants.cPLAYER_ID))) playerId = c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID));
-        if (!c.isNull(c.getColumnIndex(SDBConstants.cNUMBER))) number = c.getInt(c.getColumnIndex(SDBConstants.cNUMBER));
+        if (!c.isNull(c.getColumnIndex(SDBConstants.cLOSTVALUE))) number = c.getInt(c.getColumnIndex(SDBConstants.cLOSTVALUE));
         if (!c.isNull(c.getColumnIndex(SDBConstants.cVALUE))) value = c.getInt(c.getColumnIndex(SDBConstants.cVALUE));
 
         long id = c.getLong(c.getColumnIndex(DBConstants.cID));
@@ -133,6 +133,21 @@ public class StatDAO implements IStatDAO {
         ArrayList<DStat> stats = new ArrayList<>();
 
         Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cTOURNAMENT_ID, SDBConstants.cTYPE), new String[]{Long.toString(tournamentId), type.toString()});
+        while (c.moveToNext())
+            stats.add(parse(c));
+
+        c.close();
+        db.close();
+
+        return stats;
+    }
+
+    @Override
+    public ArrayList<DStat> getByCompetition(Context context, long competitionId, StatsEnum type) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<DStat> stats = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cCOMPETITIONID, SDBConstants.cTYPE), new String[]{Long.toString(competitionId), type.toString()});
         while (c.moveToNext())
             stats.add(parse(c));
 

@@ -32,25 +32,74 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  * Created by Vaclav on 7. 4. 2016.
  */
 public class StatsManager implements IStatsManager {
-    @Override
-    public ArrayList<AgregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId) {
 
-        //TODO remove mock data
-
-        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, competitionId);
+    private ArrayList<AgregatedStats> getStats(Context context, ArrayList<Player> players, ArrayList<DStat> matchResults, ArrayList<DStat> sets){
         ArrayList<AgregatedStats> stats = new ArrayList<>();
-        for (Player player : players) stats.add(new AgregatedStats(player.getId(), player.getName(), 63, 42, 1, 150, 90, 999999, 999999, 2.1d, 1.3d, 54.3f, 33.12d, 61.23f, 72.5d));
+        Map<Long, AgregatedStats> mappedStats = new HashMap<>();
+        Map<Long, ArrayList<Long>> mappedParticipants = new HashMap<>();
+        for (Player p : players) mappedStats.put(p.getId(), new AgregatedStats(p.getName(), p.getId()));
+        for (DStat result : matchResults) {
+            if (!mappedParticipants.containsKey(result.getParticipantId())) {
+                mappedParticipants.put(result.getParticipantId(), DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, result.getParticipantId()));
+            }
+            for (Long playerId : mappedParticipants.get(result.getParticipantId())) {
+                switch (result.getStatus()) {
+                    case -1:
+                        mappedStats.get(playerId).lost++;
+                        break;
+                    case 0:
+                        mappedStats.get(playerId).draws++;
+                        break;
+                    case 1:
+                        mappedStats.get(playerId).won++;
+                        break;
+                }
+            }
+        }
+        for (DStat set : sets) {
+            for (Long playerId : mappedParticipants.get(set.getParticipantId())) {
+                if (set.getStatus() == 1) mappedStats.get(playerId).setsWon++;
+                else mappedStats.get(playerId).setsLost++;
+                mappedStats.get(playerId).ballsWon += set.getValue();
+                mappedStats.get(playerId).ballsLost += set.getLostValue();
+            }
+        }
+
+        for (Long key : mappedStats.keySet()) {
+
+            double played = mappedStats.get(key).won + mappedStats.get(key).lost + mappedStats.get(key).draws;
+            if (played > 0) {
+                mappedStats.get(key).matchWinRate = mappedStats.get(key).won / played * 100;
+                mappedStats.get(key).setsWinRate = ((double) mappedStats.get(key).setsWon) / (mappedStats.get(key).setsWon + mappedStats.get(key).setsLost) * 100;
+                mappedStats.get(key).ballsWonAvg = mappedStats.get(key).ballsWon / played;
+                mappedStats.get(key).ballsLostAvg = mappedStats.get(key).ballsLost / played;
+                mappedStats.get(key).setsWonAvg = mappedStats.get(key).setsWon / played;
+                mappedStats.get(key).setsLostAvg = mappedStats.get(key).setsLost / played;
+            }
+            stats.add(mappedStats.get(key));
+        }
 
         return stats;
     }
 
     @Override
-    public ArrayList<AgregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId) {
-        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
-        ArrayList<AgregatedStats> stats = new ArrayList<>();
-        for (Player player : players) stats.add(new AgregatedStats(player.getId(), player.getName(), 63, 42, 1, 150, 90, 999999, 999999, 2.1d, 1.3d, 54.3f, 33.12d, 61.23f, 72.5d));
+    public ArrayList<AgregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId) {
 
-        return stats;
+        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, competitionId);
+        ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.MATCH);
+        ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.SET);
+
+        return getStats(context, players, results, sets);
+    }
+
+    @Override
+    public ArrayList<AgregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId) {
+
+        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
+        ArrayList<DStat> matchResults = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.MATCH);
+        ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.SET);
+
+        return getStats(context, players, matchResults, sets);
     }
 
     @Override
@@ -73,21 +122,21 @@ public class StatsManager implements IStatsManager {
                 long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, p.getId()).get(0);
                 ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
                 for (DStat set : sets){
-                    if (set.getStatus() == 1) mappedStandings.get(playerId).setSetsWon(mappedStandings.get(playerId).getSetsWon() + 1);
-                    else mappedStandings.get(playerId).setSetsLost(mappedStandings.get(playerId).getSetsLost() + 1);
+                    if (set.getStatus() == 1) mappedStandings.get(playerId).setsWon++;
+                    else mappedStandings.get(playerId).setsLost++;
                 }
                 switch (stat.getStatus()){
                     case 0:
-                        mappedStandings.get(playerId).setDraws(mappedStandings.get(playerId).getDraws() + 1);
-                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getDraw());
+                        mappedStandings.get(playerId).draws++;
+                        mappedStandings.get(playerId).points += cfg.getDraw();
                         break;
                     case -1:
-                        mappedStandings.get(playerId).setLoses(mappedStandings.get(playerId).getLoses() + 1);
-                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getLoss());
+                        mappedStandings.get(playerId).loses++;
+                        mappedStandings.get(playerId).points += cfg.getLoss();
                         break;
                     case 1:
-                        mappedStandings.get(playerId).setWins(mappedStandings.get(playerId).getWins() + 1);
-                        mappedStandings.get(playerId).setPoints(mappedStandings.get(playerId).getPoints() + cfg.getWin());
+                        mappedStandings.get(playerId).wins++;
+                        mappedStandings.get(playerId).points+=cfg.getWin();
                         break;
                 }
 
@@ -101,21 +150,21 @@ public class StatsManager implements IStatsManager {
                 DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
                 ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
                 for (DStat set : sets){
-                    if (set.getStatus() == 1) mappedStandings.get(p.getTeamId()).setSetsWon(mappedStandings.get(p.getTeamId()).getSetsWon() + 1);
-                    else mappedStandings.get(p.getTeamId()).setSetsLost(mappedStandings.get(p.getTeamId()).getSetsLost() + 1);
+                    if (set.getStatus() == 1) mappedStandings.get(p.getTeamId()).setsWon++;
+                    else mappedStandings.get(p.getTeamId()).setsLost++;
                 }
                 switch (stat.getStatus()){
                     case 0:
-                        mappedStandings.get(p.getTeamId()).setDraws(mappedStandings.get(p.getTeamId()).getDraws() + 1);
-                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getDraw());
+                        mappedStandings.get(p.getTeamId()).draws++;
+                        mappedStandings.get(p.getTeamId()).points+=cfg.getDraw();
                         break;
                     case -1:
-                        mappedStandings.get(p.getTeamId()).setLoses(mappedStandings.get(p.getTeamId()).getLoses() + 1);
-                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getLoss());
+                        mappedStandings.get(p.getTeamId()).loses++;
+                        mappedStandings.get(p.getTeamId()).points += cfg.getLoss();
                         break;
                     case 1:
-                        mappedStandings.get(p.getTeamId()).setWins(mappedStandings.get(p.getTeamId()).getWins() + 1);
-                        mappedStandings.get(p.getTeamId()).setPoints(mappedStandings.get(p.getTeamId()).getPoints() + cfg.getWin());
+                        mappedStandings.get(p.getTeamId()).wins++;
+                        mappedStandings.get(p.getTeamId()).points += cfg.getWin();
                         break;
                 }
 
@@ -125,9 +174,9 @@ public class StatsManager implements IStatsManager {
         Collections.sort(standings, new Comparator<StandingItem>() {
             @Override
             public int compare(StandingItem lhs, StandingItem rhs) {
-                if (rhs.getPoints() - lhs.getPoints() == 0 )
-                    return (rhs.getSetsWon() - rhs.getSetsLost() - lhs.getSetsWon() + lhs.getSetsLost());
-                return rhs.getPoints() - lhs.getPoints();
+                if (rhs.points - lhs.points == 0 )
+                    return (rhs.setsWon - rhs.setsLost - lhs.setsWon + lhs.setsLost);
+                return rhs.points - lhs.points;
             }
         });
         return standings;
@@ -184,9 +233,9 @@ public class StatsManager implements IStatsManager {
         for (int i = 0; i< sets.size(); i++) {
             SetRowItem item = sets.get(i);
             DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, home.getId(),
-                    item.getWinner(), i + 1, item.getHomeScore(), StatsEnum.SET));
+                    item.getWinner(), item.getAwayScore(), item.getHomeScore(), StatsEnum.SET));
             DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), -1, away.getId(),
-                    item.getWinner() * -1, i + 1, item.getAwayScore(), StatsEnum.SET));
+                    item.getWinner() * -1, item.getHomeScore(), item.getAwayScore(), StatsEnum.SET));
             setswon += item.getWinner();
         }
         int result = 0;

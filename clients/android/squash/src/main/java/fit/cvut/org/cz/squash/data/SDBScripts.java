@@ -27,7 +27,7 @@ public class SDBScripts {
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + SDBConstants.cTYPE + " TEXT NOT NULL, "
             + SDBConstants.cSTATUS + " INTEGER NOT NULL, "
-            + SDBConstants.cNUMBER + " INTEGER, "
+            + SDBConstants.cLOSTVALUE + " INTEGER, "
             + SDBConstants.cVALUE + " INTEGER, "
             + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ) "
             + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ) "

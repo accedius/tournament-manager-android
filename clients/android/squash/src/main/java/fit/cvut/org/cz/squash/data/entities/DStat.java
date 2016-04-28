@@ -6,19 +6,19 @@ package fit.cvut.org.cz.squash.data.entities;
 public class DStat {
 
     private long id, competitionId, tournamentId, playerId, participantId;
-    private int status, number, value;
+    private int status, lostValue, value;
     private StatsEnum type;
 
     public DStat() {}
 
-    public DStat(long id, long competitionId, long tournamentId, long playerId, long participantId, int status, int number, int value, StatsEnum type) {
+    public DStat(long id, long competitionId, long tournamentId, long playerId, long participantId, int status, int lostValue, int value, StatsEnum type) {
         this.id = id;
         this.competitionId = competitionId;
         this.tournamentId = tournamentId;
         this.playerId = playerId;
         this.participantId = participantId;
         this.status = status;
-        this.number = number;
+        this.lostValue = lostValue;
         this.value = value;
         this.type = type;
     }
@@ -71,12 +71,12 @@ public class DStat {
         this.status = status;
     }
 
-    public int getNumber() {
-        return number;
+    public int getLostValue() {
+        return lostValue;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setLostValue(int lostValue) {
+        this.lostValue = lostValue;
     }
 
     public int getValue() {

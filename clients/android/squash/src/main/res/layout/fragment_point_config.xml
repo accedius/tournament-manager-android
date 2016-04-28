@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_wins"
-                android:inputType="number"
+                android:inputType="numberSigned"
                 android:hint="@string/win"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_draws"
-                android:inputType="number"
+                android:inputType="numberSigned"
                 android:hint="@string/draw"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_loss"
-                android:inputType="number"
+                android:inputType="numberSigned"
                 android:hint="@string/loss"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
