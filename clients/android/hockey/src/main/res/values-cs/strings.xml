@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_player">Add player</string>
+    <string name="a">A</string>
+    <string name="ag">PrumG</string>
+    <string name="ap">PrumB</string>
+    <string name="apmp">Prum+/-</string>
+    <string name="assists">PrumA</string>
+    <string name="atp">PrumTB</string>
+    <string name="d">R</string>
+    <string name="g">G</string>
+    <string name="gg">G+</string>
+    <string name="gr">G-</string>
+    <string name="goals">Góly</string>
+    <string name="gp">Zápasy</string>
+    <string name="i">Z</string>
+    <string name="interventions">Zákroky</string>
+    <string name="p">B</string>
+    <string name="l">P</string>
+    <string name="normal_time">Standartní čas</string>
+    <string name="overtime">Přesčas</string>
+    <string name="player_cant_delete">Nelze smazat, hráč je někde registrovaný!</string>
+    <string name="plus_minus_points">+/- body</string>
+    <string name="pmp">+/-</string>
+    <string name="set_all">Vše musí být nastaveno!</string>
+    <string name="shootouts">Nájezdy</string>
+    <string name="sport_name">Hokej</string>
+    <string name="team_cant_delete">Nelze smazas, tým se účastní zápasu!</string>
+    <string name="title_activity_main">Hokej hlavní aktivita</string>
+    <string name="tour_not_deleted">Turnaj není prázdný, nelze smazat!</string>
+    <string name="tp">TB</string>
+    <string name="w">V</string>
+</resources>
