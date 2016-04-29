@@ -19,11 +19,19 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_PLAYER_ID = "extra_player_id";
     public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_SELECTED = "extra_selected";
+    public static final String EXTRA_OUTCOME = "extra_delete_player_outcome";
+
+    public static final int OUTCOME_OK = 1;
+    public static final int OUTCOME_NOT_OK = 0;
 
     public static final String ACTION_GET_PLAYERS_NOT_IN_COMPETITION = "action_get_players_not_in_competition";
     public static final String ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT = "action_get_players_not_in_tournament";
+
+    public static final String ACTION_DELETE_PLAYER_FROM_TOURNAMENT = "action_delete_player_from_tournament";
+    public static final String ACTION_DELETE_PLAYER_FROM_COMPETITION = "action_delete_player_from_competition";
 
     public static final String ACTION_ADD_PLAYERS_TO_COMPETITION = "action_add_players_to_competition";
     public static final String ACTION_ADD_PLAYERS_TO_TOURNAMENT = "action_add_players_to_tournament";
@@ -137,6 +145,36 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 res.putParcelableArrayListExtra( EXTRA_PLAYERS, players);
                 res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+                break;
+            }
+            case ACTION_DELETE_PLAYER_FROM_COMPETITION:
+            {
+                Intent res = new Intent( action );
+                long playerId = intent.getLongExtra( EXTRA_PLAYER_ID, -1 );
+                long competitionId = intent.getLongExtra( EXTRA_ID, -1 );
+
+
+                if( ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromCompetition( this, playerId, competitionId ) ){
+                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                } else {
+                    res.putExtra( EXTRA_OUTCOME, OUTCOME_NOT_OK );
+                }
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+                break;
+            }
+            case ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
+            {
+                Intent res = new Intent( action );
+                long playerId = intent.getLongExtra( EXTRA_PLAYER_ID, -1 );
+                long tournamentId = intent.getLongExtra( EXTRA_ID, -1 );
+
+
+                if( ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromTournament( this, playerId, tournamentId ) ){
+                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                } else {
+                    res.putExtra( EXTRA_OUTCOME, OUTCOME_NOT_OK );
+                }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }

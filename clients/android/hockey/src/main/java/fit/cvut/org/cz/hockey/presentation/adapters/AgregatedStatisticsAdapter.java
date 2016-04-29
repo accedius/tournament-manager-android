@@ -40,12 +40,16 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AgregatedSta
             holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));
             holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
+        setOnClickListeners(holder.wholeView, stats.getPlayerID());
     }
+
+    protected void setOnClickListeners( View v, long playerId ) {};
 
     public class AgregatedStatisticsViewHolder extends RecyclerView.ViewHolder
     {
         public long id;
         TextView name, M, W, L, D, G, A, P, PMP, TP, AG, AP, APMP, ATP;
+        public View wholeView;
 
         public AgregatedStatisticsViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +68,7 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AgregatedSta
             AP = (TextView) itemView.findViewById(R.id.as_avg_p);
             APMP = (TextView) itemView.findViewById(R.id.as_avg_pmp);
             ATP = (TextView) itemView.findViewById(R.id.as_avg_tp);
-
+            wholeView = itemView;
         }
     }
 }

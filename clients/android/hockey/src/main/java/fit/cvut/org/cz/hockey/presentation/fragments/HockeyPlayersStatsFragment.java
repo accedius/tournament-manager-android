@@ -2,11 +2,14 @@ package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.AgregatedStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -78,7 +82,54 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new AgregatedStatisticsAdapter();
+        return new AgregatedStatisticsAdapter(){
+            @Override
+            protected void setOnClickListeners(View v, long playerId) {
+
+                final long final_plId = playerId;
+
+                super.setOnClickListeners(v, playerId);
+                v.setOnLongClickListener( new View.OnLongClickListener(){
+
+                    @Override
+                    public boolean onLongClick(View v) {
+                        DeleteOnlyDialog dialog = new DeleteOnlyDialog(){
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch ( which )
+                                        {
+                                            case 0:
+                                            {
+
+                                                if(competitionID != -1){
+                                                    Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION, getContext());
+                                                    intent.putExtra( PlayerService.EXTRA_PLAYER_ID, final_plId );
+                                                    intent.putExtra( PlayerService.EXTRA_ID, competitionID );
+                                                    getContext().startService( intent );
+                                                } else {
+                                                    Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
+                                                    intent.putExtra( PlayerService.EXTRA_PLAYER_ID, final_plId );
+                                                    intent.putExtra( PlayerService.EXTRA_ID, tournamentID );
+                                                    getContext().startService( intent );
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                };
+                            }
+                        };
+                        dialog.show(getFragmentManager(), "EDIT_DELETE");
+
+                        return false;
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -121,10 +172,12 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
         if( competitionID != -1 ) {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_COMP_ID);
             filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION );
+            filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION );
         }
         else {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_TOUR_ID);
             filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT );
+            filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT );
         }
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver( statsReceiver, filter);
@@ -212,6 +265,18 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedSt
                     sendForData = true;
                     askForData();
                     break;
+                }
+                case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:
+                case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
+                {
+                    if( intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK ){
+                        sendForData = true;
+                        askForData();
+                        break;
+                    } else {
+                        View v = getView();
+                        if( v != null ) Snackbar.make(v, R.string.player_cant_delete, Snackbar.LENGTH_LONG).show();
+                    }
                 }
                 default: break;
 

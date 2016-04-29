@@ -69,6 +69,14 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                                                 insertTeamDialog.show(getFragmentManager(), "tag2");
                                                 dialog.dismiss();
                                                 break;
+                                            case 1:
+                                            {
+                                                Intent intent = TeamService.newStartIntent( TeamService.ACTION_DELETE, getContext() );
+                                                intent.putExtra( TeamService.EXTRA_ID, tid );
+                                                getContext().startService( intent );
+                                                dialog.dismiss();
+                                                break;
+                                            }
                                             default:break;
                                         }
                                     }

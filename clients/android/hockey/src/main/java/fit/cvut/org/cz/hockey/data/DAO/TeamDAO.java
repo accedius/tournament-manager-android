@@ -55,7 +55,11 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public void delete(Context context, long id) {
-        //TODO
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format( "%s = ?", DBConstants.cID );
+        String[] projection = new String[]{ Long.toString( id ) };
+        db.delete(DBConstants.tTEAMS, where, projection);
     }
 
     @Override

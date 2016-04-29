@@ -23,6 +23,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_ID = "action_get_team_by_id";
     public static final String ACTION_INSERT = "action_insert_team";
     public static final String ACTION_EDIT = "action_edit_team";
+    public static final String ACTION_DELETE = "action_delete_team";
     public static final String ACTION_GET_TEAMS_BY_TOURNAMENT = "action_get_teams_by_tournament";
 
 
@@ -93,6 +94,15 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 sendTeams( id );
 
 
+                break;
+            }
+            case ACTION_DELETE:
+            {
+                long teamId = intent.getLongExtra( EXTRA_ID, -1 );
+                if(teamId == -1) break;
+                long tourId = ManagerFactory.getInstance().teamManager.getById( this, teamId ).getTournamentId();
+                ManagerFactory.getInstance().teamManager.delete( this, teamId );
+                sendTeams( tourId );
                 break;
             }
         }

@@ -28,7 +28,8 @@ public class TeamManager implements ITeamManager {
 
     @Override
     public void delete(Context context, long id) {
-
+        DAOFactory.getInstance().packagePlayerDAO.deleteAllPlayersFromTeam( context, id );
+        DAOFactory.getInstance().teamDAO.delete( context, id );
     }
 
     @Override

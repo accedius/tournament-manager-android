@@ -69,12 +69,20 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
+        String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID );
+        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( competitionId ) };
+        db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, projection);
     }
 
     @Override
     public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
+        String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID );
+        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( tournamentId ) };
+        db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
     }
 
     @Override

@@ -33,4 +33,5 @@
     <string name="assists">Assists</string>
     <string name="plus_minus_points">+/- points</string>
     <string name="interventions">Interventions</string>
+    <string name="player_cant_delete">Cannot delete, player registered somewhere!</string>
 </resources>
