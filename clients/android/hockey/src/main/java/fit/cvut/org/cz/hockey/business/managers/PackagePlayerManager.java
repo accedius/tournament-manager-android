@@ -32,13 +32,15 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
 
     @Override
-    public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
+    public boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
         DAOFactory.getInstance().packagePlayerDAO.deletePlayerFromCompetition(context, playerId, competitionId);
+        return true;
     }
 
     @Override
-    public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
+    public boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
         DAOFactory.getInstance().packagePlayerDAO.deletePlayerFromTournament(context, playerId, tournamentId);
+        return true;
     }
 
 

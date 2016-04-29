@@ -33,13 +33,13 @@ public class PlayerManager implements IPackagePlayerManager {
 
 
     @Override
-    public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
-
+    public boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
+        return false;
     }
 
     @Override
-    public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
-
+    public boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
+        return false;
     }
 
 

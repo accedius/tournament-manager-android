@@ -15,8 +15,8 @@ public interface IPackagePlayerManager {
     void addPlayerToCompetition(Context context, long playerId, long competitionId);
     void addPlayerToTournament(Context context, long playerId, long tournamentId);
 
-    void deletePlayerFromCompetition(Context context, long playerId, long competitionId);
-    void deletePlayerFromTournament(Context context, long playerId, long tournamentId);
+    boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId);
+    boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId);
 
     ArrayList<Player> getPlayersByCompetition(Context context, long competitionId);
     ArrayList<Player> getPlayersByTournament(Context context, long tournamentId);
