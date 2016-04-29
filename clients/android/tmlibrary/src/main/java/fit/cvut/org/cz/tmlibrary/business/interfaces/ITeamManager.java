@@ -13,7 +13,7 @@ public interface ITeamManager {
 
     void insert(Context context, Team team);
     void update(Context context, Team team);
-    void delete(Context context, long id);
+    boolean delete(Context context, long id);
 
     Team getById(Context context, long id);
     ArrayList<Team> getByTournamentId(Context context, long tournamentId);

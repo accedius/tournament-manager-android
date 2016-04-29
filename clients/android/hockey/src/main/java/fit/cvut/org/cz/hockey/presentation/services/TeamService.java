@@ -19,6 +19,10 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TEAM = "extra_team";
     public static final String EXTRA_TEAM_LIST = "extra_team_list";
+    public static final String EXTRA_OUTCOME = "extra_team_outcome";
+
+    public static final int OUTCOME_OK = 1;
+    public static final int OUTCOME_NOT_OK = 0;
 
     public static final String ACTION_GET_BY_ID = "action_get_team_by_id";
     public static final String ACTION_INSERT = "action_insert_team";
@@ -98,11 +102,16 @@ public class TeamService extends AbstractIntentServiceWProgress {
             }
             case ACTION_DELETE:
             {
-                long teamId = intent.getLongExtra( EXTRA_ID, -1 );
+                Intent res = new Intent( ACTION_DELETE );
+                long teamId = intent.getLongExtra(EXTRA_ID, -1);
                 if(teamId == -1) break;
                 long tourId = ManagerFactory.getInstance().teamManager.getById( this, teamId ).getTournamentId();
-                ManagerFactory.getInstance().teamManager.delete( this, teamId );
-                sendTeams( tourId );
+                if( ManagerFactory.getInstance().teamManager.delete( this, teamId )) {
+                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                } else {
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_NOT_OK);
+                }
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
         }

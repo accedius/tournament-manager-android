@@ -1,10 +1,13 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
     public static final String ARG_ID = "arg_id";
+
+    private BroadcastReceiver teamReceiver = new TeamReceiver();
 
     public static HockeyTeamsListFragment newInstance(long tournamentId){
         HockeyTeamsListFragment fragment = new HockeyTeamsListFragment();
@@ -72,8 +77,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                                             case 1:
                                             {
                                                 Intent intent = TeamService.newStartIntent( TeamService.ACTION_DELETE, getContext() );
-                                                intent.putExtra( TeamService.EXTRA_ID, tid );
-                                                getContext().startService( intent );
+                                                intent.putExtra(TeamService.EXTRA_ID, tid);
+                                                getContext().startService(intent);
                                                 dialog.dismiss();
                                                 break;
                                             }
@@ -112,12 +117,14 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT));
+        IntentFilter filter = new IntentFilter( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT );
+        filter.addAction( TeamService.ACTION_DELETE );
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(teamReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(teamReceiver);
     }
 
     @Override
@@ -133,5 +140,38 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
         });
 
         return fab;
+    }
+
+    public class TeamReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            contentView.setVisibility(View.VISIBLE);
+            switch (action)
+            {
+                case TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT:
+                {
+                    HockeyTeamsListFragment.super.bindDataOnView(intent);
+                    progressBar.setVisibility(View.GONE);
+                    break;
+                }
+                case TeamService.ACTION_DELETE:
+                {
+                    if( intent.getIntExtra( TeamService.EXTRA_OUTCOME, -1 ) == TeamService.OUTCOME_OK ){
+                        contentView.setVisibility( View.GONE );
+                        progressBar.setVisibility(View.VISIBLE);
+                        askForData();
+                        break;
+                    } else {
+                        View v = getView();
+                        if( v != null ) Snackbar.make(v, R.string.team_cant_delete, Snackbar.LENGTH_LONG).show();
+                    }
+                }
+                default: break;
+
+            }
+        }
     }
 }

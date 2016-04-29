@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
@@ -27,9 +29,17 @@ public class TeamManager implements ITeamManager {
     }
 
     @Override
-    public void delete(Context context, long id) {
-        DAOFactory.getInstance().packagePlayerDAO.deleteAllPlayersFromTeam( context, id );
+    public boolean delete(Context context, long id) {
+        Team t = getById( context, id );
+        ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId( context, t.getTournamentId() );
+        for( ScoredMatch match : matches ){
+            if( match.getHomeParticipantId() == id || match.getAwayParticipantId() == id ) return false;
+        }
+
+
+        DAOFactory.getInstance().packagePlayerDAO.deleteAllPlayersFromTeam(context, id);
         DAOFactory.getInstance().teamDAO.delete( context, id );
+        return true;
     }
 
     @Override

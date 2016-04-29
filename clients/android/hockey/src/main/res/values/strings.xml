@@ -34,4 +34,5 @@
     <string name="plus_minus_points">+/- points</string>
     <string name="interventions">Interventions</string>
     <string name="player_cant_delete">Cannot delete, player registered somewhere!</string>
+    <string name="team_cant_delete">Cannot delete, team participates in a match!</string>
 </resources>
