@@ -2,16 +2,22 @@ package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +26,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -33,9 +40,11 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private MatchStatisticsAdapter homeAdapter, awayAdapter;
     private String homeName, awayName;
     private RecyclerView homeRecyclerView, awayRecyclerView;
-    private Button addHomePlayer, addAwayPlayer;
     private TextView tvHome, tvAway;
+    private FloatingActionButton fab;
+    private ScrollView scrv;
     private long matchId;
+    private Fragment thisFragment;
     private long tournamentId;
     ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
     private static final int REQUEST_HOME = 1;
@@ -64,6 +73,9 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        matchId = getArguments().getLong( ARG_MATCH_ID, -1 );
+        thisFragment = this;
 
         if( savedInstanceState != null )
         {
@@ -138,10 +150,9 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
 
         homeRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_home);
         awayRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_away);
-        addHomePlayer = (Button) fragmentView.findViewById(R.id.btn_add_home);
-        addAwayPlayer = (Button) fragmentView.findViewById(R.id.btn_add_away);
         tvHome = (TextView) fragmentView.findViewById(R.id.tv_home);
         tvAway = (TextView) fragmentView.findViewById(R.id.tv_away);
+        scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
 
         homeAdapter = new MatchStatisticsAdapter( this );
         awayAdapter = new MatchStatisticsAdapter( this );
@@ -151,10 +162,16 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         homeRecyclerView.setLayoutManager(linearLayoutManager);
+        homeRecyclerView.setNestedScrollingEnabled( false );
 
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
         linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
         awayRecyclerView.setLayoutManager(linearLayoutManager2);
+        awayRecyclerView.setNestedScrollingEnabled(false);
+
+        fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, (ViewGroup)fragmentView, false);
+        ((ViewGroup) fragmentView).addView(fab);
+
 
         setOnClickListeners();
 
@@ -163,25 +180,55 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
 
     private void setOnClickListeners()
     {
-        addHomePlayer.setOnClickListener(new View.OnClickListener() {
+        scrv.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
-                Intent intent = AddPlayersActivity.newStartIntent( getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID) );
-                intent.putParcelableArrayListExtra( AddPlayersActivity.EXTRA_OMIT_DATA, omitStats );
-                startActivityForResult( intent, REQUEST_HOME );
+            public boolean onTouch(View v, MotionEvent event) {
+                fab.hide();
+                if( event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL )
+                {
+                    fab.show();
+                }
+                return false;
             }
         });
-        addAwayPlayer.setOnClickListener(new View.OnClickListener() {
+
+        fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
-                Intent intent = AddPlayersActivity.newStartIntent( getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID) );
-                intent.putParcelableArrayListExtra( AddPlayersActivity.EXTRA_OMIT_DATA, omitStats );
-                startActivityForResult( intent, REQUEST_AWAY );
+                HomeAwayDialog dialog = new HomeAwayDialog() {
+                    @Override
+                    protected void homeClicked() {
+                        ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
+                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, matchId);
+                        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+                        thisFragment.startActivityForResult(intent, REQUEST_HOME);
+                    }
+
+                    @Override
+                    protected void awayClicked() {
+                        ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
+                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, matchId);
+                        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+                        thisFragment.startActivityForResult(intent, REQUEST_AWAY);
+                    }
+
+                    @Override
+                    protected String getHomeName() {
+                        return homeName;
+                    }
+
+                    @Override
+                    protected String getAwayName() {
+                        return awayName;
+                    }
+                };
+                dialog.show(getFragmentManager(), "tag211");
             }
         });
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -222,4 +269,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     {
         return awayAdapter.getData();
     }
+
+
 }

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scroll_v">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,15 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_home"
-            android:layout_toLeftOf="@+id/btn_add_home"
             android:layout_alignParentLeft="true"
             style="@style/Base.TextAppearance.AppCompat.Display1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_add_home"
-            android:text="@string/add_player"
-            android:layout_alignParentRight="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,15 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_away"
-            android:layout_toLeftOf="@+id/btn_add_away"
             android:layout_alignParentLeft="true"
             style="@style/Base.TextAppearance.AppCompat.Display1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_add_away"
-            android:text="@string/add_player"
-            android:layout_alignParentRight="true" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,5 +134,7 @@
         </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
