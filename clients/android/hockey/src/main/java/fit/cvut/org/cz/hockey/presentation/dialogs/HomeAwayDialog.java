@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import fit.cvut.org.cz.hockey.R;
+
 /**
  * Created by atgot_000 on 29. 4. 2016.
  */
@@ -41,15 +43,15 @@ public class HomeAwayDialog extends DialogFragment {
 
         if(getArguments() != null)
         {
-            dialHomeName = getArguments().getString(ARG_HOME_NAME, "Add players to home team" );
-            dialAwayName = getArguments().getString(ARG_AWAY_NAME, "Add players to away team");
+            dialHomeName = getArguments().getString(ARG_HOME_NAME, getActivity().getString(R.string.add_home_complete) );
+            dialAwayName = getArguments().getString(ARG_AWAY_NAME, getActivity().getString(R.string.add_away_complete));
         } else if( getHomeName() != null && getAwayName() != null ){
-            dialHomeName = "Add players to" + getHomeName();
-            dialAwayName = "Add players to" + getAwayName();
+            dialHomeName = getActivity().getString(R.string.add_player) + getHomeName();
+            dialAwayName = getActivity().getString(R.string.add_player) + getAwayName();
         }
         else {
-            dialHomeName = "Add players to home team";
-            dialAwayName = "Add players to away team";
+            dialHomeName = getActivity().getString(R.string.add_home_complete);
+            dialAwayName = getActivity().getString(R.string.add_away_complete);
         }
 
 

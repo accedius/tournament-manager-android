@@ -7,6 +7,30 @@
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity</string>
     <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity</string>
 
+    <string name="create_competition_header">Competition settings</string>
+    <string name="competition_header">Competition</string>
+    <string name="create_tournament_header">Tournament settings</string>
+    <string name="tournament_header">Tournament</string>
+    <string name="point_config_header">Point configuration</string>
+    <string name="add_players_header">Add players</string>
+    <string name="team_header">Team</string>
+    <string name="create_match_header">Match settings</string>
+    <string name="match_header">Match</string>
+
+    <string name="header_overview">Overview</string>
+    <string name="header_tournaments_list">Tournaments</string>
+    <string name="header_players">Players</string>
+    <string name="header_teams">Teams</string>
+    <string name="header_standings">Standings</string>
+    <string name="header_matches">Matches</string>
+
+    <string name="add_single_match">Add single match</string>
+    <string name="add_round">Add round</string>
+    <string name="add_home_complete">Add players to home team</string>
+    <string name="add_away_complete">Add players to away team</string>
+    <string name="add_players_to_team">Add players to </string>
+    <string name="edit_stats">Edit stats</string>
+
     <string name="gp">GP</string>
     <string name="w">W</string>
     <string name="l">L</string>

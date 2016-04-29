@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
@@ -21,9 +22,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class ShowCompetitionActivity extends AbstractTabActivity {
-    private static String HEADER_OVERVIEW_COMPETITION = "Overview";
-    private static String HEADER_TOURNAMENTS_LIST = "Tournaments";
-    private static String HEADER_COMPETITION_STANDINGS = "Players";
+//    private static String HEADER_OVERVIEW_COMPETITION = getString(R.string.header_overview);
+//    private static String HEADER_TOURNAMENTS_LIST = "Tournaments";
+//    private static String HEADER_COMPETITION_STANDINGS = "Players";
 
     private long competitionID = -1;
 
@@ -37,7 +38,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
         //competitionID = 3;
 
-        titles = new String[]{ HEADER_OVERVIEW_COMPETITION, HEADER_TOURNAMENTS_LIST, HEADER_COMPETITION_STANDINGS };
+        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
         Fragment f3 = AgregStatsTitleFragment.newInstance( competitionID, true );

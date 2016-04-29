@@ -10,47 +10,47 @@
         android:theme="@style/AppTheme">
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Hockey Competition"
+            android:label="@string/create_competition_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Competition"
+            android:label="@string/competition_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Hockey Tournament"
+            android:label="@string/create_tournament_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Tournament"
+            android:label="@string/tournament_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.TournamentConfigurationActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Point Configuration"
+            android:label="@string/point_config_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Add Players"
+            android:label="@string/add_players_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowTeamActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Team"
+            android:label="@string/team_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Hockey Match"
+            android:label="@string/create_match_header"
             android:exported="true">
         </activity>
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Hockey Match"
+            android:label="@string/match_header"
             android:exported="true">
         </activity>
 

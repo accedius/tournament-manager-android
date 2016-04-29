@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_player">Add player</string>
+    <string name="add_player">Přidat hráče do </string>
     <string name="a">A</string>
     <string name="ag">PrumG</string>
     <string name="ap">PrumB</string>
@@ -25,9 +25,30 @@
     <string name="set_all">Vše musí být nastaveno!</string>
     <string name="shootouts">Nájezdy</string>
     <string name="sport_name">Hokej</string>
-    <string name="team_cant_delete">Nelze smazas, tým se účastní zápasu!</string>
+    <string name="team_cant_delete">Nelze smazat, tým se účastní zápasu!</string>
     <string name="title_activity_main">Hokej hlavní aktivita</string>
     <string name="tour_not_deleted">Turnaj není prázdný, nelze smazat!</string>
     <string name="tp">TB</string>
     <string name="w">V</string>
+    <string name="add_players_header">Přidat hráče</string>
+    <string name="competition_header">Soutěž</string>
+    <string name="create_competition_header">Nastavení soutěže</string>
+    <string name="create_match_header">Nastavení zápasu</string>
+    <string name="create_tournament_header">Nastavení turnaje</string>
+    <string name="match_header">Zápas</string>
+    <string name="point_config_header">Konfigurace bodů</string>
+    <string name="team_header">Tým</string>
+    <string name="tournament_header">Turnaj</string>
+    <string name="header_overview">Přehled</string>
+    <string name="header_players">Hráči</string>
+    <string name="header_tournaments_list">Turnaje</string>
+    <string name="header_teams">Týmy</string>
+    <string name="header_standings">Výsledky</string>
+    <string name="header_matches">Zápasy</string>
+    <string name="add_away_complete">Přidat hráče k domácím</string>
+    <string name="add_home_complete">Přidat hráče k hostům</string>
+    <string name="add_players_to_team">Přidat hráče do týmu </string>
+    <string name="add_round">Přidat kolo</string>
+    <string name="add_single_match">Přidat jeden zápas</string>
+    <string name="edit_stats">Upravit statistiky</string>
 </resources>

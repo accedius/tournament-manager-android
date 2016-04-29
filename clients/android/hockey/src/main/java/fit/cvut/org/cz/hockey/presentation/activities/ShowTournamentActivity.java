@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
@@ -27,11 +28,11 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
 
-    private static String HEADER_OVERVIEW_TOURNAMENT = "Overview";
-    private static String HEADER_PLAYERS_TOURNAMENT = "Players";
-    private static String HEADER_TEAMS_TOURNAMENT = "Teams";
-    private static String HEADER_MATCHES_TOURNAMENT = "Matches";
-    private static String HEADER_STANDINGS_TOURNAMENT = "Standings";
+//    private static String HEADER_OVERVIEW_TOURNAMENT = "Overview";
+//    private static String HEADER_PLAYERS_TOURNAMENT = "Players";
+//    private static String HEADER_TEAMS_TOURNAMENT = "Teams";
+//    private static String HEADER_MATCHES_TOURNAMENT = "Matches";
+//    private static String HEADER_STANDINGS_TOURNAMENT = "Standings";
     public static final String TOUR_ID = "tournament_id";
 
     private long tournamentID;
@@ -43,12 +44,10 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
-        //tournamentID = 1;
 
-        titles = new String[]{ HEADER_OVERVIEW_TOURNAMENT, HEADER_PLAYERS_TOURNAMENT, HEADER_TEAMS_TOURNAMENT, HEADER_MATCHES_TOURNAMENT, HEADER_STANDINGS_TOURNAMENT };
+        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players), getString(R.string.header_teams), getString(R.string.header_matches), getString(R.string.header_standings) };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );
         Fragment f2 = AgregStatsTitleFragment.newInstance( tournamentID, false );
-        //Fragment f2 = NewMatchFragment.newInstance( tournamentID, true, NewHockeyMatchFragment.class );
         Fragment f3 = HockeyTeamsListFragment.newInstance( tournamentID );
         Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
         Fragment f5 = StandingsStatsTitleFragment.newInstance( tournamentID );

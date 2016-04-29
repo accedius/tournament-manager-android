@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="to">Do:</string>
+    <string name="away">Hosté</string>
+    <string name="cancel">Zrušit</string>
+    <string name="date">Datum</string>
+    <string name="delete">Odstranit</string>
+    <string name="edit">Upravit</string>
+    <string name="email">E-mail</string>
+    <string name="endDate">Datum konce</string>
+    <string name="finish">Konec</string>
+    <string name="from">Od:</string>
+    <string name="home">Domácí</string>
+    <string name="invalidEmail">Email není správně!</string>
+    <string name="invalidName">Jméno není správně!</string>
+    <string name="invalidParticipants">Účastníci nesmí být totožní!</string>
+    <string name="invalidRoundPeriod">Kolo nebo perioda není nastaveno!</string>
+    <string name="match_sum">Počet zápasů:</string>
+    <string name="name">Jméno</string>
+    <string name="note">Poznámka</string>
+    <string name="ok">OK</string>
+    <string name="period">Perioda</string>
+    <string name="players">Hráči</string>
+    <string name="point_config">Konfigurovat bodový zisk</string>
+    <string name="restart">Restartovat</string>
+    <string name="round">Kolo</string>
+    <string name="startDate">Datum počátku</string>
+    <string name="teams">Týmy</string>
+    <string name="tournament_id_invalid">Musíte specifikovat competitionId nebo tournamentId</string>
+    <string name="tours_held">Počet turnajů:</string>
+    <string name="type">Typ</string>
+    <string name="vs">vs.</string>
+</resources>

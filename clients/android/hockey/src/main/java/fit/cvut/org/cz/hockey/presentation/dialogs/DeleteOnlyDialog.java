@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import fit.cvut.org.cz.hockey.R;
+
 /**
  * Created by atgot_000 on 29. 4. 2016.
  */
@@ -18,7 +20,7 @@ public class DeleteOnlyDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
 
-        String[] items = new String[]{ "Delete" };
+        String[] items = new String[]{ getActivity().getString(R.string.delete) };
 
         builder.setItems( items, supplyListener() );
 

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchOverviewFragment;
@@ -69,7 +70,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         matchId = getIntent().getExtras().getLong(MATCH_ID);
 
-        titles = new String[]{ HEADER_OVERVIEW_MATCH, HEADER_PLAYER_STATS_MATCH };
+        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players) };
         Fragment f1 = HockeyMatchOverviewFragment.newInstance( matchId );
         Fragment f2 = HockeyMatchStatsFragment.newInstance( matchId );
         fragments = new Fragment[]{ f1, f2 };
