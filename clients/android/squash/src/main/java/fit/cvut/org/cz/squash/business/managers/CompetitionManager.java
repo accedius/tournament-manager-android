@@ -22,11 +22,12 @@ public class CompetitionManager implements ICompetitionManager {
     }
 
     @Override
-    public void delete(Context context, long id) {
+    public boolean delete(Context context, long id) {
 
         //TODO delete everything else before competition
 
         DAOFactory.getInstance().competitionDAO.delete(context, id);
+        return false;
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface ICompetitionManager {
 
     void insert(Context context, Competition competition);
     void update(Context context, Competition competition);
-    void delete(Context context, long id);
+    boolean delete(Context context, long id);
 
     Competition getById(Context context, long id);
 }

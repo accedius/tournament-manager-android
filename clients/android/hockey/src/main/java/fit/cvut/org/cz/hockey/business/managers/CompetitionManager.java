@@ -2,9 +2,13 @@ package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DAO.CompetitionDAO;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 
@@ -26,9 +30,15 @@ public class CompetitionManager implements ICompetitionManager {
     }
 
     @Override
-    public void delete(Context context, long id) {
-        //TODO chytit vyjimku z databaze kdyz chci mazat competition pod kterou neco je
+    public boolean delete(Context context, long id) {
+        ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId( context, id );
+        if( tournaments.size() > 0 ) return false;
+
+        ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByCompetition( context, id );
+        if( playerIds.size() > 0 ) return false;
+
         DAOFactory.getInstance().competitionDAO.delete( context, id );
+        return true;
     }
 
     @Override
