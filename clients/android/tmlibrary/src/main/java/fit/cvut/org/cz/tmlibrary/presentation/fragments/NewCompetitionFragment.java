@@ -88,6 +88,10 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             //type.setClickable(false);
         }
 
+        if(!isTypeChoosable()) {
+            type.setVisibility( View.GONE );
+        }
+
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
@@ -211,6 +215,12 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
      * @return String key of competition gotten in Bundle of Intent when receiving from service
      */
     protected abstract String getCompetitionKey();
+
+    /**
+     *
+     * @return true, if you want to permit choosing between team and individuals
+     */
+    protected boolean isTypeChoosable() { return true; }
 
     @Override
     protected void bindDataOnView(Intent intent) {

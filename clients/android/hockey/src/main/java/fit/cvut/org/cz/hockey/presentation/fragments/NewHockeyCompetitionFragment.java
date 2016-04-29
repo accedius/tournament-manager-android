@@ -57,4 +57,8 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
+    @Override
+    protected boolean isTypeChoosable() {
+        return false;
+    }
 }
