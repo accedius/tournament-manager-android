@@ -47,7 +47,7 @@ public class MainActivity extends AbstractToolbarActivity {
             }
         }
 
-        mMenuOptions = new String[]{"Competitions", "Players", "Settings"};
+        mMenuOptions = new String[]{"Competitions", "Players"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
