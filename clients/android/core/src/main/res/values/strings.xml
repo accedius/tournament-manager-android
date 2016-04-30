@@ -11,4 +11,6 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="player_cp_authority">fit.cvut.org.cz.tournamentmanager.data</string>
 
+    <string name="openDrawer">drawer_open_action</string>
+    <string name="closeDrawer">drawer_close_action</string>
 </resources>

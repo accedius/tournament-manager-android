@@ -5,7 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,7 +30,7 @@ public class MainActivity extends AbstractToolbarActivity {
 
     private String[] mMenuOptions;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    private NavigationView mDrawerList;
 
     ArrayList<ApplicationInfo> sport_packages;
 
@@ -47,15 +50,40 @@ public class MainActivity extends AbstractToolbarActivity {
             }
         }
 
-        mMenuOptions = new String[]{"Competitions", "Players"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (NavigationView) findViewById(R.id.left_drawer);
 
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_option, mMenuOptions));
         // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        selectItem(0);
+        mDrawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                item.setChecked(!item.isChecked());
+                mDrawerLayout.closeDrawers();
+
+                selectItem(item.getItemId());
+                return true;
+            }
+        });
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer){
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        //calling sync state is necessary or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+
+        selectItem(R.id.competitions);
     }
 
     @Override
@@ -69,39 +97,30 @@ public class MainActivity extends AbstractToolbarActivity {
         return null;
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
+        Bundle b = new Bundle();
+        // get list of installed sport packages
+        b.putParcelableArrayList("sport_packages", sport_packages);
         switch (position) {
-            case 0:
-                // get list of installed sport packages
+            case R.id.competitions:
                 setTitle("Competitions");
                 SportsFragment sf = new SportsFragment();
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("sport_packages", sport_packages);
                 sf.setArguments(b);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, sf)
                         .commit();
                 break;
-            case 1:
+            case R.id.players:
                 setTitle("Players");
                 PlayersListFragment plf = new PlayersListFragment();
+                plf.setArguments(b);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, plf)
                         .commit();
                 break;
         }
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
     }
 }
