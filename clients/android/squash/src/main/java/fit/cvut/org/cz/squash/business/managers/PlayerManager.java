@@ -34,12 +34,26 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
-        return false;
+
+        ArrayList<Tournament> tournaments = ManagersFactory.getInstance().tournamentManager.getByCompetitionId(context,competitionId);
+        for (Tournament t : tournaments){
+            ArrayList<Long> playerIds = DAOFactory.getInstance().playerDAO.getPlayerIdsByTournament(context, t.getId());
+            if (playerIds.contains(playerId)) return false;
+        }
+        DAOFactory.getInstance().playerDAO.deletePlayerFromCompetition(context, playerId, competitionId);
+        return true;
     }
 
     @Override
     public boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
-        return false;
+
+        Player p = new Player(playerId, null, null, null);
+        if (DAOFactory.getInstance().statDAO.getByPlayer(context, playerId, StatsEnum.MATCH_PARTICIPATION).size() != 0) return false;
+        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(context, tournamentId);
+        if (!players.contains(p)) return false;
+
+        DAOFactory.getInstance().playerDAO.deletePlayerFromTournament(context, playerId, tournamentId);
+        return true;
     }
 
 

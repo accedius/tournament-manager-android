@@ -25,13 +25,18 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_SELECTED = "extra_selected";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_ROLE = "extra_role";
+    public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_POSITION = "extra_position";
+    public static final String EXTRA_PLAYER_ID = "extra_player_id";
 
     public static final String ACTION_GET_SELECTED_FROM_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.competition_selected_players";
     public static final String ACTION_GET_PLAYERS_FOR_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.get_players_for_competition";
     public static final String ACTION_ADD_PLAYERS_TO_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.add_players_to_competition";
+    public static final String ACTION_DELETE_PLAYER_FROM_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.delete_player_from_competition";
 
     public static final String ACTION_ADD_PLAYERS_TO_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.add_players_to_tournament";
     public static final String ACTION_GET_PLAYERS_FOR_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_players_for_tournament";
+    public static final String ACTION_DELETE_PLAYER_FROM_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.delete_player_from_tournament";
 
 
     public static final String ACTION_UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
@@ -143,7 +148,29 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 if (players != null){
                     ManagersFactory.getInstance().participantManager.updatePlayersForMatch(this, matchId, role, players);
                 } else ManagersFactory.getInstance().participantManager.setParticipationValid(this, matchId);
+                break;
+            }
+            case ACTION_DELETE_PLAYER_FROM_COMPETITION:{
+                Intent result = new Intent(action);
+                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
+                long competitionId = intent.getLongExtra(EXTRA_ID, -1);
+                result.putExtra(EXTRA_POSITION, position);
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().playerManager.deletePlayerFromCompetition(this, playerId, competitionId));
 
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_DELETE_PLAYER_FROM_TOURNAMENT:{
+                Intent result = new Intent(action);
+                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
+                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
+                result.putExtra(EXTRA_POSITION, position);
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().playerManager.deletePlayerFromTournament(this, playerId, tournamentId));
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
             }
         }
     }

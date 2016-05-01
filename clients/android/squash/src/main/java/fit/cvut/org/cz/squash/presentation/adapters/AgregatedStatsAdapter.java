@@ -21,6 +21,8 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
         return new AgregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_agregated_stats, parent, false));
     }
 
+    protected void setOnClickListeners(View v, AgregatedStats item, int position) {}
+
     @Override
     public void onBindViewHolder(AgregatedStatsViewHolder holder, int position) {
 
@@ -41,17 +43,18 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
             holder.WPER.setText(String.format("%.2f", stats.matchWinRate));
             holder.SWPER.setText(String.format("%.2f", stats.setsWinRate));
         }
-
-
+        setOnClickListeners(holder.wholeView, stats, position);
     }
 
     public class AgregatedStatsViewHolder extends RecyclerView.ViewHolder{
 
         public long id;
+        public View wholeView;
         TextView name, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
 
         public AgregatedStatsViewHolder(View itemView) {
             super(itemView);
+            wholeView = itemView;
 
             name = (TextView) itemView.findViewById(R.id.tv_name);
             W = (TextView) itemView.findViewById(R.id.tv_won);

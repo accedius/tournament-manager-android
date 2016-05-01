@@ -67,8 +67,6 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        final View fw =v;
-
                         EditDeleteDialog dialog = new EditDeleteDialog() {
                             @Override
                             protected DialogInterface.OnClickListener supplyListener() {
@@ -169,7 +167,6 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                     int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
                     adapter.delete(position);
                 }
-
                 else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();
             }
 
