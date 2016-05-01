@@ -100,7 +100,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_finish, menu);
+        getMenuInflater().inflate(R.menu.menu_match, menu);
         return true;
     }
 
@@ -108,7 +108,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish){
+        if (item.getItemId() == R.id.action_finish){
 //            for( int i = 0; i < pager.getAdapter().getCount(); i++ ) {
 //                ((HockeyMatchOverviewFragment)((DefaultViewPagerAdapter)(pager.getAdapter())).getItem( i )).testMethod();
 //            }
@@ -127,8 +127,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
             intent.putExtra( MatchService.EXTRA_AWAY_STATS, awayStats);
 
             startService(intent);
+
+            finish();
+        } else if(item.getItemId() == R.id.action_edit) {
+            ((HockeyMatchStatsFragment) ((DefaultViewPagerAdapter) (pager.getAdapter())).getItem(1)).editAll();
         }
-        finish();
+
 
         return super.onOptionsItemSelected(item);
     }

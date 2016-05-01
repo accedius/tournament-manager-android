@@ -30,4 +30,5 @@
     <string name="tours_held">Počet turnajů:</string>
     <string name="type">Typ</string>
     <string name="vs">vs.</string>
+    <string name="save">Uložit</string>
 </resources>
