@@ -25,4 +25,8 @@ public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder>
     }
 
     public ArrayList<T> getData() {return new ArrayList<>(data);}
+    public void delete(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
 }

@@ -24,10 +24,13 @@ public class TournamentService extends AbstractIntentServiceWProgress{
     public static final String EXTRA_PLAYER_COUNT = "extra_player_count";
     public static final String EXTRA_MATCH_COUNT = "extra_match_count";
     public static final String EXTRA_TEAM_COUNT = "extra_team_count";
-    public static final String EXTRA_TYPE = "extra_team_count";
+    public static final String EXTRA_TYPE = "extra_type";
+    public static final String EXTRA_POSITION = "extra_position";
+    public static final String EXTRA_RESULT = "extra_result";
 
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.squash.presentation.services.new_tournament";
+    public static final String ACTION_DELETE = "fit.cvut.org.cz.squash.presentation.services.delete_tournament";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_tournament_by_id";
     public static final String ACTION_UPDATE = "fit.cvut.org.cz.squash.presentation.services.update_tournament";
     public static final String ACTION_GET_BY_COMPETITION_ID = "fit.cvut.org.cz.squash.presentation.services.get_tournaments_by_competition_id";
@@ -104,7 +107,16 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 result.putExtra(EXTRA_TEAM_COUNT, teams);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_DELETE:{
+                Intent result = new Intent(action);
+                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                result.putExtra(EXTRA_POSITION, position);
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().tournamentManager.delete(this, intent.getLongExtra(EXTRA_ID, -1)));
 
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
             }
         }
 

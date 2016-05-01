@@ -10,9 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,7 +18,6 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
-import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
@@ -28,7 +25,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
 /**
  * Created by Vaclav on 5. 4. 2016.
@@ -37,6 +33,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
+    private TournamentAdapter adapter = null;
 
     public static TournamentsListFragment newInstance(long competitionId){
         TournamentsListFragment fragment = new TournamentsListFragment();
@@ -50,9 +47,9 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new TournamentAdapter(){
+        adapter =  new TournamentAdapter(){
             @Override
-            protected void setOnClickListeners(View v, final long tournamentId) {
+            protected void setOnClickListeners(View v, final long tournamentId, final int position) {
                 final Context c = getContext();
 
                 v.setOnClickListener(new View.OnClickListener() {
@@ -82,12 +79,16 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                                             case 0:{
                                                 Intent intent = CreateTournamentActivity.newStartIntent(c, tournamentId, false);
                                                 startActivity(intent);
-
                                                 break;
                                             }
                                             case 1:{
-                                                //TODO Delete not implemented yet
-                                                Snackbar.make(fw, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
+                                                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, c);
+                                                intent.putExtra(TournamentService.EXTRA_POSITION, position);
+                                                intent.putExtra(TournamentService.EXTRA_ID, tournamentId);
+                                                contentView.setVisibility(View.INVISIBLE);
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                c.startService(intent);
+                                                break;
                                             }
                                         }
                                         dialog.dismiss();
@@ -103,6 +104,8 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                 });
             }
         };
+
+        return adapter;
     }
 
     @Override
@@ -125,7 +128,9 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, new IntentFilter(TournamentService.ACTION_GET_BY_COMPETITION_ID));
+        IntentFilter filter = new IntentFilter(TournamentService.ACTION_GET_BY_COMPETITION_ID);
+        filter.addAction(TournamentService.ACTION_DELETE);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, filter);
     }
 
     @Override
@@ -156,8 +161,18 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
-            TournamentsListFragment.super.bindDataOnView(intent);
-            type = CompetitionType.valueOf(intent.getStringExtra(TournamentService.EXTRA_TYPE));
+            if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)){
+                TournamentsListFragment.super.bindDataOnView(intent);
+                type = CompetitionType.valueOf(intent.getStringExtra(TournamentService.EXTRA_TYPE));
+            } else {
+                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
+                    int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
+                    adapter.delete(position);
+                }
+
+                else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();
+            }
+
         }
     }
 }

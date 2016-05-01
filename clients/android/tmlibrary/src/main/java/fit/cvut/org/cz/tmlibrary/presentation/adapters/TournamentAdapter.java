@@ -29,8 +29,9 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
      * @param tournamentId
      * @param v target view
      * @param tournamentId
+     * @param position
      */
-    protected void setOnClickListeners(View v, long tournamentId){}
+    protected void setOnClickListeners(View v, long tournamentId, int position){}
 
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
@@ -45,7 +46,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         if (tournament.getEndDate() != null) holder.endDate.append(dateFormat.format(tournament.getEndDate()));
 
         holder.name.setText(tournament.getName());
-        setOnClickListeners(holder.wholeView, tournament.getId());
+        setOnClickListeners(holder.wholeView, tournament.getId(), position);
 
     }
 

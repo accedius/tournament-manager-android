@@ -55,7 +55,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     protected AbstractListAdapter getAdapter() {
         return new TournamentAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long tournamentId) {
+            protected void setOnClickListeners(View v, long tournamentId, int position) {
 
                 final long tourId = tournamentId;
 
@@ -108,7 +108,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                         return false;
                     }
                 } );
-                super.setOnClickListeners(v, tournamentId);
+                super.setOnClickListeners(v, tournamentId, position);
             }
         };
     }

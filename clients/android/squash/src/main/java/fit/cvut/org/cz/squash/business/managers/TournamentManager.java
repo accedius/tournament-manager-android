@@ -28,7 +28,11 @@ public class TournamentManager implements ITournamentManager {
     @Override
     public boolean delete(Context context, long id) {
 
-        //TODO Delete Matches and stats first
+        if (ManagersFactory.getInstance().matchManager.getByTournamentId(context, id).size() != 0) return false;
+        if (ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, id).size() != 0) return false;
+        if (ManagersFactory.getInstance().teamsManager.getByTournamentId(context, id).size() != 0) return false;
+
+        DAOFactory.getInstance().pointCfgDAO.delete(context, id);
         DAOFactory.getInstance().tournamentDAO.delete(context, id);
         return true;
     }
