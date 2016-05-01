@@ -1,9 +1,9 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +11,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -24,6 +26,8 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class PlayersListFragment extends AbstractListFragment<Player> {
+
+    ArrayList<ApplicationInfo> sport_packages;
 
     private String package_name = "fit.cvut.org.cz.tournamentmanager";
     private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
@@ -47,6 +51,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        sport_packages = getArguments().getParcelableArrayList("sport_packages");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -83,6 +88,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                         intent.setClassName(package_name, activity_detail_player);
                         Bundle b = new Bundle();
                         b.putLong(PlayerService.EXTRA_ID, playerId);
+                        b.putParcelableArrayList(PlayerService.EXTRA_PACKAGES, sport_packages);
                         intent.putExtras(b);
                         startActivity(intent);
                     }

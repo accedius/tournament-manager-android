@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerCompetitionsListFragment;
@@ -23,26 +26,54 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 public class PlayerDetailActivity extends AbstractTabActivity {
 
     private static String HEADER_PLAYER_DETAIL = "Player info";
-    private static String HEADER_COMPETITIONS_LIST = "Competitions";
 
     private long playerID;
 
     private Fragment[] fragments;
     private String[] titles;
+    private ArrayList<ApplicationInfo> sport_packages;
+
+    public PlayerDetailActivity() {
+    }
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(PlayerService.EXTRA_ID);
         Log.d("PDA", ""+playerID);
+        sport_packages = getIntent().getExtras().getParcelableArrayList(PlayerService.EXTRA_PACKAGES);
+        titles = new String[1+sport_packages.size()];
+        titles[0] = HEADER_PLAYER_DETAIL;
 
-        titles = new String[]{ HEADER_PLAYER_DETAIL };//, HEADER_COMPETITIONS_LIST };
+        int i=1;
+        for(ApplicationInfo info : sport_packages) {
+            titles[i] = info.metaData.getString("sport_name");
+            i++;
+        }
+
         Fragment f1 = PlayerDetailFragment.newInstance(playerID, PlayerDetailFragment.class);
-        Fragment f2 = null;//PlayerCompetitionsListFragment.newInstance(playerID);
-        fragments = new Fragment[]{ f1 };//, f2 };
+        fragments = new Fragment[1+sport_packages.size()];
+        fragments[0] = f1;
+
+        i=1;
+        for(ApplicationInfo info : sport_packages) {
+            PlayerCompetitionsListFragment pclf = new PlayerCompetitionsListFragment();
+            String package_name = info.metaData.getString("package_name");
+            Bundle b = new Bundle();
+            b.putLong("player_id", playerID);
+            b.putString("package_name", package_name);
+            b.putString("sport_name", info.metaData.getString("sport_name"));
+            b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
+            b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
+            pclf.setAction(pclf.getAction() + "." + package_name);
+            pclf.setArguments(b);
+            fragments[i] = pclf;
+            i++;
+        }
 
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {

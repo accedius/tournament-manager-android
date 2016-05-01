@@ -1,14 +1,19 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -20,58 +25,115 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 public class PlayerCompetitionsListFragment extends AbstractListFragment<Competition> {
 
     private long playerID;
+    private String action = "org.cz.cvut.tournamentmanager";
+    private String content = "competitions_by_player/";
+
+    private String package_name;
+    private String activity_create_competition;
+    private String activity_detail_competition;
+
     private static String ARG_ID = "player_id";
 
-    public static PlayerCompetitionsListFragment newInstance(long id) {
-        PlayerCompetitionsListFragment fragment = new PlayerCompetitionsListFragment();
-        Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        fragment.setArguments(args);
-        return fragment;
+    public void setAction(String action) {
+        this.action = action;
+    }
+    public String getAction() {
+        return this.action;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getArguments() != null)
-            playerID = getArguments().getLong(ARG_ID);
+        playerID = getArguments().getLong(ARG_ID);
+        package_name = getArguments().getString("package_name");
+        activity_create_competition = getArguments().getString("activity_create_competition");
+        activity_detail_competition = getArguments().getString("activity_detail_competition");
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return null;/*
-        return new CompetitionAdapter(
-                "fit.cvut.org.cz.hockey",
-                "fit.cvut.org.cz.hockey.presentation.activites.ShowCompetitionActivity",
-                getActivity()
-        );*/
-    }
+        return new CompetitionAdapter() {
+            @Override
+            protected void setOnClickListeners(View v, final long competitionId) {
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClassName(package_name, activity_detail_competition);
+                        Bundle b = new Bundle();
+                        b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                });
 
-    @Override
-    protected String getDataKey() {
-        return CompetitionService.EXTRA_LIST;
+                v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(final View v) {
+                        final View fw =v;
+
+                        EditDeleteDialog dialog = new EditDeleteDialog() {
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return  new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which){
+                                            case 0:{
+                                                Intent intent = new Intent();
+                                                intent.setClassName(package_name, activity_create_competition);
+                                                Bundle b = new Bundle();
+                                                b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                                                intent.putExtras(b);
+                                                startActivity(intent);
+
+                                                break;
+                                            }
+                                            case 1:{
+                                                //TODO Delete not implemented yet
+                                                Snackbar.make(fw, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                };
+                            }
+                        };
+
+                        dialog.show(getFragmentManager(), "EDIT_DELETE");
+
+                        return false;
+                    }
+                });
+            }
+        };
     }
 
     @Override
     protected void askForData() {
-        Intent intent = CompetitionService.getStartIntent(CompetitionService.ACTION_GET_ALL, "fit.cvut.org.cz.hockey", getContext());
-        intent.putExtra(CompetitionService.EXTRA_PLAYER_ID, playerID);
+        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content+this.playerID, getActivity());
+        Log.d("CLF - ACTION", this.action);
         getActivity().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking(CompetitionService.ACTION_GET_ALL);
+        return CompetitionService.isWorking(this.action);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_GET_ALL));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(this.action));
     }
 
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected String getDataKey() {
+        return CompetitionService.EXTRA_COMPETITION;
     }
 }

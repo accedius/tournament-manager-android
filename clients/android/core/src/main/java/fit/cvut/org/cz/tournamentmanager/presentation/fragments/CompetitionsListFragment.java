@@ -29,8 +29,8 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  */
 public class CompetitionsListFragment extends AbstractListFragment<Competition> {
 
-    // TODO refactor - action name may be empty or shorter - is alwayas setting by SportFragment
-    private String action = "org.cz.cvut.tournamentmanager.action";
+    private String action = "org.cz.cvut.tournamentmanager";
+    private String content = "competitions";
 
     private String package_name;
     private String activity_create_competition;
@@ -113,7 +113,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void askForData() {
-        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, getActivity());
+        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getActivity());
         Log.d("CLF - ACTION", this.action);
         getActivity().startService(intent);
     }

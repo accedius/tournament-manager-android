@@ -6,5 +6,6 @@ package fit.cvut.org.cz.tmlibrary.data;
 public class CPConstants {
 
     public static final String uCompetitions = "competitions/";
+    public static final String uCompetitionsByPlayer = "competitions_by_player/";
     public static final String uPlayers = "players/";
 }

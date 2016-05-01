@@ -18,25 +18,24 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 12. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress {
-    public static final String ACTION_GET_ALL = "get_all";
-
-    public static final String EXTRA_PLAYER_ID = "extra_player_id";
-    public static final String EXTRA_LIST = "extra_list";
-
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_PACKAGE = "extra_package";
     public static final String EXTRA_COMPETITION = "extra_competition";
+    public static final String EXTRA_CONTENT = "extra_content";
 
     public CompetitionService() {
         super("Competition Service");
     }
 
-    private ArrayList<Competition> getData(String package_name) {
+    private ArrayList<Competition> getData(String package_name, String content) {
         ArrayList<Competition> data = new ArrayList<>();
 
-        Uri myUri = Uri.parse("content://"+package_name+".data/competitions");
+        String uri = "content://"+package_name+".data/"+content;
+        Uri myUri = Uri.parse(uri);
+        Log.d("CMP SRVC", uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null) {
+            Log.d("CMP SRVC", "Returned null");
             return data;
         }
 
@@ -50,10 +49,11 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return data;
     }
 
-    public static Intent getStartIntent(String action, String package_name, Context context){
+    public static Intent getStartIntent(String action, String package_name, String content, Context context){
         Intent intent = new Intent(context, CompetitionService.class);
         intent.putExtra(EXTRA_ACTION, action);
         intent.putExtra(EXTRA_PACKAGE, package_name);
+        intent.putExtra(EXTRA_CONTENT, content);
         return intent;
     }
 
@@ -66,9 +66,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(EXTRA_ACTION);
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
+        String content = intent.getStringExtra(EXTRA_CONTENT);
         Intent result = new Intent(action);
 
-        result.putParcelableArrayListExtra(EXTRA_COMPETITION, getData(package_name));
+        result.putParcelableArrayListExtra(EXTRA_COMPETITION, getData(package_name, content));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }
 }

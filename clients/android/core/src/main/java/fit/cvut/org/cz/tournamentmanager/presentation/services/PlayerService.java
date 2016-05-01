@@ -2,16 +2,12 @@ package fit.cvut.org.cz.tournamentmanager.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.CursorParser;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
 
@@ -24,6 +20,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_PLAYER = "extra_player";
     public static final String EXTRA_PLAYERS = "extra_players";
+    public static final String EXTRA_PACKAGES = "extra_packages";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.new_player";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_player_by_id";

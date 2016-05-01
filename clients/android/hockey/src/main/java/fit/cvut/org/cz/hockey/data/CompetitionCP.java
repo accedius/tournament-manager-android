@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -23,12 +24,16 @@ public class CompetitionCP extends ContentProvider {
 
     private static final int COMPETITIONS_ALL = 0;
     private static final int COMPETITION_ONE = 1;
+    private static final int COMPETITIONS_BY_PLAYER = 2;
+
+    private static final int SEGMENT_ID = 1;
 
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, CPConstants.uCompetitions, COMPETITIONS_ALL);
         matcher.addURI(AUTHORITY, CPConstants.uCompetitions + "#", COMPETITION_ONE);
+        matcher.addURI(AUTHORITY, CPConstants.uCompetitionsByPlayer + "#", COMPETITIONS_BY_PLAYER);
     }
 
     @Override
@@ -42,13 +47,26 @@ public class CompetitionCP extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriType = matcher.match(uri);
 
-        if (uriType != COMPETITIONS_ALL) return null;
+        if (uriType == matcher.NO_MATCH) {
+            return null;
+        }
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(DBConstants.tCOMPETITIONS);
+        if (uriType == COMPETITIONS_ALL) {
+            builder.setTables(DBConstants.tCOMPETITIONS);
+        }
+        else if (uriType == COMPETITIONS_BY_PLAYER) {
+            String playerID = uri.getPathSegments().get(SEGMENT_ID);
+            builder.setTables(
+                    DBConstants.tPLAYERS_IN_COMPETITION + " join " + DBConstants.tCOMPETITIONS + " ON " +
+                    DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITIONID + " = " +
+                    DBConstants.tCOMPETITIONS + "." + DBConstants.cID);
+
+            projection = new String[]{DBConstants.tCOMPETITIONS + ".*"};
+            selection = DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cPLAYER_ID + " = " + playerID;
+        }
 
         Cursor cursor = builder.query(helper.getWritableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
-
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
