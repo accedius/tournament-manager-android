@@ -39,11 +39,15 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         holder.name.setText(tournament.getName());
+        holder.startDate.setVisibility(View.VISIBLE);
+        holder.endDate.setVisibility(View.VISIBLE);
         holder.startDate.setText(R.string.from);
         holder.endDate.setText(R.string.to);
 
         if (tournament.getStartDate() != null) holder.startDate.append(dateFormat.format(tournament.getStartDate()));
+        else holder.startDate.setVisibility(View.GONE);
         if (tournament.getEndDate() != null) holder.endDate.append(dateFormat.format(tournament.getEndDate()));
+        else holder.endDate.setVisibility(View.GONE);
 
         holder.name.setText(tournament.getName());
         setOnClickListeners(holder.wholeView, tournament.getId(), position);

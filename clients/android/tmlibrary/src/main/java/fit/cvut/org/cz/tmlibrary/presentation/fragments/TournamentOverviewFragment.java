@@ -22,8 +22,9 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
  */
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
-    private TextView name, start, end, matchSum, playerSum, teamSum, note;
-    private static final String TOUR_KEY = "tournament_id_key";
+    private TextView name, start, end, matchSum, playerSum, note;
+    protected TextView teamSum, teamsLabel;
+    protected static final String TOUR_KEY = "tournament_id_key";
     protected long tournamentID;
 
     /**
@@ -84,6 +85,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         matchSum = (TextView) v.findViewById(R.id.match_sum);
         playerSum = (TextView) v.findViewById(R.id.tour_player_sum);
         teamSum = (TextView) v.findViewById(R.id.team_sum);
+        teamsLabel = (TextView) v.findViewById(R.id.teams_label);
         note = (TextView) v.findViewById(R.id.tour_note);
 
         if( getArguments() != null )

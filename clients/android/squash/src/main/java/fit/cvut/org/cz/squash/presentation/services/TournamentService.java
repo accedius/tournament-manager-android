@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -94,17 +95,19 @@ public class TournamentService extends AbstractIntentServiceWProgress{
             case ACTION_GET_OVERVIEW:{
                 Intent result = new Intent(action);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
+                CompetitionType type = CompetitionType.valueOf(intent.getStringExtra(EXTRA_TYPE));
                 Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, id);
                 ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, id);
                 ArrayList<ScoredMatch> matches = ManagersFactory.getInstance().matchManager.getByTournamentId(this, id);
 
-                //TODO teams
-                int teams = 3;
+                if (type == CompetitionType.Teams)
+                    result.putExtra(EXTRA_TEAM_COUNT, ManagersFactory.getInstance().teamsManager.getByTournamentId(this, id).size());
+                else result.putExtra(EXTRA_TEAM_COUNT, 0);
 
                 result.putExtra(EXTRA_TOURNAMENT, t);
                 result.putExtra(EXTRA_PLAYER_COUNT, players.size());
                 result.putExtra(EXTRA_MATCH_COUNT, matches.size());
-                result.putExtra(EXTRA_TEAM_COUNT, teams);
+                result.putExtra(EXTRA_TYPE, type.toString());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

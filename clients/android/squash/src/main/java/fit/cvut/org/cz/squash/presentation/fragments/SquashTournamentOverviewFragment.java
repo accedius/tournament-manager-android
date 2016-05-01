@@ -2,15 +2,31 @@ package fit.cvut.org.cz.squash.presentation.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.View;
 
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
  */
 public class SquashTournamentOverviewFragment extends TournamentOverviewFragment {
+
+    private static final String ARG_TYPE = "arg_type";
+
+    public static TournamentOverviewFragment newInstance(long tournamentId, CompetitionType type){
+        TournamentOverviewFragment fragment = new SquashTournamentOverviewFragment();
+        Bundle args = new Bundle();
+        args.putLong(TOUR_KEY, tournamentId);
+        args.putString(ARG_TYPE, type.toString());
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     protected String getTournamentKey() {
         return TournamentService.EXTRA_TOURNAMENT;
@@ -35,6 +51,7 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
     protected void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_OVERVIEW, getContext());
         intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
+        intent.putExtra(TournamentService.EXTRA_TYPE, getArguments().getString(ARG_TYPE));
 
         getContext().startService(intent);
     }
@@ -52,5 +69,16 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void bindDataOnView(Intent intent) {
+        CompetitionType type = CompetitionType.valueOf(intent.getStringExtra((TournamentService.EXTRA_TYPE)));
+        super.bindDataOnView(intent);
+        if (type == CompetitionType.Individuals){
+            teamSum.setVisibility(View.GONE);
+            teamsLabel.setVisibility(View.GONE);
+        }
+
     }
 }

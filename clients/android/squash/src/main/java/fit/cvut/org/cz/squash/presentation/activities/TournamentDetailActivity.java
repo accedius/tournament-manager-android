@@ -37,7 +37,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         if (type == CompetitionType.Teams) {
             return new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
-                            SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
+                            SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
                             SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
                             TeamsListFragment.newInstance(id),
@@ -47,7 +47,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         } else {
             return new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
-                            SquashTournamentOverviewFragment.newInstance(id, SquashTournamentOverviewFragment.class),
+                            SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
                             SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
                             StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)

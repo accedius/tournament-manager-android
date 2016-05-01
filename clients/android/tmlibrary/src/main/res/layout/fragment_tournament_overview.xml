@@ -55,7 +55,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/teams"/>
+                android:text="@string/teams"
+                android:id="@+id/teams_label"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
