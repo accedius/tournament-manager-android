@@ -72,6 +72,9 @@
             />
         <service android:name=".presentation.services.TeamService"
             />
+        <service android:name="fit.cvut.org.cz.hockey.presentation.services.HockeyService"
+            android:exported="true"
+            />
 
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
         <meta-data android:name="sport_name" android:value="@string/sport_name"/>

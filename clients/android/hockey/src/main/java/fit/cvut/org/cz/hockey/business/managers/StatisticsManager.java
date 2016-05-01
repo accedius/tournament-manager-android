@@ -57,10 +57,12 @@ public class StatisticsManager {
         return 0;
     }
 
-    private AgregatedStatistics agregateStats( Context context, long plId, String pName,  long tourId, ArrayList<DStat> allStats )
+    private AgregatedStatistics agregateStats( Context context, long plId, String pName, ArrayList<DStat> allStats )
     {
         ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
-        playerStats.retainAll( allStats ); //common elements -> players stats in competition
+        if( allStats != null ) {
+            playerStats.retainAll(allStats); //common elements -> players stats in competition
+        }
         long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0;
         for(DStat stat : playerStats)
         {
@@ -117,6 +119,19 @@ public class StatisticsManager {
         return new AgregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints);
     }
 
+    public ArrayList<AgregatedStatistics> getAllAgregated( Context context )
+    {
+        ArrayList<DStat> allStats = null;
+        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers( context );
+
+        ArrayList<AgregatedStatistics> res = new ArrayList<>();
+
+        for( Player p : players ){
+            res.add( agregateStats(context, p.getId(), p.getName(), allStats) );
+        }
+        return res;
+    }
+
 
     public ArrayList<AgregatedStatistics> getByCompetitionID( Context context, long compId )
     {
@@ -128,7 +143,7 @@ public class StatisticsManager {
 
         for( Player p : compPlayers )
         {
-            res.add( agregateStats(context, p.getId(), p.getName(), compId, competitionStats) );
+            res.add( agregateStats(context, p.getId(), p.getName(), competitionStats) );
         }
 
         return res;
@@ -144,7 +159,7 @@ public class StatisticsManager {
 
         for( Player p : tourPlayers )
         {
-            res.add( agregateStats(context, p.getId(), p.getName(), tourId, tournamentStats) );
+            res.add( agregateStats(context, p.getId(), p.getName(),  tournamentStats) );
         }
 
         return res;
