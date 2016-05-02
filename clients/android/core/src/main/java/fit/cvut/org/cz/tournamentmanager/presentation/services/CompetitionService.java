@@ -32,14 +32,11 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
         String uri = "content://"+package_name+".data/"+content;
         Uri myUri = Uri.parse(uri);
-        Log.d("CMP SRVC", uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null) {
-            Log.d("CMP SRVC", "Returned null");
             return data;
         }
 
-        Log.d("DB", "Total rows " + cur.getCount());
         CursorParser cp = CursorParser.getInstance();
         if (cur.moveToFirst()) {
             do {
