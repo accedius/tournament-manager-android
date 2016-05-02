@@ -53,6 +53,11 @@
             android:label="@string/match_header"
             android:exported="true">
         </activity>
+        <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.EditAtOnceActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/match_header"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="fit.cvut.org.cz.hockey.data.CompetitionCP"
