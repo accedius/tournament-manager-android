@@ -31,4 +31,10 @@
     <string name="type">Typ</string>
     <string name="vs">vs.</string>
     <string name="save">Uložit</string>
+    <string name="tournament_created">Turnaj vytvořen.</string>
+    <string name="failDeletePlayerFromCompetition">Hráč je již v turnaje a nelze ho odstranit.</string>
+    <string name="failDeletePlayerFromTournament">Hráč je již v zápase nebo týmu a nelze ho odstranit.</string>
+    <string name="failDeleteTournament">Turnaj již obsahuje zápasy nebo hráče a nelze ho odstranit.</string>
+    <string name="player_created">Hráč vytvořen.</string>
+    <string name="competition_created">Soutěž vytvořena.</string>
 </resources>

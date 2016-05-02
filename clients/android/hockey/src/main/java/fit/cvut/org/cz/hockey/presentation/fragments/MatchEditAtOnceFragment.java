@@ -73,27 +73,6 @@ public class MatchEditAtOnceFragment extends Fragment {
         return fragmentView;
     }
 
-//    private void setAdapters(){
-//        homeAdp = new EditableStatsAdapter();
-//        awayAdp = new EditableStatsAdapter();
-//
-//        homeRecyclerView = (RecyclerView) getView().findViewById(R.id.rv_home);
-//        awayRecyclerView = (RecyclerView) getView().findViewById(R.id.rv_away);
-//
-//        homeRecyclerView.setAdapter(homeAdp);
-//        awayRecyclerView.setAdapter(awayAdp);
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        homeRecyclerView.setLayoutManager(linearLayoutManager);
-//        homeRecyclerView.setNestedScrollingEnabled(false);
-//
-//        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
-//        linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
-//        awayRecyclerView.setLayoutManager(linearLayoutManager2);
-//        awayRecyclerView.setNestedScrollingEnabled(false);
-//    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

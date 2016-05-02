@@ -182,7 +182,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             Snackbar.make(v, R.string.invalidName, Snackbar.LENGTH_LONG).show();
             return false;
         }
-        Snackbar.make(v, "CompetitionCreated", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(v, R.string.competition_created, Snackbar.LENGTH_SHORT).show();
         return true;
     }
 

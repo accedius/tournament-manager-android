@@ -46,8 +46,8 @@ public class HomeAwayDialog extends DialogFragment {
             dialHomeName = getArguments().getString(ARG_HOME_NAME, getActivity().getString(R.string.add_home_complete) );
             dialAwayName = getArguments().getString(ARG_AWAY_NAME, getActivity().getString(R.string.add_away_complete));
         } else if( getHomeName() != null && getAwayName() != null ){
-            dialHomeName = getActivity().getString(R.string.add_player) + getHomeName();
-            dialAwayName = getActivity().getString(R.string.add_player) + getAwayName();
+            dialHomeName = getActivity().getString(R.string.add_player) + " " + getHomeName();
+            dialAwayName = getActivity().getString(R.string.add_player) + " " + getAwayName();
         }
         else {
             dialHomeName = getActivity().getString(R.string.add_home_complete);

@@ -51,7 +51,7 @@
     <string name="shootouts">Shootouts</string>
     <string name="set_all">Everything needs to be set!</string>
     <string name="tour_not_deleted">Tournament is not empty, could not be deleted!</string>
-    <string name="add_player">Add player</string>
+    <string name="add_player">Add player to</string>
     <string name="i">I</string>
     <string name="goals">Goals</string>
     <string name="assists">Assists</string>
@@ -59,4 +59,5 @@
     <string name="interventions">Interventions</string>
     <string name="player_cant_delete">Cannot delete, player registered somewhere!</string>
     <string name="team_cant_delete">Cannot delete, team participates in a match!</string>
+    <string name="not_enough_teams">Not enough teams!</string>
 </resources>

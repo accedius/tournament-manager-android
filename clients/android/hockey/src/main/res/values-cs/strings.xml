@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_player">Přidat hráče do </string>
+    <string name="add_player">Přidat hráče do</string>
     <string name="a">A</string>
     <string name="ag">PrumG</string>
     <string name="ap">PrumB</string>
     <string name="apmp">Prum+/-</string>
-    <string name="assists">PrumA</string>
+    <string name="assists">Asistence</string>
     <string name="atp">PrumTB</string>
     <string name="d">R</string>
     <string name="g">G</string>
@@ -50,4 +50,5 @@
     <string name="add_round">Přidat kolo</string>
     <string name="add_single_match">Přidat jeden zápas</string>
     <string name="edit_stats">Upravit statistiky</string>
+    <string name="not_enough_teams">Příliš málo týmu!</string>
 </resources>

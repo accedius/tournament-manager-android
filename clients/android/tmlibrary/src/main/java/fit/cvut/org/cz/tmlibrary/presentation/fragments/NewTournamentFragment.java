@@ -170,7 +170,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             return false;
         }
 
-        Snackbar.make(v, "Tournament created", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(v, R.string.tournament_created, Snackbar.LENGTH_SHORT).show();
         return true;
     }
 

@@ -103,7 +103,7 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
             Snackbar.make(v, R.string.invalidEmail, Snackbar.LENGTH_LONG).show();
             return false;
         }
-        Snackbar.make(v, "PlayerCreated", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(v, R.string.player_created, Snackbar.LENGTH_SHORT).show();
         return true;
     }
 

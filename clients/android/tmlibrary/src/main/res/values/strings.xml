@@ -34,4 +34,7 @@
     <string name="failDeleteTournament">Tournament already includes matches or players and cannot be deleted.</string>
     <string name="failDeletePlayerFromTournament">Player is already in match or team and cannot be deleted.</string>
     <string name="failDeletePlayerFromCompetition">Player is already in tournament and cannot be deleted.</string>
+    <string name="tournament_created">Tournament created.</string>
+    <string name="player_created">Player created.</string>
+    <string name="competition_created">Competition created</string>
 </resources>
