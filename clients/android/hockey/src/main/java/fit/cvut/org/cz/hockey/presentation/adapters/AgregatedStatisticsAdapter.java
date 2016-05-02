@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class AgregatedStatisticsAdapter extends AbstractListAdapter<AgregatedStatistics, AgregatedStatisticsAdapter.AgregatedStatisticsViewHolder> {
+public class AgregatedStatisticsAdapter extends AbstractListAdapter<AggregatedStatistics, AgregatedStatisticsAdapter.AgregatedStatisticsViewHolder> {
 
 
     @Override
@@ -23,7 +23,7 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AgregatedSta
 
     @Override
     public void onBindViewHolder(AgregatedStatisticsViewHolder holder, int position) {
-        AgregatedStatistics stats = data.get( position );
+        AggregatedStatistics stats = data.get( position );
         holder.name.setText(stats.getPlayerName());
         holder.W.setText(Long.toString(stats.getWins()));
         holder.L.setText(Long.toString(stats.getLosses()));

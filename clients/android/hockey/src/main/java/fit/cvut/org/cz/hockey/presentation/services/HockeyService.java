@@ -6,7 +6,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -40,7 +40,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageComunicationConstants.ACTION_GET_STATS:
             {
                 Intent res = new Intent(action);
-                ArrayList<AgregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAgregated( this );
+                ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAgregated( this );
 
                 //TODO prevest na jadrovou formu
 

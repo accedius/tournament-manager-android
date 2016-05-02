@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
@@ -57,7 +57,7 @@ public class StatisticsManager {
         return 0;
     }
 
-    private AgregatedStatistics agregateStats( Context context, long plId, String pName, ArrayList<DStat> allStats )
+    private AggregatedStatistics agregateStats( Context context, long plId, String pName, ArrayList<DStat> allStats )
     {
         ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
         if( allStats != null ) {
@@ -116,15 +116,15 @@ public class StatisticsManager {
             }
         }
 
-        return new AgregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints);
+        return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints);
     }
 
-    public ArrayList<AgregatedStatistics> getAllAgregated( Context context )
+    public ArrayList<AggregatedStatistics> getAllAgregated( Context context )
     {
         ArrayList<DStat> allStats = null;
         ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers( context );
 
-        ArrayList<AgregatedStatistics> res = new ArrayList<>();
+        ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         for( Player p : players ){
             res.add( agregateStats(context, p.getId(), p.getName(), allStats) );
@@ -133,11 +133,11 @@ public class StatisticsManager {
     }
 
 
-    public ArrayList<AgregatedStatistics> getByCompetitionID( Context context, long compId )
+    public ArrayList<AggregatedStatistics> getByCompetitionID( Context context, long compId )
     {
         ArrayList<Player> compPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( context, compId );
 
-        ArrayList<AgregatedStatistics> res = new ArrayList<>();
+        ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         ArrayList<DStat> competitionStats = DAOFactory.getInstance().statDAO.getStatsByCompetitionId( context, compId );
 
@@ -149,11 +149,11 @@ public class StatisticsManager {
         return res;
     }
 
-    public ArrayList<AgregatedStatistics> getByTournamentID( Context context, long tourId )
+    public ArrayList<AggregatedStatistics> getByTournamentID( Context context, long tourId )
     {
         ArrayList<Player> tourPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tourId);
 
-        ArrayList<AgregatedStatistics> res = new ArrayList<>();
+        ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId(context, tourId);
 

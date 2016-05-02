@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.AgregatedStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
@@ -29,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by atgot_000 on 29. 3. 2016.
  */
-public class HockeyPlayersStatsFragment extends AbstractListFragment<AgregatedStatistics> {
+public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedStatistics> {
 
     private long competitionID;
     private long tournamentID;

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by atgot_000 on 7. 4. 2016.
  */
-public class AgregatedStatistics implements Parcelable {
+public class AggregatedStatistics implements Parcelable {
 
     private long playerID;
     private String playerName;
@@ -34,7 +34,7 @@ public class AgregatedStatistics implements Parcelable {
 
     }
 
-    public AgregatedStatistics( long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints )
+    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints)
     {
         this.playerID = pID;
         this.playerName = pName;
@@ -49,15 +49,15 @@ public class AgregatedStatistics implements Parcelable {
         calcAvg();
     }
 
-    public static final Creator<AgregatedStatistics> CREATOR = new Creator<AgregatedStatistics>() {
+    public static final Creator<AggregatedStatistics> CREATOR = new Creator<AggregatedStatistics>() {
         @Override
-        public AgregatedStatistics createFromParcel(Parcel in) {
-            return new AgregatedStatistics(in);
+        public AggregatedStatistics createFromParcel(Parcel in) {
+            return new AggregatedStatistics(in);
         }
 
         @Override
-        public AgregatedStatistics[] newArray(int size) {
-            return new AgregatedStatistics[size];
+        public AggregatedStatistics[] newArray(int size) {
+            return new AggregatedStatistics[size];
         }
     };
 
@@ -86,7 +86,7 @@ public class AgregatedStatistics implements Parcelable {
 
     }
 
-    public AgregatedStatistics( Parcel in )
+    public AggregatedStatistics(Parcel in)
     {
         playerID = in.readLong();
         playerName = in.readString();

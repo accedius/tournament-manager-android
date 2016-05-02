@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.AgregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -64,7 +64,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
-                ArrayList<AgregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID( this, compID );
+                ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID( this, compID );
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, stats);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -76,7 +76,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_TOUR_ID);
-                ArrayList<AgregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByTournamentID( this, tourID );
+                ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByTournamentID( this, tourID );
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, stats);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
