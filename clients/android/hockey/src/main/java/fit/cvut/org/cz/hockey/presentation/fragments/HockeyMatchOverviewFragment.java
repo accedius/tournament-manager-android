@@ -86,7 +86,6 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
 
-        //TODO ohlidat co to ma zobrazovat, kdye je match jeste neodehranej
 
         if( intHomeScore == -1 && intAwayScore == -1) {
             intHomeScore = match.getHomeScore();

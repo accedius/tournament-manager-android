@@ -40,6 +40,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     private Fragment[] fragments;
     private String[] titles;
 
+    private DefaultViewPagerAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -63,7 +65,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
         PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
 
-
+        adapter = (DefaultViewPagerAdapter)res;
         return res;
     }
 
@@ -94,5 +96,10 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         }
 
         return true;
+    }
+
+    public boolean isEnoughTeams(){
+        int count = ((HockeyTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(2)))).teamCount();
+        return count > 1;
     }
 }

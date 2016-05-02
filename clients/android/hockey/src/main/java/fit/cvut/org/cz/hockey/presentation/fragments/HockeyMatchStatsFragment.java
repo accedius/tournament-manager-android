@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.hockey.presentation.activities.EditAtOnceActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
@@ -50,6 +51,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
     private static final int REQUEST_HOME = 1;
     private static final int REQUEST_AWAY = 2;
+    private static final int REQUEST_EDIT = 3;
 
     private static final String ARG_MATCH_ID = "arg_match_id";
     //private static final String ARG_TOURNAMENT_ID = "arg_match_id";
@@ -236,7 +238,18 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
 
         if (resultCode != AddPlayersActivity.RESULT_OK) return;
 
-        //it will be only one request code so we do not need to check
+        if (requestCode == REQUEST_EDIT){
+            ArrayList<MatchPlayerStatistic> stats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_HOME_STATS);
+            homeAdapter.swapData( stats );
+            tmpHomeStats = stats;
+            stats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_AWAY_STATS);
+            awayAdapter.swapData( stats );
+            tmpAwayStats = stats;
+            return;
+        }
+
+
+
         ArrayList<Player> players = data.getParcelableArrayListExtra(SelectableListActivity.EXTRA_DATA);
         ArrayList<MatchPlayerStatistic> playerStatistics;
         if( requestCode == REQUEST_HOME ) playerStatistics = homeAdapter.getData();
@@ -272,8 +285,15 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     }
 
     public void editAll() {
-        Log.v( "HockeyMatchStatsFrag", "EDITALL()" );
-        //TODO
+        MatchStatisticsAdapter adapter = homeAdapter;
+        adapter = awayAdapter;
+
+        tmpHomeStats = getHomeList();
+        tmpAwayStats = getAwayList();
+
+        Intent intent = EditAtOnceActivity.newStartIntent( getContext(), tmpHomeStats, tmpAwayStats);
+
+        startActivityForResult( intent, REQUEST_EDIT );
     }
 
 }

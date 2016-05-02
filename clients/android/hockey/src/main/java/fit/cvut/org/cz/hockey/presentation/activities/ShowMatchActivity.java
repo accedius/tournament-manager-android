@@ -47,6 +47,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
     private Fragment[] fragments;
     private String[] titles;
 
+    private DefaultViewPagerAdapter adapter;
+
     @Override
     protected View injectView(ViewGroup parent) {
         v = super.injectView(parent);
@@ -77,9 +79,11 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         super.onCreate(savedInstanceState);
 
+        adapter = (DefaultViewPagerAdapter)getAdapter(getSupportFragmentManager());
+
         pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
-        pager.setAdapter(getAdapter(getSupportFragmentManager()));
-        pager.setOffscreenPageLimit(0);
+        pager.setAdapter(adapter);
+        pager.setOffscreenPageLimit(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
 
@@ -112,14 +116,14 @@ public class ShowMatchActivity extends AbstractTabActivity {
 //            for( int i = 0; i < pager.getAdapter().getCount(); i++ ) {
 //                ((HockeyMatchOverviewFragment)((DefaultViewPagerAdapter)(pager.getAdapter())).getItem( i )).testMethod();
 //            }
-            MatchScore score = ((HockeyMatchOverviewFragment) ((DefaultViewPagerAdapter) (pager.getAdapter())).getItem(0)).getScore();
+            MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore()))
             {
                 Snackbar.make( findViewById(android.R.id.content), "Shootouts are checked, match must not be draw!", Snackbar.LENGTH_LONG ).show();
                 return super.onOptionsItemSelected(item);
             }
-            ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) ((DefaultViewPagerAdapter) (pager.getAdapter())).getItem(1)).getHomeList();
-            ArrayList<MatchPlayerStatistic> awayStats = ((HockeyMatchStatsFragment) ((DefaultViewPagerAdapter) (pager.getAdapter())).getItem(1)).getAwayList();
+            ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
+            ArrayList<MatchPlayerStatistic> awayStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 
             Intent intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE_FOR_OVERVIEW, this );
             intent.putExtra( MatchService.EXTRA_MATCH_SCORE, score );
@@ -130,7 +134,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
             finish();
         } else if(item.getItemId() == R.id.action_edit) {
-            ((HockeyMatchStatsFragment) ((DefaultViewPagerAdapter) (pager.getAdapter())).getItem(1)).editAll();
+            ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
         }
 
 

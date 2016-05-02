@@ -167,7 +167,6 @@ public class StatisticsManager {
 
     public ArrayList<Standing> getStandingsByTournamentId( Context context, long tourId)
     {
-        //TODO remove mock
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( context, tourId );
 
         ArrayList<Standing> standings = new ArrayList<>();
