@@ -164,7 +164,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                         saveMatch(match);
 
                     } else {
-                        ScoredMatch match = new ScoredMatch();
+                        ScoredMatch match = ourMatch;
                         match.setId( id );
                         match.setPeriod(sPeriod);
                         match.setRound(sRound);
@@ -239,6 +239,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         if( id != -1 ) {
             smatch = intent.getParcelableExtra(getMatchKey());
             bindMatchOnView(smatch);
+            ourMatch = smatch;
         }
         ArrayList<NewMatchSpinnerParticipant> participants = intent.getParcelableArrayListExtra( getTournamentParticipantsKey() );
         bindParticipantsOnView( participants, smatch );

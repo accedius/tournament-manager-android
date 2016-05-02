@@ -15,14 +15,11 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
-import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
-import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
@@ -65,8 +62,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
     protected AbstractListAdapter getAdapter() {
         return new ScoredMatchAdapter() {
             @Override
-            protected void setOnClickListeners(View v, ScoredMatch match) {
-                super.setOnClickListeners(v, match);
+            protected void setOnClickListeners(View v, ScoredMatch match, int position) {
+                super.setOnClickListeners(v, match, position);
                 final long fmId = match.getId();
 
                 v.setOnClickListener( new View.OnClickListener(){

@@ -27,7 +27,10 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
 
     @Override
     protected void updateMatch(ScoredMatch match) {
-
+        Intent i = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH, getContext());
+        i.setAction(MatchService.ACTION_UPDATE_MATCH);
+        i.putExtra(MatchService.EXTRA_MATCH, match);
+        getContext().startService(i);
     }
 
     @Override
@@ -44,7 +47,12 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
     protected void askForData() {
 
         if (tournamentId != -1){
-            Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
+            Intent intent = null;
+            if (id == -1) intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
+            else {
+                intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_BY_ID, getContext());
+                intent.putExtra(MatchService.EXTRA_MATCH_ID, id);
+            }
             intent.putExtra(MatchService.EXTRA_ID, tournamentId);
             getContext().startService(intent);
         }
@@ -53,9 +61,9 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
 
     @Override
     protected boolean isDataSourceWorking() {
-        if (tournamentId != -1)
-            return MatchService.isWorking(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH);
-        else return MatchService.isWorking(MatchService.ACTION_GET_MATCH_BY_ID);
+        if (id != -1)
+            return MatchService.isWorking(MatchService.ACTION_GET_MATCH_BY_ID);
+        else return MatchService.isWorking(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH);
     }
 
     @Override

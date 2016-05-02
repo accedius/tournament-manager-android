@@ -28,6 +28,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
+    public static final String EXTRA_MATCH_ID = "extra_match_id";
     public static final String EXTRA_MATCHES = "extra_matches";
     public static final String EXTRA_MATCH = "extra_match";
     public static final String EXTRA_TYPE = "extra_type";
@@ -37,6 +38,8 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
     public static final String ACTION_GET_MATCH_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_match_by_id";
     public static final String ACTION_CREATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.create_match";
+    public static final String ACTION_UPDATE_MATCH = "fit.cvut.org.cz.squash.presentation.services.update_match";
+    public static final String ACTION_RESET_MATCH = "fit.cvut.org.cz.squash.presentation.services.reset_match";
     public static final String ACTION_UPDATE_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
     public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
     public static final String ACTION_DELETE_MATCH = "fit.cvut.org.cz.squash.presentation.services.delete_match";
@@ -69,29 +72,37 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-            case ACTION_GET_PARTICIPANTS_FOR_MATCH:{
+            case ACTION_GET_MATCH_BY_ID:{
                 long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
-                Tournament tr = ManagersFactory.getInstance().tournamentManager.getById(this, tournamentId);
-                CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, tr.getCompetitionId()).getType();
-
-                ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
-                if (type == CompetitionType.Individuals){
-                    ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, tournamentId);
-                    for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
-
-                } else { // teams
-                    ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId);
-                    for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
-                }
+                long matchId = intent.getLongExtra(EXTRA_MATCH_ID, -1);
 
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, participants);
+                result.putExtra(EXTRA_MATCH, ManagersFactory.getInstance().matchManager.getById(this, matchId));
+                result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_PARTICIPANTS_FOR_MATCH:{
+                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
+
+                Intent result = new Intent(action);
+                result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_CREATE_MATCH:{
                 ScoredMatch match = intent.getParcelableExtra(EXTRA_MATCH);
                 ManagersFactory.getInstance().matchManager.insert(this, match);
+                break;
+            }
+            case ACTION_UPDATE_MATCH:{
+                ScoredMatch match = intent.getParcelableExtra(EXTRA_MATCH);
+                ManagersFactory.getInstance().matchManager.update(this, match);
+                break;
+            }
+            case ACTION_RESET_MATCH:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                ManagersFactory.getInstance().matchManager.resetMatch(this, id);
                 break;
             }
             case ACTION_UPDATE_MATCH_DETAIL:{
@@ -121,5 +132,21 @@ public class MatchService extends AbstractIntentServiceWProgress {
         intent.putExtra(EXTRA_ACTION, action);
 
         return intent;
+    }
+
+    private ArrayList<NewMatchSpinnerParticipant> getParticipantsForMatch(long tournamentId){
+        Tournament tr = ManagersFactory.getInstance().tournamentManager.getById(this, tournamentId);
+        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, tr.getCompetitionId()).getType();
+
+        ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
+        if (type == CompetitionType.Individuals){
+            ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, tournamentId);
+            for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
+
+        } else { // teams
+            ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId);
+            for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
+        }
+        return participants;
     }
 }

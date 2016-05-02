@@ -23,10 +23,10 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     public static final String EXTRA_MATCH_ID = "match_id";
     public static final String EXTRA_TOURNAMENT_ID = "tournament_id";
 
-    public static Intent newStartIntent(Context context, long id, boolean forTournament){
+    public static Intent newStartIntent(Context context, long id, long tournamentId){
         Intent intent = new Intent(context, CreateMatchActivity.class);
-        if (forTournament) intent.putExtra(EXTRA_TOURNAMENT_ID, id);
-        else intent.putExtra(EXTRA_MATCH_ID,id);
+        intent.putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
+        intent.putExtra(EXTRA_MATCH_ID,id);
 
         return intent;
     }

@@ -3,6 +3,8 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.PointConfig;
@@ -18,6 +20,7 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -64,13 +67,39 @@ public class MatchManager implements IScoredMatchManager {
             matches.add(match);
         }
 
-
+        Collections.sort(matches, new Comparator<ScoredMatch>() {
+            @Override
+            public int compare(ScoredMatch lhs, ScoredMatch rhs) {
+                if (rhs.getRound() - lhs.getRound() == 0)
+                    return lhs.getPeriod() - rhs.getPeriod();
+                return lhs.getRound() - rhs.getRound();
+            }
+        });
         return matches;
     }
 
     @Override
     public ScoredMatch getById(Context context, long Id) {
-        return null;
+        ScoredMatch match = new ScoredMatch(DAOFactory.getInstance().matchDAO.getById(context, Id));
+
+        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
+        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, Id);
+        DParticipant home = null, awayParticipant = null;
+        for (DParticipant p : participants){
+            if (p.getRole().equals("home")) home = p;
+            else awayParticipant = p;
+        }
+        if (type == CompetitionType.Teams){
+            match.setHomeParticipantId(home.getTeamId());
+            match.setAwayParticipantId(awayParticipant.getTeamId());
+        }
+        else {
+            match.setHomeParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, home.getId()).get(0));
+            match.setAwayParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, awayParticipant.getId()).get(0));
+        }
+
+        return match;
     }
 
     @Override
@@ -85,6 +114,19 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void resetMatch(Context context, long matchId) {
+        ScoredMatch match = new ScoredMatch(DAOFactory.getInstance().matchDAO.getById(context, matchId));
+        match.setPlayed(false);
+        update(context, match);
+
+        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
+        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
+        for (DParticipant p : participants){
+            DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH);
+            DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.SET);
+            if (type == CompetitionType.Teams)
+                DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH_PARTICIPATION);
+        }
 
     }
 
@@ -115,7 +157,7 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void update(Context context, ScoredMatch match) {
-
+        DAOFactory.getInstance().matchDAO.update(context, ScoredMatch.convertToDMatch(match));
     }
 
     @Override

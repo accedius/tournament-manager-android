@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,9 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
-import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -32,6 +31,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
 
     public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
+    private ScoredMatchAdapter adapter = null;
 
     public static MatchListFragment newInstance(long tournamentId){
         MatchListFragment fragment = new MatchListFragment();
@@ -44,9 +44,9 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
     @Override
     protected AbstractListAdapter getAdapter() {
         final Context c = getContext();
-        return new ScoredMatchAdapter(){
+        adapter = new ScoredMatchAdapter(){
             @Override
-            protected void setOnClickListeners(View v, final ScoredMatch match) {
+            protected void setOnClickListeners(View v, final ScoredMatch match, final int position) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -58,9 +58,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        final View fw =v;
-
-                        EditDeleteDialog dialog = new EditDeleteDialog() {
+                        EditDeleteResetDialog dialog = new EditDeleteResetDialog() {
                             @Override
                             protected DialogInterface.OnClickListener supplyListener() {
                                 return  new DialogInterface.OnClickListener() {
@@ -68,16 +66,23 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                                     public void onClick(DialogInterface dialog, int which) {
                                         switch (which){
                                             case 0:{
-
+                                                Intent intent = CreateMatchActivity.newStartIntent(c, match.getId(), match.getTournamentId());
+                                                startActivity(intent);
                                                 break;
                                             }
                                             case 1:{
-
                                                 Intent intent =  MatchService.newStartIntent(MatchService.ACTION_DELETE_MATCH, c);
                                                 intent.putExtra(MatchService.EXTRA_ID, match.getId());
                                                 c.startService(intent);
-                                                //TODO better add position or stgh
+                                                adapter.delete(position);
+                                                break;
+                                            }
+                                            case 2:{
+                                                Intent intent =  MatchService.newStartIntent(MatchService.ACTION_RESET_MATCH, c);
+                                                intent.putExtra(MatchService.EXTRA_ID, match.getId());
+                                                c.startService(intent);
                                                 customOnResume();
+                                                break;
                                             }
                                         }
                                         dialog.dismiss();
@@ -86,13 +91,15 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                             }
                         };
 
-                        dialog.show(getFragmentManager(), "EDIT_DELETE");
+                        dialog.show(getFragmentManager(), "EDIT_DELETE_RESET");
 
                         return false;
                     }
                 });
             }
         };
+
+        return adapter;
     }
 
     @Override
@@ -129,7 +136,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = CreateMatchActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), true);
+                Intent intent = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ARG_ID));
                 startActivity(intent);
             }
         });
