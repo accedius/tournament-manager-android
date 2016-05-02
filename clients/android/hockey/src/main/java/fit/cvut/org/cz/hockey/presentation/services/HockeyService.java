@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.AggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -43,6 +45,13 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAgregated( this );
 
                 //TODO prevest na jadrovou formu
+
+                // Ukazka posilani statistik
+                AggregatedStats as = new AggregatedStats();
+                as.addRecord(new AggregatedStatsRecord("G", "10"));
+                as.addRecord(new AggregatedStatsRecord("A", "5"));
+                as.addRecord(new AggregatedStatsRecord("Points", "8"));
+                res.putExtra(CrossPackageComunicationConstants.EXTRA_STATS, as);
 
                 sendBroadcast( res );
                 break;
