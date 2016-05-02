@@ -14,11 +14,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class HockeyService extends AbstractIntentServiceWProgress {
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     */
-
-
 
     public HockeyService() {
         super("Hockey Service");
@@ -46,6 +41,16 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 sendBroadcast( res );
                 break;
+            }
+            case CrossPackageComunicationConstants.ACTION_DELETE_COMPETITION:
+            {
+                Intent res = new Intent(action);
+                long compId = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
+                if( ManagerFactory.getInstance().competitionManager.delete( this, compId) )
+                    res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_OK);
+                else
+                    res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_FAILED);
+                sendBroadcast( res );
             }
         }
 
