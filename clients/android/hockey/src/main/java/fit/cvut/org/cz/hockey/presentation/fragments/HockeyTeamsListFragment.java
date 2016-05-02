@@ -174,4 +174,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
             }
         }
     }
+
+    public int teamCount() {
+        return recyclerView.getAdapter().getItemCount();
+    }
 }

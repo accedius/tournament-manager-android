@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
+import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -181,7 +183,10 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                                        {
                                                            case 0:
                                                            {
-                                                               //TODO pridat kontrolu poctu tymu (musi byt aspon 2)
+                                                               if( !((ShowTournamentActivity)getActivity()).isEnoughTeams() ){
+                                                                   Snackbar.make(getActivity().findViewById(android.R.id.content), "Not enough teams!", Snackbar.LENGTH_LONG).show();
+                                                                   break;
+                                                               }
                                                                Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId);
 
                                                                startActivity(intent);
