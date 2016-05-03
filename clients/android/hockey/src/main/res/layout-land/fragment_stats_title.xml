@@ -78,6 +78,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:text="@string/i"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="2"
                 android:text="@string/ag"/>
             <TextView
                 android:layout_width="0dp"

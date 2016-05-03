@@ -63,7 +63,7 @@ public class StatisticsManager {
         if( allStats != null ) {
             playerStats.retainAll(allStats); //common elements -> players stats in competition
         }
-        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0;
+        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, interventions = 0;
         for(DStat stat : playerStats)
         {
             long value = Long.parseLong(stat.getValue());
@@ -87,6 +87,11 @@ public class StatisticsManager {
                 case plus_minus_points:
                 {
                     plusMinusPoints += value;
+                    break;
+                }
+                case interventions:
+                {
+                    interventions += value;
                     break;
                 }
                 case outcome:
@@ -116,7 +121,7 @@ public class StatisticsManager {
             }
         }
 
-        return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints);
+        return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, interventions);
     }
 
     public ArrayList<AggregatedStatistics> getAllAgregated( Context context )

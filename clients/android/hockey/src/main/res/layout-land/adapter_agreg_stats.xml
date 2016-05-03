@@ -73,6 +73,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
+            android:id="@+id/as_i"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="2"
             android:id="@+id/as_avg_g"/>
         <TextView
             android:layout_width="0dp"

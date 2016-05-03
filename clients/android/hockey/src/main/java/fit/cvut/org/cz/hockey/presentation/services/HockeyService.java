@@ -52,6 +52,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.w), Long.toString(ags.getWins())));
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.d), Long.toString(ags.getDraws())));
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.l), Long.toString(ags.getLosses())));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.i), Long.toString(ags.getInterventions())));
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.ag), String.format("%.2f", ags.getAvgGoals())));
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.ap), String.format("%.2f", ags.getAvgPoints())));
                     as.addRecord(new AggregatedStatsRecord(getString(R.string.apmp), String.format("%.2f", ags.getAvgPlusMinus())));
