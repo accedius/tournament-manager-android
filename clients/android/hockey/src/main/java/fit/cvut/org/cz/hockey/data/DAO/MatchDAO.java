@@ -35,8 +35,8 @@ public class MatchDAO implements IMatchDAO {
         if ( match.getDate() != null )
             cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
         if ( match.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(new Date()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(match.getLastSynchronized()));
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
 
         return cv;
     }
@@ -49,6 +49,8 @@ public class MatchDAO implements IMatchDAO {
 
         long newRowId;
         newRowId = db.insert(DBConstants.tMATCHES, null, values);
+
+        db.close();
         return newRowId;
     }
 
@@ -61,6 +63,7 @@ public class MatchDAO implements IMatchDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(match.getId()) };
         db.update(DBConstants.tMATCHES, values, where, projection);
+        db.close();
     }
 
     @Override
@@ -70,6 +73,7 @@ public class MatchDAO implements IMatchDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tMATCHES, where, projection);
+        db.close();
     }
 
     @Override
@@ -87,6 +91,7 @@ public class MatchDAO implements IMatchDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -103,6 +108,7 @@ public class MatchDAO implements IMatchDAO {
         DMatch res = CursorParser.getInstance().parseDMatch(cursor);
 
         cursor.close();
+        db.close();
 
         return res;
     }

@@ -35,6 +35,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
+
+        db.close();
     }
 
     @Override
@@ -48,6 +50,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
+
+        db.close();
     }
 
     @Override
@@ -65,6 +69,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
+
+        db.close();
     }
 
     @Override
@@ -74,6 +80,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID );
         String[] projection = new String[]{ Long.toString( playerId ), Long.toString( competitionId ) };
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, projection);
+
+        db.close();
     }
 
     @Override
@@ -83,6 +91,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID );
         String[] projection = new String[]{ Long.toString( playerId ), Long.toString( tournamentId ) };
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
+
+        db.close();
     }
 
     @Override
@@ -97,6 +107,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format( "%s = ?", DBConstants.cTEAM_ID );
         String[] projection = new String[]{ Long.toString( teamId ) };
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, projection);
+
+        db.close();
     }
 
     @Override
@@ -113,6 +125,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -131,6 +144,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -155,6 +169,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
 
@@ -174,6 +189,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }

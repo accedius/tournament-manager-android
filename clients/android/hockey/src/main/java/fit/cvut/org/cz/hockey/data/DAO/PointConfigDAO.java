@@ -81,6 +81,8 @@ public class PointConfigDAO implements IPointConfigDAO {
         values = defaultConfig(tournamentId);
         newRowId = db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
 
+        db.close();
+
         return newRowId;
     }
 
@@ -94,6 +96,8 @@ public class PointConfigDAO implements IPointConfigDAO {
         String where = String.format( "%s = ?", HockeyDBConstants.cTOURNAMENTID );
         String[] projection = new String[]{ Long.toString(tournamentId) };
         db.update(HockeyDBConstants.tCONFIGURATIONS, values, where, projection );
+
+        db.close();
     }
 
     @Override
@@ -107,6 +111,8 @@ public class PointConfigDAO implements IPointConfigDAO {
             return null;
 
         DPointConfiguration res = parseDPfromCursor( cursor );
+        cursor.close();
+        db.close();
 
         return res;
     }

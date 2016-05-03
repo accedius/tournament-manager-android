@@ -32,8 +32,8 @@ public class ParticipantDAO implements IParticipantDAO {
         cv.put(DBConstants.cMATCH_ID, participant.getMatchId());
         cv.put(DBConstants.cROLE, participant.getRole());
         if ( participant.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(participant.getLastSynchronized()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(new Date()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(participant.getLastSynchronized()));
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
 
         return cv;
     }
@@ -48,6 +48,7 @@ public class ParticipantDAO implements IParticipantDAO {
         long newRowId;
         newRowId = db.insert(DBConstants.tPARTICIPANTS, null, values);
 
+        db.close();
         return newRowId;
     }
 
@@ -62,6 +63,7 @@ public class ParticipantDAO implements IParticipantDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(participant.getId()) };
         db.update(DBConstants.tPARTICIPANTS, values, where, projection );
+        db.close();
     }
 
     @Override
@@ -71,6 +73,7 @@ public class ParticipantDAO implements IParticipantDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tPARTICIPANTS, where, projection);
+        db.close();
     }
 
     @Override
@@ -88,6 +91,7 @@ public class ParticipantDAO implements IParticipantDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -103,6 +107,7 @@ public class ParticipantDAO implements IParticipantDAO {
         DParticipant res = CursorParser.getInstance().parseDParticipant( cursor );
 
         cursor.close();
+        db.close();
 
         return res;
     }

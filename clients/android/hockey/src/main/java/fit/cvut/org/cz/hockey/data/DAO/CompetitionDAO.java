@@ -10,6 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
@@ -20,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  */
 public class CompetitionDAO implements ICompetitionDAO {
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat sdf = DateFormatFactory.getInstance().getDateFormat();
 
     private ContentValues toContVal(DCompetition competition)
     {
@@ -34,7 +35,9 @@ public class CompetitionDAO implements ICompetitionDAO {
         if ( competition.getEndDate() != null )
             cv.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
         cv.put(DBConstants.cNOTE, competition.getNote());
-        cv.put(DBConstants.cLASTMODIFIED, sdf.format(new Date()));
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+        if ( competition.getLastSynchronized() != null )
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(competition.getLastSynchronized()));
 
         return cv;
     }
@@ -51,6 +54,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         long newRowId;
         newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
 
+        db.close();
     }
 
     @Override
@@ -65,6 +69,8 @@ public class CompetitionDAO implements ICompetitionDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(competition.getId()) };
         db.update(DBConstants.tCOMPETITIONS, values, where, projection );
+
+        db.close();
     }
 
     @Override
@@ -75,7 +81,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tCOMPETITIONS, where, projection);
 
-
+        db.close();
     }
 
     @Override
@@ -89,6 +95,7 @@ public class CompetitionDAO implements ICompetitionDAO {
         DCompetition res = CursorParser.getInstance().parseDCompetition( cursor );
         
         cursor.close();
+        db.close();
 
         return res;
     }

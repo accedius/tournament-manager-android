@@ -10,6 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
@@ -25,6 +26,11 @@ public class TeamDAO implements ITeamDAO {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, team.getName());
         cv.put(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
+        cv.put(DBConstants.cUID, team.getUid());
+        cv.put(DBConstants.cETAG, team.getEtag());
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+        if ( team.getLastSynchronized() != null )
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(team.getLastSynchronized()));
 
         return cv;
     }
@@ -38,6 +44,7 @@ public class TeamDAO implements ITeamDAO {
         Long newRowId;
         newRowId = db.insert(DBConstants.tTEAMS, null, values);
 
+        db.close();
     }
 
     @Override
@@ -51,6 +58,7 @@ public class TeamDAO implements ITeamDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(team.getId()) };
         db.update(DBConstants.tTEAMS, values, where, projection );
+        db.close();
     }
 
     @Override
@@ -60,6 +68,7 @@ public class TeamDAO implements ITeamDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tTEAMS, where, projection);
+        db.close();
     }
 
     @Override
@@ -74,6 +83,7 @@ public class TeamDAO implements ITeamDAO {
         DTeam res = CursorParser.getInstance().parseDTeam(cursor);
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -93,6 +103,7 @@ public class TeamDAO implements ITeamDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
     }

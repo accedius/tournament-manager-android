@@ -16,4 +16,5 @@ public class DateFormatFactory {
     }
 
     public SimpleDateFormat getDateFormat(){return new SimpleDateFormat("yyyy-MM-dd");}
+    public SimpleDateFormat getDateTimeFormat(){ return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");}
 }

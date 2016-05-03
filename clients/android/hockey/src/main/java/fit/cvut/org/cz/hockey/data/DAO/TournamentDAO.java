@@ -11,6 +11,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -34,8 +35,11 @@ public class TournamentDAO implements ITournamentDAO {
         if ( tournament.getEndDate() != null )
             cv.put(DBConstants.cEND, sdf.format(tournament.getEndDate()));
         cv.put(DBConstants.cNOTE, tournament.getNote());
-        cv.put(DBConstants.cLASTMODIFIED, sdf.format(new Date()));
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
         cv.put(DBConstants.cCOMPETITIONID, tournament.getCompetitionId());
+        if ( tournament.getLastSynchronized() != null )
+            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(tournament.getLastSynchronized()));
+
 
         return cv;
     }
@@ -52,6 +56,8 @@ public class TournamentDAO implements ITournamentDAO {
         Long newRowId;
         newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
 
+        db.close();
+
         return newRowId;
     }
 
@@ -67,6 +73,8 @@ public class TournamentDAO implements ITournamentDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(tournament.getId()) };
         db.update(DBConstants.tTOURNAMENTS, values, where, projection );
+
+        db.close();
     }
 
     @Override
@@ -77,6 +85,8 @@ public class TournamentDAO implements ITournamentDAO {
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString( id ) };
         db.delete(DBConstants.tTOURNAMENTS, where, projection);
+
+        db.close();
     }
 
     @Override
@@ -90,6 +100,7 @@ public class TournamentDAO implements ITournamentDAO {
         DTournament res = CursorParser.getInstance().parseDTournament(cursor);
 
         cursor.close();
+        db.close();
 
         return res;
     }
@@ -108,6 +119,7 @@ public class TournamentDAO implements ITournamentDAO {
         }
 
         cursor.close();
+        db.close();
 
         return res;
 
