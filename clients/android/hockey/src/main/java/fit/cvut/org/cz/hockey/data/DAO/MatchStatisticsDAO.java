@@ -12,13 +12,14 @@ import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
+import fit.cvut.org.cz.hockey.data.interfaces.IMatchStatisticsDAO;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 
 /**
  * Created by atgot_000 on 20. 4. 2016.
  */
-public class MatchStatisticsDAO {
+public class MatchStatisticsDAO implements IMatchStatisticsDAO {
 
     private ContentValues toContVal( DMatchStat stat )
     {

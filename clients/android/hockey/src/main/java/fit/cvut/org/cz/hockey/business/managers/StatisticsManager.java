@@ -12,6 +12,7 @@ import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.business.interfaces.IHockeyStatisticsManager;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
@@ -28,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class StatisticsManager {
+public class StatisticsManager implements IHockeyStatisticsManager {
 
     private long calculatePoints( int outcome, DPointConfiguration pointConfig, DMatchStat matchStat )
     {
