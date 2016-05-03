@@ -21,6 +21,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 /**
  * Created by atgot_000 on 31. 3. 2016.
+ *
+ * factory class for DAO interfaces
  */
 public class DAOFactory {
 

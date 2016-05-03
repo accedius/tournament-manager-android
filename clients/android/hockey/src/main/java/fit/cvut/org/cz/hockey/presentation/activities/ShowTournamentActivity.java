@@ -28,11 +28,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
 
-//    private static String HEADER_OVERVIEW_TOURNAMENT = "Overview";
-//    private static String HEADER_PLAYERS_TOURNAMENT = "Players";
-//    private static String HEADER_TEAMS_TOURNAMENT = "Teams";
-//    private static String HEADER_MATCHES_TOURNAMENT = "Matches";
-//    private static String HEADER_STANDINGS_TOURNAMENT = "Standings";
     public static final String TOUR_ID = "tournament_id";
 
     private long tournamentID;
@@ -98,6 +93,10 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         return true;
     }
 
+    /**
+     * Checks if there is enough teams to create a match
+     * @return true of there is enough teams
+     */
     public boolean isEnoughTeams(){
         int count = ((HockeyTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(2)))).teamCount();
         return count > 1;

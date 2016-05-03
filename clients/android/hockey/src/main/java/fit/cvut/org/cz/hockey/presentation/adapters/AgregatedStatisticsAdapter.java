@@ -44,6 +44,11 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AggregatedSt
         setOnClickListeners(holder.wholeView, stats.getPlayerID());
     }
 
+    /**
+     * override this function to set on click listeners for rows
+     * @param v view of the row
+     * @param playerId id of player that was clicked
+     */
     protected void setOnClickListeners( View v, long playerId ) {};
 
     public class AgregatedStatisticsViewHolder extends RecyclerView.ViewHolder

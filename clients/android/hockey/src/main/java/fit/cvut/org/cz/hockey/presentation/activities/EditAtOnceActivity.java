@@ -28,6 +28,13 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
     public static final String EXTRA_HOME_STATS = "home_stats";
     public static final String EXTRA_AWAY_STATS = "away_stats";
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param homeStats stats of the home team
+     * @param awayStats stats of the away team
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats)
     {
         Intent res = new Intent(context, EditAtOnceActivity.class);

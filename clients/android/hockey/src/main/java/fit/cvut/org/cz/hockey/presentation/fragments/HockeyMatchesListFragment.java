@@ -119,7 +119,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
 
                         dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
 
-                        return false;
+                        return true;
                     }
                 });
             }

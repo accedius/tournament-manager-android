@@ -55,6 +55,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return v;
     }
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param matchId - id of the match to be shown
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, long matchId )
     {
         Intent intent = new Intent( context, ShowMatchActivity.class);
@@ -108,14 +114,15 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return true;
     }
 
-
+    /**
+     * Handles clicking on menu. If the save button is clicked, this activity gets data from both its fragments and sends them to service
+     * @param item menuItem
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.action_finish){
-//            for( int i = 0; i < pager.getAdapter().getCount(); i++ ) {
-//                ((HockeyMatchOverviewFragment)((DefaultViewPagerAdapter)(pager.getAdapter())).getItem( i )).testMethod();
-//            }
             MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore()))
             {

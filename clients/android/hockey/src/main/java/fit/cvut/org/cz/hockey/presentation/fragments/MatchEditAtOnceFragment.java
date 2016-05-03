@@ -97,10 +97,18 @@ public class MatchEditAtOnceFragment extends Fragment {
         outState.putParcelableArrayList(ARG_AWAY, awayAdp.getData());
     }
 
+    /**
+     *
+     * @return current list of statistics for home team
+     */
     public ArrayList<MatchPlayerStatistic> getHomeData(){
         return new ArrayList<>(homeAdp.getData());
     }
 
+    /**
+     *
+     * @return current list of statistics for home team
+     */
     public ArrayList<MatchPlayerStatistic> getAwayData(){
         return new ArrayList<>(awayAdp.getData());
     }

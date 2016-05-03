@@ -175,6 +175,10 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
         }
     }
 
+    /**
+     *
+     * @return current number of teams in the list
+     */
     public int teamCount() {
         return recyclerView.getAdapter().getItemCount();
     }

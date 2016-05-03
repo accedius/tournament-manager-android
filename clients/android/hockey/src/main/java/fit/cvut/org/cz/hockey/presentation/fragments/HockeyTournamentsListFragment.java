@@ -105,7 +105,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                         };
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
-                        return false;
+                        return true;
                     }
                 } );
                 super.setOnClickListeners(v, tournamentId, position);

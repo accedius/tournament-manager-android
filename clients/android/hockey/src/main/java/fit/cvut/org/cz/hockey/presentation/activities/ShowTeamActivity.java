@@ -22,6 +22,12 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
 
     public static final String EXTRA_TEAM_ID = "team_id";
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param id id of the team to be shown
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, long id  )
     {
         Intent res = new Intent(context, ShowTeamActivity.class);

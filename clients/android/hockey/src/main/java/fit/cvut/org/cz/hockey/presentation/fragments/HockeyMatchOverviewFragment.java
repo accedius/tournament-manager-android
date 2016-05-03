@@ -172,6 +172,9 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         outState.putInt(SAVE_AWAY_SCORE, intAwayScore);
     }
 
+    /**
+     * Set listeners for all buttons. This method is called in inject view
+     */
     private void setOnClickListeners()
     {
         homePlus.setOnClickListener( new View.OnClickListener(){

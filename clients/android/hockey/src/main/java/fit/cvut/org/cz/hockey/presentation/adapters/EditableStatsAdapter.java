@@ -71,6 +71,9 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
         }
     }
 
+    /**
+     * Listener that changes the data in adapter whenever something changed on the screen
+     */
     private class EditDataListener implements TextWatcher{
 
         public static final int LISTEN_GOALS = 0;

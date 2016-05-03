@@ -47,6 +47,10 @@ public class EditStatsDialog extends DialogFragment {
         return fragment;
     }
 
+    /**
+     * Override this function to save the stats when dialog is closed
+     * @param statistic
+     */
     protected void saveStats( MatchPlayerStatistic statistic ) {};
 
     @Override

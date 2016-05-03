@@ -21,6 +21,13 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
     public static final String EXTRA_COMP_ID = "comp_id";
     public static final String EXTRA_TOUR_ID = "tour_id";
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param compId if true, the Id is considered to be competitions, hence a new tournament is being created
+     * @param id id of tournament or competition
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, long id, boolean compId  )
     {
         Intent res = new Intent(context, CreateTournamentActivity.class);

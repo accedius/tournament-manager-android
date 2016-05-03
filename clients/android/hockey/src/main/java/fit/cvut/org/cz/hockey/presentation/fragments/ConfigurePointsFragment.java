@@ -41,6 +41,11 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
         return fragment;
     }
 
+    /**
+     * Validates whether all input texts have numbers
+     * @param v view
+     * @return true or false
+     */
     private boolean validate( View v )
     {
         if(     ntW.getText().toString().isEmpty() ||
@@ -59,6 +64,10 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
         return true;
     }
 
+    /**
+     * saves the validated configuration
+     * @param pointConfiguration configuration for the tournament
+     */
     private void saveConfig( PointConfiguration pointConfiguration )
     {
         Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_SET_CONFIG, getContext() );

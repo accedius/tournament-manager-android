@@ -29,11 +29,27 @@ public class HomeAwayDialog extends DialogFragment {
         fragment.setArguments( b );
         return fragment;
     }
+
+    /**
+     * overrride this function to show home name in dialog
+     * @return String with home name
+     */
     protected String getHomeName() { return null; }
+
+    /**
+     * overrride this function to show away name in dialog
+     * @return String with away name
+     */
     protected String getAwayName() { return null; }
 
+    /**
+     * Override to do something when the home team was clicked
+     */
     protected void homeClicked() {};
 
+    /**
+     * Override to do something when the away team was clicked
+     */
     protected void awayClicked() {};
 
     @Override

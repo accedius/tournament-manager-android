@@ -28,12 +28,9 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
         db.execSQL(DBScripts.CREATE_TABLE_MATCHES);
         db.execSQL(DBScripts.CREATE_TABLE_PARTICIPANTS);
-//        db.execSQL(DBScripts.CREATE_TABLE_PLAYER_IN_PARTICIPANT);
-//        db.execSQL(DBScripts.CREATE_TABLE_STATS_ENUM);
         db.execSQL(DBScripts.CREATE_TABLE_STATS);
         db.execSQL(DBScripts.CREATE_TABLE_TEAMS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
-        //db.execSQL(HockeyDBScripts.CREATE_TABLE_PARTICIPANT_SCORE);
         db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
     }
 
@@ -47,11 +44,8 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tMATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPARTICIPANTS);
-//        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYER_IN_PARTICIPANT);
-//        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS_ENUM);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TEAM);
-        //db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tPARTICIPANT_SCORE);
         db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tMATCH_SCORE);
         onCreate(db);
 

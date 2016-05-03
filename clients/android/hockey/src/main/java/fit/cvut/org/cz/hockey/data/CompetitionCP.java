@@ -15,6 +15,8 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
+ *
+ * Content provider for Core
  */
 public class CompetitionCP extends ContentProvider {
 

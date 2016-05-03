@@ -32,6 +32,13 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     private String action = null;
 
     public AddPlayersFragment() {}
+
+    /**
+     * return new instance of this fragment with set arguments
+     * @param option option to set
+     * @param id to set
+     * @return new instance of this fragment
+     */
     public static AddPlayersFragment newInstance( int option, long id )
     {
         AddPlayersFragment fragment = new AddPlayersFragment();
@@ -42,6 +49,14 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
         return fragment;
     }
+
+    /**
+     * return new instance of this fragment with set arguments
+     * @param option option to set
+     * @param id to set
+     * @param omitPlayers players to omit from the list
+     * @return new instance of this fragment
+     */
     public static AddPlayersFragment newInstance(int option, long id, ArrayList<Player> omitPlayers){
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
@@ -52,6 +67,15 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
         return fragment;
     }
+
+    /**
+     * return new instance of this fragment with set arguments
+     * @param option option to set
+     * @param id to set
+     * @param omitPlayerIds ids of players to omit from the list
+     * @param tmp actually useless integer argument to differentiate from other newInstance method
+     * @return new instance of this fragment
+     */
     public static AddPlayersFragment newInstance(int option, long id, ArrayList<MatchPlayerStatistic> omitPlayerIds, int tmp){
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();

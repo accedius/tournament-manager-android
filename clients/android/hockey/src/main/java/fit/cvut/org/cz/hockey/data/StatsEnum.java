@@ -2,6 +2,8 @@ package fit.cvut.org.cz.hockey.data;
 
 /**
  * Created by atgot_000 on 19. 4. 2016.
+ *
+ * enumeration of statistics that are being saved
  */
 public enum StatsEnum {
     participates(true),
@@ -16,6 +18,10 @@ public enum StatsEnum {
 
     private boolean forPlayer;
 
+    /**
+     *
+     * @param forPlayer true means that the statistic is saved for player. If false, then the stat has no player Id and is for parrticipant
+     */
     StatsEnum( boolean forPlayer ) {this.forPlayer = forPlayer;}
 
     public boolean isForPlayer() {

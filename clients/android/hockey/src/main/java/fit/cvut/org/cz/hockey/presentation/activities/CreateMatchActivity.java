@@ -20,6 +20,12 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     public static final String EXTRA_MATCH_ID = "match_id";
     public static final String EXTRA_TOUR_ID = "tour_id";
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param tourId id of the tournament where the match should be created
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, long tourId  )
     {
         Intent res = new Intent(context, CreateMatchActivity.class);
@@ -28,6 +34,13 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         return res;
     }
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param id id of the match
+     * @param tourId id of the tournament where the match should be modified
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context, long id, long tourId  )
     {
         Intent res = new Intent(context, CreateMatchActivity.class);

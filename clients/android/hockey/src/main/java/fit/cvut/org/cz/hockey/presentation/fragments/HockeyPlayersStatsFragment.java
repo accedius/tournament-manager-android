@@ -125,7 +125,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                         };
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
-                        return false;
+                        return true;
                     }
                 });
             }

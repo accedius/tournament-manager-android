@@ -274,16 +274,27 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         return res;
     }
 
+    /**
+     *
+     * @return current list of statistics of home team
+     */
     public ArrayList<MatchPlayerStatistic> getHomeList()
     {
         return homeAdapter.getData();
     }
 
+    /**
+     *
+     * @return current list of statistics of away team
+     */
     public ArrayList<MatchPlayerStatistic> getAwayList()
     {
         return awayAdapter.getData();
     }
 
+    /**
+     * Starts an edit all activity with current data
+     */
     public void editAll() {
         MatchStatisticsAdapter adapter = homeAdapter;
         adapter = awayAdapter;

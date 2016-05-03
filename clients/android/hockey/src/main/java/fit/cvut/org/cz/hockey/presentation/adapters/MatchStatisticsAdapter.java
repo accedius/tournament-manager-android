@@ -51,8 +51,6 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
 
     private void setOnClickListeners( View v, long playerId, final int position )
     {
-        //final long finPlId = playerId;
-        //final long finPos = position;
         v.setOnLongClickListener( new View.OnLongClickListener(){
             @Override
             public boolean onLongClick(View v) {
@@ -94,7 +92,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
                 };
                 dialog.show(parentFrag.getFragmentManager(), "EDIT_DELETE_PLAYER_STATS");
 
-                return false;
+                return true;
             }
         });
     }

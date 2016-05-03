@@ -49,6 +49,10 @@ public class TeamService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
+    /**
+     * sends teams to broadcast
+     * @param id id of tournament
+     */
     private void sendTeams( long id )
     {
         Intent res = new Intent( ACTION_GET_TEAMS_BY_TOURNAMENT );

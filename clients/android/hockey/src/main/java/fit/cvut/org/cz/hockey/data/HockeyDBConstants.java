@@ -2,6 +2,8 @@ package fit.cvut.org.cz.hockey.data;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.
+ *
+ * static class with database constants for hockey
  */
 public class HockeyDBConstants {
 

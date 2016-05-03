@@ -18,12 +18,21 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
 
 /**
  * Created by atgot_000 on 15. 4. 2016.
+ *
+ * Activitz for adding players
  */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
 
     private static final String ARG_OPTION = "option_arg";
     private static final String ARG_ID = "id_arg";
 
+    /**
+     * Creates a new intent to start this activity
+     * @param context
+     * @param option option where are we adding players - it is passed into the fragment
+     * @param id id of where are we adding players, also passed into fragment
+     * @return Intent to that can be used to start this activity
+     */
     public static Intent newStartIntent( Context context,  int option, long id )
     {
         Intent intent = new Intent( context, AddPlayersActivity.class );
