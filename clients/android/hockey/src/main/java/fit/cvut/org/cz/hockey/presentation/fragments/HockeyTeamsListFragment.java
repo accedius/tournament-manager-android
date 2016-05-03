@@ -45,8 +45,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     protected AbstractListAdapter getAdapter() {
         return new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId) {
-                super.setOnClickListeners(v, teamId);
+            protected void setOnClickListeners(View v, long teamId, int position) {
+                super.setOnClickListeners(v, teamId, position);
                 final long tid = teamId;
 
                 v.setOnClickListener( new View.OnClickListener(){

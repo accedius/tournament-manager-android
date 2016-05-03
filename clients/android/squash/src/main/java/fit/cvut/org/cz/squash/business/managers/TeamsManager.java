@@ -27,9 +27,11 @@ public class TeamsManager implements ITeamManager {
 
     @Override
     public boolean delete(Context context, long id) {
-        //TODO custom logic
+        Team t = getById(context, id);
+        if (t.getPlayers().size() != 0) return false;
+        if (DAOFactory.getInstance().participantDAO.getParticipantsByTeamId(context, id).size() != 0) return false;
         DAOFactory.getInstance().teamDAO.delete(context, id);
-        return false;
+        return true;
     }
 
     @Override

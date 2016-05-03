@@ -16,6 +16,7 @@ public interface IParticipantDAO {
     void delete( Context context, long id );
 
     ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );
+    ArrayList<DParticipant> getParticipantsByTeamId( Context context, long teamId );
     DParticipant getById( Context context, long id );
 
 }

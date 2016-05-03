@@ -20,12 +20,12 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
         return new TeamViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_team, parent, false));
     }
 
-    protected void setOnClickListeners(View v, long teamId) {}
+    protected void setOnClickListeners(View v, long teamId, int position) {}
 
     @Override
     public void onBindViewHolder(TeamViewHolder holder, int position) {
         Team t = data.get(position);
-        setOnClickListeners(holder.wholeView, t.getId());
+        setOnClickListeners(holder.wholeView, t.getId(), position);
 
         holder.teamName.setText(t.getName());
         if (t.getPlayers().size() > 0){

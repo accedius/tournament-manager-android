@@ -70,6 +70,22 @@ public class ParticipantDAO implements IParticipantDAO {
     }
 
     @Override
+    public ArrayList<DParticipant> getParticipantsByTeamId(Context context, long teamId) {
+        ArrayList<DParticipant> participants = new ArrayList<>();
+
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPARTICIPANTS, DBConstants.cTEAM_ID), new String[]{Long.toString(teamId)});
+
+        while (c.moveToNext())
+            participants.add(CursorParser.getInstance().parseDParticipant(c));
+        c.close();
+        db.close();
+
+        return participants;
+    }
+
+    @Override
     public DParticipant getById(Context context, long id) {
         DParticipant participant = null;
 

@@ -35,6 +35,7 @@
     <string name="failDeletePlayerFromCompetition">Hráč je již v turnaje a nelze ho odstranit.</string>
     <string name="failDeletePlayerFromTournament">Hráč je již v zápase nebo týmu a nelze ho odstranit.</string>
     <string name="failDeleteTournament">Turnaj již obsahuje zápasy nebo hráče a nelze ho odstranit.</string>
+    <string name="failDeleteTeam">Tým není prázdný a/nebo se již účastní nějákého zápasu a nelze ho odstranit.</string>
     <string name="player_created">Hráč vytvořen.</string>
     <string name="competition_created">Soutěž vytvořena.</string>
 </resources>

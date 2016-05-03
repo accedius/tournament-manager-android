@@ -23,11 +23,14 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TEAMS = "extra_teams";
     public static final String EXTRA_TEAM = "extra_team";
+    public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_POSITION = "extra_position";
 
     public static final String ACTION_GET_TEAMS_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_teams_by_tournament";
     public static final String ACTION_ADD_TEAM = "fit.cvut.org.cz.squash.presentation.services.add_team";
     public static final String ACTION_EDIT_TEAM = "fit.cvut.org.cz.squash.presentation.services.edit_team";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_team_by_id";
+    public static final String ACTION_DELETE = "fit.cvut.org.cz.squash.presentation.services.delete_team";
 
     @Override
     protected String getActionKey() {
@@ -70,6 +73,15 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
                 ManagersFactory.getInstance().teamsManager.update(this, t);
                 sendTeamsByTournament(t.getTournamentId());
+                break;
+            }
+            case ACTION_DELETE:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                Intent result = new Intent(action);
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().teamsManager.delete(this, id));
+                result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
 
