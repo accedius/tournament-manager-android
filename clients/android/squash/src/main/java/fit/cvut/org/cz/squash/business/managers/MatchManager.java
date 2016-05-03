@@ -12,10 +12,14 @@ import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
@@ -110,6 +114,35 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void generateRound(Context context, long tournamentId) {
 
+        DTournament tournament = DAOFactory.getInstance().tournamentDAO.getById(context, tournamentId);
+        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, tournament.getCompetitionId()).getType();
+
+        ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId(context, tournamentId);
+        Collections.sort(matches, new Comparator<DMatch>() {
+            @Override
+            public int compare(DMatch lhs, DMatch rhs) {
+                if (rhs.getRound() - lhs.getRound() == 0)
+                    return lhs.getPeriod() - rhs.getPeriod();
+                return lhs.getRound() - rhs.getRound();
+            }
+        });
+
+        ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
+
+        if (type == CompetitionType.Individuals){
+            ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
+            for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
+        }else { // teams
+            ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
+            for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
+        }
+
+        IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
+        int round = 0;
+        if (matches.size() != 0) round = matches.get(matches.size() -1).getRound();
+        ArrayList<ScoredMatch> newMatches = generator.generateRound(participants, round);
+
+        for (ScoredMatch m : newMatches) insert(context, m);
     }
 
     @Override

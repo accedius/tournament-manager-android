@@ -43,6 +43,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_UPDATE_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
     public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
     public static final String ACTION_DELETE_MATCH = "fit.cvut.org.cz.squash.presentation.services.delete_match";
+    public static final String ACTION_GENERATE_ROUND = "fit.cvut.org.cz.squash.presentation.services.generate_round";
 
     @Override
     protected String getActionKey() {
@@ -120,6 +121,11 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_DELETE_MATCH:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().matchManager.delete(this, id);
+                break;
+            }
+            case ACTION_GENERATE_ROUND:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                ManagersFactory.getInstance().matchManager.generateRound(this, id);
                 break;
             }
         }
