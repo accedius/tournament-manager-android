@@ -28,6 +28,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_RESULT = "extra_result";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_PLAYER_ID = "extra_player_id";
+    public static final String EXTRA_HOME_PLAYERS = "extra_home_players";
+    public static final String EXTRA_AWAY_PLAYERS = "extra_away_players";
 
     public static final String ACTION_GET_SELECTED_FROM_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.competition_selected_players";
     public static final String ACTION_GET_PLAYERS_FOR_COMPETITION = "fit.cvut.org.cz.squash.presentation.services.get_players_for_competition";
@@ -44,6 +46,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static final String ACTION_GET_AWAY_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_away_players_in_match";
     public static final String ACTION_GET_HOME_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_in_match";
+    public static final String ACTION_GET_PLAYERS_IN_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_players_in_match";
     public static final String ACTION_GET_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_for_match";
     public static final String ACTION_UDATE_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.update_players_for_match";
 
@@ -129,6 +132,26 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().statsManager.getPlayersForMatch(this, id, "home"));
                 long teamID = ManagersFactory.getInstance().participantManager.getTeamIdForMatchParticipant(this, id, "home");
                 result.putExtra(EXTRA_ID, teamID);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+
+            case ACTION_GET_PLAYERS_IN_MATCH:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                Intent result = new Intent(action);
+
+                long homeTeamId = ManagersFactory.getInstance().participantManager.getTeamIdForMatchParticipant(this, id, "home");
+                long awayTeamId = ManagersFactory.getInstance().participantManager.getTeamIdForMatchParticipant(this, id, "away");
+
+                Team homeTeam = ManagersFactory.getInstance().teamsManager.getById(this, homeTeamId);
+                homeTeam.setPlayers(ManagersFactory.getInstance().statsManager.getPlayersForMatch(this, id, "home"));
+
+                Team awayTeam = ManagersFactory.getInstance().teamsManager.getById(this, awayTeamId);
+                awayTeam.setPlayers(ManagersFactory.getInstance().statsManager.getPlayersForMatch(this, id, "away"));
+
+                result.putExtra(EXTRA_HOME_PLAYERS, homeTeam);
+                result.putExtra(EXTRA_AWAY_PLAYERS, awayTeam);
+
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }

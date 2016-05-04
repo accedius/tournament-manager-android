@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
+import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
@@ -50,14 +51,13 @@ public class MatchDetailActivity extends AbstractTabActivity {
             adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{"Sets"});
         else{
             adapter = new DefaultViewPagerAdapter(manager,
-                    new Fragment[] {MatchPlayersFragment.newInstance(id, PlayerService.ACTION_GET_HOME_PLAYERS_IN_MATCH),
-                                    SetsFragment.newInstance(id, played),
-                                    MatchPlayersFragment.newInstance(id, PlayerService.ACTION_GET_AWAY_PLAYERS_IN_MATCH)
+                    new Fragment[] {SetsFragment.newInstance(id, played),
+                                    MatchPlayersFragmentImproved.newInstance(id)
                     },
-                    new String[] {"Home", "Sets",
-                            "Away"
+                    new String[] {"Sets",
+                            "Roasters"
                     } );
-            pager.setOffscreenPageLimit(2);
+            pager.setOffscreenPageLimit(1);
         }
         return adapter;
     }
@@ -75,9 +75,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
             CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
 
-            SetsFragment fr =  null;
-            if (type == CompetitionType.Individuals) fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
-            else fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
+            SetsFragment fr =  fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
 
             if (fr != null && !fr.isWorking()){
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
@@ -88,22 +86,19 @@ public class MatchDetailActivity extends AbstractTabActivity {
             }
 
             if (adapter.getCount() > 1){
-
-                MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+                MatchPlayersFragmentImproved mfr = (MatchPlayersFragmentImproved) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
                 if (mfr != null){
-                    ArrayList<Player> players = mfr.getPlayers();
-                    Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
-                    intent.putExtra(PlayerService.EXTRA_ROLE, "home");
-                    intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
-                    intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, players);
-                    startService(intent);
-                }
-                mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(2));
-                if (mfr != null){
-                    ArrayList<Player> players = mfr.getPlayers();
+                    ArrayList<Player> players = mfr.getAwayPlayers();
                     Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
                     intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
                     intent.putExtra(PlayerService.EXTRA_ROLE, "away");
+                    intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, players);
+                    startService(intent);
+
+                    players = mfr.getHomePlayers();
+                    intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
+                    intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
+                    intent.putExtra(PlayerService.EXTRA_ROLE, "home");
                     intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, players);
                     startService(intent);
                 }
