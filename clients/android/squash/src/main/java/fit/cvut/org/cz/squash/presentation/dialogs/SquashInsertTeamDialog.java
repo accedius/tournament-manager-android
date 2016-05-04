@@ -38,7 +38,6 @@ public class SquashInsertTeamDialog extends InsertTeamDialog {
 
     @Override
     protected void editTeam(Team t) {
-        //TODO send team for editing
         Intent i = TeamService.newStartIntent(TeamService.ACTION_EDIT_TEAM, getContext());
         i.putExtra(TeamService.EXTRA_TEAM, t);
         getContext().startService(i);

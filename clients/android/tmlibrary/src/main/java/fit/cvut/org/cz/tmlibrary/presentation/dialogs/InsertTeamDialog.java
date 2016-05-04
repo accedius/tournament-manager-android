@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.presentation.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 /**
  * Created by Vaclav on 14. 4. 2016.
@@ -30,6 +32,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
     private ProgressBar progressBar;
     private TextView name;
     private Team team;
+    private IProgressInterface hostFragment = null;
 
     protected long teamId, tournamentId;
 
@@ -71,6 +74,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -79,13 +83,14 @@ public abstract class InsertTeamDialog extends DialogFragment{
 
                 if (tournamentId != -1){
                     insertTeam(new Team(tournamentId, name.getText().toString()));
-                    dismiss();
                 }
                 else if (teamId != -1){
                     team.setName(name.getText().toString());
                     editTeam(team);
-                    dismiss();
                 }
+                if (getTargetFragment() != null)
+                    getTargetFragment().onActivityResult(0, 1, null);
+                dismiss();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

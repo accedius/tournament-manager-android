@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
@@ -63,7 +64,8 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                                         switch (which){
                                             case 0:
                                                 InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(ftid, false, SquashInsertTeamDialog.class);
-                                                insertTeamDialog.show(getFragmentManager(), "tag2");
+                                                insertTeamDialog.setTargetFragment(TeamsListFragment.this, 0);
+                                                insertTeamDialog.show(getFragmentManager(), "edit_team_dialog");
                                                 dialog.dismiss();
                                                 break;
                                             case 1:
@@ -133,6 +135,7 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
             @Override
             public void onClick(View v) {
                 InsertTeamDialog dialog = SquashInsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, SquashInsertTeamDialog.class);
+                dialog.setTargetFragment(TeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }
 
@@ -142,6 +145,7 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
     }
 
     private BroadcastReceiver tReceiver = new TeamsReceiver();
+
     public class TeamsReceiver extends BroadcastReceiver {
 
         @Override

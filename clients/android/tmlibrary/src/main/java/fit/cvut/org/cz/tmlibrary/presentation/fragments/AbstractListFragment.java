@@ -95,4 +95,10 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
         Log.d("ADF", "Received data, len: "+data.size());
         adapter.swapData(data);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        progressBar.setVisibility(View.VISIBLE);
+        contentView.setVisibility(View.GONE);
+    }
 }
