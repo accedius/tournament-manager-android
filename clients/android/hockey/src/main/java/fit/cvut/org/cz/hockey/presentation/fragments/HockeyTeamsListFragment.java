@@ -71,6 +71,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                                         switch (which){
                                             case 0:
                                                 InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(tid, false, HockeyInsertTeamDialog.class);
+                                                insertTeamDialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
                                                 insertTeamDialog.show(getFragmentManager(), "tag2");
                                                 dialog.dismiss();
                                                 break;
@@ -134,6 +135,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
             @Override
             public void onClick(View v) {
                 InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, HockeyInsertTeamDialog.class);
+                dialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }
 
