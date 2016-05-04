@@ -97,6 +97,11 @@ public class ParticipantDAO implements IParticipantDAO {
     }
 
     @Override
+    public ArrayList<DParticipant> getParticipantsByTeamId(Context context, long teamId) {
+        return null;
+    }
+
+    @Override
     public DParticipant getById(Context context, long id) {
         String[] selArgs = { String.valueOf( id ) };
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
