@@ -33,6 +33,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_MATCH = "extra_match";
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_PARTICIPANTS = "extra_participants";
+    public static final String EXTRA_RESULT = "extra_result";
 
     public static final String ACTION_GET_MATCHES_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_matches_by_tournament";
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
@@ -44,6 +45,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
     public static final String ACTION_DELETE_MATCH = "fit.cvut.org.cz.squash.presentation.services.delete_match";
     public static final String ACTION_GENERATE_ROUND = "fit.cvut.org.cz.squash.presentation.services.generate_round";
+    public static final String ACTION_CAN_ADD_MATCH = "fit.cvut.org.cz.squash.presentation.services.can_add_match";
 
     @Override
     protected String getActionKey() {
@@ -125,7 +127,24 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GENERATE_ROUND:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                ManagersFactory.getInstance().matchManager.generateRound(this, id);
+                Intent result = new Intent(action);
+
+                if (enoughParticipants(id)){
+                    result.putExtra(EXTRA_RESULT, true);
+                    ManagersFactory.getInstance().matchManager.generateRound(this, id);
+                } else result.putExtra(EXTRA_RESULT, false);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_CAN_ADD_MATCH:{
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                Intent result = new Intent(action);
+
+                if (enoughParticipants(id)) result.putExtra(EXTRA_RESULT, true);
+                else result.putExtra(EXTRA_RESULT, false);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
         }
@@ -154,5 +173,13 @@ public class MatchService extends AbstractIntentServiceWProgress {
             for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
         }
         return participants;
+    }
+
+    private boolean enoughParticipants(long id){
+        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, id);
+        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, t.getCompetitionId()).getType();
+
+        return !((type == CompetitionType.Individuals && ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, id).size() < 2)
+                || (type == CompetitionType.Teams && ManagersFactory.getInstance().teamsManager.getByTournamentId(this, id).size() < 2));
     }
 }

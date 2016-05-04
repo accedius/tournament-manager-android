@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteResetDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.NewMatchDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -122,7 +124,10 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, new IntentFilter(MatchService.ACTION_GET_MATCHES_BY_TOURNAMENT));
+        IntentFilter filter = new IntentFilter(MatchService.ACTION_GET_MATCHES_BY_TOURNAMENT);
+        filter.addAction(MatchService.ACTION_GENERATE_ROUND);
+        filter.addAction(MatchService.ACTION_CAN_ADD_MATCH);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, filter);
     }
 
     @Override
@@ -133,11 +138,38 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.fab_add, parent, false);
+        final long id = getArguments().getLong(ARG_ID);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ARG_ID));
-                startActivity(intent);
+                NewMatchDialog d = new NewMatchDialog() {
+                    @Override
+                    protected DialogInterface.OnClickListener supplyListener() {
+                        return new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0:{
+                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_CAN_ADD_MATCH, getContext());
+                                        intent.putExtra(MatchService.EXTRA_ID, id);
+                                        getContext().startService(intent);
+                                        break;
+                                    }
+                                    case 1:{
+                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
+                                        intent.putExtra(MatchService.EXTRA_ID, id);
+                                        getContext().startService(intent);
+                                        break;
+                                    }
+                                }
+                                progressBar.setVisibility(View.VISIBLE);
+                                contentView.setVisibility(View.GONE);
+                                dialog.dismiss();
+                            }
+                        };
+                    }
+                };
+                d.show(getFragmentManager(), "Add_match_dialog");
             }
         });
         return fab;
@@ -149,10 +181,37 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            progressBar.setVisibility(View.GONE);
-            contentView.setVisibility(View.VISIBLE);
-            MatchListFragment.super.bindDataOnView(intent);
-            type = CompetitionType.valueOf(intent.getStringExtra(MatchService.EXTRA_TYPE));
+            switch (intent.getAction()){
+                case MatchService.ACTION_CAN_ADD_MATCH:{
+                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)){
+                        Intent start = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ARG_ID));
+                        startActivity(start);
+                    }
+                    else {
+                        progressBar.setVisibility(View.GONE);
+                        contentView.setVisibility(View.VISIBLE);
+                        Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.cant_create_match, Snackbar.LENGTH_LONG).show();
+                    }
+                    break;
+                }
+                case MatchService.ACTION_GENERATE_ROUND:{
+                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)){
+                        askForData();
+                    }
+                    else {
+                        progressBar.setVisibility(View.GONE);
+                        contentView.setVisibility(View.VISIBLE);
+                        Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.cant_create_match, Snackbar.LENGTH_LONG).show();
+                    }
+                    break;
+                }
+                default:{
+                    progressBar.setVisibility(View.GONE);
+                    contentView.setVisibility(View.VISIBLE);
+                    MatchListFragment.super.bindDataOnView(intent);
+                    type = CompetitionType.valueOf(intent.getStringExtra(MatchService.EXTRA_TYPE));
+                }
+            }
         }
     }
 }

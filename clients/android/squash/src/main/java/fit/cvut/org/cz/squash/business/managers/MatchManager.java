@@ -138,11 +138,15 @@ public class MatchManager implements IScoredMatchManager {
         }
 
         IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
-        int round = 0;
+        int round = -1;
         if (matches.size() != 0) round = matches.get(matches.size() -1).getRound();
+        round++;
         ArrayList<ScoredMatch> newMatches = generator.generateRound(participants, round);
 
-        for (ScoredMatch m : newMatches) insert(context, m);
+        for (ScoredMatch m : newMatches){
+            m.setTournamentId(tournamentId);
+            insert(context, m);
+        }
     }
 
     @Override
