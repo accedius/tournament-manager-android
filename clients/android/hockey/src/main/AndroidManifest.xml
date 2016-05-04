@@ -88,7 +88,6 @@
         <meta-data android:name="activity_detail_competition" android:value="@string/activity_detail_competition"/>
 
         <meta-data android:name="service_stats" android:value="fit.cvut.org.cz.hockey.presentation.services.HockeyService"/>
-
     </application>
 
 </manifest>
