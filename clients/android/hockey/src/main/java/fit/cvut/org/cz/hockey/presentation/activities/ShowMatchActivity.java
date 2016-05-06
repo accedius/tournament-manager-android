@@ -34,9 +34,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  */
 public class ShowMatchActivity extends AbstractTabActivity {
 
-    private static String HEADER_OVERVIEW_MATCH = "Overview";
-    private static String HEADER_PLAYER_STATS_MATCH = "Player statistics";
-
     private static final String MATCH_ID = "match_id";
 
     private long matchId;
