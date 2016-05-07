@@ -42,21 +42,21 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 ArrayList<AggregatedStats> statsToSend = new ArrayList<>();
                 for( AggregatedStatistics ags : stats ){
                     AggregatedStats as = new AggregatedStats();
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.name), ags.getPlayerName()));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.g), Long.toString(ags.getGoals())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.a), Long.toString(ags.getAssists())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.p), Long.toString(ags.getPoints())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.pmp), Long.toString(ags.getPlusMinusPoints())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.tp), Long.toString(ags.getTeamPoints())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.gp), Long.toString(ags.getMatches())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.w), Long.toString(ags.getWins())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.d), Long.toString(ags.getDraws())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.l), Long.toString(ags.getLosses())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.i), Long.toString(ags.getInterventions())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.ag), String.format("%.2f", ags.getAvgGoals())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.ap), String.format("%.2f", ags.getAvgPoints())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.apmp), String.format("%.2f", ags.getAvgPlusMinus())));
-                    as.addRecord(new AggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints())));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.name), ags.getPlayerName(), true));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.g), Long.toString(ags.getGoals()), true));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.a), Long.toString(ags.getAssists()), true));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.p), Long.toString(ags.getPoints()), true));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.pmp), Long.toString(ags.getPlusMinusPoints()), true));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.tp), Long.toString(ags.getTeamPoints()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.gp), Long.toString(ags.getMatches()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.w), Long.toString(ags.getWins()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.d), Long.toString(ags.getDraws()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.l), Long.toString(ags.getLosses()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.i), Long.toString(ags.getInterventions()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.ag), String.format("%.2f", ags.getAvgGoals()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.ap), String.format("%.2f", ags.getAvgPoints()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.apmp), String.format("%.2f", ags.getAvgPlusMinus()), false));
+                    as.addRecord(new AggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
                     statsToSend.add( as );
                 }
                 res.putParcelableArrayListExtra(CrossPackageComunicationConstants.EXTRA_STATS, statsToSend);
