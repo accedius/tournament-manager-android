@@ -111,7 +111,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content+this.playerID, getActivity());
         Log.d("CLF - ACTION", this.action);
         getActivity().startService(intent);

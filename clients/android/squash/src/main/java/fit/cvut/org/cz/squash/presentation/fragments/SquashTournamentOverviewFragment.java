@@ -8,7 +8,6 @@ import android.view.View;
 
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
@@ -48,7 +47,7 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_OVERVIEW, getContext());
         intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
         intent.putExtra(TournamentService.EXTRA_TYPE, getArguments().getString(ARG_TYPE));

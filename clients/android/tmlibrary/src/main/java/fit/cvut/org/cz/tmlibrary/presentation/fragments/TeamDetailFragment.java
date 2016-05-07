@@ -164,7 +164,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (t != null) {
             name.setText(t.getName());
             adapter.swapData(t.getPlayers());

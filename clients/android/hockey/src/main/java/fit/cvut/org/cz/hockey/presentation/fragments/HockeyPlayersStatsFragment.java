@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,7 +137,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         if( !sendForData ) return;
 
         Intent intent;

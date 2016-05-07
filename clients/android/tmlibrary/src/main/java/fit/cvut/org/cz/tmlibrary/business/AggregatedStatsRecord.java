@@ -9,15 +9,18 @@ import android.os.Parcelable;
 public class AggregatedStatsRecord implements Parcelable {
     private String key;
     private String val;
+    private boolean forPortrait;
 
-    public AggregatedStatsRecord(String k, String v) {
+    public AggregatedStatsRecord(String k, String v, boolean forPortrait) {
         this.key = k;
         this.val = v;
+        this.forPortrait = forPortrait;
     }
 
     protected AggregatedStatsRecord(Parcel in) {
         key = in.readString();
         val = in.readString();
+        forPortrait = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<AggregatedStatsRecord> CREATOR = new Parcelable.Creator<AggregatedStatsRecord>() {
@@ -40,6 +43,7 @@ public class AggregatedStatsRecord implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(key);
+        dest.writeString(val);
         dest.writeString(val);
     }
 

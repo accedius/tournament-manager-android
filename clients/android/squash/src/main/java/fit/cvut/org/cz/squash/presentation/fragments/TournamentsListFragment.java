@@ -112,7 +112,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_BY_COMPETITION_ID, getContext());
         if (getArguments() != null) intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
 

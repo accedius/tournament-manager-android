@@ -34,7 +34,7 @@ public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fr
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(PlayerService.EXTRA_ID, PlayerId);
 

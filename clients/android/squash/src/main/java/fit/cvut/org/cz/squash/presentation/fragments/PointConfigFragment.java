@@ -45,7 +45,7 @@ public class PointConfigFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PointConfigService.newStartIntent(PointConfigService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(PointConfigService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
         getContext().startService(intent);

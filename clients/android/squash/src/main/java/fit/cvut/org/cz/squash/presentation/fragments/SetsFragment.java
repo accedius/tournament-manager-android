@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
@@ -82,7 +81,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_DETAIL, getContext());
         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
@@ -104,7 +103,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     }
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (data != null) adapter.swapData(data);
         if (askForData) super.customOnResume();
 

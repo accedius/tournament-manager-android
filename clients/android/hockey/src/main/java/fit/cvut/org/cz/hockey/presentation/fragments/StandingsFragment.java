@@ -53,7 +53,7 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = StatsService.newStartIntent( StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext() );
         intent.putExtra( StatsService.EXTRA_ID, tournamentID );
 

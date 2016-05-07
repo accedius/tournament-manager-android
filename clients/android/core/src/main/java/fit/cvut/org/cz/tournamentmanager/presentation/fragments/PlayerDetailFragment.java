@@ -67,7 +67,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(PlayerService.EXTRA_ID, playerID);
         Log.d("PDF", "Asked for player: " + playerID);

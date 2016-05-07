@@ -47,7 +47,7 @@ public class MatchPlayersFragment extends TeamDetailFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent(getArguments().getString(ARG_ACTION), getContext());
         intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
@@ -114,7 +114,7 @@ public class MatchPlayersFragment extends TeamDetailFragment {
     public ArrayList<Player> getPlayers() {return adapter.getData();}
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (t != null && t.getPlayers() != null) adapter.swapData(t.getPlayers());
         if (sendForData){
             registerReceivers();

@@ -34,7 +34,7 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionId);
 

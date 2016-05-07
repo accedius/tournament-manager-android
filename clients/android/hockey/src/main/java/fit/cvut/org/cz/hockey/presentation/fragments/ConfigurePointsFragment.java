@@ -3,7 +3,6 @@ package fit.cvut.org.cz.hockey.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -11,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import java.util.Date;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
@@ -80,7 +77,7 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
 
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_GET_CONFIG_BY_ID, getContext() );
         intent.putExtra( TournamentService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID) );
 

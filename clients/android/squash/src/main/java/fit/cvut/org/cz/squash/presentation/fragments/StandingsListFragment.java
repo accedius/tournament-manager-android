@@ -39,7 +39,7 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_STANDINGS, getContext());
         intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);

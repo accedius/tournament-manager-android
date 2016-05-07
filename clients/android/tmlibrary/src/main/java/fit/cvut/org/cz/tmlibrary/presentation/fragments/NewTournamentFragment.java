@@ -3,7 +3,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -175,7 +174,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (tournamentId != -1)
             super.customOnResume();
     }

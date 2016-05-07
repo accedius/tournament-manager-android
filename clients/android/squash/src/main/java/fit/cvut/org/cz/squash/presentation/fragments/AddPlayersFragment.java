@@ -8,10 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
-import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.SelectPlayersAdapter;
@@ -105,7 +103,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
 
         Long id = getArguments().getLong(ARG_ID, -1);
         Log.d("Add Players Fragment", String.format("action: %s, id: %d", action, id));

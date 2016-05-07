@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import fit.cvut.org.cz.squash.presentation.fragments.AgregatedStatsListFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashCompetitionOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
@@ -17,6 +17,7 @@ import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
@@ -25,16 +26,42 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
 public class CompetitionDetailActivity extends AbstractTabActivity {
 
     private long competitionId = -1;
+    private DefaultViewPagerAdapter adapter = null;
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
         competitionId = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
-        return new DefaultViewPagerAdapter(getSupportFragmentManager(),
+        adapter = new DefaultViewPagerAdapter(getSupportFragmentManager(),
                 new Fragment[]{
                         CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
                         TournamentsListFragment.newInstance(competitionId),
                         StatsListWrapperFragment.newInstance(competitionId, StatsService.ACTION_GET_STATS_BY_COMPETITION)},
                 new String[] {"Overview", "Tournaments", "Stats && Players"});
+        return adapter;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
+                if (fr != null){
+                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).askForData();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

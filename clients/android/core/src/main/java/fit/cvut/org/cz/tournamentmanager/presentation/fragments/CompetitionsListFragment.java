@@ -1,13 +1,11 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -112,7 +109,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getActivity());
         Log.d("CLF - ACTION", this.action);
         getActivity().startService(intent);

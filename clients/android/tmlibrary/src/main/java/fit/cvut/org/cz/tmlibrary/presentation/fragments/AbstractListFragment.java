@@ -78,18 +78,6 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
     protected FloatingActionButton getFAB(ViewGroup parent){return null;}
 
     @Override
-    protected void customOnResume() {
-        //if (fab != null) fab.show();
-        super.customOnResume();
-    }
-
-    @Override
-    protected void customOnPause() {
-        //if (fab != null) fab.hide();
-        super.customOnPause();
-    }
-
-    @Override
     protected void bindDataOnView(Intent intent) {
         ArrayList<T> data = intent.getParcelableArrayListExtra(getDataKey());
         Log.d("ADF", "Received data, len: "+data.size());

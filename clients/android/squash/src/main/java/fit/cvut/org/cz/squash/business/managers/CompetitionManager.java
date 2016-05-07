@@ -2,6 +2,7 @@ package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
 
+import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
@@ -24,10 +25,11 @@ public class CompetitionManager implements ICompetitionManager {
     @Override
     public boolean delete(Context context, long id) {
 
-        //TODO delete everything else before competition
+        if (ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, id).size() != 0) return false;
+        if (ManagersFactory.getInstance().tournamentManager.getByCompetitionId(context, id).size() != 0) return false;
 
         DAOFactory.getInstance().competitionDAO.delete(context, id);
-        return false;
+        return true;
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
-import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
@@ -42,7 +41,7 @@ public class NewHockeyMatchFragment extends NewMatchFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_ID, getContext() );
         intent.putExtra( MatchService.EXTRA_ID, id );
         intent.putExtra( MatchService.EXTRA_TOUR_ID, tournamentId );

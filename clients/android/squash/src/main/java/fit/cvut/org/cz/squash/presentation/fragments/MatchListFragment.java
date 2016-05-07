@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
-import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.NewMatchDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
@@ -110,7 +109,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCHES_BY_TOURNAMENT, getContext());
         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
 
