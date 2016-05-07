@@ -87,6 +87,17 @@ public class PointConfigDAO implements IPointConfigDAO {
     }
 
     @Override
+    public void delete(Context context, long tournamentId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+
+        String where = String.format( "%s = ?", HockeyDBConstants.cTOURNAMENTID );
+        String[] projection = new String[]{ Long.toString( tournamentId ) };
+        db.delete(HockeyDBConstants.tCONFIGURATIONS, where, projection);
+
+        db.close();
+    }
+
+    @Override
     public void update(Context context, DPointConfiguration dPointConfiguration, Long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 

@@ -11,6 +11,7 @@ public interface IPointConfigDAO {
     void update( Context context, DPointConfiguration dPointConfiguration, Long tournamentId);
 
     public long insertDefault( Context context, long tournamentId);
+    void delete(Context context, long tournamentId);
 
     DPointConfiguration getByTournamentId( Context context, Long tournamentId );
 }

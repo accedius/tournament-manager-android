@@ -229,14 +229,14 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     private void bindCompetitionOnView(Competition c){
         name.setText(c.getName());
         if (c.getStartDate() != null){
-            startDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(c.getStartDate()));
+            startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(c.getStartDate());
         }
         if (c.getEndDate() != null){
-            endDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(c.getEndDate()));
+            endDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getEndDate()));
             dEndDate = Calendar.getInstance();
-            dEndDate.setTime(c.getStartDate());
+            dEndDate.setTime(c.getEndDate());
         }
         note.setText(c.getNote());
 

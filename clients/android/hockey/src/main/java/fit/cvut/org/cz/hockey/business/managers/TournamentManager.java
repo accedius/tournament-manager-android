@@ -37,6 +37,7 @@ public class TournamentManager implements ITournamentManager {
         ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, id);
         if( teams.size() == 0 && players.size() == 0 && matches.size() == 0 ) {
             DAOFactory.getInstance().tournamentDAO.delete(context, id);
+            DAOFactory.getInstance().pointConfigDAO.delete(context, id);
             return true;
         }
         return false;
