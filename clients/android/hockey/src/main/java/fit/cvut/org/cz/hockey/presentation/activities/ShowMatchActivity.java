@@ -123,7 +123,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
             MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore()))
             {
-                Snackbar.make( findViewById(android.R.id.content), "Shootouts are checked, match must not be draw!", Snackbar.LENGTH_LONG ).show();
+                Snackbar.make( findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG ).show();
                 return super.onOptionsItemSelected(item);
             }
             ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();

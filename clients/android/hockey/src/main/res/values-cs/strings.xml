@@ -51,4 +51,5 @@
     <string name="add_single_match">Přidat jeden zápas</string>
     <string name="edit_stats">Upravit statistiky</string>
     <string name="not_enough_teams">Příliš málo týmu!</string>
+    <string name="shootouts_error">Jsou zvoleny nájezdy, zápas nemůže být remíza!</string>
 </resources>
