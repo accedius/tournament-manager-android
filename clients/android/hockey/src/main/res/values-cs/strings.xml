@@ -18,7 +18,7 @@
     <string name="p">B</string>
     <string name="l">P</string>
     <string name="normal_time">Standartní čas</string>
-    <string name="overtime">Přesčas</string>
+    <string name="overtime">Prodloužení</string>
     <string name="player_cant_delete">Nelze smazat, hráč je někde registrovaný!</string>
     <string name="plus_minus_points">+/- body</string>
     <string name="pmp">+/-</string>
