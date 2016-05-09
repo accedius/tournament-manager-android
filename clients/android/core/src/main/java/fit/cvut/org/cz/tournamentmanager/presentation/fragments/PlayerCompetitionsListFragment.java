@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -34,19 +35,13 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     private static String ARG_ID = "player_id";
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-    public String getAction() {
-        return this.action;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
         activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
+        action += "." + package_name;
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -112,8 +107,8 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     @Override
     protected void askForData() {
-        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content+this.playerID, getActivity());
-        Log.d("CLF - ACTION", this.action);
+        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content + this.playerID, getActivity());
+        Log.d("PCLF - ACTION", this.action);
         getActivity().startService(intent);
     }
 

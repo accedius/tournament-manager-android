@@ -65,7 +65,6 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putString("sport_name", info.metaData.getString("sport_name"));
             b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
             b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
-            pclf.setAction(pclf.getAction() + "." + package_name);
             pclf.setArguments(b);
             fragments[i] = pclf;
             i++;
