@@ -34,7 +34,7 @@ public class NewHockeyTournamentFragment extends NewTournamentFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra( TournamentService.EXTRA_ID, tournamentId );
 

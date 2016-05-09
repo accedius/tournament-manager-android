@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -248,7 +249,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private void bindMatchOnView( ScoredMatch match )
     {
         if (match.getDate() != null){
-            mDate.setText(DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+            mDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(match.getDate()));
             dDate = Calendar.getInstance();
             dDate.setTime(match.getDate());
         }

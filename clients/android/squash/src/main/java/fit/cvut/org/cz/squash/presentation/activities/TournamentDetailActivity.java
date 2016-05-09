@@ -1,14 +1,15 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import fit.cvut.org.cz.squash.presentation.fragments.AgregatedStatsListFragment;
-import fit.cvut.org.cz.squash.presentation.fragments.MatchListFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
@@ -18,6 +19,7 @@ import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -26,6 +28,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
 
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TYPE = "extra_type";
+    private DefaultViewPagerAdapter adapter = null;
 
 
     @Override
@@ -35,7 +38,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         CompetitionType type = (CompetitionType) getIntent().getSerializableExtra(EXTRA_TYPE);
 
         if (type == CompetitionType.Teams) {
-            return new DefaultViewPagerAdapter(manager,
+            adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
@@ -45,7 +48,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                     },
                     new String[]{"Overview", "standings", "Matches", "Teams", "Players && stats"});
         } else {
-            return new DefaultViewPagerAdapter(manager,
+            adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
@@ -54,6 +57,30 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                     },
                     new String[]{"Overview", "standings", "Matches", "Players && stats"});
         }
+        return adapter;
+    }
+
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
+                if (fr != null){
+                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).askForData();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -62,6 +89,8 @@ public class TournamentDetailActivity extends AbstractTabActivity {
 
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

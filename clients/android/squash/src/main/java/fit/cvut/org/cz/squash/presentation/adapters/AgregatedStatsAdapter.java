@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
  */
-public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, AgregatedStatsAdapter.AgregatedStatsViewHolder> {
+public class AgregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AgregatedStatsAdapter.AgregatedStatsViewHolder> {
 
 
     @Override
@@ -21,12 +21,12 @@ public class AgregatedStatsAdapter extends AbstractListAdapter<AgregatedStats, A
         return new AgregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_agregated_stats, parent, false));
     }
 
-    protected void setOnClickListeners(View v, AgregatedStats item, int position) {}
+    protected void setOnClickListeners(View v, SAggregatedStats item, int position) {}
 
     @Override
     public void onBindViewHolder(AgregatedStatsViewHolder holder, int position) {
 
-        AgregatedStats stats = data.get(position);
+        SAggregatedStats stats = data.get(position);
         holder.name.setText(stats.playerName);
         holder.W.setText(Integer.toString(stats.won));
         holder.L.setText(Integer.toString(stats.lost));

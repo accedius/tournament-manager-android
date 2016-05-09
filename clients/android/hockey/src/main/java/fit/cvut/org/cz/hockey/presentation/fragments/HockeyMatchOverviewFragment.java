@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import java.util.logging.Logger;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
@@ -50,7 +47,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW, getContext() );
         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
 

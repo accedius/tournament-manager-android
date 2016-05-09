@@ -6,21 +6,21 @@ import android.os.Parcelable;
 /**
  * Created by Vaclav on 7. 4. 2016.
  */
-public class AgregatedStats implements Parcelable {
+public class SAggregatedStats implements Parcelable {
 
     public long playerId;
     public String playerName;
 
     public int won, lost, draws, setsWon, setsLost, ballsWon, ballsLost;
     public double setsWonAvg, setsLostAvg, ballsWonAvg, ballsLostAvg, matchWinRate, setsWinRate;
-    public AgregatedStats(String playerName, long playerId){
+    public SAggregatedStats(String playerName, long playerId){
         this.playerName = playerName;
         this.playerId = playerId;
         won = lost = draws = setsWon = setsLost = ballsWon = ballsLost = 0;
         setsWonAvg = setsLostAvg = ballsLostAvg = ballsWonAvg = matchWinRate = setsWinRate = 0;
     }
 
-    protected AgregatedStats(Parcel in) {
+    protected SAggregatedStats(Parcel in) {
         playerId = in.readLong();
         playerName = in.readString();
         won = in.readInt();
@@ -38,15 +38,15 @@ public class AgregatedStats implements Parcelable {
         setsWinRate = in.readDouble();
     }
 
-    public static final Creator<AgregatedStats> CREATOR = new Creator<AgregatedStats>() {
+    public static final Creator<SAggregatedStats> CREATOR = new Creator<SAggregatedStats>() {
         @Override
-        public AgregatedStats createFromParcel(Parcel in) {
-            return new AgregatedStats(in);
+        public SAggregatedStats createFromParcel(Parcel in) {
+            return new SAggregatedStats(in);
         }
 
         @Override
-        public AgregatedStats[] newArray(int size) {
-            return new AgregatedStats[size];
+        public SAggregatedStats[] newArray(int size) {
+            return new SAggregatedStats[size];
         }
     };
 

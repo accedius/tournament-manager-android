@@ -19,13 +19,11 @@ import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
@@ -105,7 +103,7 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
         intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(ARG_ID,-1));
         getContext().startService(intent);

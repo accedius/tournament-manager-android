@@ -64,7 +64,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
         ContentValues values = toContVal( competition );
 
-        values.put(DBConstants.cID, competition.getId());
+        //values.put(DBConstants.cID, competition.getId());
 
         String where = String.format( "%s = ?", DBConstants.cID );
         String[] projection = new String[]{ Long.toString(competition.getId()) };

@@ -34,9 +34,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  */
 public class ShowMatchActivity extends AbstractTabActivity {
 
-    private static String HEADER_OVERVIEW_MATCH = "Overview";
-    private static String HEADER_PLAYER_STATS_MATCH = "Player statistics";
-
     private static final String MATCH_ID = "match_id";
 
     private long matchId;
@@ -126,7 +123,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
             MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore()))
             {
-                Snackbar.make( findViewById(android.R.id.content), "Shootouts are checked, match must not be draw!", Snackbar.LENGTH_LONG ).show();
+                Snackbar.make( findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG ).show();
                 return super.onOptionsItemSelected(item);
             }
             ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();

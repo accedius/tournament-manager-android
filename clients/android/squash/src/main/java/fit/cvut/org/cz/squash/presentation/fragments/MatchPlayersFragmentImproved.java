@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -11,9 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +25,7 @@ import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
 /**
  * Created by Vaclav on 24. 4. 2016.
@@ -57,7 +51,7 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
 
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_PLAYERS_IN_MATCH, getContext());
         intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
@@ -198,7 +192,7 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
     }
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (askForData)
             super.customOnResume();
         else {

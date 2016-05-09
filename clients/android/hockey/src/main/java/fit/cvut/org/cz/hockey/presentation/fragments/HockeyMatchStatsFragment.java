@@ -1,8 +1,5 @@
 package fit.cvut.org.cz.hockey.presentation.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -11,13 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -101,7 +95,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void customOnResume(){
+    public void customOnResume(){
         registerReceivers();
         if (!isDataSourceWorking())
             askForData();
@@ -111,7 +105,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = StatsService.newStartIntent( StatsService.ACTION_GET_MATCH_PLAYER_STATISTICS, getContext());
         intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_MATCH_ID));
 

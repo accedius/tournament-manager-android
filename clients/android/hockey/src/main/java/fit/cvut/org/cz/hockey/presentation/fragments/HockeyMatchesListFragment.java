@@ -132,7 +132,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_TOURNAMENT_ID, getContext() );
         intent.putExtra( MatchService.EXTRA_TOUR_ID, tournamentID );
 

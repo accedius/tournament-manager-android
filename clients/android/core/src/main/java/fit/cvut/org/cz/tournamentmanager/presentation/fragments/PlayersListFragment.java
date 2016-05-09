@@ -56,7 +56,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_ALL, getActivity());
         getActivity().startService(intent);
     }

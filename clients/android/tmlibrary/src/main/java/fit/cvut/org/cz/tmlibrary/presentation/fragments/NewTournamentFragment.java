@@ -3,7 +3,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -175,7 +174,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected void customOnResume() {
+    public void customOnResume() {
         if (tournamentId != -1)
             super.customOnResume();
     }
@@ -213,14 +212,14 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     private void bindTournamentOnView(Tournament t){
         name.setText(t.getName());
         if (t.getStartDate() != null){
-            startDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(t.getStartDate()));
+            startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(t.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(t.getStartDate());
         }
         if (t.getEndDate() != null){
-            endDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(t.getEndDate()));
+            endDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(t.getEndDate()));
             dEndDate = Calendar.getInstance();
-            dEndDate.setTime(t.getStartDate());
+            dEndDate.setTime(t.getEndDate());
         }
         note.setText(t.getNote());
 

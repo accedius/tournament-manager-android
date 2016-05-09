@@ -15,13 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.AgregatedStats;
+import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.AgregatedStatsAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
-import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -29,7 +28,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by Vaclav on 5. 4. 2016.
  */
-public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedStats> {
+public class AgregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {
 
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_ACTION = "ARG_ACTION";
@@ -127,7 +126,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
         final Context c = getContext();
         adapter =  new AgregatedStatsAdapter(){
             @Override
-            protected void setOnClickListeners(View v, final AgregatedStats item, final int position) {
+            protected void setOnClickListeners(View v, final SAggregatedStats item, final int position) {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -173,7 +172,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<AgregatedSt
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
 
         if (mainAction != null && sendForData) {
             Intent intent = StatsService.newStartIntent(mainAction, getContext());

@@ -104,7 +104,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TeamService.newStartIntent( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext() );
         intent.putExtra( TeamService.EXTRA_ID, getArguments().getLong(ARG_ID, -1) );
 

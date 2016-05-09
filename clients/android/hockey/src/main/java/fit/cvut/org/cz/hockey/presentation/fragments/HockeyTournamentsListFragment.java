@@ -119,7 +119,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_ALL, getContext());
         intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionID);
         getActivity().startService(intent);

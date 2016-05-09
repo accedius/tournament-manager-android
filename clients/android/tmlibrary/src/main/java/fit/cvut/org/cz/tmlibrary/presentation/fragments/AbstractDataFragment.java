@@ -24,7 +24,7 @@ public abstract class AbstractDataFragment extends Fragment {
     /**
      * This methods asks your datasource for data. e.g. start service or async task
      */
-    protected abstract void askForData();
+    public abstract void askForData();
 
     /**
      *
@@ -74,7 +74,7 @@ public abstract class AbstractDataFragment extends Fragment {
      */
     protected BroadcastReceiver receiver = new DataReceiver();
 
-    protected void customOnResume(){
+    public void customOnResume(){
         registerReceivers();
         if (!isDataSourceWorking())
             askForData();

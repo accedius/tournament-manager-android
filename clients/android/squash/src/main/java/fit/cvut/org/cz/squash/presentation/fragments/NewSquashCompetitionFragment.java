@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
@@ -36,7 +35,7 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionId);
 

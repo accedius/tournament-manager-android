@@ -27,7 +27,7 @@ public class SquashCompetitionOverviewFragment extends CompetitionOverviewFragme
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_GET_OVERVIEW, getContext());
         intent.putExtra(CompetitionService.EXTRA_ID, competitionID);
 

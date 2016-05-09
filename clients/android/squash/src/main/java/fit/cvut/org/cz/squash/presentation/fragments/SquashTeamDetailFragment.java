@@ -51,7 +51,7 @@ public class SquashTeamDetailFragment extends TeamDetailFragment {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(TeamService.EXTRA_ID, teamId);
         getContext().startService(intent);

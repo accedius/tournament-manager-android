@@ -161,7 +161,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     }
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = PlayerService.newStartIntent( action, getContext() );
         intent.putExtra( PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID) );
 

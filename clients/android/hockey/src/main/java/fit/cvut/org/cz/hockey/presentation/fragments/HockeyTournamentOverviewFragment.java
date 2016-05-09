@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import fit.cvut.org.cz.hockey.presentation.activities.TournamentConfigurationActivity;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
@@ -35,7 +34,7 @@ public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment
 
 
     @Override
-    protected void askForData() {
+    public void askForData() {
         Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_FIND_BY_ID, getContext() );
         intent.putExtra( TournamentService.EXTRA_ID, tournamentID );
 
