@@ -138,17 +138,13 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return res;
     }
 
-    public ArrayList<AggregatedStatistics> getByPlayerID(Context context, long playerID)
+    public AggregatedStatistics getByPlayerID(Context context, long playerID)
     {
         ArrayList<DStat> allStats = null;
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(ManagerFactory.getInstance().packagePlayerManager.getPlayerById( context, playerID ));
+        Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, playerID);
 
-        ArrayList<AggregatedStatistics> res = new ArrayList<>();
+        AggregatedStatistics res = aggregateStats(context, p.getId(), p.getName(), allStats) ;
 
-        for( Player p : players ){
-            res.add( aggregateStats(context, p.getId(), p.getName(), allStats) );
-        }
         return res;
     }
 

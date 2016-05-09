@@ -28,7 +28,7 @@ public interface IHockeyStatisticsManager {
      * @param playerId id of player
      * @return aggregated statistics for one player in application throughout all competitions
      */
-    ArrayList<AggregatedStatistics> getByPlayerID(Context context, long playerId);
+    AggregatedStatistics getByPlayerID(Context context, long playerId);
 
     /**
      *
