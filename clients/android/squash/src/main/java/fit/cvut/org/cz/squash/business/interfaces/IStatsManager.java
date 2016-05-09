@@ -14,9 +14,10 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
  */
 public interface IStatsManager {
 
-    ArrayList<SAggregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId);
-    ArrayList<SAggregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId);
-    ArrayList<SAggregatedStats> getAllAgregatedStats(Context context);
+    ArrayList<SAggregatedStats> getAggregatedStatsByCompetitionId(Context context, long competitionId);
+    ArrayList<SAggregatedStats> getAggregatedStatsByTournamentId(Context context, long tournamentId);
+    ArrayList<SAggregatedStats> getAggregatedStatsByPlayerId(Context context, long playerID);
+    ArrayList<SAggregatedStats> getAllAggregatedStats(Context context);
     ArrayList<StandingItem> getStandingsByTournament(Context context, long tournamentId);
     ArrayList<SetRowItem> getSetsForMatch(Context context, long matchId);
 

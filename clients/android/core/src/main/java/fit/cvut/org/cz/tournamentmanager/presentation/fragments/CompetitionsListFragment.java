@@ -110,9 +110,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getActivity());
+        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getContext());
         Log.d("CLF - ACTION", this.action);
-        getActivity().startService(intent);
+        getContext().startService(intent);
     }
 
     @Override
@@ -122,12 +122,12 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(this.action));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(this.action));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override

@@ -57,8 +57,8 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     public void askForData() {
-        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_ALL, getActivity());
-        getActivity().startService(intent);
+        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_ALL, getContext());
+        getContext().startService(intent);
     }
 
     @Override
@@ -68,12 +68,12 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_ALL));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_ALL));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override

@@ -18,6 +18,8 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerCompetitio
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerStatsFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
@@ -57,7 +59,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
         i=1;
         for(ApplicationInfo info : sport_packages) {
-            PlayerCompetitionsListFragment pclf = new PlayerCompetitionsListFragment();
+            PlayerSportFragment psf = new PlayerSportFragment();
             String package_name = info.metaData.getString("package_name");
             Bundle b = new Bundle();
             b.putLong("player_id", playerID);
@@ -65,8 +67,9 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putString("sport_name", info.metaData.getString("sport_name"));
             b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
             b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
-            pclf.setArguments(b);
-            fragments[i] = pclf;
+            b.putString("stats_service", info.metaData.getString("service_stats"));
+            psf.setArguments(b);
+            fragments[i] = psf;
             i++;
         }
 

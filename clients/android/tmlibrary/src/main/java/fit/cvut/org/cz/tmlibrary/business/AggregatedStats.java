@@ -2,11 +2,9 @@ package fit.cvut.org.cz.tmlibrary.business;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kevin on 28.4.2016.
@@ -14,17 +12,17 @@ import java.util.Map;
 
 
 public class AggregatedStats implements Parcelable {
-    protected List<AggregatedStatsRecord> records = new ArrayList<>();
+    protected List<PlayerAggregatedStats> records = new ArrayList<>();
 
     protected AggregatedStats(Parcel in) {
-        in.readTypedList(records, AggregatedStatsRecord.CREATOR);
+        in.readTypedList(records, PlayerAggregatedStats.CREATOR);
     }
 
     public AggregatedStats() {
         records = new ArrayList<>();
     }
 
-    public void addRecord(AggregatedStatsRecord record) {
+    public void addPlayerStats(PlayerAggregatedStats record) {
         if (record == null)
             return;
 
@@ -53,7 +51,7 @@ public class AggregatedStats implements Parcelable {
         dest.writeTypedList(records);
     }
 
-    public List<AggregatedStatsRecord> getRecords() {
+    public List<PlayerAggregatedStats> getRecords() {
         return records;
     }
 }

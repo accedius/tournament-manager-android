@@ -58,7 +58,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return 0;
     }
 
-    private AggregatedStatistics agregateStats( Context context, long plId, String pName, ArrayList<DStat> allStats )
+    private AggregatedStatistics aggregateStats(Context context, long plId, String pName, ArrayList<DStat> allStats)
     {
         ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
         if( allStats != null ) {
@@ -125,15 +125,29 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, interventions);
     }
 
-    public ArrayList<AggregatedStatistics> getAllAgregated( Context context )
+    public ArrayList<AggregatedStatistics> getAllAggregated(Context context)
     {
         ArrayList<DStat> allStats = null;
-        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers( context );
+        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers(context);
 
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         for( Player p : players ){
-            res.add( agregateStats(context, p.getId(), p.getName(), allStats) );
+            res.add( aggregateStats(context, p.getId(), p.getName(), allStats) );
+        }
+        return res;
+    }
+
+    public ArrayList<AggregatedStatistics> getByPlayerID(Context context, long playerID)
+    {
+        ArrayList<DStat> allStats = null;
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(ManagerFactory.getInstance().packagePlayerManager.getPlayerById( context, playerID ));
+
+        ArrayList<AggregatedStatistics> res = new ArrayList<>();
+
+        for( Player p : players ){
+            res.add( aggregateStats(context, p.getId(), p.getName(), allStats) );
         }
         return res;
     }
@@ -149,7 +163,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
         for( Player p : compPlayers )
         {
-            res.add( agregateStats(context, p.getId(), p.getName(), competitionStats) );
+            res.add( aggregateStats(context, p.getId(), p.getName(), competitionStats) );
         }
 
         return res;
@@ -165,7 +179,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
         for( Player p : tourPlayers )
         {
-            res.add( agregateStats(context, p.getId(), p.getName(),  tournamentStats) );
+            res.add( aggregateStats(context, p.getId(), p.getName(), tournamentStats) );
         }
 
         return res;

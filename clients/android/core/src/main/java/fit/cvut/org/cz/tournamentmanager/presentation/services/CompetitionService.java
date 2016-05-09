@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
-import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -64,8 +63,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         String action = intent.getStringExtra(EXTRA_ACTION);
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
         String content = intent.getStringExtra(EXTRA_CONTENT);
-        Intent result = new Intent(action);
 
+        Intent result = new Intent(action);
         result.putParcelableArrayListExtra(EXTRA_COMPETITION, getData(package_name, content));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }

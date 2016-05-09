@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,9 @@ public class StatsManager implements IStatsManager {
                 mappedParticipants.put(result.getParticipantId(), DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, result.getParticipantId()));
             }
             for (Long playerId : mappedParticipants.get(result.getParticipantId())) {
+                if (mappedStats.get(playerId) == null)
+                    continue;
+                Log.d("STATS_MNGR - playerId", "" + playerId);
                 switch (result.getStatus()) {
                     case -1:
                         mappedStats.get(playerId).lost++;
@@ -55,6 +59,9 @@ public class StatsManager implements IStatsManager {
         }
         for (DStat set : sets) {
             for (Long playerId : mappedParticipants.get(set.getParticipantId())) {
+                if (mappedStats.get(playerId) == null)
+                    continue;
+
                 if (set.getStatus() == 1) mappedStats.get(playerId).setsWon++;
                 else mappedStats.get(playerId).setsLost++;
                 mappedStats.get(playerId).ballsWon += set.getValue();
@@ -82,7 +89,7 @@ public class StatsManager implements IStatsManager {
     }
 
     @Override
-    public ArrayList<SAggregatedStats> getAgregatedStatsByCompetitionId(Context context, long competitionId) {
+    public ArrayList<SAggregatedStats> getAggregatedStatsByCompetitionId(Context context, long competitionId) {
 
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, competitionId);
         ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.MATCH);
@@ -92,7 +99,7 @@ public class StatsManager implements IStatsManager {
     }
 
     @Override
-    public ArrayList<SAggregatedStats> getAgregatedStatsByTournamentId(Context context, long tournamentId) {
+    public ArrayList<SAggregatedStats> getAggregatedStatsByTournamentId(Context context, long tournamentId) {
 
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
         ArrayList<DStat> matchResults = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.MATCH);
@@ -102,7 +109,21 @@ public class StatsManager implements IStatsManager {
     }
 
     @Override
-    public ArrayList<SAggregatedStats> getAllAgregatedStats(Context context) {
+    public ArrayList<SAggregatedStats> getAggregatedStatsByPlayerId(Context context, long playerID) {
+        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getAllPlayers(context);
+        ArrayList<Player> filtered_players = new ArrayList<>();
+        for(Player p : players) {
+            if (playerID == p.getId())
+                filtered_players.add(p);
+        }
+        ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getAll(context, StatsEnum.MATCH);
+        ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getAll(context, StatsEnum.SET);
+
+        return getStats(context, filtered_players, results, sets);
+    }
+
+    @Override
+    public ArrayList<SAggregatedStats> getAllAggregatedStats(Context context) {
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getAllPlayers(context);
         ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getAll(context, StatsEnum.MATCH);
         ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getAll(context, StatsEnum.SET);

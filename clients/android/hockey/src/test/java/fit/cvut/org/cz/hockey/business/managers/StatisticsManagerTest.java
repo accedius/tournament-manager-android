@@ -20,7 +20,6 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
-import fit.cvut.org.cz.hockey.business.interfaces.IPointConfigManager;
 import fit.cvut.org.cz.hockey.data.DAO.MatchDAO;
 import fit.cvut.org.cz.hockey.data.DAO.MatchStatisticsDAO;
 import fit.cvut.org.cz.hockey.data.DAO.ParticipantDAO;
@@ -132,7 +131,7 @@ public class StatisticsManagerTest {
         playerStat.clear();
         playerStat.add(allStats.get(2));
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 3)).thenReturn(new ArrayList<DStat>(playerStat));
-        ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAgregated(RuntimeEnvironment.application);
+        ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAggregated(RuntimeEnvironment.application);
 
         assertTrue(stats.size() == 3);
         assertTrue(stats.get(0).getGoals() == 2);

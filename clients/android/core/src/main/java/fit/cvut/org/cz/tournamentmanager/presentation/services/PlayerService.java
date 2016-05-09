@@ -34,6 +34,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
         intent.putExtra(EXTRA_ACTION, action);
+        Log.d("PlayerSRVC", "action:"+action);
         return intent;
     }
 
@@ -42,11 +43,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
-
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
+        Log.d("PlayerSRVC", "do_work:"+action);
 
         switch (action){
             case ACTION_CREATE:{
@@ -79,6 +79,5 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 break;
             }
         }
-
     }
 }
