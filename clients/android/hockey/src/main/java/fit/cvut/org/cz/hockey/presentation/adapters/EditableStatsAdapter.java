@@ -99,8 +99,14 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            int value;
-            if( s.length() <= 0 ) value = 0;
+            int value = 0;
+            if( s.length() <= 0 )
+                value = 0;
+            else if ( s.length() == 1 ) {
+                if (s.charAt(0) == '-')
+                    value = 0;
+                else value = Integer.parseInt(s.toString());
+            }
             else value = Integer.parseInt(s.toString());
 
             switch (listenType)
