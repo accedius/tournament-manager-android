@@ -107,9 +107,23 @@ public class StatisticsManagerTest {
         players.add(new Player(2, "Jan", "honzuvemail", "note"));
         players.add(new Player(3, "Franta", "frantuvemail", "note"));
 
-        allStats.add(new DStat(1, 1, 1, StatsEnum.goals.toString(), 1, 1, "2"));
-        allStats.add(new DStat(1, 2, 1, StatsEnum.goals.toString(), 1, 1, "4"));
-        allStats.add(new DStat(1, 3, 1, StatsEnum.goals.toString(), 1, 1, "8"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.goals.toString(), 1, 1, "1"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.assists.toString(), 1, 1, "2"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.interventions.toString(), 1, 1, "3"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "4"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.participates.toString(), 1, 1, "5"));
+
+        allStats.add(new DStat(1, 2, 1, StatsEnum.goals.toString(), 1, 1, "6"));
+        allStats.add(new DStat(1, 2, 1, StatsEnum.assists.toString(), 1, 1, "7"));
+        allStats.add(new DStat(1, 2, 1, StatsEnum.interventions.toString(), 1, 1, "8"));
+        allStats.add(new DStat(1, 2, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "9"));
+        allStats.add(new DStat(1, 2, 1, StatsEnum.participates.toString(), 1, 1, "10"));
+
+        allStats.add(new DStat(1, 3, 1, StatsEnum.goals.toString(), 1, 1, "11"));
+        allStats.add(new DStat(1, 3, 1, StatsEnum.assists.toString(), 1, 1, "12"));
+        allStats.add(new DStat(1, 3, 1, StatsEnum.interventions.toString(), 1, 1, "13"));
+        allStats.add(new DStat(1, 3, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "14"));
+        allStats.add(new DStat(1, 3, 1, StatsEnum.participates.toString(), 1, 1, "15"));
 
         teams.add(new Team(1, "TeamName1"));
         teams.get(0).setId(1);
@@ -119,24 +133,49 @@ public class StatisticsManagerTest {
         when(mockPlayerManager.getAllPlayers(RuntimeEnvironment.application)).thenReturn(players);
     }
 
+    private boolean testStats(AggregatedStatistics stats, long goals, long assists, long points, long plusmp, long matches, long interventions){
+        if( stats.getGoals() != goals ) return false;
+        if( stats.getAssists() != assists ) return false;
+        if( stats.getPoints() != points ) return false;
+        if( stats.getPlusMinusPoints() != plusmp ) return false;
+        if( stats.getMatches() != matches ) return false;
+        if( stats.getInterventions() != interventions ) return false;
+        return true;
+    }
+
+    private AggregatedStatistics getAgsById( long id, ArrayList<AggregatedStatistics> ags ){
+        for( AggregatedStatistics ag : ags ){
+            if( ag.getPlayerID() == id ) return ag;
+        }
+        return null;
+    }
+
+    private ArrayList<DStat> getPlayerStats( long id, ArrayList<DStat> stats ){
+        ArrayList<DStat> res = new ArrayList<>();
+        for( DStat st : stats ){
+            if( st.getPlayerId() == id ) res.add(st);
+        }
+        return res;
+    }
+
     @Test
     public void testGetAllAgregated() throws Exception {
         when(mockPlayerManager.getAllPlayers(RuntimeEnvironment.application)).thenReturn(players);
-        ArrayList<DStat> playerStat = new ArrayList<>();
-        playerStat.add(allStats.get(0));
+        ArrayList<DStat> playerStat;
+        playerStat = getPlayerStats(1, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(1));
+        playerStat = getPlayerStats(2, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 2)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(2));
+        playerStat = getPlayerStats(3, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 3)).thenReturn(new ArrayList<DStat>(playerStat));
         ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getAllAggregated(RuntimeEnvironment.application);
 
         assertTrue(stats.size() == 3);
-        assertTrue(stats.get(0).getGoals() == 2);
-        assertTrue(stats.get(1).getGoals() == 4);
-        assertTrue(stats.get(2).getGoals() == 8);
+        assertTrue(testStats(getAgsById(1, stats), 1, 2, 3, 4, 1, 3));
+        assertTrue(testStats(getAgsById(2, stats), 6, 7, 13, 9, 1, 8));
+        assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
         verify(mockStatDAO, times(0)).getStatsByCompetitionId(any(Context.class), anyLong());
         verify(mockStatDAO, times(0)).getStatsByTournamentId(any(Context.class), anyLong());
 
@@ -146,21 +185,21 @@ public class StatisticsManagerTest {
     public void testGetByCompId() throws Exception {
         when(mockPlayerManager.getPlayersByCompetition(RuntimeEnvironment.application, 1)).thenReturn(players);
         when(mockStatDAO.getStatsByCompetitionId(RuntimeEnvironment.application, 1)).thenReturn(allStats);
-        ArrayList<DStat> playerStat = new ArrayList<>();
-        playerStat.add(allStats.get(0));
+        ArrayList<DStat> playerStat;
+        playerStat = getPlayerStats(1, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(1));
+        playerStat = getPlayerStats(2, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 2)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(2));
+        playerStat = getPlayerStats(3, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 3)).thenReturn(new ArrayList<DStat>(playerStat));
         ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID(RuntimeEnvironment.application, 1);
 
         assertTrue(stats.size() == 3);
-        assertTrue(stats.get(0).getGoals() == 2);
-        assertTrue(stats.get(1).getGoals() == 4);
-        assertTrue(stats.get(2).getGoals() == 8);
+        assertTrue(testStats(getAgsById(1, stats), 1, 2, 3, 4, 1, 3));
+        assertTrue(testStats(getAgsById(2, stats), 6, 7, 13, 9, 1, 8));
+        assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
 
     }
 
@@ -168,21 +207,21 @@ public class StatisticsManagerTest {
     public void testGetByTourId() throws Exception {
         when(mockPlayerManager.getPlayersByTournament(RuntimeEnvironment.application, 1)).thenReturn(players);
         when(mockStatDAO.getStatsByTournamentId(RuntimeEnvironment.application, 1)).thenReturn(allStats);
-        ArrayList<DStat> playerStat = new ArrayList<>();
-        playerStat.add(allStats.get(0));
+        ArrayList<DStat> playerStat;
+        playerStat = getPlayerStats(1, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(1));
+        playerStat = getPlayerStats(2, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 2)).thenReturn(new ArrayList<DStat>(playerStat));
         playerStat.clear();
-        playerStat.add(allStats.get(2));
+        playerStat = getPlayerStats(3, allStats);
         when(mockStatDAO.getStatsByPlayerId(RuntimeEnvironment.application, 3)).thenReturn(new ArrayList<DStat>(playerStat));
         ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByTournamentID(RuntimeEnvironment.application, 1);
 
         assertTrue(stats.size() == 3);
-        assertTrue(stats.get(0).getGoals() == 2);
-        assertTrue(stats.get(1).getGoals() == 4);
-        assertTrue(stats.get(2).getGoals() == 8);
+        assertTrue(testStats(getAgsById(1, stats), 1, 2, 3, 4, 1, 3));
+        assertTrue(testStats(getAgsById(2, stats), 6, 7, 13, 9, 1, 8));
+        assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
 
     }
 
