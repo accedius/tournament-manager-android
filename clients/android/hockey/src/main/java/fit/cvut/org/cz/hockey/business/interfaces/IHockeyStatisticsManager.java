@@ -12,19 +12,20 @@ import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by atgot_000 on 3. 5. 2016.
+ * Interface for manager, that works with all kinds of hockey statistics
  */
 public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @return aggregated statistics for all players in application throughout all competitions
      */
     ArrayList<AggregatedStatistics> getAllAggregated(Context context);
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param playerId id of player
      * @return aggregated statistics for one player in application throughout all competitions
      */
@@ -32,7 +33,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param compId id of competition
      * @return aggregated statistics for players in competition
      */
@@ -40,7 +41,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param tourId id of tournament
      * @return aggregated statistics for players in tournament
      */
@@ -48,7 +49,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param tourId id of tournament
      * @return standings of teams participating in tournament. Ordered by point
      */
@@ -56,7 +57,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param id id of match
      * @return entity MatchScore containing overtime and shootouts
      */
@@ -64,7 +65,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      * Sets the score of a match and gives all players the correct outcome
-     * @param context
+     * @param context application context
      * @param id id of match
      * @param score MatchScore entity containing the score and overtime and shootouts
      */
@@ -72,7 +73,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      *
-     * @param context
+     * @param context application context
      * @param playerId id of player
      * @param matchId id of match
      * @return statistics of the given player in the given match
@@ -81,7 +82,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      * updates players in match - sets the participating players to a given list
-     * @param context
+     * @param context application context
      * @param matchId id of match
      * @param parType type of participant - Home or Away
      * @param playerIds players to be set as participating
@@ -90,7 +91,7 @@ public interface IHockeyStatisticsManager {
 
     /**
      * Updates statistics of given player in a match
-     * @param context
+     * @param context application context
      * @param statistic statistics to be set
      * @param matchId id of match
      */
