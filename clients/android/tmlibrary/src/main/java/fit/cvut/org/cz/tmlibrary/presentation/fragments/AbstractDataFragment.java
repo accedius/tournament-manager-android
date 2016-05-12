@@ -58,6 +58,7 @@ public abstract class AbstractDataFragment extends Fragment {
 
     protected ProgressBar progressBar;
     protected View contentView;
+    private boolean register = true;
 
     @Nullable
     @Override
@@ -75,7 +76,11 @@ public abstract class AbstractDataFragment extends Fragment {
     protected BroadcastReceiver receiver = new DataReceiver();
 
     public void customOnResume(){
-        registerReceivers();
+        if (register){
+            registerReceivers();
+            register = false;
+        }
+
         if (!isDataSourceWorking())
             askForData();
         progressBar.setVisibility(View.VISIBLE);

@@ -20,6 +20,7 @@ import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -72,7 +73,8 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             public void onPageSelected(int position) {
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
                 if (fr != null){
-                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).askForData();
+                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).customOnResume();
+                    if (fr instanceof MatchesListWrapperFragment) ((MatchesListWrapperFragment) fr).refresh();
                 }
             }
 

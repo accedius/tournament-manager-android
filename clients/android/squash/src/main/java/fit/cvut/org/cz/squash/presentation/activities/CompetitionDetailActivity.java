@@ -53,7 +53,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
             public void onPageSelected(int position) {
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
                 if (fr != null){
-                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).askForData();
+                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).customOnResume();
                 }
             }
 

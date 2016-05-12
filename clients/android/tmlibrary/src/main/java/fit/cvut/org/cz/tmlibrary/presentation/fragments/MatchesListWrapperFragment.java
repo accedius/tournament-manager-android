@@ -17,8 +17,6 @@ import fit.cvut.org.cz.tmlibrary.R;
  */
 public abstract class MatchesListWrapperFragment extends Fragment {
 
-    //TODO progress
-
     public static final String ARG_ID = "arg_id";
 
     public static MatchesListWrapperFragment newInstance(long id, Class<? extends MatchesListWrapperFragment> clazz){
@@ -65,4 +63,10 @@ public abstract class MatchesListWrapperFragment extends Fragment {
      * @return fragment with list of matches
      */
     protected abstract Fragment supplyFragment(long tournamentId);
+    public void refresh(){
+        Fragment fr = getChildFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fr != null && fr instanceof AbstractDataFragment){
+            ((AbstractDataFragment) fr).customOnResume();
+        }
+    }
 }
