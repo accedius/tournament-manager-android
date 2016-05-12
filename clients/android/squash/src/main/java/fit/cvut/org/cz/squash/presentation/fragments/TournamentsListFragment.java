@@ -18,6 +18,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
@@ -67,36 +68,9 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        EditDeleteDialog dialog = new EditDeleteDialog() {
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = CreateTournamentActivity.newStartIntent(c, tournamentId, false);
-                                                startActivity(intent);
-                                                break;
-                                            }
-                                            case 1:{
-                                                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, c);
-                                                intent.putExtra(TournamentService.EXTRA_POSITION, position);
-                                                intent.putExtra(TournamentService.EXTRA_ID, tournamentId);
-                                                contentView.setVisibility(View.INVISIBLE);
-                                                progressBar.setVisibility(View.VISIBLE);
-                                                c.startService(intent);
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(tournamentId, position);
+                        dialog.setTargetFragment(TournamentsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
-                        dialog.setRetainInstance(true);
 
                         return false;
                     }

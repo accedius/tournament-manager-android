@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
+import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -39,7 +40,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
         return fragment;
     }
 
-    private SetsAdapter adapter;
+    public SetsAdapter adapter;
     private boolean askForData = false, receiverRegistered = false;
     private ArrayList<SetRowItem> data = null;
 
@@ -80,20 +81,8 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        DeleteDialog dialog = new DeleteDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (which == 0){
-                                            adapter.deleteItem(position);
-                                        }
-                                    }
-                                };
-                            }
-                        };
-                        dialog.setRetainInstance(true);
+                        AdapterDialog dialog = AdapterDialog.newInstance(position, 0);
+                        dialog.setTargetFragment(SetsFragment.this, 0);
                         dialog.show(getFragmentManager(), "DELETE_DIALOG");
                         return false;
                     }

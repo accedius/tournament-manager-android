@@ -22,4 +22,6 @@ public interface IStatDAO {
     ArrayList<DStat> getByCompetition(Context context, long competitionId, StatsEnum type);
     ArrayList<DStat> getAll(Context context, StatsEnum type);
     ArrayList<DStat> getByPlayer(Context context, long playerId, StatsEnum type);
+    ArrayList<DStat> getByPlayerAndTournament(Context context, long playerId, long tournamentId, StatsEnum type);
+    ArrayList<DStat> getByPlayerAndCompetition(Context context, long playerId, long competitionId, StatsEnum type);
 }

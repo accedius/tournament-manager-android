@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
+import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteResetDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.NewMatchDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
@@ -59,41 +61,9 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        EditDeleteResetDialog dialog = new EditDeleteResetDialog() {
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = CreateMatchActivity.newStartIntent(c, match.getId(), match.getTournamentId());
-                                                startActivity(intent);
-                                                break;
-                                            }
-                                            case 1:{
-                                                Intent intent =  MatchService.newStartIntent(MatchService.ACTION_DELETE_MATCH, c);
-                                                intent.putExtra(MatchService.EXTRA_ID, match.getId());
-                                                c.startService(intent);
-                                                adapter.delete(position);
-                                                break;
-                                            }
-                                            case 2:{
-                                                Intent intent =  MatchService.newStartIntent(MatchService.ACTION_RESET_MATCH, c);
-                                                intent.putExtra(MatchService.EXTRA_ID, match.getId());
-                                                c.startService(intent);
-                                                customOnResume();
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-
+                        MatchesDialog dialog = MatchesDialog.newInstance(match.getId(), match.getTournamentId(), position);
+                        dialog.setTargetFragment(MatchListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE_RESET");
-
                         return false;
                     }
                 });
@@ -126,6 +96,8 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
         IntentFilter filter = new IntentFilter(MatchService.ACTION_GET_MATCHES_BY_TOURNAMENT);
         filter.addAction(MatchService.ACTION_GENERATE_ROUND);
         filter.addAction(MatchService.ACTION_CAN_ADD_MATCH);
+        filter.addAction(MatchService.ACTION_DELETE_MATCH);
+        filter.addAction(MatchService.ACTION_RESET_MATCH);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(tReceiver, filter);
     }
 
@@ -141,34 +113,8 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewMatchDialog d = new NewMatchDialog() {
-                    @Override
-                    protected DialogInterface.OnClickListener supplyListener() {
-                        return new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0:{
-                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_CAN_ADD_MATCH, getContext());
-                                        intent.putExtra(MatchService.EXTRA_ID, id);
-                                        getContext().startService(intent);
-                                        break;
-                                    }
-                                    case 1:{
-                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
-                                        intent.putExtra(MatchService.EXTRA_ID, id);
-                                        getContext().startService(intent);
-                                        break;
-                                    }
-                                }
-                                progressBar.setVisibility(View.VISIBLE);
-                                contentView.setVisibility(View.GONE);
-                                dialog.dismiss();
-                            }
-                        };
-                    }
-                };
-                d.setRetainInstance(true);
+                AddMatchDialog d = AddMatchDialog.newInstance(id);
+                d.setTargetFragment(MatchListFragment.this, 0);
                 d.show(getFragmentManager(), "Add_match_dialog");
             }
         });
@@ -203,6 +149,16 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                         contentView.setVisibility(View.VISIBLE);
                         Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.cant_create_match, Snackbar.LENGTH_LONG).show();
                     }
+                    break;
+                }
+                case MatchService.ACTION_DELETE_MATCH:{
+                    progressBar.setVisibility(View.GONE);
+                    contentView.setVisibility(View.VISIBLE);
+                    adapter.delete(intent.getIntExtra(MatchService.EXTRA_POSITION, -1));
+                    break;
+                }
+                case MatchService.ACTION_RESET_MATCH:{
+                    customOnResume();
                     break;
                 }
                 default:{

@@ -17,6 +17,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.TeamDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -53,34 +54,8 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                     @Override
                     public boolean onLongClick(View v) {
 
-                        EditDeleteDialog dialog = new EditDeleteDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:
-                                                InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(ftid, false, SquashInsertTeamDialog.class);
-                                                insertTeamDialog.setTargetFragment(TeamsListFragment.this, 0);
-                                                insertTeamDialog.show(getFragmentManager(), "edit_team_dialog");
-                                                dialog.dismiss();
-                                                break;
-                                            case 1:
-                                                Intent intent = TeamService.newStartIntent(TeamService.ACTION_DELETE, getContext());
-                                                intent.putExtra(TeamService.EXTRA_ID, ftid);
-                                                intent.putExtra(TeamService.EXTRA_POSITION, position);
-                                                contentView.setVisibility(View.GONE);
-                                                progressBar.setVisibility(View.VISIBLE);
-                                                getContext().startService(intent);
-                                                break;
-                                            default:break;
-                                        }
-                                    }
-                                };
-                            }
-                        };
-                        dialog.setRetainInstance(true);
+                        TeamsDialog dialog = TeamsDialog.newInstance(ftid, position);
+                        dialog.setTargetFragment(TeamsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "uberTag");
                         return true;
                     }

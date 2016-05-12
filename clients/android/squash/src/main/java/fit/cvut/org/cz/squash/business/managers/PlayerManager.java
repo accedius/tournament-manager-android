@@ -48,7 +48,7 @@ public class PlayerManager implements IPackagePlayerManager {
     public boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
 
         Player p = new Player(playerId, null, null, null);
-        if (DAOFactory.getInstance().statDAO.getByPlayer(context, playerId, StatsEnum.MATCH_PARTICIPATION).size() != 0) return false;
+        if (DAOFactory.getInstance().statDAO.getByPlayerAndTournament(context, playerId, tournamentId, StatsEnum.MATCH_PARTICIPATION).size() != 0) return false;
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(context, tournamentId);
         if (!players.contains(p)) return false;
 

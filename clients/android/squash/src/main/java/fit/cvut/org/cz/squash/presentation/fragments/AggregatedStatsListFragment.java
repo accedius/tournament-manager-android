@@ -18,6 +18,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.AggregatedStatsAdapter;
+import fit.cvut.org.cz.squash.presentation.dialogs.AggregatedStatsDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
@@ -131,30 +132,8 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     @Override
                     public boolean onLongClick(View v) {
                         final long id = getArguments().getLong(ARG_ID);
-                        DeleteDialog dialog = new DeleteDialog() {
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = PlayerService.newStartIntent(deleteAction, c);
-                                                intent.putExtra(PlayerService.EXTRA_POSITION, position);
-                                                intent.putExtra(PlayerService.EXTRA_PLAYER_ID, item.playerId);
-                                                intent.putExtra(PlayerService.EXTRA_ID, id);
-                                                contentView.setVisibility(View.INVISIBLE);
-                                                progressBar.setVisibility(View.VISIBLE);
-                                                c.startService(intent);
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-                        dialog.setRetainInstance(true);
+                        AggregatedStatsDialog dialog = AggregatedStatsDialog.newInstance(id, item.playerId, position, deleteAction);
+                        dialog.setTargetFragment(AggregatedStatsListFragment.this, 3);
                         dialog.show(getFragmentManager(), "DELETE_DD");
 
                         return false;
@@ -209,6 +188,12 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
             return;
         }
         if (addAction == null) return;
+
+        if (requestCode == 3){
+            progressBar.setVisibility(View.VISIBLE);
+            contentView.setVisibility(View.GONE);
+            return;
+        }
 
         Intent intent = PlayerService.newStartIntent(addAction, getContext());
         intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));

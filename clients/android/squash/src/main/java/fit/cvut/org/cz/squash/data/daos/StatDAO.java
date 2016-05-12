@@ -187,5 +187,35 @@ public class StatDAO implements IStatDAO {
         return stats;
     }
 
+    @Override
+    public ArrayList<DStat> getByPlayerAndTournament(Context context, long playerId, long tournamentId, StatsEnum type) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<DStat> stats = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cPLAYER_ID, SDBConstants.cTYPE, DBConstants.cTOURNAMENT_ID), new String[]{Long.toString(playerId), type.toString(), Long.toString(tournamentId)});
+        while (c.moveToNext())
+            stats.add(parse(c));
+
+        c.close();
+        db.close();
+
+        return stats;
+    }
+
+    @Override
+    public ArrayList<DStat> getByPlayerAndCompetition(Context context, long playerId, long competitionId, StatsEnum type) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<DStat> stats = new ArrayList<>();
+
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cPLAYER_ID, SDBConstants.cTYPE, DBConstants.cCOMPETITIONID), new String[]{Long.toString(playerId), type.toString(), Long.toString(competitionId)});
+        while (c.moveToNext())
+            stats.add(parse(c));
+
+        c.close();
+        db.close();
+
+        return stats;
+    }
+
 
 }

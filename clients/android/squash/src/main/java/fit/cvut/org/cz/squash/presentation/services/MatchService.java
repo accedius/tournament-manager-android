@@ -34,6 +34,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_PARTICIPANTS = "extra_participants";
     public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_POSITION = "extra_position";
 
     public static final String ACTION_GET_MATCHES_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_matches_by_tournament";
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
@@ -106,6 +107,8 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_RESET_MATCH:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().matchManager.resetMatch(this, id);
+                Intent result = new Intent(action);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE_MATCH_DETAIL:{
@@ -123,6 +126,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_DELETE_MATCH:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().matchManager.delete(this, id);
+                Intent result = new Intent(action);
+                result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GENERATE_ROUND:{

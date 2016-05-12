@@ -36,7 +36,7 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
     private static final String SAVE_HOME = "save_home";
     private static final String SAVE_AWAY = "save_away";
     private static final String SAVE_DATA = "save_data";
-    private SimplePlayerAdapter homeAdapter = null, awayAdapter = null;
+    public SimplePlayerAdapter homeAdapter = null, awayAdapter = null;
     private TextView homeName = null, awayName = null;
     private Team homeTeam = null, awayTeam = null;
     private boolean askForData = true;
