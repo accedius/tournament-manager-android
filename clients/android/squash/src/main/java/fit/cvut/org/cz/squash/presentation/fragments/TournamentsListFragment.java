@@ -96,6 +96,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                         };
 
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
+                        dialog.setRetainInstance(true);
 
                         return false;
                     }

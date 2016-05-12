@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 /**
  * Created by Vaclav on 7. 4. 2016.
  */
-public class AgregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AgregatedStatsAdapter.AgregatedStatsViewHolder> {
+public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AggregatedStatsAdapter.AgregatedStatsViewHolder> {
 
 
     @Override

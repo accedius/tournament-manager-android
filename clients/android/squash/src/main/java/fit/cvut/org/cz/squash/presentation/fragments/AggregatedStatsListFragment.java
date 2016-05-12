@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
-import fit.cvut.org.cz.squash.presentation.adapters.AgregatedStatsAdapter;
+import fit.cvut.org.cz.squash.presentation.adapters.AggregatedStatsAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
@@ -28,7 +28,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 /**
  * Created by Vaclav on 5. 4. 2016.
  */
-public class AgregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {
+public class AggregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {
 
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_ACTION = "ARG_ACTION";
@@ -44,13 +44,13 @@ public class AgregatedStatsListFragment extends AbstractListFragment<SAggregated
     private String deleteAction = null;
     private int requestCode = 0;
     private boolean sendForData = true;
-    private AgregatedStatsAdapter adapter = null;
+    private AggregatedStatsAdapter adapter = null;
 
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
-    public static AgregatedStatsListFragment newInstance(long id, String action){
+    public static AggregatedStatsListFragment newInstance(long id, String action){
 
-        AgregatedStatsListFragment fragment = new AgregatedStatsListFragment();
+        AggregatedStatsListFragment fragment = new AggregatedStatsListFragment();
         Bundle b = new Bundle();
         b.putLong(ARG_ID, id);
         b.putString(ARG_ACTION, action);
@@ -124,7 +124,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<SAggregated
     @Override
     protected AbstractListAdapter getAdapter() {
         final Context c = getContext();
-        adapter =  new AgregatedStatsAdapter(){
+        adapter =  new AggregatedStatsAdapter(){
             @Override
             protected void setOnClickListeners(View v, final SAggregatedStats item, final int position) {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
@@ -154,8 +154,8 @@ public class AgregatedStatsListFragment extends AbstractListFragment<SAggregated
                                 };
                             }
                         };
-
-                        dialog.show(getFragmentManager(), "DELETE");
+                        dialog.setRetainInstance(true);
+                        dialog.show(getFragmentManager(), "DELETE_DD");
 
                         return false;
                     }
@@ -236,7 +236,7 @@ public class AgregatedStatsListFragment extends AbstractListFragment<SAggregated
                     break;
                 case StatsService.ACTION_GET_STATS_BY_COMPETITION:
                 case StatsService.ACTION_GET_STATS_BY_TOURNAMENT:
-                    AgregatedStatsListFragment.super.bindDataOnView(intent);
+                    AggregatedStatsListFragment.super.bindDataOnView(intent);
                     break;
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:{
                     if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)){
@@ -259,4 +259,6 @@ public class AgregatedStatsListFragment extends AbstractListFragment<SAggregated
 
         }
     }
+
+
 }

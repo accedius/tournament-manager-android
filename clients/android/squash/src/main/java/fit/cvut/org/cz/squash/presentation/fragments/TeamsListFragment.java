@@ -80,6 +80,7 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                                 };
                             }
                         };
+                        dialog.setRetainInstance(true);
                         dialog.show(getFragmentManager(), "uberTag");
                         return true;
                     }

@@ -12,7 +12,9 @@ import android.support.v7.app.AlertDialog;
  */
 public class DeleteDialog extends DialogFragment {
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;};
+    protected DialogInterface.OnClickListener supplyListener() { return null;}
+
+    public DeleteDialog(){}
 
     @NonNull
     @Override

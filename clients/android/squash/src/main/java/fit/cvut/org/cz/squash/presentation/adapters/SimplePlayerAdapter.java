@@ -43,6 +43,7 @@ public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlaye
                     }
                 };
                 Context context = holder.wholeView.getContext();
+                d.setRetainInstance(true);
                 if (context instanceof FragmentActivity) d.show(((FragmentActivity) context).getSupportFragmentManager(), "delete_tag");
                 return true;
             }

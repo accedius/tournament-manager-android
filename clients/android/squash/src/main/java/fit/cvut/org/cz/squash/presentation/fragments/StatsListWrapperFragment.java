@@ -7,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import fit.cvut.org.cz.squash.R;
 
 
@@ -43,7 +40,7 @@ public class StatsListWrapperFragment extends Fragment {
         super.onStart();
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null){
             getChildFragmentManager().beginTransaction().add(R.id.fragment_container,
-                    AgregatedStatsListFragment.newInstance(getArguments().getLong(ARG_ID), getArguments().getString(ARG_ACTION)))
+                    AggregatedStatsListFragment.newInstance(getArguments().getLong(ARG_ID), getArguments().getString(ARG_ACTION)))
                     .commit();
         }
     }

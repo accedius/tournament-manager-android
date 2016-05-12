@@ -36,6 +36,8 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         notifyItemRemoved(position);
     }
 
+    protected void setOnClickListeners(View itemView, int position) {}
+
     @Override
     public SetRowItemVH onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SetRowItemVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_set, parent, false), new ParsingDataListener(true), new ParsingDataListener(false));
@@ -54,6 +56,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         holder.homeLsnr.updateEditText(holder.home);
         holder.home.setText(Integer.toString(item.getHomeScore()));
         holder.away.setText(Integer.toString(item.getAwayScore()));
+        setOnClickListeners(holder.itemView,position);
 
     }
 
@@ -66,13 +69,6 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
 
         public SetRowItemVH(View itemView, ParsingDataListener homeLsnr, ParsingDataListener awayLsnr) {
             super(itemView);
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    deleteItem(getAdapterPosition());
-                    return false;
-                }
-            });
             home = (EditText) itemView.findViewById(R.id.et_home);
             away = (EditText) itemView.findViewById(R.id.et_away);
             this.homeLsnr = homeLsnr;

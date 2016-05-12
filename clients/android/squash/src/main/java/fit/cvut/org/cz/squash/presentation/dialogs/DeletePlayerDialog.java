@@ -10,11 +10,12 @@ import android.support.v7.app.AlertDialog;
 /**
  * Created by Vaclav on 11. 4. 2016.
  */
-public class EditDeleteDialog extends DialogFragment {
-
-    public EditDeleteDialog(){}
+public class DeletePlayerDialog extends DialogFragment {
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
+
+    public DeletePlayerDialog(){}
+
 
     @NonNull
     @Override
@@ -22,7 +23,7 @@ public class EditDeleteDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setItems(new String[]{"Edit", "Delete"}, supplyListener());
+        builder.setItems(new String[]{"Delete"}, supplyListener());
 
         return builder.create();
     }

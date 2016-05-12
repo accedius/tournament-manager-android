@@ -168,6 +168,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                         };
                     }
                 };
+                d.setRetainInstance(true);
                 d.show(getFragmentManager(), "Add_match_dialog");
             }
         });

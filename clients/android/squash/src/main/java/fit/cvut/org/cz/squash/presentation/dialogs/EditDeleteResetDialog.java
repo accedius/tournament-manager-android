@@ -12,7 +12,9 @@ import android.support.v7.app.AlertDialog;
  */
 public class EditDeleteResetDialog extends DialogFragment {
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;};
+    protected DialogInterface.OnClickListener supplyListener() { return null;}
+
+    public EditDeleteResetDialog(){}
 
     @NonNull
     @Override

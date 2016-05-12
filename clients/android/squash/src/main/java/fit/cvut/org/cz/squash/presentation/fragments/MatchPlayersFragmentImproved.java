@@ -148,6 +148,7 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
                         return awayTeam.getName();
                     }
                 };
+                d.setRetainInstance(true);
                 d.show(getFragmentManager(), "select_team_tag");
             }
         });

@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
+import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -71,7 +73,34 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        adapter = new SetsAdapter();
+        adapter = new SetsAdapter(){
+            @Override
+            protected void setOnClickListeners(View itemView, final int position) {
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        DeleteDialog dialog = new DeleteDialog(){
+                            @Override
+                            protected DialogInterface.OnClickListener supplyListener() {
+                                return new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (which == 0){
+                                            adapter.deleteItem(position);
+                                        }
+                                    }
+                                };
+                            }
+                        };
+                        dialog.setRetainInstance(true);
+                        dialog.show(getFragmentManager(), "DELETE_DIALOG");
+                        return false;
+                    }
+                });
+
+            }
+        };
         return adapter;
     }
 
