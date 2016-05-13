@@ -170,39 +170,12 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                                    public void onClick(View v) {
                                        final long tourId = getArguments().getLong(ARG_ID, -1);
 
-                                       AddMatchDialog dialog = new AddMatchDialog(){
-                                           @Override
-                                           protected DialogInterface.OnClickListener supplyListener() {
-                                               return new DialogInterface.OnClickListener(){
-                                                   @Override
-                                                   public void onClick(DialogInterface dialog, int which) {
-                                                       switch ( which )
-                                                       {
-                                                           case 0:
-                                                           {
-                                                               if( !((ShowTournamentActivity)getActivity()).isEnoughTeams() ){
-                                                                   Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.not_enough_teams, Snackbar.LENGTH_LONG).show();
-                                                                   break;
-                                                               }
-                                                               Intent intent = CreateMatchActivity.newStartIntent(getContext(), tourId);
+                                       if( !((ShowTournamentActivity)getActivity()).isEnoughTeams() ){
+                                           Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.not_enough_teams, Snackbar.LENGTH_LONG).show();
+                                           return;
+                                       }
 
-                                                               startActivity(intent);
-                                                               break;
-                                                           }
-                                                           case 1:
-                                                           {
-                                                               Intent intent = MatchService.newStartIntent( MatchService.ACTION_GENERATE_ROUND, getContext());
-                                                               intent.putExtra( MatchService.EXTRA_TOUR_ID, tourId );
-
-                                                               getContext().startService( intent );
-                                                               break;
-                                                           }
-                                                       }
-                                                       dialog.dismiss();
-                                                   }
-                                               };
-                                           }
-                                       };
+                                       AddMatchDialog dialog = AddMatchDialog.newInstance(tourId);
 
                                        dialog.show(getFragmentManager(), "Add Match");
 

@@ -48,7 +48,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
     protected void doWork(Intent intent) {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
-        
+
 
         switch (action){
             case ACTION_CREATE:{

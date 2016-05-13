@@ -70,6 +70,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                         ((MatchesListWrapperFragment) fr).refresh();
                     if (fr instanceof StandingsStatsTitleFragment)
                         ((StandingsStatsTitleFragment) fr).refresh();
+                    if (fr instanceof AgregStatsTitleFragment)
+                        ((AgregStatsTitleFragment) fr).refresh();
                 }
             }
 

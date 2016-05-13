@@ -92,36 +92,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
                     @Override
                     public boolean onLongClick(View v) {
-                        DeleteOnlyDialog dialog = new DeleteOnlyDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch ( which )
-                                        {
-                                            case 0:
-                                            {
-
-                                                if(competitionID != -1){
-                                                    Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION, getContext());
-                                                    intent.putExtra( PlayerService.EXTRA_PLAYER_ID, final_plId );
-                                                    intent.putExtra( PlayerService.EXTRA_ID, competitionID );
-                                                    getContext().startService( intent );
-                                                } else {
-                                                    Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
-                                                    intent.putExtra( PlayerService.EXTRA_PLAYER_ID, final_plId );
-                                                    intent.putExtra( PlayerService.EXTRA_ID, tournamentID );
-                                                    getContext().startService( intent );
-                                                }
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
+                        DeleteOnlyDialog dialog = DeleteOnlyDialog.newInstance(final_plId, competitionID, tournamentID);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
                         return true;
