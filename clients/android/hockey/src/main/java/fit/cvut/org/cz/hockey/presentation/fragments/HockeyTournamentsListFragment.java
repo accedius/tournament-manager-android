@@ -75,34 +75,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                     @Override
                     public boolean onLongClick(View v) {
 
-                        EditDeleteDialog dialog = new EditDeleteDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch ( which )
-                                        {
-                                            case 0:
-                                            {
-                                                Intent intent = CreateTournamentActivity.newStartIntent( getContext(), tourId, false );
-                                                startActivity( intent );
-                                                break;
-                                            }
-                                            case 1:
-                                            {
-                                                Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_DELETE, getContext() );
-
-                                                intent.putExtra( TournamentService.EXTRA_ID, tourId);
-                                                getContext().startService( intent );
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance( tourId);
+                        dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
                         return true;

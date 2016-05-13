@@ -3,6 +3,7 @@ package fit.cvut.org.cz.hockey.presentation.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -10,39 +11,37 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**
  * Created by atgot_000 on 24. 4. 2016.
  */
 public class EditStatsDialog extends DialogFragment {
 
-    public static final String ARG_STATS = "stats";
+    public static final String ARG_DATA = "data";
+    public static final String ARG_POSITION = "position";
+    public static final String ARG_HOME = "homea";
+
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
     private TextView goals, assists, plusMinusPoints, interventions, name;
     private MatchPlayerStatistic stat;
 
-    public static EditStatsDialog newInstance( MatchPlayerStatistic statistic, Class<? extends EditStatsDialog> clazz)
+    public static EditStatsDialog newInstance( MatchPlayerStatistic statis, int pos, boolean isHome)
     {
-        EditStatsDialog fragment = null;
-        try {
-            fragment = clazz.getConstructor().newInstance();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        EditStatsDialog fragment = new EditStatsDialog();
+
         Bundle b = new Bundle();
-        b.putParcelable(ARG_STATS, statistic);
-        fragment.setArguments( b );
+        b.putParcelable(ARG_DATA, statis);
+        b.putBoolean(ARG_HOME, isHome);
+        b.putInt(ARG_POSITION, pos);
+        fragment.setArguments(b);
 
         return fragment;
     }
@@ -51,12 +50,16 @@ public class EditStatsDialog extends DialogFragment {
      * Override this function to save the stats when dialog is closed
      * @param statistic
      */
-    protected void saveStats( MatchPlayerStatistic statistic ) {};
+    protected void saveStats( MatchPlayerStatistic statistic ) {
+
+        ((HockeyMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ARG_HOME), getArguments().getInt(ARG_POSITION), stat);
+
+    };
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        stat = getArguments().getParcelable( ARG_STATS );
+        stat = getArguments().getParcelable(ARG_DATA);
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
 
@@ -69,9 +72,9 @@ public class EditStatsDialog extends DialogFragment {
                 if( interventions.getText().toString().isEmpty() ) interventions.setText( String.valueOf(0) );
 
                 stat.setGoals(Integer.parseInt(goals.getText().toString()));
-                stat.setAssists( Integer.parseInt(assists.getText().toString()) );
-                stat.setPlusMinusPoints( Integer.parseInt(plusMinusPoints.getText().toString()) );
-                stat.setInterventions( Integer.parseInt(interventions.getText().toString()) );
+                stat.setAssists(Integer.parseInt(assists.getText().toString()));
+                stat.setPlusMinusPoints(Integer.parseInt(plusMinusPoints.getText().toString()));
+                stat.setInterventions( Integer.parseInt(interventions.getText().toString()));
 
                 saveStats( stat );
                 dismiss();

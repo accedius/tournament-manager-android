@@ -79,43 +79,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch>
                     @Override
                     public boolean onLongClick(View v) {
 
-                        EditDeleteResetDialog dialog = new EditDeleteResetDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch ( which )
-                                        {
-                                            case 0:
-                                            {
-                                                Intent intent = CreateMatchActivity.newStartIntent( getContext(), fmId, tournamentID);
-                                                startActivity( intent );
-
-                                                break;
-                                            }
-                                            case 1:
-                                            {
-                                                Intent intent = MatchService.newStartIntent( MatchService.ACTION_DELETE, getContext() );
-                                                intent.putExtra( MatchService.EXTRA_ID, fmId );
-
-                                                getContext().startService( intent );
-                                                break;
-                                            }
-                                            case 2:
-                                            {
-                                                Intent intent = MatchService.newStartIntent( MatchService.ACTION_RESTART, getContext() );
-                                                intent.putExtra( MatchService.EXTRA_ID, fmId );
-
-                                                getContext().startService( intent );
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
+                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentID);
 
                         dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
 

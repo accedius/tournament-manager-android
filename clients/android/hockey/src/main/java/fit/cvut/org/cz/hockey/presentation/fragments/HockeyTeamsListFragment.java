@@ -62,33 +62,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = new EditDeleteDialog(){
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:
-                                                InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(tid, false, HockeyInsertTeamDialog.class);
-                                                insertTeamDialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
-                                                insertTeamDialog.show(getFragmentManager(), "tag2");
-                                                dialog.dismiss();
-                                                break;
-                                            case 1:
-                                            {
-                                                Intent intent = TeamService.newStartIntent( TeamService.ACTION_DELETE, getContext() );
-                                                intent.putExtra(TeamService.EXTRA_ID, tid);
-                                                getContext().startService(intent);
-                                                dialog.dismiss();
-                                                break;
-                                            }
-                                            default:break;
-                                        }
-                                    }
-                                };
-                            }
-                        };
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid);
+                        dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;
                     }

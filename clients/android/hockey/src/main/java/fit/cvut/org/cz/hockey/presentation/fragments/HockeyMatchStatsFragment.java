@@ -43,9 +43,9 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private Fragment thisFragment;
     private long tournamentId;
     ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
-    private static final int REQUEST_HOME = 1;
-    private static final int REQUEST_AWAY = 2;
-    private static final int REQUEST_EDIT = 3;
+    public static final int REQUEST_HOME = 1;
+    public static final int REQUEST_AWAY = 2;
+    public static final int REQUEST_EDIT = 3;
 
     private static final String ARG_MATCH_ID = "arg_match_id";
     //private static final String ARG_TOURNAMENT_ID = "arg_match_id";
@@ -152,7 +152,9 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
 
         homeAdapter = new MatchStatisticsAdapter( this );
+        homeAdapter.setIsHome( true );
         awayAdapter = new MatchStatisticsAdapter( this );
+        awayAdapter.setIsHome( false );
         homeRecyclerView.setAdapter(homeAdapter);
         awayRecyclerView.setAdapter(awayAdapter);
 
@@ -193,33 +195,8 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
 
             @Override
             public void onClick(View v) {
-                HomeAwayDialog dialog = new HomeAwayDialog() {
-                    @Override
-                    protected void homeClicked() {
-                        ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
-                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, matchId);
-                        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
-                        thisFragment.startActivityForResult(intent, REQUEST_HOME);
-                    }
-
-                    @Override
-                    protected void awayClicked() {
-                        ArrayList<MatchPlayerStatistic> omitStats = getOmitPlayers();
-                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, matchId);
-                        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
-                        thisFragment.startActivityForResult(intent, REQUEST_AWAY);
-                    }
-
-                    @Override
-                    protected String getHomeName() {
-                        return homeName;
-                    }
-
-                    @Override
-                    protected String getAwayName() {
-                        return awayName;
-                    }
-                };
+                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
+                dialog.setTargetFragment(thisFragment, 1);
                 dialog.show(getFragmentManager(), "tag211");
             }
         });
@@ -260,7 +237,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         }
     }
 
-    private ArrayList<MatchPlayerStatistic> getOmitPlayers()
+    public ArrayList<MatchPlayerStatistic> getOmitPlayers()
     {
         ArrayList<MatchPlayerStatistic> res = new ArrayList<>();
         res.addAll( homeAdapter.getData() );
@@ -299,6 +276,42 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         Intent intent = EditAtOnceActivity.newStartIntent( getContext(), tmpHomeStats, tmpAwayStats);
 
         startActivityForResult( intent, REQUEST_EDIT );
+    }
+
+    /**
+     * Sets stats of a player. Used by edit stats dialog
+     * @param home is it about home team or away team
+     * @param position position in data
+     * @param statistic statistic to be changed to
+     */
+    public void setPlayerStats( boolean home, int position, MatchPlayerStatistic statistic )
+    {
+        if( home ){
+            ArrayList<MatchPlayerStatistic> dat = homeAdapter.getData();
+            dat.remove(position);
+            dat.add(position, statistic);
+            homeAdapter.swapData( dat );
+        }
+        else{
+            ArrayList<MatchPlayerStatistic> dat = awayAdapter.getData();
+            dat.remove(position);
+            dat.add(position, statistic);
+            awayAdapter.swapData( dat );
+        }
+    }
+
+    /**
+     * removes player from team
+     * @param home is it about home team or away team
+     * @param position position in data to be removed
+     */
+    public void removePlayer( boolean home, int position ){
+        if( home ){
+            homeAdapter.removePos( position );
+        }
+        else{
+            awayAdapter.removePos( position );
+        }
     }
 
 }
