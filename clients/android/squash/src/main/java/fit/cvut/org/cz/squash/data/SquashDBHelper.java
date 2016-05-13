@@ -16,10 +16,13 @@ public class SquashDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMSquash";
     private static final int DBVersion = 5;
+    private boolean test = false;
 
-    public SquashDBHelper(Context context) {
+    public SquashDBHelper(Context context, boolean test) {
         super(context, DBName, null, DBVersion);
+        this.test = test;
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -72,7 +75,7 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        if (!db.isReadOnly()) {
+        if (!db.isReadOnly() && !test) {
             // Enable foreign key constraints
             db.execSQL("PRAGMA foreign_keys=ON;");
         }

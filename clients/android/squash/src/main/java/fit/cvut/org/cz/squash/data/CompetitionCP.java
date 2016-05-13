@@ -37,7 +37,7 @@ public class CompetitionCP extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        helper = new SquashDBHelper(getContext());
+        helper = new SquashDBHelper(getContext(), false);
         return true;
     }
 

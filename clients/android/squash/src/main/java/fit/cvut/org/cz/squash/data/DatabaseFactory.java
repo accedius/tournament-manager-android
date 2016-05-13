@@ -2,6 +2,7 @@ package fit.cvut.org.cz.squash.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by Vaclav on 29. 3. 2016.
@@ -17,5 +18,11 @@ public class DatabaseFactory {
     private DatabaseFactory() {
     }
 
-    public SQLiteDatabase getDatabase(Context context) { return new SquashDBHelper(context).getWritableDatabase();}
+    private boolean test = false;
+    public void setTest(boolean test) {this.test = test;}
+
+    public SQLiteDatabase getDatabase(Context context) {
+        return new SquashDBHelper(context, test).getWritableDatabase();
+    }
+
 }

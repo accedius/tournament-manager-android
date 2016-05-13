@@ -26,10 +26,13 @@ public class StatDAO implements IStatDAO {
         cv.put(DBConstants.cPARTICIPANT_ID, stat.getParticipantId());
         if (stat.getPlayerId() != -1)
             cv.put(DBConstants.cPLAYER_ID, stat.getPlayerId());
+        else cv.putNull(DBConstants.cPLAYER_ID);
         cv.put(SDBConstants.cTYPE, stat.getType().toString());
         cv.put(SDBConstants.cSTATUS, stat.getStatus());
         if (stat.getValue() != -1) cv.put(SDBConstants.cVALUE, stat.getValue());
+        else cv.putNull(SDBConstants.cVALUE);
         if (stat.getLostValue() != -1) cv.put(SDBConstants.cLOSTVALUE, stat.getLostValue());
+        else cv.putNull(SDBConstants.cLOSTVALUE);
 
         return cv;
     }
@@ -59,7 +62,7 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = convert(stat);
 
-        db.insert(SDBConstants.tSTATS, null, cv);
+        long id = db.insert(SDBConstants.tSTATS, null, cv);
         db.close();
     }
 
@@ -95,10 +98,10 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = convert(stat);
-        cv.put(DBConstants.cID, stat.getId());
+        //cv.put(DBConstants.cID, stat.getId());
 
         String where = String.format("%s = ?", DBConstants.cID);
-        db.update(SDBConstants.tSTATS, cv, where, new String[]{Long.toString(stat.getId())});
+        long rows = db.update(SDBConstants.tSTATS, cv, where, new String[]{Long.toString(stat.getId())});
         db.close();
     }
 

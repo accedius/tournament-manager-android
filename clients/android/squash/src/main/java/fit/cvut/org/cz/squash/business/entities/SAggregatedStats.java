@@ -73,4 +73,6 @@ public class SAggregatedStats implements Parcelable {
         dest.writeDouble(matchWinRate);
         dest.writeDouble(setsWinRate);
     }
+
+
 }
