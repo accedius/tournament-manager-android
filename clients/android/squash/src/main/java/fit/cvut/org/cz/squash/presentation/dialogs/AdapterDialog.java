@@ -46,7 +46,11 @@ public class AdapterDialog extends DialogFragment {
                             ((SetsFragment)fr).adapter.deleteItem(getArguments().getInt(ARG_POSITION));
                         }
                         if (fr instanceof MatchPlayersFragmentImproved){
-
+                            if (getArguments().getInt(ARG_OPTION) == 0){
+                                ((MatchPlayersFragmentImproved)fr).homeAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                            }
+                            else
+                                ((MatchPlayersFragmentImproved)fr).awayAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
                         }
                     }
                 }

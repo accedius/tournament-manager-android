@@ -34,6 +34,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
     public void deleteItem(int position){
         data.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, data.size());
     }
 
     protected void setOnClickListeners(View itemView, int position) {}

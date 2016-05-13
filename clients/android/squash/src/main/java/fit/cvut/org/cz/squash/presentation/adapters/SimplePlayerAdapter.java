@@ -24,30 +24,18 @@ public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlaye
         return new PlayerVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player, parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(final PlayerVH holder, final int position) {
-        holder.name.setText(data.get(position).getName());
+    protected void setOnClickListeners(View itemView, int position) {}
 
-        holder.wholeView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                DeleteDialog d = new DeleteDialog(){
-                    @Override
-                    protected DialogInterface.OnClickListener supplyListener() {
-                        return new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                delete(position);
-                            }
-                        };
-                    }
-                };
-                Context context = holder.wholeView.getContext();
-                d.setRetainInstance(true);
-                if (context instanceof FragmentActivity) d.show(((FragmentActivity) context).getSupportFragmentManager(), "delete_tag");
-                return true;
-            }
-        });
+    public void deleteItem(int position){
+        data.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, data.size());
+    }
+
+    @Override
+    public void onBindViewHolder(final PlayerVH holder, int position) {
+        holder.name.setText(data.get(position).getName());
+        setOnClickListeners(holder.itemView, position);
     }
 
     public class PlayerVH extends RecyclerView.ViewHolder{

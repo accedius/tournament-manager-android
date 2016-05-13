@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.SimplePlayerAdapter;
+import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialogImproved;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -88,8 +90,36 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
        View v = inflater.inflate(R.layout.fragment_match_players_improved, container, false);
 
-        homeAdapter = new SimplePlayerAdapter();
-        awayAdapter = new SimplePlayerAdapter();
+        homeAdapter = new SimplePlayerAdapter(){
+            @Override
+            protected void setOnClickListeners(View itemView, final int position) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AdapterDialog d = AdapterDialog.newInstance(position, 0);
+                        d.setTargetFragment(MatchPlayersFragmentImproved.this, 0);
+                        d.show(getFragmentManager(), "DELETE_HOME");
+                        return false;
+                    }
+
+                });
+            }
+        };
+        awayAdapter = new SimplePlayerAdapter(){
+            @Override
+            protected void setOnClickListeners(View itemView, final int position) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AdapterDialog d = AdapterDialog.newInstance(position, 1);
+                        d.setTargetFragment(MatchPlayersFragmentImproved.this, 0);
+                        d.show(getFragmentManager(), "DELETE_AWAY");
+                        return false;
+                    }
+
+                });
+            }
+        };
         homeName = (TextView) v.findViewById(R.id.tv_home_name);
         awayName = (TextView) v.findViewById(R.id.tv_away_name);
 
@@ -123,32 +153,8 @@ public class MatchPlayersFragmentImproved extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectTeamDialog d = new SelectTeamDialog(){
-                    @Override
-                    protected void homeClick() {
-                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, homeTeam.getId());
-                        intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, homeAdapter.getData());
-                        MatchPlayersFragmentImproved.this.startActivityForResult(intent, 0);
-                    }
-
-                    @Override
-                    protected void awayClick() {
-                        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, awayTeam.getId());
-                        intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, awayAdapter.getData());
-                        MatchPlayersFragmentImproved.this.startActivityForResult(intent, 1);
-                    }
-
-                    @Override
-                    protected String getHomeName() {
-                        return homeTeam.getName();
-                    }
-
-                    @Override
-                    protected String getAwayName() {
-                        return awayTeam.getName();
-                    }
-                };
-                d.setRetainInstance(true);
+                SelectTeamDialogImproved d = SelectTeamDialogImproved.newInstance(homeTeam.getId(), awayTeam.getId(), homeTeam.getName(), awayTeam.getName());
+                d.setTargetFragment(MatchPlayersFragmentImproved.this, 0);
                 d.show(getFragmentManager(), "select_team_tag");
             }
         });
