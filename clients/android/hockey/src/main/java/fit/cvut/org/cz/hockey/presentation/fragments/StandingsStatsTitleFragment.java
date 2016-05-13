@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
  * Created by atgot_000 on 19. 4. 2016.
@@ -54,6 +55,16 @@ public class StandingsStatsTitleFragment extends Fragment {
                     .beginTransaction()
                     .add(R.id.stats_list, clf)
                     .commit();
+        }
+    }
+
+    /**
+     * Bridge for refreshing
+     */
+    public void refresh(){
+        Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
+        if (fr != null && fr instanceof AbstractDataFragment){
+            ((AbstractDataFragment) fr).customOnResume();
         }
     }
 }

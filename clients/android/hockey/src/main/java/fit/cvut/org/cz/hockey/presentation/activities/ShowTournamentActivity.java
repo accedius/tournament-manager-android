@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +20,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment
 import fit.cvut.org.cz.hockey.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
@@ -40,6 +42,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
 
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players), getString(R.string.header_teams), getString(R.string.header_matches), getString(R.string.header_standings) };
@@ -48,9 +51,35 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         Fragment f3 = HockeyTeamsListFragment.newInstance( tournamentID );
         Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
         Fragment f5 = StandingsStatsTitleFragment.newInstance( tournamentID );
-        fragments = new Fragment[]{ f1, f2, f3, f4, f5 };
+        fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
+                if (fr != null) {
+                    if (fr instanceof AbstractDataFragment)
+                        ((AbstractDataFragment) fr).customOnResume();
+                    if (fr instanceof MatchesListWrapperFragment)
+                        ((MatchesListWrapperFragment) fr).refresh();
+                    if (fr instanceof StandingsStatsTitleFragment)
+                        ((StandingsStatsTitleFragment) fr).refresh();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
 
 
     }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +17,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragme
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
@@ -24,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
 public class ShowCompetitionActivity extends AbstractTabActivity {
 
     private long competitionID = -1;
+    private DefaultViewPagerAdapter adapter = null;
 
     private Fragment[] fragments;
     private String[] titles;
@@ -32,15 +35,37 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
-        //competitionID = 2;
+        //competitionID = 1;
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
         Fragment f3 = AgregStatsTitleFragment.newInstance( competitionID, true );
         fragments = new Fragment[]{ f1, f2, f3 };
-
         super.onCreate(savedInstanceState);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
+                if (fr != null) {
+                    if (fr instanceof AbstractDataFragment)
+                        ((AbstractDataFragment) fr).customOnResume();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
 
 
     }
@@ -48,10 +73,10 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
 
-        PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
+        adapter = new DefaultViewPagerAdapter(manager, fragments, titles);
 
 
-        return res;
+        return adapter;
     }
 
     @Override

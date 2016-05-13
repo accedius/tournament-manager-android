@@ -88,7 +88,10 @@ public abstract class AbstractDataFragment extends Fragment {
     }
 
     protected void customOnPause(){
-        unregisterReceivers();
+        if (!register){
+            unregisterReceivers();
+            register = true;
+        }
     }
 
     @Override
