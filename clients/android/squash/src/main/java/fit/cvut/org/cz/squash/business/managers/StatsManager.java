@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
@@ -134,7 +135,7 @@ public class StatsManager implements IStatsManager {
     @Override
     public ArrayList<StandingItem> getStandingsByTournament(Context context, long tournamentId) {
 
-        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, tournamentId);
+        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         Map<Long, StandingItem> mappedStandings = new HashMap<>();
 
@@ -147,9 +148,8 @@ public class StatsManager implements IStatsManager {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
             for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getName()));
             for (DStat stat : stats){
-                DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
-                long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, p.getId()).get(0);
-                ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
+                long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, stat.getParticipantId()).get(0);
+                ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, stat.getParticipantId(), StatsEnum.SET);
                 for (DStat set : sets){
                     if (set.getStatus() == 1) mappedStandings.get(playerId).setsWon++;
                     else mappedStandings.get(playerId).setsLost++;

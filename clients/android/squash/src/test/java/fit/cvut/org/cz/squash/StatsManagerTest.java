@@ -20,33 +20,45 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.AbstractQueuedLongSynchronizer;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.squash.business.entities.PointConfig;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.entities.StandingItem;
+import fit.cvut.org.cz.squash.business.interfaces.IPointConfigManager;
+import fit.cvut.org.cz.squash.business.managers.CompetitionManager;
 import fit.cvut.org.cz.squash.business.managers.PlayerManager;
+import fit.cvut.org.cz.squash.business.managers.PointConfigManager;
 import fit.cvut.org.cz.squash.business.managers.TeamsManager;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.daos.MatchDAO;
 import fit.cvut.org.cz.squash.data.daos.ParticipantDAO;
 import fit.cvut.org.cz.squash.data.daos.PlayerDAO;
 import fit.cvut.org.cz.squash.data.daos.StatDAO;
+import fit.cvut.org.cz.squash.data.daos.TeamDAO;
 import fit.cvut.org.cz.squash.data.daos.TournamentDAO;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.squash.data.interfaces.IStatDAO;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPlayerDAO;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 import static org.junit.Assert.assertEquals;
@@ -80,6 +92,10 @@ public class StatsManagerTest {
     IPackagePlayerDAO mockPlayerDAO;
     @Mock
     ITeamManager mockTeamsManager;
+    @Mock
+    ICompetitionManager mockCompetitionManager;
+    IPointConfigManager mockPointConfigManager;
+    ITeamDAO mockTeamDAO;
 
     @Before
     public void setUp() throws Exception {
@@ -91,14 +107,20 @@ public class StatsManagerTest {
         mockTournamentDAO = Mockito.mock(ITournamentDAO.class);
         mockPlayerDAO = Mockito.mock(IPackagePlayerDAO.class);
         mockTeamsManager = Mockito.mock(ITeamManager.class);
+        mockCompetitionManager = Mockito.mock(ICompetitionManager.class);
+        mockPointConfigManager = Mockito.mock(IPointConfigManager.class);
+        mockTeamDAO = Mockito.mock(ITeamDAO.class);
 
         ManagersFactory.getInstance().playerManager = mockPlayerManager;
         ManagersFactory.getInstance().teamsManager = mockTeamsManager;
+        ManagersFactory.getInstance().competitionManager = mockCompetitionManager;
+        ManagersFactory.getInstance().pointConfigManager = mockPointConfigManager;
         DAOFactory.getInstance().statDAO = mockStatsDAO;
         DAOFactory.getInstance().participantDAO = mockParticipantDAO;
         DAOFactory.getInstance().matchDAO = mockMatchDAO;
         DAOFactory.getInstance().tournamentDAO = mockTournamentDAO;
         DAOFactory.getInstance().playerDAO = mockPlayerDAO;
+        DAOFactory.getInstance().teamDAO = mockTeamDAO;
 
     }
 
@@ -182,7 +204,7 @@ public class StatsManagerTest {
         assertTrue(stats.size() == 3);
         assertAgStat(stats.get(0), "A", 2, 0, 0, 3, 1, 53, 40, (double) 3 / 2, (double) 1 / 2, (double) 53 / 2, (double) 40 / 2, (double) 2 * 100 / 2, (double) 3 * 100 / 4);
         assertAgStat(stats.get(1), "B", 1, 1, 0, 2, 1, 33, 40, (double) 2 / 2, (double) 1 / 2, (double) 33 / 2, (double) 40 / 2, (double) 1 * 100 / 2, (double) (2.0 * 100 / 3));
-        assertAgStat(stats.get(2), "C", 0, 2, 0, 1, 4, 62, 68, (double)1/2 , (double)4/2, (double)62/2, (double)68/2, (double)0/2, (double)1*100/5);
+        assertAgStat(stats.get(2), "C", 0, 2, 0, 1, 4, 62, 68, (double) 1 / 2, (double) 4 / 2, (double) 62 / 2, (double) 68 / 2, (double) 0 / 2, (double) 1 * 100 / 5);
     }
 
     private void prepSetsForMatch(){
@@ -322,14 +344,92 @@ public class StatsManagerTest {
 
     }
 
+    private void prepTestGetStandingsByTournament(){
+        when(mockTournamentDAO.getById(RuntimeEnvironment.application, 1)).thenReturn(new DTournament(1, null, null, null, null, null, null, null, null, 1));
+        when(mockTournamentDAO.getById(RuntimeEnvironment.application, 2)).thenReturn(new DTournament(1, null, null, null, null, null, null, null, null, 2));
+        when(mockCompetitionManager.getById(RuntimeEnvironment.application, 1)).thenReturn(new Competition(1, null, null, null, null, CompetitionType.Individuals));
+        when(mockCompetitionManager.getById(RuntimeEnvironment.application, 2)).thenReturn(new Competition(1, null, null, null, null, CompetitionType.Teams));
+        when(mockPointConfigManager.getById(RuntimeEnvironment.application, 1)).thenReturn(new PointConfig(1, 3, 1, 0));
+        when(mockPointConfigManager.getById(RuntimeEnvironment.application, 2)).thenReturn(new PointConfig(2, 3, 1, 0));
+
+        ArrayList<DStat> stats = new ArrayList<>();
+        stats.add(new DStat(0, 0, 1, -1, 1, 1, -1, -1, StatsEnum.MATCH));
+        stats.add(new DStat(0, 0, 1, -1, 2, -1, -1, -1, StatsEnum.MATCH));
+        stats.add(new DStat(0, 0, 1, -1, 3, 1, -1, -1, StatsEnum.MATCH));
+        stats.add(new DStat(0, 0, 1, -1, 4, -1, -1, -1, StatsEnum.MATCH));
+        stats.add(new DStat(0, 0, 1, -1, 5, 0, -1, -1, StatsEnum.MATCH));
+        stats.add(new DStat(0, 0, 1, -1, 6, 0, -1, -1, StatsEnum.MATCH));
+        when(mockStatsDAO.getByTournament(RuntimeEnvironment.application, 1, StatsEnum.MATCH)).thenReturn(stats);
+        when(mockStatsDAO.getByTournament(RuntimeEnvironment.application, 2, StatsEnum.MATCH)).thenReturn(stats);
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player(1, "A", null, null));
+        players.add(new Player(2, "B", null, null));
+        players.add(new Player(3, "C", null, null));
+        when(mockPlayerManager.getPlayersByTournament(RuntimeEnvironment.application, 1)).thenReturn(players);
+
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{3L})));
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 2)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{1L})));
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 3)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{3L})));
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 4)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{2L})));
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 5)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{1L})));
+        when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 6)).thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{2L})));
+
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 1, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[] {new DStat(1, 1, 1, 1, 1, 1, 0, 0, StatsEnum.SET), new DStat(1, 1, 1, 1, 1, 1, 0, 0, StatsEnum.SET)})));
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 2, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[]{new DStat(1, 1, 1, 1, 2, -1, 0, 0, StatsEnum.SET), new DStat(1, 1, 1, 1, 1, -1, 0, 0, StatsEnum.SET)})));
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 3, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[]{new DStat(1, 1, 1, 1, 3, 1, 0, 0, StatsEnum.SET)})));
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 4, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[] {new DStat(1, 1, 1, 1, 4, -1, 0, 0, StatsEnum.SET)})));
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 5, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[]{new DStat(1, 1, 1, 1, 5, 1, 0, 0, StatsEnum.SET), new DStat(1, 1, 1, 1, 5, -1, 1, 1, StatsEnum.SET)})));
+        when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 6, StatsEnum.SET)).thenReturn(new ArrayList<>(Arrays.asList(new DStat[]{new DStat(1, 1, 1, 1, 6, -1, 0, 0, StatsEnum.SET), new DStat(1, 1, 1, 1, 6, 1, 1, 1, StatsEnum.SET)})));
+
+        when(mockTeamDAO.getByTournamentId(RuntimeEnvironment.application, 2)).thenReturn(new ArrayList<>(Arrays.asList(new DTeam[]{new DTeam(1, 2, "Team A"), new DTeam(2, 2, "Team B"), new DTeam(3, 2, "Team C")})));
+
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 1)).thenReturn(new DParticipant(1, 3, 0, "home"));
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 2)).thenReturn(new DParticipant(2, 1, 0, "home"));
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 3)).thenReturn(new DParticipant(3, 3, 0, "home"));
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 4)).thenReturn(new DParticipant(4, 2, 0, "home"));
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 5)).thenReturn(new DParticipant(5, 1, 0, "home"));
+        when(mockParticipantDAO.getById(RuntimeEnvironment.application, 6)).thenReturn(new DParticipant(6, 2, 0, "home"));
+
+    }
+
+    private void assertStanding(StandingItem item, String name, int won, int lost, int draw, int points, int sw, int sl){
+        assertEquals(name, item.name);
+        assertEquals(won, item.wins);
+        assertEquals(lost, item.loses);
+        assertEquals(draw, item.draws);
+        assertEquals(points, item.points);
+        assertEquals(sw, item.setsWon);
+        assertEquals(sl, item.setsLost);
+    }
+    @Test
+    public void testGetStandingsByTournament() throws Exception {
+
+        prepTestGetStandingsByTournament();
+
+        ArrayList<StandingItem> singleStandings = ManagersFactory.getInstance().statsManager.getStandingsByTournament(RuntimeEnvironment.application, 1);
+        assertEquals(3, singleStandings.size());
+        assertStanding(singleStandings.get(0), "C", 2, 0, 0, 6, 3, 0);
+        assertStanding(singleStandings.get(1), "B", 0, 1, 1, 1, 1, 2);
+        assertStanding(singleStandings.get(2), "A", 0, 1, 1, 1, 1, 3);
+        ArrayList<StandingItem> teamStandings = ManagersFactory.getInstance().statsManager.getStandingsByTournament(RuntimeEnvironment.application, 2);
+        assertEquals(3, teamStandings.size());
+        assertStanding(teamStandings.get(0), "Team C", 2, 0, 0, 6, 3, 0);
+        assertStanding(teamStandings.get(1), "Team B", 0, 1, 1, 1, 1, 2);
+        assertStanding(teamStandings.get(2), "Team A", 0, 1, 1, 1, 1, 3);
+    }
+
     @After
     public void tearDown() throws Exception {
         ManagersFactory.getInstance().playerManager = new PlayerManager();
         ManagersFactory.getInstance().teamsManager = new TeamsManager();
+        ManagersFactory.getInstance().competitionManager = new CompetitionManager();
+        ManagersFactory.getInstance().pointConfigManager = new PointConfigManager();
         DAOFactory.getInstance().statDAO = new StatDAO();
         DAOFactory.getInstance().participantDAO = new ParticipantDAO();
         DAOFactory.getInstance().matchDAO = new MatchDAO();
         DAOFactory.getInstance().tournamentDAO = new TournamentDAO();
         DAOFactory.getInstance().playerDAO = new PlayerDAO();
+        DAOFactory.getInstance().teamDAO = new TeamDAO();
     }
 }
