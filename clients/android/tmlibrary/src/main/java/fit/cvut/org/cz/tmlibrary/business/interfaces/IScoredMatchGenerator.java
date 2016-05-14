@@ -10,5 +10,11 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
  */
 public interface IScoredMatchGenerator {
 
+    /**
+     * generates round robin of matches
+     * @param participants participants to be divided into teams
+     * @param round number of round to be generated
+     * @return list of matches
+     */
     ArrayList<ScoredMatch> generateRound(ArrayList<NewMatchSpinnerParticipant> participants, int round);
 }
