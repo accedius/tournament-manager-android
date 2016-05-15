@@ -1,9 +1,9 @@
 <resources>
-    <string name="sport_name">Squash</string>
-    <string name="tournament_manager_package">TournamentManagerPackage</string>
-    <string name="title_activity_main">Squash Main Activity</string>
-    <string name="squashpcg">Squash PCG</string>
-    <string name="dateFirmat">yyyy-MM-dd</string>
+    <string name="sport_name" translatable="false">Squash</string>
+    <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
+    <string name="title_activity_main" translatable="false">Squash Main Activity</string>
+    <string name="squashpcg" translatable="false">Squash PCG</string>
+    <string name="dateFirmat" translatable="false">yyyy-MM-dd</string>
     <string name="wins">W</string>
     <string name="loses">L</string>
     <string name="draws">D</string>
@@ -12,7 +12,7 @@
     <string name="setsLost">SL</string>
     <string name="setsWonAvg">SW AVG</string>
     <string name="setsLostAvg">SL AVG</string>
-    <string name="setsPer">S%</string>
+    <string name="setsPer" translatable="false">S%</string>
     <string name="ballsWon">BW</string>
     <string name="ballsLost">BL</string>
     <string name="ballsWonAvg">BW AVG</string>
@@ -22,11 +22,35 @@
     <string name="win">Win</string>
     <string name="draw">Draw</string>
     <string name="loss">Loss</string>
-    <string name="set_divider">:</string>
+    <string name="set_divider" translatable="false">:</string>
     <string name="parse_number_error">Could not parse lostValue</string>
     <string name="zero_score">Score cannot be lower than zero</string>
+    <string name="tie_set">Set cannot end in tie</string>
+    <string name="sets_error">Some sets have invalid values, either unfilled or tie</string>
+    <string name="competition_settings">Competition Settings</string>
+    <string name="competition_detail">Competition Detail</string>
+    <string name="overview">Overview</string>
+    <string name="tournaments">Tournaments</string>
+    <string name="sap">Stats and Players</string>
+    <string name="add_players">Add Players</string>
+    <string name="tournament_settings">Tournament Settings</string>
+    <string name="tournament_detail">Tournament Detail</string>
+    <string name="standings">Standings</string>
+    <string name="matches">Matches</string>
+    <string name="teams">Teams</string>
+    <string name="team_detail">Team Detail</string>
+    <string name="add_round">Add Round</string>
+    <string name="add_match">Add Match</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="reset">Reset</string>
+    <string name="match_settings">Match Settings</string>
+    <string name="match_detail">Match Detail</string>
+    <string name="sets">Sets</string>
+    <string name="rosters">Rosters</string>
+    <string name="add_player_to">Add player to</string>
 
-    <string name="package_name">fit.cvut.org.cz.squash</string>
-    <string name="activity_create_competition">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
-    <string name="activity_detail_competition">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>
+    <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
+    <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
+    <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>
 </resources>

@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
+import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
@@ -62,7 +63,7 @@ public class SelectTeamDialogImproved extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setItems(new String[]{"Add Player to " + getArguments().getString(ARG_HOME_NAME), "Add Player to " + getArguments().getString(ARG_AWAY_NAME)},
+        builder.setItems(new String[]{getString(R.string.add_player_to) + " " + getArguments().getString(ARG_HOME_NAME), getString(R.string.add_player_to) + " " + getArguments().getString(ARG_AWAY_NAME)},
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

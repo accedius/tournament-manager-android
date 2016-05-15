@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_match">Přidat zápas</string>
+    <string name="add_players">Přidat hráče</string>
+    <string name="add_round">Přidat kolo</string>
+    <string name="ballsLost">PM</string>
+    <string name="ballsLostAvg">PM PR</string>
+    <string name="ballsWon">VM</string>
+    <string name="ballsWonAvg">VM PR</string>
+    <string name="competition_detail">Detail soutěže</string>
+    <string name="competition_settings">Nastavení soutěže</string>
+    <string name="delete">Smazat</string>
+    <string name="draw">Remíza</string>
+    <string name="draws">R</string>
+    <string name="edit">Editovat</string>
+    <string name="loses">P</string>
+    <string name="loss">Prohra</string>
+    <string name="match_detail">Detail zápasu</string>
+    <string name="match_settings">Nastavení zápasu</string>
+    <string name="matches">Zápasy</string>
+    <string name="overview">Přehled</string>
+    <string name="parse_number_error">Chyba při parsování hodnoty</string>
+    <string name="points">Body</string>
+    <string name="reset">Resetovat</string>
+    <string name="rosters">Soupisky</string>
+    <string name="sap">Hráči a statistiky</string>
+    <string name="score">Skóre</string>
+    <string name="sets">Sety</string>
+    <string name="setsLost">PS</string>
+    <string name="setsLostAvg">PS PR</string>
+    <string name="setsWon">VS</string>
+    <string name="setsWonAvg">VS PR</string>
+    <string name="sets_error">Některé sety mají neplatné hodnoty, buď nevyplněné nebo remízu</string>
+    <string name="standings">Pořadí</string>
+    <string name="team_detail">Detail týmu</string>
+    <string name="teams">Týmy</string>
+    <string name="tie_set">Set nemůže skončit remízou</string>
+    <string name="tournament_detail">Detail Turnaje</string>
+    <string name="tournament_settings">Nastavení turnaje</string>
+    <string name="tournaments">Turnaje</string>
+    <string name="win">Výhra</string>
+    <string name="wins">V</string>
+    <string name="winsPer">V%</string>
+    <string name="zero_score">Skóre nemůže být záporné</string>
+    <string name="add_player_to">Pidat hráče do</string>
+</resources>

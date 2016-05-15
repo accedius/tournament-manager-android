@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
@@ -47,7 +48,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                             TeamsListFragment.newInstance(id),
                             StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
                     },
-                    new String[]{"Overview", "standings", "Matches", "Teams", "Players && stats"});
+                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.matches), getResources().getString(R.string.teams), getResources().getString(R.string.sap)});
         } else {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
@@ -56,7 +57,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                             SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
                             StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
                     },
-                    new String[]{"Overview", "standings", "Matches", "Players && stats"});
+                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.matches), getResources().getString(R.string.sap)});
         }
         return adapter;
     }

@@ -11,32 +11,32 @@
 
         <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Competition"
+            android:label="@string/competition_settings"
             android:exported="true"/>
         <activity android:name=".presentation.activities.CreateTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Tournament"/>
+            android:label="@string/tournament_settings"/>
         <activity android:name=".presentation.activities.CreateMatchActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="New Match"/>
+            android:label="@string/match_settings"/>
         <activity android:name=".presentation.activities.TournamentDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Tournament Detail"/>
+            android:label="@string/tournament_detail"/>
         <activity android:name=".presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Add Players"/>
+            android:label="@string/add_players"/>
         <activity android:name=".presentation.activities.TeamDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Team Detail"/>
+            android:label="@string/team_detail"/>
         <activity android:name=".presentation.activities.PointConfigActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Configure Point Gain"/>
+            android:label="@string/point_config"/>
         <activity android:name=".presentation.activities.MatchDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Match Detail"/>
+            android:label="@string/match_detail"/>
         <activity android:name="fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Competition Detail"
+            android:label="@string/competition_detail"
             android:exported="true" />
 
 

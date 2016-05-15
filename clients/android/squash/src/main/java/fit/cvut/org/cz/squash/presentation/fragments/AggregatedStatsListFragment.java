@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.AggregatedStatsAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.AggregatedStatsDialog;
-import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;

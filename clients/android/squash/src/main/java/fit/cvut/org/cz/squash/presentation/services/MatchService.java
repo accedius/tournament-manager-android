@@ -59,12 +59,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
         String action = intent.getStringExtra(EXTRA_ACTION);
         if (action == null) action = intent.getAction();
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         switch (action){
             case ACTION_GET_MATCHES_BY_TOURNAMENT:{
                 Long id = intent.getLongExtra(EXTRA_ID, -1);

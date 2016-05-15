@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.TeamDetailActivity;
-import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;

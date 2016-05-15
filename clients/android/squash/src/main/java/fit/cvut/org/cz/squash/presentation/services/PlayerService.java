@@ -62,12 +62,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         switch (action){
             case ACTION_GET_PLAYERS_FOR_COMPETITION:{
                 Intent result = new Intent(action);

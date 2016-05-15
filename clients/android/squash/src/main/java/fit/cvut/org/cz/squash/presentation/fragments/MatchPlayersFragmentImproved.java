@@ -22,7 +22,6 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.SimplePlayerAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
-import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialogImproved;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;

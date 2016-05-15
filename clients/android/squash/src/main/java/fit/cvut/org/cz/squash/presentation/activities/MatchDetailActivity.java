@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
@@ -52,14 +54,14 @@ public class MatchDetailActivity extends AbstractTabActivity {
         boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
         CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
         if (type == CompetitionType.Individuals)
-            adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{"Sets"});
+            adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{getString(R.string.sets)});
         else{
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[] {SetsFragment.newInstance(id, played),
                                     MatchPlayersFragmentImproved.newInstance(id)
                     },
-                    new String[] {"Sets",
-                            "Roasters"
+                    new String[] {getString(R.string.sets),
+                            getString(R.string.rosters)
                     } );
             pager.setOffscreenPageLimit(1);
         }
@@ -79,7 +81,20 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
             CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
 
-            SetsFragment fr =  fr = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+            SetsFragment fr  = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+            if (fr !=null){
+                ArrayList<SetRowItem> list = fr.getSets();
+                if (fr.hasErrors()) {
+                    Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
+                    return true;
+                }
+                for (SetRowItem set : list) {
+                    if (set.getWinner() == 0){
+                        Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
+                        return true;
+                    }
+                }
+            }
 
             if (fr != null && !fr.isWorking()){
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);

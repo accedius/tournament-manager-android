@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import fit.cvut.org.cz.squash.R;
+
 /**
  * Created by Vaclav on 11. 4. 2016.
  */
@@ -23,7 +25,7 @@ public class DeletePlayerDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setItems(new String[]{"Delete"}, supplyListener());
+        builder.setItems(new String[]{getString(R.string.delete)}, supplyListener());
 
         return builder.create();
     }

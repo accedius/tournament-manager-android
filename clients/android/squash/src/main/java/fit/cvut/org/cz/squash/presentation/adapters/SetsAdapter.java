@@ -57,6 +57,10 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         holder.homeLsnr.updateEditText(holder.home);
         holder.home.setText(Integer.toString(item.getHomeScore()));
         holder.away.setText(Integer.toString(item.getAwayScore()));
+        if (item.getHomeScore() == item.getAwayScore()){
+            //errorCount--;
+            holder.home.setError(null);
+        }
         setOnClickListeners(holder.itemView,position);
 
     }
@@ -116,7 +120,9 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
                 else  data.get(position).setAwayScore(value);
                 if (data.get(position).getHomeScore() > data.get(position).getAwayScore()) data.get(position).setWinner(1);
                 else if (data.get(position).getHomeScore() < data.get(position).getAwayScore()) data.get(position).setWinner(-1);
-                    else data.get(position).setWinner(0);
+                    else {
+                    data.get(position).setWinner(0);
+                }
             } catch (NumberFormatException e){
                 errorCount++;
                 editText.setError(editText.getResources().getText(R.string.parse_number_error));

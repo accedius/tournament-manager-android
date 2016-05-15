@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
-import fit.cvut.org.cz.squash.presentation.dialogs.DeleteDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -149,4 +147,5 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public ArrayList<SetRowItem> getSets() {
         return adapter.getData();
     }
+    public boolean hasErrors() {return adapter.hasErrors();}
 }

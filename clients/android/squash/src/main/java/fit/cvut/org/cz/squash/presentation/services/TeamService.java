@@ -42,12 +42,6 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         switch (action){
             case ACTION_GET_TEAMS_BY_TOURNAMENT:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);

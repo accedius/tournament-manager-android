@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashCompetitionOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
@@ -36,7 +37,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
                         CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
                         TournamentsListFragment.newInstance(competitionId),
                         StatsListWrapperFragment.newInstance(competitionId, StatsService.ACTION_GET_STATS_BY_COMPETITION)},
-                new String[] {"Overview", "Tournaments", "Stats && Players"});
+                new String[] {getResources().getString(R.string.overview), getResources().getString(R.string.tournaments), getResources().getString(R.string.sap)});
         return adapter;
     }
 

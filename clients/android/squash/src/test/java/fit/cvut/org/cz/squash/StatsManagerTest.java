@@ -1,16 +1,11 @@
 package fit.cvut.org.cz.squash;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -20,7 +15,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.AbstractQueuedLongSynchronizer;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.PointConfig;
@@ -57,15 +51,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
-import fit.cvut.org.cz.tmlibrary.data.interfaces.IPlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.doubleThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,21 +69,13 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class StatsManagerTest {
 
-    @Mock
     IPackagePlayerManager mockPlayerManager;
-    @Mock
     IStatDAO mockStatsDAO;
-    @Mock
     IParticipantDAO mockParticipantDAO;
-    @Mock
     IMatchDAO mockMatchDAO;
-    @Mock
     ITournamentDAO mockTournamentDAO;
-    @Mock
     IPackagePlayerDAO mockPlayerDAO;
-    @Mock
     ITeamManager mockTeamsManager;
-    @Mock
     ICompetitionManager mockCompetitionManager;
     IPointConfigManager mockPointConfigManager;
     ITeamDAO mockTeamDAO;
@@ -124,7 +107,7 @@ public class StatsManagerTest {
 
     }
 
-    private void prepData(){
+    private void prepAgStatData(){
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player(0, "A", null, null));
         players.add(new Player(1, "B", null, null));
@@ -197,7 +180,7 @@ public class StatsManagerTest {
     @Test
     public void testGetAggregatedStats() throws Exception {
 
-        prepData();
+        prepAgStatData();
 
         ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByCompetitionId(RuntimeEnvironment.application, 0);
         stats.size();

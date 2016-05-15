@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
+import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 
@@ -36,7 +37,7 @@ public class AdapterDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setItems(new String[]{"Delete"}, new DialogInterface.OnClickListener() {
+        builder.setItems(new String[]{getString(R.string.delete)}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0){

@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -17,9 +16,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
-import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
-import fit.cvut.org.cz.squash.presentation.dialogs.NewMatchDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;

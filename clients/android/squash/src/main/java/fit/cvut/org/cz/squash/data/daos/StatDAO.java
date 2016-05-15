@@ -62,7 +62,7 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = convert(stat);
 
-        long id = db.insert(SDBConstants.tSTATS, null, cv);
+        db.insert(SDBConstants.tSTATS, null, cv);
         db.close();
     }
 
