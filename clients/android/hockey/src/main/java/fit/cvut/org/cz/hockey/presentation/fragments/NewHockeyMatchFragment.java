@@ -9,6 +9,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
 /**
+ * Fragment for creating new match or editing one
  * Created by atgot_000 on 10. 4. 2016.
  */
 public class NewHockeyMatchFragment extends NewMatchFragment {

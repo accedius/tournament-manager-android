@@ -16,6 +16,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
 /**
+ * Fragment for adding players
  * Created by atgot_000 on 15. 4. 2016.
  */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {

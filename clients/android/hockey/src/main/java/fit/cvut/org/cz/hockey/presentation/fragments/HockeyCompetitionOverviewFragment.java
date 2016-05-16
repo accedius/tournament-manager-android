@@ -8,6 +8,7 @@ import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
+ * Fragment for competition overview
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragment {

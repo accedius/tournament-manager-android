@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Fragmnet for list of teams in tournament
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyTeamsListFragment extends AbstractListFragment<Team> {

@@ -13,6 +13,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
+ * Activity for creating and modifying match
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class CreateMatchActivity extends AbstractToolbarActivity {

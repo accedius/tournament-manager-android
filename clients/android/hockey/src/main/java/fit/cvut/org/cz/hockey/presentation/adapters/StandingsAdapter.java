@@ -11,6 +11,7 @@ import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
+ * Adapter holding standings in tournament
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAdapter.StandingsViewHolder> {

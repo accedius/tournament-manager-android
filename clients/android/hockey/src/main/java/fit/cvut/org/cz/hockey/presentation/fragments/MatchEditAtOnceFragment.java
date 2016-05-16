@@ -16,6 +16,7 @@ import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.adapters.EditableStatsAdapter;
 
 /**
+ * Fragment for editing all stats in match at once
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class MatchEditAtOnceFragment extends Fragment {

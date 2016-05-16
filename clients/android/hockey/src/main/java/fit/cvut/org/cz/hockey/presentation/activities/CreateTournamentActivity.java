@@ -14,6 +14,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
+ * Activity for creating and modifying tournament
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {

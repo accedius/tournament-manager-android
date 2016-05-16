@@ -1,9 +1,9 @@
 package fit.cvut.org.cz.hockey.data;
 
 /**
+ * enumeration of statistics that are being saved
  * Created by atgot_000 on 19. 4. 2016.
  *
- * enumeration of statistics that are being saved
  */
 public enum StatsEnum {
     participates(true),

@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Fragment for list of tournaments in competition
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyTournamentsListFragment extends AbstractListFragment<Tournament> {

@@ -12,6 +12,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
+ * Activity for creating and modifying competition
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class CreateCompetitionActivity extends AbstractToolbarActivity {

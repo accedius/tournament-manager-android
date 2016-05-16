@@ -21,6 +21,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
 /**
+ * Activity for editing all stats in a match at once
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditAtOnceActivity extends AbstractToolbarActivity {

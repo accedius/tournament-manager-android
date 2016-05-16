@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 
 /**
+ * Fragment holding matches list header
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyMatchesListWrapperFragment extends MatchesListWrapperFragment {

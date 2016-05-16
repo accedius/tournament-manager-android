@@ -9,6 +9,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
 /**
+ * Fragment for creating new tournament or editing one
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class NewHockeyTournamentFragment extends NewTournamentFragment {

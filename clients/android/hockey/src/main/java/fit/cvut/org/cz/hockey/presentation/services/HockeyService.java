@@ -14,6 +14,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
+ * Exported service for core
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class HockeyService extends AbstractIntentServiceWProgress {

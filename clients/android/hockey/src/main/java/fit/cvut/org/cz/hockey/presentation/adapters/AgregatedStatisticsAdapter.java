@@ -11,6 +11,7 @@ import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
+ * Adapter holding aggregated statistics
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class AgregatedStatisticsAdapter extends AbstractListAdapter<AggregatedStatistics, AgregatedStatisticsAdapter.AgregatedStatisticsViewHolder> {

@@ -19,6 +19,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Fragment for match overview
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class HockeyMatchOverviewFragment extends AbstractDataFragment {

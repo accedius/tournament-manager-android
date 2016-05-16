@@ -11,6 +11,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Fragment holding the title in player stats
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class AgregStatsTitleFragment extends Fragment {

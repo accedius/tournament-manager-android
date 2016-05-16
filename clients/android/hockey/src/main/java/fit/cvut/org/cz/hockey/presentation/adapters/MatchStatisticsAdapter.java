@@ -22,6 +22,7 @@ import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
+ * Adapter holding match statistics for players
  * Created by atgot_000 on 23. 4. 2016.
  */
 public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStatistic, MatchStatisticsAdapter.MatchStatisticsViewHolder> {

@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Fragment holding aggregated stats
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedStatistics> {

@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
+ * Activity for showing tournament
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class ShowTournamentActivity extends AbstractTabActivity {

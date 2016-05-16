@@ -15,6 +15,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
+ * Activity for setting tournament configuration
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class TournamentConfigurationActivity extends AbstractToolbarActivity {

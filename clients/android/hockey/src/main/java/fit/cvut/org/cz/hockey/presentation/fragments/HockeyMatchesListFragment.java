@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Fragment for list of matches
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyMatchesListFragment extends AbstractListFragment<ScoredMatch> {

@@ -17,6 +17,7 @@ import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Fragment for configuring points in tournament
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class ConfigurePointsFragment extends AbstractDataFragment {

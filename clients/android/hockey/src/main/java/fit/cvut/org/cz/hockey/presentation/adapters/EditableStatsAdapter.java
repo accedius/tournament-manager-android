@@ -14,6 +14,7 @@ import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
+ * Adapter holding editable match statistics
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatistic, EditableStatsAdapter.EditableStatsViewHolder> {

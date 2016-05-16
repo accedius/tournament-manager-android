@@ -30,6 +30,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
 /**
+ * Activity showing match detail
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class ShowMatchActivity extends AbstractTabActivity {

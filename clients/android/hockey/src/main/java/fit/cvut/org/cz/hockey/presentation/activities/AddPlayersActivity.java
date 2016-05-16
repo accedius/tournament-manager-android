@@ -17,9 +17,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
 /**
- * Created by atgot_000 on 15. 4. 2016.
+ * Activity for adding players.
  *
- * Activitz for adding players
+ * Created by atgot_000 on 15. 4. 2016.
  */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
 

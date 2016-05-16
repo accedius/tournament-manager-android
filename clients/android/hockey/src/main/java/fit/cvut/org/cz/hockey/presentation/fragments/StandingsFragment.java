@@ -12,6 +12,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Fragment for standings in tournament
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsFragment extends AbstractListFragment<Standing> {

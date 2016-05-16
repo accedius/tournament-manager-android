@@ -29,6 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Fragment for player stats in match
  * Created by atgot_000 on 23. 4. 2016.
  */
 public class HockeyMatchStatsFragment extends AbstractDataFragment {
