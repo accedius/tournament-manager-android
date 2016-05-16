@@ -11,24 +11,22 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
-import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
-import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
-import fit.cvut.org.cz.squash.presentation.services.TournamentService;
+import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 
 /**
  * Created by Vaclav on 11. 4. 2016.
  */
-public class SelectTeamDialogImproved extends DialogFragment {
+public class SelectTeamDialog extends DialogFragment {
 
-    public SelectTeamDialogImproved(){}
+    public SelectTeamDialog(){}
     public static final String ARG_HOME_ID = "arg_home_id";
     public static final String ARG_AWAY_ID = "arg_away_id";
     public static final String ARG_HOME_NAME = "arg_home_name";
     public static final String ARG_AWAY_NAME = "arg_away_name";
 
-    public static SelectTeamDialogImproved newInstance(long homeId, long awayId, String homeName, String awayName){
-        SelectTeamDialogImproved fragment = new SelectTeamDialogImproved();
+    public static SelectTeamDialog newInstance(long homeId, long awayId, String homeName, String awayName){
+        SelectTeamDialog fragment = new SelectTeamDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_AWAY_ID, awayId);
         args.putLong(ARG_HOME_ID, homeId);
@@ -41,8 +39,8 @@ public class SelectTeamDialogImproved extends DialogFragment {
     private void homeClick(){
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, getArguments().getLong(ARG_HOME_ID));
         Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragmentImproved){
-            MatchPlayersFragmentImproved ifr = (MatchPlayersFragmentImproved) fr;
+        if (fr !=null && fr instanceof MatchPlayersFragment){
+            MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
             intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.homeAdapter.getData());
             ifr.startActivityForResult(intent, 0);
         }
@@ -50,8 +48,8 @@ public class SelectTeamDialogImproved extends DialogFragment {
     private void awayClick(){
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, getArguments().getLong(ARG_AWAY_ID));
         Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragmentImproved){
-            MatchPlayersFragmentImproved ifr = (MatchPlayersFragmentImproved) fr;
+        if (fr !=null && fr instanceof MatchPlayersFragment){
+            MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
             intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.awayAdapter.getData());
             ifr.startActivityForResult(intent, 1);
         }

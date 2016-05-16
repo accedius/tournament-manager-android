@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
+import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 
 /**
@@ -46,12 +46,12 @@ public class AdapterDialog extends DialogFragment {
                         if (fr instanceof SetsFragment){
                             ((SetsFragment)fr).adapter.deleteItem(getArguments().getInt(ARG_POSITION));
                         }
-                        if (fr instanceof MatchPlayersFragmentImproved){
+                        if (fr instanceof MatchPlayersFragment){
                             if (getArguments().getInt(ARG_OPTION) == 0){
-                                ((MatchPlayersFragmentImproved)fr).homeAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                                ((MatchPlayersFragment)fr).homeAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
                             }
                             else
-                                ((MatchPlayersFragmentImproved)fr).awayAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                                ((MatchPlayersFragment)fr).awayAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
                         }
                     }
                 }

@@ -76,6 +76,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                 if (fr != null){
                     if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).customOnResume();
                     if (fr instanceof MatchesListWrapperFragment) ((MatchesListWrapperFragment) fr).refresh();
+                    if (fr instanceof StandingsWrapperFragment) ((StandingsWrapperFragment) fr).refresh();
                 }
             }
 

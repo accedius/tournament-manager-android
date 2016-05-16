@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 
 /**
@@ -41,6 +42,11 @@ public class StandingsWrapperFragment extends Fragment {
                     StandingsListFragment.newInstance(getArguments().getLong(ARG_ID)))
                     .commit();
         }
+    }
+
+    public void refresh(){
+        AbstractDataFragment fragment = (AbstractDataFragment) getChildFragmentManager().findFragmentById(R.id.fragment_container2);
+        if (fragment != null) fragment.customOnResume();
     }
 
 }

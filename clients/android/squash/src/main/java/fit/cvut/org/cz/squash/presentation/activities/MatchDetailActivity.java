@@ -2,13 +2,10 @@ package fit.cvut.org.cz.squash.presentation.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +14,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
-import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragmentImproved;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
@@ -25,7 +21,6 @@ import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
  * Created by Vaclav on 24. 4. 2016.
@@ -58,7 +53,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
         else{
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[] {SetsFragment.newInstance(id, played),
-                                    MatchPlayersFragmentImproved.newInstance(id)
+                                    MatchPlayersFragment.newInstance(id)
                     },
                     new String[] {getString(R.string.sets),
                             getString(R.string.rosters)
@@ -105,7 +100,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
             }
 
             if (adapter.getCount() > 1){
-                MatchPlayersFragmentImproved mfr = (MatchPlayersFragmentImproved) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
+                MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
                 if (mfr != null){
                     ArrayList<Player> players = mfr.getAwayPlayers();
                     Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
