@@ -29,6 +29,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Displays roster in match detail
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchPlayersFragment extends AbstractDataFragment {

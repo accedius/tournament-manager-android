@@ -24,6 +24,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 
 /**
+ * This acitivity includes all necessary fragments to display Detail of tournament
  * Created by Vaclav on 10. 4. 2016.
  */
 public class TournamentDetailActivity extends AbstractTabActivity {

@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.squash.data;
 
 /**
+ * This class contains table names and columns used in database specific for thi module
  * Created by Vaclav on 19. 4. 2016.
  */
 public class SDBConstants {

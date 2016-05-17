@@ -22,6 +22,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
+ * This activity contains tabs that are needed to display all info about competition
+ * thus, Overview, Tournamets and Stats and players
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CompetitionDetailActivity extends AbstractTabActivity {

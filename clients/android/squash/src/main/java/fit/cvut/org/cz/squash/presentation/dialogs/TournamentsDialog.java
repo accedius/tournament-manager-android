@@ -13,7 +13,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
-/**
+/** Dialog that allows to edit or delete tournament
  * Created by Vaclav on 11. 4. 2016.
  */
 public class TournamentsDialog extends DialogFragment {

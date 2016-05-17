@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.squash.data.entities;
 
 /**
+ * Represent statistic on data layer
  * Created by Vaclav on 21. 4. 2016.
  */
 public class DStat {
@@ -47,6 +48,9 @@ public class DStat {
         this.tournamentId = tournamentId;
     }
 
+    /**
+     * @return id or -1 if null in DB
+     */
     public long getPlayerId() {
         return playerId;
     }
@@ -63,6 +67,10 @@ public class DStat {
         this.participantId = participantId;
     }
 
+    /**
+     *
+     * @return if type is MATCH 1 for win 0 for draw -1 for loss, if type is SET 1 for win -1 for loss
+     */
     public int getStatus() {
         return status;
     }
@@ -71,6 +79,10 @@ public class DStat {
         this.status = status;
     }
 
+    /**
+     * Only valid if type is SET
+     * @return value or -1 if null
+     */
     public int getLostValue() {
         return lostValue;
     }
@@ -79,6 +91,10 @@ public class DStat {
         this.lostValue = lostValue;
     }
 
+    /**
+     * Only valid if type is SET
+     * @return value or -1 if null
+     */
     public int getValue() {
         return value;
     }

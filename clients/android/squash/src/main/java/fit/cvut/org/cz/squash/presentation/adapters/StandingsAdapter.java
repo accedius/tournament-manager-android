@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-/**
+/**Adapter displaying standings of tournament
  * Created by Vaclav on 7. 4. 2016.
  */
 public class StandingsAdapter extends AbstractListAdapter<StandingItem, StandingsAdapter.StandingItemViewHolder> {

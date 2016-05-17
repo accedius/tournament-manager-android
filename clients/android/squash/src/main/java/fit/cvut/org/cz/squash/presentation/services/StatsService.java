@@ -8,6 +8,7 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
+ * Handles request belonging to Statistics
  * Created by Vaclav on 3. 4. 2016.
  */
 public class StatsService extends AbstractIntentServiceWProgress {

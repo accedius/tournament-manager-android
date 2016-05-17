@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.squash.data.entities;
 
 /**
+ * Represents configuration of tournament on data layer. Methods return how many points should be awarded
  * Created by Vaclav on 19. 4. 2016.
  */
 public class DPointConfig {

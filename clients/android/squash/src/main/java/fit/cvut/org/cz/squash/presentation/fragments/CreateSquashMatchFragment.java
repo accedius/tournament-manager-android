@@ -8,7 +8,7 @@ import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
-/**
+/**Allows user to edit or create match
  * Created by Vaclav on 20. 4. 2016.
  */
 public class CreateSquashMatchFragment extends NewMatchFragment {

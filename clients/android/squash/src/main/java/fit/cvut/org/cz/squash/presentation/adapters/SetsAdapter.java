@@ -16,7 +16,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-/**
+/**Adapter holding sets for match, it allows user to change content of sets
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.SetRowItemVH> {

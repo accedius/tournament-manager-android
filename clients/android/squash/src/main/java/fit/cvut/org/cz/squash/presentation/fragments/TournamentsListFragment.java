@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Allows usser to display tournaments in competition
  * Created by Vaclav on 5. 4. 2016.
  */
 public class TournamentsListFragment extends AbstractListFragment<Tournament> {

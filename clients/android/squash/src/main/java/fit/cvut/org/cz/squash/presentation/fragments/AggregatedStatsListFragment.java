@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Displays list of aggregated statistics for tournament or competition
  * Created by Vaclav on 5. 4. 2016.
  */
 public class AggregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {

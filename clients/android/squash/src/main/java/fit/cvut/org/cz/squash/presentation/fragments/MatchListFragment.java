@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Displays list matches in tournament
  * Created by Vaclav on 10. 4. 2016.
  */
 public class MatchListFragment extends AbstractListFragment<ScoredMatch> {

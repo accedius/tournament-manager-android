@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Allows usser to display teams in tournament
  * Created by Vaclav on 13. 4. 2016.
  */
 public class TeamsListFragment extends AbstractListFragment<Team> {

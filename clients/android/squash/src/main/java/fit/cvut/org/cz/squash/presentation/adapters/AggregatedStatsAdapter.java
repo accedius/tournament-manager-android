@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-/**
+/**Adapter holding aggregated statistics
  * Created by Vaclav on 7. 4. 2016.
  */
 public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AggregatedStatsAdapter.AgregatedStatsViewHolder> {

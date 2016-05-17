@@ -16,6 +16,7 @@ import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 
 /**
+ * Allows Core to delete Competition and get stats for player
  * Created by Vaclav on 6. 5. 2016.
  */
 public class SquashExportedService extends IntentService {

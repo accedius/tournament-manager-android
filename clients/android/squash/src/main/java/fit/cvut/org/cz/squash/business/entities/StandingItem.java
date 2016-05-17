@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Class holds how individual participant does in tournament
+ * this defines order
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingItem implements Parcelable {

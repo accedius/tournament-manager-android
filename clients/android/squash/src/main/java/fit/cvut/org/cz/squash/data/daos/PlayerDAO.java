@@ -20,6 +20,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 
 /**
+ *
+ * Provides implementation of interface over SQLite database
  * Created by Vaclav on 5. 4. 2016.
  */
 public class PlayerDAO implements IPackagePlayerDAO {

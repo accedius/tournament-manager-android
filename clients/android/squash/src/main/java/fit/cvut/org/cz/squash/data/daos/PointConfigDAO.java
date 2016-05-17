@@ -12,6 +12,7 @@ import fit.cvut.org.cz.squash.data.interfaces.IPointConfigDAO;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
+ * Provides implementation of interface over SQLite database
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigDAO implements IPointConfigDAO {

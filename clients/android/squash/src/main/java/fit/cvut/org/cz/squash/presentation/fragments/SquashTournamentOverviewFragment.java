@@ -11,6 +11,7 @@ import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
+ * Allows usser to display tournament overview
  * Created by Vaclav on 13. 4. 2016.
  */
 public class SquashTournamentOverviewFragment extends TournamentOverviewFragment {

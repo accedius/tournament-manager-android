@@ -17,12 +17,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 
-/**
+/** Provides implementation of interface over SQLite database
  * Created by Vaclav on 21. 4. 2016.
  */
 public class MatchDAO implements IMatchDAO {
 
-    public ContentValues convert(DMatch match){
+    private ContentValues convert(DMatch match){
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cROUND, match.getRound());
         cv.put(DBConstants.cPERIOD, match.getPeriod());

@@ -11,6 +11,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
+ * Handles request belonging to Teams
  * Created by Vaclav on 3. 4. 2016.
  */
 public class TeamService extends AbstractIntentServiceWProgress {

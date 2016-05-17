@@ -3,6 +3,7 @@ package fit.cvut.org.cz.squash.data;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
+ * Thia class contains scripts to create db tables specific for this modules
  * Created by Vaclav on 19. 4. 2016.
  */
 public class SDBScripts {

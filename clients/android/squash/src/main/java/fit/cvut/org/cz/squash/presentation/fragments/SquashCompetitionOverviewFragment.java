@@ -8,6 +8,7 @@ import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
+ * Displays overview of competition
  * Created by Vaclav on 5. 4. 2016.
  */
 public class SquashCompetitionOverviewFragment extends CompetitionOverviewFragment {

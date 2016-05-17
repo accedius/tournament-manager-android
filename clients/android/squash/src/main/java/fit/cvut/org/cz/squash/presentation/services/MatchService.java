@@ -18,6 +18,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
+ * Handles request belonging to Matches
  * Created by Vaclav on 3. 4. 2016.
  */
 public class MatchService extends AbstractIntentServiceWProgress {

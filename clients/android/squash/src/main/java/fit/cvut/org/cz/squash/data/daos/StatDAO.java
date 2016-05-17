@@ -15,6 +15,7 @@ import fit.cvut.org.cz.squash.data.interfaces.IStatDAO;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
+ * Provides implementation of interface over SQLite database
  * Created by Vaclav on 21. 4. 2016.
  */
 public class StatDAO implements IStatDAO {

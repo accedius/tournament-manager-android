@@ -11,7 +11,8 @@ import fit.cvut.org.cz.squash.presentation.fragments.SquashTeamDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
-/**
+/**This Activity accomodates PointConfigFragment
+ * @see fit.cvut.org.cz.squash.presentation.fragments.PointConfigFragment
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigActivity extends AbstractToolbarActivity {

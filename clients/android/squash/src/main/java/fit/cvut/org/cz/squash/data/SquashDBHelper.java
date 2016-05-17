@@ -10,6 +10,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 
 /**
+ * Helper class that is responsible for creating and managing apllication database and allows us acsess to it
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SQLiteOpenHelper {

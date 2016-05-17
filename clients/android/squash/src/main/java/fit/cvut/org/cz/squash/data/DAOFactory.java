@@ -18,6 +18,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 /**
+ * This pseudo factory returns all databsse implementatios of stored interfaces
  * Created by Vaclav on 29. 3. 2016.
  */
 public class DAOFactory {

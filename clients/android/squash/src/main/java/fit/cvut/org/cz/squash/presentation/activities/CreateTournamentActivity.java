@@ -15,6 +15,7 @@ import fit.cvut.org.cz.squash.presentation.fragments.NewSquashTournametFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
+ * This Activity accomodates NewSquashTournamentFragment
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {

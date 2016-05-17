@@ -12,6 +12,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 
 /**
+ * Header for standings list
  * Created by Vaclav on 10. 4. 2016.
  */
 public class StandingsWrapperFragment extends Fragment {

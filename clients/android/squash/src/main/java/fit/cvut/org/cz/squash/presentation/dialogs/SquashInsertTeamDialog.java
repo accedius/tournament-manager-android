@@ -8,7 +8,7 @@ import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
-/**
+/** Dialog for creating or editing team
  * Created by Vaclav on 14. 4. 2016.
  */
 public class SquashInsertTeamDialog extends InsertTeamDialog {

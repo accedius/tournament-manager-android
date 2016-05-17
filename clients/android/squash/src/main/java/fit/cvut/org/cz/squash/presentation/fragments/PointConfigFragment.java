@@ -17,6 +17,7 @@ import fit.cvut.org.cz.squash.presentation.services.PointConfigService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
+ * Allows user to change point cfg for Tournament
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigFragment extends AbstractDataFragment {

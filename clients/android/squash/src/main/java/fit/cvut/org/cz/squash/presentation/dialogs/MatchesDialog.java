@@ -14,7 +14,7 @@ import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
-/**
+/** Dialog that allows user to Edit, Reset or Delete match
  * Created by Vaclav on 11. 4. 2016.
  */
 public class MatchesDialog extends DialogFragment {

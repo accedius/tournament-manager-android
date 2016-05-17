@@ -23,6 +23,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
 /**
+ * This activity accomodates all fragments to display detail of match.
+ * So either SetsListFragment alone or together with MatchPlayersFragment
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchDetailActivity extends AbstractTabActivity {

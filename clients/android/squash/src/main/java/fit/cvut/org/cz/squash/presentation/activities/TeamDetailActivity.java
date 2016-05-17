@@ -16,6 +16,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
 /**
+ * This activity accomodates TeamDetailFragment
  * Created by Vaclav on 15. 4. 2016.
  */
 public class TeamDetailActivity extends AbstractToolbarActivity {

@@ -14,7 +14,7 @@ import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
-/**
+/**Dialog, that allows user to specify if he wants to add match manually or to add round of matches
  * Created by Vaclav on 11. 4. 2016.
  */
 public class AddMatchDialog extends DialogFragment {

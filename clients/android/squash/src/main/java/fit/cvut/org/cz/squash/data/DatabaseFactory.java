@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * This class allows acess to application database
  * Created by Vaclav on 29. 3. 2016.
  */
 public class DatabaseFactory {

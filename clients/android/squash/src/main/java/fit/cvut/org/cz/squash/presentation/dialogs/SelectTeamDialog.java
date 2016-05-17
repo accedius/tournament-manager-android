@@ -14,7 +14,7 @@ import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 
-/**
+/** Dialog that specifies to which team players should be added in match rosters
  * Created by Vaclav on 11. 4. 2016.
  */
 public class SelectTeamDialog extends DialogFragment {
@@ -37,7 +37,7 @@ public class SelectTeamDialog extends DialogFragment {
     }
 
     private void homeClick(){
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, getArguments().getLong(ARG_HOME_ID));
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_HOME_ID));
         Fragment fr = getTargetFragment();
         if (fr !=null && fr instanceof MatchPlayersFragment){
             MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
@@ -46,7 +46,7 @@ public class SelectTeamDialog extends DialogFragment {
         }
     }
     private void awayClick(){
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, getArguments().getLong(ARG_AWAY_ID));
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_AWAY_ID));
         Fragment fr = getTargetFragment();
         if (fr !=null && fr instanceof MatchPlayersFragment){
             MatchPlayersFragment ifr = (MatchPlayersFragment) fr;

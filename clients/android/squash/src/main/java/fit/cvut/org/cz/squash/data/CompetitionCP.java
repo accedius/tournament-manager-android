@@ -13,6 +13,8 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 
 /**
+ * This provider allows core to get hold of data about competitions
+ * only query is implemented
  * Created by Vaclav on 25. 3. 2016.
  */
 public class CompetitionCP extends ContentProvider {

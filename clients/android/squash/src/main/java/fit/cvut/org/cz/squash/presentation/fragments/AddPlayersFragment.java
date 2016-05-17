@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.SelectPlayersAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
-/**
+/** Fragment that allows user to select players and then returns them
  * Created by Vaclav on 12. 4. 2016.
  */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {

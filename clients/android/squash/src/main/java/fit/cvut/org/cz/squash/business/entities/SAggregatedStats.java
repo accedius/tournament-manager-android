@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Class that holds aggregated statistics
+ * Represents computed statistics for one pleyer across some set of data
  * Created by Vaclav on 7. 4. 2016.
  */
 public class SAggregatedStats implements Parcelable {

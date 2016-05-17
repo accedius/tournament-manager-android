@@ -17,6 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
 
 /**
+ * Provides implementation of interface over SQLite database
  * Created by Vaclav on 29. 3. 2016.
  */
 public class CompetitionDAO implements ICompetitionDAO {

@@ -13,6 +13,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
+ * Handles request belonging to Competitions
  * Created by Vaclav on 28. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress{

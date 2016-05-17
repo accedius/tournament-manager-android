@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Class that holds how sets were played
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetRowItem implements Parcelable {
@@ -63,6 +64,10 @@ public class SetRowItem implements Parcelable {
         this.awayScore = awayScore;
     }
 
+    /**
+     *
+     * @return 1 if winner is home or -1 if winner is away
+     */
     public int getWinner() {
         return winner;
     }

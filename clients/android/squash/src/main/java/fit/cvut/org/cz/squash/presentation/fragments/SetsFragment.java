@@ -20,6 +20,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
+ * Allows user to manage sets for match
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetsFragment extends AbstractListFragment<SetRowItem> {

@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
-/**
+/**Allows user to display and manage team
  * Created by Vaclav on 15. 4. 2016.
  */
 public class SquashTeamDetailFragment extends TeamDetailFragment {

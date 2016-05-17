@@ -15,6 +15,7 @@ import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 
 /**
+ * Dialog that allows to remove player from competition or tournament
  * Created by Vaclav on 11. 4. 2016.
  */
 public class AggregatedStatsDialog extends DialogFragment {

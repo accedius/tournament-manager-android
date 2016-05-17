@@ -13,6 +13,8 @@ import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 
 /**
+ * Dialog that is bound to MatchPlayersFragment or SetsFragment and allows user to delete
+ * data from their adapters
  * Created by Vaclav on 11. 4. 2016.
  */
 public class AdapterDialog extends DialogFragment {

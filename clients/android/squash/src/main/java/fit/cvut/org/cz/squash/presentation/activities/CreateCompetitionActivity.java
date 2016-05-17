@@ -13,6 +13,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
+ * This activty acommodates NewSquashCompetitionFragment
  * Created by Vaclav on 28. 3. 2016.
  */
 public class CreateCompetitionActivity extends AbstractToolbarActivity {

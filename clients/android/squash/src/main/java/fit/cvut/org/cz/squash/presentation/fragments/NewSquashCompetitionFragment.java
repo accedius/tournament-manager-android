@@ -9,6 +9,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
+ * Allows user to create or edit Competition
  * Created by Vaclav on 28. 3. 2016.
  */
 public class NewSquashCompetitionFragment extends NewCompetitionFragment {

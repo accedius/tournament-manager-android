@@ -16,6 +16,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 /**
+ * Provides implementation of interface over SQLite database
  * Created by Vaclav on 29. 3. 2016.
  */
 public class TournamentDAO implements ITournamentDAO {

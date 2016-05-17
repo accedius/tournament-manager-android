@@ -15,7 +15,7 @@ import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
-/**
+/** Dialog that allows to delete team
  * Created by Vaclav on 11. 4. 2016.
  */
 public class TeamsDialog extends DialogFragment {

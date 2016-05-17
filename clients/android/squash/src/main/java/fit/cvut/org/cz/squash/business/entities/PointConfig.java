@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import fit.cvut.org.cz.squash.data.entities.DPointConfig;
 
 /**
+ * Represents point configuration for tournament
+ * methods return how much points should be awarded
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfig implements Parcelable {

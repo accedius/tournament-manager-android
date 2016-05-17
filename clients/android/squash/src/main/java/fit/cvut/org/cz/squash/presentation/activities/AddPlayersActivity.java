@@ -12,12 +12,21 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
 /**
+ * This activty allows user to specify list of players to be added to competition,
+ * tournament, team, or match roaster and then returns this list
  * Created by Vaclav on 12. 4. 2016.
  */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
 
     public static final String EXTRA_OPTION = "extra_option_key";
 
+    /**
+     *
+     * @param c
+     * @param option is passed to accomodated fragment and should specify which players should fragment display
+     * @param id
+     * @return
+     */
     public static Intent newStartIntent(Context c, int option, long id){
 
         Intent intent = new Intent(c, AddPlayersActivity.class);
