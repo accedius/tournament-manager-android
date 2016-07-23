@@ -35,12 +35,6 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         switch (action){
             case ACTION_GET_STATS_BY_COMPETITION:{
 
