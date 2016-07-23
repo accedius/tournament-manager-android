@@ -52,7 +52,6 @@ public class SquashExportedService extends IntentService {
                 for (SAggregatedStats stat : stats){
 
                     PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
-                    exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.name), stat.playerName, true));
                     exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.wins), Integer.toString(stat.won), true));
                     exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.loses), Integer.toString(stat.lost), true));
                     exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.draws), Integer.toString(stat.draws), true));
