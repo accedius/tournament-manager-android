@@ -14,16 +14,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Fragment holding the title in player stats
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class AgregStatsTitleFragment extends Fragment {
+public class AggregStatsTitleFragment extends Fragment {
 
     private long competitionID;
     private long tournamentID;
     private static String ARG_COMP_ID = "competition_id";
     private static String ARG_TOUR_ID = "tournament_id";
 
-    public static AgregStatsTitleFragment newInstance( long id, boolean forComp )
+    public static AggregStatsTitleFragment newInstance( long id, boolean forComp )
     {
-        AgregStatsTitleFragment fragment = new AgregStatsTitleFragment();
+        AggregStatsTitleFragment fragment = new AggregStatsTitleFragment();
         Bundle args = new Bundle();
 
         if( forComp ) args.putLong(ARG_COMP_ID, id);

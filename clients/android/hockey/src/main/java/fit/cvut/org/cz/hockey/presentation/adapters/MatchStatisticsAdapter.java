@@ -1,10 +1,5 @@
 package fit.cvut.org.cz.hockey.presentation.adapters;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.presentation.dialogs.EditStatsDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.PlayerMatchStatDialog;
-import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**

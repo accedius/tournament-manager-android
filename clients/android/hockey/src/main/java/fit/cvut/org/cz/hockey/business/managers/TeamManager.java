@@ -9,7 +9,6 @@ import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**

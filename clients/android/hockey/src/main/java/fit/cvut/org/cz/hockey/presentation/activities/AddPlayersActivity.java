@@ -2,17 +2,12 @@ package fit.cvut.org.cz.hockey.presentation.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 

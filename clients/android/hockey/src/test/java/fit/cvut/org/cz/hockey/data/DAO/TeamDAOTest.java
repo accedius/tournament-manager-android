@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 import static org.junit.Assert.*;
 

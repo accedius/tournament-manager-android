@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 
 /**

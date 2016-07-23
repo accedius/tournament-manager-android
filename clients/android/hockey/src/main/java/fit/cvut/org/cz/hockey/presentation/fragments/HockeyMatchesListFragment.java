@@ -2,7 +2,6 @@ package fit.cvut.org.cz.hockey.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;

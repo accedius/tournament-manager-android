@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 
 /**
  * This provider allows core to get hold of data about competitions

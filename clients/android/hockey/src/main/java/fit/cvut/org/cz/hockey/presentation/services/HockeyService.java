@@ -2,8 +2,6 @@ package fit.cvut.org.cz.hockey.presentation.services;
 
 import android.content.Intent;
 
-import java.util.ArrayList;
-
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;

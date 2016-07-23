@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;

@@ -1,12 +1,6 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

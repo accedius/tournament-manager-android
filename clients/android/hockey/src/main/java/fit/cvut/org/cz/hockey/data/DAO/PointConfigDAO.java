@@ -9,7 +9,6 @@ import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
 import fit.cvut.org.cz.hockey.data.interfaces.IPointConfigDAO;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.

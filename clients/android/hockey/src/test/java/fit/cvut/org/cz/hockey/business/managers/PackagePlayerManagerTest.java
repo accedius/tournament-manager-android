@@ -13,7 +13,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
@@ -21,9 +20,9 @@ import fit.cvut.org.cz.hockey.data.DAO.PackagePlayerDAO;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
-import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by atgot_000 on 5. 5. 2016.

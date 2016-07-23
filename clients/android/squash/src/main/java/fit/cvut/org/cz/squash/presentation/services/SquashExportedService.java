@@ -3,12 +3,10 @@ package fit.cvut.org.cz.squash.presentation.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
-
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStats;

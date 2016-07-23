@@ -1,16 +1,10 @@
 package fit.cvut.org.cz.squash;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -20,7 +14,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SDBConstants;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 

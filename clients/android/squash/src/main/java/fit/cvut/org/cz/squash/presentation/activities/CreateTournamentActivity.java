@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.presentation.fragments.NewSquashCompetitionFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashTournametFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 

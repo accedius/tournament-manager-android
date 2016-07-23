@@ -1,21 +1,15 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**

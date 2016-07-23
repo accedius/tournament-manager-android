@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
-import fit.cvut.org.cz.hockey.business.managers.MatchManager;
-import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;

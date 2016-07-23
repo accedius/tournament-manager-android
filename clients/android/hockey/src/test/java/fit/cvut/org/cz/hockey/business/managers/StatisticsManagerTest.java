@@ -44,8 +44,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IStatDAO;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by atgot_000 on 5. 5. 2016.

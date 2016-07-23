@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.PointConfig;
+import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.business.interfaces.IStatsManager;

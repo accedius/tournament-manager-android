@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;

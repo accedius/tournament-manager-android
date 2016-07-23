@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-
 import org.mockito.Mockito;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -26,7 +24,6 @@ import fit.cvut.org.cz.hockey.data.DAO.TeamDAO;
 import fit.cvut.org.cz.hockey.data.DAO.TournamentDAO;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
@@ -39,6 +36,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by atgot_000 on 5. 5. 2016.

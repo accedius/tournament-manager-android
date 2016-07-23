@@ -11,7 +11,6 @@ import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 
 /**

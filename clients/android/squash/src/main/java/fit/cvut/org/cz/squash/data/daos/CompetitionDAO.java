@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Date;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
 

@@ -2,22 +2,18 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStats;

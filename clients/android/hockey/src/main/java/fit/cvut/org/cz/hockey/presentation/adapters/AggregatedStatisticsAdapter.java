@@ -19,7 +19,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
     @Override
     public AggregatedStatisticsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AggregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_agreg_stats, parent, false));
+        return new AggregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_aggreg_stats, parent, false));
     }
 
     @Override

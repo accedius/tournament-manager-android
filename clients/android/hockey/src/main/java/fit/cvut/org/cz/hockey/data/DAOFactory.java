@@ -2,11 +2,11 @@ package fit.cvut.org.cz.hockey.data;
 
 import fit.cvut.org.cz.hockey.data.DAO.CompetitionDAO;
 import fit.cvut.org.cz.hockey.data.DAO.MatchDAO;
+import fit.cvut.org.cz.hockey.data.DAO.MatchStatisticsDAO;
 import fit.cvut.org.cz.hockey.data.DAO.PackagePlayerDAO;
 import fit.cvut.org.cz.hockey.data.DAO.ParticipantDAO;
 import fit.cvut.org.cz.hockey.data.DAO.PointConfigDAO;
 import fit.cvut.org.cz.hockey.data.DAO.StatDAO;
-import fit.cvut.org.cz.hockey.data.DAO.MatchStatisticsDAO;
 import fit.cvut.org.cz.hockey.data.DAO.TeamDAO;
 import fit.cvut.org.cz.hockey.data.DAO.TournamentDAO;
 import fit.cvut.org.cz.hockey.data.interfaces.IMatchStatisticsDAO;

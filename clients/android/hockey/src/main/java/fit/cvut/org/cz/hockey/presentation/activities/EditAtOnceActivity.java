@@ -18,7 +18,6 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.presentation.fragments.MatchEditAtOnceFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
 /**
  * Activity for editing all stats in a match at once

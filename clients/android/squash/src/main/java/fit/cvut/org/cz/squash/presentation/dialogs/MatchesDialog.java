@@ -10,9 +10,7 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
-import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
 /** Dialog that allows user to Edit, Reset or Delete match
  * Created by Vaclav on 11. 4. 2016.

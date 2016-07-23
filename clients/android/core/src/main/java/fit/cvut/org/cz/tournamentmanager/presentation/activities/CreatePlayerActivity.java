@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.NewPlayerFragment;

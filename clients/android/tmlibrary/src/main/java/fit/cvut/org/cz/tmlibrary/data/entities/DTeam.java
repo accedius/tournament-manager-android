@@ -1,12 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.data.entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.ArrayList;
 import java.util.Date;
-
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 
 /**
  * Created by Vaclav on 12. 3. 2016.

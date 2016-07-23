@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.fragments.PointConfigFragment;
-import fit.cvut.org.cz.squash.presentation.fragments.SquashTeamDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
 /**This Activity accomodates PointConfigFragment
  * @see fit.cvut.org.cz.squash.presentation.fragments.PointConfigFragment

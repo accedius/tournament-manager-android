@@ -11,18 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
+import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentOverviewFragment;
-import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
-import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
@@ -48,7 +45,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players), getString(R.string.header_teams), getString(R.string.header_matches), getString(R.string.header_standings) };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );
-        Fragment f2 = AgregStatsTitleFragment.newInstance( tournamentID, false );
+        Fragment f2 = AggregStatsTitleFragment.newInstance(tournamentID, false);
         Fragment f3 = HockeyTeamsListFragment.newInstance( tournamentID );
         Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
         Fragment f5 = StandingsStatsTitleFragment.newInstance( tournamentID );
@@ -71,8 +68,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                         ((MatchesListWrapperFragment) fr).refresh();
                     if (fr instanceof StandingsStatsTitleFragment)
                         ((StandingsStatsTitleFragment) fr).refresh();
-                    if (fr instanceof AgregStatsTitleFragment)
-                        ((AgregStatsTitleFragment) fr).refresh();
+                    if (fr instanceof AggregStatsTitleFragment)
+                        ((AggregStatsTitleFragment) fr).refresh();
                 }
             }
 

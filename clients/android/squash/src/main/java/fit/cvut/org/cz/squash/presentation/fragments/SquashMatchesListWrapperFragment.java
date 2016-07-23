@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.squash.presentation.fragments;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;

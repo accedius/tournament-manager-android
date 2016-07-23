@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;

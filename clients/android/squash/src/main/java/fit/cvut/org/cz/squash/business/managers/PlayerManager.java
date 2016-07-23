@@ -3,7 +3,6 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
@@ -15,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by Vaclav on 5. 4. 2016.

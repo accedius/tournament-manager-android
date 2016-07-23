@@ -7,14 +7,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.business.entities.PointConfig;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;

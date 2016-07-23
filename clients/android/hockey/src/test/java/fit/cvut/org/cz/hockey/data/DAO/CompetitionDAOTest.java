@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.hockey.data.DAO;
 
-import android.content.Context;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;

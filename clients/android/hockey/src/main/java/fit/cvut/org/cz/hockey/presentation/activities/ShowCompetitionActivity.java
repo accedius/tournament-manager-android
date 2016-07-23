@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.presentation.fragments.AgregStatsTitleFragment;
+import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
@@ -42,7 +42,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
-        Fragment f3 = AgregStatsTitleFragment.newInstance( competitionID, true );
+        Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
         fragments = new Fragment[]{ f1, f2, f3 };
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

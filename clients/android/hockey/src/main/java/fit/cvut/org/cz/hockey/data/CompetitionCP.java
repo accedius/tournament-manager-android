@@ -7,11 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 
 /**
  * Created by Vaclav on 25. 3. 2016.

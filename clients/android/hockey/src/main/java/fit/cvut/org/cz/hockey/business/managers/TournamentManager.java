@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;

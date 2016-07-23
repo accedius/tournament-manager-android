@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.presentation.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 

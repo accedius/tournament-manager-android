@@ -14,12 +14,10 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerCompetitionsListFragment;
-import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
-import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerStatsFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**

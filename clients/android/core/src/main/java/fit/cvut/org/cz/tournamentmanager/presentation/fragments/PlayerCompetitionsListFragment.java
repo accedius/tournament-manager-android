@@ -14,11 +14,10 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
-import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
-import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
  * Created by atgot_000 on 29. 3. 2016.

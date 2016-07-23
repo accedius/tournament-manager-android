@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * This class allows acess to application database

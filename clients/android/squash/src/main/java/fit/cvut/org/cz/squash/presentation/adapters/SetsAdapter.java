@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.squash.presentation.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import java.text.ParseException;
-import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;

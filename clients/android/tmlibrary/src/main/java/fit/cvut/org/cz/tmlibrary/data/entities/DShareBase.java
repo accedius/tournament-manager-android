@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.data.entities;
 
-import android.os.Parcelable;
-
 import java.util.Date;
 
 /**
