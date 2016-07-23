@@ -13,18 +13,18 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 /**Adapter holding aggregated statistics
  * Created by Vaclav on 7. 4. 2016.
  */
-public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AggregatedStatsAdapter.AgregatedStatsViewHolder> {
+public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AggregatedStatsAdapter.AggregatedStatsViewHolder> {
 
 
     @Override
-    public AgregatedStatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AgregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_agregated_stats, parent, false));
+    public AggregatedStatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new AggregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_aggregated_stats, parent, false));
     }
 
     protected void setOnClickListeners(View v, SAggregatedStats item, int position) {}
 
     @Override
-    public void onBindViewHolder(AgregatedStatsViewHolder holder, int position) {
+    public void onBindViewHolder(AggregatedStatsViewHolder holder, int position) {
 
         SAggregatedStats stats = data.get(position);
         holder.name.setText(stats.playerName);
@@ -46,13 +46,13 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
         setOnClickListeners(holder.wholeView, stats, position);
     }
 
-    public class AgregatedStatsViewHolder extends RecyclerView.ViewHolder{
+    public class AggregatedStatsViewHolder extends RecyclerView.ViewHolder{
 
         public long id;
         public View wholeView;
         TextView name, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
 
-        public AgregatedStatsViewHolder(View itemView) {
+        public AggregatedStatsViewHolder(View itemView) {
             super(itemView);
             wholeView = itemView;
 

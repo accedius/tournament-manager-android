@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
-import fit.cvut.org.cz.hockey.presentation.adapters.AgregatedStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.adapters.AggregatedStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
@@ -82,7 +82,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new AgregatedStatisticsAdapter(){
+        return new AggregatedStatisticsAdapter(){
             @Override
             protected void setOnClickListeners(View v, long playerId) {
 

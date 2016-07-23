@@ -159,7 +159,7 @@ public class StatisticsManagerTest {
     }
 
     @Test
-    public void testGetAllAgregated() throws Exception {
+    public void testGetAllAggregated() throws Exception {
         when(mockPlayerManager.getAllPlayers(RuntimeEnvironment.application)).thenReturn(players);
         ArrayList<DStat> playerStat;
         playerStat = getPlayerStats(1, allStats);

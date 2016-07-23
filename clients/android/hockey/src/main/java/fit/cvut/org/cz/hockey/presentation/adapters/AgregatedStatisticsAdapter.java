@@ -14,16 +14,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Adapter holding aggregated statistics
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class AgregatedStatisticsAdapter extends AbstractListAdapter<AggregatedStatistics, AgregatedStatisticsAdapter.AgregatedStatisticsViewHolder> {
+public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedStatistics, AggregatedStatisticsAdapter.AggregatedStatisticsViewHolder> {
 
 
     @Override
-    public AgregatedStatisticsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AgregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_agreg_stats, parent, false));
+    public AggregatedStatisticsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new AggregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_agreg_stats, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(AgregatedStatisticsViewHolder holder, int position) {
+    public void onBindViewHolder(AggregatedStatisticsViewHolder holder, int position) {
         AggregatedStatistics stats = data.get( position );
         holder.name.setText(stats.getPlayerName());
         holder.W.setText(Long.toString(stats.getWins()));
@@ -52,13 +52,13 @@ public class AgregatedStatisticsAdapter extends AbstractListAdapter<AggregatedSt
      */
     protected void setOnClickListeners( View v, long playerId ) {};
 
-    public class AgregatedStatisticsViewHolder extends RecyclerView.ViewHolder
+    public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder
     {
         public long id;
         TextView name, M, W, L, D, G, A, P, PMP, TP, AG, AP, APMP, ATP, I;
         public View wholeView;
 
-        public AgregatedStatisticsViewHolder(View itemView) {
+        public AggregatedStatisticsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
