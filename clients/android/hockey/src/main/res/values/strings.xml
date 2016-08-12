@@ -42,8 +42,7 @@
     <string name="tp">TP</string>
     <string name="ag">AvgG</string>
     <string name="ap">AvgP</string>
-    <string name="gg">GG</string>
-    <string name="gr">GR</string>
+    <string name="score">Score</string>
     <string name="apmp">Avg+/-</string>
     <string name="atp">AvgTP</string>
     <string name="normal_time">Normal time</string>

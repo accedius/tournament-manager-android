@@ -9,8 +9,7 @@
     <string name="atp">PrumTB</string>
     <string name="d">R</string>
     <string name="g">G</string>
-    <string name="gg">G+</string>
-    <string name="gr">G-</string>
+    <string name="score">Skóre</string>
     <string name="goals">Góly</string>
     <string name="gp">Hry</string>
     <string name="i">Z</string>

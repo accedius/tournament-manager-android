@@ -29,15 +29,14 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         holder.W.setText(Long.toString(stats.getWins()));
         holder.L.setText(Long.toString(stats.getLosses()));
         holder.D.setText(Long.toString(stats.getDraws()));
-        holder.GG.setText(Long.toString(stats.getGoalsGiven()));
-        holder.GR.setText(Long.toString(stats.getGoalsReceived()));
+        holder.SCORE.setText(Long.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
         holder.P.setText(Long.toString(stats.getPoints()));
     }
 
     public class StandingsViewHolder extends RecyclerView.ViewHolder
     {
         public long id;
-        TextView name, W, L, D, GG, GR, P;
+        TextView name, W, L, D, SCORE, P;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
@@ -46,8 +45,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
             W = (TextView) itemView.findViewById(R.id.as_wins);
             L = (TextView) itemView.findViewById(R.id.as_losses);
             D = (TextView) itemView.findViewById(R.id.as_draws);
-            GG = (TextView) itemView.findViewById(R.id.as_goals_given);
-            GR = (TextView) itemView.findViewById(R.id.as_goals_received);
+            SCORE = (TextView) itemView.findViewById(R.id.as_score);
             P = (TextView) itemView.findViewById(R.id.as_points);
         }
     }

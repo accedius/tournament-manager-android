@@ -11,7 +11,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/tv_name"
-            android:gravity="center"
+            android:gravity="left"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="0dp"
