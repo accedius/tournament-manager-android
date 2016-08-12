@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="to">Do:</string>
+    <string name="to">Do:\u0020</string>
     <string name="away">Hosté</string>
     <string name="cancel">Zrušit</string>
     <string name="date">Datum</string>
@@ -9,7 +9,7 @@
     <string name="email">E-mail</string>
     <string name="endDate">Datum konce</string>
     <string name="finish">Konec</string>
-    <string name="from">Od:</string>
+    <string name="from">Od:\u0020</string>
     <string name="home">Domácí</string>
     <string name="invalidEmail">Email není správně!</string>
     <string name="invalidName">Jméno není správně!</string>

@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -95,7 +98,10 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         awayScore.setText( String.valueOf(intAwayScore) );
         round.setText(String.valueOf(match.getRound()));
         period.setText( String.valueOf(match.getPeriod()) );
-        if( match.getDate()!= null ) date.setText(DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+        if( match.getDate()!= null ) {
+            DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
+            date.setText(df.format(match.getDate()));
+        }
         else date.setText( "--" );
         note.setText(match.getNote());
 

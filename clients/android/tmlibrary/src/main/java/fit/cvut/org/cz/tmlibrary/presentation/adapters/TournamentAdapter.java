@@ -36,7 +36,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
         Tournament tournament = data.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 
         holder.name.setText(tournament.getName());
         holder.startDate.setVisibility(View.VISIBLE);

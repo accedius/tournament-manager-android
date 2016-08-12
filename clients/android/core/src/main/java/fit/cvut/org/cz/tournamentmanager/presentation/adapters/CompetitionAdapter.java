@@ -30,7 +30,7 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
     @Override
     public void onBindViewHolder(CompetitionAdapter.CompetitionViewHolder holder, int position) {
         Competition competition = data.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 
         holder.name.setText(competition.getName());
         holder.startDate.setText(fit.cvut.org.cz.tmlibrary.R.string.from);
