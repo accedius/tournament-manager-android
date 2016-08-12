@@ -38,7 +38,6 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
 
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
-        //competitionID = 1;
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );

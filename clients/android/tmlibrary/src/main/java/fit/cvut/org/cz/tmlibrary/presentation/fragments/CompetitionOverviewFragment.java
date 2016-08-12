@@ -21,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
  */
 public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
 
-    private TextView name, start, end, tourSum, playerSum, note;
+    private TextView start, end, tourSum, playerSum, note;
     private static final String COMP_KEY = "competition_id_key";
     protected long competitionID;
 
@@ -30,8 +30,6 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
      * @return Key of Comeptition saved as extra
      */
     protected abstract String getCompetitionKey();
-
-    //U těchhle by se dalo nahoru předat competition. To by ale nemělo být potřeba, protože fragment ví competitionID
 
     /**
      *
@@ -72,14 +70,13 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_competition_overview, container, false);
 
-        name = (TextView) v.findViewById(R.id.comp_name);
         start = (TextView) v.findViewById(R.id.comp_start);
         end = (TextView) v.findViewById(R.id.comp_end);
         tourSum = (TextView) v.findViewById(R.id.comp_tour_sum);
         playerSum = (TextView) v.findViewById(R.id.comp_player_sum);
         note = (TextView) v.findViewById(R.id.comp_note);
 
-        if( getArguments() != null )
+        if (getArguments() != null)
             competitionID = getArguments().getLong( COMP_KEY );
 
         return v;
@@ -89,19 +86,21 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         Competition competition = intent.getParcelableExtra(getCompetitionKey());
 
-        if( competition == null )
-        {
-            name.setText( "Competition not found" ); //PROZATIMNI RESENI
+        if (competition == null) {
+            getActivity().setTitle(getResources().getString(R.string.competitionNotFound));
             return;
         }
 
+        getActivity().setTitle(getResources().getString(R.string.competition_header)+" – "+competition.getName());
+
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 
-        name.setText(competition.getName());
-        if(competition.getStartDate() != null )
+        if (competition.getStartDate() != null)
             start.setText(df.format(competition.getStartDate()));
-        if(competition.getEndDate() != null )
+
+        if (competition.getEndDate() != null)
             end.setText(df.format(competition.getEndDate()));
+
         tourSum.setText(String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
         note.setText(competition.getNote());

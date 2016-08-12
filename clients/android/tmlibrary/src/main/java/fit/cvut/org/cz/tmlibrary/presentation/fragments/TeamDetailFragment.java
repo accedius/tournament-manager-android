@@ -55,7 +55,6 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    private TextView name;
     protected Team t = null;
     private RecyclerView recyclerView;
     protected AbstractDeletableListAdapter<Player, ? extends OneActionViewHolder> adapter;
@@ -102,7 +101,6 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_team_detail, container, false);
-        name = (TextView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.tv_name);
         teamId = getArguments().getLong(ARG_ID, -1);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         adapter = new DeletePlayersAdapter();
@@ -142,7 +140,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
 
         Team t = intent.getParcelableExtra(getTeamKey());
-        name.setText(t.getName());
+        getActivity().setTitle(getResources().getString(R.string.team_header)+" – "+t.getName());
         adapter.swapData(t.getPlayers());
         this.t = t;
         super.customOnPause();
@@ -166,7 +164,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     @Override
     public void customOnResume() {
         if (t != null) {
-            name.setText(t.getName());
+            getActivity().setTitle(getResources().getString(R.string.team_header)+" – "+t.getName());
             adapter.swapData(t.getPlayers());
         }
         if (sendForData)

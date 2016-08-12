@@ -47,6 +47,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null){
+            // TODO get match info also - for participants names
             data = savedInstanceState.getParcelableArrayList(EXTRA_DATA);
             askForData = savedInstanceState.getBoolean(EXTRA_ASK);
         }
@@ -123,7 +124,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public void customOnResume() {
         if (data != null) adapter.swapData(data);
         if (askForData) super.customOnResume();
-
     }
 
     @Override

@@ -27,7 +27,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  */
 public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
-    private TextView homeName, awayName, homeScore, awayScore, round, period, date, note;
+    private TextView homeScore, awayScore, round, period, date, note;
     private ImageButton homePlus, homeMinus, awayPlus, awayMinus;
     private CheckBox overtime, shootouts;
     private int intHomeScore = -1, intAwayScore = -1;
@@ -87,13 +87,13 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
 
+        getActivity().setTitle(getResources().getString(R.string.match_header) + " – " +
+                match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
 
         if( intHomeScore == -1 && intAwayScore == -1) {
             intHomeScore = match.getHomeScore();
             intAwayScore = match.getAwayScore();
         }
-        homeName.setText( match.getHomeName() );
-        awayName.setText( match.getAwayName() );
         homeScore.setText(String.valueOf(intHomeScore));
         awayScore.setText( String.valueOf(intAwayScore) );
         round.setText(String.valueOf(match.getRound()));
@@ -144,8 +144,6 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_match_view, container, false);
 
-        homeName = (TextView) v.findViewById(R.id.tv_home);
-        awayName = (TextView) v.findViewById(R.id.tv_away);
         homeScore = (TextView) v.findViewById(R.id.tv_home_score);
         awayScore = (TextView) v.findViewById(R.id.tv_away_score);
         round = (TextView) v.findViewById(R.id.tv_round);

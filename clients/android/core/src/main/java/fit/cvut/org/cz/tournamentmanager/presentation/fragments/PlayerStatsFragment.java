@@ -104,11 +104,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
                     TextView label = new TextView(getContext());
                     LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                    if (asr.getKey().equals("Name")) {
-                        params.weight = 2;
-                    } else {
-                        params.weight = 1;
-                    }
+                    params.weight = 1;
                     params.gravity = Gravity.CENTER;
                     params.width = 0;
                     label.setLayoutParams(params);
@@ -117,14 +113,8 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
                     TextView stat = new TextView(getContext());
                     params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                    if (asr.getKey().equals("Name")) {
-                        params.gravity = Gravity.LEFT;
-                        params.setMargins(10, 0, 0, 0);
-                        params.weight = 2;
-                    } else {
-                        params.gravity = Gravity.CENTER;
-                        params.weight = 1;
-                    }
+                    params.gravity = Gravity.CENTER;
+                    params.weight = 1;
                     params.width = 0;
                     stat.setLayoutParams(params);
                     stat.setText(asr.getVal());

@@ -112,6 +112,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_DETAIL:{
                 Intent result = new Intent(action);
+                // TODO get match data also - for names of participants
                 ArrayList<SetRowItem> sets =  ManagersFactory.getInstance().statsManager.getSetsForMatch(this, intent.getLongExtra(EXTRA_ID, -1));
                 result.putParcelableArrayListExtra(EXTRA_MATCHES, sets);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);

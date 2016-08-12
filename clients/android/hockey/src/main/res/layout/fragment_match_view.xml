@@ -10,27 +10,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_weight="3"
-                    android:id="@+id/tv_home"
-                    style="@style/TextAppearance.AppCompat.Display1"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="3"
-                    android:id="@+id/tv_away"
-                    style="@style/TextAppearance.AppCompat.Display1"/>
-
-            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

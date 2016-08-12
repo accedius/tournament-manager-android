@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
  */
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
-    private TextView name, start, end, matchSum, playerSum, note;
+    private TextView start, end, matchSum, playerSum, note;
     protected TextView teamSum, teamsLabel;
     protected static final String TOUR_KEY = "tournament_id_key";
     protected long tournamentID;
@@ -79,7 +79,6 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_tournament_overview, container, false);
 
-        name = (TextView) v.findViewById(R.id.tour_name);
         start = (TextView) v.findViewById(R.id.tour_start);
         end = (TextView) v.findViewById(R.id.tour_end);
         matchSum = (TextView) v.findViewById(R.id.match_sum);
@@ -99,15 +98,15 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
         Tournament tournament = intent.getParcelableExtra(getTournamentKey());
 
-        if( tournament == null )
-        {
-            name.setText( "Tournament not found" ); //PROZATIMNI RESENI
+        if (tournament == null) {
+            getActivity().setTitle(getResources().getString(R.string.tournamentNotFound));
             return;
         }
 
+        getActivity().setTitle(getResources().getString(R.string.tournament_header)+" – "+tournament.getName());
+
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 
-        name.setText(tournament.getName());
         if(tournament.getStartDate() != null )
             start.setText(df.format(tournament.getStartDate()));
         if(tournament.getEndDate() != null )
