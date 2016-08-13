@@ -163,28 +163,28 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false );
 
         fab.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View v) {
+               @Override
+               public void onClick(View v) {
 
-                                       int requestCode;
-                                       int option;
-                                       long id;
-                                       sendForData = false;
-                                       if (competitionID != -1) {
-                                           option = AddPlayersFragment.OPTION_COMPETITION;
-                                           id = competitionID;
-                                           requestCode = option;
-                                       } else {
-                                           option = AddPlayersFragment.OPTION_TOURNAMENT;
-                                           id = tournamentID;
-                                           requestCode = option;
-                                       }
+                   int requestCode;
+                   int option;
+                   long id;
+                   sendForData = false;
+                   if (competitionID != -1) {
+                       option = AddPlayersFragment.OPTION_COMPETITION;
+                       id = competitionID;
+                       requestCode = option;
+                   } else {
+                       option = AddPlayersFragment.OPTION_TOURNAMENT;
+                       id = tournamentID;
+                       requestCode = option;
+                   }
 
-                                       Intent intent = AddPlayersActivity.newStartIntent(getContext(), option, id);
+                   Intent intent = AddPlayersActivity.newStartIntent(getContext(), option, id);
 
-                                       startActivityForResult(intent, requestCode);
-                                   }
-                               }
+                   startActivityForResult(intent, requestCode);
+               }
+           }
         );
 
         return fab;

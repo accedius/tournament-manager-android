@@ -44,11 +44,9 @@ public class EditDeleteDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Fragment fr = getTargetFragment();
-                if(fr != null)
-                {
-                    if( fr instanceof HockeyTeamsListFragment )
-                    {
-                        switch (which){
+                if(fr != null) {
+                    if( fr instanceof HockeyTeamsListFragment ) {
+                        switch (which) {
                             case 0:
                                 InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), false, HockeyInsertTeamDialog.class);
                                 insertTeamDialog.setTargetFragment(fr, 0);
@@ -56,34 +54,23 @@ public class EditDeleteDialog extends DialogFragment {
                                 dialog.dismiss();
                                 break;
                             case 1:
-                            {
                                 Intent intent = TeamService.newStartIntent(TeamService.ACTION_DELETE, getContext());
                                 intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(ARG_ID));
                                 getContext().startService(intent);
                                 dialog.dismiss();
                                 break;
-                            }
-                            default:break;
                         }
-                    }
-                    else if( fr instanceof HockeyTournamentsListFragment)
-                    {
-                        switch ( which )
-                        {
+                    } else if( fr instanceof HockeyTournamentsListFragment) {
+                        switch ( which ) {
                             case 0:
-                            {
-                                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), false);
-                                startActivity( intent );
+                                Intent intent0 = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), false);
+                                startActivity( intent0 );
                                 break;
-                            }
                             case 1:
-                            {
-                                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, getContext());
-
-                                intent.putExtra( TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID));
-                                getContext().startService( intent );
+                                Intent intent1 = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, getContext());
+                                intent1.putExtra( TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                getContext().startService( intent1 );
                                 break;
-                            }
                         }
                         dialog.dismiss();
                     }

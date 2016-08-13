@@ -45,20 +45,20 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
+                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
                             SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
-                            TeamsListFragment.newInstance(id),
-                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
+                            TeamsListFragment.newInstance(id)
                     },
-                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.matches), getResources().getString(R.string.teams), getResources().getString(R.string.sap)});
+                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.players), getResources().getString(R.string.matches), getResources().getString(R.string.teams)});
         } else {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(id, type),
                             StandingsWrapperFragment.newInstance(id),
-                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
-                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT)
+                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
+                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class)
                     },
-                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.matches), getResources().getString(R.string.sap)});
+                    new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.players), getResources().getString(R.string.matches)});
         }
         return adapter;
     }

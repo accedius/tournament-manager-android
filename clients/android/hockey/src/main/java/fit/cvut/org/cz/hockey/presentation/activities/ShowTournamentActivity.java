@@ -43,12 +43,12 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
 
-        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players), getString(R.string.header_teams), getString(R.string.header_matches), getString(R.string.header_standings) };
+        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_standings), getString(R.string.header_players), getString(R.string.header_matches), getString(R.string.header_teams) };
         Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );
-        Fragment f2 = AggregStatsTitleFragment.newInstance(tournamentID, false);
-        Fragment f3 = HockeyTeamsListFragment.newInstance( tournamentID );
+        Fragment f2 = StandingsStatsTitleFragment.newInstance( tournamentID );
+        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentID, false);
         Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
-        Fragment f5 = StandingsStatsTitleFragment.newInstance( tournamentID );
+        Fragment f5 = HockeyTeamsListFragment.newInstance( tournamentID );
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
@@ -127,7 +127,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
      * @return true of there is enough teams
      */
     public boolean isEnoughTeams(){
-        int count = ((HockeyTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(2)))).teamCount();
+        int count = ((HockeyTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(4)))).teamCount();
         return count > 1;
     }
 }
