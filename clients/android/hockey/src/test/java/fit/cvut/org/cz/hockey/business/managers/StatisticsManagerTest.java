@@ -109,19 +109,19 @@ public class StatisticsManagerTest {
 
         allStats.add(new DStat(1, 1, 1, StatsEnum.goals.toString(), 1, 1, "1"));
         allStats.add(new DStat(1, 1, 1, StatsEnum.assists.toString(), 1, 1, "2"));
-        allStats.add(new DStat(1, 1, 1, StatsEnum.interventions.toString(), 1, 1, "3"));
+        allStats.add(new DStat(1, 1, 1, StatsEnum.saves.toString(), 1, 1, "3"));
         allStats.add(new DStat(1, 1, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "4"));
         allStats.add(new DStat(1, 1, 1, StatsEnum.participates.toString(), 1, 1, "5"));
 
         allStats.add(new DStat(1, 2, 1, StatsEnum.goals.toString(), 1, 1, "6"));
         allStats.add(new DStat(1, 2, 1, StatsEnum.assists.toString(), 1, 1, "7"));
-        allStats.add(new DStat(1, 2, 1, StatsEnum.interventions.toString(), 1, 1, "8"));
+        allStats.add(new DStat(1, 2, 1, StatsEnum.saves.toString(), 1, 1, "8"));
         allStats.add(new DStat(1, 2, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "9"));
         allStats.add(new DStat(1, 2, 1, StatsEnum.participates.toString(), 1, 1, "10"));
 
         allStats.add(new DStat(1, 3, 1, StatsEnum.goals.toString(), 1, 1, "11"));
         allStats.add(new DStat(1, 3, 1, StatsEnum.assists.toString(), 1, 1, "12"));
-        allStats.add(new DStat(1, 3, 1, StatsEnum.interventions.toString(), 1, 1, "13"));
+        allStats.add(new DStat(1, 3, 1, StatsEnum.saves.toString(), 1, 1, "13"));
         allStats.add(new DStat(1, 3, 1, StatsEnum.plus_minus_points.toString(), 1, 1, "14"));
         allStats.add(new DStat(1, 3, 1, StatsEnum.participates.toString(), 1, 1, "15"));
 
@@ -133,13 +133,13 @@ public class StatisticsManagerTest {
         when(mockPlayerManager.getAllPlayers(RuntimeEnvironment.application)).thenReturn(players);
     }
 
-    private boolean testStats(AggregatedStatistics stats, long goals, long assists, long points, long plusmp, long matches, long interventions){
+    private boolean testStats(AggregatedStatistics stats, long goals, long assists, long points, long plusmp, long matches, long saves){
         if( stats.getGoals() != goals ) return false;
         if( stats.getAssists() != assists ) return false;
         if( stats.getPoints() != points ) return false;
         if( stats.getPlusMinusPoints() != plusmp ) return false;
         if( stats.getMatches() != matches ) return false;
-        if( stats.getInterventions() != interventions ) return false;
+        if( stats.getSaves() != saves ) return false;
         return true;
     }
 

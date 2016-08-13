@@ -24,7 +24,7 @@ public class EditStatsDialog extends DialogFragment {
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    private TextView goals, assists, plusMinusPoints, interventions, name;
+    private TextView goals, assists, plusMinusPoints, saves, name;
     private MatchPlayerStatistic stat;
 
     public static EditStatsDialog newInstance( MatchPlayerStatistic statis, int pos, boolean isHome)
@@ -63,12 +63,12 @@ public class EditStatsDialog extends DialogFragment {
                 if( goals.getText().toString().isEmpty() ) goals.setText( String.valueOf(0) );
                 if( assists.getText().toString().isEmpty() ) assists.setText( String.valueOf(0) );
                 if( plusMinusPoints.getText().toString().isEmpty() ) plusMinusPoints.setText( String.valueOf(0) );
-                if( interventions.getText().toString().isEmpty() ) interventions.setText( String.valueOf(0) );
+                if( saves.getText().toString().isEmpty() ) saves.setText( String.valueOf(0) );
 
                 stat.setGoals(Integer.parseInt(goals.getText().toString()));
                 stat.setAssists(Integer.parseInt(assists.getText().toString()));
                 stat.setPlusMinusPoints(Integer.parseInt(plusMinusPoints.getText().toString()));
-                stat.setInterventions( Integer.parseInt(interventions.getText().toString()));
+                stat.setSaves( Integer.parseInt(saves.getText().toString()));
 
                 saveStats( stat );
                 dismiss();
@@ -94,8 +94,8 @@ public class EditStatsDialog extends DialogFragment {
         plusMinusPoints = (TextView) v.findViewById(R.id.tv_plus_minus);
         plusMinusPoints.setText( String.valueOf(stat.getPlusMinusPoints()));
 
-        interventions = (TextView) v.findViewById(R.id.tv_interventions);
-        interventions.setText(String.valueOf(stat.getInterventions()));
+        saves = (TextView) v.findViewById(R.id.tv_saves);
+        saves.setText(String.valueOf(stat.getSaves()));
 
         name = (TextView) v.findViewById(R.id.tv_name);
         name.setText( stat.getName() );

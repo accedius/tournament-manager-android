@@ -41,7 +41,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
         holder.name.setText(stats.getName());
         holder.G.setText(Long.toString(stats.getGoals()));
         holder.A.setText(Long.toString(stats.getAssists()));
-        holder.I.setText(Long.toString(stats.getInterventions()));
+        holder.I.setText(Long.toString(stats.getSaves()));
         holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
 
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), position);
@@ -84,7 +84,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
             G = (TextView) itemView.findViewById(R.id.as_goals);
             A = (TextView) itemView.findViewById(R.id.as_assists);
             PMP = (TextView) itemView.findViewById(R.id.as_pmp);
-            I = (TextView) itemView.findViewById(R.id.as_interventions);
+            I = (TextView) itemView.findViewById(R.id.as_saves);
             wholeView = itemView;
 
         }

@@ -64,7 +64,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         if( allStats != null ) {
             playerStats.retainAll(allStats); //common elements -> players stats in competition
         }
-        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, interventions = 0;
+        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
         for(DStat stat : playerStats)
         {
             long value = Long.parseLong(stat.getValue());
@@ -90,9 +90,9 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                     plusMinusPoints += value;
                     break;
                 }
-                case interventions:
+                case saves:
                 {
-                    interventions += value;
+                    saves += value;
                     break;
                 }
                 case outcome:
@@ -122,7 +122,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             }
         }
 
-        return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, interventions);
+        return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, saves);
     }
 
     public ArrayList<AggregatedStatistics> getAllAggregated(Context context)
@@ -348,8 +348,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 case plus_minus_points:
                     res.setPlusMinusPoints( value );
                     break;
-                case interventions:
-                    res.setInterventions( value );
+                case saves:
+                    res.setSaves( value );
                     break;
                 default: break;
             }
@@ -401,8 +401,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 case plus_minus_points:
                     stat.setValue(String.valueOf(statistic.getPlusMinusPoints()));
                     break;
-                case interventions:
-                    stat.setValue(String.valueOf(statistic.getInterventions()));
+                case saves:
+                    stat.setValue(String.valueOf(statistic.getSaves()));
                     break;
                 default: break;
             }

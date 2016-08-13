@@ -36,7 +36,7 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
         holder.goals.setText(Integer.toString(rowItem.getGoals()));
         holder.assists.setText( Integer.toString(rowItem.getAssists()) );
         holder.plusMinus.setText( Integer.toString(rowItem.getPlusMinusPoints()) );
-        holder.interv.setText( Integer.toString(rowItem.getInterventions()) );
+        holder.interv.setText( Integer.toString(rowItem.getSaves()) );
 
         holder.name.setText( rowItem.getName() );
     }
@@ -55,7 +55,7 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
             goals = (EditText) itemView.findViewById(R.id.et_goals);
             assists = (EditText) itemView.findViewById(R.id.et_assists);
             plusMinus = (EditText) itemView.findViewById(R.id.et_plus_minus);
-            interv = (EditText) itemView.findViewById(R.id.et_interventions);
+            interv = (EditText) itemView.findViewById(R.id.et_saves);
             wholeView = itemView;
 
             this.goalLsnr = new EditDataListener(EditDataListener.LISTEN_GOALS);
@@ -119,7 +119,7 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
                     data.get(position).setAssists(value);
                     break;
                 case LISTEN_INTERV:
-                    data.get(position).setInterventions(value);
+                    data.get(position).setSaves(value);
                     break;
                 case LISTEN_PLUSMP:
                     data.get(position).setPlusMinusPoints(value);

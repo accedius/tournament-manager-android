@@ -36,7 +36,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
             holder.P.setText(Long.toString(stats.getPoints()));
             holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
-            holder.I.setText(Long.toString(stats.getInterventions()));
+            holder.I.setText(Long.toString(stats.getSaves()));
             holder.AG.setText(String.format("%.2f", stats.getAvgGoals()));
             holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
             holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));

@@ -11,9 +11,9 @@
     <string name="g">G</string>
     <string name="score">Skóre</string>
     <string name="goals">Góly</string>
-    <string name="gp">Hry</string>
-    <string name="i">Z</string>
-    <string name="interventions">Zákroky</string>
+    <string name="gp">Z</string>
+    <string name="i">Zák</string>
+    <string name="saves">Zákroky</string>
     <string name="p">B</string>
     <string name="l">P</string>
     <string name="normal_time">Standardní čas</string>

@@ -11,7 +11,7 @@ public class AggregatedStatistics implements Parcelable {
     private long playerID;
     private String playerName;
 
-    private long goals, assists, points, plusMinusPoints, teamPoints, matches, wins, losses, draws, interventions;
+    private long goals, assists, points, plusMinusPoints, teamPoints, matches, wins, losses, draws, saves;
     private double avgGoals, avgPoints, avgPlusMinus, avgTeamPoints;
 
     private void calcAvg()
@@ -34,7 +34,7 @@ public class AggregatedStatistics implements Parcelable {
 
     }
 
-    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long interventions)
+    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long saves)
     {
         this.playerID = pID;
         this.playerName = pName;
@@ -46,7 +46,7 @@ public class AggregatedStatistics implements Parcelable {
         this.assists = assists;
         this.plusMinusPoints = plusMinusPoints;
         this.teamPoints = teamPoints;
-        this.interventions = interventions;
+        this.saves = saves;
         calcAvg();
     }
 
@@ -84,7 +84,7 @@ public class AggregatedStatistics implements Parcelable {
         dest.writeDouble(avgPoints);
         dest.writeDouble(avgPlusMinus);
         dest.writeDouble(avgTeamPoints);
-        dest.writeLong(interventions);
+        dest.writeLong(saves);
 
     }
 
@@ -108,7 +108,7 @@ public class AggregatedStatistics implements Parcelable {
         avgPlusMinus = in.readDouble();
         avgTeamPoints = in.readDouble();
 
-        interventions = in.readLong();
+        saves = in.readLong();
     }
 
     public long getPlayerID() { return playerID; }
@@ -171,11 +171,11 @@ public class AggregatedStatistics implements Parcelable {
 
     public void setAvgTeamPoints( long avgTeamPoints ) { this.avgTeamPoints = avgTeamPoints; }
 
-    public long getInterventions() {
-        return interventions;
+    public long getSaves() {
+        return saves;
     }
 
-    public void setInterventions(long interventions) {
-        this.interventions = interventions;
+    public void setSaves(long saves) {
+        this.saves = saves;
     }
 }

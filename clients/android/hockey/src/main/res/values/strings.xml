@@ -55,7 +55,7 @@
     <string name="goals">Goals</string>
     <string name="assists">Assists</string>
     <string name="plus_minus_points">+/- points</string>
-    <string name="interventions">Saves</string>
+    <string name="saves">Saves</string>
     <string name="player_cant_delete">Cannot delete, player registered somewhere!</string>
     <string name="team_cant_delete">Cannot delete, team participates in a match!</string>
     <string name="not_enough_teams">Not enough teams!</string>

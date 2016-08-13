@@ -12,7 +12,7 @@ public enum StatsEnum {
     assists(true),
     plus_minus_points(true),
     outcome(true),
-    interventions(true);
+    saves(true);
 
 
 

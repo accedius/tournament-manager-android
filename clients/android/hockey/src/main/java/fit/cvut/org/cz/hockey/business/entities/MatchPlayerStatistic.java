@@ -10,7 +10,7 @@ public class MatchPlayerStatistic implements Parcelable {
 
     private long playerId;
     private String name;
-    private int goals, assists, plusMinusPoints, interventions;
+    private int goals, assists, plusMinusPoints, saves;
 
     public MatchPlayerStatistic() {};
 
@@ -26,13 +26,13 @@ public class MatchPlayerStatistic implements Parcelable {
         }
     };
 
-    public MatchPlayerStatistic(long playerId, String name, int goals, int assists, int plusMinusPoints, int interventions) {
+    public MatchPlayerStatistic(long playerId, String name, int goals, int assists, int plusMinusPoints, int saves) {
         this.playerId = playerId;
         this.name = name;
         this.goals = goals;
         this.assists = assists;
         this.plusMinusPoints = plusMinusPoints;
-        this.interventions = interventions;
+        this.saves = saves;
     }
 
 
@@ -48,7 +48,7 @@ public class MatchPlayerStatistic implements Parcelable {
         dest.writeInt(goals);
         dest.writeInt(assists);
         dest.writeInt(plusMinusPoints);
-        dest.writeInt(interventions);
+        dest.writeInt(saves);
     }
 
     public MatchPlayerStatistic( Parcel in )
@@ -58,7 +58,7 @@ public class MatchPlayerStatistic implements Parcelable {
         this.goals = in.readInt();
         this.assists = in.readInt();
         this.plusMinusPoints = in.readInt();
-        this.interventions = in.readInt();
+        this.saves = in.readInt();
     }
 
     public int getGoals() {
@@ -85,12 +85,12 @@ public class MatchPlayerStatistic implements Parcelable {
         this.plusMinusPoints = plusMinusPoints;
     }
 
-    public int getInterventions() {
-        return interventions;
+    public int getSaves() {
+        return saves;
     }
 
-    public void setInterventions(int interventions) {
-        this.interventions = interventions;
+    public void setSaves(int saves) {
+        this.saves = saves;
     }
 
 
