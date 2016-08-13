@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class SquashDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMSquash";
-    private static final int DBVersion = 5;
+    private static final int DBVersion = 7;
     private boolean test = false;
 
     public SquashDBHelper(Context context, boolean test) {
@@ -28,7 +28,9 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
+
         db.execSQL(DBScripts.CREATE_TABLE_TOURNAMENTS);
+
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
         db.execSQL(DBScripts.CREATE_TABLE_TEAMS);
@@ -38,6 +40,50 @@ public class SquashDBHelper extends SQLiteOpenHelper {
         db.execSQL(DBScripts.CREATE_TABLE_PARTICIPANTS);
         db.execSQL(SDBScripts.CREATE_TABLE_STATS_ENUM);
         db.execSQL(SDBScripts.CREATE_TABLE_STATS);
+
+        db.execSQL(DBScripts.INSERT_SQUASH_COMPETITIONS);
+        db.execSQL(DBScripts.INSERT_SQUASH_COMPETITIONS_1);
+        db.execSQL(DBScripts.INSERT_SQUASH_COMPETITIONS_2);
+
+        db.execSQL(DBScripts.INSERT_SQUASH_TOURNAMENTS);
+        db.execSQL(DBScripts.INSERT_SQUASH_TOURNAMENTS_1);
+        db.execSQL(DBScripts.INSERT_SQUASH_TOURNAMENTS_2);
+
+        db.execSQL(SDBScripts.INSERT_POINT_CONFIG);
+        db.execSQL(SDBScripts.INSERT_POINT_CONFIG_1);
+        db.execSQL(SDBScripts.INSERT_POINT_CONFIG_2);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_7);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_7);
+
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_1);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_2);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_3);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_7);
 
         ContentValues cv = new ContentValues();
         cv.put(SDBConstants.cTYPE, StatsEnum.MATCH.toString());

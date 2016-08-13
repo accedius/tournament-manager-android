@@ -18,8 +18,6 @@ public class SDBScripts {
     public static final String CREATE_TABLE_STATS_ENUM = "create table " + SDBConstants.tSTATS_ENUM + " ("
             + SDBConstants.cTYPE + " TEXT PRIMARY KEY  );";
 
-
-
     public static final String CREATE_TABLE_STATS = "create table " + SDBConstants.tSTATS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cPLAYER_ID + " INTEGER , "
@@ -35,6 +33,8 @@ public class SDBScripts {
             + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ) "
             + "FOREIGN KEY ( " + SDBConstants.cTYPE + " ) REFERENCES " + SDBConstants.tSTATS_ENUM + " ( " + SDBConstants.cTYPE + " ));";
 
-
+    public static final String INSERT_POINT_CONFIG = "insert into " + SDBConstants.tPOINT_CONFIG + " values('1', '2', '1', '0');";
+    public static final String INSERT_POINT_CONFIG_1 = "insert into " + SDBConstants.tPOINT_CONFIG + " values('2', '2', '1', '0');";
+    public static final String INSERT_POINT_CONFIG_2 = "insert into " + SDBConstants.tPOINT_CONFIG + " values('3', '2', '1', '0');";
 
 }

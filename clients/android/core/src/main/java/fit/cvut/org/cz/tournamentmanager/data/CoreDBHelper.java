@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class CoreDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 15;
+    private static final int DBVersion = 17;
 
     public CoreDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -25,6 +25,11 @@ public class CoreDBHelper extends SQLiteOpenHelper {
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS);
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS_1);
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS_2);
+        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_3);
+        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_4);
+        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_5);
+        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_6);
+        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_7);
 
     }
 

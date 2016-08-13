@@ -29,4 +29,8 @@ public class HockeyDBScripts {
             + HockeyDBConstants.cOVERTIME + " INTEGER, "
             + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
 
+    public static final String INSERT_POINT_CONFIG = "insert into " + HockeyDBConstants.tCONFIGURATIONS + " values('1', '3', '1', '0', '2', '1', '1', '2', '1', '1');";
+    public static final String INSERT_POINT_CONFIG_1 = "insert into " + HockeyDBConstants.tCONFIGURATIONS + " values('2', '3', '1', '0', '2', '1', '1', '2', '1', '2');";
+    public static final String INSERT_POINT_CONFIG_2 = "insert into " + HockeyDBConstants.tCONFIGURATIONS + " values('3', '3', '1', '0', '2', '1', '1', '2', '1', '3');";
+
 }

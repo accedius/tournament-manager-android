@@ -4,16 +4,27 @@ package fit.cvut.org.cz.tmlibrary.data;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class DBScripts {
-    public static final String CREATE_TABLE_PLAYERS =
-            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
-                    DBConstants.tPLAYERS, DBConstants.cID, DBConstants.cNAME, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED, DBConstants.cLASTSYNCHRONIZED);
+    public static String CREATE_TABLE_PLAYERS = "create table " + DBConstants.tPLAYERS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cNAME + " TEXT, "
+            + DBConstants.cEMAIL + " TEXT, "
+            + DBConstants.cNOTE  + " TEXT, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT);";
 
-    public static final String CREATE_TABLE_COMPETITIONS =
-            String.format("create table %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s  TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
-                    DBConstants.tCOMPETITIONS, DBConstants.cID, DBConstants.cNAME, DBConstants.cSTART, DBConstants.cEND, DBConstants.cTYPE, DBConstants.cNOTE, DBConstants.cUID, DBConstants.cETAG, DBConstants.cLASTMODIFIED, DBConstants.cLASTSYNCHRONIZED);
-
-
-
+    public static final String CREATE_TABLE_COMPETITIONS = "create table " + DBConstants.tCOMPETITIONS + " ("
+            + DBConstants.cID + " INTEGER PRIMARY KEY, "
+            + DBConstants.cNAME + " TEXT NOT NULL, "
+            + DBConstants.cSTART + " TEXT, "
+            + DBConstants.cEND + " TEXT, "
+            + DBConstants.cTYPE + " TEXT, "
+            + DBConstants.cNOTE + " TEXT, "
+            + DBConstants.cUID + " TEXT, "
+            + DBConstants.cETAG + " TEXT, "
+            + DBConstants.cLASTMODIFIED + " TEXT, "
+            + DBConstants.cLASTSYNCHRONIZED + " TEXT);";
 
     public static final String CREATE_TABLE_TOURNAMENTS = "create table " + DBConstants.tTOURNAMENTS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
@@ -84,13 +95,6 @@ public class DBScripts {
             + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ) "
             + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
 
-//    public static final String CREATE_TABLE_PLAYER_IN_PARTICIPANT = "create table " + DBConstants.tPLAYER_IN_PARTICIPANT + " ("
-//            + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-//            + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
-//            + "PRIMARY KEY ( " + DBConstants.cPARTICIPANT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
-//            + "FOREIGN KEY ( " + DBConstants.cPARTICIPANT_ID + " ) REFERENCES " + DBConstants.tPARTICIPANTS + " ( " + DBConstants.cID + " ));";
-
-
     public static final String CREATE_TABLE_STATS = "create table " + DBConstants.tSTATS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cPARTICIPANT_ID + " INTEGER NOT NULL, "
@@ -103,45 +107,77 @@ public class DBScripts {
             + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public static final String INSERT_INTO_COMPETITIONS =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 14, "41212", "WC in Squash", "2017-01-01", "2017-01-21", "single", "---");
-    public static final String INSERT_INTO_COMPETITIONS_1 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 22, "90833", "EURO squash", "2017-06-01", "2017-07-01", "team", "---");
-    public static final String INSERT_INTO_COMPETITIONS_2 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 33, "18742", "Singles", "2016-01-01", "2016-02-29", "single", "no, its team :D");
-
-    public static final String INSERT_INTO_COMPETITIONS_H =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 14, "41212", "Euro Hockey Tour", "2017-01-01", "2017-01-21", "team", "---");
-    public static final String INSERT_INTO_COMPETITIONS_H1 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 22, "90833", "IIHF WC 2015", "2017-06-01", "2017-07-01", "team", "---");
-    public static final String INSERT_INTO_COMPETITIONS_H2 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tCOMPETITIONS, 33, "18742", "NHL", "2016-01-01", "2016-02-29", "team", "no, its team :D");
-
     public static final String INSERT_INTO_PLAYERS =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 1, "Martin Hovorka", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 1, "Martin", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_1 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 2, "Aleš Valenta", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 2, "Aleš", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
     public static final String INSERT_INTO_PLAYERS_2 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 3, "Jaroslav Frk", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 3, "Jarda", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_3 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 4, "Pavel", "pavel@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_4 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 5, "Honza", "honza@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_5 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 6, "Zdeněk", "zdenda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_6 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 7, "Tomáš", "tomnas@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+    public static final String INSERT_INTO_PLAYERS_7 =
+            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+                    DBConstants.tPLAYERS, 8, "Radek", "Radek@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+
+
+    public static final String INSERT_SQUASH_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','SQ T CMP 1','2001-01-01','2001-12-12','Teams','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
+    public static final String INSERT_SQUASH_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','SQ I CMP 2','2002-01-01','2002-12-12','Individuals','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
+    public static final String INSERT_SQUASH_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','SQ I CMP 3','2003-01-01','2003-12-12','Individuals','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
+
+    public static final String INSERT_SQUASH_TOURNAMENTS = "insert into " + DBConstants.tTOURNAMENTS + " values('1','SQ TOUR 1','2001-01-01','2001-12-12','PoznTour1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
+    public static final String INSERT_SQUASH_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS+ " values('2','SQ TOUR 2','2001-01-01','2001-12-12','PoznTour2','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
+    public static final String INSERT_SQUASH_TOURNAMENTS_2 = "insert into " + DBConstants.tTOURNAMENTS + " values('3','SQ TOUR 3','2002-01-01','2002-12-12','PoznTour3','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10', '2');";
+
+    public static final String INSERT_HOCKEY_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','H CMP 1','2001-01-01','2001-12-12','Teams','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
+    public static final String INSERT_HOCKEY_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','H CMP 2','2002-01-01','2002-12-12','Teams','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
+    public static final String INSERT_HOCKEY_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','H CMP 3','2003-01-01','2003-12-12','Teams','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
+
+    public static final String INSERT_HOCKEY_TOURNAMENTS = "insert into " + DBConstants.tTOURNAMENTS + " values('1','H TOUR 1','2001-01-01','2001-12-12','PoznTour1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
+    public static final String INSERT_HOCKEY_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS + " values('2','H TOUR 2','2001-01-01','2001-12-12','PoznTour2','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
+    public static final String INSERT_HOCKEY_TOURNAMENTS_2 = "insert into " + DBConstants.tTOURNAMENTS + " values('3','H TOUR 3','2002-01-01','2002-12-12','PoznTour3','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10', '2');";
+
+    public static final String INSERT_PLAYER_COMPETITION = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '1');";
+    public static final String INSERT_PLAYER_COMPETITION_1 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '2');";
+    public static final String INSERT_PLAYER_COMPETITION_2 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '3');";
+    public static final String INSERT_PLAYER_COMPETITION_3 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '4');";
+    public static final String INSERT_PLAYER_COMPETITION_4 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '5');";
+    public static final String INSERT_PLAYER_COMPETITION_5 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '6');";
+    public static final String INSERT_PLAYER_COMPETITION_6 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '7');";
+    public static final String INSERT_PLAYER_COMPETITION_7 = "insert into " + DBConstants.tPLAYERS_IN_COMPETITION + " values('1', '8');";
+
+    public static final String INSERT_PLAYER_TOURNAMENT = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '1');";
+    public static final String INSERT_PLAYER_TOURNAMENT_1 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '2');";
+    public static final String INSERT_PLAYER_TOURNAMENT_2 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '3');";
+    public static final String INSERT_PLAYER_TOURNAMENT_3 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '4');";
+    public static final String INSERT_PLAYER_TOURNAMENT_4 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '5');";
+    public static final String INSERT_PLAYER_TOURNAMENT_5 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '6');";
+    public static final String INSERT_PLAYER_TOURNAMENT_6 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '7');";
+    public static final String INSERT_PLAYER_TOURNAMENT_7 = "insert into " + DBConstants.tPLAYERS_IN_TOURNAMENT + " values('1', '8');";
+
+    public static final String INSERT_TOURNAMENT_TEAMS = "insert into " + DBConstants.tTEAMS + " values('1', 'asdf', 'lkjh', '2010-01-01 10:10:10', '2010-01-01 10:10:10', 'A Team', '1');";
+    public static final String INSERT_TOURNAMENT_TEAMS_1 = "insert into " + DBConstants.tTEAMS + " values('2', 'asdf', 'lkjh', '2010-01-01 10:10:10', '2010-01-01 10:10:10', 'B Team', '1');";
+    public static final String INSERT_TOURNAMENT_TEAMS_2 = "insert into " + DBConstants.tTEAMS + " values('3', 'asdf', 'lkjh', '2010-01-01 10:10:10', '2010-01-01 10:10:10', 'C Team', '1');";
+    public static final String INSERT_TOURNAMENT_TEAMS_3 = "insert into " + DBConstants.tTEAMS + " values('4', 'asdf', 'lkjh', '2010-01-01 10:10:10', '2010-01-01 10:10:10', 'D Team', '1');";
+
+    public static final String INSERT_PLAYER_TEAMS = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('1', '1');";
+    public static final String INSERT_PLAYER_TEAMS_1 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('1', '2');";
+    public static final String INSERT_PLAYER_TEAMS_2 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('2', '3');";
+    public static final String INSERT_PLAYER_TEAMS_3 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('2', '4');";
+    public static final String INSERT_PLAYER_TEAMS_4 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('3', '5');";
+    public static final String INSERT_PLAYER_TEAMS_5 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('3', '6');";
+    public static final String INSERT_PLAYER_TEAMS_6 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('4', '7');";
+    public static final String INSERT_PLAYER_TEAMS_7 = "insert into " + DBConstants.tPLAYERS_IN_TEAM + " values('4', '8');";
 }

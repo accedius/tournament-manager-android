@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class HockeyDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMHockey.db";
-    private static final int DBVersion = 22;
+    private static final int DBVersion = 24;
 
     public HockeyDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -22,7 +22,9 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
+
         db.execSQL(DBScripts.CREATE_TABLE_TOURNAMENTS);
+
         db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
@@ -32,6 +34,50 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
         db.execSQL(DBScripts.CREATE_TABLE_TEAMS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
         db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
+
+        db.execSQL(DBScripts.INSERT_HOCKEY_COMPETITIONS);
+        db.execSQL(DBScripts.INSERT_HOCKEY_COMPETITIONS_1);
+        db.execSQL(DBScripts.INSERT_HOCKEY_COMPETITIONS_2);
+
+        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS);
+        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS_1);
+        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS_2);
+
+        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG);
+        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG_1);
+        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG_2);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_7);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_7);
+
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_1);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_2);
+        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_3);
+
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_1);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_2);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_3);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_4);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_5);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_6);
+        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_7);
     }
 
     @Override
