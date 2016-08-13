@@ -71,7 +71,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(R.layout.fragment_newcompetition, container, false);
+        View v = inflater.inflate(R.layout.fragment_new_competition, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
