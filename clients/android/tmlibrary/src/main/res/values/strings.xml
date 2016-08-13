@@ -14,7 +14,7 @@
     <string name="tours_held">Tournaments held</string>
     <string name="players">Players</string>
     <string name="finish">Finish</string>
-    <string name="tournament_id_invalid">You have to specify either competitionId or tournamentId</string>
+    <string name="tournament_id_invalid">You have to specify either competitionId or tournamentId.</string>
     <string name="from">From:\u0020</string>
     <string name="to">To:\u0020</string>
     <string name="teams">Teams</string>
@@ -43,6 +43,6 @@
     <string name="tournamentNotFound">Tournament not found.</string>
     <string name="tournament_created">Tournament created.</string>
     <string name="player_created">Player created.</string>
-    <string name="competition_created">Competition created</string>
+    <string name="competition_created">Competition created.</string>
     <string name="cant_create_match">Cannot create match because tournament has too few participants.</string>
 </resources>

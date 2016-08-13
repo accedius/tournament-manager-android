@@ -35,7 +35,7 @@
     <string name="team_detail">Detail týmu</string>
     <string name="teams">Týmy</string>
     <string name="tie_set">Set nemůže skončit remízou</string>
-    <string name="tournament_detail">Detail Turnaje</string>
+    <string name="tournament_detail">Detail turnaje</string>
     <string name="tournament_settings">Nastavení turnaje</string>
     <string name="tournaments">Turnaje</string>
     <string name="win">Výhra</string>
@@ -43,4 +43,5 @@
     <string name="winsPer">V%</string>
     <string name="zero_score">Skóre nemůže být záporné</string>
     <string name="add_player_to">Pidat hráče do</string>
+    <string name="sport_name">Squash</string>
 </resources>

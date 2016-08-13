@@ -1,5 +1,5 @@
 <resources>
-    <string name="sport_name" translatable="false">Squash</string>
+    <string name="sport_name">Squash</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
     <string name="title_activity_main" translatable="false">Squash Main Activity</string>
     <string name="squashpcg" translatable="false">Squash PCG</string>
@@ -48,7 +48,7 @@
     <string name="match_detail">Match Detail</string>
     <string name="sets">Sets</string>
     <string name="rosters">Rosters</string>
-    <string name="add_player_to">Add player to</string>
+    <string name="add_player_to">Add Player to</string>
 
     <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>

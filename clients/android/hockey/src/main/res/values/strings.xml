@@ -1,7 +1,7 @@
 <resources>
-    <string name="sport_name" translatable="false">Hockey</string>
+    <string name="sport_name">Hockey</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
-    <string name="title_activity_main">Hockey Main Activity</string>
+    <string name="title_activity_main" translatable="false">Hockey Main Activity</string>
 
     <string name="package_name" translatable="false">fit.cvut.org.cz.hockey</string>
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity</string>

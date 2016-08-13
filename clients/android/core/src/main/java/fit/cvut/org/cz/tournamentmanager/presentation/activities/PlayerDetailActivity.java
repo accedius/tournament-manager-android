@@ -25,8 +25,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  */
 public class PlayerDetailActivity extends AbstractTabActivity {
 
-    private static String HEADER_PLAYER_DETAIL = "Player info";
-
     private long playerID;
 
     private Fragment[] fragments;
@@ -43,7 +41,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         Log.d("PDA", ""+playerID);
         sport_packages = getIntent().getExtras().getParcelableArrayList(PlayerService.EXTRA_PACKAGES);
         titles = new String[1+sport_packages.size()];
-        titles[0] = HEADER_PLAYER_DETAIL;
+        titles[0] = getResources().getString(R.string.player_detail_header);
 
         int i=1;
         for(ApplicationInfo info : sport_packages) {

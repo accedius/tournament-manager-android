@@ -15,7 +15,7 @@
     <string name="invalidName">Jméno není správně!</string>
     <string name="invalidParticipants">Účastníci nesmí být totožní!</string>
     <string name="invalidRoundPeriod">Kolo nebo perioda není nastaveno!</string>
-    <string name="match_sum">Počet zápasů:</string>
+    <string name="match_sum">Počet zápasů</string>
     <string name="name">Jméno</string>
     <string name="note">Poznámka</string>
     <string name="ok">OK</string>
@@ -24,10 +24,10 @@
     <string name="point_config">Konfigurovat bodový zisk</string>
     <string name="restart">Restartovat</string>
     <string name="round">Kolo</string>
-    <string name="startDate">Datum počátku</string>
+    <string name="startDate">Datum začátku</string>
     <string name="teams">Týmy</string>
-    <string name="tournament_id_invalid">Musíte specifikovat competitionId nebo tournamentId</string>
-    <string name="tours_held">Počet turnajů:</string>
+    <string name="tournament_id_invalid">Musíte specifikovat competitionId nebo tournamentId.</string>
+    <string name="tours_held">Počet turnajů</string>
     <string name="type">Typ</string>
     <string name="vs">vs.</string>
     <string name="save">Uložit</string>
@@ -38,4 +38,11 @@
     <string name="failDeleteTeam">Tým není prázdný a/nebo se již účastní nějákého zápasu a nelze ho odstranit.</string>
     <string name="player_created">Hráč vytvořen.</string>
     <string name="competition_created">Soutěž vytvořena.</string>
+    <string name="competition_header">Soutěž</string>
+    <string name="competitionNotFound">Soutěž nenalezena.</string>
+    <string name="player_header">Detail hráče</string>
+    <string name="team_header">Detail týmu</string>
+    <string name="tournamentNotFound">Turnaj nenalezen.</string>
+    <string name="tournament_header">Detail turnaje</string>
+    <string name="cant_create_match">Nelze vytvořit – zápas nemá dostatek účastníků.</string>
 </resources>

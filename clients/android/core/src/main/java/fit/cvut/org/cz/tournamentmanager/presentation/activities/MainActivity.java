@@ -101,7 +101,7 @@ public class MainActivity extends AbstractToolbarActivity {
         b.putParcelableArrayList("sport_packages", sport_packages);
         switch (position) {
             case R.id.competitions:
-                setTitle("Competitions");
+                setTitle(R.string.title_activity_competitions);
                 SportsFragment sf = new SportsFragment();
                 sf.setArguments(b);
                 getSupportFragmentManager()
@@ -110,7 +110,7 @@ public class MainActivity extends AbstractToolbarActivity {
                         .commit();
                 break;
             case R.id.players:
-                setTitle("Players");
+                setTitle(R.string.title_activity_players);
                 PlayersListFragment plf = new PlayersListFragment();
                 plf.setArguments(b);
                 getSupportFragmentManager()
