@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:layout_weight="2"
                 android:id="@+id/as_saves"
-                android:text="@string/i"/>
+                android:text="@string/s"/>
 
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
@@ -122,7 +122,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/i"/>
+                android:text="@string/s"/>
 
         </LinearLayout>
         <android.support.v7.widget.RecyclerView

@@ -10,6 +10,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18dp"
             android:id="@+id/tv_name"
             android:layout_weight="8"/>
         <Space
@@ -20,6 +24,9 @@
         <android.support.v7.widget.AppCompatCheckBox
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/aView"
             android:layout_weight="1"/>
 

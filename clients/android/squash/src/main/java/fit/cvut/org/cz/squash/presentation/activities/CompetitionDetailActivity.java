@@ -39,7 +39,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
                         CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
                         TournamentsListFragment.newInstance(competitionId),
                         StatsListWrapperFragment.newInstance(competitionId, StatsService.ACTION_GET_STATS_BY_COMPETITION)},
-                new String[] {getResources().getString(R.string.overview), getResources().getString(R.string.tournaments), getResources().getString(R.string.sap)});
+                new String[] {getResources().getString(R.string.overview), getResources().getString(R.string.tournaments), getResources().getString(R.string.players)});
         return adapter;
     }
 

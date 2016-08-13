@@ -23,7 +23,6 @@
     <string name="points">Body</string>
     <string name="reset">Resetovat</string>
     <string name="rosters">Soupisky</string>
-    <string name="sap">Hráči a statistiky</string>
     <string name="score">Skóre</string>
     <string name="sets">Sety</string>
     <string name="setsLost">PS</string>
@@ -31,7 +30,7 @@
     <string name="setsWon">VS</string>
     <string name="setsWonAvg">VS PR</string>
     <string name="sets_error">Některé sety mají neplatné hodnoty, buď nevyplněné nebo remízu</string>
-    <string name="standings">Pořadí</string>
+    <string name="standings">Tabulka</string>
     <string name="team_detail">Detail týmu</string>
     <string name="teams">Týmy</string>
     <string name="tie_set">Set nemůže skončit remízou</string>
@@ -42,6 +41,6 @@
     <string name="wins">V</string>
     <string name="winsPer">V%</string>
     <string name="zero_score">Skóre nemůže být záporné</string>
-    <string name="add_player_to">Pidat hráče do</string>
+    <string name="add_player_to">Přidat hráče do</string>
     <string name="sport_name">Squash</string>
 </resources>

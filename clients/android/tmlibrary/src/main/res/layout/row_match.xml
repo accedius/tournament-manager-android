@@ -44,6 +44,9 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_home"
                 android:gravity="center"
@@ -51,6 +54,9 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_score"
                 android:gravity="center"
@@ -58,6 +64,9 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
                 android:layout_height="match_parent"
                 android:id="@+id/tv_away"
                 android:gravity="center"

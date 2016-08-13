@@ -26,17 +26,17 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
     public void onBindViewHolder(AggregatedStatisticsViewHolder holder, int position) {
         AggregatedStatistics stats = data.get( position );
         holder.name.setText(stats.getPlayerName());
-        holder.W.setText(Long.toString(stats.getWins()));
-        holder.L.setText(Long.toString(stats.getLosses()));
-        holder.D.setText(Long.toString(stats.getDraws()));
+        holder.GP.setText(Long.toString(stats.getMatches()));
         holder.G.setText(Long.toString(stats.getGoals()));
         holder.A.setText(Long.toString(stats.getAssists()));
-        if( holder.M != null ) {
-            holder.M.setText(Long.toString(stats.getMatches()));
-            holder.P.setText(Long.toString(stats.getPoints()));
-            holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
+        holder.P.setText(Long.toString(stats.getPoints()));
+        holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
+        holder.S.setText(Long.toString(stats.getSaves()));
+        if( holder.W != null ) {
+            holder.W.setText(Long.toString(stats.getWins()));
+            holder.L.setText(Long.toString(stats.getLosses()));
+            holder.D.setText(Long.toString(stats.getDraws()));
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
-            holder.I.setText(Long.toString(stats.getSaves()));
             holder.AG.setText(String.format("%.2f", stats.getAvgGoals()));
             holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
             holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));
@@ -55,27 +55,28 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder
     {
         public long id;
-        TextView name, M, W, L, D, G, A, P, PMP, TP, AG, AP, APMP, ATP, I;
+        TextView name, GP, G, A, P, PMP, S, W, D, L, TP, AG, AP, APMP, ATP;
         public View wholeView;
 
         public AggregatedStatisticsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
-            M = (TextView) itemView.findViewById(R.id.as_games);
-            W = (TextView) itemView.findViewById(R.id.as_wins);
-            L = (TextView) itemView.findViewById(R.id.as_losses);
-            D = (TextView) itemView.findViewById(R.id.as_draws);
+            GP = (TextView) itemView.findViewById(R.id.as_games_played);
             G = (TextView) itemView.findViewById(R.id.as_goals);
             A = (TextView) itemView.findViewById(R.id.as_assists);
             P = (TextView) itemView.findViewById(R.id.as_points);
-            PMP = (TextView) itemView.findViewById(R.id.as_pmp);
-            TP = (TextView) itemView.findViewById(R.id.as_tp);
+            PMP = (TextView) itemView.findViewById(R.id.as_plus_minus_points);
+            S = (TextView) itemView.findViewById(R.id.as_saves);
+
+            W = (TextView) itemView.findViewById(R.id.as_wins);
+            D = (TextView) itemView.findViewById(R.id.as_draws);
+            L = (TextView) itemView.findViewById(R.id.as_losses);
+            TP = (TextView) itemView.findViewById(R.id.as_team_points);
             AG = (TextView) itemView.findViewById(R.id.as_avg_g);
             AP = (TextView) itemView.findViewById(R.id.as_avg_p);
             APMP = (TextView) itemView.findViewById(R.id.as_avg_pmp);
             ATP = (TextView) itemView.findViewById(R.id.as_avg_tp);
-            I = (TextView) itemView.findViewById(R.id.as_i);
             wholeView = itemView;
         }
     }
