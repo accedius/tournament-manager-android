@@ -31,102 +31,80 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
  */
 public class StatisticsManager implements IHockeyStatisticsManager {
 
-    private long calculatePoints( int outcome, DPointConfiguration pointConfig, DMatchStat matchStat )
-    {
-        switch (outcome)
-        {
-            case 1:{
+    private long calculatePoints( int outcome, DPointConfiguration pointConfig, DMatchStat matchStat ) {
+        switch (outcome) {
+            case 1:
                 if(matchStat.isShootouts())
                     return pointConfig.soW;
                 if(matchStat.isOvertime())
                     return pointConfig.otW;
                 return pointConfig.ntW;
-            }
-            case 2:{
+            case 2:
                 if(matchStat.isOvertime())
                     return pointConfig.otD;
                 return pointConfig.ntD;
-            }
-            case 3:{
+            case 3:
                 if(matchStat.isShootouts())
                     return pointConfig.soL;
                 if(matchStat.isOvertime())
                     return pointConfig.otL;
                 return pointConfig.ntL;
-            }
+            default:
+                return 0;
         }
-        return 0;
     }
 
-    private AggregatedStatistics aggregateStats(Context context, long plId, String pName, ArrayList<DStat> allStats)
-    {
+    private AggregatedStatistics aggregateStats(Context context, long plId, String pName, ArrayList<DStat> allStats) {
         ArrayList<DStat> playerStats = DAOFactory.getInstance().statDAO.getStatsByPlayerId( context, plId );
         if( allStats != null ) {
             playerStats.retainAll(allStats); //common elements -> players stats in competition
         }
         long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
-        for(DStat stat : playerStats)
-        {
+        for(DStat stat : playerStats) {
             long value = Long.parseLong(stat.getValue());
-            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
-            {
+            switch (StatsEnum.valueOf(stat.getStatsEnumId())) {
                 case goals:
-                {
                     goals += value;
                     break;
-                }
                 case participates:
-                {
                     matches++;
                     break;
-                }
                 case assists:
-                {
                     assists += value;
                     break;
-                }
                 case plus_minus_points:
-                {
                     plusMinusPoints += value;
                     break;
-                }
                 case saves:
-                {
                     saves += value;
                     break;
-                }
                 case outcome:
-                {
                     DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, stat.getTournamentId() );
                     DParticipant participant = DAOFactory.getInstance().participantDAO.getById( context, stat.getParticipantId() );
                     DMatchStat matchStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, participant.getMatchId() );
 
                     teamPoints += calculatePoints( (int)value, pointConfiguration, matchStat );
-                    switch ((int)value)
-                    {
-                        case 1: {
+                    switch ((int)value) {
+                        case 1:
                             wins++;
                             break;
-                        }
-                        case 2: {
+                        case 2:
                             draws++;
                             break;
-                        }
-                        case 3: {
+                        case 3:
                             losses++;
                             break;
-                        }
-                        default: break;
+                        default:
+                            break;
                     }
-                }
+                    break;
             }
         }
 
         return new AggregatedStatistics(plId, pName, matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, saves);
     }
 
-    public ArrayList<AggregatedStatistics> getAllAggregated(Context context)
-    {
+    public ArrayList<AggregatedStatistics> getAllAggregated(Context context) {
         ArrayList<DStat> allStats = null;
         ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers(context);
 
@@ -138,8 +116,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return res;
     }
 
-    public AggregatedStatistics getByPlayerID(Context context, long playerID)
-    {
+    public AggregatedStatistics getByPlayerID(Context context, long playerID) {
         ArrayList<DStat> allStats = null;
         Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, playerID);
 
@@ -149,77 +126,75 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     }
 
 
-    public ArrayList<AggregatedStatistics> getByCompetitionID( Context context, long compId )
-    {
+    public ArrayList<AggregatedStatistics> getByCompetitionID( Context context, long compId ) {
         ArrayList<Player> compPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( context, compId );
 
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         ArrayList<DStat> competitionStats = DAOFactory.getInstance().statDAO.getStatsByCompetitionId( context, compId );
 
-        for( Player p : compPlayers )
-        {
+        for( Player p : compPlayers ) {
             res.add( aggregateStats(context, p.getId(), p.getName(), competitionStats) );
         }
 
         return res;
     }
 
-    public ArrayList<AggregatedStatistics> getByTournamentID( Context context, long tourId )
-    {
+    public ArrayList<AggregatedStatistics> getByTournamentID( Context context, long tourId ) {
         ArrayList<Player> tourPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tourId);
 
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
         ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId(context, tourId);
 
-        for( Player p : tourPlayers )
-        {
+        for( Player p : tourPlayers ) {
             res.add( aggregateStats(context, p.getId(), p.getName(), tournamentStats) );
         }
 
         return res;
     }
 
-    public ArrayList<Standing> getStandingsByTournamentId( Context context, long tourId)
-    {
+    public ArrayList<Standing> getStandingsByTournamentId( Context context, long tourId) {
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( context, tourId );
 
         ArrayList<Standing> standings = new ArrayList<>();
 
         DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, tourId );
 
-        for( Team t : teams )
-        {
+        for( Team t : teams ) {
             standings.add( new Standing(t.getName(), 0L, 0L, 0L, 0L, 0L, 0L, t.getId()));
         }
         ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, tourId );
-        for( DMatch dMatch : matches )
-        {
-            if(!dMatch.isPlayed()) continue;
+        for( DMatch dMatch : matches ) {
+            if(!dMatch.isPlayed())
+                continue;
+
             ScoredMatch match = ManagerFactory.getInstance().matchManager.getById( context, dMatch.getId() );
             Standing standingH = null;
             Standing standingA = null;
             for( Standing s : standings ){
-                if( s.getTeamId() == match.getHomeParticipantId() ) standingH = s;
-                else if ( s.getTeamId() == match.getAwayParticipantId() ) standingA = s;
+                if( s.getTeamId() == match.getHomeParticipantId() )
+                    standingH = s;
+                else if ( s.getTeamId() == match.getAwayParticipantId() )
+                    standingA = s;
             }
-            if(standingA == null || standingH == null)continue;
+            if(standingA == null || standingH == null)
+                continue;
+
             DMatchStat matchStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId( context, match.getId() );
             int homeOutcome, awayOutcome;
+
             if( match.getHomeScore() > match.getAwayScore() ) {
                 homeOutcome = 1;
                 standingH.addWin();
                 awayOutcome = 3;
                 standingA.addLoss();
-            }
-            else if (match.getHomeScore() == match.getAwayScore()){
+            } else if (match.getHomeScore() == match.getAwayScore()){
                 homeOutcome = 2;
                 standingH.addDraw();
                 awayOutcome = 2;
                 standingA.addDraw();
-            }
-            else{
+            } else{
                 homeOutcome = 3;
                 standingH.addLoss();
                 awayOutcome = 1;
@@ -239,15 +214,21 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         Collections.sort(standings, new Comparator<Standing>() {
             @Override
             public int compare(Standing lhs, Standing rhs) {
-                return (int)(rhs.getPoints() - lhs.getPoints());
+                if (rhs.getPoints() != lhs.getPoints())
+                    return (int)(rhs.getPoints() - lhs.getPoints());
+                if ((rhs.getGoalsGiven()-rhs.getGoalsReceived()) != (lhs.getGoalsGiven()-lhs.getGoalsReceived())) {
+                    return (int)((rhs.getGoalsGiven()-rhs.getGoalsReceived()) - (lhs.getGoalsGiven()-lhs.getGoalsReceived()));
+                }
+                return (int)(rhs.getGoalsGiven()-lhs.getGoalsGiven());
             }
         });
         return standings;
     }
-    public MatchScore getMatchScoreByMatchId( Context context, long id )
-    {
+    public MatchScore getMatchScoreByMatchId( Context context, long id ) {
         DMatchStat stat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId(context, id);
-        if( stat == null )return null;
+        if( stat == null )
+            return null;
+
         MatchScore score = new MatchScore();
         score.setMatchId( stat.getMatchId() );
         score.setShootouts( stat.isShootouts() );
@@ -255,8 +236,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return score;
     }
 
-    public void setMatchScoreByMatchId( Context context, long id, MatchScore score )
-    {
+    public void setMatchScoreByMatchId( Context context, long id, MatchScore score ) {
         DMatchStat matchStat = new DMatchStat( id, score.isOvertime(), score.isShootouts() );
         DAOFactory.getInstance().matchStatisticsDAO.update( context, matchStat );
 
@@ -264,12 +244,10 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         if( score.getHomeScore() > score.getAwayScore() ) {
             homeOutcome = 1;
             awayOutcome = 3;
-        }
-        else if (score.getHomeScore() == score.getAwayScore()){
+        } else if (score.getHomeScore() == score.getAwayScore()){
             homeOutcome = 2;
             awayOutcome = 2;
-        }
-        else{
+        } else{
             homeOutcome = 3;
             awayOutcome = 1;
         }
@@ -279,12 +257,19 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         for( DParticipant dp : participants ) {
             ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, dp.getId() );
             if( dp.getRole().equals(ParticipantType.home.toString())){
-                for( DStat ds : stats ) if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {homeScoreStat = ds; break;}
+                for( DStat ds : stats )
+                    if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {
+                        homeScoreStat = ds;
+                        break;
+                    }
                 homeScoreStat.setValue( Integer.toString( score.getHomeScore() ) );
                 giveOutcome( context, homeOutcome, stats );
             }
-            else if ( dp.getRole().equals(ParticipantType.away.toString())){
-                for( DStat ds : stats ) if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {awayScoreStat = ds; break;}
+            else if ( dp.getRole().equals(ParticipantType.away.toString())) {
+                for( DStat ds : stats )
+                    if( StatsEnum.team_goals.toString().equals(ds.getStatsEnumId()) ) {
+                        awayScoreStat = ds; break;
+                    }
                 awayScoreStat.setValue( Integer.toString( score.getAwayScore() ) );
                 giveOutcome( context, awayOutcome, stats );
             }
@@ -293,20 +278,16 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         DAOFactory.getInstance().statDAO.update(context, awayScoreStat);
     }
 
-    private void giveOutcome( Context context, int outcome, ArrayList<DStat> participantStats )
-    {
-        for( DStat stat : participantStats )
-        {
-            if(StatsEnum.outcome.toString().equals(stat.getStatsEnumId()))
-            {
+    private void giveOutcome( Context context, int outcome, ArrayList<DStat> participantStats ) {
+        for( DStat stat : participantStats ) {
+            if(StatsEnum.outcome.toString().equals(stat.getStatsEnumId())) {
                 stat.setValue( String.valueOf(outcome));
                 DAOFactory.getInstance().statDAO.update( context, stat );
             }
         }
     }
 
-    private long getParticipantIdByPlayerAndMatch( Context context, long playerId, long matchId )
-    {
+    private long getParticipantIdByPlayerAndMatch( Context context, long playerId, long matchId ) {
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
         long partId = -1;
         for(DParticipant dParticipant : participants){
@@ -318,27 +299,30 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return partId;
     }
 
-    public MatchPlayerStatistic getPlayerStatsInMatch( Context context, long playerId, long matchId )
-    {
+    public MatchPlayerStatistic getPlayerStatsInMatch( Context context, long playerId, long matchId ) {
         MatchPlayerStatistic res = new MatchPlayerStatistic();
 
         long partId = getParticipantIdByPlayerAndMatch( context, playerId, matchId );
 
         ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByParticipant( context, partId );
         Player curPlayer = null;
-        for( Player p : players ) if( p.getId() == playerId ) curPlayer = p;
-        if( curPlayer == null ) return null;
+        for( Player p : players )
+            if( p.getId() == playerId )
+                curPlayer = p;
+
+        if( curPlayer == null )
+            return null;
 
         ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId( context, partId );
         res.setPlayerId(playerId);
         res.setName( curPlayer.getName() );
 
-        for( DStat stat : partStats )
-        {
-            if( stat.getPlayerId() != playerId ) continue;
+        for( DStat stat : partStats ) {
+            if( stat.getPlayerId() != playerId )
+                continue;
+
             int value = Integer.parseInt(stat.getValue());
-            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
-            {
+            switch (StatsEnum.valueOf(stat.getStatsEnumId())) {
                 case goals:
                     res.setGoals( value );
                     break;
@@ -351,14 +335,14 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 case saves:
                     res.setSaves( value );
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
         return res;
     }
 
-    public void updatePlayersInMatch( Context context, long matchId, ParticipantType parType, ArrayList<Long> playerIds )
-    {
+    public void updatePlayersInMatch( Context context, long matchId, ParticipantType parType, ArrayList<Long> playerIds ) {
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId( context, matchId);
         DParticipant currentPart = null;
         for( DParticipant part : participants ) {
@@ -367,7 +351,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 break;
             }
         }
-        if( currentPart == null ) return;
+        if( currentPart == null )
+            return;
 
         Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> playerListToUpdate = new ArrayList<>();
@@ -381,17 +366,15 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         ManagerFactory.getInstance().packagePlayerManager.updatePlayersInParticipant( context, currentPart.getId(), compId, tourId, playerListToUpdate );
     }
 
-    public void updatePlayerStatsInMatch( Context context, MatchPlayerStatistic statistic, long matchId )
-    {
+    public void updatePlayerStatsInMatch( Context context, MatchPlayerStatistic statistic, long matchId ) {
         long partId = getParticipantIdByPlayerAndMatch( context, statistic.getPlayerId(), matchId );
         ArrayList<DStat> participantStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(context, partId);
 
-        for( DStat stat : participantStats )
-        {
-            if( stat.getPlayerId() != statistic.getPlayerId() ) continue;
-            //int value = Integer.parseInt(stat.getValue());
-            switch (StatsEnum.valueOf(stat.getStatsEnumId()))
-            {
+        for( DStat stat : participantStats ) {
+            if( stat.getPlayerId() != statistic.getPlayerId() )
+                continue;
+
+            switch (StatsEnum.valueOf(stat.getStatsEnumId())) {
                 case goals:
                     stat.setValue(String.valueOf(statistic.getGoals()));
                     break;
@@ -404,7 +387,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 case saves:
                     stat.setValue(String.valueOf(statistic.getSaves()));
                     break;
-                default: break;
+                default:
+                    break;
             }
             DAOFactory.getInstance().statDAO.update( context, stat );
         }
