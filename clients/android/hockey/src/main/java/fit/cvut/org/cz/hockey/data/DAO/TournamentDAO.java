@@ -23,8 +23,7 @@ public class TournamentDAO implements ITournamentDAO {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    private ContentValues toContVal(DTournament tournament)
-    {
+    private ContentValues toContVal(DTournament tournament) {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cUID, tournament.getUid());
         cv.put(DBConstants.cETAG, tournament.getEtag());
@@ -39,7 +38,6 @@ public class TournamentDAO implements ITournamentDAO {
         if ( tournament.getLastSynchronized() != null )
             cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(tournament.getLastSynchronized()));
 
-
         return cv;
     }
 
@@ -47,16 +45,13 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public long insert(Context context, DTournament tournament) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-
         ContentValues values = toContVal( tournament );
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
 
         db.close();
-
         return newRowId;
     }
 
@@ -96,6 +91,7 @@ public class TournamentDAO implements ITournamentDAO {
         cursor.moveToFirst();
         if( cursor.getCount() <= 0 )
             return null;
+
         DTournament res = CursorParser.getInstance().parseDTournament(cursor);
 
         cursor.close();
@@ -108,12 +104,11 @@ public class TournamentDAO implements ITournamentDAO {
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
         String[] selArgs = { String.valueOf( competitionId ) };
-        Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
+        Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
 
         ArrayList<DTournament> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add( CursorParser.getInstance().parseDTournament( cursor ));
         }
 

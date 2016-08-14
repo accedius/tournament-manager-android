@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -30,7 +31,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
         String uri = "content://"+package_name+".data/"+content;
         Uri myUri = Uri.parse(uri);
-        Cursor cur = getContentResolver().query(myUri, null, null, null, null);
+        Cursor cur = getContentResolver().query(myUri, null, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
         if (cur == null) {
             return data;
         }

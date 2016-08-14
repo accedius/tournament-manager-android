@@ -101,7 +101,7 @@ public class TournamentDAO implements ITournamentDAO {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String selection = String.format("select * from %s where %s = ?", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITIONID);
+        String selection = String.format("select * from %s where %s = ? order by %s", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITIONID, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
 
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(competitionId)});
 
