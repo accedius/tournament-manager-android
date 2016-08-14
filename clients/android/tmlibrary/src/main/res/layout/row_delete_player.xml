@@ -6,30 +6,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
             android:id="@+id/tv_name"
             android:gravity="center_vertical"
-            android:layout_weight="7"/>
+            android:layout_weight="7"
+            android:layout_marginBottom="8dp"
+            android:textSize="18dp" />
 
-
-        <ImageButton
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/aView"
-            android:src="@drawable/ic_delete_sweep_white_24dp"
-            android:layout_weight="1"/>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
+            android:src="@drawable/ic_delete_forever_black_24dp"
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

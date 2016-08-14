@@ -20,8 +20,6 @@ import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
  */
 public class PlayerDAO implements IPlayerDAO {
 
-    SimpleDateFormat format = DateFormater.getInstance().getFormat();
-
     private ContentValues serializePlayer(DPlayer player) {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, player.getName());
@@ -92,7 +90,7 @@ public class PlayerDAO implements IPlayerDAO {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String selection = String.format("select * from %s", DBConstants.tPLAYERS);
+        String selection = String.format("select * from %s order by name asc", DBConstants.tPLAYERS);
 
         Cursor c = db.rawQuery(selection, null);
         ArrayList<DPlayer> players = new ArrayList<>();

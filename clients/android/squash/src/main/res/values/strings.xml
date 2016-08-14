@@ -18,7 +18,7 @@
     <string name="ballsWonAvg">BW AVG</string>
     <string name="ballsLostAvg">BL AVG</string>
     <string name="score">Score</string>
-    <string name="points">Points</string>
+    <string name="points">P</string>
     <string name="win">Win</string>
     <string name="draw">Draw</string>
     <string name="loss">Loss</string>

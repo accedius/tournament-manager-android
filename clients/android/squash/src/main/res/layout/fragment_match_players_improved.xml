@@ -8,32 +8,59 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/sv">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/tv_home_name"/>
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="16dp">
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_home"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/tv_home_name"
+                    android:text="Team A"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="26dp"
+                    android:paddingBottom="8dp" />
 
-            <TextView
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_home_name"
+                        android:id="@+id/rv_home"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/tv_away_name"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="16dp"
+                android:paddingTop="8dp">
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_away"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/tv_away_name"
+                    android:text="Team B"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="26dp"
+                    android:paddingBottom="8dp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_away_name"
+                        android:id="@+id/rv_away"/>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
