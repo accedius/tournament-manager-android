@@ -4,6 +4,7 @@
     <string name="title_activity_main" translatable="false">Squash Main Activity</string>
     <string name="squashpcg" translatable="false">Squash PCG</string>
     <string name="dateFirmat" translatable="false">yyyy-MM-dd</string>
+    <string name="games_played">GP</string>
     <string name="wins">W</string>
     <string name="loses">L</string>
     <string name="draws">D</string>

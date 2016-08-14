@@ -13,18 +13,19 @@ public class SAggregatedStats implements Parcelable {
     public long playerId;
     public String playerName;
 
-    public int won, lost, draws, setsWon, setsLost, ballsWon, ballsLost;
+    public int games_played, won, lost, draws, setsWon, setsLost, ballsWon, ballsLost;
     public double setsWonAvg, setsLostAvg, ballsWonAvg, ballsLostAvg, matchWinRate, setsWinRate;
     public SAggregatedStats(String playerName, long playerId){
         this.playerName = playerName;
         this.playerId = playerId;
-        won = lost = draws = setsWon = setsLost = ballsWon = ballsLost = 0;
+        games_played = won = lost = draws = setsWon = setsLost = ballsWon = ballsLost = 0;
         setsWonAvg = setsLostAvg = ballsLostAvg = ballsWonAvg = matchWinRate = setsWinRate = 0;
     }
 
     protected SAggregatedStats(Parcel in) {
         playerId = in.readLong();
         playerName = in.readString();
+        games_played = in.readInt();
         won = in.readInt();
         lost = in.readInt();
         draws = in.readInt();
@@ -61,6 +62,7 @@ public class SAggregatedStats implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(playerId);
         dest.writeString(playerName);
+        dest.writeInt(games_played);
         dest.writeInt(won);
         dest.writeInt(lost);
         dest.writeInt(draws);

@@ -43,4 +43,5 @@
     <string name="zero_score">Skóre nemůže být záporné</string>
     <string name="add_player_to">Přidat hráče do</string>
     <string name="sport_name">Squash</string>
+    <string name="games_played">Z</string>
 </resources>

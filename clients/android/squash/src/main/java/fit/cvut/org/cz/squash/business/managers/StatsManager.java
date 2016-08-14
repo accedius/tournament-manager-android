@@ -45,6 +45,7 @@ public class StatsManager implements IStatsManager {
                 if (mappedStats.get(playerId) == null)
                     continue;
                 Log.d("STATS_MNGR - playerId", "" + playerId);
+                mappedStats.get(playerId).games_played++;
                 switch (result.getStatus()) {
                     case -1:
                         mappedStats.get(playerId).lost++;
