@@ -15,4 +15,6 @@
 
     <string name="openDrawer" translatable="false">drawer_open_action</string>
     <string name="closeDrawer" translatable="false">drawer_close_action</string>
+
+    <string name="player_name_email_empty_error">Name and email must not be empty!</string>
 </resources>

@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
  */
 public abstract class NewPlayerFragment extends AbstractDataFragment {
 
-    private static final String ARG_ID = "arg_id";
+    protected static final String ARG_ID = "arg_id";
 
     /**
      * Constructor for this fragment with id of Player that needs to update
@@ -51,13 +52,15 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    private EditText note, name, email;
-    private FloatingActionButton fab;
+    protected EditText note, name, email;
     protected long PlayerId = -1;
+    protected View v;
+
+    protected Player Player = null;
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(R.layout.fragment_new_player, container, false);
+        v = inflater.inflate(R.layout.fragment_new_player, container, false);
 
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
@@ -66,44 +69,7 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
         if (getArguments() != null)
             PlayerId = getArguments().getLong(ARG_ID , -1);
 
-        fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
-        //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDataSourceWorking() && validate(v)){
-                    if (PlayerId == -1){
-                        Player = new Player(PlayerId, name.getText().toString(), email.getText().toString(), note.getText().toString());
-                        savePlayer(Player);
-                    }
-                    else{
-                        Player.setName(name.getText().toString());
-                        Player.setEmail(email.getText().toString());
-                        Player.setNote(note.getText().toString());
-                        updatePlayer(Player);
-                    }
-                    getActivity().finish();
-                }
-            }
-        });
-
         return v;
-    }
-
-    private Player Player = null;
-
-    private boolean validate(View v){
-        if (name.getText().toString().isEmpty()){
-            Snackbar.make(v, R.string.invalidName, Snackbar.LENGTH_LONG).show();
-            return false;
-        }
-        if (email.getText().toString().isEmpty()){
-            Snackbar.make(v, R.string.invalidEmail, Snackbar.LENGTH_LONG).show();
-            return false;
-        }
-        Snackbar.make(v, R.string.player_created, Snackbar.LENGTH_SHORT).show();
-        return true;
     }
 
     @Override

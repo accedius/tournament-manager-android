@@ -7,4 +7,5 @@
     <string name="player_detail_header">Info o hráči</string>
     <string name="title_activity_competitions">Soutěže</string>
     <string name="main_acc_name">Soutěže</string>
+    <string name="player_name_email_empty_error">Jméno a e-mail nesmí být prázdné!</string>
 </resources>

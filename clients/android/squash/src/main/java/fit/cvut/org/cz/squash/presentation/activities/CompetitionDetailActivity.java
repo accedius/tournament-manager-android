@@ -78,13 +78,13 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
         switch (item.getItemId()){
 
-            case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
-                if (competitionId == -1) break;
+            case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
+                if (competitionId == -1)
+                    break;
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
                 break;
-            }
             default:
                 break;
         }

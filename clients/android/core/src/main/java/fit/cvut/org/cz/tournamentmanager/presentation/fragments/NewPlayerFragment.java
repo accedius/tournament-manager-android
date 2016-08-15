@@ -3,8 +3,12 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
@@ -54,4 +58,10 @@ public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fr
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
+
+    public Player getPlayer() {
+        Player res = new Player( getArguments().getLong(ARG_ID), name.getText().toString(), email.getText().toString(), note.getText().toString() );
+        return res;
+    }
+
 }

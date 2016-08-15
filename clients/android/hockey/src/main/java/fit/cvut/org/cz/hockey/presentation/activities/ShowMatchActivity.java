@@ -119,8 +119,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         if (item.getItemId() == R.id.action_finish){
             MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-            if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore()))
-            {
+            if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
                 Snackbar.make( findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG ).show();
                 return super.onOptionsItemSelected(item);
             }
