@@ -50,6 +50,9 @@
     <string name="rosters">Rosters</string>
     <string name="add_player_to">Add Player to</string>
 
+    <string name="competition_name_empty_error">Name must not be empty!</string>
+    <string name="tournament_name_empty_error">Name must not be empty!</string>
+
     <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
     <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>

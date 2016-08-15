@@ -29,14 +29,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
-    public static final String ARG_ID = "arg_id";
+    public static final String TOUR_ID = "tour_id";
+    public static final String COMP_ID = "comp_id";
 
     private BroadcastReceiver teamReceiver = new TeamReceiver();
 
-    public static HockeyTeamsListFragment newInstance(long tournamentId){
+    public static HockeyTeamsListFragment newInstance(long tournamentId, long competitionId){
         HockeyTeamsListFragment fragment = new HockeyTeamsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, tournamentId);
+        args.putLong(TOUR_ID, tournamentId);
+        args.putLong(COMP_ID, competitionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +64,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1);
                         dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;
@@ -81,7 +83,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     @Override
     public void askForData() {
         Intent intent = TeamService.newStartIntent( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext() );
-        intent.putExtra( TeamService.EXTRA_ID, getArguments().getLong(ARG_ID, -1) );
+        intent.putExtra( TeamService.EXTRA_ID, getArguments().getLong(TOUR_ID, -1) );
 
         getContext().startService( intent );
     }
@@ -109,7 +111,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, HockeyInsertTeamDialog.class);
+                InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(TOUR_ID), true, HockeyInsertTeamDialog.class);
                 dialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }

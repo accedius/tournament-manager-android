@@ -211,13 +211,15 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     }
 
     private void bindMatchOnView( ScoredMatch match ) {
+        Calendar argDate = Calendar.getInstance();
         if (match.getDate() != null){
             mDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(match.getDate()));
             dDate = Calendar.getInstance();
             dDate.setTime(match.getDate());
+            argDate = dDate;
         }
 
-        setDatepicker(dDate);
+        setDatepicker(argDate);
         period.setText( Integer.toString( match.getPeriod() ) );
         round.setText(Integer.toString(match.getRound()));
         note.setText(match.getNote());

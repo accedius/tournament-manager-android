@@ -19,13 +19,15 @@ public class TournamentsDialog extends DialogFragment {
 
     public TournamentsDialog(){}
 
-    public static final String ARG_ID = "arg_id";
+    public static final String COMP_ID = "comp_id";
+    public static final String TOUR_ID = "tour_id";
     public static final String ARG_POSITION = "arg_pos";
 
-    public static TournamentsDialog newInstance(long tournamentId, int position){
+    public static TournamentsDialog newInstance(long compId, long tourId, int position){
         TournamentsDialog fragment = new TournamentsDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, tournamentId);
+        args.putLong(COMP_ID, compId);
+        args.putLong(TOUR_ID, tourId);
         args.putInt(ARG_POSITION, position);
         fragment.setArguments(args);
         return fragment;
@@ -43,14 +45,14 @@ public class TournamentsDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case 0:{
-                                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), false);
+                                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(COMP_ID), getArguments().getLong(TOUR_ID));
                                 startActivity(intent);
                                 break;
                             }
                             case 1:{
                                 Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, getContext());
                                 intent.putExtra(TournamentService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
-                                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(TOUR_ID));
                                 getContext().startService(intent);
                                 break;
                             }

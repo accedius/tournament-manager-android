@@ -3,8 +3,8 @@ package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +26,17 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
  */
 public abstract class NewTournamentFragment extends AbstractDataFragment {
 
-    private static final String ARG_ID = "arg_id";
-    private static final String ARG_COMPETIITON_ID = "arg_competition_id";
+    private static final String ARG_TOUR_ID = "arg_tour_id";
+    private static final String ARG_COMP_ID = "arg_comp_id";
 
     /**
      *
-     * @param id id of tournament for update or id of Competition this tournament belongs to depends on forCompetition param
-     * @param forComeptition if true id is this tournaments competition
+     * @param tourId id of tournament
+     * @param compId id of competition
      * @param clazz class of child fragment
      * @return
      */
-    public static NewTournamentFragment newInstance(long id, boolean forComeptition, Class<? extends NewTournamentFragment> clazz){
+    public static NewTournamentFragment newInstance(long tourId, long compId, Class<? extends NewTournamentFragment> clazz){
         NewTournamentFragment fragment = null;
         try {
             Constructor<? extends NewTournamentFragment> c = clazz.getConstructor();
@@ -53,15 +53,14 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
 
         Bundle args = new Bundle();
 
-        if (forComeptition) args.putLong(ARG_COMPETIITON_ID, id);
-        else args.putLong(ARG_ID, id);
+        args.putLong(ARG_TOUR_ID, tourId);
+        args.putLong(ARG_COMP_ID, compId);
 
         fragment.setArguments(args);
         return fragment;
     }
 
     private EditText note, name, startDate, endDate;
-    private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
     protected long tournamentId = -1;
     protected long competitionId = -1;
@@ -76,12 +75,11 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         name = (EditText) v.findViewById(R.id.et_name);
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
-        fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
         if (getArguments() != null){
-            tournamentId = getArguments().getLong(ARG_ID, -1);
-            competitionId = getArguments().getLong(ARG_COMPETIITON_ID, -1);
+            tournamentId = getArguments().getLong(ARG_TOUR_ID, -1);
+            competitionId = getArguments().getLong(ARG_COMP_ID, -1);
         }
 
         if (tournamentId == -1) {
@@ -91,29 +89,6 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);
         endDate.setKeyListener(null);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDataSourceWorking() && validate(v)){
-                    Date sDate = null; Date eDate = null;
-                    if (dStartDate != null) sDate = dStartDate.getTime();
-                    if (dEndDate != null) eDate = dEndDate.getTime();
-                    if (tournamentId == -1){
-                        tournament = new Tournament(tournamentId, competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
-                        saveTournament(tournament);
-                    }
-                    else{
-                        tournament.setName(name.getText().toString());
-                        tournament.setStartDate(sDate);
-                        tournament.setEndDate(eDate);
-                        tournament.setNote(note.getText().toString());
-                        updateTournament(tournament);
-                    }
-                    getActivity().finish();
-                }
-            }
-        });
 
         return v;
     }
@@ -170,20 +145,24 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     }
 
     private void bindTournamentOnView(Tournament t){
+        Calendar argStart = Calendar.getInstance();
+        Calendar argEnd = Calendar.getInstance();
+
         name.setText(t.getName());
         if (t.getStartDate() != null){
             startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(t.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(t.getStartDate());
+            argStart = dStartDate;
         }
         if (t.getEndDate() != null){
             endDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(t.getEndDate()));
             dEndDate = Calendar.getInstance();
             dEndDate.setTime(t.getEndDate());
+            argEnd = dEndDate;
         }
         note.setText(t.getNote());
-
-        setDatepicker(dStartDate, dEndDate);
+        setDatepicker(argStart, argEnd);
     }
 
     // Set Datepicker dates to Tournament start and end
@@ -237,5 +216,18 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
                 }
             }
         });
+    }
+
+    public Tournament getTournament() {
+        Date sDate = null, eDate = null;
+        if (dStartDate != null)
+            sDate = dStartDate.getTime();
+        if (dEndDate != null)
+            eDate = dEndDate.getTime();
+
+        Log.d("TOURNAMENT_FRAGMENT", "Tournament_id = "+getArguments().getLong(ARG_TOUR_ID));
+        Log.d("TOURNAMENT_FRAGMENT", "Competition_id = "+competitionId);
+
+        return new Tournament(getArguments().getLong(ARG_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
     }
 }

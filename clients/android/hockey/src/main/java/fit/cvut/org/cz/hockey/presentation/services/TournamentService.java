@@ -3,6 +3,7 @@ package fit.cvut.org.cz.hockey.presentation.services;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         super("Hockey Tournament Service");
     }
 
-    public static Intent newStartIntent(String action, Context context)
-    {
+    public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, TournamentService.class);
         res.putExtra(EXTRA_ACTION, action);
 
@@ -55,8 +55,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
-    private ArrayList<Tournament> getData( long competitionID )
-    {
+    private ArrayList<Tournament> getData( long competitionID ) {
         ArrayList<Tournament> res = ManagerFactory.getInstance().tournamentManager.getByCompetitionId( this, competitionID );
         return res;
     }
@@ -66,11 +65,12 @@ public class TournamentService extends AbstractIntentServiceWProgress {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
 
-        switch (action)
-        {
+        switch (action) {
             case ACTION_CREATE:
             {
                 Tournament t = intent.getParcelableExtra( EXTRA_TOURNAMENT );
+                Log.d("TOURNAMENT_SERVICE_SAVE", "Tournament id="+t.getId());
+                Log.d("TOURNAMENT_SERVICE_SAVE", "Competition id="+t.getCompetitionId());
                 ManagerFactory.getInstance().tournamentManager.insert( this, t);
 
                 break;
@@ -98,6 +98,8 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             case ACTION_UPDATE:
             {
                 Tournament c = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+                Log.d("TOURNAMENT_SERVICE_UPDA", "Tournament id="+c.getId());
+                Log.d("TOURNAMENT_SERVICE_UPDA", "Competition id="+c.getCompetitionId());
                 ManagerFactory.getInstance().tournamentManager.update( this, c );
 
                 break;

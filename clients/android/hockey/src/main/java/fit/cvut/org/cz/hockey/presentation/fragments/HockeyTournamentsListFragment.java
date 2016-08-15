@@ -30,7 +30,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class HockeyTournamentsListFragment extends AbstractListFragment<Tournament> {
 
-    private long competitionID;
+    private long competitionId;
     private static String ARG_ID = "competition_id";
 
     private TournamentsListReceiver myReceiver = new TournamentsListReceiver();
@@ -46,7 +46,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getArguments() != null)
-            competitionID = getArguments().getLong(ARG_ID);
+            competitionId = getArguments().getLong(ARG_ID);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -57,6 +57,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
             @Override
             protected void setOnClickListeners(View v, long tournamentId, int position) {
 
+                final long compId = competitionId;
                 final long tourId = tournamentId;
 
                 v.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +65,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                                          public void onClick(View v) {
                                              Intent intent = new Intent( getContext(), ShowTournamentActivity.class);
                                              Bundle b = new Bundle();
+                                             b.putLong(ShowTournamentActivity.COMP_ID, compId);
                                              b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
                                              intent.putExtras(b);
                                              intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
@@ -75,7 +77,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                     @Override
                     public boolean onLongClick(View v) {
 
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance( tourId);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance( tourId, compId);
                         dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
@@ -95,7 +97,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_ALL, getContext());
-        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionID);
+        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionId);
         getActivity().startService(intent);
     }
 
@@ -121,14 +123,13 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
 
         fab.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View v) {
-                                       long compId = getArguments().getLong(ARG_ID, -1);
-                                       Intent intent = CreateTournamentActivity.newStartIntent(getContext(), compId, true);
-
-                                       startActivity(intent);
-                                   }
-                               }
+               @Override
+               public void onClick(View v) {
+                   long compId = getArguments().getLong(ARG_ID, -1);
+                   Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
+                   startActivity(intent);
+               }
+           }
         );
 
         return fab;

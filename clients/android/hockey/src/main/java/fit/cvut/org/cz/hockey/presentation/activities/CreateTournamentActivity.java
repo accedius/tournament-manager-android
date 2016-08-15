@@ -5,13 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment;
+import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
 /**
  * Activity for creating and modifying tournament
@@ -25,17 +32,14 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
      * @param context
-     * @param compId if true, the Id is considered to be competitions, hence a new tournament is being created
-     * @param id id of tournament or competition
+     * @param tourId id of tournament
+     * @param compId id oc competition
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long id, boolean compId  )
-    {
+    public static Intent newStartIntent( Context context, long tourId, long compId  ) {
         Intent res = new Intent(context, CreateTournamentActivity.class);
-        if( compId )
-            res.putExtra(EXTRA_COMP_ID, id);
-        else res.putExtra(EXTRA_TOUR_ID, id);
-
+        res.putExtra(EXTRA_TOUR_ID, tourId);
+        res.putExtra(EXTRA_COMP_ID, compId);
         return res;
     }
 
@@ -58,10 +62,37 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
         compID = getIntent().getLongExtra( EXTRA_COMP_ID, -1 );
 
         if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
-            if( tourID != -1)
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyTournamentFragment.newInstance(tourID, false, NewHockeyTournamentFragment.class)).commit();
-            else
-                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyTournamentFragment.newInstance(compID, true, NewHockeyTournamentFragment.class)).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyTournamentFragment.newInstance(tourID, compID, NewHockeyTournamentFragment.class)).commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_finish, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
+            Tournament tournament = ((NewTournamentFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getTournament();
+            if (tournament.getName().isEmpty()) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.tournament_name_empty_error), Snackbar.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            Intent intent;
+            if (tournament.getId() == -1) {
+                intent = TournamentService.newStartIntent(TournamentService.ACTION_CREATE, this);
+            } else {
+                intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
+            }
+            Log.d("TOURNAMENT_ACTIVITY", "Tournament_id="+tournament.getId());
+            Log.d("TOURNAMENT_ACTIVITY", "Competition_id="+tournament.getCompetitionId());
+            intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournament);
+            startService(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -21,14 +21,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
  */
 public class EditDeleteDialog extends DialogFragment {
 
-    private static final String ARG_ID = "arg_tour_id";
+    private static final String ARG_ID = "arg_id";
+    private static final String SECOND_ID = "second_id";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    public static EditDeleteDialog newInstance( long id ){
+    public static EditDeleteDialog newInstance( long id, long otherId ){
         EditDeleteDialog fragment = new EditDeleteDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
+        args.putLong(SECOND_ID, otherId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +65,7 @@ public class EditDeleteDialog extends DialogFragment {
                     } else if( fr instanceof HockeyTournamentsListFragment) {
                         switch ( which ) {
                             case 0:
-                                Intent intent0 = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), false);
+                                Intent intent0 = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(ARG_ID), getArguments().getLong(SECOND_ID));
                                 startActivity( intent0 );
                                 break;
                             case 1:

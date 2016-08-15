@@ -17,6 +17,9 @@
     <string name="create_match_header">Match settings</string>
     <string name="match_header">Match</string>
 
+    <string name="competition_name_empty_error">Name must not be empty!</string>
+    <string name="tournament_name_empty_error">Name must not be empty!</string>
+
     <string name="header_overview">Overview</string>
     <string name="header_tournaments_list">Tournaments</string>
     <string name="header_players">Players</string>

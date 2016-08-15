@@ -28,8 +28,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
 
+    public static final String COMP_ID = "competition_id";
     public static final String TOUR_ID = "tournament_id";
 
+    private long competitionID;
     private long tournamentID;
 
     private Fragment[] fragments;
@@ -41,6 +43,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
 
+        competitionID = getIntent().getExtras().getLong(COMP_ID);
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
 
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_standings), getString(R.string.header_players), getString(R.string.header_matches), getString(R.string.header_teams) };
@@ -48,7 +51,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         Fragment f2 = StandingsStatsTitleFragment.newInstance( tournamentID );
         Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentID, false);
         Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
-        Fragment f5 = HockeyTeamsListFragment.newInstance( tournamentID );
+        Fragment f5 = HockeyTeamsListFragment.newInstance( tournamentID, competitionID );
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
@@ -106,7 +109,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (tournamentID == -1) break;
-                Intent intent = CreateTournamentActivity.newStartIntent( this, tournamentID, false );
+                Intent intent = CreateTournamentActivity.newStartIntent( this, tournamentID, competitionID );
                 startActivity(intent);
                 break;
             }

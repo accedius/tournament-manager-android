@@ -31,14 +31,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
-    public static final String ARG_ID = "arg_id";
+    public static final String COMP_ID = "comp_id";
     private CompetitionType type = null;
     private TournamentAdapter adapter = null;
 
     public static TournamentsListFragment newInstance(long competitionId){
         TournamentsListFragment fragment = new TournamentsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, competitionId);
+        args.putLong(COMP_ID, competitionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +67,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        TournamentsDialog dialog = TournamentsDialog.newInstance(tournamentId, position);
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(getArguments().getLong(COMP_ID), tournamentId, position);
                         dialog.setTargetFragment(TournamentsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
@@ -88,7 +88,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_BY_COMPETITION_ID, getContext());
-        if (getArguments() != null) intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
+        if (getArguments() != null) intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(COMP_ID, -1));
 
         getContext().startService(intent);
     }
@@ -117,8 +117,8 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long cId = getArguments().getLong(ARG_ID, -1);
-                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), cId, true);
+                long cId = getArguments().getLong(COMP_ID, -1);
+                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), cId, -1);
                 startActivity(intent);
             }
         });

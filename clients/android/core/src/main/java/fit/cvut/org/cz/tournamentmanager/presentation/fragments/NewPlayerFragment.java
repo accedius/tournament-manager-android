@@ -60,8 +60,7 @@ public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fr
     }
 
     public Player getPlayer() {
-        Player res = new Player( getArguments().getLong(ARG_ID), name.getText().toString(), email.getText().toString(), note.getText().toString() );
-        return res;
+        return new Player( getArguments().getLong(ARG_ID), name.getText().toString(), email.getText().toString(), note.getText().toString() );
     }
 
 }

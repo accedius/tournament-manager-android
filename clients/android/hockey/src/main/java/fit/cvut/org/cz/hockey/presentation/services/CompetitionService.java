@@ -40,8 +40,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return EXTRA_ACTION;
     }
 
-    public static Intent newStartIntent(String action, Context context)
-    {
+    public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, CompetitionService.class);
         res.putExtra(EXTRA_ACTION, action);
 
@@ -53,38 +52,32 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     protected void doWork(Intent intent) {
 
         String action = intent.getStringExtra(EXTRA_ACTION);
+        Competition c;
 
-        switch (action)
-        {
+        switch (action) {
             case ACTION_CREATE:
-            {
-                Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
+                c = intent.getParcelableExtra(EXTRA_COMPETITION);
                 ManagerFactory.getInstance().competitionManager.insert(this, c);
-
                 break;
-            }
-            case ACTION_FIND_BY_ID:
-            {
-                Intent res = new Intent();
-                long compID = intent.getLongExtra(EXTRA_ID, -1);
-                res.setAction(ACTION_FIND_BY_ID);
-                Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compID );
-                ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
-                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( this, compID);
 
-                res.putExtra(EXTRA_COMPETITION, c);
-                res.putExtra(EXTRA_PLAYERS_COUNT, players.size());
-                res.putExtra(EXTRA_TOURNAMENT_COUNT, tournaments.size());
-                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
-
-                break;
-            }
             case ACTION_UPDATE:
-            {
-                Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
+                c = intent.getParcelableExtra(EXTRA_COMPETITION);
                 ManagerFactory.getInstance().competitionManager.update( this, c );
                 break;
-            }
+
+            case ACTION_FIND_BY_ID:
+            Intent res = new Intent();
+            long compID = intent.getLongExtra(EXTRA_ID, -1);
+            res.setAction(ACTION_FIND_BY_ID);
+            c = ManagerFactory.getInstance().competitionManager.getById(this, compID );
+            ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
+            ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( this, compID);
+
+            res.putExtra(EXTRA_COMPETITION, c);
+            res.putExtra(EXTRA_PLAYERS_COUNT, players.size());
+            res.putExtra(EXTRA_TOURNAMENT_COUNT, tournaments.size());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+            break;
         }
 
     }

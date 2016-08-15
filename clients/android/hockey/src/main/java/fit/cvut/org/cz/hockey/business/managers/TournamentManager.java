@@ -54,8 +54,7 @@ public class TournamentManager implements ITournamentManager {
         ArrayList<Tournament> res = new ArrayList<>();
         ArrayList<DTournament> dTList = DAOFactory.getInstance().tournamentDAO.getByCompetitionId( context, competitionId );
 
-        for ( DTournament dt: dTList )
-        {
+        for ( DTournament dt: dTList ) {
             res.add( new Tournament(dt) );
         }
         return res;

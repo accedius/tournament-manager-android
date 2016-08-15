@@ -109,29 +109,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             setDatepicker(Calendar.getInstance(), Calendar.getInstance());
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDataSourceWorking() && validate(v)){
-                    Date sDate = null; Date eDate = null;
-                    if (dStartDate != null) sDate = dStartDate.getTime();
-                    if (dEndDate != null) eDate = dEndDate.getTime();
-                    CompetitionType t = (CompetitionType) type.getSelectedItem();
-
-                    if (competitionId == -1){
-                        competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
-                        saveCompetition(competition);
-                    } else {
-                        competition.setStartDate(sDate);
-                        competition.setEndDate(eDate);
-                        competition.setName(name.getText().toString());
-                        competition.setNote(note.getText().toString());
-                        updateCompetition(competition);
-                    }
-                    getActivity().finish();
-                }
-            }
-        });
         return v;
     }
 
@@ -187,21 +164,25 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     private void bindCompetitionOnView(final Competition c){
+        Calendar argStart = Calendar.getInstance();
+        Calendar argEnd = Calendar.getInstance();
+
         name.setText(c.getName());
         if (c.getStartDate() != null){
             startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(c.getStartDate());
+            argStart = dStartDate;
         }
         if (c.getEndDate() != null){
             endDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getEndDate()));
             dEndDate = Calendar.getInstance();
             dEndDate.setTime(c.getEndDate());
+            argEnd = dEndDate;
         }
         note.setText(c.getNote());
 
-        setDatepicker(dStartDate, dEndDate);
-
+        setDatepicker(argStart, argEnd);
         int index = adapter.getPosition(c.getType());
         type.setSelection(index);
     }
@@ -256,5 +237,16 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                 }
             }
         });
+    }
+
+    public Competition getCompetition() {
+        Date sDate = null, eDate = null;
+        if (dStartDate != null)
+            sDate = dStartDate.getTime();
+        if (dEndDate != null)
+            eDate = dEndDate.getTime();
+
+        CompetitionType t = (CompetitionType) type.getSelectedItem();
+        return new Competition(getArguments().getLong(ARG_ID), name.getText().toString(), sDate, eDate, note.getText().toString(), t);
     }
 }
