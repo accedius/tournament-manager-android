@@ -3,7 +3,6 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,10 +86,6 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        Log.d("ORIENTATION", "" + getResources().getConfiguration().orientation);
-        Log.d("Landscape", ""+ getResources().getConfiguration().ORIENTATION_LANDSCAPE);
-        Log.d("Portrait", ""+getResources().getConfiguration().ORIENTATION_PORTRAIT);
-
         int orientation = getResources().getConfiguration().orientation;
         int landscape = getResources().getConfiguration().ORIENTATION_LANDSCAPE;
         int portrait = getResources().getConfiguration().ORIENTATION_PORTRAIT;
@@ -98,25 +93,24 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         label_row.removeAllViews();
         stats_row.removeAllViews();
 
+        LayoutParams labelParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        LayoutParams statsParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        labelParams.weight = 1;
+        statsParams.weight = 1;
+
         AggregatedStats ags = intent.getParcelableExtra(CrossPackageComunicationConstants.EXTRA_STATS);
         for(PlayerAggregatedStats as : ags.getRecords()) {
             for (PlayerAggregatedStatsRecord asr : as.getRecords()) {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
                     TextView label = new TextView(getContext());
-                    LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                    params.weight = 1;
-                    params.gravity = Gravity.CENTER;
-                    params.width = 0;
-                    label.setLayoutParams(params);
+                    label.setLayoutParams(labelParams);
+                    label.setGravity(Gravity.CENTER);
                     label.setText(asr.getKey());
                     label_row.addView(label);
 
                     TextView stat = new TextView(getContext());
-                    params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                    params.gravity = Gravity.CENTER;
-                    params.weight = 1;
-                    params.width = 0;
-                    stat.setLayoutParams(params);
+                    stat.setLayoutParams(statsParams);
+                    stat.setGravity(Gravity.CENTER);
                     stat.setText(asr.getVal());
                     stats_row.addView(stat);
                 }
