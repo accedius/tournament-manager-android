@@ -60,8 +60,6 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         return fragment;
     }
 
-
-
     private EditText note, name, startDate, endDate;
     private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
@@ -86,51 +84,13 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             competitionId = getArguments().getLong(ARG_COMPETIITON_ID, -1);
         }
 
+        if (tournamentId == -1) {
+            setDatepicker(Calendar.getInstance(), Calendar.getInstance());
+        }
+
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);
         endDate.setKeyListener(null);
-
-        //Instead we show dialog with date picker when the focus is gained
-        startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
-                            dStartDate = Calendar.getInstance();
-                            dStartDate.set(Calendar.YEAR, year);
-                            dStartDate.set(Calendar.MONTH, monthOfYear);
-                            dStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        }
-                    };
-                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
-                }
-            }
-        });
-
-        //here as well
-        endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
-                            dEndDate = Calendar.getInstance();
-                            dEndDate.set(Calendar.YEAR, year);
-                            dEndDate.set(Calendar.MONTH, monthOfYear);
-                            dEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        }
-                    };
-                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
-                }
-            }
-        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,5 +183,59 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         }
         note.setText(t.getNote());
 
+        setDatepicker(dStartDate, dEndDate);
+    }
+
+    // Set Datepicker dates to Tournament start and end
+    private void setDatepicker(final Calendar start, final Calendar end) {
+        startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Bundle b = new Bundle();
+                    b.putInt("y", start.get(Calendar.YEAR));
+                    b.putInt("m", start.get(Calendar.MONTH));
+                    b.putInt("d", start.get(Calendar.DAY_OF_MONTH));
+                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    fragment.setArguments(b);
+                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
+                            dStartDate = Calendar.getInstance();
+                            dStartDate.set(Calendar.YEAR, year);
+                            dStartDate.set(Calendar.MONTH, monthOfYear);
+                            dStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        }
+                    };
+                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
+                }
+            }
+        });
+
+        endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Bundle b = new Bundle();
+                    b.putInt("y", end.get(Calendar.YEAR));
+                    b.putInt("m", end.get(Calendar.MONTH));
+                    b.putInt("d", end.get(Calendar.DAY_OF_MONTH));
+                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    fragment.setArguments(b);
+                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
+                            dEndDate = Calendar.getInstance();
+                            dEndDate.set(Calendar.YEAR, year);
+                            dEndDate.set(Calendar.MONTH, monthOfYear);
+                            dEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        }
+                    };
+                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
+                }
+            }
+        });
     }
 }

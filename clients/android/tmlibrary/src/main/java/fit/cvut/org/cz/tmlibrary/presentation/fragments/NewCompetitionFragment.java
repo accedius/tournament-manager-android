@@ -100,53 +100,14 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         endDate.setKeyListener(null);
 
         //We set adapter for spinner from CompetitionType Enum
-
         adapter = new ArrayAdapter<CompetitionType>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         type.setAdapter(adapter);
 
-        //Instead we show dialog with date picker when the focus is gained
-        startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
-                            dStartDate = Calendar.getInstance();
-                            dStartDate.set(Calendar.YEAR, year);
-                            dStartDate.set(Calendar.MONTH, monthOfYear);
-                            dStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        }
-                    };
-                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
-                }
-            }
-        });
-
-        //here as well
-        endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
-                            dEndDate = Calendar.getInstance();
-                            dEndDate.set(Calendar.YEAR, year);
-                            dEndDate.set(Calendar.MONTH, monthOfYear);
-                            dEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        }
-                    };
-                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
-                }
-            }
-        });
+        if (competitionId == -1) {
+            setDatepicker(Calendar.getInstance(), Calendar.getInstance());
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,8 +121,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     if (competitionId == -1){
                         competition = new Competition(competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
                         saveCompetition(competition);
-                    }
-                    else{
+                    } else {
                         competition.setStartDate(sDate);
                         competition.setEndDate(eDate);
                         competition.setName(name.getText().toString());
@@ -226,7 +186,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         bindCompetitionOnView(competition);
     }
 
-    private void bindCompetitionOnView(Competition c){
+    private void bindCompetitionOnView(final Competition c){
         name.setText(c.getName());
         if (c.getStartDate() != null){
             startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getStartDate()));
@@ -240,7 +200,61 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         }
         note.setText(c.getNote());
 
+        setDatepicker(dStartDate, dEndDate);
+
         int index = adapter.getPosition(c.getType());
         type.setSelection(index);
+    }
+
+    private void setDatepicker(final Calendar start, final Calendar end) {
+        startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Bundle b = new Bundle();
+                    b.putInt("y", start.get(Calendar.YEAR));
+                    b.putInt("m", start.get(Calendar.MONTH));
+                    b.putInt("d", start.get(Calendar.DAY_OF_MONTH));
+                    final DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    fragment.setArguments(b);
+                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
+                            dStartDate = Calendar.getInstance();
+                            dStartDate.set(Calendar.YEAR, year);
+                            dStartDate.set(Calendar.MONTH, monthOfYear);
+                            dStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        }
+                    };
+                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
+                }
+            }
+        });
+
+        endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Bundle b = new Bundle();
+                    b.putInt("y", end.get(Calendar.YEAR));
+                    b.putInt("m", end.get(Calendar.MONTH));
+                    b.putInt("d", end.get(Calendar.DAY_OF_MONTH));
+                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    fragment.setArguments(b);
+                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
+                            dEndDate = Calendar.getInstance();
+                            dEndDate.set(Calendar.YEAR, year);
+                            dEndDate.set(Calendar.MONTH, monthOfYear);
+                            dEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        }
+                    };
+                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
+                }
+            }
+        });
     }
 }

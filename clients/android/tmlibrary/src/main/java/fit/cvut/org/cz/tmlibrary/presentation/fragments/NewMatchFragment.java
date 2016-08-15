@@ -112,35 +112,15 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
 
         //if the match is created, we do not allow changing teams
-        if (id != -1)
-        {
+        if (id != -1) {
             homeTeamSpinner.setEnabled( false );
             awayTeamSpinner.setEnabled( false );
+            setDatepicker(Calendar.getInstance());
         }
 
         fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
 
         mDate.setKeyListener( null );
-
-        mDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
-                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            mDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
-                            dDate = Calendar.getInstance();
-                            dDate.set(Calendar.YEAR, year);
-                            dDate.set(Calendar.MONTH, monthOfYear);
-                            dDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        }
-                    };
-                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
-                }
-            }
-        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +143,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                         match.setDate(sDate);
                         match.setTournamentId( tournamentId );
                         saveMatch(match);
-
                     } else {
                         ScoredMatch match = ourMatch;
                         match.setId( id );
@@ -206,33 +185,18 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
      */
     protected abstract String getTournamentParticipantsKey();
 
-    private boolean validate( View v )
-    {
-        if( period.getText().toString().isEmpty() || round.getText().toString().isEmpty() )
-        {
+    private boolean validate( View v ) {
+        if( period.getText().toString().isEmpty() || round.getText().toString().isEmpty() ) {
             Snackbar.make(v, R.string.invalidRoundPeriod, Snackbar.LENGTH_LONG).show();
             return false;
         }
 
-        if( homeTeamSpinner.getSelectedItemId() == awayTeamSpinner.getSelectedItemId() )
-        {
+        if( homeTeamSpinner.getSelectedItemId() == awayTeamSpinner.getSelectedItemId() ) {
             Snackbar.make(v, R.string.invalidParticipants, Snackbar.LENGTH_LONG).show();
             return false;
         }
         return true;
     }
-
-//    @Override
-//    protected void customOnResume() {
-//        if (id != -1)
-//            super.customOnResume();
-//    }
-//
-//    @Override
-//    protected void customOnPause() {
-//        if (id != -1)
-//            super.customOnPause();
-//    }
 
     @Override
     protected void bindDataOnView(Intent intent) {
@@ -246,20 +210,20 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         bindParticipantsOnView( participants, smatch );
     }
 
-    private void bindMatchOnView( ScoredMatch match )
-    {
+    private void bindMatchOnView( ScoredMatch match ) {
         if (match.getDate() != null){
             mDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(match.getDate()));
             dDate = Calendar.getInstance();
             dDate.setTime(match.getDate());
         }
+
+        setDatepicker(dDate);
         period.setText( Integer.toString( match.getPeriod() ) );
         round.setText(Integer.toString(match.getRound()));
         note.setText(match.getNote());
     }
 
-    private void bindParticipantsOnView( ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match )
-    {
+    private void bindParticipantsOnView( ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match ) {
         homePartAdapter = new ArrayAdapter<NewMatchSpinnerParticipant>(getContext(), android.R.layout.simple_spinner_item, participants );
         homePartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         homeTeamSpinner.setAdapter( homePartAdapter );
@@ -269,7 +233,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         awayTeamSpinner.setAdapter(awayPartAdapter);
 
         if( match != null ) {
-
             int hIndex = homePartAdapter.getPosition(findParticipant(participants, match.getHomeParticipantId()));
             int aIndex = awayPartAdapter.getPosition(findParticipant(participants, match.getAwayParticipantId()));
 
@@ -278,13 +241,40 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
     }
 
-    private NewMatchSpinnerParticipant findParticipant( ArrayList<NewMatchSpinnerParticipant> participants, long id )
-    {
+    private NewMatchSpinnerParticipant findParticipant( ArrayList<NewMatchSpinnerParticipant> participants, long id ) {
         for( NewMatchSpinnerParticipant part : participants )
-            if( part.getParticipantId() == id ) return part;
+            if( part.getParticipantId() == id )
+                return part;
+
         return null;
     }
 
-
+    // Set Datepicker dates to Tournament start and end
+    private void setDatepicker(final Calendar date) {
+        mDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Bundle b = new Bundle();
+                    b.putInt("y", date.get(Calendar.YEAR));
+                    b.putInt("m", date.get(Calendar.MONTH));
+                    b.putInt("d", date.get(Calendar.DAY_OF_MONTH));
+                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    fragment.setArguments(b);
+                    fragment.listener = new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            mDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
+                            dDate = Calendar.getInstance();
+                            dDate.set(Calendar.YEAR, year);
+                            dDate.set(Calendar.MONTH, monthOfYear);
+                            dDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        }
+                    };
+                    fragment.show(getActivity().getSupportFragmentManager(), "TAG");
+                }
+            }
+        });
+    }
 
 }
