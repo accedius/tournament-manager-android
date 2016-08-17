@@ -92,7 +92,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
-        fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
         //We don't want user to write into editTexts
