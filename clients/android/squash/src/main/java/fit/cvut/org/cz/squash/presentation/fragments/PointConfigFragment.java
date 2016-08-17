@@ -26,17 +26,6 @@ public class PointConfigFragment extends AbstractDataFragment {
     private PointConfig cfg = null;
     private TextView w, l, d;
 
-    private void editCfg(){
-
-        cfg.setWin(Integer.parseInt(w.getText().toString()));
-        cfg.setDraw(Integer.parseInt(d.getText().toString()));
-        cfg.setLoss(Integer.parseInt(l.getText().toString()));
-
-        Intent intent = PointConfigService.newStartIntent(PointConfigService.ACTION_EDIT_CFG, getContext());
-        intent.putExtra(PointConfigService.EXTRA_CFG, cfg);
-        getContext().startService(intent);
-    }
-
     public static PointConfigFragment newInstance(long id){
         PointConfigFragment f = new PointConfigFragment();
         Bundle args = new Bundle();
@@ -83,16 +72,34 @@ public class PointConfigFragment extends AbstractDataFragment {
         l = (EditText) v.findViewById(R.id.tv_loss);
         d = (EditText) v.findViewById(R.id.tv_draws);
 
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editCfg();
-                getActivity().finish();
-            }
-        });
-
         return v;
+    }
+
+    /**
+     * Validates whether all input texts are filled
+     * @return true or false
+     */
+    private boolean validate() {
+        if(     w.getText().toString().isEmpty() ||
+                l.getText().toString().isEmpty() ||
+                d.getText().toString().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public PointConfig getPointConfig() {
+        if (!validate())
+            return null;
+
+        try {
+            return new PointConfig(
+                    getArguments().getLong(ARG_ID),
+                    Integer.parseInt(w.getText().toString()),
+                    Integer.parseInt(d.getText().toString()),
+                    Integer.parseInt(l.getText().toString()));
+        } catch(NumberFormatException ex) {
+            return null;
+        }
     }
 }

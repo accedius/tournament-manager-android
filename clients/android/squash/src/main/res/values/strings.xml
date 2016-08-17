@@ -52,6 +52,7 @@
 
     <string name="competition_name_empty_error">Name must not be empty!</string>
     <string name="tournament_name_empty_error">Name must not be empty!</string>
+    <string name="point_config_error">Not all fields are properly filled!</string>
 
     <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
