@@ -24,13 +24,11 @@ public class PointConfiguration implements Parcelable {
         }
     };
 
-    public static DPointConfiguration convertToDPointConfiguration( PointConfiguration p )
-    {
+    public static DPointConfiguration convertToDPointConfiguration( PointConfiguration p ) {
         return new DPointConfiguration( p.ntW, p.ntD, p.ntL, p.otW, p.otD, p.otL, p.soW, p.soL );
     }
 
-    public PointConfiguration( Parcel in )
-    {
+    public PointConfiguration( Parcel in ) {
         this.ntW = in.readLong();
         this.ntD = in.readLong();
         this.ntL = in.readLong();
@@ -62,8 +60,7 @@ public class PointConfiguration implements Parcelable {
         dest.writeLong( soL );
     }
 
-    public PointConfiguration( Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL  )
-    {
+    public PointConfiguration( Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL  ) {
         this.ntW = nW;
         this.ntD = nD;
         this.ntL = nL;
@@ -76,8 +73,7 @@ public class PointConfiguration implements Parcelable {
         this.soL = sL;
     }
 
-    public PointConfiguration (DPointConfiguration dp)
-    {
+    public PointConfiguration (DPointConfiguration dp) {
         this.ntW = dp.ntW;
         this.ntD = dp.ntD;
         this.ntL = dp.ntL;

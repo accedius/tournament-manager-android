@@ -144,12 +144,5 @@
 
         </LinearLayout>
     </ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fab_save"
-        android:src="@drawable/ic_save_white_24dp"
-        android:layout_margin="16dp"
-        android:layout_gravity="bottom|right"/>
 
 </android.support.design.widget.CoordinatorLayout>
