@@ -1,12 +1,12 @@
 <resources>
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="name">Name</string>
     <string name="email">E-mail</string>
     <string name="note">Note</string>
     <string name="type">Type</string>
     <string name="date">Date</string>
-    <string name="startDate">Start Date</string>
-    <string name="endDate">End Date</string>
+    <string name="startDate">Start date</string>
+    <string name="endDate">End date</string>
+    <string name="competitionType">Competition type</string>
     <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>
     <string name="invalidParticipants">Participants cannot be the same!</string>
@@ -20,8 +20,8 @@
     <string name="teams">Teams</string>
     <string name="point_config">Configure point gain</string>
     <string name="vs">vs.</string>
-    <string name="home">HOME</string>
-    <string name="away">AWAY</string>
+    <string name="home">Home</string>
+    <string name="away">Away</string>
     <string name="round">Round</string>
     <string name="player_header">Player</string>
     <string name="tournament_header">Tournament</string>

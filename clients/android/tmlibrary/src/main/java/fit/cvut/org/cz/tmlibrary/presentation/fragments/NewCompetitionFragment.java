@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -60,6 +61,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         return fragment;
     }
 
+    private TextView type_label;
     private EditText note, name, startDate, endDate;
     private AppCompatSpinner type;
     private FloatingActionButton fab;
@@ -76,6 +78,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         note = (EditText) v.findViewById(R.id.et_note);
         name = (EditText) v.findViewById(R.id.et_name);
         type = (AppCompatSpinner) v.findViewById(R.id.sp_type);
+        type_label = (TextView) v.findViewById(R.id.tv_competition_type_label);
 
         if (getArguments() != null)
             competitionId = getArguments().getLong(ARG_ID , -1);
@@ -88,6 +91,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
 
         if(!isTypeChoosable()) {
             type.setVisibility( View.GONE );
+            type_label.setVisibility( View.GONE );
         }
 
         startDate = (EditText) v.findViewById(R.id.et_startDate);
