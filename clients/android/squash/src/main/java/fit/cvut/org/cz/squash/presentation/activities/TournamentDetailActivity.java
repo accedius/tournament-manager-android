@@ -28,35 +28,40 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
  * Created by Vaclav on 10. 4. 2016.
  */
 public class TournamentDetailActivity extends AbstractTabActivity {
-
-    public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TYPE = "extra_type";
+
+    public static final String COMP_ID = "competition_id";
+    public static final String TOUR_ID = "tournament_id";
+
+    private long competitionID;
+    private long tournamentID;
     private DefaultViewPagerAdapter adapter = null;
 
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
 
-        long id = getIntent().getLongExtra(EXTRA_ID, -1);
+        competitionID = getIntent().getExtras().getLong(COMP_ID);
+        tournamentID = getIntent().getExtras().getLong(TOUR_ID);
         CompetitionType type = (CompetitionType) getIntent().getSerializableExtra(EXTRA_TYPE);
 
         if (type == CompetitionType.Teams) {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
-                            SquashTournamentOverviewFragment.newInstance(id, type),
-                            StandingsWrapperFragment.newInstance(id),
-                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
-                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class),
-                            TeamsListFragment.newInstance(id)
+                            SquashTournamentOverviewFragment.newInstance(tournamentID, type),
+                            StandingsWrapperFragment.newInstance(tournamentID),
+                            StatsListWrapperFragment.newInstance(tournamentID, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
+                            SquashMatchesListWrapperFragment.newInstance(tournamentID, SquashMatchesListWrapperFragment.class),
+                            TeamsListFragment.newInstance(tournamentID)
                     },
                     new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.players), getResources().getString(R.string.matches), getResources().getString(R.string.teams)});
         } else {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
-                            SquashTournamentOverviewFragment.newInstance(id, type),
-                            StandingsWrapperFragment.newInstance(id),
-                            StatsListWrapperFragment.newInstance(id, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
-                            SquashMatchesListWrapperFragment.newInstance(id, SquashMatchesListWrapperFragment.class)
+                            SquashTournamentOverviewFragment.newInstance(tournamentID, type),
+                            StandingsWrapperFragment.newInstance(tournamentID),
+                            StatsListWrapperFragment.newInstance(tournamentID, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
+                            SquashMatchesListWrapperFragment.newInstance(tournamentID, SquashMatchesListWrapperFragment.class)
                     },
                     new String[]{getResources().getString(R.string.overview), getResources().getString(R.string.standings), getResources().getString(R.string.players), getResources().getString(R.string.matches)});
         }
@@ -96,9 +101,15 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
+            case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
+                if (tournamentID == -1) break;
+                Intent intent = CreateTournamentActivity.newStartIntent( this, competitionID, tournamentID );
+                startActivity(intent);
+                break;
+            }
             case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
                 Intent intent = new Intent(this, PointConfigActivity.class);
-                intent.putExtra(PointConfigActivity.ARG_ID, getIntent().getLongExtra(EXTRA_ID, -1));
+                intent.putExtra(PointConfigActivity.ARG_ID, tournamentID);
                 startActivity(intent);
                 return true;
             }

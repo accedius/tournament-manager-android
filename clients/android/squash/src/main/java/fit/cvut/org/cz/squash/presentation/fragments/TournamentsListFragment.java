@@ -56,7 +56,8 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(c, TournamentDetailActivity.class);
-                        intent.putExtra(TournamentDetailActivity.EXTRA_ID, tournamentId);
+                        intent.putExtra(TournamentDetailActivity.TOUR_ID, tournamentId);
+                        intent.putExtra(TournamentDetailActivity.COMP_ID, getArguments().getLong(COMP_ID));
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                         intent.putExtra(TournamentDetailActivity.EXTRA_TYPE, type);
 
@@ -88,7 +89,8 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_BY_COMPETITION_ID, getContext());
-        if (getArguments() != null) intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(COMP_ID, -1));
+        if (getArguments() != null)
+            intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(COMP_ID));
 
         getContext().startService(intent);
     }
@@ -136,12 +138,11 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
             if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)){
                 TournamentsListFragment.super.bindDataOnView(intent);
                 type = CompetitionType.valueOf(intent.getStringExtra(TournamentService.EXTRA_TYPE));
-            } else {
-                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
+            } else if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
                     int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
                     adapter.delete(position);
-                }
-                else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();
+            } else {
+                Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();
             }
 
         }
