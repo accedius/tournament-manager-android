@@ -13,23 +13,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
  * Created by atgot_000 on 10. 4. 2016.
  */
 public class NewHockeyMatchFragment extends NewMatchFragment {
-    @Override
-    protected void saveMatch(ScoredMatch match) {
-        Intent intent = MatchService.newStartIntent( MatchService.ACTION_CREATE, getContext() );
-        intent.setAction( MatchService.ACTION_CREATE );
-        intent.putExtra(MatchService.EXTRA_MATCH, match);
-
-        getContext().startService( intent );
-    }
-
-    @Override
-    protected void updateMatch(ScoredMatch match) {
-        Intent intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE, getContext() );
-        intent.setAction(MatchService.ACTION_UPDATE);
-        intent.putExtra(MatchService.EXTRA_MATCH, match);
-
-        getContext().startService( intent );
-    }
 
     @Override
     protected String getMatchKey() {

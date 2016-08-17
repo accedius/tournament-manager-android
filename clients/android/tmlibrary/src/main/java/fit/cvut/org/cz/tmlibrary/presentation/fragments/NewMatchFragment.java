@@ -118,60 +118,38 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
             setDatepicker(Calendar.getInstance());
         }
 
-        fab = (FloatingActionButton) v.findViewById(R.id.fab_edit);
-
         mDate.setKeyListener( null );
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDataSourceWorking() && validate(v)) {
-                    Date sDate = null;
-                    if (dDate != null) sDate = dDate.getTime();
-                    int sPeriod = Integer.valueOf(period.getText().toString());
-                    int sRound = Integer.valueOf(round.getText().toString());
-                    long homeTeamId = ((NewMatchSpinnerParticipant) homeTeamSpinner.getSelectedItem()).getParticipantId();
-                    long awayTeamId = ((NewMatchSpinnerParticipant) awayTeamSpinner.getSelectedItem()).getParticipantId();
-
-                    if (id == -1) {
-                        ScoredMatch match = new ScoredMatch();
-                        match.setHomeParticipantId(homeTeamId);
-                        match.setAwayParticipantId(awayTeamId);
-                        match.setPeriod(sPeriod);
-                        match.setRound(sRound);
-                        match.setNote(note.getText().toString());
-                        match.setDate(sDate);
-                        match.setTournamentId( tournamentId );
-                        saveMatch(match);
-                    } else {
-                        ScoredMatch match = ourMatch;
-                        match.setId( id );
-                        match.setPeriod(sPeriod);
-                        match.setRound(sRound);
-                        match.setNote(note.getText().toString());
-                        match.setDate(sDate);
-                        match.setTournamentId( tournamentId );
-                        updateMatch(match);
-                    }
-                    getActivity().finish();
-                }
-            }
-        });
-
         return v;
     }
 
-    /**
-     * Called with new ScoredMatch in param
-     * @param match
-     */
-    protected abstract void saveMatch( ScoredMatch match );
+    public ScoredMatch getMatch() {
+        int sPeriod, sRound;
+        try {
+            sPeriod = Integer.valueOf(period.getText().toString());
+            sRound = Integer.valueOf(round.getText().toString());
+        } catch(NumberFormatException ex) {
+            return null;
+        }
+        ScoredMatch sm = new ScoredMatch();
+        Date sDate = null;
+        if (dDate != null)
+            sDate = dDate.getTime();
+        long homeTeamId = ((NewMatchSpinnerParticipant) homeTeamSpinner.getSelectedItem()).getParticipantId();
+        long awayTeamId = ((NewMatchSpinnerParticipant) awayTeamSpinner.getSelectedItem()).getParticipantId();
 
-    /**
-     * Called when match should be updated
-     * @param match
-     */
-    protected abstract void updateMatch( ScoredMatch match );
+        if (id == -1) {
+            sm.setHomeParticipantId(homeTeamId);
+            sm.setAwayParticipantId(awayTeamId);
+        }
+
+        sm.setId(id);
+        sm.setPeriod(sPeriod);
+        sm.setRound(sRound);
+        sm.setNote(note.getText().toString());
+        sm.setDate(sDate);
+        sm.setTournamentId( tournamentId );
+        return sm;
+    }
 
     /**
      *
@@ -184,19 +162,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
      * @return String key of tournament participants received  in Bundle from datasource
      */
     protected abstract String getTournamentParticipantsKey();
-
-    private boolean validate( View v ) {
-        if( period.getText().toString().isEmpty() || round.getText().toString().isEmpty() ) {
-            Snackbar.make(v, R.string.invalidRoundPeriod, Snackbar.LENGTH_LONG).show();
-            return false;
-        }
-
-        if( homeTeamSpinner.getSelectedItemId() == awayTeamSpinner.getSelectedItemId() ) {
-            Snackbar.make(v, R.string.invalidParticipants, Snackbar.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
 
     @Override
     protected void bindDataOnView(Intent intent) {

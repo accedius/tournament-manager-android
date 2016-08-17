@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
+import fit.cvut.org.cz.hockey.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
@@ -27,8 +32,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
      * @param tourId id of the tournament where the match should be created
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long tourId  )
-    {
+    public static Intent newStartIntent( Context context, long tourId  ) {
         Intent res = new Intent(context, CreateMatchActivity.class);
         res.putExtra(EXTRA_TOUR_ID, tourId);
 
@@ -42,8 +46,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
      * @param tourId id of the tournament where the match should be modified
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long id, long tourId  )
-    {
+    public static Intent newStartIntent( Context context, long id, long tourId  ) {
         Intent res = new Intent(context, CreateMatchActivity.class);
         res.putExtra(EXTRA_TOUR_ID, tourId);
         res.putExtra(EXTRA_MATCH_ID, id);
@@ -54,11 +57,6 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_basic_layout, parent, false);
-    }
-
-    @Override
-    protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
-        return null;
     }
 
     @Override
@@ -75,5 +73,40 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
             else
                 getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyMatchFragment.newInstance(matchId, tourId, NewHockeyMatchFragment.class)).commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_finish, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
+            ScoredMatch scoredMatch = ((NewHockeyMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
+            if (scoredMatch == null) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_error), Snackbar.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+            }
+            if( scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId() ) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            Intent intent;
+            if (scoredMatch.getId() == -1) {
+                intent = MatchService.newStartIntent( MatchService.ACTION_CREATE, this );
+                intent.setAction( MatchService.ACTION_CREATE );
+            } else {
+                intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE, this );
+                intent.setAction( MatchService.ACTION_UPDATE );
+            }
+            intent.putExtra(MatchService.EXTRA_MATCH, scoredMatch);
+
+            startService(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

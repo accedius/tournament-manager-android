@@ -13,25 +13,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
  */
 public class CreateSquashMatchFragment extends NewMatchFragment {
 
-
-    @Override
-    protected void saveMatch(ScoredMatch match) {
-        Intent i = MatchService.newStartIntent(MatchService.ACTION_CREATE_MATCH, getContext());
-        i.setAction(MatchService.ACTION_CREATE_MATCH);
-        match.setTournamentId(tournamentId);
-        match.setPlayed(false);
-        i.putExtra(MatchService.EXTRA_MATCH, match);
-        getContext().startService(i);
-    }
-
-    @Override
-    protected void updateMatch(ScoredMatch match) {
-        Intent i = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH, getContext());
-        i.setAction(MatchService.ACTION_UPDATE_MATCH);
-        i.putExtra(MatchService.EXTRA_MATCH, match);
-        getContext().startService(i);
-    }
-
     @Override
     protected String getMatchKey() {
         return MatchService.EXTRA_MATCH;
