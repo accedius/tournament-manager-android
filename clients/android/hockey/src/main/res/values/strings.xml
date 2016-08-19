@@ -51,6 +51,9 @@
     <string name="score">Score</string>
     <string name="apmp">Avg+/-</string>
     <string name="atp">AvgTP</string>
+    <string name="so">so</string>
+    <string name="ot">ot</string>
+
     <string name="normal_time">Normal time</string>
     <string name="overtime">Overtime</string>
     <string name="shootouts">Shootouts</string>

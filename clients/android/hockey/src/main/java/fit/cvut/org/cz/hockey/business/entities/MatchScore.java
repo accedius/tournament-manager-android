@@ -36,8 +36,7 @@ public class MatchScore implements Parcelable {
         dest.writeByte((byte) (overtime ? 1 : 0));
     }
 
-    public MatchScore( Parcel in )
-    {
+    public MatchScore( Parcel in ) {
         this.matchId = in.readLong();
         this.homeScore = in.readInt();
         this.awayScore = in.readInt();

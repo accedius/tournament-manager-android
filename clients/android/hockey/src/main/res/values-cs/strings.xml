@@ -51,4 +51,12 @@
     <string name="not_enough_teams">Příliš málo týmů!</string>
     <string name="shootouts_error">Jsou zvoleny nájezdy, zápas nemůže skončit remízou!</string>
     <string name="sport_name">Hokej</string>
+    <string name="competition_name_empty_error">Název nesmí být prázdný!</string>
+    <string name="match_error">Některá pole nejsou vyplněna nebo obsahují chybu!</string>
+    <string name="ot">pp</string>
+    <string name="s">Zák</string>
+    <string name="so">sn</string>
+    <string name="tournament_name_empty_error">Název nesmí být prázdný!</string>
+    <string name="point_config_error">Některá pole nejsou vyplněna nebo obsahují chybu!</string>
+    <string name="match_same_participants_error">Domácí a hostující týmy se musí lišit!</string>
 </resources>

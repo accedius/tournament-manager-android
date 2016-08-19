@@ -52,7 +52,6 @@ public abstract class MatchesListWrapperFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null){
-
             getChildFragmentManager().beginTransaction().add(R.id.fragment_container, supplyFragment(getArguments().getLong(ARG_ID))).commit();
         }
     }

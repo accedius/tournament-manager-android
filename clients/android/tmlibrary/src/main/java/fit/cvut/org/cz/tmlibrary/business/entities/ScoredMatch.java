@@ -24,7 +24,7 @@ public class ScoredMatch extends Match {
     public ScoredMatch() {}
     public ScoredMatch(DMatch match) {super(match);}
 
-    protected ScoredMatch(Parcel in) {
+    public ScoredMatch(Parcel in) {
         super(in);
         homeParticipantId = in.readLong();
         awayParticipantId = in.readLong();

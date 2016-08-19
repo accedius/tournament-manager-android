@@ -29,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
  */
 public abstract class AbstractListFragment<T extends Parcelable> extends AbstractDataFragment {
 
-    private AbstractListAdapter adapter;
+    protected AbstractListAdapter adapter;
     protected RecyclerView recyclerView;
     protected FloatingActionButton fab = null;
 
