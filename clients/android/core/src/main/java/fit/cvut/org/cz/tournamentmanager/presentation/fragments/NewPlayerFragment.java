@@ -3,12 +3,8 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**

@@ -1,9 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.data.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.

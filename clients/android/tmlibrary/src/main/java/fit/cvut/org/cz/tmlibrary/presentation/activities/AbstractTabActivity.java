@@ -2,20 +2,14 @@ package fit.cvut.org.cz.tmlibrary.presentation.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.DummyFragment;
 
 /**
  * Created by Vaclav on 20. 3. 2016.

@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

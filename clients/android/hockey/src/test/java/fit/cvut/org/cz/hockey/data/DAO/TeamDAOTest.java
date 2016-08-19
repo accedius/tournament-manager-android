@@ -12,7 +12,7 @@ import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by atgot_000 on 7. 5. 2016.

@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 
 /**

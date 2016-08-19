@@ -2,11 +2,8 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 
 import android.os.Parcel;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
