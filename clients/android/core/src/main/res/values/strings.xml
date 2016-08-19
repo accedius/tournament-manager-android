@@ -4,7 +4,7 @@
 
     <string name="main_acc_name">Competitions</string>
     <string name="title_activity_competitions">Competitions</string>
-    <string name="title_activity_create_player">Player Settings</string>
+    <string name="title_activity_create_player">Player settings</string>
     <string name="title_activity_players">Players</string>
     <string name="player_detail_header">Player info</string>
     <string name="title_activity_player_detail">Player</string>
