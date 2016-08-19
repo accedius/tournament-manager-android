@@ -35,6 +35,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     /**
      * Constructor for this fragment with id of competition that needs to update
      * @param id
+     * @param tournamentId id of tournament
      * @param clazz
      * @return
      */
@@ -84,14 +85,11 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     }
 
     private AppCompatSpinner homeTeamSpinner, awayTeamSpinner;
-    private FloatingActionButton fab;
     private Calendar dDate = null;
     protected long id = -1, tournamentId = -1;
     private EditText mDate, period, round, note;
 
     private ArrayAdapter<NewMatchSpinnerParticipant> homePartAdapter, awayPartAdapter;
-
-    private ScoredMatch ourMatch = null;
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
@@ -108,15 +106,16 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
             id = getArguments().getLong(ARG_ID, -1 );
             tournamentId = getArguments().getLong( ARG_TOUR_ID, -1 );
         }
+        mDate.setKeyListener( null );
 
         //if the match is created, we do not allow changing teams
         if (id != -1) {
             homeTeamSpinner.setEnabled( false );
             awayTeamSpinner.setEnabled( false );
+        } else {
             setDatepicker(Calendar.getInstance());
         }
 
-        mDate.setKeyListener( null );
         return v;
     }
 
@@ -167,7 +166,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         if( id != -1 ) {
             smatch = intent.getParcelableExtra(getMatchKey());
             bindMatchOnView(smatch);
-            ourMatch = smatch;
         }
         ArrayList<NewMatchSpinnerParticipant> participants = intent.getParcelableArrayListExtra( getTournamentParticipantsKey() );
         bindParticipantsOnView( participants, smatch );
@@ -189,11 +187,11 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     }
 
     private void bindParticipantsOnView( ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match ) {
-        homePartAdapter = new ArrayAdapter<NewMatchSpinnerParticipant>(getContext(), android.R.layout.simple_spinner_item, participants );
+        homePartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants );
         homePartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         homeTeamSpinner.setAdapter( homePartAdapter );
 
-        awayPartAdapter = new ArrayAdapter<NewMatchSpinnerParticipant>(getContext(), android.R.layout.simple_spinner_item, participants );
+        awayPartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants );
         awayPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         awayTeamSpinner.setAdapter(awayPartAdapter);
 
@@ -214,7 +212,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         return null;
     }
 
-    // Set Datepicker dates to Tournament start and end
+    // Set Datepicker date
     private void setDatepicker(final Calendar date) {
         mDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
