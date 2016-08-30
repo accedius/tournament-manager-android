@@ -47,7 +47,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null){
-            // TODO get match info also - for participants names
             data = savedInstanceState.getParcelableArrayList(EXTRA_DATA);
             askForData = savedInstanceState.getBoolean(EXTRA_ASK);
         }
@@ -95,24 +94,24 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     @Override
     protected String getDataKey() {
-        return MatchService.EXTRA_MATCHES;
+        return MatchService.EXTRA_SETS;
     }
 
     @Override
     public void askForData() {
-        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_DETAIL, getContext());
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_SETS, getContext());
         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return MatchService.isWorking(MatchService.ACTION_GET_MATCH_DETAIL);
+        return MatchService.isWorking(MatchService.ACTION_GET_MATCH_SETS);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(MatchService.ACTION_GET_MATCH_DETAIL));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(MatchService.ACTION_GET_MATCH_SETS));
     }
 
     @Override

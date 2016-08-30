@@ -87,18 +87,23 @@ public class MatchManager implements IScoredMatchManager {
         DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, Id);
-        DParticipant home = null, awayParticipant = null;
+        DParticipant home = null, away = null;
         for (DParticipant p : participants){
             if (p.getRole().equals("home")) home = p;
-            else awayParticipant = p;
+            else away = p;
         }
+
         if (type == CompetitionType.Teams){
             match.setHomeParticipantId(home.getTeamId());
-            match.setAwayParticipantId(awayParticipant.getTeamId());
+            match.setAwayParticipantId(away.getTeamId());
+            match.setHomeName(ManagersFactory.getInstance().teamsManager.getById(context, home.getTeamId()).getName());
+            match.setAwayName(ManagersFactory.getInstance().teamsManager.getById(context, away.getTeamId()).getName());
         }
         else {
             match.setHomeParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, home.getId()).get(0));
-            match.setAwayParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, awayParticipant.getId()).get(0));
+            match.setAwayParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, away.getId()).get(0));
+            match.setHomeName(ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0).getName());
+            match.setAwayName(ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0).getName());
         }
 
         return match;

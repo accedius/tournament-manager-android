@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
-import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
+import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
@@ -51,10 +51,10 @@ public class MatchDetailActivity extends AbstractTabActivity {
         boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
         CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
         if (type == CompetitionType.Individuals)
-            adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SetsFragment.newInstance(id, played)}, new String[]{getString(R.string.sets)});
+            adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SquashMatchOverviewFragment.newInstance(id, played)}, new String[]{getString(R.string.sets)});
         else{
             adapter = new DefaultViewPagerAdapter(manager,
-                    new Fragment[] {SetsFragment.newInstance(id, played),
+                    new Fragment[] {SquashMatchOverviewFragment.newInstance(id, played),
                                     MatchPlayersFragment.newInstance(id)
                     },
                     new String[] {getString(R.string.sets),
@@ -75,13 +75,10 @@ public class MatchDetailActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish){
-
-            CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
-
-            SetsFragment fr  = (SetsFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
+            SquashMatchOverviewFragment fr  = (SquashMatchOverviewFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
             if (fr !=null){
-                ArrayList<SetRowItem> list = fr.getSets();
-                if (fr.hasErrors()) {
+                ArrayList<SetRowItem> list = fr.getSetsFragment().getSets();
+                if (fr.getSetsFragment().hasErrors()) {
                     Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
@@ -95,7 +92,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
             if (fr != null && !fr.isWorking()){
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
-                ArrayList<SetRowItem> list = fr.getSets();
+                ArrayList<SetRowItem> list = fr.getSetsFragment().getSets();
                 intent.putExtra(MatchService.EXTRA_MATCHES, list);
                 intent.putExtra(MatchService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
                 startService(intent);

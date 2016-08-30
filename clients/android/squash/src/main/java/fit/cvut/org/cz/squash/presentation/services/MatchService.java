@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.entities.SquashScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -31,6 +32,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_MATCH_ID = "extra_match_id";
     public static final String EXTRA_MATCHES = "extra_matches";
     public static final String EXTRA_MATCH = "extra_match";
+    public static final String EXTRA_SETS = "extra_sets";
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_PARTICIPANTS = "extra_participants";
     public static final String EXTRA_RESULT = "extra_result";
@@ -44,6 +46,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_RESET_MATCH = "fit.cvut.org.cz.squash.presentation.services.reset_match";
     public static final String ACTION_UPDATE_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.update_match_detail";
     public static final String ACTION_GET_MATCH_DETAIL = "fit.cvut.org.cz.squash.presentation.services.get_match_detail";
+    public static final String ACTION_GET_MATCH_SETS = "fit.cvut.org.cz.squash.presentation.services.get_match_sets";
     public static final String ACTION_DELETE_MATCH = "fit.cvut.org.cz.squash.presentation.services.delete_match";
     public static final String ACTION_GENERATE_ROUND = "fit.cvut.org.cz.squash.presentation.services.generate_round";
     public static final String ACTION_CAN_ADD_MATCH = "fit.cvut.org.cz.squash.presentation.services.can_add_match";
@@ -112,9 +115,15 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_DETAIL:{
                 Intent result = new Intent(action);
-                // TODO get match data also - for names of participants
+                ScoredMatch sm = ManagersFactory.getInstance().matchManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                result.putExtra(EXTRA_MATCH, sm);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
+            case ACTION_GET_MATCH_SETS:{
+                Intent result = new Intent(action);
                 ArrayList<SetRowItem> sets =  ManagersFactory.getInstance().statsManager.getSetsForMatch(this, intent.getLongExtra(EXTRA_ID, -1));
-                result.putParcelableArrayListExtra(EXTRA_MATCHES, sets);
+                result.putParcelableArrayListExtra(EXTRA_SETS, sets);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
