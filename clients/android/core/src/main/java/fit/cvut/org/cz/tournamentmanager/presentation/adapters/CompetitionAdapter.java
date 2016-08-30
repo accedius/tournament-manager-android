@@ -23,8 +23,6 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         return holder;
     }
 
-    public CompetitionAdapter() {};
-
     protected void setOnClickListeners(View v, long competitionId){}
 
     @Override
@@ -33,11 +31,20 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 
         holder.name.setText(competition.getName());
+        holder.startDate.setVisibility(View.VISIBLE);
+        holder.endDate.setVisibility(View.VISIBLE);
         holder.startDate.setText(fit.cvut.org.cz.tmlibrary.R.string.from);
         holder.endDate.setText(fit.cvut.org.cz.tmlibrary.R.string.to);
 
-        if (competition.getStartDate() != null) holder.startDate.append(dateFormat.format(competition.getStartDate()));
-        if (competition.getEndDate() != null) holder.endDate.append(dateFormat.format(competition.getEndDate()));
+        if (competition.getStartDate() != null)
+            holder.startDate.append(dateFormat.format(competition.getStartDate()));
+        else
+            holder.startDate.setVisibility(View.GONE);
+
+        if (competition.getEndDate() != null)
+            holder.endDate.append(dateFormat.format(competition.getEndDate()));
+        else
+            holder.endDate.setVisibility(View.GONE);
 
         setOnClickListeners(holder.wholeView, competition.getId());
     }

@@ -19,18 +19,9 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
     public TournamentAdapter.TournamentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_tournament, parent, false);
         TournamentViewHolder holder = new TournamentViewHolder(v);
-
         return holder;
     }
 
-    /**
-     * You can overload this view to set various listeners on inflated row view
-     * By default none are added
-     * @param tournamentId
-     * @param v target view
-     * @param tournamentId
-     * @param position
-     */
     protected void setOnClickListeners(View v, long tournamentId, int position){}
 
     @Override
@@ -44,14 +35,17 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         holder.startDate.setText(R.string.from);
         holder.endDate.setText(R.string.to);
 
-        if (tournament.getStartDate() != null) holder.startDate.append(dateFormat.format(tournament.getStartDate()));
-        else holder.startDate.setVisibility(View.GONE);
-        if (tournament.getEndDate() != null) holder.endDate.append(dateFormat.format(tournament.getEndDate()));
-        else holder.endDate.setVisibility(View.GONE);
+        if (tournament.getStartDate() != null)
+            holder.startDate.append(dateFormat.format(tournament.getStartDate()));
+        else
+            holder.startDate.setVisibility(View.GONE);
 
-        holder.name.setText(tournament.getName());
+        if (tournament.getEndDate() != null)
+            holder.endDate.append(dateFormat.format(tournament.getEndDate()));
+        else
+            holder.endDate.setVisibility(View.GONE);
+
         setOnClickListeners(holder.wholeView, tournament.getId(), position);
-
     }
 
     public class TournamentViewHolder extends RecyclerView.ViewHolder {
