@@ -29,6 +29,7 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
         SAggregatedStats stats = data.get(position);
         holder.name.setText(stats.playerName);
         holder.GP.setText(Integer.toString(stats.games_played));
+        holder.P.setText(Integer.toString(stats.points));
         holder.W.setText(Integer.toString(stats.won));
         holder.L.setText(Integer.toString(stats.lost));
         holder.D.setText(Integer.toString(stats.draws));
@@ -51,7 +52,7 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
 
         public long id;
         public View wholeView;
-        TextView name, GP, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
+        TextView name, GP, P, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
 
         public AggregatedStatsViewHolder(View itemView) {
             super(itemView);
@@ -59,6 +60,7 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
 
             name = (TextView) itemView.findViewById(R.id.tv_name);
             GP = (TextView) itemView.findViewById(R.id.tv_games_played);
+            P = (TextView) itemView.findViewById(R.id.tv_points);
             W = (TextView) itemView.findViewById(R.id.tv_won);
             L = (TextView) itemView.findViewById(R.id.tv_lost);
             D = (TextView) itemView.findViewById(R.id.tv_draws);

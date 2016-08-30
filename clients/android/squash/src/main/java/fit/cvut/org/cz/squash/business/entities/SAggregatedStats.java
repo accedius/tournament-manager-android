@@ -13,12 +13,12 @@ public class SAggregatedStats implements Parcelable {
     public long playerId;
     public String playerName;
 
-    public int games_played, won, lost, draws, setsWon, setsLost, ballsWon, ballsLost;
+    public int games_played, points, won, lost, draws, setsWon, setsLost, ballsWon, ballsLost;
     public double setsWonAvg, setsLostAvg, ballsWonAvg, ballsLostAvg, matchWinRate, setsWinRate;
     public SAggregatedStats(String playerName, long playerId){
         this.playerName = playerName;
         this.playerId = playerId;
-        games_played = won = lost = draws = setsWon = setsLost = ballsWon = ballsLost = 0;
+        games_played = points = won = lost = draws = setsWon = setsLost = ballsWon = ballsLost = 0;
         setsWonAvg = setsLostAvg = ballsLostAvg = ballsWonAvg = matchWinRate = setsWinRate = 0;
     }
 
@@ -26,6 +26,7 @@ public class SAggregatedStats implements Parcelable {
         playerId = in.readLong();
         playerName = in.readString();
         games_played = in.readInt();
+        points = in.readInt();
         won = in.readInt();
         lost = in.readInt();
         draws = in.readInt();
@@ -63,6 +64,7 @@ public class SAggregatedStats implements Parcelable {
         dest.writeLong(playerId);
         dest.writeString(playerName);
         dest.writeInt(games_played);
+        dest.writeInt(points);
         dest.writeInt(won);
         dest.writeInt(lost);
         dest.writeInt(draws);
@@ -77,6 +79,4 @@ public class SAggregatedStats implements Parcelable {
         dest.writeDouble(matchWinRate);
         dest.writeDouble(setsWinRate);
     }
-
-
 }

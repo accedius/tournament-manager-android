@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +35,16 @@ public class StatsManager implements IStatsManager {
         ArrayList<SAggregatedStats> stats = new ArrayList<>();
         Map<Long, SAggregatedStats> mappedStats = new HashMap<>();
         Map<Long, ArrayList<Long>> mappedParticipants = new HashMap<>();
+        Map<Long, PointConfig> tournamentPointConfigs = new HashMap<>();
+
+        for (DStat result : matchResults) {
+            if (!tournamentPointConfigs.containsKey(result.getTournamentId())) {
+                PointConfig cfg = ManagersFactory.getInstance().pointConfigManager.getById(
+                                    context, result.getTournamentId());
+                tournamentPointConfigs.put(result.getTournamentId(), cfg);
+            }
+        }
+
         for (Player p : players) mappedStats.put(p.getId(), new SAggregatedStats(p.getName(), p.getId()));
         for (DStat result : matchResults) {
             if (!mappedParticipants.containsKey(result.getParticipantId())) {
@@ -44,17 +53,19 @@ public class StatsManager implements IStatsManager {
             for (Long playerId : mappedParticipants.get(result.getParticipantId())) {
                 if (mappedStats.get(playerId) == null)
                     continue;
-                Log.d("STATS_MNGR - playerId", "" + playerId);
                 mappedStats.get(playerId).games_played++;
                 switch (result.getStatus()) {
                     case -1:
                         mappedStats.get(playerId).lost++;
+                        mappedStats.get(playerId).points += tournamentPointConfigs.get(result.getTournamentId()).getLoss();
                         break;
                     case 0:
                         mappedStats.get(playerId).draws++;
+                        mappedStats.get(playerId).points += tournamentPointConfigs.get(result.getTournamentId()).getDraw();
                         break;
                     case 1:
                         mappedStats.get(playerId).won++;
+                        mappedStats.get(playerId).points += tournamentPointConfigs.get(result.getTournamentId()).getWin();
                         break;
                 }
             }
