@@ -63,7 +63,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     private TextView type_label;
     private EditText note, name, startDate, endDate;
     private AppCompatSpinner type;
-    private FloatingActionButton fab;
     private Calendar dStartDate = null, dEndDate = null;
     private ArrayAdapter<CompetitionType> adapter;
     protected long competitionId = -1;
@@ -102,7 +101,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         endDate.setKeyListener(null);
 
         //We set adapter for spinner from CompetitionType Enum
-        adapter = new ArrayAdapter<CompetitionType>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         type.setAdapter(adapter);
@@ -112,15 +111,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         }
 
         return v;
-    }
-
-    private boolean validate(View v){
-        if (name.getText().toString().isEmpty()){
-            Snackbar.make(v, R.string.invalidName, Snackbar.LENGTH_LONG).show();
-            return false;
-        }
-        Snackbar.make(v, R.string.competition_created, Snackbar.LENGTH_SHORT).show();
-        return true;
     }
 
     @Override
@@ -198,7 +188,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     b.putInt("y", start.get(Calendar.YEAR));
                     b.putInt("m", start.get(Calendar.MONTH));
                     b.putInt("d", start.get(Calendar.DAY_OF_MONTH));
-                    final DatePickerDialogFragment fragment = new DatePickerDialogFragment();
+                    DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
                         @Override

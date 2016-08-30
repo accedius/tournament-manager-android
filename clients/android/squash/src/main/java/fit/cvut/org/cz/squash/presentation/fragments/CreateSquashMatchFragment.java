@@ -27,7 +27,8 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
 
         if (tournamentId != -1){
             Intent intent = null;
-            if (id == -1) intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
+            if (id == -1)
+                intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
             else {
                 intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_BY_ID, getContext());
                 intent.putExtra(MatchService.EXTRA_MATCH_ID, id);
