@@ -106,7 +106,6 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public void askForData() {
 
         Long id = getArguments().getLong(ARG_ID, -1);
-        Log.d("Add Players Fragment", String.format("action: %s, id: %d", action, id));
         if (action == null || id == -1) return;
         Intent intent = PlayerService.newStartIntent(action, getContext());
         intent.putExtra(PlayerService.EXTRA_ID, id);

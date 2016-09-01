@@ -19,7 +19,7 @@ public class DBScripts {
             + DBConstants.cNAME + " TEXT NOT NULL, "
             + DBConstants.cSTART + " TEXT, "
             + DBConstants.cEND + " TEXT, "
-            + DBConstants.cTYPE + " TEXT, "
+            + DBConstants.cTYPE + " INTEGER, "
             + DBConstants.cNOTE + " TEXT, "
             + DBConstants.cUID + " TEXT, "
             + DBConstants.cETAG + " TEXT, "
@@ -133,17 +133,17 @@ public class DBScripts {
                     DBConstants.tPLAYERS, 8, "Radek", "Radek@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
 
 
-    public static final String INSERT_SQUASH_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','SQ T CMP 1','2001-01-01','2001-12-12','Teams','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
-    public static final String INSERT_SQUASH_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','SQ I CMP 2','2002-01-01','2002-12-12','Individuals','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
-    public static final String INSERT_SQUASH_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','SQ I CMP 3','2003-01-01','2003-12-12','Individuals','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
+    public static final String INSERT_SQUASH_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','SQ T CMP 1','2001-01-01','2001-12-12','1','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
+    public static final String INSERT_SQUASH_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','SQ I CMP 2','2002-01-01','2002-12-12','0','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
+    public static final String INSERT_SQUASH_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','SQ I CMP 3','2003-01-01','2003-12-12','0','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
 
     public static final String INSERT_SQUASH_TOURNAMENTS = "insert into " + DBConstants.tTOURNAMENTS + " values('1','SQ TOUR 1','2001-01-01','2001-12-12','PoznTour1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_SQUASH_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS+ " values('2','SQ TOUR 2','2001-01-01','2001-12-12','PoznTour2','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_SQUASH_TOURNAMENTS_2 = "insert into " + DBConstants.tTOURNAMENTS + " values('3','SQ TOUR 3','2002-01-01','2002-12-12','PoznTour3','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10', '2');";
 
-    public static final String INSERT_HOCKEY_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','H CMP 1','2001-01-01','2001-12-12','Teams','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
-    public static final String INSERT_HOCKEY_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','H CMP 2','2002-01-01','2002-12-12','Teams','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
-    public static final String INSERT_HOCKEY_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','H CMP 3','2003-01-01','2003-12-12','Teams','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
+    public static final String INSERT_HOCKEY_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','H CMP 1','2001-01-01','2001-12-12','1','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
+    public static final String INSERT_HOCKEY_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','H CMP 2','2002-01-01','2002-12-12','1','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
+    public static final String INSERT_HOCKEY_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','H CMP 3','2003-01-01','2003-12-12','1','Pozn3','asdf','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
 
     public static final String INSERT_HOCKEY_TOURNAMENTS = "insert into " + DBConstants.tTOURNAMENTS + " values('1','H TOUR 1','2001-01-01','2001-12-12','PoznTour1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_HOCKEY_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS + " values('2','H TOUR 2','2001-01-01','2001-12-12','PoznTour2','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";

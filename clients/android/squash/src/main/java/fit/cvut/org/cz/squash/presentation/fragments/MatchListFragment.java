@@ -19,6 +19,7 @@ import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
@@ -163,7 +164,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                     progressBar.setVisibility(View.GONE);
                     contentView.setVisibility(View.VISIBLE);
                     MatchListFragment.super.bindDataOnView(intent);
-                    type = CompetitionType.valueOf(intent.getStringExtra(MatchService.EXTRA_TYPE));
+                    type = CompetitionTypes.competitionTypes()[intent.getIntExtra(MatchService.EXTRA_TYPE, 0)];
                 }
             }
         }

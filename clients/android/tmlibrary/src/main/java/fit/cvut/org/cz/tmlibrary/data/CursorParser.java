@@ -29,7 +29,8 @@ public class CursorParser {
 
     public DCompetition parseDCompetition(Cursor cursor) {
         long id;
-        String uid, name, note, type, etag;
+        int type;
+        String uid, name, note, etag;
         Date startDate = null;
         Date endDate = null;
         Date lastModified = null;
@@ -53,7 +54,7 @@ public class CursorParser {
         }
 
         note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
-        type = cursor.getString(cursor.getColumnIndex(DBConstants.cTYPE));
+        type = cursor.getInt(cursor.getColumnIndex(DBConstants.cTYPE));
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
         return new DCompetition(id, name, startDate, endDate, note, type, etag, uid, lastModified, lastSynchronized);

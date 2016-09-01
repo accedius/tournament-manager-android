@@ -18,6 +18,7 @@ import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchOverviewFragment
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -37,7 +38,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
         Intent i = new Intent(context, MatchDetailActivity.class);
         i.putExtra(ARG_ID, id);
         i.putExtra(ARG_PLAYED, played);
-        i.putExtra(ARG_TYPE, type.toString());
+        i.putExtra(ARG_TYPE, type.id);
 
         return i;
     }
@@ -49,8 +50,8 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
         long id = getIntent().getLongExtra(ARG_ID, -1);
         boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
-        CompetitionType type = CompetitionType.valueOf(getIntent().getStringExtra(ARG_TYPE));
-        if (type == CompetitionType.Individuals)
+        CompetitionType type = CompetitionTypes.competitionTypes()[getIntent().getIntExtra(ARG_TYPE, 0)];
+        if (type.equals(CompetitionTypes.individuals()))
             adapter = new DefaultViewPagerAdapter(manager, new Fragment[]{SquashMatchOverviewFragment.newInstance(id, played)}, new String[]{getString(R.string.sets)});
         else{
             adapter = new DefaultViewPagerAdapter(manager,

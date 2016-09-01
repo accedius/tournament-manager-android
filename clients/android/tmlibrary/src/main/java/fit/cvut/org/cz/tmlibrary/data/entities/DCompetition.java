@@ -13,11 +13,11 @@ public class DCompetition extends DShareBase {
     private Date startDate;
     private Date endDate;
     private String note;
-    private String type;
+    private int type;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public DCompetition(long id, String name, Date startDate, Date endDate, String note, String type, String etag, String uid, Date lastModified, Date lastSynchronized) {
+    public DCompetition(long id, String name, Date startDate, Date endDate, String note, int type, String etag, String uid, Date lastModified, Date lastSynchronized) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -30,7 +30,7 @@ public class DCompetition extends DShareBase {
         this.lastSynchronized = lastSynchronized;
     }
 
-    public DCompetition(long id, String name, Date startDate, Date endDate, String note, String type) {
+    public DCompetition(long id, String name, Date startDate, Date endDate, String note, int type) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -79,11 +79,11 @@ public class DCompetition extends DShareBase {
         this.note = note;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 }

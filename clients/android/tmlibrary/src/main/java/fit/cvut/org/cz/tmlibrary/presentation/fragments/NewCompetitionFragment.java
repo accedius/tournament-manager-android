@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,9 +21,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -100,9 +104,9 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         startDate.setKeyListener(null);
         endDate.setKeyListener(null);
 
-        //We set adapter for spinner from CompetitionType Enum
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, CompetitionType.values());
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.addAll(CompetitionTypes.competitionTypes(getResources()));
 
         type.setAdapter(adapter);
 
@@ -175,7 +179,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         note.setText(c.getNote());
 
         setDatepicker(argStart, argEnd);
-        int index = adapter.getPosition(c.getType());
+        int index = c.getType().id;
         type.setSelection(index);
     }
 

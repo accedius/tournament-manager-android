@@ -25,7 +25,6 @@
     <string name="restart">Restartovat</string>
     <string name="round">Kolo</string>
     <string name="startDate">Datum začátku</string>
-    <string name="teams">Týmy</string>
     <string name="tournament_id_invalid">Musíte specifikovat competitionId nebo tournamentId.</string>
     <string name="tours_held">Počet turnajů</string>
     <string name="type">Typ</string>
@@ -45,4 +44,7 @@
     <string name="tournamentNotFound">Turnaj nenalezen.</string>
     <string name="tournament_header">Detail turnaje</string>
     <string name="cant_create_match">Nelze vytvořit – zápas nemá dostatek účastníků.</string>
+    <string name="competitionType">Typ soutěže</string>
+    <string name="type_individuals">Individuální</string>
+    <string name="type_teams">Týmová</string>
 </resources>

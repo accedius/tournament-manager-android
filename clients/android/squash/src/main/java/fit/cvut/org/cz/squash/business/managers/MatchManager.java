@@ -11,6 +11,7 @@ import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -93,13 +94,12 @@ public class MatchManager implements IScoredMatchManager {
             else away = p;
         }
 
-        if (type == CompetitionType.Teams){
+        if (type.equals(CompetitionTypes.teams())){
             match.setHomeParticipantId(home.getTeamId());
             match.setAwayParticipantId(away.getTeamId());
             match.setHomeName(ManagersFactory.getInstance().teamsManager.getById(context, home.getTeamId()).getName());
             match.setAwayName(ManagersFactory.getInstance().teamsManager.getById(context, away.getTeamId()).getName());
-        }
-        else {
+        } else {
             match.setHomeParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, home.getId()).get(0));
             match.setAwayParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, away.getId()).get(0));
             match.setHomeName(ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0).getName());
@@ -132,10 +132,10 @@ public class MatchManager implements IScoredMatchManager {
 
         ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
 
-        if (type == CompetitionType.Individuals){
+        if (type.equals(CompetitionTypes.individuals())){
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
             for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
-        }else { // teams
+        } else {
             ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
             for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
         }
@@ -164,7 +164,7 @@ public class MatchManager implements IScoredMatchManager {
         for (DParticipant p : participants){
             DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH);
             DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.SET);
-            if (type == CompetitionType.Teams)
+            if (type.equals(CompetitionTypes.teams()))
                 DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH_PARTICIPATION);
         }
 
@@ -178,7 +178,7 @@ public class MatchManager implements IScoredMatchManager {
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         DParticipant home = null;
         DParticipant away = null;
-        if (type == CompetitionType.Individuals){
+        if (type.equals(CompetitionTypes.individuals())){
             home = new DParticipant(-1, -1, matchId, "home");
             away = new DParticipant(-1, -1, matchId, "away");
             long homePartipId = DAOFactory.getInstance().participantDAO.insert(context, home);

@@ -18,6 +18,7 @@ import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
@@ -155,7 +156,7 @@ public class StatsManager implements IStatsManager {
         ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByTournament(context, t.getId(), StatsEnum.MATCH);
         PointConfig cfg = ManagersFactory.getInstance().pointConfigManager.getById(context, tournamentId);
 
-        if (type == CompetitionType.Individuals){
+        if (type.equals(CompetitionTypes.individuals())){
 
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
             for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getName()));

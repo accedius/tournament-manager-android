@@ -19,6 +19,7 @@ import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -59,7 +60,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                         intent.putExtra(TournamentDetailActivity.TOUR_ID, tournamentId);
                         intent.putExtra(TournamentDetailActivity.COMP_ID, getArguments().getLong(COMP_ID));
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                        intent.putExtra(TournamentDetailActivity.EXTRA_TYPE, type);
+                        intent.putExtra(TournamentDetailActivity.EXTRA_TYPE, type.id);
 
                         startActivity(intent);
                     }
@@ -129,15 +130,13 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
     }
     private BroadcastReceiver tReceiver = new TournamentsReceiver();
     public class TournamentsReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
             if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)){
                 TournamentsListFragment.super.bindDataOnView(intent);
-                type = CompetitionType.valueOf(intent.getStringExtra(TournamentService.EXTRA_TYPE));
+                type = CompetitionTypes.competitionTypes(getResources())[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
             } else if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
                     int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
                     adapter.delete(position);

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 
@@ -27,9 +28,8 @@ public class Competition extends ShareBase implements Parcelable {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static DCompetition convertToDCompetition(Competition c){
-
         return new DCompetition(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getType().toString(), c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized());
+                c.getEndDate(), c.getNote(), c.getType().id, c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized());
     }
 
 
@@ -59,7 +59,7 @@ public class Competition extends ShareBase implements Parcelable {
         this.startDate = c.getStartDate();
         this.endDate = c.getEndDate();
         this.note = c.getNote();
-        this.type = CompetitionType.valueOf(c.getType());
+        this.type = CompetitionTypes.competitionTypes()[c.getType()];
 
         this.uid = c.getUid();
         this.etag = c.getEtag();
@@ -67,31 +67,11 @@ public class Competition extends ShareBase implements Parcelable {
         this.lastSynchronized = c.getLastSynchronized();
     }
 
-    public Competition(Cursor cursor)  {
-        this.id = cursor.getLong(cursor.getColumnIndex(DBConstants.cID));
-        this.uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
-        this.name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
-
-        Date startDate = null;
-        Date endDate = null;
-        try {
-            startDate = dateFormat.parse("2015-02-02");
-            //endDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.cEND)));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
-        //this.type = CompetitionType.valueOf(cursor.getString(cursor.getColumnIndex(DBConstants.cTYPE)));
-    }
-
     protected Competition(Parcel in) {
         id = in.readLong();
         name = in.readString();
         note = in.readString();
-        type = CompetitionType.valueOf(in.readString());
+        type = in.readParcelable(CompetitionType.class.getClassLoader());
 
         try{
             String text = in.readString();
@@ -122,7 +102,7 @@ public class Competition extends ShareBase implements Parcelable {
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(note);
-        dest.writeString(type.toString());
+        dest.writeParcelable(type, flags);
         if (startDate == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(startDate));
         if (endDate == null) dest.writeString(null);

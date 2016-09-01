@@ -10,6 +10,7 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.SquashScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
@@ -69,7 +70,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 result.putExtra(EXTRA_MATCHES, ManagersFactory.getInstance().matchManager.getByTournamentId(this, id));
                 Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, id);
                 CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, t.getCompetitionId()).getType();
-                result.putExtra(EXTRA_TYPE, type.toString());
+                result.putExtra(EXTRA_TYPE, type.id);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
@@ -174,7 +175,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, tr.getCompetitionId()).getType();
 
         ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
-        if (type == CompetitionType.Individuals){
+        if (type.equals(CompetitionTypes.individuals())){
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, tournamentId);
             for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
 
@@ -189,7 +190,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, id);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, t.getCompetitionId()).getType();
 
-        return !((type == CompetitionType.Individuals && ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, id).size() < 2)
-                || (type == CompetitionType.Teams && ManagersFactory.getInstance().teamsManager.getByTournamentId(this, id).size() < 2));
+        return !((type.equals(CompetitionTypes.individuals()) && ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, id).size() < 2)
+                || (type.equals(CompetitionTypes.teams()) && ManagersFactory.getInstance().teamsManager.getByTournamentId(this, id).size() < 2));
     }
 }

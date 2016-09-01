@@ -8,6 +8,7 @@ import android.view.View;
 
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
@@ -22,7 +23,7 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
         TournamentOverviewFragment fragment = new SquashTournamentOverviewFragment();
         Bundle args = new Bundle();
         args.putLong(TOUR_KEY, tournamentId);
-        args.putString(ARG_TYPE, type.toString());
+        args.putInt(ARG_TYPE, type.id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +52,7 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_OVERVIEW, getContext());
         intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
-        intent.putExtra(TournamentService.EXTRA_TYPE, getArguments().getString(ARG_TYPE));
-
+        intent.putExtra(TournamentService.EXTRA_TYPE, getArguments().getInt(ARG_TYPE));
         getContext().startService(intent);
     }
 
@@ -73,9 +73,9 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        CompetitionType type = CompetitionType.valueOf(intent.getStringExtra((TournamentService.EXTRA_TYPE)));
+        CompetitionType type = CompetitionTypes.competitionTypes()[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
         super.bindDataOnView(intent);
-        if (type == CompetitionType.Individuals){
+        if (type.equals(CompetitionTypes.individuals())){
             teamSum.setVisibility(View.GONE);
             teamsLabel.setVisibility(View.GONE);
         }
