@@ -17,16 +17,15 @@ public class PlayerMatchStatDialog extends DialogFragment {
 
     public static final String ARG_DATA = "data";
     public static final String ARG_POSITION = "position";
-    public static final String ARG_HOME = "homea";
+    public static final String ARG_HOME = "home";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    public static PlayerMatchStatDialog newInstance( MatchPlayerStatistic statis, int pos, boolean isHome)
-    {
+    public static PlayerMatchStatDialog newInstance( MatchPlayerStatistic statistic, int pos, boolean isHome) {
         PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
 
         Bundle b = new Bundle();
-        b.putParcelable(ARG_DATA, statis);
+        b.putParcelable(ARG_DATA, statistic);
         b.putBoolean(ARG_HOME, isHome);
         b.putInt(ARG_POSITION, pos);
         fragment.setArguments(b);
@@ -36,11 +35,8 @@ public class PlayerMatchStatDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-
         String[] items = new String[]{ getActivity().getString(R.string.edit_stats), getActivity().getString(R.string.delete) };
-
         builder.setItems( items, new DialogInterface.OnClickListener(){
 
             @Override

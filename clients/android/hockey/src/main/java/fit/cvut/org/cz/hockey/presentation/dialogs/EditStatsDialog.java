@@ -19,7 +19,7 @@ public class EditStatsDialog extends DialogFragment {
 
     public static final String ARG_DATA = "data";
     public static final String ARG_POSITION = "position";
-    public static final String ARG_HOME = "homea";
+    public static final String ARG_HOME = "home";
 
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
@@ -27,12 +27,11 @@ public class EditStatsDialog extends DialogFragment {
     private TextView goals, assists, plusMinusPoints, saves, name;
     private MatchPlayerStatistic stat;
 
-    public static EditStatsDialog newInstance( MatchPlayerStatistic statis, int pos, boolean isHome)
-    {
+    public static EditStatsDialog newInstance( MatchPlayerStatistic statistic, int pos, boolean isHome) {
         EditStatsDialog fragment = new EditStatsDialog();
 
         Bundle b = new Bundle();
-        b.putParcelable(ARG_DATA, statis);
+        b.putParcelable(ARG_DATA, statistic);
         b.putBoolean(ARG_HOME, isHome);
         b.putInt(ARG_POSITION, pos);
         fragment.setArguments(b);
