@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="competition_header">Soutěž</string>
-    <string name="tournament_header">Turnaj</string>
-    <string name="team_header">Tým</string>
-    <string name="player_header">Hráč</string>
+    <string name="competition">Soutěž</string>
+    <string name="competitions">Soutěže</string>
+    <string name="tournament">Turnaj</string>
+    <string name="team">Tým</string>
+    <string name="teams">Týmy</string>
+    <string name="player">Hráč</string>
+    <string name="players">Hráči</string>
 
     <string name="competitionType">Typ soutěže</string>
     <string name="type_individuals">Individuální</string>
@@ -14,8 +17,6 @@
     <string name="away">Hosté</string>
     <string name="match_sum">Počet zápasů</string>
     <string name="tours_held">Počet turnajů</string>
-    <string name="players">Hráči</string>
-    <string name="teams">Týmy</string>
 
     <string name="ok">OK</string>
     <string name="save">Uložit</string>

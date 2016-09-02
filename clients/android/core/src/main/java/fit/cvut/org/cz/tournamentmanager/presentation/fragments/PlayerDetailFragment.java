@@ -56,7 +56,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
             getActivity().setTitle("Player not found"); //PROZATIMNI RESENI
             return;
         }
-        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.player_header)+" – "+player.getName());
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.player)+" – "+player.getName());
 
         email.setText(player.getEmail());
         note.setText(player.getNote());

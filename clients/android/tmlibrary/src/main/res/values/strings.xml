@@ -1,8 +1,11 @@
 <resources>
-    <string name="competition_header">Competition</string>
-    <string name="tournament_header">Tournament</string>
-    <string name="team_header">Team</string>
-    <string name="player_header">Player</string>
+    <string name="competition">Competition</string>
+    <string name="competitions">Competitions</string>
+    <string name="tournament">Tournament</string>
+    <string name="team">Team</string>
+    <string name="teams">Teams</string>
+    <string name="player">Player</string>
+    <string name="players">Players</string>
 
     <string name="competitionType">Competition type</string>
     <string name="type_individuals">Individuals</string>
@@ -12,8 +15,6 @@
     <string name="away">Away</string>
     <string name="match_sum">Matches played</string>
     <string name="tours_held">Tournaments held</string>
-    <string name="players">Players</string>
-    <string name="teams">Teams</string>
 
     <string name="ok">OK</string>
     <string name="save">Save</string>

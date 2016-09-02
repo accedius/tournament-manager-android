@@ -5,12 +5,11 @@
             android:id="@+id/competitions"
             android:checked="true"
             android:icon="@drawable/cup_24dp"
-            android:title="@string/main_acc_name" />
-
+            android:title="@string/competitions" />
         <item
             android:id="@+id/players"
             android:checked="false"
             android:icon="@drawable/ic_people_white_24dp"
-            android:title="@string/title_activity_players" />
+            android:title="@string/players" />
     </group>
 </menu>

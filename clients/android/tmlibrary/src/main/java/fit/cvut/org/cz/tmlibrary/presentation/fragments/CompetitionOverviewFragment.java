@@ -90,7 +90,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
             return;
         }
 
-        getActivity().setTitle(getResources().getString(R.string.competition_header)+" – "+competition.getName());
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.competition)+" – "+competition.getName());
 
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 

@@ -139,7 +139,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
 
         Team t = intent.getParcelableExtra(getTeamKey());
-        getActivity().setTitle(getResources().getString(R.string.team_header)+" – "+t.getName());
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.team)+" – "+t.getName());
         adapter.swapData(t.getPlayers());
         this.t = t;
         super.customOnPause();
@@ -163,7 +163,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     @Override
     public void customOnResume() {
         if (t != null) {
-            getActivity().setTitle(getResources().getString(R.string.team_header)+" – "+t.getName());
+            getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.team)+" – "+t.getName());
             adapter.swapData(t.getPlayers());
         }
         if (sendForData)

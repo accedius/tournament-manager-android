@@ -101,7 +101,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
             return;
         }
 
-        getActivity().setTitle(getResources().getString(R.string.tournament_header)+" – "+tournament.getName());
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.tournament)+" – "+tournament.getName());
 
         DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
 

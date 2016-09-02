@@ -31,12 +31,12 @@
 
         <activity
             android:name=".presentation.activities.CreatePlayerActivity"
-            android:label="@string/title_activity_create_player" >
+            android:label="@string/player_settings" >
         </activity>
 
         <activity
             android:name=".presentation.activities.PlayerDetailActivity"
-            android:label="@string/title_activity_player_detail" >
+            android:label="@string/player" >
         </activity>
     </application>
 

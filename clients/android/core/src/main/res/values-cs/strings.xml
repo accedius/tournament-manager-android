@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TournamentManager</string>
-    <string name="title_activity_player_detail">Detail hráče</string>
-    <string name="title_activity_create_player">Nastavení hráče</string>
-    <string name="title_activity_players">Hráči</string>
+
     <string name="player_detail_header">Info o hráči</string>
-    <string name="title_activity_competitions">Soutěže</string>
-    <string name="main_acc_name">Soutěže</string>
+
     <string name="player_name_email_empty_error">Jméno a e-mail nesmí být prázdné!</string>
+    <string name="player_settings">Nastavení hráče</string>
 </resources>
