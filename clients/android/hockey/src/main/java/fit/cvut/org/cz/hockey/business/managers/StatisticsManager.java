@@ -151,6 +151,18 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             res.add( aggregateStats(context, p.getId(), p.getName(), tournamentStats) );
         }
 
+        Collections.sort(res, new Comparator<AggregatedStatistics>() {
+            @Override
+            public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
+                if (rs.getPoints() != ls.getPoints())
+                    return (int)(rs.getPoints() - ls.getPoints());
+                if (rs.getGoals() != ls.getGoals()) {
+                    return (int)(rs.getGoals()- ls.getGoals());
+                }
+                return (int)(ls.getMatches()-rs.getMatches());
+            }
+        });
+
         return res;
     }
 
@@ -178,6 +190,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 else if ( s.getTeamId() == match.getAwayParticipantId() )
                     standingA = s;
             }
+
             if(standingA == null || standingH == null)
                 continue;
 
