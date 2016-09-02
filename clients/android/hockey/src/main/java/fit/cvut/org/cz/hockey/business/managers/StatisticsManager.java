@@ -119,58 +119,37 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     public AggregatedStatistics getByPlayerID(Context context, long playerID) {
         ArrayList<DStat> allStats = null;
         Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, playerID);
-
         AggregatedStatistics res = aggregateStats(context, p.getId(), p.getName(), allStats) ;
-
         return res;
     }
 
-
     public ArrayList<AggregatedStatistics> getByCompetitionID( Context context, long compId ) {
         ArrayList<Player> compPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( context, compId );
-
+        ArrayList<DStat> competitionStats = DAOFactory.getInstance().statDAO.getStatsByCompetitionId( context, compId );
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
-        ArrayList<DStat> competitionStats = DAOFactory.getInstance().statDAO.getStatsByCompetitionId( context, compId );
-
-        for( Player p : compPlayers ) {
+        for( Player p : compPlayers )
             res.add( aggregateStats(context, p.getId(), p.getName(), competitionStats) );
-        }
 
+        orderPlayers(res);
         return res;
     }
 
     public ArrayList<AggregatedStatistics> getByTournamentID( Context context, long tourId ) {
         ArrayList<Player> tourPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tourId);
-
+        ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId(context, tourId);
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
-        ArrayList<DStat> tournamentStats = DAOFactory.getInstance().statDAO.getStatsByTournamentId(context, tourId);
-
-        for( Player p : tourPlayers ) {
+        for( Player p : tourPlayers )
             res.add( aggregateStats(context, p.getId(), p.getName(), tournamentStats) );
-        }
 
-        Collections.sort(res, new Comparator<AggregatedStatistics>() {
-            @Override
-            public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
-                if (rs.getPoints() != ls.getPoints())
-                    return (int)(rs.getPoints() - ls.getPoints());
-                if (rs.getGoals() != ls.getGoals()) {
-                    return (int)(rs.getGoals()- ls.getGoals());
-                }
-                return (int)(ls.getMatches()-rs.getMatches());
-            }
-        });
-
+        orderPlayers(res);
         return res;
     }
 
     public ArrayList<Standing> getStandingsByTournamentId( Context context, long tourId) {
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( context, tourId );
-
         ArrayList<Standing> standings = new ArrayList<>();
-
         DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, tourId );
 
         for( Team t : teams ) {
@@ -305,6 +284,20 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         }
         DAOFactory.getInstance().statDAO.update(context, homeScoreStat);
         DAOFactory.getInstance().statDAO.update(context, awayScoreStat);
+    }
+
+    private void orderPlayers(ArrayList<AggregatedStatistics> stats) {
+        Collections.sort(stats, new Comparator<AggregatedStatistics>() {
+            @Override
+            public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
+                if (rs.getPoints() != ls.getPoints())
+                    return (int)(rs.getPoints() - ls.getPoints());
+                if (rs.getGoals() != ls.getGoals()) {
+                    return (int)(rs.getGoals()- ls.getGoals());
+                }
+                return (int)(ls.getMatches()-rs.getMatches());
+            }
+        });
     }
 
     private void giveOutcome( Context context, int outcome, ArrayList<DStat> participantStats ) {
