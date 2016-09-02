@@ -32,6 +32,20 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  */
 public class StatsManager implements IStatsManager {
 
+    private void orderPlayers(ArrayList<SAggregatedStats> stats) {
+        Collections.sort(stats, new Comparator<SAggregatedStats>() {
+            @Override
+            public int compare(SAggregatedStats ls, SAggregatedStats rs) {
+                if (rs.points != ls.points)
+                    return rs.points - ls.points;
+                if (rs.setsWon != ls.setsWon) {
+                    return rs.setsWon- ls.setsWon;
+                }
+                return ls.games_played-rs.games_played;
+            }
+        });
+    }
+
     private ArrayList<SAggregatedStats> getStats(Context context, ArrayList<Player> players, ArrayList<DStat> matchResults, ArrayList<DStat> sets){
         ArrayList<SAggregatedStats> stats = new ArrayList<>();
         Map<Long, SAggregatedStats> mappedStats = new HashMap<>();
@@ -109,17 +123,21 @@ public class StatsManager implements IStatsManager {
         ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.MATCH);
         ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.SET);
 
-        return getStats(context, players, results, sets);
+        ArrayList<SAggregatedStats> res = getStats(context, players, results, sets);
+        orderPlayers(res);
+        return res;
     }
 
     @Override
     public ArrayList<SAggregatedStats> getAggregatedStatsByTournamentId(Context context, long tournamentId) {
 
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
-        ArrayList<DStat> matchResults = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.MATCH);
+        ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.MATCH);
         ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.SET);
 
-        return getStats(context, players, matchResults, sets);
+        ArrayList<SAggregatedStats> res = getStats(context, players, results, sets);
+        orderPlayers(res);
+        return res;
     }
 
     @Override
@@ -147,7 +165,6 @@ public class StatsManager implements IStatsManager {
 
     @Override
     public ArrayList<StandingItem> getStandingsByTournament(Context context, long tournamentId) {
-
         DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         Map<Long, StandingItem> mappedStandings = new HashMap<>();
