@@ -23,14 +23,12 @@ public class MatchEditAtOnceFragment extends Fragment {
 
     private EditableStatsAdapter homeAdp, awayAdp;
     private RecyclerView homeRecyclerView, awayRecyclerView;
-
     private ArrayList<MatchPlayerStatistic> tmpHomeStat, tmpAwayStat;
 
     private static final String ARG_HOME = "arg_home";
     private static final String ARG_AWAY = "arg_away";
 
-    public static MatchEditAtOnceFragment newInstance(ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats)
-    {
+    public static MatchEditAtOnceFragment newInstance(ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats) {
         MatchEditAtOnceFragment fragment = new MatchEditAtOnceFragment();
 
         ArrayList<MatchPlayerStatistic> newHomeStat = new ArrayList<>(homeStats);

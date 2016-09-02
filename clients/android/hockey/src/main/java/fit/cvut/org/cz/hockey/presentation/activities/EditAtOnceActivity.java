@@ -35,8 +35,7 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
      * @param awayStats stats of the away team
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats)
-    {
+    public static Intent newStartIntent( Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats) {
         Intent res = new Intent(context, EditAtOnceActivity.class);
 
         ArrayList<MatchPlayerStatistic> newHomeStat = new ArrayList<>(homeStats);
@@ -67,13 +66,11 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
 
         if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, MatchEditAtOnceFragment.newInstance(homeStats, awayStats)).commit();
-
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_finish, menu);
         return true;
     }
@@ -81,12 +78,12 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == R.id.action_finish) {
             MatchEditAtOnceFragment fragment = (MatchEditAtOnceFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if (fragment == null) {
                 return super.onOptionsItemSelected(item);
             }
+
             ArrayList<MatchPlayerStatistic> homeStats = fragment.getHomeData();
             ArrayList<MatchPlayerStatistic> awayStats = fragment.getAwayData();
 
@@ -95,7 +92,6 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
             data.putParcelableArrayListExtra(EXTRA_AWAY_STATS, awayStats);
 
             setResult(Activity.RESULT_OK, data);
-
             finish();
         }
         return super.onOptionsItemSelected(item);

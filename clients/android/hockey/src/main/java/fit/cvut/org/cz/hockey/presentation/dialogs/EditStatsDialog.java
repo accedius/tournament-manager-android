@@ -45,25 +45,25 @@ public class EditStatsDialog extends DialogFragment {
      * @param statistic
      */
     protected void saveStats( MatchPlayerStatistic statistic ) {
-
         ((HockeyMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ARG_HOME), getArguments().getInt(ARG_POSITION), stat);
-
     };
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         stat = getArguments().getParcelable(ARG_DATA);
-
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
 
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if( goals.getText().toString().isEmpty() ) goals.setText( String.valueOf(0) );
-                if( assists.getText().toString().isEmpty() ) assists.setText( String.valueOf(0) );
-                if( plusMinusPoints.getText().toString().isEmpty() ) plusMinusPoints.setText( String.valueOf(0) );
-                if( saves.getText().toString().isEmpty() ) saves.setText( String.valueOf(0) );
+                if( goals.getText().toString().isEmpty() )
+                    goals.setText( String.valueOf(0) );
+                if( assists.getText().toString().isEmpty() )
+                    assists.setText( String.valueOf(0) );
+                if( plusMinusPoints.getText().toString().isEmpty() )
+                    plusMinusPoints.setText( String.valueOf(0) );
+                if( saves.getText().toString().isEmpty() )
+                    saves.setText( String.valueOf(0) );
 
                 stat.setGoals(Integer.parseInt(goals.getText().toString()));
                 stat.setAssists(Integer.parseInt(assists.getText().toString()));
@@ -83,25 +83,19 @@ public class EditStatsDialog extends DialogFragment {
 
         View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stats, null);
 
-
-
         goals = (TextView) v.findViewById(R.id.tv_goals);
-        goals.setText(String.valueOf(stat.getGoals()));
-
         assists = (TextView) v.findViewById(R.id.tv_assists);
-        assists.setText( String.valueOf(stat.getAssists()));
-
         plusMinusPoints = (TextView) v.findViewById(R.id.tv_plus_minus);
-        plusMinusPoints.setText( String.valueOf(stat.getPlusMinusPoints()));
-
         saves = (TextView) v.findViewById(R.id.tv_saves);
-        saves.setText(String.valueOf(stat.getSaves()));
-
         name = (TextView) v.findViewById(R.id.tv_name);
+
+        goals.setText(String.valueOf(stat.getGoals()));
+        assists.setText( String.valueOf(stat.getAssists()));
+        plusMinusPoints.setText( String.valueOf(stat.getPlusMinusPoints()));
+        saves.setText(String.valueOf(stat.getSaves()));
         name.setText( stat.getName() );
 
         builder.setView(v);
-
         return builder.create();
     }
 }

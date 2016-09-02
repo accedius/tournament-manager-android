@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,9 +21,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:inputType="number"
-                android:id="@+id/et_goals"/>
+                android:id="@+id/et_goals"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -34,9 +33,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:inputType="number"
-                android:id="@+id/et_assists"/>
+                android:id="@+id/et_assists"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -46,9 +45,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:inputType="numberSigned"
-                android:id="@+id/et_plus_minus"/>
+                android:id="@+id/et_plus_minus"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -58,9 +57,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:inputType="number"
-                android:id="@+id/et_saves"/>
+                android:id="@+id/et_saves"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
-
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

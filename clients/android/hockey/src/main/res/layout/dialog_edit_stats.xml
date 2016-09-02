@@ -20,7 +20,8 @@
             android:layout_height="match_parent"
             android:id="@+id/tv_goals"
             android:hint="@string/goals"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"/>
     </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -30,7 +31,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_assists"
                 android:hint="@string/assists"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -40,7 +42,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_plus_minus"
                 android:hint="@string/plus_minus_points"
-                android:inputType="numberSigned"/>
+                android:inputType="numberSigned"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -50,7 +53,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_saves"
                 android:hint="@string/saves"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
