@@ -30,6 +30,11 @@
     <string name="header_standings">Standings</string>
     <string name="header_matches">Matches</string>
 
+    <string name="generate_by_team_points">Generate by team points</string>
+    <string name="generate_by_goals">Generate by goals</string>
+    <string name="generate_by_wins">Generate by wins</string>
+    <string name="generate_randomly">Generate randomly</string>
+
     <string name="add_single_match">Add single match</string>
     <string name="add_round">Add round</string>
     <string name="add_home_complete">Add players to home team</string>

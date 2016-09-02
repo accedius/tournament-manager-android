@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
@@ -80,14 +81,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
-
-
-
-
     }
 
     @Override
@@ -122,10 +117,10 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 break;
             }
             case GEN_ROSTER_ID:{
-                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, this);
-                intent.putExtra(TournamentService.EXTRA_ID, competitionID);
-                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournamentID);
-                startService(intent);
+                Fragment parentFrag = adapter.getItem(pager.getCurrentItem());
+                GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionID, tournamentID);
+                dialog.setTargetFragment(parentFrag, 1);
+                dialog.show(parentFrag.getFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
             }
         }

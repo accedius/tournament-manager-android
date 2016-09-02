@@ -54,7 +54,8 @@ public interface ITeamManager {
      * @param context application context
      * @param competitionId id of the competition
      * @param tournamentId id of the tournament
+     * @param generatingType type of stat for generating balanced rosters
      */
-    void generateRosters(Context context, long competitionId, long tournamentId);
+    void generateRosters(Context context, long competitionId, long tournamentId, int generatingType);
 
 }

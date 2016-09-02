@@ -18,6 +18,9 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
 public class RoundRobinTeamsRostersGenerator implements ITeamsRostersGenerator {
     @Override
     public void generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats) {
+        if (teams.isEmpty())
+            return;
+
         for (Team t : teams)
             if (!t.getPlayers().isEmpty())
                 return;

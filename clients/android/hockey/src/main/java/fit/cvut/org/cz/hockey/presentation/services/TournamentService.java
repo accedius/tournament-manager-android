@@ -30,6 +30,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_TEAMS_SUM = "extra_number_of_teams";
     public static final String EXTRA_CONFIGURATION = "extra_configuration";
     public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_GENERATING_TYPE = "extra_generating_type";
 
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";
@@ -39,6 +40,12 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.hockey.presentation.services.tournament_set_configuration";
     public static final String ACTION_DELETE = "fit.cvut.org.cz.hockey.presentation.services.tournament_delete";
     public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.hockey.presentation.services.generate_rosters";
+
+    public static final int GENERATING_TYPES_CNT = 4;
+    public static final int GENERATE_BY_TEAM_POINTS = 0;
+    public static final int GENERATE_BY_WINS = 1;
+    public static final int GENERATE_BY_GOALS = 2;
+    public static final int GENERATE_RANDOMLY = 3;
 
     public TournamentService() {
         super("Hockey Tournament Service");
@@ -126,7 +133,8 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 ManagerFactory.getInstance().teamManager.generateRosters(
                         this,
                         intent.getLongExtra(EXTRA_ID, -1),
-                        intent.getLongExtra(EXTRA_TOURNAMENT, -1));
+                        intent.getLongExtra(EXTRA_TOURNAMENT, -1),
+                        intent.getIntExtra(EXTRA_GENERATING_TYPE, -1));
                 LocalBroadcastManager.getInstance( this ).sendBroadcast(result);
                 break;
             }

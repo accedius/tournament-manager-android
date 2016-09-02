@@ -14,28 +14,22 @@ public class AggregatedStatistics implements Parcelable {
     private long goals, assists, points, plusMinusPoints, teamPoints, matches, wins, losses, draws, saves;
     private double avgGoals, avgPoints, avgPlusMinus, avgTeamPoints;
 
-    private void calcAvg()
-    {
+    private void calcAvg() {
         this.points = this.goals + this.assists;
-        if( this.matches > 0 )
-        {
+        if( this.matches > 0 ) {
             this.avgGoals = (double)this.goals/(double)this.matches;
             this.avgPoints = (double)this.points/(double)this.matches;
             this.avgPlusMinus = (double)this.plusMinusPoints/(double)this.matches;
             this.avgTeamPoints = (double)this.teamPoints/(double)this.matches;
-        }
-        else
-        {
+        } else {
             this.avgGoals = 0;
             this.avgPoints = 0;
             this.avgPlusMinus = 0;
             this.avgTeamPoints = 0;
         }
-
     }
 
-    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long saves)
-    {
+    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long saves) {
         this.playerID = pID;
         this.playerName = pName;
         this.matches = matches;
@@ -88,8 +82,7 @@ public class AggregatedStatistics implements Parcelable {
 
     }
 
-    public AggregatedStatistics(Parcel in)
-    {
+    public AggregatedStatistics(Parcel in) {
         playerID = in.readLong();
         playerName = in.readString();
 
@@ -177,5 +170,23 @@ public class AggregatedStatistics implements Parcelable {
 
     public void setSaves(long saves) {
         this.saves = saves;
+    }
+
+    public double getAvgWins() {
+        if (matches == 0)
+            return 0;
+        return wins/matches;
+    }
+
+    public double getAvgDraws() {
+        if (matches == 0)
+            return 0;
+        return draws/matches;
+    }
+
+    public double getAvgLosses() {
+        if (matches == 0)
+            return 0;
+        return losses/matches;
     }
 }
