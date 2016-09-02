@@ -67,8 +67,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put( DBConstants.cTEAM_ID, teamId );
         values.put( DBConstants.cPLAYER_ID, playerId);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
+        Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
 
         db.close();
     }

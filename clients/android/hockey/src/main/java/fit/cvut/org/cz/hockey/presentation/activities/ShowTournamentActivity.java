@@ -41,8 +41,6 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-
         competitionID = getIntent().getExtras().getLong(COMP_ID);
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
 
@@ -89,9 +87,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-
         PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
-
         adapter = (DefaultViewPagerAdapter)res;
         return res;
     }
@@ -104,9 +100,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
-
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (tournamentID == -1) break;
                 Intent intent = CreateTournamentActivity.newStartIntent( this, tournamentID, competitionID );

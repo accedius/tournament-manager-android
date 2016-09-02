@@ -35,16 +35,13 @@ public class TeamsManager implements ITeamManager {
 
     @Override
     public Team getById(Context context, long id) {
-
         Team t = new Team(DAOFactory.getInstance().teamDAO.getById(context, id));
         t.setPlayers(ManagersFactory.getInstance().playerManager.getPlayersByTeam(context, t.getId()));
-
         return t;
     }
 
     @Override
     public ArrayList<Team> getByTournamentId(Context context, long tournamentId) {
-
         ArrayList<Team> teams = new ArrayList<>();
         ArrayList<DTeam> dTeams = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
         for (DTeam dTeam : dTeams) {

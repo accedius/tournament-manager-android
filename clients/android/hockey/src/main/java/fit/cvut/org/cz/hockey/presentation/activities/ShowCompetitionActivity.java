@@ -35,8 +35,6 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
@@ -64,18 +62,11 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
             }
         });
-
-
-
-
     }
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-
         adapter = new DefaultViewPagerAdapter(manager, fragments, titles);
-
-
         return adapter;
     }
 
@@ -87,9 +78,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
-
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (competitionID == -1) break;
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);

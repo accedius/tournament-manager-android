@@ -17,7 +17,7 @@ public class Team extends ShareBase implements Parcelable {
     private long id;
     private long tournamentId;
     private String name;
-    ArrayList<Player> players;
+    ArrayList<Player> players = new ArrayList<>();
 
     public Team(){}
 

@@ -26,14 +26,14 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
 
         // array of participant indices - serves to generate matches
         ArrayList<Integer> arr = new ArrayList<>();
-        for(int i=0; i<participants_even_number; i++)
+        for (int i = 0; i < participants_even_number; i++)
             arr.add(i);
 
         // each iteration generates one period
         int home_idx, away_idx;
-        for(int period=1; period<=periods_number; period++) {
+        for (int period = 1; period <= periods_number; period++) {
             // each iteration generates one match
-            for (int j=0; j<participants_even_number / 2; j++) {
+            for (int j = 0; j < participants_even_number / 2; j++) {
                 if (round_oddness) {
                     home_idx = arr.get(j);
                     away_idx = arr.get(participants_even_number - 1 - j);
@@ -65,9 +65,8 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
 
     private void shift(ArrayList<Integer> arr) {
         int last_idx = arr.get(arr.size()-1);
-        for(int i=arr.size()-1; i>1; i--) {
+        for (int i = arr.size()-1; i > 1; i--)
             arr.set(i, arr.get(i-1));
-        }
         arr.set(1, last_idx);
     }
 }

@@ -4,9 +4,10 @@
 
     <item android:id="@+id/action_edit"
         android:title="@string/edit"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_create_white_24dp"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_point_config"
         android:title="@string/point_config"
-        app:showAsAction="never"/>
-
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>

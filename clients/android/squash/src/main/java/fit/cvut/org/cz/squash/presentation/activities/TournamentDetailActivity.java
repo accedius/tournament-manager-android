@@ -40,7 +40,6 @@ public class TournamentDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-
         competitionID = getIntent().getExtras().getLong(COMP_ID);
         tournamentID = getIntent().getExtras().getLong(TOUR_ID);
         CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
@@ -100,11 +99,8 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         return true;
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (tournamentID == -1) break;
