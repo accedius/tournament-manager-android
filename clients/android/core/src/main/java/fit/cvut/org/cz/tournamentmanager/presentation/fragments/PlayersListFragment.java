@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -80,7 +80,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     protected AbstractListAdapter getAdapter() {
         return new PlayerAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long playerId) {
+            protected void setOnClickListeners(View v, final long playerId, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,6 +124,10 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                 };
                             }
                         };
+
+                        Bundle b = new Bundle();
+                        b.putString(EditDeleteDialog.ARG_TITLE, name);
+                        dialog.setArguments(b);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return false;
                     }

@@ -23,7 +23,7 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         return holder;
     }
 
-    protected void setOnClickListeners(View v, long competitionId){}
+    protected void setOnClickListeners(View v, long competitionId, String name){}
 
     @Override
     public void onBindViewHolder(CompetitionAdapter.CompetitionViewHolder holder, int position) {
@@ -46,7 +46,7 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         else
             holder.endDate.setVisibility(View.GONE);
 
-        setOnClickListeners(holder.wholeView, competition.getId());
+        setOnClickListeners(holder.wholeView, competition.getId(), competition.getName());
     }
 
     @Override

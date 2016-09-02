@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fit.cvut.org.cz.squash.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -53,7 +53,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected AbstractListAdapter getAdapter() {
         return new CompetitionAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long competitionId) {
+            protected void setOnClickListeners(View v, final long competitionId, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -99,8 +99,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                             }
                         };
 
+                        Bundle b = new Bundle();
+                        b.putString(EditDeleteDialog.ARG_TITLE, name);
+                        dialog.setArguments(b);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
-
                         return false;
                     }
                 });

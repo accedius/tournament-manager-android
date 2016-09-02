@@ -26,7 +26,7 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
 
     public PlayerAdapter() {};
 
-    protected void setOnClickListeners(View v, long playerId){}
+    protected void setOnClickListeners(View v, long playerId, String name){}
 
     @Override
     public void onBindViewHolder(PlayerViewHolder holder, int position) {
@@ -34,7 +34,7 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
         holder.name.setText(player.getName());
         holder.email.setText(player.getEmail());
 
-        setOnClickListeners(holder.wholeView, player.getId());
+        setOnClickListeners(holder.wholeView, player.getId(), player.getName());
     }
 
     @Override
