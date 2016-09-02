@@ -4,10 +4,12 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.data.DAOFactory;
+import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -61,18 +63,28 @@ public class TeamsManager implements ITeamManager {
     }
 
     @Override
-    public void generateRosters(Context context, long competitionId, long tournamentId) {
+    public void generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
         ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
         ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByCompetitionId(context, competitionId);
+        Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
         for (Player p : players)
             playersHashMap.put(p.getId(), p);
 
         HashMap<Long, Double> statsHashMap = new HashMap<>();
-        for(SAggregatedStats s : stats)
-            statsHashMap.put(s.playerId, (double)s.points);
+        for (SAggregatedStats s : stats) {
+            if (generatingType == TournamentService.GENERATE_BY_TEAM_POINTS) {
+                statsHashMap.put(s.playerId, (double) s.points);
+            } else if (generatingType == TournamentService.GENERATE_BY_SETS) {
+                statsHashMap.put(s.playerId, s.setsWinRate);
+            } else if (generatingType == TournamentService.GENERATE_BY_BALLS) {
+                statsHashMap.put(s.playerId, s.ballsWonAvg);
+            } else if (generatingType == TournamentService.GENERATE_RANDOMLY) {
+                statsHashMap.put(s.playerId, r.nextDouble());
+            }
+        }
 
         ITeamsRostersGenerator teamsRostersGenerator = new RoundRobinTeamsRostersGenerator();
         teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);

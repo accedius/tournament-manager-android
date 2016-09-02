@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
@@ -132,16 +133,10 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                 if (type.equals(CompetitionTypes.individuals()))
                     break;
 
-                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, this);
-                intent.putExtra(TournamentService.EXTRA_ID, competitionID);
-                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournamentID);
-                startService(intent);
-                pager.setCurrentItem(TEAMS_LIST_POSITION);
-                TeamsListFragment fr = (TeamsListFragment)adapter.getItem(TEAMS_LIST_POSITION);
-                if (fr != null) {
-                    Log.d("TDA", "Fragment is not null, we can ask for data");
-                    fr.customOnResume();
-                }
+                Fragment parentFrag = adapter.getItem(pager.getCurrentItem());
+                GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionID, tournamentID);
+                dialog.setTargetFragment(parentFrag, 1);
+                dialog.show(parentFrag.getFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 return true;
             }
         }

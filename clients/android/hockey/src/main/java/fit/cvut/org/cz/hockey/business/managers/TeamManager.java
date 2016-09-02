@@ -79,7 +79,6 @@ public class TeamManager implements ITeamManager {
         ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tournamentId);
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(context, tournamentId);
         ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID(context, competitionId);
-
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();

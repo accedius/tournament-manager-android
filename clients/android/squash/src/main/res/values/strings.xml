@@ -50,6 +50,11 @@
     <string name="rosters">Rosters</string>
     <string name="add_player_to">Add player to</string>
 
+    <string name="generate_by_team_points">Generate by team points</string>
+    <string name="generate_by_balls">Generate by balls</string>
+    <string name="generate_by_sets">Generate by sets</string>
+    <string name="generate_randomly">Generate randomly</string>
+
     <string name="competition_name_empty_error">Name must not be empty!</string>
     <string name="tournament_name_empty_error">Name must not be empty!</string>
     <string name="point_config_error">Not all fields are properly filled!</string>

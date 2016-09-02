@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.hockey.presentation.dialogs;
+package fit.cvut.org.cz.squash.presentation.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,8 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
 /**
  * Created by kevin on 2.9.2016.
@@ -35,8 +35,8 @@ public class GenerateRostersDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         String[] items = new String[TournamentService.GENERATING_TYPES_CNT];
         items[TournamentService.GENERATE_BY_TEAM_POINTS] = getActivity().getString(R.string.generate_by_team_points);
-        items[TournamentService.GENERATE_BY_WINS] = getActivity().getString(R.string.generate_by_wins);
-        items[TournamentService.GENERATE_BY_GOALS] = getActivity().getString(R.string.generate_by_goals);
+        items[TournamentService.GENERATE_BY_SETS] = getActivity().getString(R.string.generate_by_sets);
+        items[TournamentService.GENERATE_BY_BALLS] = getActivity().getString(R.string.generate_by_balls);
         items[TournamentService.GENERATE_RANDOMLY] = getActivity().getString(R.string.generate_randomly);
         builder.setItems( items, new DialogInterface.OnClickListener(){
 
