@@ -19,13 +19,10 @@ public class StandingsStatsTitleFragment extends Fragment {
     private long tournamentID;
     private static String ARG_TOUR_ID = "tournament_id";
 
-    public static StandingsStatsTitleFragment newInstance( long id )
-    {
+    public static StandingsStatsTitleFragment newInstance( long id ) {
         StandingsStatsTitleFragment fragment = new StandingsStatsTitleFragment();
         Bundle args = new Bundle();
-
         args.putLong(ARG_TOUR_ID, id);
-
         fragment.setArguments( args );
         return fragment;
     }
@@ -34,24 +31,18 @@ public class StandingsStatsTitleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View v = inflater.inflate(R.layout.fragment_standings_title, container, false);
         Bundle b = getArguments();
         tournamentID = b.getLong(ARG_TOUR_ID, -1);
-
         return v;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         if (getChildFragmentManager().findFragmentById(R.id.stats_list) == null) {
             StandingsFragment clf;
-
-
             clf = StandingsFragment.newInstance(tournamentID);
-
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.stats_list, clf)

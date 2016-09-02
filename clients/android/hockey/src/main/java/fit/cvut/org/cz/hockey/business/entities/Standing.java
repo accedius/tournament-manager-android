@@ -8,23 +8,32 @@ import android.os.Parcelable;
  */
 public class Standing implements Parcelable {
     private String name;
-    private Long wins, losses, draws, points, goalsGiven, goalsReceived;
+    private Long wins, wins_ot, wins_so, losses, losses_ot, losses_so, draws, points, goalsGiven, goalsReceived;
     private long teamId;
 
     public Standing() {}
 
-    public Standing(String name, Long wins, Long losses, Long draws, Long points, Long goalsGiven, Long goalsReceived, long teamId) {
+    public Standing(String name, Long wins, Long wins_ot, Long wins_so, Long losses, Long losses_ot, Long losses_so, Long draws, Long points, Long goalsGiven, Long goalsReceived, long teamId) {
         this.name = name;
         this.wins = wins;
+        this.wins_ot = wins_ot;
+        this.wins_so = wins_so;
         this.losses = losses;
+        this.losses_ot = losses_ot;
+        this.losses_so = losses_so;
         this.draws = draws;
         this.points = points;
         this.goalsGiven = goalsGiven;
         this.goalsReceived = goalsReceived;
         this.teamId = teamId;
     }
+
     public void addWin() { this.wins++; }
+    public void addWinOt() { this.wins_ot++; }
+    public void addWinSo() { this.wins_so++; }
     public void addLoss() { this.losses++; }
+    public void addLossOt() { this.losses_ot++; }
+    public void addLossSo() { this.losses_so++; }
     public void addDraw() { this.draws++; }
     public void addPoints( long points ) { this.points += points; }
     public void addGoalsGiven( long gg ) { this.goalsGiven += gg; }
@@ -42,12 +51,28 @@ public class Standing implements Parcelable {
         return wins;
     }
 
+    public Long getTotalWins() { return wins+wins_ot+wins_so; }
+
+    public Long getWinsOt() { return wins_ot; }
+
+    public Long getWinsSo() { return wins_so; }
+
     public void setWins(Long wins) {
         this.wins = wins;
     }
 
     public Long getLosses() {
         return losses;
+    }
+
+    public Long getTotalLosses() { return losses+losses_ot+losses_so; }
+
+    public Long getLossesOt() {
+        return losses_ot;
+    }
+
+    public Long getLossesSo() {
+        return losses_so;
     }
 
     public void setLosses(Long losses) {

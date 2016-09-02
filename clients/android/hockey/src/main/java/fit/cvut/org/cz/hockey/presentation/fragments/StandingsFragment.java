@@ -20,26 +20,19 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
     private long tournamentID;
     private static String ARG_ID = "tournament_id";
 
-
-    public static StandingsFragment newInstance( long id )
-    {
+    public static StandingsFragment newInstance( long id ) {
         StandingsFragment fragment = new StandingsFragment();
         Bundle args = new Bundle();
-
         args.putLong(ARG_ID, id);
-
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        if( getArguments() != null )
-        {
+        if( getArguments() != null ) {
             tournamentID = getArguments().getLong( ARG_ID, -1 );
         }
-
         super.onCreate(savedInstanceState);
     }
 

@@ -162,7 +162,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, tourId );
 
         for( Team t : teams ) {
-            standings.add( new Standing(t.getName(), 0L, 0L, 0L, 0L, 0L, 0L, t.getId()));
+            standings.add( new Standing(t.getName(), 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, t.getId()));
         }
         ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId( context, tourId );
         for( DMatch dMatch : matches ) {
@@ -186,9 +186,17 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
             if( match.getHomeScore() > match.getAwayScore() ) {
                 homeOutcome = 1;
-                standingH.addWin();
                 awayOutcome = 3;
-                standingA.addLoss();
+                if (matchStat.isShootouts()) {
+                    standingH.addWinSo();
+                    standingA.addLossSo();;
+                } else if (matchStat.isOvertime()) {
+                    standingH.addWinOt();
+                    standingA.addLossOt();
+                } else {
+                    standingH.addWin();
+                    standingA.addLoss();
+                }
             } else if (match.getHomeScore() == match.getAwayScore()){
                 homeOutcome = 2;
                 standingH.addDraw();
@@ -196,9 +204,17 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                 standingA.addDraw();
             } else{
                 homeOutcome = 3;
-                standingH.addLoss();
                 awayOutcome = 1;
-                standingA.addWin();
+                if (matchStat.isShootouts()) {
+                    standingH.addLossSo();
+                    standingA.addWinSo();
+                } else if (matchStat.isOvertime()) {
+                    standingH.addLossOt();
+                    standingA.addWinOt();
+                } else {
+                    standingH.addLoss();
+                    standingA.addWin();
+                }
             }
             standingH.addPoints( calculatePoints( homeOutcome, pointConfiguration, matchStat ) );
             standingA.addPoints( calculatePoints( awayOutcome, pointConfiguration, matchStat ) );

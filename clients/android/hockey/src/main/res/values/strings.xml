@@ -74,4 +74,8 @@
     <string name="team_cant_delete">Cannot delete, team participates in a match!</string>
     <string name="not_enough_teams">Not enough teams!</string>
     <string name="shootouts_error">Shootuts are checked, match must not be draw!</string>
+    <string name="lot">L ot</string>
+    <string name="lso">L so</string>
+    <string name="wot">W ot</string>
+    <string name="wso">W so</string>
 </resources>

@@ -26,24 +26,38 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
     public void onBindViewHolder(StandingsViewHolder holder, int position) {
         Standing stats = data.get( position );
         holder.name.setText(stats.getName());
-        holder.W.setText(Long.toString(stats.getWins()));
-        holder.L.setText(Long.toString(stats.getLosses()));
+        if( holder.Wot == null ) {
+            holder.W.setText(Long.toString(stats.getTotalWins()));
+            holder.L.setText(Long.toString(stats.getTotalLosses()));
+        }
         holder.D.setText(Long.toString(stats.getDraws()));
         holder.SCORE.setText(Long.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
         holder.P.setText(Long.toString(stats.getPoints()));
+
+        if( holder.Wot != null ) {
+            holder.W.setText(Long.toString(stats.getWins()));
+            holder.Wot.setText(Long.toString(stats.getWinsOt()));
+            holder.Wso.setText(Long.toString(stats.getWinsSo()));
+            holder.L.setText(Long.toString(stats.getLosses()));
+            holder.Lot.setText(Long.toString(stats.getLossesOt()));
+            holder.Lso.setText(Long.toString(stats.getLossesSo()));
+        }
     }
 
-    public class StandingsViewHolder extends RecyclerView.ViewHolder
-    {
+    public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, W, L, D, SCORE, P;
+        TextView name, W, Wot, Wso, L, Lot, Lso, D, SCORE, P;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
             W = (TextView) itemView.findViewById(R.id.as_wins);
+            Wot = (TextView) itemView.findViewById(R.id.as_wins_ot);
+            Wso = (TextView) itemView.findViewById(R.id.as_wins_so);
             L = (TextView) itemView.findViewById(R.id.as_losses);
+            Lot = (TextView) itemView.findViewById(R.id.as_losses_ot);
+            Lso = (TextView) itemView.findViewById(R.id.as_losses_so);
             D = (TextView) itemView.findViewById(R.id.as_draws);
             SCORE = (TextView) itemView.findViewById(R.id.as_score);
             P = (TextView) itemView.findViewById(R.id.as_points);

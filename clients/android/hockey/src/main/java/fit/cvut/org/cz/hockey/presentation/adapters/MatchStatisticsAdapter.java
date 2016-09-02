@@ -47,8 +47,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), position);
     }
 
-    private void setOnClickListeners( View v, long playerId, final int position )
-    {
+    private void setOnClickListeners( View v, long playerId, final int position ) {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -71,8 +70,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
         notifyDataSetChanged();
     }
 
-    public class MatchStatisticsViewHolder extends RecyclerView.ViewHolder
-    {
+    public class MatchStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         public View wholeView;
         TextView name, G, A, PMP, I;
