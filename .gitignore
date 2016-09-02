@@ -8,5 +8,6 @@
 /clients/android/captures
 /clients/android/**/*.log
 /clients/android/.idea/*
+/clients/android/install*
 
 .idea/
