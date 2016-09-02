@@ -49,7 +49,6 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
         final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
         if (fab != null){
             this.fab = fab;
-            //fab.hide();
             ((ViewGroup) fragmentView).addView(fab);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -73,7 +72,6 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
     @Override
     protected void bindDataOnView(Intent intent) {
         ArrayList<T> data = intent.getParcelableArrayListExtra(getDataKey());
-        Log.d("ADF", "Received data, len: "+data.size());
         adapter.swapData(data);
     }
 

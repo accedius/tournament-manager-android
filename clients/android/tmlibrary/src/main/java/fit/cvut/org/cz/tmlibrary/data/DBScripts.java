@@ -109,28 +109,28 @@ public class DBScripts {
 
     public static final String INSERT_INTO_PLAYERS =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 1, "Martin", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 1, "Martin", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_1 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 2, "Aleš", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 2, "Aleš", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_2 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 3, "Jarda", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 3, "Jarda", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_3 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 4, "Pavel", "pavel@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 4, "Pavel", "pavel@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_4 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 5, "Honza", "honza@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 5, "Honza", "honza@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_5 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 6, "Zdeněk", "zdenda@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 6, "Zdeněk", "zdenda@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_6 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 7, "Tomáš", "tomnas@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 7, "Tomáš", "tomnas@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_7 =
             String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
-                    DBConstants.tPLAYERS, 8, "Radek", "Radek@frk.cz", "", "abcde", "efgh", "2016-04-04", "2016-04-04");
+                    DBConstants.tPLAYERS, 8, "Radek", "Radek@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
 
 
     public static final String INSERT_SQUASH_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','SQ T CMP 1','2001-01-01','2001-12-12','1','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";

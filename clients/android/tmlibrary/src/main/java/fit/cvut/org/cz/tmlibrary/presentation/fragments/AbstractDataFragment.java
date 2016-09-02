@@ -117,7 +117,6 @@ public abstract class AbstractDataFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
             bindDataOnView(intent);
-            //Toast.makeText(context, "DataReceived", Toast.LENGTH_SHORT).show();
         }
     }
 }
