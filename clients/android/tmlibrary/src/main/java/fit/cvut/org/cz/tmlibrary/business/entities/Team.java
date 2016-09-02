@@ -124,4 +124,8 @@ public class Team extends ShareBase implements Parcelable {
     public static DTeam convertToDTeam(Team t){
         return new DTeam(t.getId(), t.getTournamentId(), t.getName(), t.getEtag(), t.getUid(), t.getLastModified(), t.getLastSynchronized());
     }
+
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
 }

@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class SquashDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMSquash.db";
-    private static final int DBVersion = 2;
+    private static final int DBVersion = 10;
     private boolean test = false;
 
     public SquashDBHelper(Context context, boolean test) {

@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class CoreDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 20;
+    private static final int DBVersion = 10;
 
     public CoreDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -37,5 +37,10 @@ public class CoreDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS);
         onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
     }
 }

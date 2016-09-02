@@ -38,6 +38,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_CONFIG_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_get_configuration_by_tournament_id";
     public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.hockey.presentation.services.tournament_set_configuration";
     public static final String ACTION_DELETE = "fit.cvut.org.cz.hockey.presentation.services.tournament_delete";
+    public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.hockey.presentation.services.generate_rosters";
 
     public TournamentService() {
         super("Hockey Tournament Service");
@@ -62,21 +63,27 @@ public class TournamentService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
-
         switch (action) {
-            case ACTION_CREATE:
-            {
+            case ACTION_CREATE: {
                 Tournament t = intent.getParcelableExtra( EXTRA_TOURNAMENT );
-                Log.d("TOURNAMENT_SERVICE_SAVE", "Tournament id="+t.getId());
-                Log.d("TOURNAMENT_SERVICE_SAVE", "Competition id="+t.getCompetitionId());
                 ManagerFactory.getInstance().tournamentManager.insert( this, t);
-
                 break;
             }
-            case ACTION_FIND_BY_ID:
-            {
+            case ACTION_UPDATE: {
+                Tournament c = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+                ManagerFactory.getInstance().tournamentManager.update( this, c );
+                break;
+            }
+            case ACTION_DELETE: {
+                Intent res = new Intent(ACTION_DELETE);
+                long tourId = intent.getLongExtra( EXTRA_ID, -1 );
+                if( ManagerFactory.getInstance().tournamentManager.delete( this, tourId)) res.putExtra( EXTRA_RESULT, 0 );
+                else res.putExtra( EXTRA_RESULT, 1 );
+                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+                break;
+            }
+            case ACTION_FIND_BY_ID: {
                 Intent res = new Intent();
                 res.setAction(ACTION_FIND_BY_ID);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
@@ -92,51 +99,35 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.putExtra(EXTRA_TEAMS_SUM, teams.size());
                 res.putExtra(EXTRA_PLAYER_SUM, players.size());
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
-
                 break;
             }
-            case ACTION_UPDATE:
-            {
-                Tournament c = intent.getParcelableExtra(EXTRA_TOURNAMENT);
-                Log.d("TOURNAMENT_SERVICE_UPDA", "Tournament id="+c.getId());
-                Log.d("TOURNAMENT_SERVICE_UPDA", "Competition id="+c.getCompetitionId());
-                ManagerFactory.getInstance().tournamentManager.update( this, c );
-
-                break;
-            }
-            case ACTION_GET_ALL:
-            {
+            case ACTION_GET_ALL: {
                 Intent res = new Intent();
                 res.setAction( ACTION_GET_ALL );
                 res.putParcelableArrayListExtra(EXTRA_LIST, getData( intent.getLongExtra(EXTRA_COMP_ID, -1) ));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
-
                 break;
             }
-            case ACTION_GET_CONFIG_BY_ID:
-            {
+            case ACTION_GET_CONFIG_BY_ID: {
                 Intent res = new Intent();
                 res.setAction(ACTION_GET_CONFIG_BY_ID);
                 res.putExtra(EXTRA_CONFIGURATION, ManagerFactory.getInstance().pointConfigManager.getByTournamentId(this, intent.getLongExtra(EXTRA_ID, -1)));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
-
                 break;
             }
-            case ACTION_SET_CONFIG:
-            {
+            case ACTION_SET_CONFIG: {
                 PointConfiguration pc = intent.getParcelableExtra( EXTRA_CONFIGURATION );
                 Long tourId = intent.getLongExtra(EXTRA_ID, -1);
                 ManagerFactory.getInstance().pointConfigManager.update( this, pc, tourId );
-
                 break;
             }
-            case ACTION_DELETE:
-            {
-                Intent res = new Intent(ACTION_DELETE);
-                long tourId = intent.getLongExtra( EXTRA_ID, -1 );
-                if( ManagerFactory.getInstance().tournamentManager.delete( this, tourId)) res.putExtra( EXTRA_RESULT, 0 );
-                else res.putExtra( EXTRA_RESULT, 1 );
-                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+            case ACTION_GENERATE_ROSTERS: {
+                Intent result = new Intent(action);
+                ManagerFactory.getInstance().teamManager.generateRosters(
+                        this,
+                        intent.getLongExtra(EXTRA_ID, -1),
+                        intent.getLongExtra(EXTRA_TOURNAMENT, -1));
+                LocalBroadcastManager.getInstance( this ).sendBroadcast(result);
                 break;
             }
         }

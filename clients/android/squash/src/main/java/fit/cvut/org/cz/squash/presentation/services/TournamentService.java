@@ -12,6 +12,7 @@ import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -38,6 +39,7 @@ public class TournamentService extends AbstractIntentServiceWProgress{
     public static final String ACTION_UPDATE = "fit.cvut.org.cz.squash.presentation.services.update_tournament";
     public static final String ACTION_GET_BY_COMPETITION_ID = "fit.cvut.org.cz.squash.presentation.services.get_tournaments_by_competition_id";
     public static final String ACTION_GET_OVERVIEW = "fit.cvut.org.cz.squash.presentation.services.get_tournament_overview";
+    public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.squash.presentation.services.generate_rosters";
 
     public TournamentService() {
         super("Squash Tournament Service");
@@ -66,17 +68,26 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 ManagersFactory.getInstance().tournamentManager.insert(this, t);
                 break;
             }
+            case ACTION_UPDATE:{
+                Tournament t = intent.getParcelableExtra(EXTRA_TOURNAMENT);
+                ManagersFactory.getInstance().tournamentManager.update(this, t);
+                break;
+            }
+            case ACTION_DELETE:{
+                Intent result = new Intent(action);
+                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                result.putExtra(EXTRA_POSITION, position);
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().tournamentManager.delete(this, intent.getLongExtra(EXTRA_ID, -1)));
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                break;
+            }
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
                 Tournament t = ManagersFactory.getInstance().tournamentManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_TOURNAMENT, t);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
-                break;
-            }
-            case ACTION_UPDATE:{
-                Tournament t = intent.getParcelableExtra(EXTRA_TOURNAMENT);
-                ManagersFactory.getInstance().tournamentManager.update(this, t);
                 break;
             }
             case ACTION_GET_BY_COMPETITION_ID:{
@@ -89,7 +100,6 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-
             case ACTION_GET_OVERVIEW:{
                 Intent result = new Intent(action);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
@@ -111,13 +121,13 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-            case ACTION_DELETE:{
+            case ACTION_GENERATE_ROSTERS: {
                 Intent result = new Intent(action);
-                int position = intent.getIntExtra(EXTRA_POSITION, -1);
-                result.putExtra(EXTRA_POSITION, position);
-                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().tournamentManager.delete(this, intent.getLongExtra(EXTRA_ID, -1)));
-
-                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
+                ManagersFactory.getInstance().teamsManager.generateRosters(
+                        this,
+                        intent.getLongExtra(EXTRA_ID, -1),
+                        intent.getLongExtra(EXTRA_TOURNAMENT, -1));
+                LocalBroadcastManager.getInstance( this ).sendBroadcast(result);
                 break;
             }
         }

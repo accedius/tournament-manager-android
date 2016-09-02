@@ -49,4 +49,12 @@ public interface ITeamManager {
      */
     ArrayList<Team> getByTournamentId(Context context, long tournamentId);
 
+    /**
+     * generates balanced rosters for teams in given tournament
+     * @param context application context
+     * @param competitionId id of the competition
+     * @param tournamentId id of the tournament
+     */
+    void generateRosters(Context context, long competitionId, long tournamentId);
+
 }

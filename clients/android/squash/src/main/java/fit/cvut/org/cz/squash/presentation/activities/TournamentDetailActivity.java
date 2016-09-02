@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +17,9 @@ import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFra
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TeamsListFragment;
+import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
+import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -32,6 +35,9 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     public static final String EXTRA_TYPE = "extra_type";
     public static final String COMP_ID = "competition_id";
     public static final String TOUR_ID = "tournament_id";
+
+    private final int GEN_ROSTER_ID = 1001;
+    private final int TEAMS_LIST_POSITION = 4;
 
     private long competitionID;
     private long tournamentID;
@@ -96,6 +102,13 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);
+        CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
+        if (type.equals(CompetitionTypes.teams())) {
+            String genRosters = getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.generate_rosters);
+            menu.add(0, GEN_ROSTER_ID, menu.size(), genRosters)
+                    .setIcon(R.drawable.ic_people_white_24dp)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
         return true;
     }
 
@@ -112,6 +125,23 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                 Intent intent = new Intent(this, PointConfigActivity.class);
                 intent.putExtra(PointConfigActivity.ARG_ID, tournamentID);
                 startActivity(intent);
+                return true;
+            }
+            case GEN_ROSTER_ID:{
+                CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
+                if (type.equals(CompetitionTypes.individuals()))
+                    break;
+
+                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, this);
+                intent.putExtra(TournamentService.EXTRA_ID, competitionID);
+                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournamentID);
+                startService(intent);
+                pager.setCurrentItem(TEAMS_LIST_POSITION);
+                TeamsListFragment fr = (TeamsListFragment)adapter.getItem(TEAMS_LIST_POSITION);
+                if (fr != null) {
+                    Log.d("TDA", "Fragment is not null, we can ask for data");
+                    fr.customOnResume();
+                }
                 return true;
             }
         }

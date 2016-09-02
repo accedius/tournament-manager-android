@@ -16,6 +16,9 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFra
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.StandingsStatsTitleFragment;
+import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -30,6 +33,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     public static final String COMP_ID = "competition_id";
     public static final String TOUR_ID = "tournament_id";
+
+    private final int GEN_ROSTER_ID = 1001;
 
     private long competitionID;
     private long tournamentID;
@@ -95,6 +100,10 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);
+        String genRosters = getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.generate_rosters);
+        menu.add(0, GEN_ROSTER_ID, menu.size(), genRosters)
+                .setIcon(R.drawable.ic_people_white_24dp)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -112,8 +121,13 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 startActivity( intent );
                 break;
             }
-            default:
+            case GEN_ROSTER_ID:{
+                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, this);
+                intent.putExtra(TournamentService.EXTRA_ID, competitionID);
+                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournamentID);
+                startService(intent);
                 break;
+            }
         }
 
         return true;

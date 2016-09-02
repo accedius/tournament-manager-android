@@ -1,14 +1,20 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.tmlibrary.business.RoundRobinTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
@@ -64,5 +70,26 @@ public class TeamManager implements ITeamManager {
         }
 
         return ts;
+    }
+
+    @Override
+    public void generateRosters(Context context, long competitionId, long tournamentId) {
+        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tournamentId);
+        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(context, tournamentId);
+        ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID(context, competitionId);
+
+        HashMap<Long, Player> playersHashMap = new HashMap<>();
+        for (Player p : players)
+            playersHashMap.put(p.getId(), p);
+
+        HashMap<Long, Double> statsHashMap = new HashMap<>();
+        for(AggregatedStatistics s : stats)
+            statsHashMap.put(s.getPlayerID(), (double)s.getGoals());
+
+        ITeamsRostersGenerator teamsRostersGenerator = new RoundRobinTeamsRostersGenerator();
+        teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
+
+        for (Team t : teams)
+            ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam( context, t.getId(), t.getPlayers());
     }
 }
