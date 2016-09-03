@@ -55,36 +55,34 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     protected AbstractListAdapter getAdapter() {
         return new TournamentAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long tournamentId, int position) {
+            protected void setOnClickListeners(View v, long tournamentId, int position, final String name) {
 
                 final long compId = competitionId;
                 final long tourId = tournamentId;
 
                 v.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             Intent intent = new Intent( getContext(), ShowTournamentActivity.class);
-                                             Bundle b = new Bundle();
-                                             b.putLong(ShowTournamentActivity.COMP_ID, compId);
-                                             b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
-                                             intent.putExtras(b);
-                                             intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                                             startActivity(intent);
-                                         }
-                                     }
+                         @Override
+                         public void onClick(View v) {
+                             Intent intent = new Intent( getContext(), ShowTournamentActivity.class);
+                             Bundle b = new Bundle();
+                             b.putLong(ShowTournamentActivity.COMP_ID, compId);
+                             b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
+                             intent.putExtras(b);
+                             intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
+                             startActivity(intent);
+                         }
+                     }
                 );
                 v.setOnLongClickListener( new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance( tourId, compId);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tourId, compId, name);
                         dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
-
                         return true;
                     }
                 } );
-                super.setOnClickListeners(v, tournamentId, position);
+                super.setOnClickListeners(v, tournamentId, position, name);
             }
         };
     }

@@ -39,6 +39,9 @@
     <string name="type">Type</string>
     <string name="vs">vs.</string>
 
+    <string name="team_settings">Team settings</string>
+    <string name="add_match">Add match</string>
+
     <string name="competition_created">Competition created.</string>
     <string name="tournament_created">Tournament created.</string>
     <string name="player_created">Player created.</string>

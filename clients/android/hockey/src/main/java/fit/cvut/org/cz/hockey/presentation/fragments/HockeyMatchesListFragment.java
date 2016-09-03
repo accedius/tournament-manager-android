@@ -59,8 +59,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
     protected AbstractListAdapter getAdapter() {
         return new HockeyScoredMatchAdapter(getResources()) {
             @Override
-            protected void setOnClickListeners(View v, HockeyScoredMatch match, int position) {
-                super.setOnClickListeners(v, match, position);
+            protected void setOnClickListeners(View v, HockeyScoredMatch match, int position, final String title) {
+                super.setOnClickListeners(v, match, position, title);
                 final long fmId = match.getScoredMatch().getId();
 
                 v.setOnClickListener( new View.OnClickListener(){
@@ -73,7 +73,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
                 v.setOnLongClickListener( new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentID);
+                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentID, title);
                         dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
                         return true;
                     }

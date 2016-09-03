@@ -43,19 +43,16 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
         holder.A.setText(Long.toString(stats.getAssists()));
         holder.I.setText(Long.toString(stats.getSaves()));
         holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
-
-        setOnClickListeners(holder.wholeView, stats.getPlayerId(), position);
+        setOnClickListeners(holder.wholeView, stats.getPlayerId(), position, stats.getName());
     }
 
-    private void setOnClickListeners( View v, long playerId, final int position ) {
+    private void setOnClickListeners(View v, long playerId, final int position, final String name ) {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
-                PlayerMatchStatDialog dialog = PlayerMatchStatDialog.newInstance(data.get(position), position, isHome);
+                PlayerMatchStatDialog dialog = PlayerMatchStatDialog.newInstance(data.get(position), position, isHome, name);
                 dialog.setTargetFragment(parentFrag, 1);
                 dialog.show(parentFrag.getFragmentManager(), "EDIT_DELETE_PLAYER_STATS");
-
                 return true;
             }
         });

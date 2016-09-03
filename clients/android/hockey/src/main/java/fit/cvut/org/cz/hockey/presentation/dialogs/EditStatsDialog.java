@@ -1,9 +1,11 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -17,25 +19,22 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
  */
 public class EditStatsDialog extends DialogFragment {
 
-    public static final String ARG_DATA = "data";
-    public static final String ARG_POSITION = "position";
-    public static final String ARG_HOME = "home";
-
+    public static final String ARG_DATA = "arg_data";
+    public static final String ARG_POSITION = "arg_position";
+    public static final String ARG_HOME = "arg_home";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    private TextView goals, assists, plusMinusPoints, saves, name;
+    private TextView goals, assists, plusMinusPoints, saves;
     private MatchPlayerStatistic stat;
 
     public static EditStatsDialog newInstance( MatchPlayerStatistic statistic, int pos, boolean isHome) {
         EditStatsDialog fragment = new EditStatsDialog();
-
         Bundle b = new Bundle();
         b.putParcelable(ARG_DATA, statistic);
         b.putBoolean(ARG_HOME, isHome);
         b.putInt(ARG_POSITION, pos);
         fragment.setArguments(b);
-
         return fragment;
     }
 
@@ -50,7 +49,7 @@ public class EditStatsDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         stat = getArguments().getParcelable(ARG_DATA);
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -86,14 +85,13 @@ public class EditStatsDialog extends DialogFragment {
         assists = (TextView) v.findViewById(R.id.tv_assists);
         plusMinusPoints = (TextView) v.findViewById(R.id.tv_plus_minus);
         saves = (TextView) v.findViewById(R.id.tv_saves);
-        name = (TextView) v.findViewById(R.id.tv_name);
 
         goals.setText(String.valueOf(stat.getGoals()));
         assists.setText( String.valueOf(stat.getAssists()));
         plusMinusPoints.setText( String.valueOf(stat.getPlusMinusPoints()));
         saves.setText(String.valueOf(stat.getSaves()));
-        name.setText( stat.getName() );
 
+        builder.setTitle(stat.getName());
         builder.setView(v);
         return builder.create();
     }

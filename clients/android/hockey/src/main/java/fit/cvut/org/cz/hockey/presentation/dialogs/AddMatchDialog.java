@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +54,7 @@ public class AddMatchDialog extends DialogFragment {
             }
         });
 
+        builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match));
         return builder.create();
     }
 }

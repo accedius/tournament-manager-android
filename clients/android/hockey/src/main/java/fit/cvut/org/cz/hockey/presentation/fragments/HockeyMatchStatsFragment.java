@@ -42,45 +42,34 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private ScrollView scrv;
     private long matchId;
     private Fragment thisFragment;
-    private long tournamentId;
     ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
+
     public static final int REQUEST_HOME = 1;
     public static final int REQUEST_AWAY = 2;
     public static final int REQUEST_EDIT = 3;
 
     private static final String ARG_MATCH_ID = "arg_match_id";
-    //private static final String ARG_TOURNAMENT_ID = "arg_match_id";
-
     private static final String SAVE_HOME_LIST = "save_home_list";
     private static final String SAVE_AWAY_LIST = "save_away_list";
 
-    public static HockeyMatchStatsFragment newInstance(long matchId)
-    {
+    public static HockeyMatchStatsFragment newInstance(long matchId) {
         HockeyMatchStatsFragment fragment = new HockeyMatchStatsFragment();
-
         Bundle b = new Bundle();
         b.putLong(ARG_MATCH_ID, matchId);
-        //b.putLong(ARG_TOURNAMENT_ID, tournamentId);
-
         fragment.setArguments( b );
         return fragment;
     }
 
-    //U pridavani playeru muzu omit udelat pres IDcka. neni treba posilat pro playery
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         matchId = getArguments().getLong( ARG_MATCH_ID, -1 );
         thisFragment = this;
 
-        if( savedInstanceState != null )
-        {
+        if (savedInstanceState != null) {
             tmpHomeStats = savedInstanceState.getParcelableArrayList(SAVE_HOME_LIST);
             tmpAwayStats = savedInstanceState.getParcelableArrayList(SAVE_AWAY_LIST);
-        }
-        else{
+        } else {
             tmpHomeStats = null;
             tmpAwayStats = null;
         }
@@ -109,7 +98,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = StatsService.newStartIntent( StatsService.ACTION_GET_MATCH_PLAYER_STATISTICS, getContext());
         intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_MATCH_ID));
-
         getContext().startService(intent);
     }
 
@@ -120,7 +108,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        if( tmpHomeStats == null && tmpAwayStats == null ) {
+        if (tmpHomeStats == null && tmpAwayStats == null) {
             tmpHomeStats = intent.getParcelableArrayListExtra(StatsService.EXTRA_HOME_STATS);
             tmpAwayStats = intent.getParcelableArrayListExtra(StatsService.EXTRA_AWAY_STATS);
         }
@@ -172,20 +160,17 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, (ViewGroup)fragmentView, false);
         ((ViewGroup) fragmentView).addView(fab);
 
-
         setOnClickListeners();
 
         return fragmentView;
     }
 
-    private void setOnClickListeners()
-    {
+    private void setOnClickListeners() {
         scrv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 fab.hide();
-                if( event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL )
-                {
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     fab.show();
                 }
                 return false;
@@ -193,22 +178,20 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
+                String title = homeName+" "+getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.vs)+" "+awayName;
+                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId, title);
                 dialog.setTargetFragment(thisFragment, 1);
                 dialog.show(getFragmentManager(), "tag211");
             }
         });
     }
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode != AddPlayersActivity.RESULT_OK) return;
+        if (resultCode != AddPlayersActivity.RESULT_OK)
+            return;
 
         if (requestCode == REQUEST_EDIT){
             ArrayList<MatchPlayerStatistic> stats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_HOME_STATS);
@@ -220,26 +203,26 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             return;
         }
 
-
-
         ArrayList<Player> players = data.getParcelableArrayListExtra(SelectableListActivity.EXTRA_DATA);
         ArrayList<MatchPlayerStatistic> playerStatistics;
-        if( requestCode == REQUEST_HOME ) playerStatistics = homeAdapter.getData();
-        else playerStatistics = awayAdapter.getData();
+        if (requestCode == REQUEST_HOME)
+            playerStatistics = homeAdapter.getData();
+        else
+            playerStatistics = awayAdapter.getData();
+
         for (Player p : players )
             playerStatistics.add( new MatchPlayerStatistic(p.getId(), p.getName(), 0, 0, 0, 0));
-        if( requestCode == REQUEST_HOME ) {
+
+        if (requestCode == REQUEST_HOME) {
             homeAdapter.swapData( playerStatistics );
             tmpHomeStats = playerStatistics;
-        }
-        else{
+        } else{
             awayAdapter.swapData(playerStatistics);
             tmpAwayStats = playerStatistics;
         }
     }
 
-    public ArrayList<MatchPlayerStatistic> getOmitPlayers()
-    {
+    public ArrayList<MatchPlayerStatistic> getOmitPlayers() {
         ArrayList<MatchPlayerStatistic> res = new ArrayList<>();
         res.addAll( homeAdapter.getData() );
         res.addAll( awayAdapter.getData() );
@@ -268,14 +251,10 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      * Starts an edit all activity with current data
      */
     public void editAll() {
-        MatchStatisticsAdapter adapter = homeAdapter;
-        adapter = awayAdapter;
-
         tmpHomeStats = getHomeList();
         tmpAwayStats = getAwayList();
 
         Intent intent = EditAtOnceActivity.newStartIntent( getContext(), tmpHomeStats, tmpAwayStats);
-
         startActivityForResult( intent, REQUEST_EDIT );
     }
 
@@ -285,15 +264,13 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      * @param position position in data
      * @param statistic statistic to be changed to
      */
-    public void setPlayerStats( boolean home, int position, MatchPlayerStatistic statistic )
-    {
-        if( home ){
+    public void setPlayerStats( boolean home, int position, MatchPlayerStatistic statistic ) {
+        if (home) {
             ArrayList<MatchPlayerStatistic> dat = homeAdapter.getData();
             dat.remove(position);
             dat.add(position, statistic);
             homeAdapter.swapData( dat );
-        }
-        else{
+        } else {
             ArrayList<MatchPlayerStatistic> dat = awayAdapter.getData();
             dat.remove(position);
             dat.add(position, statistic);
@@ -307,12 +284,10 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      * @param position position in data to be removed
      */
     public void removePlayer( boolean home, int position ){
-        if( home ){
+        if (home) {
             homeAdapter.removePos( position );
-        }
-        else{
+        } else{
             awayAdapter.removePos( position );
         }
     }
-
 }

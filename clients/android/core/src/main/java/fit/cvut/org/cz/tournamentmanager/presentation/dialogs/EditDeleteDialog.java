@@ -1,11 +1,11 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.dialogs;
 
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.tournamentmanager.R;
 
@@ -26,9 +26,8 @@ public class EditDeleteDialog extends DialogFragment {
                     getResources().getString(R.string.edit),
                     getResources().getString(R.string.delete)},
                 supplyListener());
-        if (getArguments() != null) {
-            builder.setTitle(getArguments().getString(ARG_TITLE));
-        }
+
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

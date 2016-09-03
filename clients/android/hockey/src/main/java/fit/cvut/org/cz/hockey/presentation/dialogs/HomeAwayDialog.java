@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,18 +23,17 @@ public class HomeAwayDialog extends DialogFragment {
     private static final String ARG_HOME_NAME = "arg_home";
     private static final String ARG_AWAY_NAME = "arg_away";
     private static final String ARG_MATCH_ID = "arg_match_id";
+    private static final String ARG_TITLE = "arg_title";
 
     private String dialHomeName, dialAwayName;
 
-    public static HomeAwayDialog newInstance(String homeName, String awayName, long matchId)
-    {
+    public static HomeAwayDialog newInstance(String homeName, String awayName, long matchId, String title) {
         HomeAwayDialog fragment = new HomeAwayDialog();
-
         Bundle b = new Bundle();
         b.putString(ARG_HOME_NAME, homeName);
         b.putString(ARG_AWAY_NAME, awayName);
         b.putLong(ARG_MATCH_ID, matchId);
-
+        b.putString(ARG_TITLE, title);
         fragment.setArguments( b );
         return fragment;
     }
@@ -73,27 +72,14 @@ public class HomeAwayDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
 
-        if(getArguments() != null)
-        {
-            dialHomeName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_HOME_NAME, getActivity().getString(R.string.add_home_complete) );
-            dialAwayName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_AWAY_NAME, getActivity().getString(R.string.add_away_complete));
-        } else if( getHomeName() != null && getAwayName() != null ){
-            dialHomeName = getActivity().getString(R.string.add_player) + " " + getHomeName();
-            dialAwayName = getActivity().getString(R.string.add_player) + " " + getAwayName();
-        }
-        else {
-            dialHomeName = getActivity().getString(R.string.add_home_complete);
-            dialAwayName = getActivity().getString(R.string.add_away_complete);
-        }
-
+        dialHomeName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_HOME_NAME);
+        dialAwayName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_AWAY_NAME);
 
         String[] items = new String[]{ dialHomeName, dialAwayName };
-
         builder.setItems( items, supplyListener() );
-
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 
@@ -111,8 +97,6 @@ public class HomeAwayDialog extends DialogFragment {
                         dialog.dismiss();
                         break;
                     }
-                    default:
-                        break;
                 }
             }
         };

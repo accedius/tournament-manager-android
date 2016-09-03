@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,26 +22,25 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 public class EditDeleteDialog extends DialogFragment {
 
     private static final String ARG_ID = "arg_id";
+    private static final String ARG_TITLE = "arg_title";
     private static final String SECOND_ID = "second_id";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    public static EditDeleteDialog newInstance( long id, long otherId ){
+    public static EditDeleteDialog newInstance( long id, long otherId, String name ){
         EditDeleteDialog fragment = new EditDeleteDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
         args.putLong(SECOND_ID, otherId);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-
         String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
-
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -80,6 +79,7 @@ public class EditDeleteDialog extends DialogFragment {
             }
         });
 
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

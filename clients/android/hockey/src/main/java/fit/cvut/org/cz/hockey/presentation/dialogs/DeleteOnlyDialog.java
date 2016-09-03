@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.dialogs;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,26 +18,25 @@ public class DeleteOnlyDialog extends DialogFragment {
     private static final String ARG_PLAYER_ID = "arg_player_id";
     private static final String ARG_COMP_ID = "arg_comp_id";
     private static final String ARG_TOUR_ID = "arg_tour_id";
+    private static final String ARG_TITLE = "arg_title";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    public static DeleteOnlyDialog newInstance( long playerId, long compId, long tourId ){
+    public static DeleteOnlyDialog newInstance( long playerId, long compId, long tourId, String name ){
         DeleteOnlyDialog fragment = new DeleteOnlyDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_PLAYER_ID, playerId);
         args.putLong(ARG_COMP_ID, compId);
         args.putLong(ARG_TOUR_ID, tourId);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-
         String[] items = new String[]{ getActivity().getString(R.string.delete) };
-
         builder.setItems( items, new DialogInterface.OnClickListener(){
 
             @Override
@@ -59,6 +58,7 @@ public class DeleteOnlyDialog extends DialogFragment {
             }
         });
 
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

@@ -22,7 +22,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         return holder;
     }
 
-    protected void setOnClickListeners(View v, long tournamentId, int position){}
+    protected void setOnClickListeners(View v, long tournamentId, int position, String name){}
 
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
@@ -45,7 +45,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
         else
             holder.endDate.setVisibility(View.GONE);
 
-        setOnClickListeners(holder.wholeView, tournament.getId(), position);
+        setOnClickListeners(holder.wholeView, tournament.getId(), position, tournament.getName());
     }
 
     public class TournamentViewHolder extends RecyclerView.ViewHolder {

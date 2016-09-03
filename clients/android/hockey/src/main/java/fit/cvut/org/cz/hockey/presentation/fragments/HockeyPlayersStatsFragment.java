@@ -42,13 +42,14 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
-    public static HockeyPlayersStatsFragment newInstance( long id, boolean forComp )
-    {
+    public static HockeyPlayersStatsFragment newInstance( long id, boolean forComp ) {
         HockeyPlayersStatsFragment fragment = new HockeyPlayersStatsFragment();
         Bundle args = new Bundle();
 
-        if( forComp ) args.putLong(ARG_COMP_ID, id);
-        else args.putLong(ARG_TOUR_ID, id);
+        if(forComp)
+            args.putLong(ARG_COMP_ID, id);
+        else
+            args.putLong(ARG_TOUR_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -83,18 +84,14 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     protected AbstractListAdapter getAdapter() {
         return new AggregatedStatisticsAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long playerId) {
-
-                final long final_plId = playerId;
-
-                super.setOnClickListeners(v, playerId);
+            protected void setOnClickListeners(View v, final long playerId, final String name) {
+                super.setOnClickListeners(v, playerId, name);
                 v.setOnLongClickListener( new View.OnLongClickListener(){
 
                     @Override
                     public boolean onLongClick(View v) {
-                        DeleteOnlyDialog dialog = DeleteOnlyDialog.newInstance(final_plId, competitionID, tournamentID);
+                        DeleteOnlyDialog dialog = DeleteOnlyDialog.newInstance(playerId, competitionID, tournamentID, name);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
-
                         return true;
                     }
                 });
@@ -115,8 +112,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         if( competitionID != -1 ) {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_COMP_ID, getContext());
             intent.putExtra(StatsService.EXTRA_ID, competitionID );
-        }
-        else {
+        } else {
             intent = StatsService.newStartIntent( StatsService.ACTION_GET_BY_TOUR_ID, getContext() );
             intent.putExtra(StatsService.EXTRA_ID, tournamentID );
         }
@@ -127,10 +123,9 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     @Override
     protected boolean isDataSourceWorking() {
 
-        if( competitionID != -1 ) {
+        if (competitionID != -1) {
             return StatsService.isWorking( StatsService.ACTION_GET_BY_COMP_ID );
-        }
-        else {
+        } else {
             return StatsService.isWorking( StatsService.ACTION_GET_BY_TOUR_ID );
         }
     }
@@ -143,8 +138,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             filter = new IntentFilter(StatsService.ACTION_GET_BY_COMP_ID);
             filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION );
             filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION );
-        }
-        else {
+        } else {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_TOUR_ID);
             filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT );
             filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT );
@@ -161,11 +155,9 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false );
-
         fab.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-
                    int requestCode;
                    int option;
                    long id;
@@ -181,18 +173,15 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                    }
 
                    Intent intent = AddPlayersActivity.newStartIntent(getContext(), option, id);
-
                    startActivityForResult(intent, requestCode);
                }
            }
         );
-
         return fab;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode != SelectableListActivity.RESULT_OK){
             sendForData = true;
             askForData();
@@ -204,8 +193,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
             intent.putExtra(PlayerService.EXTRA_ID, competitionID);
             getContext().startService(intent);
-        }
-        else {
+        } else {
             Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT, getContext());
             intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
             intent.putExtra(PlayerService.EXTRA_ID, tournamentID);
@@ -214,15 +202,12 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public class StatsReceiver extends BroadcastReceiver
-    {
-
+    public class StatsReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             contentView.setVisibility(View.VISIBLE);
-            switch (action)
-            {
+            switch (action) {
                 case StatsService.ACTION_GET_BY_TOUR_ID:
                 case StatsService.ACTION_GET_BY_COMP_ID: {
                     HockeyPlayersStatsFragment.super.bindDataOnView(intent);
@@ -230,16 +215,14 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                     break;
                 }
                 case PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT:
-                case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION:
-                {
+                case PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION: {
                     sendForData = true;
                     askForData();
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:
-                case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
-                {
-                    if( intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK ){
+                case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT: {
+                    if(intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK){
                         sendForData = true;
                         askForData();
                         break;
@@ -248,8 +231,6 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                         if( v != null ) Snackbar.make(v, R.string.player_cant_delete, Snackbar.LENGTH_LONG).show();
                     }
                 }
-                default: break;
-
             }
         }
     }

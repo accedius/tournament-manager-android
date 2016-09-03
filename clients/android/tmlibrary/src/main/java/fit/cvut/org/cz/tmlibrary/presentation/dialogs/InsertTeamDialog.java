@@ -7,10 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.presentation.interfaces.IProgressInterface;
 
 /**
  * Created by Vaclav on 14. 4. 2016.
@@ -30,7 +32,6 @@ public abstract class InsertTeamDialog extends DialogFragment{
     private ProgressBar progressBar;
     private TextView name;
     private Team team;
-    private IProgressInterface hostFragment = null;
 
     protected long teamId, tournamentId;
 
@@ -63,26 +64,19 @@ public abstract class InsertTeamDialog extends DialogFragment{
     protected abstract String getTeamKey();
     protected abstract boolean isDataSourceWorking();
 
-
-
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                if (name.getText().toString().isEmpty() || isDataSourceWorking()) return;
+                if (name.getText().toString().isEmpty() || isDataSourceWorking())
+                    return;
 
                 if (tournamentId != -1){
                     insertTeam(new Team(tournamentId, name.getText().toString()));
-                }
-                else if (teamId != -1){
+                } else if (teamId != -1){
                     team.setName(name.getText().toString());
                     editTeam(team);
                 }
@@ -102,7 +96,6 @@ public abstract class InsertTeamDialog extends DialogFragment{
         builder.setView(v);
         name = (TextView) v.findViewById(R.id.tv_name);
         progressBar = (ProgressBar) v.findViewById(R.id.progress_spinner);
-
         teamId = getArguments().getLong(ARG_ID, -1);
         tournamentId = getArguments().getLong(ARG_TOURNAMENT_ID, -1);
 
@@ -113,7 +106,16 @@ public abstract class InsertTeamDialog extends DialogFragment{
             name.setVisibility(View.GONE);
         }
 
+        builder.setTitle(getResources().getString(R.string.team_settings));
         return builder.create();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        name.requestFocus();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -125,10 +127,8 @@ public abstract class InsertTeamDialog extends DialogFragment{
 
     protected BroadcastReceiver receiver = new TeamReceiver();
     public class TeamReceiver extends BroadcastReceiver{
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
             progressBar.setVisibility(View.GONE);
             name.setVisibility(View.VISIBLE);
             team = intent.getParcelableExtra(getTeamKey());

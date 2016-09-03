@@ -47,8 +47,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     protected AbstractListAdapter getAdapter() {
         return new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId, int position) {
-                super.setOnClickListeners(v, teamId, position);
+            protected void setOnClickListeners(View v, long teamId, int position, final String name) {
+                super.setOnClickListeners(v, teamId, position, name);
                 final long tid = teamId;
 
                 v.setOnClickListener( new View.OnClickListener(){
@@ -64,7 +64,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1, name);
                         dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;

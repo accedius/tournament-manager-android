@@ -19,7 +19,7 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
         this.res = res;
     }
 
-    protected void setOnClickListeners(View v, HockeyScoredMatch match, int position){}
+    protected void setOnClickListeners(View v, HockeyScoredMatch match, int position, String title){}
 
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,9 +32,7 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
         holder.home.setText(m.getScoredMatch().getHomeName());
         holder.away.setText(m.getScoredMatch().getAwayName());
 
-        if (!m.getScoredMatch().isPlayed())
-            holder.score.setText(R.string.vs);
-        else {
+        if (m.getScoredMatch().isPlayed()) {
             if (m.getMatchScore().isShootouts()) {
                 holder.score.setText(String.format("%d:%d %s", m.getScoredMatch().getHomeScore(), m.getScoredMatch().getAwayScore(), res.getString(R.string.so)));
             } else if (m.getMatchScore().isOvertime()) {
@@ -42,6 +40,8 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
             } else {
                 holder.score.setText(String.format("%d:%d", m.getScoredMatch().getHomeScore(), m.getScoredMatch().getAwayScore()));
             }
+        } else {
+            holder.score.setText(R.string.vs);
         }
 
         if (position > 0){
@@ -56,7 +56,8 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
             }
         }
 
-        setOnClickListeners(holder.card, m, position);
+        String title = m.getScoredMatch().getHomeName()+" "+res.getString(R.string.vs)+" "+m.getScoredMatch().getAwayName();
+        setOnClickListeners(holder.card, m, position, title);
     }
 
     public class MatchViewHolder extends RecyclerView.ViewHolder {
