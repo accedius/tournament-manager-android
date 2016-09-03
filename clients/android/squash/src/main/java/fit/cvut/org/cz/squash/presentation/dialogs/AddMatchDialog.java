@@ -56,6 +56,8 @@ public class AddMatchDialog extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
+
+        builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match));
         return builder.create();
     }
 }

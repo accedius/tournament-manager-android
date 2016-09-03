@@ -23,17 +23,15 @@ public class HomeAwayDialog extends DialogFragment {
     private static final String ARG_HOME_NAME = "arg_home";
     private static final String ARG_AWAY_NAME = "arg_away";
     private static final String ARG_MATCH_ID = "arg_match_id";
-    private static final String ARG_TITLE = "arg_title";
 
     private String dialHomeName, dialAwayName;
 
-    public static HomeAwayDialog newInstance(String homeName, String awayName, long matchId, String title) {
+    public static HomeAwayDialog newInstance(String homeName, String awayName, long matchId) {
         HomeAwayDialog fragment = new HomeAwayDialog();
         Bundle b = new Bundle();
         b.putString(ARG_HOME_NAME, homeName);
         b.putString(ARG_AWAY_NAME, awayName);
         b.putLong(ARG_MATCH_ID, matchId);
-        b.putString(ARG_TITLE, title);
         fragment.setArguments( b );
         return fragment;
     }
@@ -74,12 +72,12 @@ public class HomeAwayDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
 
-        dialHomeName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_HOME_NAME);
-        dialAwayName = getActivity().getString(R.string.add_player) + " " + getArguments().getString(ARG_AWAY_NAME);
+        dialHomeName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_HOME_NAME);
+        dialAwayName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_AWAY_NAME);
 
         String[] items = new String[]{ dialHomeName, dialAwayName };
         builder.setItems( items, supplyListener() );
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_player));
         return builder.create();
     }
 

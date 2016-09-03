@@ -23,12 +23,14 @@ public class AdapterDialog extends DialogFragment {
 
     public static final String ARG_POSITION = "arg_pos";
     public static final String ARG_OPTION = "arg_option";
+    public static final String ARG_TITLE = "arg_title";
 
-    public static AdapterDialog newInstance(int position, int option){
+    public static AdapterDialog newInstance(int position, int option, String name){
         AdapterDialog fragment = new AdapterDialog();
         Bundle args = new Bundle();
         args.putInt(ARG_POSITION, position);
         args.putInt(ARG_OPTION, option);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +62,7 @@ public class AdapterDialog extends DialogFragment {
             }
         });
 
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

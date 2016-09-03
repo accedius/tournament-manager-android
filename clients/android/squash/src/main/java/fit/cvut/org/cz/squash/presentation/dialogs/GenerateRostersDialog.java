@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.dialogs;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
@@ -55,6 +55,7 @@ public class GenerateRostersDialog extends DialogFragment {
             }
         });
 
+        builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.generate_rosters));
         return builder.create();
     }
 }

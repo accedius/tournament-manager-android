@@ -46,9 +46,9 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
     @Override
     protected AbstractListAdapter getAdapter() {
         final Context c = getContext();
-        adapter = new ScoredMatchAdapter(){
+        adapter = new ScoredMatchAdapter(getResources()){
             @Override
-            protected void setOnClickListeners(View v, final ScoredMatch match, final int position) {
+            protected void setOnClickListeners(View v, final ScoredMatch match, final int position, final String title) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -60,7 +60,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        MatchesDialog dialog = MatchesDialog.newInstance(match.getId(), match.getTournamentId(), position);
+                        MatchesDialog dialog = MatchesDialog.newInstance(match.getId(), match.getTournamentId(), position, title);
                         dialog.setTargetFragment(MatchListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE_RESET");
                         return false;

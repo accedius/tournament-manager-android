@@ -49,8 +49,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
         if (savedInstanceState != null){
             data = savedInstanceState.getParcelableArrayList(EXTRA_DATA);
             askForData = savedInstanceState.getBoolean(EXTRA_ASK);
-        }
-        else {
+        } else {
             askForData = getArguments().getBoolean(ARG_PLAYED);
             receiverRegistered = askForData;
         }
@@ -73,14 +72,14 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        adapter = new SetsAdapter(){
+        adapter = new SetsAdapter(getResources()){
             @Override
-            protected void setOnClickListeners(View itemView, final int position) {
+            protected void setOnClickListeners(View itemView, final int position, final String title) {
 
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AdapterDialog dialog = AdapterDialog.newInstance(position, 0);
+                        AdapterDialog dialog = AdapterDialog.newInstance(position, 0, title);
                         dialog.setTargetFragment(SetsFragment.this, 0);
                         dialog.show(getFragmentManager(), "DELETE_DIALOG");
                         return false;

@@ -34,8 +34,8 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
             holder.playerNames.append(t.getPlayers().get(0).getName());
             for (int i = 1; i<t.getPlayers().size();i++)
                 holder.playerNames.append(String.format(", %s", t.getPlayers().get(i).getName()));
-        } else holder.playerNames.setVisibility(View.GONE);
-
+        } else
+            holder.playerNames.setVisibility(View.GONE);
     }
 
     public class TeamViewHolder extends RecyclerView.ViewHolder{

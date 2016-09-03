@@ -22,13 +22,15 @@ public class MatchesDialog extends DialogFragment {
     public static final String ARG_ID = "arg_id";
     public static final String ARG_TOURNAMENT_ID = "arg_tournament_id";
     public static final String ARG_POSITION = "arg_pos";
+    public static final String ARG_TITLE = "arg_title";
 
-    public static MatchesDialog newInstance(long id, long tournamentId, int position){
+    public static MatchesDialog newInstance(long id, long tournamentId, int position, String title) {
         MatchesDialog fragment = new MatchesDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
         args.putLong(ARG_TOURNAMENT_ID, tournamentId);
         args.putInt(ARG_POSITION, position);
+        args.putString(ARG_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,9 +38,7 @@ public class MatchesDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
         builder.setItems(new String[]{getString(R.string.edit), getString(R.string.delete), getString(R.string.reset)},
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -67,6 +67,8 @@ public class MatchesDialog extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
+
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

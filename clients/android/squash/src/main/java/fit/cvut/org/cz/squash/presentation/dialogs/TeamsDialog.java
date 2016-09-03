@@ -21,12 +21,14 @@ public class TeamsDialog extends DialogFragment {
 
     public static final String ARG_ID = "arg_id";
     public static final String ARG_POSITION = "arg_pos";
+    public static final String ARG_TITLE = "arg_title";
 
-    public static TeamsDialog newInstance(long teamId, int position){
+    public static TeamsDialog newInstance(long teamId, int position, String name) {
         TeamsDialog fragment = new TeamsDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, teamId);
         args.putInt(ARG_POSITION, position);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +63,8 @@ public class TeamsDialog extends DialogFragment {
                         }
                     }
                 });
+
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

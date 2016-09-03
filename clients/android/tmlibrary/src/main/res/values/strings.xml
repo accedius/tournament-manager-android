@@ -38,6 +38,9 @@
     <string name="period">Period</string>
     <string name="type">Type</string>
     <string name="vs">vs.</string>
+    <string name="set_nr">Set nr.</string>
+
+    <string name="add_player">Add player</string>
 
     <string name="team_settings">Team settings</string>
     <string name="add_match">Add match</string>

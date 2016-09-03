@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.adapters;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  */
 public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.SetRowItemVH> {
 
+    protected Resources res;
+
+    public SetsAdapter(Resources res) {
+        this.res = res;
+    }
+
     //private ArrayList<SetRowItemVH> holders = new ArrayList<>();
     private int errorCount = 0;
 
@@ -33,7 +40,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         notifyItemRangeChanged(position, data.size());
     }
 
-    protected void setOnClickListeners(View itemView, int position) {}
+    protected void setOnClickListeners(View itemView, int position, String title) {}
 
     @Override
     public SetRowItemVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,10 +50,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
 
     @Override
     public void onBindViewHolder(SetRowItemVH holder, int position) {
-
         SetRowItem item = data.get(position);
-
-
         holder.homeLsnr.updatePosition(position);
         holder.awayLsnr.updatePosition(position);
         holder.awayLsnr.updateEditText(holder.away);
@@ -57,14 +61,15 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
             //errorCount--;
             holder.home.setError(null);
         }
-        setOnClickListeners(holder.itemView,position);
+
+        String title = res.getString(fit.cvut.org.cz.tmlibrary.R.string.set_nr) + " " + (position+1);
+        setOnClickListeners(holder.itemView, position, title);
 
     }
 
 
 
     public class SetRowItemVH extends RecyclerView.ViewHolder{
-
         public EditText home, away;
         public ParsingDataListener homeLsnr, awayLsnr;
 
@@ -80,7 +85,6 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
     }
 
     private class ParsingDataListener implements TextWatcher{
-
         private int position;
         private EditText editText;
         private boolean home;
@@ -112,13 +116,18 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
                     editText.setError(editText.getResources().getText(R.string.zero_score));
                     return;
                 }
-                if (home) data.get(position).setHomeScore(value);
-                else  data.get(position).setAwayScore(value);
-                if (data.get(position).getHomeScore() > data.get(position).getAwayScore()) data.get(position).setWinner(1);
-                else if (data.get(position).getHomeScore() < data.get(position).getAwayScore()) data.get(position).setWinner(-1);
-                    else {
+                if (home)
+                    data.get(position).setHomeScore(value);
+                else
+                    data.get(position).setAwayScore(value);
+
+                if (data.get(position).getHomeScore() > data.get(position).getAwayScore())
+                    data.get(position).setWinner(1);
+                else if (data.get(position).getHomeScore() < data.get(position).getAwayScore())
+                    data.get(position).setWinner(-1);
+                else
                     data.get(position).setWinner(0);
-                }
+
             } catch (NumberFormatException e){
                 errorCount++;
                 editText.setError(editText.getResources().getText(R.string.parse_number_error));

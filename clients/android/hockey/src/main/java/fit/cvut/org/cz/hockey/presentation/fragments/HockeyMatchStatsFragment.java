@@ -180,8 +180,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = homeName+" "+getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.vs)+" "+awayName;
-                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId, title);
+                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
                 dialog.setTargetFragment(thisFragment, 1);
                 dialog.show(getFragmentManager(), "tag211");
             }

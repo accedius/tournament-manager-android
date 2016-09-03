@@ -43,17 +43,14 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-
         adapter =  new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId, final int position) {
+            protected void setOnClickListeners(View v, long teamId, final int position, final String name) {
                 final long ftid = teamId;
-
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
-                        TeamsDialog dialog = TeamsDialog.newInstance(ftid, position);
+                        TeamsDialog dialog = TeamsDialog.newInstance(ftid, position, name);
                         dialog.setTargetFragment(TeamsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "uberTag");
                         return true;

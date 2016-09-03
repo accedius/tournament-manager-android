@@ -21,11 +21,10 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
         return new AggregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_aggregated_stats, parent, false));
     }
 
-    protected void setOnClickListeners(View v, SAggregatedStats item, int position) {}
+    protected void setOnClickListeners(View v, SAggregatedStats item, int position, String name) {}
 
     @Override
     public void onBindViewHolder(AggregatedStatsViewHolder holder, int position) {
-
         SAggregatedStats stats = data.get(position);
         holder.name.setText(stats.playerName);
         holder.GP.setText(Integer.toString(stats.games_played));
@@ -33,7 +32,7 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
         holder.W.setText(Integer.toString(stats.won));
         holder.L.setText(Integer.toString(stats.lost));
         holder.D.setText(Integer.toString(stats.draws));
-        if (holder.SW != null){
+        if (holder.SW != null) {
             holder.SW.setText(Integer.toString(stats.setsWon));
             holder.SL.setText(Integer.toString(stats.setsLost));
             holder.BW.setText(Integer.toString(stats.ballsWon));
@@ -45,11 +44,10 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
             holder.WPER.setText(String.format("%.2f", stats.matchWinRate));
             holder.SWPER.setText(String.format("%.2f", stats.setsWinRate));
         }
-        setOnClickListeners(holder.wholeView, stats, position);
+        setOnClickListeners(holder.wholeView, stats, position, stats.playerName);
     }
 
-    public class AggregatedStatsViewHolder extends RecyclerView.ViewHolder{
-
+    public class AggregatedStatsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         public View wholeView;
         TextView name, GP, P, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
@@ -74,8 +72,6 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
             BWAVG = (TextView) itemView.findViewById(R.id.tv_balls_won_avg);
             WPER = (TextView) itemView.findViewById(R.id.tv_won_per);
             SWPER = (TextView) itemView.findViewById(R.id.tv_sets_per);
-
-
         }
     }
 }

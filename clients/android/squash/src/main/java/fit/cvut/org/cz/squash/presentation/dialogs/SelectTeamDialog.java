@@ -25,7 +25,7 @@ public class SelectTeamDialog extends DialogFragment {
     public static final String ARG_HOME_NAME = "arg_home_name";
     public static final String ARG_AWAY_NAME = "arg_away_name";
 
-    public static SelectTeamDialog newInstance(long homeId, long awayId, String homeName, String awayName){
+    public static SelectTeamDialog newInstance(long homeId, long awayId, String homeName, String awayName) {
         SelectTeamDialog fragment = new SelectTeamDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_AWAY_ID, awayId);
@@ -58,9 +58,7 @@ public class SelectTeamDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
         builder.setItems(new String[]{getString(R.string.add_player_to) + " " + getArguments().getString(ARG_HOME_NAME), getString(R.string.add_player_to) + " " + getArguments().getString(ARG_AWAY_NAME)},
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -76,6 +74,8 @@ public class SelectTeamDialog extends DialogFragment {
                         dismiss();
                     }
                 });
+
+        builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_player));
         return builder.create();
     }
 }

@@ -22,13 +22,15 @@ public class TournamentsDialog extends DialogFragment {
     public static final String COMP_ID = "comp_id";
     public static final String TOUR_ID = "tour_id";
     public static final String ARG_POSITION = "arg_pos";
+    public static final String ARG_TITLE = "arg_title";
 
-    public static TournamentsDialog newInstance(long compId, long tourId, int position){
+    public static TournamentsDialog newInstance(long compId, long tourId, int position, String name) {
         TournamentsDialog fragment = new TournamentsDialog();
         Bundle args = new Bundle();
         args.putLong(COMP_ID, compId);
         args.putLong(TOUR_ID, tourId);
         args.putInt(ARG_POSITION, position);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +63,8 @@ public class TournamentsDialog extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
+
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

@@ -40,6 +40,7 @@
     <string name="add_home_complete">Add players to home team</string>
     <string name="add_away_complete">Add players to away team</string>
     <string name="add_players_to_team">Add players to </string>
+    <string name="add_player_to">Add player to</string>
     <string name="edit_stats">Edit stats</string>
 
     <string name="gp">GP</string>
@@ -64,7 +65,6 @@
     <string name="shootouts">Shootouts</string>
     <string name="set_all">Everything needs to be set!</string>
     <string name="tour_not_deleted">Tournament is not empty, could not be deleted!</string>
-    <string name="add_player">Add player to</string>
     <string name="s">S</string>
     <string name="goals">Goals</string>
     <string name="assists">Assists</string>

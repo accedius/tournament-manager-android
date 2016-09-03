@@ -21,7 +21,7 @@ public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlaye
         return new PlayerVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player, parent, false));
     }
 
-    protected void setOnClickListeners(View itemView, int position) {}
+    protected void setOnClickListeners(View itemView, int position, String name) {}
 
     public void deleteItem(int position){
         data.remove(position);
@@ -32,7 +32,7 @@ public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlaye
     @Override
     public void onBindViewHolder(final PlayerVH holder, int position) {
         holder.name.setText(data.get(position).getName());
-        setOnClickListeners(holder.itemView, position);
+        setOnClickListeners(holder.itemView, position, data.get(position).getName());
     }
 
     public class PlayerVH extends RecyclerView.ViewHolder{

@@ -24,14 +24,16 @@ public class AggregatedStatsDialog extends DialogFragment {
     public static final String ARG_PLAYER_ID = "player_id";
     public static final String ARG_ACTION = "arg_action";
     public static final String ARG_POSITION = "arg_pos";
+    public static final String ARG_TITLE = "arg_title";
 
-    public static AggregatedStatsDialog newInstance(long id, long playerId, int position, String action){
+    public static AggregatedStatsDialog newInstance(long id, long playerId, int position, String action, String name){
         AggregatedStatsDialog fragment = new AggregatedStatsDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
         args.putLong(ARG_PLAYER_ID, playerId);
         args.putInt(ARG_POSITION, position);
         args.putString(ARG_ACTION, action);
+        args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,9 +41,7 @@ public class AggregatedStatsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
         builder.setItems(new String[]{getString(R.string.delete)},
             new DialogInterface.OnClickListener() {
                 @Override
@@ -63,6 +63,7 @@ public class AggregatedStatsDialog extends DialogFragment {
                 }
             });
 
+        builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();
     }
 }

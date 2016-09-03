@@ -123,18 +123,16 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        final Context c = getContext();
         adapter =  new AggregatedStatsAdapter(){
             @Override
-            protected void setOnClickListeners(View v, final SAggregatedStats item, final int position) {
+            protected void setOnClickListeners(View v, final SAggregatedStats item, final int position, final String name) {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         final long id = getArguments().getLong(ARG_ID);
-                        AggregatedStatsDialog dialog = AggregatedStatsDialog.newInstance(id, item.playerId, position, deleteAction);
+                        AggregatedStatsDialog dialog = AggregatedStatsDialog.newInstance(id, item.playerId, position, deleteAction, name);
                         dialog.setTargetFragment(AggregatedStatsListFragment.this, 3);
                         dialog.show(getFragmentManager(), "DELETE_DD");
-
                         return false;
                     }
                 });
@@ -151,11 +149,9 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     public void askForData() {
-
         if (mainAction != null && sendForData) {
             Intent intent = StatsService.newStartIntent(mainAction, getContext());
             intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_ID));
-
             getContext().startService(intent);
         }
     }
@@ -180,13 +176,13 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode != SelectableListActivity.RESULT_OK){
             sendForData = true;
             askForData();
             return;
         }
-        if (addAction == null) return;
+        if (addAction == null)
+            return;
 
         if (requestCode == 3){
             progressBar.setVisibility(View.VISIBLE);
@@ -199,14 +195,11 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
         getContext().startService(intent);
         progressBar.setVisibility(View.VISIBLE);
-
     }
 
-    public class RefreshReceiver extends BroadcastReceiver{
-
+    public class RefreshReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             String action = intent.getAction();
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
@@ -238,7 +231,6 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeletePlayerFromTournament, Snackbar.LENGTH_LONG).show();
                     break;
                 }
-                default:break;
             }
 
         }

@@ -92,11 +92,11 @@ public class MatchPlayersFragment extends AbstractDataFragment {
 
         homeAdapter = new SimplePlayerAdapter(){
             @Override
-            protected void setOnClickListeners(View itemView, final int position) {
+            protected void setOnClickListeners(View itemView, final int position, final String name) {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AdapterDialog d = AdapterDialog.newInstance(position, 0);
+                        AdapterDialog d = AdapterDialog.newInstance(position, 0, name);
                         d.setTargetFragment(MatchPlayersFragment.this, 0);
                         d.show(getFragmentManager(), "DELETE_HOME");
                         return false;
@@ -107,11 +107,11 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         };
         awayAdapter = new SimplePlayerAdapter(){
             @Override
-            protected void setOnClickListeners(View itemView, final int position) {
+            protected void setOnClickListeners(View itemView, final int position, final String name) {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AdapterDialog d = AdapterDialog.newInstance(position, 1);
+                        AdapterDialog d = AdapterDialog.newInstance(position, 1, name);
                         d.setTargetFragment(MatchPlayersFragment.this, 0);
                         d.show(getFragmentManager(), "DELETE_AWAY");
                         return false;
