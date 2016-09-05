@@ -49,7 +49,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     protected AbstractListAdapter getAdapter() {
         return new CompetitionAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long competitionId, final String name) {
+            protected void setOnClickListeners(View v, final long competitionId, int position, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -65,8 +65,6 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        final View fw =v;
-
                         EditDeleteDialog dialog = new EditDeleteDialog() {
                             @Override
                             protected DialogInterface.OnClickListener supplyListener() {
@@ -84,8 +82,8 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                                                 break;
                                             }
                                             case 1:{
-                                                //TODO Delete not implemented yet
-                                                Snackbar.make(fw, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
+                                                //TODO Zde bude maximálně odebrání hráče ze soutěže, pokud vůbec... Mazání soutěže je hloupost, to nikdy nepůjde
+                                                Snackbar.make(v, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
                                             }
                                         }
                                         dialog.dismiss();

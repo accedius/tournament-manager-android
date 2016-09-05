@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
@@ -33,6 +38,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String activity_create_competition;
     private String activity_detail_competition;
 
+    private BroadcastReceiver receiver;
+
     public void setAction(String action) {
         this.action = action;
     }
@@ -53,7 +60,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected AbstractListAdapter getAdapter() {
         return new CompetitionAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long competitionId, final String name) {
+            protected void setOnClickListeners(View v, final long competitionId, int position, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -68,44 +75,14 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick(final View v) {
-                        final View fw =v;
-
-                        EditDeleteDialog dialog = new EditDeleteDialog() {
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = new Intent();
-                                                intent.setClassName(package_name, activity_create_competition);
-                                                Bundle b = new Bundle();
-                                                b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
-                                                intent.putExtras(b);
-                                                startActivity(intent);
-
-                                                break;
-                                            }
-                                            case 1:{
-                                                //TODO Delete not implemented yet
-                                                Snackbar.make(fw, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-
-                        Bundle b = new Bundle();
-                        b.putString(EditDeleteDialog.ARG_TITLE, name);
-                        dialog.setArguments(b);
+                    public boolean onLongClick(View v) {
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, name, package_name, activity_create_competition);
+                        dialog.setTargetFragment(CompetitionsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
-                        return false;
+                        return true;
                     }
-                });
+                } );
+                super.setOnClickListeners(v, competitionId, position, name);
             }
         };
     }
@@ -124,7 +101,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(this.action));
+        receiver = new CompetitionsListReceiver();
+        IntentFilter filter = new IntentFilter(this.action);
+        filter.addAction(CompetitionDialog.ACTION_ID);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
     }
 
     @Override
@@ -149,7 +129,31 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 startActivity(intent);
             }
         });
-
         return fab;
+    }
+
+    public class CompetitionsListReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String type = intent.getStringExtra(CompetitionService.EXTRA_TYPE);
+
+            contentView.setVisibility(View.VISIBLE);
+            if (type.equals(CompetitionService.EXTRA_COMPETITION)) {
+                CompetitionsListFragment.super.bindDataOnView(intent);
+                progressBar.setVisibility(View.GONE);
+            } else if (type.equals(CompetitionService.EXTRA_DELETE)) {
+                boolean result = intent.getBooleanExtra(CompetitionService.EXTRA_RESULT, true);
+                if (result) {
+                    contentView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    // TODO možné řešení problému s načtením soupisek po jejich vygenerování
+                    askForData();
+                } else {
+                    View v = getView().findFocus();
+                    if (v != null)
+                        Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_deleted, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 }

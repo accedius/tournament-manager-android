@@ -57,6 +57,7 @@
     <string name="invalidRoundPeriod">Round or period is not set!</string>
     <string name="tournament_id_invalid">You have to specify either competitionId or tournamentId.</string>
 
+    <string name="competition_not_deleted">Competition could not be deleted! It contains some tournaments or players.</string>
     <string name="failDeletePlayerFromTournament">Player is already in match or team and cannot be deleted.</string>
     <string name="failDeletePlayerFromCompetition">Player is already in tournament and cannot be deleted.</string>
     <string name="failDeleteTournament">Tournament already includes matches or players and cannot be deleted.</string>
