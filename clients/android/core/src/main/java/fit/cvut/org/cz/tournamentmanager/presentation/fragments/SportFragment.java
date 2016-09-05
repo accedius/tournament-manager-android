@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tournamentmanager.R;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class SportFragment extends Fragment {
-
     private String sport_name;
     private String package_name;
     private String activity_create_competition;
@@ -27,7 +26,6 @@ public class SportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View v = inflater.inflate(R.layout.fragment_sport_layout, container, false);
         tv = (TextView) v.findViewById(R.id.sport_name);
         Bundle b = getArguments();
@@ -36,7 +34,6 @@ public class SportFragment extends Fragment {
         activity_create_competition = b.getString("activity_create_competition");
         activity_detail_competition = b.getString("activity_detail_competition");
         tv.setText(sport_name);
-
         return v;
     }
 
@@ -44,7 +41,6 @@ public class SportFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Log.d("SportFragment", "Started");
         if (getChildFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
             CompetitionsListFragment clf = new CompetitionsListFragment();
             Bundle b = new Bundle();
@@ -53,7 +49,6 @@ public class SportFragment extends Fragment {
             b.putString("activity_detail_competition", activity_detail_competition);
             b.putString("activity_create_competition", activity_create_competition);
             clf.setAction(clf.getAction() + "." + package_name);
-            Log.d("SF - ACTION", clf.getAction());
             clf.setArguments(b);
             getChildFragmentManager()
                     .beginTransaction()

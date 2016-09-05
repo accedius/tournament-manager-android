@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
         String content = intent.getStringExtra(EXTRA_CONTENT);
         String action = intent.getStringExtra(EXTRA_ACTION);
+        Log.d("COMP_SRVC", "Do work, action: "+action);
 
         Intent result = new Intent(action);
         if (action.equals(CompetitionDialog.ACTION_ID)) {

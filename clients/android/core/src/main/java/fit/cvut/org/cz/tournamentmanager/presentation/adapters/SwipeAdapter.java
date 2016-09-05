@@ -20,12 +20,10 @@ public class SwipeAdapter extends FragmentPagerAdapter {
     public SwipeAdapter(FragmentManager fm, ArrayList<ApplicationInfo> sport_packages) {
         super(fm);
         this.sport_packages = sport_packages;
-        Log.d("SwipeAdapter", "created");
     }
 
     @Override
     public Fragment getItem(int position) {
-        Log.d("SwipeAdapter", "Get Item");
         Fragment f = new SportFragment();
         Bundle b = new Bundle();
 

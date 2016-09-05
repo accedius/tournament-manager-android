@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -45,6 +46,8 @@ public class CompetitionCP extends ContentProvider {
         helper = new HockeyDBHelper(getContext());
         return true;
     }
+
+
 
     @Nullable
     @Override

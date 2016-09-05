@@ -90,7 +90,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     @Override
     public void askForData() {
         Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getContext());
-        Log.d("CLF - ACTION", this.action);
         getContext().startService(intent);
     }
 
@@ -120,7 +119,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floating_button_add, parent, false);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

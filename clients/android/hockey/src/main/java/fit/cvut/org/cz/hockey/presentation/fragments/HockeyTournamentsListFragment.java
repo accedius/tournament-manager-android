@@ -56,14 +56,13 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         return new TournamentAdapter(){
             @Override
             protected void setOnClickListeners(View v, long tournamentId, int position, final String name) {
-
                 final long compId = competitionId;
                 final long tourId = tournamentId;
 
                 v.setOnClickListener(new View.OnClickListener() {
                          @Override
                          public void onClick(View v) {
-                             Intent intent = new Intent( getContext(), ShowTournamentActivity.class);
+                             Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
                              Bundle b = new Bundle();
                              b.putLong(ShowTournamentActivity.COMP_ID, compId);
                              b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
@@ -73,7 +72,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                          }
                      }
                 );
-                v.setOnLongClickListener( new View.OnLongClickListener(){
+                v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         EditDeleteDialog dialog = EditDeleteDialog.newInstance(tourId, compId, name);
@@ -133,43 +132,31 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         return fab;
     }
 
-    public class TournamentsListReceiver extends BroadcastReceiver
-    {
-
+    public class TournamentsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             contentView.setVisibility(View.VISIBLE);
-
-            switch (action)
-            {
+            switch (action) {
                 case TournamentService.ACTION_GET_ALL: {
                     HockeyTournamentsListFragment.super.bindDataOnView(intent);
                     progressBar.setVisibility(View.GONE);
                     break;
                 }
-                case TournamentService.ACTION_DELETE:
-                {
-                    int result = intent.getIntExtra( TournamentService.EXTRA_RESULT, -1);
-                    if( result == 0 ) //turnaj byl vymazan
-                    {
-                        contentView.setVisibility( View.GONE );
+                case TournamentService.ACTION_DELETE: {
+                    int result = intent.getIntExtra(TournamentService.EXTRA_RESULT, -1);
+                    if (result == 0) {
+                        contentView.setVisibility(View.GONE);
                         progressBar.setVisibility(View.VISIBLE);
                         askForData();
-                    }
-                    else
-                    {
+                    } else {
                         View v = getView();
-                        if( v != null ) Snackbar.make(v, R.string.tour_not_deleted, Snackbar.LENGTH_LONG).show();
+                        if( v != null )
+                            Snackbar.make(v, R.string.tour_not_deleted, Snackbar.LENGTH_LONG).show();
                     }
-
                     break;
                 }
-                default: break;
-
             }
         }
     }
-
-
 }

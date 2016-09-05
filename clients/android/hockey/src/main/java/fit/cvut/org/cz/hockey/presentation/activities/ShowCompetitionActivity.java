@@ -32,7 +32,6 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     private Fragment[] fragments;
     private String[] titles;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
