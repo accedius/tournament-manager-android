@@ -58,13 +58,6 @@ public class CompetitionCP extends ContentProvider {
             return null;
         }
 
-        if (uriType == DELETE_COMPETITION) {
-            String competitionID = uri.getPathSegments().get(SEGMENT_ID);
-            String where = DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " + competitionID;
-            helper.getWritableDatabase().delete(DBConstants.tCOMPETITIONS, where, null);
-            return null;
-        }
-
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         if (uriType == COMPETITIONS_ALL) {
             builder.setTables(DBConstants.tCOMPETITIONS);
@@ -113,6 +106,12 @@ public class CompetitionCP extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int uriType = matcher.match(uri);
+        if (uriType == DELETE_COMPETITION) {
+            String competitionID = uri.getPathSegments().get(SEGMENT_ID);
+            String where = DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " + competitionID;
+            return helper.getWritableDatabase().delete(DBConstants.tCOMPETITIONS, where, null);
+        }
         return 0;
     }
 

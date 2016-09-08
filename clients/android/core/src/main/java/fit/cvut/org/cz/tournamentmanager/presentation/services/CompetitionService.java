@@ -44,7 +44,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
         uri = "content://"+package_name+".data/delete_competition/"+competitionId;
         myUri = Uri.parse(uri);
-        getContentResolver().query(myUri, null, null, null, null);
+        getContentResolver().delete(myUri, null, null);
         return true;
     }
 
