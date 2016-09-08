@@ -48,22 +48,17 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
-                if (fr != null){
-                    if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).customOnResume();
-                }
+                if (fr != null && fr instanceof AbstractDataFragment)
+                    ((AbstractDataFragment) fr).customOnResume();
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
     }
 
@@ -75,17 +70,11 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-
+        switch (item.getItemId()) {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
-                if (competitionId == -1)
-                    break;
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
-                break;
-            default:
                 break;
         }
 
