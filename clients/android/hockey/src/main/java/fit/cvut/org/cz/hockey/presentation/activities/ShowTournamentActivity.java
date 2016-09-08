@@ -1,10 +1,14 @@
 package fit.cvut.org.cz.hockey.presentation.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -18,8 +22,6 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -36,6 +38,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     public static final String TOUR_ID = "tournament_id";
 
     private final int GEN_ROSTER_ID = 1001;
+    private final int TEAMS_LIST_POSITION = 4;
 
     private long competitionID;
     private long tournamentID;
@@ -61,9 +64,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -83,6 +84,20 @@ public class ShowTournamentActivity extends AbstractTabActivity {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
+        IntentFilter filter = new IntentFilter(TournamentService.ACTION_GENERATE_ROSTERS);
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
+                    HockeyTeamsListFragment fr = (HockeyTeamsListFragment)adapter.getItem(pager.getCurrentItem());
+                    fr.customOnResume();
+                } else {
+                    pager.setCurrentItem(TEAMS_LIST_POSITION);
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
     @Override

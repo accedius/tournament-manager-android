@@ -18,6 +18,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TEAM = "extra_team";
+    public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_TEAM_LIST = "extra_team_list";
     public static final String EXTRA_OUTCOME = "extra_team_outcome";
 
@@ -30,13 +31,9 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static final String ACTION_DELETE = "action_delete_team";
     public static final String ACTION_GET_TEAMS_BY_TOURNAMENT = "action_get_teams_by_tournament";
 
-
-
-    public static Intent newStartIntent(String action, Context context)
-    {
+    public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, TeamService.class);
         res.putExtra(EXTRA_ACTION, action);
-
         return res;
     }
 
@@ -53,65 +50,55 @@ public class TeamService extends AbstractIntentServiceWProgress {
      * sends teams to broadcast
      * @param id id of tournament
      */
-    private void sendTeams( long id )
-    {
-        Intent res = new Intent( ACTION_GET_TEAMS_BY_TOURNAMENT );
-        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId( this, id );
-        res.putParcelableArrayListExtra( EXTRA_TEAM_LIST, teams );
+    private void sendTeams(long id) {
+        Intent res = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
+        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(this, id);
+        res.putParcelableArrayListExtra(EXTRA_TEAM_LIST, teams);
 
-        LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+        LocalBroadcastManager.getInstance(this ).sendBroadcast( res);
     }
 
     @Override
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(EXTRA_ACTION);
 
-        switch (action)
-        {
-            case ACTION_GET_BY_ID:
-            {
-                long id = intent.getLongExtra( EXTRA_ID, -1 );
+        switch (action) {
+            case ACTION_GET_BY_ID: {
+                long id = intent.getLongExtra(EXTRA_ID, -1);
                 Team t = ManagerFactory.getInstance().teamManager.getById(this, id);
-                t.setPlayers( ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam( this, t.getId() ) );
-                Intent res = new Intent( ACTION_GET_BY_ID );
+                t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam( this, t.getId() ));
+                Intent res = new Intent(ACTION_GET_BY_ID);
                 res.putExtra(EXTRA_TEAM, t);
 
-
-                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
-
+                LocalBroadcastManager.getInstance(this ).sendBroadcast( res);
                 break;
             }
-            case ACTION_INSERT:
-            {
-                Team t = intent.getParcelableExtra( EXTRA_TEAM );
-                ManagerFactory.getInstance().teamManager.insert( this, t );
-                sendTeams( t.getTournamentId() );
+            case ACTION_INSERT: {
+                Team t = intent.getParcelableExtra(EXTRA_TEAM);
+                ManagerFactory.getInstance().teamManager.insert(this, t);
+                sendTeams(t.getTournamentId());
                 break;
             }
-            case ACTION_EDIT:
-            {
-                Team t = intent.getParcelableExtra( EXTRA_TEAM );
-                ManagerFactory.getInstance().teamManager.update( this, t );
-                sendTeams( t.getTournamentId() );
+            case ACTION_EDIT: {
+                Team t = intent.getParcelableExtra(EXTRA_TEAM);
+                ManagerFactory.getInstance().teamManager.update(this, t);
+                sendTeams(t.getTournamentId());
                 break;
             }
-            case ACTION_GET_TEAMS_BY_TOURNAMENT:
-            {
-
-                long id = intent.getLongExtra( EXTRA_ID, -1 );
-                sendTeams( id );
-
-
+            case ACTION_GET_TEAMS_BY_TOURNAMENT: {
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                sendTeams(id);
                 break;
             }
-            case ACTION_DELETE:
-            {
-                Intent res = new Intent( ACTION_DELETE );
+            case ACTION_DELETE: {
+                Intent res = new Intent(ACTION_DELETE);
                 long teamId = intent.getLongExtra(EXTRA_ID, -1);
-                if(teamId == -1) break;
-                long tourId = ManagerFactory.getInstance().teamManager.getById( this, teamId ).getTournamentId();
-                if( ManagerFactory.getInstance().teamManager.delete( this, teamId )) {
-                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                if (teamId == -1)
+                    break;
+                if (ManagerFactory.getInstance().teamManager.delete( this, teamId)) {
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
+                    int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                    res.putExtra(EXTRA_POSITION, position);
                 } else {
                     res.putExtra(EXTRA_OUTCOME, OUTCOME_NOT_OK);
                 }
@@ -119,7 +106,5 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 break;
             }
         }
-
-
     }
 }

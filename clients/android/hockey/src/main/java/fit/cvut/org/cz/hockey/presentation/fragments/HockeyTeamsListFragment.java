@@ -47,24 +47,22 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     protected AbstractListAdapter getAdapter() {
         return new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId, int position, final String name) {
+            protected void setOnClickListeners(View v, long teamId, final int position, final String name) {
                 super.setOnClickListeners(v, teamId, position, name);
                 final long tid = teamId;
 
                 v.setOnClickListener( new View.OnClickListener(){
-
                     @Override
                     public void onClick(View v) {
-                        Intent i = ShowTeamActivity.newStartIntent( getContext(), tid );
-                        startActivity( i );
+                        Intent i = ShowTeamActivity.newStartIntent(getContext(), tid);
+                        startActivity(i);
                     }
                 });
 
                 v.setOnLongClickListener( new View.OnLongClickListener(){
-
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1, name);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1, position, name);
                         dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;
@@ -82,21 +80,20 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     public void askForData() {
-        Intent intent = TeamService.newStartIntent( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext() );
-        intent.putExtra( TeamService.EXTRA_ID, getArguments().getLong(TOUR_ID, -1) );
-
-        getContext().startService( intent );
+        Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
+        intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(TOUR_ID, -1));
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TeamService.isWorking( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT );
+        return TeamService.isWorking(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
     }
 
     @Override
     protected void registerReceivers() {
-        IntentFilter filter = new IntentFilter( TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT );
-        filter.addAction( TeamService.ACTION_DELETE );
+        IntentFilter filter = new IntentFilter(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
+        filter.addAction(TeamService.ACTION_DELETE);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(teamReceiver, filter);
     }
 
@@ -115,41 +112,32 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                 dialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }
-
         });
 
         return fab;
     }
 
-    public class TeamReceiver extends BroadcastReceiver
-    {
-
+    public class TeamReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
-            switch (action)
-            {
-                case TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT:
-                {
+            switch (action) {
+                case TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT: {
                     HockeyTeamsListFragment.super.bindDataOnView(intent);
-                    progressBar.setVisibility(View.GONE);
                     break;
                 }
-                case TeamService.ACTION_DELETE:
-                {
-                    if( intent.getIntExtra( TeamService.EXTRA_OUTCOME, -1 ) == TeamService.OUTCOME_OK ){
-                        contentView.setVisibility( View.GONE );
-                        progressBar.setVisibility(View.VISIBLE);
-                        askForData();
+                case TeamService.ACTION_DELETE: {
+                    if (intent.getIntExtra( TeamService.EXTRA_OUTCOME, -1 ) == TeamService.OUTCOME_OK){
+                        int position = intent.getIntExtra(TeamService.EXTRA_POSITION, -1);
+                        adapter.delete(position);
                         break;
                     } else {
                         View v = getView();
-                        if( v != null ) Snackbar.make(v, R.string.team_cant_delete, Snackbar.LENGTH_LONG).show();
+                        if(v != null) Snackbar.make(v, R.string.team_cant_delete, Snackbar.LENGTH_LONG).show();
                     }
                 }
-                default: break;
-
             }
         }
     }

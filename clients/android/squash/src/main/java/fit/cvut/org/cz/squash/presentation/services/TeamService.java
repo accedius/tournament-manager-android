@@ -77,14 +77,10 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-
         }
-
-
     }
 
     private void sendTeamsByTournament(long tournamentId){
-
         Intent result = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
         result.putParcelableArrayListExtra(EXTRA_TEAMS, ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId));
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -93,7 +89,6 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, TeamService.class);
         intent.putExtra(EXTRA_ACTION, action);
-
         return intent;
     }
 }

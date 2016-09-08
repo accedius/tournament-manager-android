@@ -30,8 +30,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class TeamsListFragment extends AbstractListFragment<Team> {
 
-    public static final String ARG_ID = "arg_id";
     private TeamAdapter adapter = null;
+
+    public static final String ARG_ID = "arg_id";
+    private BroadcastReceiver tReceiver = new TeamsReceiver();
 
     public static TeamsListFragment newInstance(long tournamentId){
         TeamsListFragment fragment = new TeamsListFragment();
@@ -45,12 +47,11 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
     protected AbstractListAdapter getAdapter() {
         adapter =  new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId, final int position, final String name) {
-                final long ftid = teamId;
+            protected void setOnClickListeners(View v, final long teamId, final int position, final String name) {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        TeamsDialog dialog = TeamsDialog.newInstance(ftid, position, name);
+                        TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
                         dialog.setTargetFragment(TeamsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "uberTag");
                         return true;
@@ -59,12 +60,12 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = TeamDetailActivity.newStartIntent(ftid, getContext());
+                        Intent intent = TeamDetailActivity.newStartIntent(teamId, getContext());
                         startActivity(intent);
                     }
                 });
-
             }
+
         };
         return adapter;
     }
@@ -114,13 +115,9 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
         return fab;
     }
 
-    private BroadcastReceiver tReceiver = new TeamsReceiver();
-
     public class TeamsReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
             if (intent.getAction().equals(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT)){

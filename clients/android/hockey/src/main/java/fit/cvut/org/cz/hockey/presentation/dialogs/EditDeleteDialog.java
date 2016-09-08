@@ -23,15 +23,17 @@ public class EditDeleteDialog extends DialogFragment {
 
     private static final String ARG_ID = "arg_id";
     private static final String ARG_TITLE = "arg_title";
+    private static final String ARG_POSITION = "arg_position";
     private static final String SECOND_ID = "second_id";
 
     protected DialogInterface.OnClickListener supplyListener() { return null;}
 
-    public static EditDeleteDialog newInstance( long id, long otherId, String name ){
+    public static EditDeleteDialog newInstance( long id, long otherId, int position, String name ){
         EditDeleteDialog fragment = new EditDeleteDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
         args.putLong(SECOND_ID, otherId);
+        args.putInt(ARG_POSITION, position);
         args.putString(ARG_TITLE, name);
         fragment.setArguments(args);
         return fragment;
@@ -59,6 +61,7 @@ public class EditDeleteDialog extends DialogFragment {
                             case 1:
                                 Intent intent = TeamService.newStartIntent(TeamService.ACTION_DELETE, getContext());
                                 intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                intent.putExtra(TeamService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
                                 getContext().startService(intent);
                                 dialog.dismiss();
                                 break;

@@ -110,8 +110,7 @@ public abstract class AbstractDataFragment extends Fragment {
         return isDataSourceWorking();
     }
 
-    public class DataReceiver extends BroadcastReceiver{
-
+    public class DataReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             progressBar.setVisibility(View.GONE);

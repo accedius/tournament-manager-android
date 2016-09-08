@@ -27,5 +27,6 @@ public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder>
     public void delete(int position) {
         data.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount() - position);
     }
 }

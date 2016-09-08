@@ -55,7 +55,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     protected AbstractListAdapter getAdapter() {
         return new TournamentAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long tournamentId, int position, final String name) {
+            protected void setOnClickListeners(View v, long tournamentId, final int position, final String name) {
                 final long compId = competitionId;
                 final long tourId = tournamentId;
 
@@ -75,7 +75,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tourId, compId, name);
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tourId, compId, position, name);
                         dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;

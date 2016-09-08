@@ -134,7 +134,7 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                         intent.getLongExtra(EXTRA_ID, -1),
                         intent.getLongExtra(EXTRA_TOURNAMENT, -1),
                         intent.getIntExtra(EXTRA_GENERATING_TYPE, -1));
-                LocalBroadcastManager.getInstance( this ).sendBroadcast(result);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
         }

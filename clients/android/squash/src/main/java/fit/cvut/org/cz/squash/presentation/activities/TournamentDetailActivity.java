@@ -1,13 +1,16 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +21,6 @@ import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFra
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TeamsListFragment;
-import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
@@ -43,7 +45,6 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     private long competitionID;
     private long tournamentID;
     private DefaultViewPagerAdapter adapter = null;
-
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
@@ -98,6 +99,20 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
+        IntentFilter filter = new IntentFilter(TournamentService.ACTION_GENERATE_ROSTERS);
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
+                    TeamsListFragment fr = (TeamsListFragment)adapter.getItem(pager.getCurrentItem());
+                    fr.customOnResume();
+                } else {
+                    pager.setCurrentItem(TEAMS_LIST_POSITION);
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
 
     @Override
