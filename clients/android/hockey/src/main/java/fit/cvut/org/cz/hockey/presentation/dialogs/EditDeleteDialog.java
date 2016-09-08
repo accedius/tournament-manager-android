@@ -76,6 +76,7 @@ public class EditDeleteDialog extends DialogFragment {
                             case 1: {
                                 Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, getContext());
                                 intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                intent.putExtra(TeamService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
                                 getContext().startService(intent);
                                 break;
                             }

@@ -137,18 +137,17 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             contentView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
             switch (action) {
                 case TournamentService.ACTION_GET_ALL: {
                     HockeyTournamentsListFragment.super.bindDataOnView(intent);
-                    progressBar.setVisibility(View.GONE);
                     break;
                 }
                 case TournamentService.ACTION_DELETE: {
                     int result = intent.getIntExtra(TournamentService.EXTRA_RESULT, -1);
                     if (result == 0) {
-                        contentView.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
-                        askForData();
+                        int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
+                        adapter.delete(position);
                     } else {
                         View v = getView();
                         if( v != null )
