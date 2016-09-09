@@ -50,7 +50,7 @@ public class PointConfigActivity extends AbstractToolbarActivity {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             PointConfig pointConfig = ((PointConfigFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
             if (pointConfig == null) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.point_config_error), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
 

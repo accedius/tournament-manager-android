@@ -58,7 +58,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
         match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
         tournament_id = match.getTournamentId();
 
-        getActivity().setTitle(getResources().getString(R.string.match_detail) + " – " +
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
                 match.getHomeName() + " " +
                 getResources().getString(R.string.vs) + " " +
                 match.getAwayName());

@@ -35,7 +35,10 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
-        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_tournaments_list), getString(R.string.header_players) };
+        titles = new String[]{
+                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
         Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
         Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);

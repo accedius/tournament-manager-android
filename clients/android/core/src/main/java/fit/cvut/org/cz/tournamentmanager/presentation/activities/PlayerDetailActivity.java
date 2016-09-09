@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
-import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
@@ -41,7 +41,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         Log.d("PDA", ""+playerID);
         sport_packages = getIntent().getExtras().getParcelableArrayList(PlayerService.EXTRA_PACKAGES);
         titles = new String[1+sport_packages.size()];
-        titles[0] = getResources().getString(R.string.player_detail_header);
+        titles[0] = getResources().getString(R.string.player_info);
 
         int i=1;
         for(ApplicationInfo info : sport_packages) {

@@ -48,7 +48,7 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             Player player = ((NewPlayerFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPlayer();
             if (player.getName().isEmpty() || player.getEmail().isEmpty()) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.player_name_email_empty_error), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.name_email_empty_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
 

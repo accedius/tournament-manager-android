@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
 public class CoreDBHelper extends SQLiteOpenHelper {
 
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 10;
+    private static final int DBVersion = 1;
 
     public CoreDBHelper(Context context) {
         super(context, DBName, null, DBVersion);

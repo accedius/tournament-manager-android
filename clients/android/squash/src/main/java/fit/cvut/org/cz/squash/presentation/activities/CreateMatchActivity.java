@@ -66,7 +66,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             ScoredMatch scoredMatch = ((CreateSquashMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
             if (scoredMatch == null) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_error), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
             if (scoredMatch.getId() == -1 && scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId() ) {

@@ -71,7 +71,9 @@ public class ShowMatchActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         matchId = getIntent().getExtras().getLong(MATCH_ID);
 
-        titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players) };
+        titles = new String[]{
+                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = HockeyMatchOverviewFragment.newInstance( matchId );
         Fragment f2 = HockeyMatchStatsFragment.newInstance( matchId );
         fragments = new Fragment[]{ f1, f2 };

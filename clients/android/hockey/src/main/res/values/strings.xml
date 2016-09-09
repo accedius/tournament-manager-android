@@ -7,41 +7,11 @@
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity</string>
     <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.hockey.presentation.activities.ShowCompetitionActivity</string>
 
-    <string name="create_competition_header">Competition settings</string>
-    <string name="competition_header">Competition</string>
-    <string name="create_tournament_header">Tournament settings</string>
-    <string name="tournament_header">Tournament</string>
-    <string name="point_config_header">Point configuration</string>
-    <string name="add_players_header">Add players</string>
-    <string name="team_header">Team</string>
-    <string name="create_match_header">Match settings</string>
-    <string name="match_header">Match</string>
-
-    <string name="competition_name_empty_error">Name must not be empty!</string>
-    <string name="tournament_name_empty_error">Name must not be empty!</string>
-    <string name="point_config_error">Not all fields are properly filled!</string>
-    <string name="match_error">Not all fields are properly filled!</string>
     <string name="match_same_participants_error">Home and away teams cannot be same!</string>
 
-    <string name="header_overview">Overview</string>
-    <string name="header_tournaments_list">Tournaments</string>
-    <string name="header_players">Players</string>
-    <string name="header_teams">Teams</string>
-    <string name="header_standings">Standings</string>
-    <string name="header_matches">Matches</string>
-
-    <string name="generate_by_team_points">Generate by team points</string>
     <string name="generate_by_goals">Generate by goals</string>
     <string name="generate_by_wins">Generate by wins</string>
-    <string name="generate_randomly">Generate randomly</string>
 
-    <string name="add_single_match">Add single match</string>
-    <string name="add_round">Add round</string>
-    <string name="add_home_complete">Add players to home team</string>
-    <string name="add_away_complete">Add players to away team</string>
-    <string name="add_players_to_team">Add players to </string>
-    <string name="add_player_to">Add player to</string>
-    <string name="edit_stats">Edit stats</string>
 
     <string name="gp">GP</string>
     <string name="w">W</string>
@@ -63,17 +33,13 @@
     <string name="normal_time">Normal time</string>
     <string name="overtime">Overtime</string>
     <string name="shootouts">Shootouts</string>
-    <string name="set_all">Everything needs to be set!</string>
-    <string name="tour_not_deleted">Tournament is not empty, could not be deleted!</string>
+    <string name="set_all">All fields need to be set!</string>
     <string name="s">S</string>
     <string name="goals">Goals</string>
     <string name="assists">Assists</string>
     <string name="plus_minus_points">+/- points</string>
     <string name="saves">Saves</string>
-    <string name="player_cant_delete">Cannot delete, player registered somewhere!</string>
-    <string name="team_cant_delete">Cannot delete, team participates in a match!</string>
-    <string name="not_enough_teams">Not enough teams!</string>
-    <string name="shootouts_error">Shootuts are checked, match must not be draw!</string>
+    <string name="shootouts_error">Shootouts are checked, match must not be draw!</string>
     <string name="lot">L ot</string>
     <string name="lso">L so</string>
     <string name="wot">W ot</string>

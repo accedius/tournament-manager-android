@@ -135,7 +135,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                         break;
                     } else {
                         View v = getView();
-                        if(v != null) Snackbar.make(v, R.string.team_cant_delete, Snackbar.LENGTH_LONG).show();
+                        if(v != null) Snackbar.make(v, R.string.team_not_empty_error, Snackbar.LENGTH_LONG).show();
                     }
                 }
             }

@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_match">Přidat zápas</string>
-    <string name="add_players">Přidat hráče</string>
-    <string name="add_round">Přidat kolo</string>
     <string name="ballsLost">PM</string>
     <string name="ballsLostAvg">Prům. PM</string>
     <string name="ballsWon">VM</string>
     <string name="ballsWonAvg">Prům. VM</string>
-    <string name="competition_detail">Detail soutěže</string>
-    <string name="competition_settings">Nastavení soutěže</string>
-    <string name="delete">Smazat</string>
     <string name="draw">Remíza</string>
     <string name="draws">R</string>
-    <string name="edit">Editovat</string>
     <string name="loses">P</string>
     <string name="loss">Prohra</string>
-    <string name="match_detail">Zápas</string>
-    <string name="match_settings">Nastavení zápasu</string>
-    <string name="matches">Zápasy</string>
-    <string name="overview">Přehled</string>
     <string name="parse_number_error">Chyba při parsování hodnoty</string>
     <string name="points">B</string>
-    <string name="reset">Resetovat</string>
     <string name="rosters">Soupisky</string>
     <string name="score">Skóre</string>
     <string name="sets">Sety</string>
@@ -30,20 +18,14 @@
     <string name="setsWon">VS</string>
     <string name="setsWonAvg">Prům. VS</string>
     <string name="sets_error">Některé sety mají neplatné hodnoty, buď nevyplněné nebo remízu</string>
-    <string name="standings">Tabulka</string>
-    <string name="team_detail">Detail týmu</string>
-    <string name="teams">Týmy</string>
     <string name="tie_set">Set nemůže skončit remízou</string>
-    <string name="tournament_detail">Detail turnaje</string>
-    <string name="tournament_settings">Nastavení turnaje</string>
-    <string name="tournaments">Turnaje</string>
     <string name="win">Výhra</string>
     <string name="wins">V</string>
     <string name="winsPer">V%</string>
     <string name="zero_score">Skóre nemůže být záporné</string>
-    <string name="add_player_to">Přidat hráče do</string>
     <string name="sport_name">Squash</string>
     <string name="games_played">Z</string>
-    <string name="competition_name_empty_error">Název nesmí být prázdný!</string>
-    <string name="tournament_name_empty_error">Název nesmí být prázdný!</string>
+    <string name="generate_by_balls">Generovat podle míčků</string>
+    <string name="generate_by_sets">Generovat podle setů</string>
+    <string name="match_same_participants_error">Domácí a hostující účastník nesmí být stejní!</string>
 </resources>

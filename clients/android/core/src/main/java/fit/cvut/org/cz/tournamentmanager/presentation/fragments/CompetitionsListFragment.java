@@ -146,7 +146,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 } else {
                     View v = getView().findFocus();
                     if (v != null)
-                        Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_deleted, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
             }
         }

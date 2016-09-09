@@ -151,7 +151,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                     } else {
                         View v = getView();
                         if( v != null )
-                            Snackbar.make(v, R.string.tour_not_deleted, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(v, R.string.tournament_not_empty_error, Snackbar.LENGTH_LONG).show();
                     }
                     break;
                 }

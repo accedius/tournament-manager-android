@@ -1,30 +1,44 @@
 <resources>
     <string name="competition">Competition</string>
     <string name="competitions">Competitions</string>
+    <string name="competition_settings">Competition settings</string>
     <string name="tournament">Tournament</string>
+    <string name="tournaments">Tournaments</string>
+    <string name="tournament_settings">Tournament settings</string>
     <string name="team">Team</string>
     <string name="teams">Teams</string>
+    <string name="team_settings">Team settings</string>
+    <string name="match">Match</string>
+    <string name="matches">Matches</string>
+    <string name="match_settings">Match settings</string>
     <string name="player">Player</string>
     <string name="players">Players</string>
+    <string name="player_settings">Player settings</string>
+    <string name="standings">Standings</string>
+    <string name="overview">Overview</string>
+    <string name="point_configuration">Point configuration</string>
+    <string name="player_info">Player info</string>
 
     <string name="competitionType">Competition type</string>
     <string name="type_individuals">Individuals</string>
     <string name="type_teams">Teams</string>
 
+    <string name="ok">OK</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="finish">Finish</string>
+    <string name="edit_stats">Edit stats</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="restart">Restart</string>
+    <string name="generate_rosters">Generate rosters</string>
+    <string name="generate_by_team_points">Generate by team points</string>
+    <string name="generate_randomly">Generate randomly</string>
+
     <string name="home">Home</string>
     <string name="away">Away</string>
     <string name="match_sum">Matches played</string>
     <string name="tours_held">Tournaments held</string>
-
-    <string name="ok">OK</string>
-    <string name="save">Save</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
-    <string name="restart">Restart</string>
-    <string name="point_config">Configure point gain</string>
-    <string name="generate_rosters">Generate rosters</string>
-
     <string name="date">Date</string>
     <string name="to">To:\u0020</string>
     <string name="from">From:\u0020</string>
@@ -32,7 +46,6 @@
     <string name="email">E-mail</string>
     <string name="startDate">Start date</string>
     <string name="endDate">End date</string>
-    <string name="finish">Finish</string>
     <string name="note">Note</string>
     <string name="round">Round</string>
     <string name="period">Period</string>
@@ -40,10 +53,13 @@
     <string name="vs">vs.</string>
     <string name="set_nr">Set nr.</string>
 
+    <string name="add_match">Add single match</string>
+    <string name="add_round">Add round</string>
     <string name="add_player">Add player</string>
-
-    <string name="team_settings">Team settings</string>
-    <string name="add_match">Add match</string>
+    <string name="add_players">Add players</string>
+    <string name="add_player_to">Add player to</string>
+    <string name="add_players_home">Add players to home team</string>
+    <string name="add_players_away">Add players to away team</string>
 
     <string name="competition_created">Competition created.</string>
     <string name="tournament_created">Tournament created.</string>
@@ -51,14 +67,24 @@
     <string name="competitionNotFound">Competition not found.</string>
     <string name="tournamentNotFound">Tournament not found.</string>
 
+    <string name="name_empty_error">Name is empty!</string>
+    <string name="name_email_empty_error">Name and/or email is empty!</string>
+    <string name="not_all_fields_error">Not all fields are properly filled!</string>
+    <string name="not_enough_teams_error">Not enough teams!</string>
+
     <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>
     <string name="invalidParticipants">Participants cannot be the same!</string>
     <string name="invalidRoundPeriod">Round or period is not set!</string>
     <string name="tournament_id_invalid">You have to specify either competitionId or tournamentId.</string>
 
-    <string name="competition_not_deleted">Competition could not be deleted! It contains some tournaments or players.</string>
-    <string name="player_not_deleted">Player could not be deleted! Player is registered in some competitions.</string>
+    <string name="competition_not_empty_error">Competition could not be deleted! It contains some tournaments or players.</string>
+    <string name="tournament_not_empty_error">Tournament could not be deleted! It contains some matches, teams or players.</string>
+    <string name="player_not_empty_error">Player could not be deleted! Player is registered in some competitions.</string>
+    <string name="player_delete_from_competition_error">Player could not be deleted! Player is registered in some tournaments, teams or matches.</string>
+    <string name="player_delete_from_tournament_error">Player could not be deleted! Player is registered in some teams or matches.</string>
+    <string name="team_not_empty_error">Team could not be deleted! It is participated in some matches.</string>
+
     <string name="failGenerateRosters">Rosters could not be generated! No team exists or some team contains players.</string>
     <string name="failDeletePlayerFromTournament">Player is already in match or team and cannot be deleted.</string>
     <string name="failDeletePlayerFromCompetition">Player is already in tournament and cannot be deleted.</string>

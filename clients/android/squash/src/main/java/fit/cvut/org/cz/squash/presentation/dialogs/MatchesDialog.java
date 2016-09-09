@@ -39,7 +39,10 @@ public class MatchesDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setItems(new String[]{getString(R.string.edit), getString(R.string.delete), getString(R.string.reset)},
+        builder.setItems(new String[]{
+                getString(fit.cvut.org.cz.tmlibrary.R.string.edit),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.delete),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.restart)},
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -88,7 +88,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
         tournament_id = match.getTournamentId();
 
-        getActivity().setTitle(getResources().getString(R.string.match_header) + " – " +
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
                 match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
 
         if( intHomeScore == -1 && intAwayScore == -1) {

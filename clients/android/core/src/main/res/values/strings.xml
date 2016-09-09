@@ -1,14 +1,9 @@
 <resources>
-    <string name="app_name">TournamentManager</string>
+    <string name="app_name" translatable="false">TournamentManager</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
-
-    <string name="player_settings">Player settings</string>
-    <string name="player_detail_header">Player info</string>
 
     <string name="player_cp_authority" translatable="false">fit.cvut.org.cz.tournamentmanager.data</string>
 
     <string name="openDrawer" translatable="false">drawer_open_action</string>
     <string name="closeDrawer" translatable="false">drawer_close_action</string>
-
-    <string name="player_name_email_empty_error">Name and email must not be empty!</string>
 </resources>

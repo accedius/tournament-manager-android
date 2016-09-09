@@ -126,7 +126,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
                final long tourId = getArguments().getLong(ARG_ID, -1);
 
                if( !((ShowTournamentActivity)getActivity()).isEnoughTeams() ){
-                   Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.not_enough_teams, Snackbar.LENGTH_LONG).show();
+                   Snackbar.make(getActivity().findViewById(android.R.id.content), fit.cvut.org.cz.tmlibrary.R.string.not_enough_teams_error, Snackbar.LENGTH_LONG).show();
                    return;
                }
 

@@ -221,6 +221,14 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:
+                    if(intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK){
+                        sendForData = true;
+                        askForData();
+                        break;
+                    } else {
+                        View v = getView();
+                        if( v != null ) Snackbar.make(v, R.string.player_delete_from_competition_error, Snackbar.LENGTH_LONG).show();
+                    }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT: {
                     if(intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK){
                         sendForData = true;
@@ -228,7 +236,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                         break;
                     } else {
                         View v = getView();
-                        if( v != null ) Snackbar.make(v, R.string.player_cant_delete, Snackbar.LENGTH_LONG).show();
+                        if( v != null ) Snackbar.make(v, R.string.player_delete_from_tournament_error, Snackbar.LENGTH_LONG).show();
                     }
                 }
             }
