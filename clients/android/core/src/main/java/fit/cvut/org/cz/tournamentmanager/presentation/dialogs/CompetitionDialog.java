@@ -18,7 +18,8 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  * Created by kevin on 14. 4. 2016.
  */
 public class CompetitionDialog extends DialogFragment {
-    public static final String ACTION_ID = "competition_dialog_action";
+    public static final String ARG_POSITION = "arg_position";
+    public static final String ACTION_DELETE_COMPETITION = "action_delete_competition";
 
     // TODO všude kde je supplyListener vracející null je vhodné to využít!
     private Long competition_id;
@@ -44,7 +45,8 @@ public class CompetitionDialog extends DialogFragment {
                             break;
                         }
                         case 1: {
-                            Intent intent = CompetitionService.getStartIntent(ACTION_ID, package_name, competition_id.toString(), getContext());
+                            Intent intent = CompetitionService.getStartIntent(ACTION_DELETE_COMPETITION, package_name, competition_id.toString(), getContext());
+                            intent.putExtra(CompetitionService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
                             getContext().startService(intent);
                             dialog.dismiss();
                             break;
@@ -55,12 +57,16 @@ public class CompetitionDialog extends DialogFragment {
         };
     }
 
-    public static CompetitionDialog newInstance(long competitionId, String name, String package_name, String activity_create_competition) {
+    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String activity_create_competition) {
         CompetitionDialog fragment = new CompetitionDialog();
         fragment.competition_id = competitionId;
         fragment.competition_name = name;
         fragment.package_name = package_name;
         fragment.activity_create_competition = activity_create_competition;
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_POSITION, position);
+        fragment.setArguments(args);
         return fragment;
     }
 

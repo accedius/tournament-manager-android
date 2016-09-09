@@ -23,12 +23,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_PACKAGE = "extra_package";
     public static final String EXTRA_COMPETITION = "extra_competition";
     public static final String EXTRA_RESULT= "extra_result";
+    public static final String EXTRA_POSITION= "extra_position";
     public static final String EXTRA_CONTENT = "extra_content";
     public static final String EXTRA_TYPE= "extra_type";
-    public static final String EXTRA_DELETE= "extra_delete";
-
-    public static final String ACTION_GET_ALL = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_all";
-    public static final String ACTION_DELETE = "fit.cvut.org.cz.tournamentmanager.presentation.services.delete";
+    public static final String EXTRA_DELETE= "extra_delete";;
 
     public CompetitionService() {
         super("Competition Service");
@@ -90,9 +88,11 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         Log.d("COMP_SRVC", "Do work, action: "+action);
 
         Intent result = new Intent(action);
-        if (action.equals(CompetitionDialog.ACTION_ID)) {
+        result.putExtra(EXTRA_PACKAGE, package_name);
+        if (action.equals(CompetitionDialog.ACTION_DELETE_COMPETITION)) {
             result.putExtra(EXTRA_TYPE, EXTRA_DELETE);
             result.putExtra(EXTRA_RESULT, deleteCompetition(package_name, Long.parseLong(content)));
+            result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
         } else {
             result.putExtra(EXTRA_TYPE, EXTRA_COMPETITION);
             result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, content));

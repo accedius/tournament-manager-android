@@ -2,7 +2,6 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,10 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -60,7 +56,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected AbstractListAdapter getAdapter() {
         return new CompetitionAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long competitionId, int position, final String name) {
+            protected void setOnClickListeners(View v, final long competitionId, final int position, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -76,7 +72,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, name, package_name, activity_create_competition);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, activity_create_competition);
                         dialog.setTargetFragment(CompetitionsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
@@ -102,7 +98,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(this.action);
-        filter.addAction(CompetitionDialog.ACTION_ID);
+        filter.addAction(CompetitionDialog.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
     }
 
@@ -133,19 +129,20 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     public class CompetitionsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (!package_name.equals(intent.getStringExtra(CompetitionService.EXTRA_PACKAGE))) {
+                return;
+            }
             String type = intent.getStringExtra(CompetitionService.EXTRA_TYPE);
 
             contentView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
             if (type.equals(CompetitionService.EXTRA_COMPETITION)) {
                 CompetitionsListFragment.super.bindDataOnView(intent);
-                progressBar.setVisibility(View.GONE);
             } else if (type.equals(CompetitionService.EXTRA_DELETE)) {
                 boolean result = intent.getBooleanExtra(CompetitionService.EXTRA_RESULT, true);
                 if (result) {
-                    contentView.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-                    // TODO možné řešení problému s načtením soupisek po jejich vygenerování
-                    askForData();
+                    int position = intent.getIntExtra(CompetitionService.EXTRA_POSITION, -1);
+                    adapter.delete(position);
                 } else {
                     View v = getView().findFocus();
                     if (v != null)
