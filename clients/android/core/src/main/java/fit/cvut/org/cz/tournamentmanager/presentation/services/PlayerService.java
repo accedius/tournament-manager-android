@@ -2,12 +2,19 @@ package fit.cvut.org.cz.tournamentmanager.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.CPConstants;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
 
@@ -21,7 +28,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_PLAYER = "extra_player";
     public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_PACKAGES = "extra_packages";
+    public static final String EXTRA_POSITION = "extra_position";
+    public static final String EXTRA_RESULT = "extra_result";
 
+    public static final String ACTION_DELETE = "fit.cvut.org.cz.tournamentmanager.presentation.services.delete_player";
     public static final String ACTION_CREATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.new_player";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_player_by_id";
     public static final String ACTION_GET_ALL = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_all_players";
@@ -31,10 +41,22 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         super("Player Service");
     }
 
+    private boolean existsCompetitionsForPlayer(String package_name, String content) {
+        String uri = "content://"+package_name+".data/"+content;
+        Uri myUri = Uri.parse(uri);
+        Cursor cur = getContentResolver().query(myUri, null, null, null, null);
+        if (cur == null)
+            return false;
+
+        if (cur.getCount() > 0)
+            return true;
+
+        return false;
+    }
+
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
         intent.putExtra(EXTRA_ACTION, action);
-        Log.d("PlayerSRVC", "action:"+action);
         return intent;
     }
 
@@ -46,7 +68,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     @Override
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(EXTRA_ACTION);
-        Log.d("PlayerSRVC", "do_work:"+action);
 
         switch (action){
             case ACTION_CREATE:{
@@ -63,13 +84,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_GET_BY_ID:{
-                Log.d("PlayerService", "Received, id: " + intent.getLongExtra(EXTRA_ID, -1));
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
                 Player p = ManagersFactory.getInstance().playerManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
-                Log.d("PlayerService", "Answering with player "+p.getName());
                 result.putExtra(EXTRA_PLAYER, p);
-                Log.d("PlayerService", "Player set to: "+EXTRA_PLAYER);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
@@ -77,6 +95,27 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 Player p = intent.getParcelableExtra(EXTRA_PLAYER);
                 ManagersFactory.getInstance().playerManager.update(this, p);
                 break;
+            }
+            case ACTION_DELETE: {
+                Intent result = new Intent(action);
+                Long playerId = intent.getLongExtra(EXTRA_ID, -1);
+                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                boolean deleted = true;
+                ArrayList<ApplicationInfo> sport_packages = intent.getParcelableArrayListExtra(EXTRA_PACKAGES);
+                for (ApplicationInfo info : sport_packages) {
+                    String package_name = info.metaData.getString("package_name");
+                    if (existsCompetitionsForPlayer(package_name, CPConstants.uCompetitionsByPlayer+playerId)) {
+                        deleted = false;
+                        break;
+                    }
+                }
+
+                if (deleted)
+                    ManagersFactory.getInstance().playerManager.delete(this, playerId);
+
+                result.putExtra(EXTRA_POSITION, position);
+                result.putExtra(EXTRA_RESULT, deleted);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }
         }
     }

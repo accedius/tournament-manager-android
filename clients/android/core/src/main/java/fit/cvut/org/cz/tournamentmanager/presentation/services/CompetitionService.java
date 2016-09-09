@@ -85,7 +85,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
         String content = intent.getStringExtra(EXTRA_CONTENT);
         String action = intent.getStringExtra(EXTRA_ACTION);
-        Log.d("COMP_SRVC", "Do work, action: "+action);
 
         Intent result = new Intent(action);
         result.putExtra(EXTRA_PACKAGE, package_name);

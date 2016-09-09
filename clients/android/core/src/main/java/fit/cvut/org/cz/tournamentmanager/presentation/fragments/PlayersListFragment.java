@@ -1,10 +1,13 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -26,7 +29,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class PlayersListFragment extends AbstractListFragment<Player> {
-
     ArrayList<ApplicationInfo> sport_packages;
 
     private String package_name = "fit.cvut.org.cz.tournamentmanager";
@@ -68,7 +70,10 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_ALL));
+        receiver = new PlayersListReceiver();
+        IntentFilter filter = new IntentFilter(PlayerService.ACTION_GET_ALL);
+        filter.addAction(PlayerService.ACTION_DELETE);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
     }
 
     @Override
@@ -80,7 +85,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     protected AbstractListAdapter getAdapter() {
         return new PlayerAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long playerId, final String name) {
+            protected void setOnClickListeners(View v, final long playerId, final int position, final String name) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -115,8 +120,11 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                                 break;
                                             }
                                             case 1:{
-                                                //TODO Delete not implemented yet
-                                                Snackbar.make(fw, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
+                                                Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE, getContext());
+                                                intent.putExtra(PlayerService.EXTRA_ID, playerId);
+                                                intent.putExtra(PlayerService.EXTRA_POSITION, position);
+                                                intent.putParcelableArrayListExtra(PlayerService.EXTRA_PACKAGES, sport_packages);
+                                                getContext().startService(intent);
                                             }
                                         }
                                         dialog.dismiss();
@@ -142,4 +150,29 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     }
 
 
+
+    public class PlayersListReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            contentView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            String action = intent.getAction();
+            switch (action) {
+                case PlayerService.ACTION_GET_ALL:
+                    PlayersListFragment.super.bindDataOnView(intent);
+                    break;
+                case PlayerService.ACTION_DELETE:
+                    boolean result = intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false);
+                    if (result) {
+                        int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
+                        adapter.delete(position);
+                    } else {
+                        View v = getView().findFocus();
+                        if (v != null)
+                            Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.player_not_deleted, Snackbar.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+    }
 }

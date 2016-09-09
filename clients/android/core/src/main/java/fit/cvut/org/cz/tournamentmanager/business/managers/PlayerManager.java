@@ -25,10 +25,7 @@ public class PlayerManager implements IPlayerManager {
 
     @Override
     public void delete(Context context, long id) {
-
-        //TODO delete only if player does not part in any competition etc.
-
-        //DAOFactory.getInstance().playerDAO.delete(context, id);
+        DAOFactory.getInstance().playerDAO.delete(context, id);
     }
 
     @Override
