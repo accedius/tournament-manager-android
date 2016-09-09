@@ -70,7 +70,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
-            if( scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId() ) {
+            if (scoredMatch.getId() == -1 && scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId() ) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
