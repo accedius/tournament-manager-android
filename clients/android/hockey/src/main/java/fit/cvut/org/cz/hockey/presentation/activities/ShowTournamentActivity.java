@@ -127,13 +127,13 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (tournamentID == -1) break;
-                Intent intent = CreateTournamentActivity.newStartIntent( this, tournamentID, competitionID );
+                Intent intent = CreateTournamentActivity.newStartIntent(this, tournamentID, competitionID);
                 startActivity(intent);
                 break;
             }
             case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
                 Intent intent = TournamentConfigurationActivity.newStartIntent(this, tournamentID);
-                startActivity( intent );
+                startActivity(intent);
                 break;
             }
             case GEN_ROSTER_ID:{

@@ -64,8 +64,7 @@ public class TeamManager implements ITeamManager {
         ArrayList<DTeam> dts = DAOFactory.getInstance().teamDAO.getByTournamentId( context, tournamentId );
         ArrayList<Team> ts = new ArrayList<>();
 
-        for( DTeam i : dts )
-        {
+        for( DTeam i : dts ) {
             Team t = new Team(i);
             t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, t.getId()));
             ts.add(t);

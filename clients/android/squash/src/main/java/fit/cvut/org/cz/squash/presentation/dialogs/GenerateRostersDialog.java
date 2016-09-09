@@ -22,7 +22,6 @@ public class GenerateRostersDialog extends DialogFragment {
 
     public static GenerateRostersDialog newInstance( long competitionId, long tournamentId) {
         GenerateRostersDialog fragment = new GenerateRostersDialog();
-
         Bundle b = new Bundle();
         b.putLong(ARG_COMP_ID, competitionId);
         b.putLong(ARG_TOUR_ID, tournamentId);
@@ -42,15 +41,11 @@ public class GenerateRostersDialog extends DialogFragment {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    default:
-                        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
-                        intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
-                        intent.putExtra(TournamentService.EXTRA_TOURNAMENT, getArguments().getLong(ARG_TOUR_ID));
-                        intent.putExtra(TournamentService.EXTRA_GENERATING_TYPE, which);
-                        getContext().startService(intent);
-                        break;
-                }
+                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
+                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
+                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, getArguments().getLong(ARG_TOUR_ID));
+                intent.putExtra(TournamentService.EXTRA_GENERATING_TYPE, which);
+                getContext().startService(intent);
                 dialog.dismiss();
             }
         });
