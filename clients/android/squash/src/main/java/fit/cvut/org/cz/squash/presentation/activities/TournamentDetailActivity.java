@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -104,11 +105,15 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
-                    TeamsListFragment fr = (TeamsListFragment)adapter.getItem(pager.getCurrentItem());
-                    fr.customOnResume();
+                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false) == false) {
+                    Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.failGenerateRosters), Snackbar.LENGTH_LONG).show();
                 } else {
-                    pager.setCurrentItem(TEAMS_LIST_POSITION);
+                    if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
+                        TeamsListFragment fr = (TeamsListFragment) adapter.getItem(pager.getCurrentItem());
+                        fr.customOnResume();
+                    } else {
+                        pager.setCurrentItem(TEAMS_LIST_POSITION);
+                    }
                 }
             }
         };

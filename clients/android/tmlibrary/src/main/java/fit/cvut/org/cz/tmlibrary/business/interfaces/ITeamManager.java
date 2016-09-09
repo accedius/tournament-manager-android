@@ -55,7 +55,8 @@ public interface ITeamManager {
      * @param competitionId id of the competition
      * @param tournamentId id of the tournament
      * @param generatingType type of stat for generating balanced rosters
+     * @return boolean true if succeeded, false if failed
      */
-    void generateRosters(Context context, long competitionId, long tournamentId, int generatingType);
+    boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType);
 
 }

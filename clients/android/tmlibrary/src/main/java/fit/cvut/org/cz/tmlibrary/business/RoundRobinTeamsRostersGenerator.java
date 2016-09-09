@@ -17,13 +17,13 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
  */
 public class RoundRobinTeamsRostersGenerator implements ITeamsRostersGenerator {
     @Override
-    public void generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats) {
+    public boolean generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats) {
         if (teams.isEmpty())
-            return;
+            return false;
 
         for (Team t : teams)
             if (!t.getPlayers().isEmpty())
-                return;
+                return false;
 
         Collections.shuffle(teams, new Random(System.nanoTime()));
         int team_index = 0;
@@ -48,5 +48,7 @@ public class RoundRobinTeamsRostersGenerator implements ITeamsRostersGenerator {
                 team_index--;
             }
         }
+
+        return true;
     }
 }

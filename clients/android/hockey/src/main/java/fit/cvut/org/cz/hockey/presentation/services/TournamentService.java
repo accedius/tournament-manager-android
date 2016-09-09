@@ -135,11 +135,13 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GENERATE_ROSTERS: {
                 Intent result = new Intent(action);
-                ManagerFactory.getInstance().teamManager.generateRosters(
+                boolean res = ManagerFactory.getInstance().teamManager.generateRosters(
                         this,
                         intent.getLongExtra(EXTRA_ID, -1),
                         intent.getLongExtra(EXTRA_TOURNAMENT, -1),
                         intent.getIntExtra(EXTRA_GENERATING_TYPE, -1));
+
+                result.putExtra(EXTRA_RESULT, res);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }

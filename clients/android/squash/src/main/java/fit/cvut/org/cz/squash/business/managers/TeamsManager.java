@@ -63,7 +63,7 @@ public class TeamsManager implements ITeamManager {
     }
 
     @Override
-    public void generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
+    public boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
         ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
         ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByCompetitionId(context, competitionId);
@@ -87,9 +87,11 @@ public class TeamsManager implements ITeamManager {
         }
 
         ITeamsRostersGenerator teamsRostersGenerator = new RoundRobinTeamsRostersGenerator();
-        teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
+        boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
             ManagersFactory.getInstance().playerManager.updatePlayersInTeam( context, t.getId(), t.getPlayers());
+
+        return res;
     }
 }

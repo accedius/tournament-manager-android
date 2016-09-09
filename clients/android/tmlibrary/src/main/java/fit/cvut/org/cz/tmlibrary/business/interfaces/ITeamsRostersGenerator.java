@@ -16,5 +16,5 @@ public interface ITeamsRostersGenerator {
      * @param players hashmap of player ids and players
      * @param stats map of players id and stat for balanced rosters
      */
-    void generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats);
+    boolean generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats);
 }
