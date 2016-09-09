@@ -29,7 +29,6 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         Intent intent = new Intent(context, CreateMatchActivity.class);
         intent.putExtra(EXTRA_TOURNAMENT_ID, tournamentId);
         intent.putExtra(EXTRA_MATCH_ID, id);
-
         return intent;
     }
 

@@ -56,8 +56,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
      * @param matchId - id of the match to be shown
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long matchId )
-    {
+    public static Intent newStartIntent( Context context, long matchId ) {
         Intent intent = new Intent( context, ShowMatchActivity.class);
         Bundle b = new Bundle();
 
@@ -70,7 +69,6 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         matchId = getIntent().getExtras().getLong(MATCH_ID);
 
         titles = new String[]{ getString(R.string.header_overview), getString(R.string.header_players) };
@@ -81,15 +79,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
         super.onCreate(savedInstanceState);
 
         adapter = (DefaultViewPagerAdapter)getAdapter(getSupportFragmentManager());
-
         pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
-
         tabLayout.setupWithViewPager(pager);
-
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     }
@@ -97,14 +92,11 @@ public class ShowMatchActivity extends AbstractTabActivity {
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
         PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
-
-
         return res;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_match, menu);
         return true;
     }
