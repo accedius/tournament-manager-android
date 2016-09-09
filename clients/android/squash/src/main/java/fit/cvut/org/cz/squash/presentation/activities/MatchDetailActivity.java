@@ -68,14 +68,13 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_finish, menu);
+        getMenuInflater().inflate(R.menu.menu_match, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish){
+        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             SquashMatchOverviewFragment fr  = (SquashMatchOverviewFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
             if (fr !=null){
                 ArrayList<SetRowItem> list = fr.getSetsFragment().getSets();
@@ -123,6 +122,10 @@ public class MatchDetailActivity extends AbstractTabActivity {
             }
             finish();
             return true;
+        } else if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_edit) {
+            SquashMatchOverviewFragment fr = (SquashMatchOverviewFragment) adapter.getItem(0);
+            Intent intent = CreateMatchActivity.newStartIntent(this, getIntent().getLongExtra(ARG_ID, -1), fr.getTournamentId());
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

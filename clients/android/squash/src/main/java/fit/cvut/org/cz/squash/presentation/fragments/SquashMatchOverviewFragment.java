@@ -30,6 +30,8 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
 
     private ScoredMatch match = null;
 
+    private Long tournament_id;
+
     public static SquashMatchOverviewFragment newInstance(long id, boolean played) {
         SquashMatchOverviewFragment fragment = new SquashMatchOverviewFragment();
         Bundle args = new Bundle();
@@ -54,6 +56,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
+        tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(R.string.match_detail) + " – " +
                 match.getHomeName() + " " +
@@ -92,5 +95,9 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
 
     public SetsFragment getSetsFragment() {
         return sf;
+    }
+
+    public Long getTournamentId() {
+        return tournament_id;
     }
 }

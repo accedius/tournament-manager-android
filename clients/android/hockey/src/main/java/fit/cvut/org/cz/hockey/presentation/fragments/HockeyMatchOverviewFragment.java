@@ -31,6 +31,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     private CheckBox overtime, shootouts;
     private int intHomeScore = -1, intAwayScore = -1;
     private int ot, so;
+    private Long tournament_id;
 
     private static String SAVE_HOME_SCORE = "save_home_score";
     private static String SAVE_AWAY_SCORE = "save_away_score";
@@ -85,6 +86,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
+        tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(R.string.match_header) + " – " +
                 match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
@@ -234,9 +236,12 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         });
     }
 
-    public MatchScore getScore()
-    {
+    public MatchScore getScore() {
         MatchScore res = new MatchScore( getArguments().getLong(ARG_ID), intHomeScore, intAwayScore, so != 0, ot != 0 );
         return res;
+    }
+
+    public Long getTournamentId() {
+        return tournament_id;
     }
 }

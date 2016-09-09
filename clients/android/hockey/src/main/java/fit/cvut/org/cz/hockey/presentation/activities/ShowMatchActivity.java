@@ -134,8 +134,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
             startService(intent);
 
             finish();
-        } else if(item.getItemId() == R.id.action_edit) {
+        } else if(item.getItemId() == R.id.action_edit_stats) {
             ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
+        } else if(item.getItemId() == R.id.action_edit) {
+            HockeyMatchOverviewFragment fr = (HockeyMatchOverviewFragment) fragments[0];
+            Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
+            startActivity(intent);
         }
 
 

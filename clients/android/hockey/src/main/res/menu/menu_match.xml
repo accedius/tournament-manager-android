@@ -7,6 +7,10 @@
         android:title="@string/edit"
         android:icon="@drawable/ic_create_white_24dp"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_edit_stats"
+        android:title="@string/edit_stats"
+        android:icon="@drawable/ic_people_white_24dp"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_finish"
         android:title="@string/save"
         android:icon="@drawable/ic_save_white_24dp"
