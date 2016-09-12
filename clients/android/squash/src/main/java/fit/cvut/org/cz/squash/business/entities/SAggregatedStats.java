@@ -79,4 +79,25 @@ public class SAggregatedStats implements Parcelable {
         dest.writeDouble(matchWinRate);
         dest.writeDouble(setsWinRate);
     }
+
+    public double getStat(String key) {
+        switch (key) {
+            case "gp": return games_played;
+            case "p": return points;
+            case "w": return won;
+            case "l": return lost;
+            case "d": return draws;
+            case "w%": return matchWinRate;
+            case "sw": return setsWon;
+            case "sl": return setsLost;
+            case "swavg": return setsWonAvg;
+            case "slavg": return setsLostAvg;
+            case "s%": return setsWinRate;
+            case "bw": return ballsWon;
+            case "bl": return ballsLost;
+            case "bwavg": return ballsWonAvg;
+            case "blavg": return ballsLostAvg;
+            default: return 0;
+        }
+    }
 }

@@ -13,6 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
@@ -45,6 +49,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
     private int requestCode = 0;
     private boolean sendForData = true;
     private AggregatedStatsAdapter adapter = null;
+    private String order = "";
 
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
@@ -93,7 +98,32 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 break;
             default: break;
         }
+    }    public void orderData(final String stat) {
+        if (adapter == null) return;
+
+        ArrayList<SAggregatedStats> stats = adapter.getData();
+        if (order.equals(stat)) {
+            order = stat+"_ASC";
+            Collections.sort(stats, new Comparator<SAggregatedStats>() {
+                @Override
+                public int compare(SAggregatedStats ls, SAggregatedStats rs) {
+                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                }
+            });
+        } else {
+            order = stat;
+            Collections.sort(stats, new Comparator<SAggregatedStats>() {
+                @Override
+                public int compare(SAggregatedStats ls, SAggregatedStats rs) {
+                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                }
+            });
+        }
+        adapter.swapData(stats);
+        adapter.notifyDataSetChanged();
     }
+
+
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
