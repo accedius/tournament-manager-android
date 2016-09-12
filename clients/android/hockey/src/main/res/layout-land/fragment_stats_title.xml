@@ -12,90 +12,105 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
+                android:id="@+id/stats_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="left|center_vertical"
                 android:layout_weight="3"
                 android:text="@string/name"/>
             <TextView
+                android:id="@+id/stats_games_played"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/gp"/>
             <TextView
+                android:id="@+id/stats_goals"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/g"/>
             <TextView
+                android:id="@+id/stats_assists"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/a"/>
             <TextView
+                android:id="@+id/stats_points"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/p"/>
             <TextView
+                android:id="@+id/stats_plus_minus"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/pmp"/>
             <TextView
+                android:id="@+id/stats_saves"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/s"/>
             <TextView
+                android:id="@+id/stats_wins"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/w"/>
             <TextView
+                android:id="@+id/stats_draws"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/d"/>
             <TextView
+                android:id="@+id/stats_losses"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/l"/>
             <TextView
+                android:id="@+id/stats_team_points"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/tp"/>
             <TextView
+                android:id="@+id/stats_goals_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/ag"/>
             <TextView
+                android:id="@+id/stats_points_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/ap"/>
             <TextView
+                android:id="@+id/stats_plus_minus_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/apmp"/>
             <TextView
+                android:id="@+id/stats_team_points_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"

@@ -13,6 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
@@ -39,6 +43,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     public static final String SAVE_SEND = "SAVE_SEND";
 
     private boolean sendForData = true;
+    private String order = "";
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
@@ -46,7 +51,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         HockeyPlayersStatsFragment fragment = new HockeyPlayersStatsFragment();
         Bundle args = new Bundle();
 
-        if(forComp)
+        if (forComp)
             args.putLong(ARG_COMP_ID, id);
         else
             args.putLong(ARG_TOUR_ID, id);
@@ -67,18 +72,42 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             tournamentID = savedInstanceState.getLong(SAVE_TOUR_ID);
             competitionID = savedInstanceState.getLong(SAVE_COMP_ID);
             sendForData = savedInstanceState.getBoolean(SAVE_SEND);
         }
 
-        if( getArguments() != null ) {
+        if (getArguments() != null) {
             competitionID = getArguments().getLong(ARG_COMP_ID, -1);
             tournamentID = getArguments().getLong(ARG_TOUR_ID, -1);
         }
     }
 
+    public void orderData(final String stat) {
+        if (adapter == null) return;
+
+        ArrayList<AggregatedStatistics> stats = adapter.getData();
+        if (order.equals(stat)) {
+            order = stat+"_ASC";
+            Collections.sort(stats, new Comparator<AggregatedStatistics>() {
+                @Override
+                public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
+                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                }
+            });
+        } else {
+            order = stat;
+            Collections.sort(stats, new Comparator<AggregatedStatistics>() {
+                @Override
+                public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
+                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                }
+            });
+        }
+        adapter.swapData(stats);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     protected AbstractListAdapter getAdapter() {
@@ -109,7 +138,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         if( !sendForData ) return;
 
         Intent intent;
-        if( competitionID != -1 ) {
+        if (competitionID != -1) {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_COMP_ID, getContext());
             intent.putExtra(StatsService.EXTRA_ID, competitionID );
         } else {
@@ -134,7 +163,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     protected void registerReceivers() {
         IntentFilter filter;
 
-        if( competitionID != -1 ) {
+        if (competitionID != -1) {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_COMP_ID);
             filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION );
             filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION );

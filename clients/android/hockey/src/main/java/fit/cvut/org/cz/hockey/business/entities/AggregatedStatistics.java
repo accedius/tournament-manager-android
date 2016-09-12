@@ -189,4 +189,24 @@ public class AggregatedStatistics implements Parcelable {
             return 0;
         return losses/matches;
     }
+
+    public double getStat(String key) {
+        switch (key) {
+            case "gp": return getMatches();
+            case "g": return getGoals();
+            case "a": return getAssists();
+            case "p": return getPoints();
+            case "+-": return getPlusMinusPoints();
+            case "s": return getSaves();
+            case "w": return getWins();
+            case "d": return getDraws();
+            case "l": return getLosses();
+            case "tp": return getTeamPoints();
+            case "gavg": return getAvgGoals();
+            case "pavg": return getAvgPoints();
+            case "+-avg": return getAvgPlusMinus();
+            case "tpavg": return getAvgTeamPoints();
+            default: return 0;
+        }
+    }
 }
