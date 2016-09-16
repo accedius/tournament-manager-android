@@ -34,6 +34,12 @@
     <string name="generate_rosters">Generate rosters</string>
     <string name="generate_by_team_points">Generate by team points</string>
     <string name="generate_randomly">Generate randomly</string>
+    <string name="sort_players">Sort players</string>
+    <string name="sort_competitions">Sort competitions</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_email">Sort by email</string>
+    <string name="sort_by_start_date">Sort by start date</string>
+    <string name="sort_by_end_date">Sort by end date</string>
 
     <string name="home">Home</string>
     <string name="away">Away</string>

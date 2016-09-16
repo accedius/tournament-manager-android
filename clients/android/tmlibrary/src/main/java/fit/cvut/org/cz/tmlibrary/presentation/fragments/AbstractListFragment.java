@@ -66,12 +66,14 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
         return fragmentView;
     }
 
+    protected void afterBindData() {}
     protected FloatingActionButton getFAB(ViewGroup parent){return null;}
 
     @Override
     protected void bindDataOnView(Intent intent) {
         ArrayList<T> data = intent.getParcelableArrayListExtra(getDataKey());
         adapter.swapData(data);
+        afterBindData();
     }
 
     @Override

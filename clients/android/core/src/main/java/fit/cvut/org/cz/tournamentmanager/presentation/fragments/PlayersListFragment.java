@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -34,6 +35,9 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     private String package_name = "fit.cvut.org.cz.tournamentmanager";
     private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
     private String activity_detail_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
+
+    private String orderColumn = Player.col_name;
+    private String orderType = "ASC";
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
@@ -81,6 +85,35 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
+    public void orderData(final String type) {
+        if (adapter == null) return;
+
+        ArrayList<Player> players = adapter.getData();
+        if (orderColumn.equals(type) && orderType.equals("ASC")) {
+            orderType = "DESC";
+            Collections.sort(players, new Comparator<Player>() {
+                @Override
+                public int compare(Player ls, Player rs) {
+                    return rs.getColumn(type).compareToIgnoreCase(ls.getColumn(type));
+                }
+            });
+        } else {
+            if (!orderColumn.equals(type)) {
+                orderColumn = type;
+            }
+            orderType = "ASC";
+            Collections.sort(players, new Comparator<Player>() {
+                @Override
+                public int compare(Player ls, Player rs) {
+                    return ls.getColumn(type).compareToIgnoreCase(rs.getColumn(type));
+                }
+            });
+        }
+
+        adapter.swapData(players);
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     protected AbstractListAdapter getAdapter() {
         return new PlayerAdapter() {
@@ -101,8 +134,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick(final View v) {
-                        final View fw = v;
+                    public boolean onLongClick(View v) {
                         EditDeleteDialog dialog = new EditDeleteDialog() {
                             @Override
                             protected DialogInterface.OnClickListener supplyListener() {

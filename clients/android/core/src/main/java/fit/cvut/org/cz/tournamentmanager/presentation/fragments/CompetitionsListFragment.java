@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -124,6 +127,35 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             }
         });
         return fab;
+    }
+
+    @Override
+    protected void afterBindData() {
+        ArrayList<Competition> data = adapter.getData();
+        orderData(data, getArguments().getString("order_column"), getArguments().getString("order_type"));
+        adapter.swapData(data);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void orderData(ArrayList<Competition> data, final String column, final String order) {
+        if (adapter == null) return;
+
+        ArrayList<Competition> players = data;
+        if (order.equals("DESC")) {
+            Collections.sort(players, new Comparator<Competition>() {
+                @Override
+                public int compare(Competition ls, Competition rs) {
+                    return rs.getColumn(column).compareToIgnoreCase(ls.getColumn(column));
+                }
+            });
+        } else {
+            Collections.sort(players, new Comparator<Competition>() {
+                @Override
+                public int compare(Competition ls, Competition rs) {
+                    return ls.getColumn(column).compareToIgnoreCase(rs.getColumn(column));
+                }
+            });
+        }
     }
 
     public class CompetitionsListReceiver extends BroadcastReceiver {

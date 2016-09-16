@@ -89,7 +89,7 @@ public class PlayerDAO implements IPlayerDAO {
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String selection = String.format("select * from %s order by name asc", DBConstants.tPLAYERS);
+        String selection = String.format("select * from %s order by name collate nocase asc", DBConstants.tPLAYERS);
 
         Cursor c = db.rawQuery(selection, null);
         ArrayList<DPlayer> players = new ArrayList<>();

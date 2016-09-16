@@ -20,6 +20,9 @@ public class Player extends ShareBase implements Parcelable {
     private String email;
     private String note;
 
+    public static final String col_name = "name";
+    public static final String col_email = "email";
+
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Creator<Player> getCREATOR() {
@@ -155,6 +158,16 @@ public class Player extends ShareBase implements Parcelable {
 
         return id == player.id;
 
+    }
+
+    public String getColumn(String column) {
+        if (column.equals(col_name)) {
+            return getName();
+        } else if (column.equals(col_email)) {
+            return getEmail();
+        } else {
+            return "";
+        }
     }
 
     @Override

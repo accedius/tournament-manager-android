@@ -3,7 +3,6 @@ package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +43,13 @@ public class SportFragment extends Fragment {
         if (getChildFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
             CompetitionsListFragment clf = new CompetitionsListFragment();
             Bundle b = new Bundle();
+            // TODO zbytečné znovuopakování všech argumentů, lepší poslat celý getArguments znovu
             b.putString("package_name", package_name);
             b.putString("sport_name", sport_name);
             b.putString("activity_detail_competition", activity_detail_competition);
             b.putString("activity_create_competition", activity_create_competition);
+            b.putString("order_column", getArguments().getString("order_column"));
+            b.putString("order_type", getArguments().getString("order_type"));
             clf.setAction(clf.getAction() + "." + package_name);
             clf.setArguments(b);
             getChildFragmentManager()

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
@@ -17,6 +18,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Competition extends ShareBase implements Parcelable {
+
+    public final static String col_name = "name";
+    public final static String col_start_date = "start_date";
+    public final static String col_end_date = "end_date";
 
     private long id;
     private String name;
@@ -31,8 +36,6 @@ public class Competition extends ShareBase implements Parcelable {
         return new DCompetition(c.getId(), c.getName(), c.getStartDate(),
                 c.getEndDate(), c.getNote(), c.getType().id, c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized());
     }
-
-
 
     public Competition(long id, String uid, String name, Date startDate, Date endDate, String note, CompetitionType type) {
         this.id = id;
@@ -181,5 +184,21 @@ public class Competition extends ShareBase implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public String getColumn(String column) {
+        if (column.equals(col_name)) {
+            return getName();
+        } else if (column.equals(col_start_date)) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(startDate);
+            return Integer.toString(cal.get(Calendar.YEAR))+Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+        } else if (column.equals(col_end_date)) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(endDate);
+            return Integer.toString(cal.get(Calendar.YEAR))+Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+        } else {
+            return "";
+        }
     }
 }
