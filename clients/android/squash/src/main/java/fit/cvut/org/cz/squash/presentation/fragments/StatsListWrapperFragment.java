@@ -42,6 +42,7 @@ public class StatsListWrapperFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_stats_wrapper, container, false);
         setOrderingListeners(v);
+        setDefaultOrder(v);
         return v;
     }
 
@@ -54,8 +55,13 @@ public class StatsListWrapperFragment extends Fragment {
         }
     }
 
+    private void setDefaultOrder(View v) {
+        TextView points = (TextView)v.findViewById(R.id.tv_points_label);
+        points.setText(points.getText()+ " ▼");
+    }
+
     private void setOrderingListeners(View v) {
-        HashMap<String, TextView> columns = new HashMap<>();
+        final HashMap<String, TextView> columns = new HashMap<>();
         columns.put("gp",(TextView)v.findViewById(R.id.tv_games_played_label));
         columns.put("p", (TextView)v.findViewById(R.id.tv_points_label));
         columns.put("w", (TextView)v.findViewById(R.id.tv_wins_label));
@@ -77,7 +83,7 @@ public class StatsListWrapperFragment extends Fragment {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    statsFragment.orderData(e.getKey());
+                    statsFragment.orderData(e.getKey(), columns);
                 }
             });
         }

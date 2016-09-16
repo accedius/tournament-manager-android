@@ -12,10 +12,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
@@ -49,7 +51,8 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
     private int requestCode = 0;
     private boolean sendForData = true;
     private AggregatedStatsAdapter adapter = null;
-    private String order = "";
+    private String orderColumn = "p";
+    private String orderType = "DESC";
 
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
@@ -98,12 +101,19 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 break;
             default: break;
         }
-    }    public void orderData(final String stat) {
+    }
+
+    public void orderData(final String stat, HashMap<String, TextView> columns) {
         if (adapter == null) return;
 
+        TextView col = columns.get(orderColumn);
+        String text = (String) col.getText();
+        String originalText = text.substring(0, text.length()-2);
+        col.setText(originalText);
+
         ArrayList<SAggregatedStats> stats = adapter.getData();
-        if (order.equals(stat)) {
-            order = stat+"_ASC";
+        if (orderColumn.equals(stat) && orderType == "DESC") {
+            orderType = "ASC";
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
@@ -111,7 +121,10 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 }
             });
         } else {
-            order = stat;
+            if (!orderColumn.equals(stat)) {
+                orderColumn = stat;
+            }
+            orderType = "DESC";
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
@@ -119,6 +132,17 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 }
             });
         }
+
+        col = columns.get(stat);
+        text = (String) col.getText();
+        String addition = "";
+        if (orderType.equals("ASC")) {
+            addition = "▲";
+        } else if (orderType.equals("DESC")) {
+            addition = "▼";
+        }
+        col.setText(text + " " + addition);
+
         adapter.swapData(stats);
         adapter.notifyDataSetChanged();
     }
