@@ -12,10 +12,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
@@ -43,7 +45,8 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
     public static final String SAVE_SEND = "SAVE_SEND";
 
     private boolean sendForData = true;
-    private String order = "";
+    private String orderColumn = "p";
+    private String orderType = "DESC";
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
@@ -84,12 +87,17 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         }
     }
 
-    public void orderData(final String stat) {
+    public void orderData(final String stat, HashMap<String, TextView> columns) {
         if (adapter == null) return;
 
+        TextView col = columns.get(orderColumn);
+        String text = (String) col.getText();
+        String originalText = text.substring(0, text.length()-2);
+        col.setText(originalText);
+
         ArrayList<AggregatedStatistics> stats = adapter.getData();
-        if (order.equals(stat)) {
-            order = stat+"_ASC";
+        if (orderColumn.equals(stat) && orderType == "DESC") {
+            orderType = "ASC";
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
@@ -97,7 +105,10 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                 }
             });
         } else {
-            order = stat;
+            if (!orderColumn.equals(stat)) {
+                orderColumn = stat;
+            }
+            orderType = "DESC";
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
@@ -105,6 +116,17 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                 }
             });
         }
+
+        col = columns.get(stat);
+        text = (String) col.getText();
+        String addition = "";
+        if (orderType.equals("ASC")) {
+            addition = "▲";
+        } else if (orderType.equals("DESC")) {
+            addition = "▼";
+        }
+        col.setText(text + " " + addition);
+
         adapter.swapData(stats);
         adapter.notifyDataSetChanged();
     }

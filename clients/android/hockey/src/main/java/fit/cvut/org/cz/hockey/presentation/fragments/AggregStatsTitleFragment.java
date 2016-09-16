@@ -41,10 +41,8 @@ public class AggregStatsTitleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_stats_title, container, false);
-
-
         setOrderingListeners(v);
-
+        setDefaultOrder(v);
         return v;
     }
 
@@ -75,11 +73,17 @@ public class AggregStatsTitleFragment extends Fragment {
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
         if (fr != null && fr instanceof AbstractDataFragment){
             ((AbstractDataFragment) fr).customOnResume();
+            // TODO ((HockeyPlayersStatsFragment) fr). ... setDefaultOrder ! (zobrazit ▼ u bodu)
         }
     }
 
+    private void setDefaultOrder(View v) {
+        TextView points = (TextView)v.findViewById(R.id.stats_points);
+        points.setText(points.getText() + " ▼");
+    }
+
     private void setOrderingListeners(View v) {
-        HashMap<String, TextView> columns = new HashMap<>();
+        final HashMap<String, TextView> columns = new HashMap<>();
         columns.put("gp",(TextView)v.findViewById(R.id.stats_games_played));
         columns.put("g", (TextView)v.findViewById(R.id.stats_goals));
         columns.put("a", (TextView)v.findViewById(R.id.stats_assists));
@@ -100,7 +104,7 @@ public class AggregStatsTitleFragment extends Fragment {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    statsFragment.orderData(e.getKey());
+                    statsFragment.orderData(e.getKey(), columns);
                 }
             });
         }
