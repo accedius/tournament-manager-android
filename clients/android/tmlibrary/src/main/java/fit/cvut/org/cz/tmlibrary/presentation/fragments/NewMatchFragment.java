@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
@@ -174,7 +175,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private void bindMatchOnView( ScoredMatch match ) {
         Calendar argDate = Calendar.getInstance();
         if (match.getDate() != null){
-            mDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(match.getDate()));
+            mDate.setText(DateFormatter.getInstance().getDisplayDateFormat().format(match.getDate()));
             dDate = Calendar.getInstance();
             dDate.setTime(match.getDate());
             argDate = dDate;
@@ -227,7 +228,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            mDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
+                            mDate.setText(String.format("%d. %d. %d", dayOfMonth, monthOfYear + 1, year));
                             dDate = Calendar.getInstance();
                             dDate.set(Calendar.YEAR, year);
                             dDate.set(Calendar.MONTH, monthOfYear);

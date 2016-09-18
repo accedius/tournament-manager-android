@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 
@@ -19,6 +20,9 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class MatchDAO implements IMatchDAO {
+
+    private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
+    private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
     private ContentValues toContVal(DMatch match)
     {
@@ -32,10 +36,10 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cPLAYED, match.isPlayed());
         cv.put(DBConstants.cNOTE, match.getNote());
         if ( match.getDate() != null )
-            cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+            cv.put(DBConstants.cDATE, dateFormat.format(match.getDate()));
         if ( match.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(match.getLastSynchronized()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(match.getLastSynchronized()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
 
         return cv;
     }

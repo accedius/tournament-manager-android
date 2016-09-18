@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**

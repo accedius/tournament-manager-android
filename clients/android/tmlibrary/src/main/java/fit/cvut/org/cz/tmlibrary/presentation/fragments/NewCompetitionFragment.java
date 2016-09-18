@@ -26,6 +26,7 @@ import java.util.HashMap;
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -160,18 +161,19 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     private void bindCompetitionOnView(final Competition c){
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
         Calendar argStart = Calendar.getInstance();
         Calendar argEnd = Calendar.getInstance();
 
         name.setText(c.getName());
         if (c.getStartDate() != null){
-            startDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getStartDate()));
+            startDate.setText(dateFormat.format(c.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(c.getStartDate());
             argStart = dStartDate;
         }
         if (c.getEndDate() != null){
-            endDate.setText(new SimpleDateFormat("dd.MM.yyyy").format(c.getEndDate()));
+            endDate.setText(dateFormat.format(c.getEndDate()));
             dEndDate = Calendar.getInstance();
             dEndDate.setTime(c.getEndDate());
             argEnd = dEndDate;
@@ -197,7 +199,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            startDate.setText(String.format("%d.%d.%d", dayOfMonth, monthOfYear + 1, year));
+                            startDate.setText(String.format("%d. %d. %d", dayOfMonth, monthOfYear + 1, year));
                             dStartDate = Calendar.getInstance();
                             dStartDate.set(Calendar.YEAR, year);
                             dStartDate.set(Calendar.MONTH, monthOfYear);
@@ -222,7 +224,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            endDate.setText(String.format("%d.%d.%d",dayOfMonth, monthOfYear+1, year));
+                            endDate.setText(String.format("%d. %d. %d",dayOfMonth, monthOfYear+1, year));
                             dEndDate = Calendar.getInstance();
                             dEndDate.set(Calendar.YEAR, year);
                             dEndDate.set(Calendar.MONTH, monthOfYear);

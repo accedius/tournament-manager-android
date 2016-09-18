@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -28,7 +29,7 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
     @Override
     public void onBindViewHolder(CompetitionAdapter.CompetitionViewHolder holder, int position) {
         Competition competition = data.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
         holder.name.setText(competition.getName());
         holder.startDate.setVisibility(View.VISIBLE);

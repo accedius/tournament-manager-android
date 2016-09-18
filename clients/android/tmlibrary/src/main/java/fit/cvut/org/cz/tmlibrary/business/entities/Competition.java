@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,7 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 
 /**
@@ -30,7 +29,7 @@ public class Competition extends ShareBase implements Parcelable {
     private String note;
     private CompetitionType type;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
     public static DCompetition convertToDCompetition(Competition c){
         return new DCompetition(c.getId(), c.getName(), c.getStartDate(),

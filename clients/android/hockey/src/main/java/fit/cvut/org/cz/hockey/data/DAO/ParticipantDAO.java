@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 
@@ -19,6 +20,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
  * Created by atgot_000 on 18. 4. 2016.
  */
 public class ParticipantDAO implements IParticipantDAO {
+
+    private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
     private ContentValues toContVal(DParticipant participant)
     {
@@ -30,8 +33,8 @@ public class ParticipantDAO implements IParticipantDAO {
         cv.put(DBConstants.cMATCH_ID, participant.getMatchId());
         cv.put(DBConstants.cROLE, participant.getRole());
         if ( participant.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(participant.getLastSynchronized()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(participant.getLastSynchronized()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
 
         return cv;
     }

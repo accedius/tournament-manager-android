@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
@@ -21,7 +22,7 @@ public class Tournament extends ShareBase implements Parcelable {
     private Date endDate;
     private String note;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
     public static DTournament convertToDTournament(Tournament c){
 

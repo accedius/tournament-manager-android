@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
@@ -24,7 +25,7 @@ public class PlayerDAO implements IPlayerDAO {
         cv.put(DBConstants.cNAME, player.getName());
         cv.put(DBConstants.cEMAIL, player.getEmail());
         cv.put(DBConstants.cNOTE, player.getNote());
-        cv.put(DBConstants.cLASTMODIFIED, DateFormater.getInstance().getDateTimeFormat().format(new Date()));
+        cv.put(DBConstants.cLASTMODIFIED, DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
 
         return cv;
     }

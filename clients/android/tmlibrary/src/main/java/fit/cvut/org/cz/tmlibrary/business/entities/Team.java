@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
@@ -45,10 +45,10 @@ public class Team extends ShareBase implements Parcelable {
         try{
             String text = in.readString();
             if (text == null) lastModified = null;
-            else lastModified = DateFormatFactory.getInstance().getDateFormat().parse(text);
+            else lastModified = DateFormatter.getInstance().getDBDateFormat().parse(text);
             text = in.readString();
             if (text == null) lastSynchronized = null;
-            else lastSynchronized = DateFormatFactory.getInstance().getDateFormat().parse(text);
+            else lastSynchronized = DateFormatter.getInstance().getDBDateFormat().parse(text);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -82,9 +82,9 @@ public class Team extends ShareBase implements Parcelable {
         dest.writeTypedList(players);
         dest.writeLong(tournamentId);
         if (lastModified == null) dest.writeString(null);
-        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastModified));
+        else dest.writeString(DateFormatter.getInstance().getDBDateFormat().format(lastModified));
         if (lastSynchronized == null) dest.writeString(null);
-        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastSynchronized));
+        else dest.writeString(DateFormatter.getInstance().getDBDateFormat().format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
     }

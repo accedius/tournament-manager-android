@@ -5,14 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
-import fit.cvut.org.cz.tmlibrary.data.CursorParser;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.*;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
+
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 
 /** Provides implementation of interface over SQLite database
  * Created by Vaclav on 21. 4. 2016.
@@ -20,6 +21,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 public class MatchDAO implements IMatchDAO {
 
     private ContentValues convert(DMatch match){
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
+
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cROUND, match.getRound());
         cv.put(DBConstants.cPERIOD, match.getPeriod());
@@ -27,11 +30,11 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cTOURNAMENT_ID, match.getTournamentId());
         cv.put(DBConstants.cNOTE, match.getNote());
         if (match.getDate() != null)
-            cv.put(DBConstants.cDATE, DateFormatFactory.getInstance().getDateFormat().format(match.getDate()));
+            cv.put(DBConstants.cDATE, dateFormat.format(match.getDate()));
         cv.put(DBConstants.cUID, match.getUid());
         cv.put(DBConstants.cETAG, match.getEtag());
-        if (match.getLastModified() != null) cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastModified()));
-        if (match.getLastSynchronized() != null) cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateFormat().format(match.getLastSynchronized()));
+        if (match.getLastModified() != null) cv.put(DBConstants.cLASTMODIFIED, dateFormat.format(match.getLastModified()));
+        if (match.getLastSynchronized() != null) cv.put(DBConstants.cLASTSYNCHRONIZED, dateFormat.format(match.getLastSynchronized()));
 
         return cv;
     }

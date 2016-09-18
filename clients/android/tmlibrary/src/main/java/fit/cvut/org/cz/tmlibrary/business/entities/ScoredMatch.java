@@ -4,7 +4,7 @@ import android.os.Parcel;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
 /**
@@ -81,9 +81,9 @@ public class ScoredMatch extends Match {
         dest.writeLongArray(losersArray);
 
         if (lastModified == null) dest.writeString(null);
-        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastModified));
+        else dest.writeString(DateFormatter.getInstance().getDBDateFormat().format(lastModified));
         if (lastSynchronized == null) dest.writeString(null);
-        else dest.writeString(DateFormatFactory.getInstance().getDateFormat().format(lastSynchronized));
+        else dest.writeString(DateFormatter.getInstance().getDBDateFormat().format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
     }

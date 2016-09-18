@@ -15,9 +15,6 @@ public class DTournament extends DShareBase {
     private Date endDate;
     private String note;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-
     public DTournament(long id, String name, Date startDate, Date endDate, String note, String etag, String uid, Date lastModified, Date lastSynchronized, long competitionId) {
         this.id = id;
         this.name = name;

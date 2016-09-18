@@ -9,9 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
 
@@ -20,7 +20,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  */
 public class CompetitionDAO implements ICompetitionDAO {
 
-    private static SimpleDateFormat sdf = DateFormatFactory.getInstance().getDateFormat();
+    private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
+    private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
     private ContentValues toContVal(DCompetition competition)
     {
@@ -30,13 +31,13 @@ public class CompetitionDAO implements ICompetitionDAO {
         cv.put(DBConstants.cNAME, competition.getName());
         cv.put(DBConstants.cTYPE, competition.getType());
         if ( competition.getStartDate() != null )
-            cv.put(DBConstants.cSTART, sdf.format(competition.getStartDate()));
+            cv.put(DBConstants.cSTART, dateFormat.format(competition.getStartDate()));
         if ( competition.getEndDate() != null )
-            cv.put(DBConstants.cEND, sdf.format(competition.getEndDate()));
+            cv.put(DBConstants.cEND, dateFormat.format(competition.getEndDate()));
         cv.put(DBConstants.cNOTE, competition.getNote());
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
         if ( competition.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(competition.getLastSynchronized()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(competition.getLastSynchronized()));
 
         return cv;
     }

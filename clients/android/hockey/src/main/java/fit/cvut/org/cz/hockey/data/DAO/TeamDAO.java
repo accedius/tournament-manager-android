@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 
@@ -20,6 +21,9 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
  */
 public class TeamDAO implements ITeamDAO {
 
+    private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
+
+
     private ContentValues toContVal(DTeam team)
     {
         ContentValues cv = new ContentValues();
@@ -27,9 +31,9 @@ public class TeamDAO implements ITeamDAO {
         cv.put(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
         cv.put(DBConstants.cUID, team.getUid());
         cv.put(DBConstants.cETAG, team.getEtag());
-        cv.put(DBConstants.cLASTMODIFIED, DateFormatFactory.getInstance().getDateTimeFormat().format(new Date()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
         if ( team.getLastSynchronized() != null )
-            cv.put(DBConstants.cLASTSYNCHRONIZED, DateFormatFactory.getInstance().getDateTimeFormat().format(team.getLastSynchronized()));
+            cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(team.getLastSynchronized()));
 
         return cv;
     }

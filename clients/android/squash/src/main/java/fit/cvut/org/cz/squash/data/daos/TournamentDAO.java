@@ -15,6 +15,8 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+
 /**
  * Provides implementation of interface over SQLite database
  * Created by Vaclav on 29. 3. 2016.
@@ -23,16 +25,17 @@ public class TournamentDAO implements ITournamentDAO {
 
     private ContentValues serializeTournament(DTournament tournament) {
 
-        SimpleDateFormat format = DateFormater.getInstance().getFormat();
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
+        SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, tournament.getName());
         cv.put(DBConstants.cNOTE, tournament.getNote());
         if (tournament.getStartDate() != null)
-            cv.put(DBConstants.cSTART, format.format(tournament.getStartDate()));
+            cv.put(DBConstants.cSTART, dateFormat.format(tournament.getStartDate()));
         if (tournament.getEndDate() != null)
-            cv.put(DBConstants.cEND, format.format(tournament.getEndDate()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormater.getInstance().getDateTimeFormat().format(new Date()));
+            cv.put(DBConstants.cEND, dateFormat.format(tournament.getEndDate()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
         cv.put(DBConstants.cCOMPETITIONID, tournament.getCompetitionId());
 
         return cv;

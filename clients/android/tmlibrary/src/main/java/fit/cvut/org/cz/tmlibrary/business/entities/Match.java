@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatFactory;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
 /**
@@ -66,7 +66,7 @@ public class Match extends ShareBase {
         period = in.readInt();
         round = in.readInt();
 
-        SimpleDateFormat dateFormat = DateFormatFactory.getInstance().getDateFormat();
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
         try{
             String  text = in.readString();
@@ -114,7 +114,7 @@ public class Match extends ShareBase {
         dest.writeInt(period);
         dest.writeInt(round);
 
-        SimpleDateFormat dateFormat = DateFormatFactory.getInstance().getDateFormat();
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
         if (date == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(date));

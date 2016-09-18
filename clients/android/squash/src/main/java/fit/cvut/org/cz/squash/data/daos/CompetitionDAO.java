@@ -14,25 +14,26 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 /**
  * Provides implementation of interface over SQLite database
  * Created by Vaclav on 29. 3. 2016.
  */
 public class CompetitionDAO implements ICompetitionDAO {
 
+    SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
+    SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
+
     private ContentValues serializeCompetition(DCompetition competition) {
-
-        SimpleDateFormat format = DateFormater.getInstance().getFormat();
-
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, competition.getName());
         cv.put(DBConstants.cTYPE, competition.getType());
         cv.put(DBConstants.cNOTE, competition.getNote());
         if (competition.getStartDate() != null)
-            cv.put(DBConstants.cSTART, format.format(competition.getStartDate()));
+            cv.put(DBConstants.cSTART, dateFormat.format(competition.getStartDate()));
         if (competition.getEndDate() != null)
-            cv.put(DBConstants.cEND, format.format(competition.getEndDate()));
-        cv.put(DBConstants.cLASTMODIFIED, DateFormater.getInstance().getDateTimeFormat().format(new Date()));
+            cv.put(DBConstants.cEND, dateFormat.format(competition.getEndDate()));
+        cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
 
         return cv;
     }

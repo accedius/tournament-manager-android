@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 
 /**
@@ -27,7 +28,7 @@ public class TournamentAdapter extends AbstractListAdapter<Tournament, Tournamen
     @Override
     public void onBindViewHolder(TournamentAdapter.TournamentViewHolder holder, int position) {
         Tournament tournament = data.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
         holder.name.setText(tournament.getName());
         holder.startDate.setVisibility(View.VISIBLE);

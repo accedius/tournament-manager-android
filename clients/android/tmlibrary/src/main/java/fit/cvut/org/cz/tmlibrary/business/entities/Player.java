@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
@@ -23,7 +24,7 @@ public class Player extends ShareBase implements Parcelable {
     public static final String col_name = "name";
     public static final String col_email = "email";
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
     public static Creator<Player> getCREATOR() {
         return CREATOR;

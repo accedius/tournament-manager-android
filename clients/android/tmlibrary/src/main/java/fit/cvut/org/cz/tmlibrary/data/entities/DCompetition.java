@@ -15,8 +15,6 @@ public class DCompetition extends DShareBase {
     private String note;
     private int type;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     public DCompetition(long id, String name, Date startDate, Date endDate, String note, int type, String etag, String uid, Date lastModified, Date lastSynchronized) {
         this.id = id;
         this.name = name;

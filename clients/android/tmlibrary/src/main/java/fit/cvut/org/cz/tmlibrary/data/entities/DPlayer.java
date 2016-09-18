@@ -13,8 +13,6 @@ public class DPlayer extends DShareBase {
     private String email;
     private String note;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     public DPlayer(long id, String name, String email, String note, String etag, String uid, Date lastModified, Date lastSynchronized) {
         this.id = id;
         this.name = name;

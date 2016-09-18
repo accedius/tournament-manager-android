@@ -10,9 +10,9 @@ import android.widget.TextView;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 
 /**
@@ -92,13 +92,13 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.competition)+" – "+competition.getName());
 
-        DateFormat df = new SimpleDateFormat("dd. MM. yyyy");
+        DateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
         if (competition.getStartDate() != null)
-            start.setText(df.format(competition.getStartDate()));
+            start.setText(dateFormat.format(competition.getStartDate()));
 
         if (competition.getEndDate() != null)
-            end.setText(df.format(competition.getEndDate()));
+            end.setText(dateFormat.format(competition.getEndDate()));
 
         tourSum.setText(String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
