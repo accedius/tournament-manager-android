@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.data.entities;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**

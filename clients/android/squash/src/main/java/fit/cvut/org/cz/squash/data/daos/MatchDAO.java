@@ -9,11 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
-import fit.cvut.org.cz.tmlibrary.data.*;
+import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
-
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 
 /** Provides implementation of interface over SQLite database
  * Created by Vaclav on 21. 4. 2016.

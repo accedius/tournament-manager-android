@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

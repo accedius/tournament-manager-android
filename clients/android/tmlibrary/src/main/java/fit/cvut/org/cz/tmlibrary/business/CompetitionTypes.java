@@ -2,9 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business;
 
 import android.content.res.Resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fit.cvut.org.cz.tmlibrary.R;
 
 /**
