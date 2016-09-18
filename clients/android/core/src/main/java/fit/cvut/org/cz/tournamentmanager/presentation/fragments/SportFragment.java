@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,8 @@ import fit.cvut.org.cz.tournamentmanager.R;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class SportFragment extends Fragment {
-    private String sport_name;
-    private String package_name;
-    private String activity_create_competition;
-    private String activity_detail_competition;
+    private ApplicationInfo sport_package;
+    private String package_name = "";
 
     private TextView tv;
 
@@ -28,11 +27,9 @@ public class SportFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_sport_layout, container, false);
         tv = (TextView) v.findViewById(R.id.sport_name);
         Bundle b = getArguments();
-        sport_name = b.getString("sport_name");
-        package_name = b.getString("package_name");
-        activity_create_competition = b.getString("activity_create_competition");
-        activity_detail_competition = b.getString("activity_detail_competition");
-        tv.setText(sport_name);
+        sport_package = b.getParcelable("sport_package");
+        package_name = sport_package.metaData.getString("sport_name");
+        tv.setText(package_name);
         return v;
     }
 
@@ -43,11 +40,7 @@ public class SportFragment extends Fragment {
         if (getChildFragmentManager().findFragmentById(R.id.fragment_competitions_list) == null) {
             CompetitionsListFragment clf = new CompetitionsListFragment();
             Bundle b = new Bundle();
-            // TODO zbytečné znovuopakování všech argumentů, lepší poslat celý getArguments znovu
-            b.putString("package_name", package_name);
-            b.putString("sport_name", sport_name);
-            b.putString("activity_detail_competition", activity_detail_competition);
-            b.putString("activity_create_competition", activity_create_competition);
+            b.putParcelable("sport_package", sport_package);
             b.putString("order_column", getArguments().getString("order_column"));
             b.putString("order_type", getArguments().getString("order_type"));
             clf.setAction(clf.getAction() + "." + package_name);

@@ -27,14 +27,7 @@ public class SwipeAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         SportFragment sf = new SportFragment();
         Bundle b = new Bundle();
-
-        // TODO: 16.9.2016 snazší cesta než 4x putString:::  b.putParcelable("sport_package", sport_packages.get(position));
-
-        b.putString("sport_name", sport_packages.get(position).metaData.getString("sport_name"));
-        b.putString("package_name", sport_packages.get(position).metaData.getString("package_name"));
-        b.putString("activity_create_competition", sport_packages.get(position).metaData.getString("activity_create_competition"));
-        b.putString("activity_detail_competition", sport_packages.get(position).metaData.getString("activity_detail_competition"));
-
+        b.putParcelable("sport_package", sport_packages.get(position));
         b.putString("order_column", arguments.getString("order_column"));
         b.putString("order_type", arguments.getString("order_type"));
 

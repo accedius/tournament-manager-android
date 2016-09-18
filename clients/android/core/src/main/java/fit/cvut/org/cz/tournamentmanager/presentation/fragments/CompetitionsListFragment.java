@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,9 +49,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        package_name = getArguments().getString("package_name");
-        activity_create_competition = getArguments().getString("activity_create_competition");
-        activity_detail_competition = getArguments().getString("activity_detail_competition");
+        ApplicationInfo sport_package = getArguments().getParcelable("sport_package");
+        package_name = sport_package.metaData.getString("package_name");
+        activity_create_competition = sport_package.metaData.getString("activity_create_competition");
+        activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
