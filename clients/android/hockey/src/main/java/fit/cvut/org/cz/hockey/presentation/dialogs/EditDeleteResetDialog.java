@@ -20,23 +20,8 @@ public class EditDeleteResetDialog extends DialogFragment {
     private static final String ARG_TOUR_ID = "arg_tour_id";
     private static final String ARG_TITLE = "arg_title";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
-    public static EditDeleteResetDialog newInstance( long matchId, long tourId, String name ){
-        EditDeleteResetDialog fragment = new EditDeleteResetDialog();
-        Bundle args = new Bundle();
-        args.putLong(ARG_MATCH_ID, matchId);
-        args.putLong(ARG_TOUR_ID, tourId);
-        args.putString(ARG_TITLE, name);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete), getActivity().getString(R.string.restart) };
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch ( which ) {
@@ -60,7 +45,24 @@ public class EditDeleteResetDialog extends DialogFragment {
                 }
                 dialog.dismiss();
             }
-        });
+        };
+    }
+
+    public static EditDeleteResetDialog newInstance( long matchId, long tourId, String name ){
+        EditDeleteResetDialog fragment = new EditDeleteResetDialog();
+        Bundle args = new Bundle();
+        args.putLong(ARG_MATCH_ID, matchId);
+        args.putLong(ARG_TOUR_ID, tourId);
+        args.putString(ARG_TITLE, name);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete), getActivity().getString(R.string.restart) };
+        builder.setItems(items, supplyListener());
 
         builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();

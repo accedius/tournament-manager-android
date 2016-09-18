@@ -18,22 +18,8 @@ public class AddMatchDialog extends DialogFragment {
 
     private static final String ARG_TOUR_ID = "arg_tour_id";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
-    public static AddMatchDialog newInstance( long tourId ){
-        AddMatchDialog fragment = new AddMatchDialog();
-        Bundle args = new Bundle();
-        args.putLong(ARG_TOUR_ID, tourId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match), getActivity().getString(R.string.add_round) };
-
-        builder.setItems( items, new DialogInterface.OnClickListener(){
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -52,7 +38,23 @@ public class AddMatchDialog extends DialogFragment {
                 }
                 dialog.dismiss();
             }
-        });
+        };
+    }
+
+    public static AddMatchDialog newInstance( long tourId ){
+        AddMatchDialog fragment = new AddMatchDialog();
+        Bundle args = new Bundle();
+        args.putLong(ARG_TOUR_ID, tourId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match), getActivity().getString(R.string.add_round) };
+
+        builder.setItems( items, supplyListener());
 
         builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match));
         return builder.create();

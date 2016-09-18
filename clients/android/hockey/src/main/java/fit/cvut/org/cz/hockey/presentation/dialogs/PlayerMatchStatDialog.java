@@ -20,24 +20,8 @@ public class PlayerMatchStatDialog extends DialogFragment {
     public static final String ARG_HOME = "home";
     public static final String ARG_TITLE = "arg_title";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
-    public static PlayerMatchStatDialog newInstance( MatchPlayerStatistic statistic, int pos, boolean isHome, String name) {
-        PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
-        Bundle b = new Bundle();
-        b.putParcelable(ARG_DATA, statistic);
-        b.putBoolean(ARG_HOME, isHome);
-        b.putInt(ARG_POSITION, pos);
-        b.putString(ARG_TITLE, name);
-        fragment.setArguments(b);
-        return fragment;
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(R.string.edit_stats), getActivity().getString(R.string.delete) };
-        builder.setItems( items, new DialogInterface.OnClickListener(){
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -58,7 +42,25 @@ public class PlayerMatchStatDialog extends DialogFragment {
                 }
                 dialog.dismiss();
             }
-        });
+        };
+    }
+
+    public static PlayerMatchStatDialog newInstance( MatchPlayerStatistic statistic, int pos, boolean isHome, String name) {
+        PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
+        Bundle b = new Bundle();
+        b.putParcelable(ARG_DATA, statistic);
+        b.putBoolean(ARG_HOME, isHome);
+        b.putInt(ARG_POSITION, pos);
+        b.putString(ARG_TITLE, name);
+        fragment.setArguments(b);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        String[] items = new String[]{ getActivity().getString(R.string.edit_stats), getActivity().getString(R.string.delete) };
+        builder.setItems( items, supplyListener());
 
         builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();

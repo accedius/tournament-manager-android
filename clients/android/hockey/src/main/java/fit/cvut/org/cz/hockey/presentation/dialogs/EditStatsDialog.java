@@ -22,8 +22,6 @@ public class EditStatsDialog extends DialogFragment {
     public static final String ARG_POSITION = "arg_position";
     public static final String ARG_HOME = "arg_home";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
     private TextView goals, assists, plusMinusPoints, saves;
     private MatchPlayerStatistic stat;
 
@@ -39,9 +37,8 @@ public class EditStatsDialog extends DialogFragment {
 
     /**
      * Override this function to save the stats when dialog is closed
-     * @param statistic
      */
-    protected void saveStats( MatchPlayerStatistic statistic ) {
+    protected void saveStats() {
         ((HockeyMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ARG_HOME), getArguments().getInt(ARG_POSITION), stat);
     };
 
@@ -67,7 +64,7 @@ public class EditStatsDialog extends DialogFragment {
                 stat.setPlusMinusPoints(Integer.parseInt(plusMinusPoints.getText().toString()));
                 stat.setSaves( Integer.parseInt(saves.getText().toString()));
 
-                saveStats( stat );
+                saveStats();
                 dismiss();
             }
         });

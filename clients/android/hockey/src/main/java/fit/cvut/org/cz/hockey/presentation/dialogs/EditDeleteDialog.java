@@ -26,26 +26,8 @@ public class EditDeleteDialog extends DialogFragment {
     private static final String ARG_POSITION = "arg_position";
     private static final String SECOND_ID = "second_id";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
-    public static EditDeleteDialog newInstance( long id, long otherId, int position, String name ){
-        EditDeleteDialog fragment = new EditDeleteDialog();
-        Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putLong(SECOND_ID, otherId);
-        args.putInt(ARG_POSITION, position);
-        args.putString(ARG_TITLE, name);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    // TODO rozdělit na více stejných dialogů, zdědily by stejný newInstance, měly by rozdílný onCreateDialog
-    // alespoň by nebylo nutné používat instanceof
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Fragment fr = getTargetFragment();
@@ -85,7 +67,27 @@ public class EditDeleteDialog extends DialogFragment {
                     }
                 }
             }
-        });
+        };
+    }
+
+    public static EditDeleteDialog newInstance( long id, long otherId, int position, String name ){
+        EditDeleteDialog fragment = new EditDeleteDialog();
+        Bundle args = new Bundle();
+        args.putLong(ARG_ID, id);
+        args.putLong(SECOND_ID, otherId);
+        args.putInt(ARG_POSITION, position);
+        args.putString(ARG_TITLE, name);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    // TODO rozdělit na více stejných dialogů, zdědily by stejný newInstance, měly by rozdílný onCreateDialog
+    // alespoň by nebylo nutné používat instanceof
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
+        builder.setItems(items, supplyListener());
 
         builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();

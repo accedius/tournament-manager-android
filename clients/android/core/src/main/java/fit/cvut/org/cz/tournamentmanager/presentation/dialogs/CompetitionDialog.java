@@ -21,7 +21,6 @@ public class CompetitionDialog extends DialogFragment {
     public static final String ARG_POSITION = "arg_position";
     public static final String ACTION_DELETE_COMPETITION = "action_delete_competition";
 
-    // TODO všude kde je supplyListener vracející null je vhodné to využít!
     private Long competition_id;
     private String competition_name;
     private String package_name;

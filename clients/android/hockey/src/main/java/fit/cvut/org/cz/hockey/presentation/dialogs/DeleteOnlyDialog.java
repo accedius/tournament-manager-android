@@ -20,25 +20,8 @@ public class DeleteOnlyDialog extends DialogFragment {
     private static final String ARG_TOUR_ID = "arg_tour_id";
     private static final String ARG_TITLE = "arg_title";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
-
-    public static DeleteOnlyDialog newInstance( long playerId, long compId, long tourId, String name ){
-        DeleteOnlyDialog fragment = new DeleteOnlyDialog();
-        Bundle args = new Bundle();
-        args.putLong(ARG_PLAYER_ID, playerId);
-        args.putLong(ARG_COMP_ID, compId);
-        args.putLong(ARG_TOUR_ID, tourId);
-        args.putString(ARG_TITLE, name);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(R.string.delete) };
-        builder.setItems( items, new DialogInterface.OnClickListener(){
-
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if( which == 0 ){
@@ -56,7 +39,25 @@ public class DeleteOnlyDialog extends DialogFragment {
                 }
                 dismiss();
             }
-        });
+        };
+    }
+
+    public static DeleteOnlyDialog newInstance( long playerId, long compId, long tourId, String name ){
+        DeleteOnlyDialog fragment = new DeleteOnlyDialog();
+        Bundle args = new Bundle();
+        args.putLong(ARG_PLAYER_ID, playerId);
+        args.putLong(ARG_COMP_ID, compId);
+        args.putLong(ARG_TOUR_ID, tourId);
+        args.putString(ARG_TITLE, name);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        String[] items = new String[]{ getActivity().getString(R.string.delete) };
+        builder.setItems(items, supplyListener());
 
         builder.setTitle(getArguments().getString(ARG_TITLE));
         return builder.create();

@@ -18,7 +18,20 @@ public class GenerateRostersDialog extends DialogFragment {
     private static final String ARG_COMP_ID = "competition_id";
     private static final String ARG_TOUR_ID = "tournament_id";
 
-    protected DialogInterface.OnClickListener supplyListener() { return null;}
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
+                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
+                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, getArguments().getLong(ARG_TOUR_ID));
+                intent.putExtra(TournamentService.EXTRA_GENERATING_TYPE, which);
+                getContext().startService(intent);
+                dialog.dismiss();
+            }
+        };
+    }
 
     public static GenerateRostersDialog newInstance( long competitionId, long tournamentId) {
         GenerateRostersDialog fragment = new GenerateRostersDialog();
@@ -37,18 +50,7 @@ public class GenerateRostersDialog extends DialogFragment {
         items[TournamentService.GENERATE_BY_SETS] = getActivity().getString(R.string.generate_by_sets);
         items[TournamentService.GENERATE_BY_BALLS] = getActivity().getString(R.string.generate_by_balls);
         items[TournamentService.GENERATE_RANDOMLY] = getActivity().getString(R.string.generate_randomly);
-        builder.setItems( items, new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
-                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
-                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, getArguments().getLong(ARG_TOUR_ID));
-                intent.putExtra(TournamentService.EXTRA_GENERATING_TYPE, which);
-                getContext().startService(intent);
-                dialog.dismiss();
-            }
-        });
+        builder.setItems( items, supplyListener());
 
         builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.generate_rosters));
         return builder.create();
