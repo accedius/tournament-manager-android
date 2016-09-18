@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
-import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.hockey.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -75,7 +75,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tourId, compId, position, name);
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
                         dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;

@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTeamActivity;
-import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HockeyInsertTeamDialog;
+import fit.cvut.org.cz.hockey.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -47,14 +47,13 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
     protected AbstractListAdapter getAdapter() {
         return new TeamAdapter(){
             @Override
-            protected void setOnClickListeners(View v, long teamId, final int position, final String name) {
+            protected void setOnClickListeners(View v, final long teamId, final int position, final String name) {
                 super.setOnClickListeners(v, teamId, position, name);
-                final long tid = teamId;
 
                 v.setOnClickListener( new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        Intent i = ShowTeamActivity.newStartIntent(getContext(), tid);
+                        Intent i = ShowTeamActivity.newStartIntent(getContext(), teamId);
                         startActivity(i);
                     }
                 });
@@ -62,7 +61,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                 v.setOnLongClickListener( new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(tid, -1, position, name);
+                        TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
                         dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;

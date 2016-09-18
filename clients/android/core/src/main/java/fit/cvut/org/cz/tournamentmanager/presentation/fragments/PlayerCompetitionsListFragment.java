@@ -67,7 +67,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                     public boolean onLongClick(final View v) {
                         EditDeleteDialog dialog = new EditDeleteDialog() {
                             @Override
-                            // TODO toto se možná posunde do EditDeleteDialogu!
+                            // TODO toto se možná posune do EditDeleteDialogu!
                             protected DialogInterface.OnClickListener supplyListener() {
                                 return  new DialogInterface.OnClickListener() {
                                     @Override
