@@ -78,7 +78,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     @Override
                     public boolean onLongClick(View v) {
                         CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, activity_create_competition);
-                        dialog.setTargetFragment(CompetitionsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }

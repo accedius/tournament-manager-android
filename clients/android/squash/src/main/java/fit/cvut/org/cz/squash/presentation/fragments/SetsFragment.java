@@ -80,7 +80,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
                     @Override
                     public boolean onLongClick(View v) {
                         AdapterDialog dialog = AdapterDialog.newInstance(position, 0, title);
-                        dialog.setTargetFragment(SetsFragment.this, 0);
                         dialog.show(getFragmentManager(), "DELETE_DIALOG");
                         return false;
                     }

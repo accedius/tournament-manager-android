@@ -93,7 +93,7 @@
     <string name="player_delete_from_tournament_error">Player could not be deleted! Player is registered in some teams or matches.</string>
     <string name="team_not_empty_error">Team could not be deleted! It is participated in some matches.</string>
 
-    <string name="failGenerateRosters">Rosters could not be generated! No team exists or some team contains players.</string>
+    <string name="failGenerateRosters">Rosters could not be generated! No team exists or some team already contains players.</string>
     <string name="failDeletePlayerFromTournament">Player is already in match or team and cannot be deleted.</string>
     <string name="failDeletePlayerFromCompetition">Player is already in tournament and cannot be deleted.</string>
     <string name="failDeleteTournament">Tournament already includes matches or players and cannot be deleted.</string>

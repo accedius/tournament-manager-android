@@ -142,10 +142,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 break;
             }
             case GEN_ROSTER_ID:{
-                Fragment parentFrag = adapter.getItem(pager.getCurrentItem());
                 GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionID, tournamentID);
-                dialog.setTargetFragment(parentFrag, 1);
-                dialog.show(parentFrag.getFragmentManager(), "GENERATE_ROSTERS_DIALOG");
+                dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
             }
         }

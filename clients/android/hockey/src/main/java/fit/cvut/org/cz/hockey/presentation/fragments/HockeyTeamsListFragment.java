@@ -62,7 +62,6 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                     @Override
                     public boolean onLongClick(View v) {
                         TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
-                        dialog.setTargetFragment(HockeyTeamsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "tag3");
                         return true;
                     }
@@ -108,7 +107,6 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
             @Override
             public void onClick(View v) {
                 InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(TOUR_ID), true, HockeyInsertTeamDialog.class);
-                dialog.setTargetFragment(HockeyTeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }
         });

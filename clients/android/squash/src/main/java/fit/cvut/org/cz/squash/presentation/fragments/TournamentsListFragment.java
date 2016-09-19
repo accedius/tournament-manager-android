@@ -92,7 +92,6 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                     @Override
                     public boolean onLongClick(final View v) {
                         TournamentsDialog dialog = TournamentsDialog.newInstance(getArguments().getLong(COMP_ID), tournamentId, position, name);
-                        dialog.setTargetFragment(TournamentsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
                         return false;

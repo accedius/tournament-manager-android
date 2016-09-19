@@ -61,7 +61,6 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                     @Override
                     public boolean onLongClick(final View v) {
                         MatchesDialog dialog = MatchesDialog.newInstance(match.getId(), match.getTournamentId(), position, title);
-                        dialog.setTargetFragment(MatchListFragment.this, 0);
                         dialog.show(getFragmentManager(), "EDIT_DELETE_RESET");
                         return false;
                     }

@@ -36,7 +36,7 @@ public class SortingPlayersDialog extends DialogFragment {
                         getResources().getString(R.string.sort_by_email)},
                 supplyListener());
 
-        builder.setTitle(getResources().getString(R.string.sort_competitions));
+        builder.setTitle(getResources().getString(R.string.sort_players));
         return builder.create();
     }
 }

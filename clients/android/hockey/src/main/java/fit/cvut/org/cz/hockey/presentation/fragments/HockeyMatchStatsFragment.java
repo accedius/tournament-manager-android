@@ -181,7 +181,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             @Override
             public void onClick(View v) {
                 HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
-                dialog.setTargetFragment(thisFragment, 1);
                 dialog.show(getFragmentManager(), "tag211");
             }
         });

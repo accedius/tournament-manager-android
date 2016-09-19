@@ -153,10 +153,8 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                 if (type.equals(CompetitionTypes.individuals()))
                     break;
 
-                Fragment parentFrag = adapter.getItem(pager.getCurrentItem());
                 GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionID, tournamentID);
-                dialog.setTargetFragment(parentFrag, 1);
-                dialog.show(parentFrag.getFragmentManager(), "GENERATE_ROSTERS_DIALOG");
+                dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 return true;
             }
         }

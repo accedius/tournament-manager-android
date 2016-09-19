@@ -185,7 +185,6 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     public boolean onLongClick(View v) {
                         final long id = getArguments().getLong(ARG_ID);
                         AggregatedStatsDialog dialog = AggregatedStatsDialog.newInstance(id, item.playerId, position, deleteAction, name);
-                        dialog.setTargetFragment(AggregatedStatsListFragment.this, 3);
                         dialog.show(getFragmentManager(), "DELETE_DD");
                         return false;
                     }

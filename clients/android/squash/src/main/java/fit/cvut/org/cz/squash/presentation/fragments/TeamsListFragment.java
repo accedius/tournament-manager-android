@@ -52,7 +52,6 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                     @Override
                     public boolean onLongClick(View v) {
                         TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
-                        dialog.setTargetFragment(TeamsListFragment.this, 0);
                         dialog.show(getFragmentManager(), "uberTag");
                         return true;
                     }
@@ -106,7 +105,6 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
             @Override
             public void onClick(View v) {
                 InsertTeamDialog dialog = SquashInsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, SquashInsertTeamDialog.class);
-                dialog.setTargetFragment(TeamsListFragment.this, 0);
                 dialog.show(getFragmentManager(), "dialog");
             }
 

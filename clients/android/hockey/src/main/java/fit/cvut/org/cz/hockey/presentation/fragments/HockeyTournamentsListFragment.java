@@ -98,7 +98,6 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                     @Override
                     public boolean onLongClick(View v) {
                         TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
-                        dialog.setTargetFragment(HockeyTournamentsListFragment.this, 1);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
