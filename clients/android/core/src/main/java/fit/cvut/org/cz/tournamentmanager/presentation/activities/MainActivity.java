@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -185,6 +187,23 @@ public class MainActivity extends AbstractToolbarActivity {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.exit_title)
+                    .setMessage(R.string.exit_text)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            finish();
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private DialogInterface.OnClickListener getSortingCompetitionsListener() {

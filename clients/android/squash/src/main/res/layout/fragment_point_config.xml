@@ -19,7 +19,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_wins"
                 android:inputType="numberSigned"
-                android:hint="@string/win"/>
+                android:hint="@string/win"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -29,7 +30,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_draws"
                 android:inputType="numberSigned"
-                android:hint="@string/draw"/>
+                android:hint="@string/draw"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -39,7 +41,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/tv_loss"
                 android:inputType="numberSigned"
-                android:hint="@string/loss"/>
+                android:hint="@string/loss"
+                android:selectAllOnFocus="true"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
     </ScrollView>

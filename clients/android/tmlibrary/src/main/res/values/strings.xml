@@ -99,4 +99,5 @@
     <string name="failDeleteTournament">Tournament already includes matches or players and cannot be deleted.</string>
     <string name="failDeleteTeam">Team is not empty and/or is already in some match and cannot be deleted.</string>
     <string name="cant_create_match">Cannot create match because tournament has too few participants.</string>
+    <string name="sort_by_player_name">Sort by name</string>
 </resources>

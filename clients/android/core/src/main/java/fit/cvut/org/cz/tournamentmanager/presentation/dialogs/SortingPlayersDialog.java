@@ -32,7 +32,7 @@ public class SortingPlayersDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(
                 new String[]{
-                        getResources().getString(R.string.sort_by_name),
+                        getResources().getString(R.string.sort_by_player_name),
                         getResources().getString(R.string.sort_by_email)},
                 supplyListener());
 

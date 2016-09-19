@@ -6,4 +6,7 @@
 
     <string name="openDrawer" translatable="false">drawer_open_action</string>
     <string name="closeDrawer" translatable="false">drawer_close_action</string>
+
+    <string name="exit_title">Exit the application</string>
+    <string name="exit_text">Do you really want to exit?</string>
 </resources>

@@ -25,7 +25,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_nt_w"
-                    android:hint="@string/w"/>
+                    android:hint="@string/w"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -39,7 +40,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_nt_d"
-                    android:hint="@string/d"/>
+                    android:hint="@string/d"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -53,7 +55,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_nt_l"
-                    android:hint="@string/l"/>
+                    android:hint="@string/l"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +78,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_ot_w"
-                    android:hint="@string/w"/>
+                    android:hint="@string/w"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -88,7 +92,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_ot_d"
-                    android:hint="@string/d"/>
+                    android:hint="@string/d"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -101,7 +106,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_ot_l"
-                    android:hint="@string/l"/>
+                    android:hint="@string/l"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -123,7 +129,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_so_w"
-                    android:hint="@string/w"/>
+                    android:hint="@string/w"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -136,7 +143,8 @@
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:id="@+id/et_so_l"
-                    android:hint="@string/l"/>
+                    android:hint="@string/l"
+                    android:selectAllOnFocus="true"/>
 
             </android.support.design.widget.TextInputLayout>
 

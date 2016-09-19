@@ -91,4 +91,13 @@
     <string name="add_players_home">Přidat hráče k domácím</string>
     <string name="add_players">Přidat hráče</string>
     <string name="add_player_to">Přidat hráče k</string>
+    <string name="sort_tournaments">Seřadit turnaje</string>
+    <string name="sort_competitions">Seřadit soutěže</string>
+    <string name="sort_players">Seřadit hráče</string>
+    <string name="sort_by_start_date">Podle data začátku</string>
+    <string name="sort_by_name">Podle názvu</string>
+    <string name="sort_by_email">Podle e-mailu</string>
+    <string name="sort_by_end_date">Podle data konce</string>
+    <string name="sort">Seřadit</string>
+    <string name="sort_by_player_name">Podle jména</string>
 </resources>
