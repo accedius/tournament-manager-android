@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -45,7 +44,7 @@ public class MainActivity extends AbstractToolbarActivity {
     private String active_fragment;
     private PlayersListFragment plf = null;
     private SportsFragment sf = null;
-    private int selectedItem = 0;
+    private int selectedItem;
 
     private String orderColumn = Competition.col_end_date;
     private String orderType = "DESC";
@@ -105,11 +104,6 @@ public class MainActivity extends AbstractToolbarActivity {
     protected View injectView(ViewGroup parent) {
         v = getLayoutInflater().inflate(R.layout.activity_main, parent, false);
         return v;
-    }
-
-    @Override
-    protected FloatingActionButton getFloatingActionButton(ViewGroup root) {
-        return null;
     }
 
     @Override
