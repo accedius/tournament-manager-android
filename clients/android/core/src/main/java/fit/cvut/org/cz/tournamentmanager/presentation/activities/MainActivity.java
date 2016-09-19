@@ -176,55 +176,61 @@ public class MainActivity extends AbstractToolbarActivity {
         if (item.getItemId() == R.id.action_order) {
             if (active_fragment.equals(frg_competitions)) {
                 SortingCompetitionsDialog dialog = SortingCompetitionsDialog.newInstance();
-                dialog.setListener(
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (orderColumn == getColumnForDialogId(which)) {
-                                    switchOrder();
-                                } else {
-                                    orderColumn = getColumnForDialogId(which);
-                                    orderType = "ASC";
-                                }
-
-                                Bundle b = new Bundle();
-                                b.putParcelableArrayList("sport_packages", sport_packages);
-                                b.putString("order_column", orderColumn);
-                                b.putString("order_type", orderType);
-                                b.putInt("current_item", sf.getCurrentItem());
-                                SportsFragment ssf = new SportsFragment();
-                                ssf.setArguments(b);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.content_frame, ssf)
-                                        .commit();
-                                sf = ssf;
-                                dialog.dismiss();
-                            }
-                        });
+                dialog.setListener(getSortingCompetitionsListener());
                 dialog.show(getSupportFragmentManager(), "SORT_COMPETITIONS");
             } else if (active_fragment.equals(frg_players)) {
                 SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
-                dialog.setListener(
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0:{
-                                        plf.orderData(Player.col_name);
-                                        break;
-                                    }
-                                    case 1:{
-                                        plf.orderData(Player.col_email);
-                                        break;
-                                    }
-                                }
-                                dialog.dismiss();
-                            }
-                        });
+                dialog.setListener(getSortingPlayersListener());
                 dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
             }
         }
         return true;
+    }
+
+    private DialogInterface.OnClickListener getSortingCompetitionsListener() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (orderColumn == getColumnForDialogId(which)) {
+                    switchOrder();
+                } else {
+                    orderColumn = getColumnForDialogId(which);
+                    orderType = "ASC";
+                }
+
+                Bundle b = new Bundle();
+                b.putParcelableArrayList("sport_packages", sport_packages);
+                b.putString("order_column", orderColumn);
+                b.putString("order_type", orderType);
+                b.putInt("current_item", sf.getCurrentItem());
+                SportsFragment ssf = new SportsFragment();
+                ssf.setArguments(b);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, ssf)
+                        .commit();
+                sf = ssf;
+                dialog.dismiss();
+            }
+        };
+    }
+
+    private DialogInterface.OnClickListener getSortingPlayersListener() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:{
+                        plf.orderData(Player.col_name);
+                        break;
+                    }
+                    case 1:{
+                        plf.orderData(Player.col_email);
+                        break;
+                    }
+                }
+                dialog.dismiss();
+            }
+        };
     }
 }
