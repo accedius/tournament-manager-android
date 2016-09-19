@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -36,12 +37,13 @@ public class MainActivity extends AbstractToolbarActivity {
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mDrawerList;
+    private View v;
 
     ArrayList<ApplicationInfo> sport_packages;
     private String active_fragment;
-    private View v;
     private PlayersListFragment plf = null;
     private SportsFragment sf = null;
+    private int selectedItem = 0;
 
     private String orderColumn = Competition.col_end_date;
     private String orderType = "DESC";
@@ -108,8 +110,15 @@ public class MainActivity extends AbstractToolbarActivity {
         return null;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        selectItem(selectedItem);
+        super.onConfigurationChanged(newConfig);
+    }
+
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
+        selectedItem = position;
         Bundle b = new Bundle();
         // get list of installed sport packages
         b.putParcelableArrayList("sport_packages", sport_packages);
@@ -152,7 +161,6 @@ public class MainActivity extends AbstractToolbarActivity {
             case 2: return Competition.col_end_date;
             default: return Competition.col_name;
         }
-
     }
 
     private void switchOrder() {
