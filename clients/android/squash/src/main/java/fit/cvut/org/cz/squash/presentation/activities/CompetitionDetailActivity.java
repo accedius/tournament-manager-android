@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,9 +16,11 @@ import fit.cvut.org.cz.squash.presentation.fragments.SquashCompetitionOverviewFr
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
@@ -30,16 +33,21 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     private long competitionId = -1;
     private DefaultViewPagerAdapter adapter = null;
+    private Fragment[] fragments;
+    private String[] titles;
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
         competitionId = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
-        adapter = new DefaultViewPagerAdapter(getSupportFragmentManager(),
-                new Fragment[]{
-                        CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
-                        TournamentsListFragment.newInstance(competitionId),
-                        StatsListWrapperFragment.newInstance(competitionId, StatsService.ACTION_GET_STATS_BY_COMPETITION)},
-                new String[] {getResources().getString(R.string.overview), getResources().getString(R.string.tournaments), getResources().getString(R.string.players)});
+        fragments = new Fragment[]{
+                CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
+                TournamentsListFragment.newInstance(competitionId),
+                StatsListWrapperFragment.newInstance(competitionId, StatsService.ACTION_GET_STATS_BY_COMPETITION)};
+        titles = new String[] {
+                getResources().getString(R.string.overview),
+                getResources().getString(R.string.tournaments),
+                getResources().getString(R.string.players)};
+        adapter = new DefaultViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         return adapter;
     }
 
@@ -75,6 +83,31 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
+                break;
+            case fit.cvut.org.cz.tmlibrary.R.id.action_order:
+                SortingTournamentsDialog dialog = SortingTournamentsDialog.newInstance();
+                dialog.setListener(
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0:{
+                                        ((TournamentsListFragment)fragments[1]).orderData(Tournament.col_name);
+                                        break;
+                                    }
+                                    case 1:{
+                                        ((TournamentsListFragment)fragments[1]).orderData(Tournament.col_start_date);
+                                        break;
+                                    }
+                                    case 2:{
+                                        ((TournamentsListFragment)fragments[1]).orderData(Tournament.col_end_date);
+                                        break;
+                                    }
+                                }
+                                dialog.dismiss();
+                            }
+                        });
+                dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
                 break;
         }
 

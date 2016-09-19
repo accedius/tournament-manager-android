@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.hockey.presentation.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -77,11 +80,34 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
-                if (competitionID == -1)
-                    break;
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionID);
                 startActivity(intent);
+                break;
+            case fit.cvut.org.cz.tmlibrary.R.id.action_order:
+                SortingTournamentsDialog dialog = SortingTournamentsDialog.newInstance();
+                dialog.setListener(
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0:{
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_name);
+                                        break;
+                                    }
+                                    case 1:{
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_start_date);
+                                        break;
+                                    }
+                                    case 2:{
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_end_date);
+                                        break;
+                                    }
+                                }
+                                dialog.dismiss();
+                            }
+                        });
+                dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
                 break;
         }
 

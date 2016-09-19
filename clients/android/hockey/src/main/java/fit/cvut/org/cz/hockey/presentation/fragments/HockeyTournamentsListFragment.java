@@ -5,13 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
@@ -33,6 +40,9 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     private long competitionId;
     private static String ARG_ID = "competition_id";
 
+    private String orderColumn = Tournament.col_end_date;
+    private String orderType = "DESC";
+
     private TournamentsListReceiver myReceiver = new TournamentsListReceiver();
 
     public static HockeyTournamentsListFragment newInstance(long id) {
@@ -41,6 +51,18 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         args.putLong(ARG_ID, id);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_sorting, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -113,6 +135,35 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myReceiver);
+    }
+
+    public void orderData(final String type) {
+        if (adapter == null) return;
+
+        ArrayList<Tournament> tournaments = adapter.getData();
+        if (orderColumn.equals(type) && orderType.equals("ASC")) {
+            orderType = "DESC";
+            Collections.sort(tournaments, new Comparator<Tournament>() {
+                @Override
+                public int compare(Tournament ls, Tournament rs) {
+                    return rs.getColumn(type).compareToIgnoreCase(ls.getColumn(type));
+                }
+            });
+        } else {
+            if (!orderColumn.equals(type)) {
+                orderColumn = type;
+            }
+            orderType = "ASC";
+            Collections.sort(tournaments, new Comparator<Tournament>() {
+                @Override
+                public int compare(Tournament ls, Tournament rs) {
+                    return ls.getColumn(type).compareToIgnoreCase(rs.getColumn(type));
+                }
+            });
+        }
+
+        adapter.swapData(tournaments);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -15,6 +15,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  */
 public class Tournament extends ShareBase implements Parcelable {
 
+    public static final String col_name = "name";
+    public static final String col_start_date = "start_date";
+    public static final String col_end_date= "end_date";
+
     private long id;
     private long competitionId;
     private String name;
@@ -178,5 +182,17 @@ public class Tournament extends ShareBase implements Parcelable {
 
     public void setCompetitionId(long competitionId) {
         this.competitionId = competitionId;
+    }
+
+    public String getColumn(String column) {
+        if (column.equals("name")) {
+            return name;
+        } else if (column.equals("start_date")) {
+            return DateFormatter.getInstance().getDBDateFormat().format(startDate);
+        } else if (column.equals("end_date")) {
+            return DateFormatter.getInstance().getDBDateFormat().format(endDate);
+        } else {
+            return "";
+        }
     }
 }
