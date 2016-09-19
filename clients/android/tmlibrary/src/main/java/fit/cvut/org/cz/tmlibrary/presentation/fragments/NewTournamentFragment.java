@@ -227,9 +227,6 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         if (dEndDate != null)
             eDate = dEndDate.getTime();
 
-        Log.d("TOURNAMENT_FRAGMENT", "Tournament_id = "+getArguments().getLong(ARG_TOUR_ID));
-        Log.d("TOURNAMENT_FRAGMENT", "Competition_id = "+competitionId);
-
         return new Tournament(getArguments().getLong(ARG_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
     }
 }

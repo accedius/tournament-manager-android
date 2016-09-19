@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_order"
         android:icon="@drawable/ic_sort_white_24dp"
-        android:title="@string/edit"
+        android:title="@string/sort"
         app:showAsAction="ifRoom"/>
 </menu>

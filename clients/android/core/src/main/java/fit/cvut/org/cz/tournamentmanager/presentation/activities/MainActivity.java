@@ -214,7 +214,7 @@ public class MainActivity extends AbstractToolbarActivity {
                                 dialog.dismiss();
                             }
                         });
-                dialog.show(getSupportFragmentManager(), "SORT_COMPETITIONS");
+                dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
             }
         }
         return true;

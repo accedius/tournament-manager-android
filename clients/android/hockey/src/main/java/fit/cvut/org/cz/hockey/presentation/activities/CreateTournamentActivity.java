@@ -87,8 +87,6 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
             } else {
                 intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
             }
-            Log.d("TOURNAMENT_ACTIVITY", "Tournament_id="+tournament.getId());
-            Log.d("TOURNAMENT_ACTIVITY", "Competition_id="+tournament.getCompetitionId());
             intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournament);
             startService(intent);
             finish();

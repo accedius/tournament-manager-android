@@ -26,6 +26,7 @@
     <string name="ok">OK</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="sort">Sort</string>
     <string name="finish">Finish</string>
     <string name="edit_stats">Edit stats</string>
     <string name="delete">Delete</string>
@@ -36,6 +37,7 @@
     <string name="generate_randomly">Generate randomly</string>
     <string name="sort_players">Sort players</string>
     <string name="sort_competitions">Sort competitions</string>
+    <string name="sort_tournaments">Sort tournaments</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_email">Sort by email</string>
     <string name="sort_by_start_date">Sort by start date</string>

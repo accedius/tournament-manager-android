@@ -38,7 +38,6 @@ public class PlayerDetailActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(PlayerService.EXTRA_ID);
-        Log.d("PDA", ""+playerID);
         sport_packages = getIntent().getExtras().getParcelableArrayList(PlayerService.EXTRA_PACKAGES);
         titles = new String[1+sport_packages.size()];
         titles[0] = getResources().getString(R.string.player_info);
