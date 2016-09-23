@@ -34,7 +34,7 @@ public class AddMatchDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setItems(new String[]{getString(R.string.add_match), getString(R.string.add_round)},
+        builder.setItems(new String[]{getString(R.string.add_single_match), getString(R.string.add_round)},
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -58,6 +58,7 @@
     <string name="failDeleteTeam">Tým není prázdný a/nebo se již účastní nějakého zápasu a nelze ho odstranit.</string>
     <string name="cant_create_match">Nelze vytvořit – zápas nemá dostatek účastníků.</string>
     <string name="add_match">Přidat zápas</string>
+    <string name="add_single_match">Přidat jeden zápas</string>
     <string name="add_round">Přidat kolo</string>
     <string name="competition_settings">Nastavení soutěže</string>
     <string name="generate_randomly">Generovat náhodně</string>

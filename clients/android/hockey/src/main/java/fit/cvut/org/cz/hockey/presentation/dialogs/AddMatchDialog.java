@@ -52,7 +52,7 @@ public class AddMatchDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match), getActivity().getString(R.string.add_round) };
+        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_single_match), getActivity().getString(R.string.add_round) };
 
         builder.setItems( items, supplyListener());
 
