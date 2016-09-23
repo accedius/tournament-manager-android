@@ -36,7 +36,6 @@ public class StandingsStatsTitleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_standings_title, container, false);
-        Bundle b = getArguments();
         setOrderingListeners(v);
         setDefaultOrder(v);
         return v;

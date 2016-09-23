@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class StandingsFragment extends AbstractListFragment<Standing> {
 
-    private long tournamentID;
     private static String ARG_ID = "tournament_id";
 
     private String orderColumn = "p";
@@ -35,14 +34,6 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         args.putLong(ARG_ID, id);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if( getArguments() != null ) {
-            tournamentID = getArguments().getLong( ARG_ID, -1 );
-        }
     }
 
     public void orderData(final String stat, HashMap<String, TextView> columns) {
@@ -67,6 +58,7 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
                 orderColumn = stat;
             }
             orderType = "DESC";
+            // TODO order for points should be the same order as defined in HOCKEYHOCKEY RULES - Points, less matches, wins, score, ...
             Collections.sort(stats, new Comparator<Standing>() {
                 @Override
                 public int compare(Standing ls, Standing rs) {
@@ -102,6 +94,7 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
 
     @Override
     public void askForData() {
+        Long tournamentID = getArguments().getLong(ARG_ID, -1);
         Intent intent = StatsService.newStartIntent( StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext() );
         intent.putExtra( StatsService.EXTRA_ID, tournamentID );
 
