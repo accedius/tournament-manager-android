@@ -11,17 +11,17 @@ import android.os.Parcelable;
 public class StandingItem implements Parcelable {
 
     public String name;
-    public int wins, loses, draws, setsWon, setsLost, points;
+    public int wins, losses, draws, setsWon, setsLost, points;
 
     public StandingItem(String name){
         this.name = name;
-        wins = loses = draws = setsWon = setsLost = points = 0;
+        wins = losses = draws = setsWon = setsLost = points = 0;
     }
 
     protected StandingItem(Parcel in) {
         name = in.readString();
         wins = in.readInt();
-        loses = in.readInt();
+        losses = in.readInt();
         draws = in.readInt();
         setsWon = in.readInt();
         setsLost = in.readInt();
@@ -49,10 +49,22 @@ public class StandingItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeInt(wins);
-        dest.writeInt(loses);
+        dest.writeInt(losses);
         dest.writeInt(draws);
         dest.writeInt(setsWon);
         dest.writeInt(setsLost);
         dest.writeInt(points);
+    }
+
+    public double getStat(String key) {
+        switch (key) {
+            case "p": return points;
+            case "w": return wins;
+            case "l": return losses;
+            case "d": return draws;
+            case "sw": return setsWon;
+            case "sl": return setsLost;
+            default: return 0;
+        }
     }
 }

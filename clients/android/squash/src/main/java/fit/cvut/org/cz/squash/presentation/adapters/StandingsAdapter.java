@@ -26,7 +26,7 @@ public class StandingsAdapter extends AbstractListAdapter<StandingItem, Standing
         StandingItem item = data.get(position);
         holder.name.setText(item.name);
         holder.W.setText(Integer.toString(item.wins));
-        holder.L.setText(Integer.toString(item.loses));
+        holder.L.setText(Integer.toString(item.losses));
         holder.D.setText(Integer.toString(item.draws));
         holder.points.setText(Integer.toString(item.points));
         holder.score.setText(String.format("%d:%d", item.setsWon, item.setsLost));

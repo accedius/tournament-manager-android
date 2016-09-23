@@ -4,6 +4,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.presentation.adapters.StandingsAdapter;
@@ -19,14 +25,60 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
 
     public static final String ARG_ID = "arg_id";
 
+    private String orderColumn = "p";
+    private String orderType = "DESC";
+
     public static StandingsListFragment newInstance(long id){
         StandingsListFragment fragment = new StandingsListFragment();
-
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
-
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void orderData(final String stat, HashMap<String, TextView> columns) {
+        if (adapter == null) return;
+
+        TextView col = columns.get(orderColumn);
+        String text = (String) col.getText();
+        String originalText = text.substring(0, text.length()-2);
+        col.setText(originalText);
+
+        ArrayList<StandingItem> stats = adapter.getData();
+        if (orderColumn.equals(stat) && orderType == "DESC") {
+            orderType = "ASC";
+            Collections.sort(stats, new Comparator<StandingItem>() {
+                @Override
+                public int compare(StandingItem ls, StandingItem rs) {
+                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                }
+            });
+        } else {
+            if (!orderColumn.equals(stat)) {
+                orderColumn = stat;
+            }
+            orderType = "DESC";
+            // TODO order for points should be the same order as defined in SQUASH RULES
+            Collections.sort(stats, new Comparator<StandingItem>() {
+                @Override
+                public int compare(StandingItem ls, StandingItem rs) {
+                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                }
+            });
+        }
+
+        col = columns.get(stat);
+        text = (String) col.getText();
+        String addition = "";
+        if (orderType.equals("ASC")) {
+            addition = "▲";
+        } else if (orderType.equals("DESC")) {
+            addition = "▼";
+        }
+        col.setText(text + " " + addition);
+
+        adapter.swapData(stats);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

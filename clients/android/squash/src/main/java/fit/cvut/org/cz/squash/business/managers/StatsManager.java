@@ -190,7 +190,7 @@ public class StatsManager implements IStatsManager {
                         mappedStandings.get(playerId).points += cfg.getDraw();
                         break;
                     case -1:
-                        mappedStandings.get(playerId).loses++;
+                        mappedStandings.get(playerId).losses++;
                         mappedStandings.get(playerId).points += cfg.getLoss();
                         break;
                     case 1:
@@ -218,7 +218,7 @@ public class StatsManager implements IStatsManager {
                         mappedStandings.get(p.getTeamId()).points+=cfg.getDraw();
                         break;
                     case -1:
-                        mappedStandings.get(p.getTeamId()).loses++;
+                        mappedStandings.get(p.getTeamId()).losses++;
                         mappedStandings.get(p.getTeamId()).points += cfg.getLoss();
                         break;
                     case 1:

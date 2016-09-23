@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/loses"
-                android:id="@+id/tv_loses_label"
+                android:id="@+id/tv_losses_label"
                 android:layout_weight="2" />
             <TextView
                 android:layout_width="0dp"

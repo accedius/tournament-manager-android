@@ -65,7 +65,7 @@ public class StatsListWrapperFragment extends Fragment {
         columns.put("gp",(TextView)v.findViewById(R.id.tv_games_played_label));
         columns.put("p", (TextView)v.findViewById(R.id.tv_points_label));
         columns.put("w", (TextView)v.findViewById(R.id.tv_wins_label));
-        columns.put("l", (TextView)v.findViewById(R.id.tv_loses_label));
+        columns.put("l", (TextView)v.findViewById(R.id.tv_losses_label));
         columns.put("d", (TextView)v.findViewById(R.id.tv_draws_label));
         if (v.findViewById(R.id.tv_won_per_label) != null) {
             columns.put("w%", (TextView)v.findViewById(R.id.tv_won_per_label));

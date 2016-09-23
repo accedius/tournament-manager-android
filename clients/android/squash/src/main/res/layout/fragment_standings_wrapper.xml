@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:id="@+id/tv_points_label"
                 android:text="@string/points"/>
             <TextView
                 android:layout_width="0dp"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:id="@+id/tv_loses_label"
+                android:id="@+id/tv_losses_label"
                 android:text="@string/loses"/>
             <TextView
                 android:layout_width="0dp"
@@ -50,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:id="@+id/tv_score_label"
                 android:text="@string/score"/>
 
         </LinearLayout>
