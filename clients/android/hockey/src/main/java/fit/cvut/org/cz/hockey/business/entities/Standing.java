@@ -157,4 +157,20 @@ public class Standing implements Parcelable {
     public void setTeamId(long teamId) {
         this.teamId = teamId;
     }
+
+    public double getStat(String key) {
+        switch (key) {
+            case "p": return getPoints();
+            case "tw": return getTotalWins();
+            case "tl": return getTotalLosses();
+            case "w": return getWins();
+            case "d": return getDraws();
+            case "l": return getLosses();
+            case "wot": return getWinsOt();
+            case "lot": return getLossesOt();
+            case "wso": return getWinsSo();
+            case "lso": return getLossesSo();
+            default: return 0;
+        }
+    }
 }

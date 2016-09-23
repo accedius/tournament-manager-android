@@ -17,60 +17,70 @@
                 android:layout_height="match_parent"
                 android:gravity="left"
                 android:layout_weight="3"
+                android:id="@+id/standings_name"
                 android:text="@string/name"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_points"
                 android:text="@string/p"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_wins"
                 android:text="@string/w"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_wins_ot"
                 android:text="@string/wot"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_wins_so"
                 android:text="@string/wso"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_draws"
                 android:text="@string/d"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_losses_so"
                 android:text="@string/lso"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_losses_ot"
                 android:text="@string/lot"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_losses"
                 android:text="@string/l"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
+                android:id="@+id/standings_score"
                 android:text="@string/score"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>

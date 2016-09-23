@@ -4,6 +4,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.presentation.adapters.StandingsAdapter;
@@ -20,6 +26,9 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
     private long tournamentID;
     private static String ARG_ID = "tournament_id";
 
+    private String orderColumn = "p";
+    private String orderType = "DESC";
+
     public static StandingsFragment newInstance( long id ) {
         StandingsFragment fragment = new StandingsFragment();
         Bundle args = new Bundle();
@@ -30,11 +39,56 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if( getArguments() != null ) {
             tournamentID = getArguments().getLong( ARG_ID, -1 );
         }
-        super.onCreate(savedInstanceState);
     }
+
+    public void orderData(final String stat, HashMap<String, TextView> columns) {
+        if (adapter == null) return;
+
+        TextView col = columns.get(orderColumn);
+        String text = (String) col.getText();
+        String originalText = text.substring(0, text.length()-2);
+        col.setText(originalText);
+
+        ArrayList<Standing> stats = adapter.getData();
+        if (orderColumn.equals(stat) && orderType == "DESC") {
+            orderType = "ASC";
+            Collections.sort(stats, new Comparator<Standing>() {
+                @Override
+                public int compare(Standing ls, Standing rs) {
+                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                }
+            });
+        } else {
+            if (!orderColumn.equals(stat)) {
+                orderColumn = stat;
+            }
+            orderType = "DESC";
+            Collections.sort(stats, new Comparator<Standing>() {
+                @Override
+                public int compare(Standing ls, Standing rs) {
+                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                }
+            });
+        }
+
+        col = columns.get(stat);
+        text = (String) col.getText();
+        String addition = "";
+        if (orderType.equals("ASC")) {
+            addition = "▲";
+        } else if (orderType.equals("DESC")) {
+            addition = "▼";
+        }
+        col.setText(text + " " + addition);
+
+        adapter.swapData(stats);
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     protected AbstractListAdapter getAdapter() {
