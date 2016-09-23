@@ -41,7 +41,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private FloatingActionButton fab;
     private ScrollView scrv;
     private long matchId;
-    private Fragment thisFragment;
     ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
 
     public static final int REQUEST_HOME = 1;
@@ -64,7 +63,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         matchId = getArguments().getLong( ARG_MATCH_ID, -1 );
-        thisFragment = this;
 
         if (savedInstanceState != null) {
             tmpHomeStats = savedInstanceState.getParcelableArrayList(SAVE_HOME_LIST);
