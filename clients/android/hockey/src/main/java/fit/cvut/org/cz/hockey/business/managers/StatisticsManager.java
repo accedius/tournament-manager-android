@@ -218,18 +218,6 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             standingA.addGoalsReceived( match.getHomeScore() );
 
         }
-
-        Collections.sort(standings, new Comparator<Standing>() {
-            @Override
-            public int compare(Standing lhs, Standing rhs) {
-                if (rhs.getPoints() != lhs.getPoints())
-                    return (int)(rhs.getPoints() - lhs.getPoints());
-                if ((rhs.getGoalsGiven()-rhs.getGoalsReceived()) != (lhs.getGoalsGiven()-lhs.getGoalsReceived())) {
-                    return (int)((rhs.getGoalsGiven()-rhs.getGoalsReceived()) - (lhs.getGoalsGiven()-lhs.getGoalsReceived()));
-                }
-                return (int)(rhs.getGoalsGiven()-lhs.getGoalsGiven());
-            }
-        });
         return standings;
     }
     public MatchScore getMatchScoreByMatchId( Context context, long id ) {

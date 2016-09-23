@@ -58,13 +58,27 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
                 orderColumn = stat;
             }
             orderType = "DESC";
-            // TODO order for points should be the same order as defined in HOCKEYHOCKEY RULES - Points, less matches, wins, score, ...
-            Collections.sort(stats, new Comparator<Standing>() {
-                @Override
-                public int compare(Standing ls, Standing rs) {
-                    return (int) (rs.getStat(stat) - ls.getStat(stat));
-                }
-            });
+            // TODO better this sorting
+            if (orderColumn == "p") {
+                Collections.sort(stats, new Comparator<Standing>() {
+                    @Override
+                    public int compare(Standing ls, Standing rs) {
+                        if (rs.getPoints() != ls.getPoints())
+                            return (int) (rs.getPoints() - ls.getPoints());
+                        if ((rs.getGoalsGiven() - rs.getGoalsReceived()) != (ls.getGoalsGiven() - ls.getGoalsReceived())) {
+                            return (int) ((rs.getGoalsGiven() - rs.getGoalsReceived()) - (ls.getGoalsGiven() - ls.getGoalsReceived()));
+                        }
+                        return (int) (rs.getGoalsGiven() - ls.getGoalsGiven());
+                    }
+                });
+            } else {
+                Collections.sort(stats, new Comparator<Standing>() {
+                    @Override
+                    public int compare(Standing ls, Standing rs) {
+                        return (int) (rs.getStat(stat) - ls.getStat(stat));
+                    }
+                });
+            }
         }
 
         col = columns.get(stat);

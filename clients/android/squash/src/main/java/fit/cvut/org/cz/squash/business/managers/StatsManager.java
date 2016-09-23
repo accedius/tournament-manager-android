@@ -230,14 +230,6 @@ public class StatsManager implements IStatsManager {
             }
         }
         for (Long key : mappedStandings.keySet()) standings.add(mappedStandings.get(key));
-        Collections.sort(standings, new Comparator<StandingItem>() {
-            @Override
-            public int compare(StandingItem lhs, StandingItem rhs) {
-                if (rhs.points - lhs.points == 0 )
-                    return (rhs.setsWon - rhs.setsLost - lhs.setsWon + lhs.setsLost);
-                return rhs.points - lhs.points;
-            }
-        });
         return standings;
     }
 

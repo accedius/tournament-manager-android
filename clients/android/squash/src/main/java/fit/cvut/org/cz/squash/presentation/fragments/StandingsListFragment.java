@@ -58,13 +58,26 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
                 orderColumn = stat;
             }
             orderType = "DESC";
-            // TODO order for points should be the same order as defined in SQUASH RULES
-            Collections.sort(stats, new Comparator<StandingItem>() {
-                @Override
-                public int compare(StandingItem ls, StandingItem rs) {
-                    return (int) (rs.getStat(stat) - ls.getStat(stat));
-                }
-            });
+            // TODO better this sorting
+            if (orderColumn == "p") {
+                Collections.sort(stats, new Comparator<StandingItem>() {
+                    @Override
+                    public int compare(StandingItem lhs, StandingItem rhs) {
+                        if (rhs.points != lhs.points)
+                            return rhs.points - lhs.points;
+                        if ((rhs.setsWon - rhs.setsLost) != (lhs.setsWon - lhs.setsLost))
+                            return (rhs.setsWon - rhs.setsLost - lhs.setsWon + lhs.setsLost);
+                        return rhs.setsWon - lhs.setsWon;
+                    }
+                });
+            } else {
+                Collections.sort(stats, new Comparator<StandingItem>() {
+                    @Override
+                    public int compare(StandingItem ls, StandingItem rs) {
+                        return (int) (rs.getStat(stat) - ls.getStat(stat));
+                    }
+                });
+            }
         }
 
         col = columns.get(stat);
