@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
  * Created by Vaclav on 5. 4. 2016.
  */
 public interface IPackagePlayerManager {
-
     /**
      *
      * @param context application context

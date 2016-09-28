@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  * Created by Vaclav on 13. 4. 2016.
  */
 public interface ITeamDAO {
-
     /**
      * insert team into database
      * @param context application context

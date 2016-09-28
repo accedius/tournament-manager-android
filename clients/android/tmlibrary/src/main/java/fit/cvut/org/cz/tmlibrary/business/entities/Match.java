@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
  * Created by Vaclav on 20. 4. 2016.
  */
 public class Match extends ShareBase {
-
     private long id, tournamentId;
     private CompetitionType type;
     private Date date;
@@ -68,7 +67,7 @@ public class Match extends ShareBase {
 
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
-        try{
+        try {
             String  text = in.readString();
             if (text == null) date = null;
             else date = dateFormat.parse(text);

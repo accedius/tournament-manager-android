@@ -30,7 +30,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.competition_find_by_id";
     public static final String ACTION_UPDATE = "fit.cvut.org.cz.hockey.presentation.services.competition_update";
 
-
     public CompetitionService() {
         super("Hockey Competition Service");
     }
@@ -47,10 +46,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return res;
     }
 
-
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
         Competition c;
 
@@ -62,16 +59,16 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
             case ACTION_UPDATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance().competitionManager.update( this, c );
+                ManagerFactory.getInstance().competitionManager.update(this, c);
                 break;
 
             case ACTION_FIND_BY_ID:
             Intent res = new Intent();
             long compID = intent.getLongExtra(EXTRA_ID, -1);
             res.setAction(ACTION_FIND_BY_ID);
-            c = ManagerFactory.getInstance().competitionManager.getById(this, compID );
+            c = ManagerFactory.getInstance().competitionManager.getById(this, compID);
             ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
-            ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition( this, compID);
+            ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition(this, compID);
 
             res.putExtra(EXTRA_COMPETITION, c);
             res.putExtra(EXTRA_PLAYERS_COUNT, players.size());
@@ -79,6 +76,5 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             LocalBroadcastManager.getInstance(this).sendBroadcast(res);
             break;
         }
-
     }
 }

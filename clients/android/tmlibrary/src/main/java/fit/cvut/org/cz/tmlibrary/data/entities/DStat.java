@@ -21,16 +21,16 @@ public class DStat {
 
     @Override
     public boolean equals(Object o) {
-        if(o == null) return false;
+        if (o == null) return false;
 
-        if( !DStat.class.isAssignableFrom( o.getClass()) ) return false;
+        if (!DStat.class.isAssignableFrom(o.getClass())) return false;
 
         final DStat other = (DStat) o;
-        if( (this.value == null) ? (other.value != null) : !this.value.equals(other.getValue()) ) return false;
+        if ((this.value == null) ? (other.value != null) : !this.value.equals(other.getValue())) return false;
 
-        if( (this.statsEnumId == null) ? (other.statsEnumId != null) : !this.statsEnumId.equals(other.getStatsEnumId()) ) return false;
+        if ((this.statsEnumId == null) ? (other.statsEnumId != null) : !this.statsEnumId.equals(other.getStatsEnumId())) return false;
 
-        if( this.id != other.getId() || this.playerId != other.getPlayerId() || this.participantId != other.getParticipantId()
+        if (this.id != other.getId() || this.playerId != other.getPlayerId() || this.participantId != other.getParticipantId()
                 || this.tournamentId != other.getTournamentId()
                 || this.competitionId != other.getCompetitionId()) return false;
         return true;

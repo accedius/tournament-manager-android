@@ -20,15 +20,14 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class MatchStatisticsDAOTest {
-
     @Test
     public void testInsertAndGet() throws Exception {
         DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(RuntimeEnvironment.application, new DMatchStat(1, true, true));
         DMatchStat returnedStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId(RuntimeEnvironment.application, 1);
 
-        assertTrue( returnedStat.isOvertime() );
-        assertTrue( returnedStat.isShootouts() );
-        assertTrue( returnedStat.getMatchId() == 1 );
+        assertTrue(returnedStat.isOvertime());
+        assertTrue(returnedStat.isShootouts());
+        assertTrue(returnedStat.getMatchId() == 1);
     }
 
     @Test
@@ -48,6 +47,6 @@ public class MatchStatisticsDAOTest {
         DAOFactory.getInstance().matchStatisticsDAO.delete(RuntimeEnvironment.application, 3);
         DMatchStat returnedStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId(RuntimeEnvironment.application, 3);
 
-        assertNull( returnedStat );
+        assertNull(returnedStat);
     }
 }

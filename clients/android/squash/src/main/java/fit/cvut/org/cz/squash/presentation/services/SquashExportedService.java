@@ -24,14 +24,11 @@ public class SquashExportedService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         String action = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_PACKAGE);
 
         switch (action){
-
             case CrossPackageComunicationConstants.ACTION_DELETE_COMPETITION:{
-
                 long id = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
@@ -44,13 +41,11 @@ public class SquashExportedService extends IntentService {
                 break;
             }
             case CrossPackageComunicationConstants.ACTION_GET_STATS:{
-
                 long id = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
                 ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByPlayerId(this, id);
                 AggregatedStats statsForExport = new AggregatedStats();
 
-                for (SAggregatedStats stat : stats){
-
+                for (SAggregatedStats stat : stats) {
                     PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
                     exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.wins), Integer.toString(stat.won), true));
                     exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.loses), Integer.toString(stat.lost), true));
@@ -74,6 +69,5 @@ public class SquashExportedService extends IntentService {
                 break;
             }
         }
-
     }
 }

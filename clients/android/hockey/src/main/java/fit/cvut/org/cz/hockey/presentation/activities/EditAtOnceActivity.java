@@ -24,7 +24,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditAtOnceActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_HOME_STATS = "home_stats";
     public static final String EXTRA_AWAY_STATS = "away_stats";
 
@@ -35,7 +34,7 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
      * @param awayStats stats of the away team
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats) {
+    public static Intent newStartIntent(Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats) {
         Intent res = new Intent(context, EditAtOnceActivity.class);
 
         ArrayList<MatchPlayerStatistic> newHomeStat = new ArrayList<>(homeStats);
@@ -64,7 +63,7 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
         ArrayList<MatchPlayerStatistic> homeStats = getIntent().getParcelableArrayListExtra(EXTRA_HOME_STATS);
         ArrayList<MatchPlayerStatistic> awayStats = getIntent().getParcelableArrayListExtra(EXTRA_AWAY_STATS);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, MatchEditAtOnceFragment.newInstance(homeStats, awayStats)).commit();
         }
     }
@@ -74,7 +73,6 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
         getMenuInflater().inflate(R.menu.menu_finish, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

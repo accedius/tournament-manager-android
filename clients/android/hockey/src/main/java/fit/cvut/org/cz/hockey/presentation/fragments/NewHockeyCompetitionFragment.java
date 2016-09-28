@@ -47,7 +47,6 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
         return CompetitionService.isWorking(CompetitionService.ACTION_FIND_BY_ID);
     }
 
-
     @Override
     protected void registerReceivers() {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));

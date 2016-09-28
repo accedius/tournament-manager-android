@@ -59,7 +59,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class StatisticsManagerTest {
-
     @Mock
     IPackagePlayerManager mockPlayerManager;
 
@@ -139,26 +138,26 @@ public class StatisticsManagerTest {
     }
 
     private boolean testStats(AggregatedStatistics stats, long goals, long assists, long points, long plusmp, long matches, long saves){
-        if( stats.getGoals() != goals ) return false;
-        if( stats.getAssists() != assists ) return false;
-        if( stats.getPoints() != points ) return false;
-        if( stats.getPlusMinusPoints() != plusmp ) return false;
-        if( stats.getMatches() != matches ) return false;
-        if( stats.getSaves() != saves ) return false;
+        if (stats.getGoals() != goals) return false;
+        if (stats.getAssists() != assists) return false;
+        if (stats.getPoints() != points) return false;
+        if (stats.getPlusMinusPoints() != plusmp) return false;
+        if (stats.getMatches() != matches) return false;
+        if (stats.getSaves() != saves) return false;
         return true;
     }
 
-    private AggregatedStatistics getAgsById( long id, ArrayList<AggregatedStatistics> ags ){
-        for( AggregatedStatistics ag : ags ){
-            if( ag.getPlayerID() == id ) return ag;
+    private AggregatedStatistics getAgsById(long id, ArrayList<AggregatedStatistics> ags){
+        for (AggregatedStatistics ag : ags) {
+            if (ag.getPlayerID() == id) return ag;
         }
         return null;
     }
 
-    private ArrayList<DStat> getPlayerStats( long id, ArrayList<DStat> stats ){
+    private ArrayList<DStat> getPlayerStats(long id, ArrayList<DStat> stats){
         ArrayList<DStat> res = new ArrayList<>();
-        for( DStat st : stats ){
-            if( st.getPlayerId() == id ) res.add(st);
+        for (DStat st : stats) {
+            if (st.getPlayerId() == id) res.add(st);
         }
         return res;
     }
@@ -183,7 +182,6 @@ public class StatisticsManagerTest {
         assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
         verify(mockStatDAO, times(0)).getStatsByCompetitionId(any(Context.class), anyLong());
         verify(mockStatDAO, times(0)).getStatsByTournamentId(any(Context.class), anyLong());
-
     }
 
     @Test
@@ -205,7 +203,6 @@ public class StatisticsManagerTest {
         assertTrue(testStats(getAgsById(1, stats), 1, 2, 3, 4, 1, 3));
         assertTrue(testStats(getAgsById(2, stats), 6, 7, 13, 9, 1, 8));
         assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
-
     }
 
     @Test
@@ -227,7 +224,6 @@ public class StatisticsManagerTest {
         assertTrue(testStats(getAgsById(1, stats), 1, 2, 3, 4, 1, 3));
         assertTrue(testStats(getAgsById(2, stats), 6, 7, 13, 9, 1, 8));
         assertTrue(testStats(getAgsById(3, stats), 11, 12, 23, 14, 1, 13));
-
     }
 
     @Test
@@ -247,7 +243,6 @@ public class StatisticsManagerTest {
         when(mockMatchStatisticsDAO.getByMatchId(any(Context.class), anyLong())).thenReturn(new DMatchStat(1, false, false));
 
         ArrayList<Standing> res = ManagerFactory.getInstance().statisticsManager.getStandingsByTournamentId(RuntimeEnvironment.application, 1);
-
 
         assertNotNull(res);
         assertTrue(res.size() == 2);

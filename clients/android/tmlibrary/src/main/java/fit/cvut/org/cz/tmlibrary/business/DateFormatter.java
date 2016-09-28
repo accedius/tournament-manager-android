@@ -14,8 +14,8 @@ public class DateFormatter {
     }
 
     public SimpleDateFormat getDisplayDateFormat() { return new SimpleDateFormat("dd. MM. yyyy");}
-    public SimpleDateFormat getDBDateFormat(){ return new SimpleDateFormat("yyyy-MM-dd");}
-    public SimpleDateFormat getDBDateTimeFormat(){ return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");}
+    public SimpleDateFormat getDBDateFormat() { return new SimpleDateFormat("yyyy-MM-dd");}
+    public SimpleDateFormat getDBDateTimeFormat() { return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");}
 
     private DateFormatter() {
     }

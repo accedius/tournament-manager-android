@@ -25,7 +25,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
  * factory class for DAO interfaces
  */
 public class DAOFactory {
-
     private static DAOFactory instance = new DAOFactory();
 
     public ICompetitionDAO competitionDAO = new CompetitionDAO();
@@ -38,13 +37,10 @@ public class DAOFactory {
     public IMatchStatisticsDAO matchStatisticsDAO = new MatchStatisticsDAO();
     public IStatDAO statDAO = new StatDAO();
 
-    private DAOFactory()
-    {
-
+    private DAOFactory() {
     }
 
-    public static DAOFactory getInstance()
-    {
+    public static DAOFactory getInstance() {
         return instance;
     }
 

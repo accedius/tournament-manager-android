@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.R;
  * Created by Vaclav on 10. 4. 2016.
  */
 public abstract class MatchesListWrapperFragment extends Fragment {
-
     public static final String ARG_ID = "arg_id";
 
     public static MatchesListWrapperFragment newInstance(long id, Class<? extends MatchesListWrapperFragment> clazz){
@@ -51,7 +50,7 @@ public abstract class MatchesListWrapperFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null){
+        if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getChildFragmentManager().beginTransaction().add(R.id.fragment_container, supplyFragment(getArguments().getLong(ARG_ID))).commit();
         }
     }
@@ -64,7 +63,7 @@ public abstract class MatchesListWrapperFragment extends Fragment {
     protected abstract Fragment supplyFragment(long tournamentId);
     public void refresh(){
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fr != null && fr instanceof AbstractDataFragment){
+        if (fr != null && fr instanceof AbstractDataFragment) {
             ((AbstractDataFragment) fr).customOnResume();
         }
     }

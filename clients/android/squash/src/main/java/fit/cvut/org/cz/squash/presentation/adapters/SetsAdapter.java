@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.SetRowItemVH> {
-
     protected Resources res;
 
     public SetsAdapter(Resources res) {
@@ -47,7 +46,6 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         return new SetRowItemVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_set, parent, false), new ParsingDataListener(true), new ParsingDataListener(false));
     }
 
-
     @Override
     public void onBindViewHolder(SetRowItemVH holder, int position) {
         SetRowItem item = data.get(position);
@@ -57,17 +55,14 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
         holder.homeLsnr.updateEditText(holder.home);
         holder.home.setText(Integer.toString(item.getHomeScore()));
         holder.away.setText(Integer.toString(item.getAwayScore()));
-        if (item.getHomeScore() == item.getAwayScore()){
+        if (item.getHomeScore() == item.getAwayScore()) {
             //errorCount--;
             holder.home.setError(null);
         }
 
         String title = res.getString(fit.cvut.org.cz.tmlibrary.R.string.set_nr) + " " + (position+1);
         setOnClickListeners(holder.itemView, position, title);
-
     }
-
-
 
     public class SetRowItemVH extends RecyclerView.ViewHolder{
         public EditText home, away;
@@ -102,7 +97,6 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -111,7 +105,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
             editText.setError(null);
             try {
                 int value = Integer.parseInt(s.toString());
-                if (value < 0){
+                if (value < 0) {
                     errorCount++;
                     editText.setError(editText.getResources().getText(R.string.zero_score));
                     return;
@@ -127,8 +121,7 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
                     data.get(position).setWinner(-1);
                 else
                     data.get(position).setWinner(0);
-
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 errorCount++;
                 editText.setError(editText.getResources().getText(R.string.parse_number_error));
             }
@@ -136,7 +129,6 @@ public class SetsAdapter extends AbstractListAdapter<SetRowItem, SetsAdapter.Set
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     }
 }

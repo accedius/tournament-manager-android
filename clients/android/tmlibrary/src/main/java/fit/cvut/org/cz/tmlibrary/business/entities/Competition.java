@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Competition extends ShareBase implements Parcelable {
-
     public final static String col_name = "name";
     public final static String col_start_date = "start_date";
     public final static String col_end_date = "end_date";
@@ -75,7 +74,7 @@ public class Competition extends ShareBase implements Parcelable {
         note = in.readString();
         type = in.readParcelable(CompetitionType.class.getClassLoader());
 
-        try{
+        try {
             String text = in.readString();
             if (text == null) startDate = null;
             else startDate = dateFormat.parse(text);
@@ -118,7 +117,6 @@ public class Competition extends ShareBase implements Parcelable {
         dest.writeString(uid);
         dest.writeString(etag);
     }
-
 
     public static final Creator<Competition> CREATOR = new Creator<Competition>() {
         @Override

@@ -18,7 +18,6 @@ import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
  * Created by Vaclav on 11. 4. 2016.
  */
 public class SelectTeamDialog extends DialogFragment {
-
     public SelectTeamDialog(){}
     public static final String ARG_HOME_ID = "arg_home_id";
     public static final String ARG_AWAY_ID = "arg_away_id";
@@ -39,7 +38,7 @@ public class SelectTeamDialog extends DialogFragment {
     private void homeClick(){
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_HOME_ID));
         Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragment){
+        if (fr !=null && fr instanceof MatchPlayersFragment) {
             MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
             intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.homeAdapter.getData());
             ifr.startActivityForResult(intent, 0);
@@ -48,7 +47,7 @@ public class SelectTeamDialog extends DialogFragment {
     private void awayClick(){
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_AWAY_ID));
         Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragment){
+        if (fr !=null && fr instanceof MatchPlayersFragment) {
             MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
             intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.awayAdapter.getData());
             ifr.startActivityForResult(intent, 1);

@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class TournamentDAO implements ITournamentDAO {
-
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
     private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
@@ -29,25 +28,23 @@ public class TournamentDAO implements ITournamentDAO {
         cv.put(DBConstants.cUID, tournament.getUid());
         cv.put(DBConstants.cETAG, tournament.getEtag());
         cv.put(DBConstants.cNAME, tournament.getName());
-        if ( tournament.getStartDate() != null )
+        if (tournament.getStartDate() != null)
             cv.put(DBConstants.cSTART, dateFormat.format(tournament.getStartDate()));
-        if ( tournament.getEndDate() != null )
+        if (tournament.getEndDate() != null)
             cv.put(DBConstants.cEND, dateFormat.format(tournament.getEndDate()));
         cv.put(DBConstants.cNOTE, tournament.getNote());
         cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
         cv.put(DBConstants.cCOMPETITIONID, tournament.getCompetitionId());
-        if ( tournament.getLastSynchronized() != null )
+        if (tournament.getLastSynchronized() != null)
             cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(tournament.getLastSynchronized()));
 
         return cv;
     }
 
-
-
     @Override
     public long insert(Context context, DTournament tournament) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        ContentValues values = toContVal( tournament );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ContentValues values = toContVal(tournament);
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
@@ -58,27 +55,25 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public void update(Context context, DTournament tournament) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        ContentValues values = toContVal( tournament );
+        ContentValues values = toContVal(tournament);
 
         values.put(DBConstants.cID, tournament.getId());
 
-        String where = String.format( "%s = ?", DBConstants.cID );
+        String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(tournament.getId()) };
-        db.update(DBConstants.tTOURNAMENTS, values, where, projection );
+        db.update(DBConstants.tTOURNAMENTS, values, where, projection);
 
         db.close();
     }
 
     @Override
     public void delete(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ?", DBConstants.cID );
-        String[] projection = new String[]{ Long.toString( id ) };
+        String where = String.format("%s = ?", DBConstants.cID);
+        String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tTOURNAMENTS, where, projection);
 
         db.close();
@@ -86,11 +81,11 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public DTournament getById(Context context, long id) {
-        String[] selArgs = { String.valueOf( id ) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        Cursor cursor = db.query( DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null );
+        String[] selArgs = { String.valueOf(id) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if( cursor.getCount() <= 0 )
+        if (cursor.getCount() <= 0)
             return null;
 
         DTournament res = CursorParser.getInstance().parseDTournament(cursor);
@@ -103,20 +98,19 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( competitionId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
 
         ArrayList<DTournament> res = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            res.add( CursorParser.getInstance().parseDTournament( cursor ));
+            res.add(CursorParser.getInstance().parseDTournament(cursor));
         }
 
         cursor.close();
         db.close();
 
         return res;
-
     }
 }

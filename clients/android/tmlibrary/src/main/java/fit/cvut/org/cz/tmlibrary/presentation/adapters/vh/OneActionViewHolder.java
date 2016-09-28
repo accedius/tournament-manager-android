@@ -9,7 +9,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractOneActionListAdap
  * Created by Vaclav on 19. 3. 2016.
  */
 public abstract class OneActionViewHolder extends RecyclerView.ViewHolder {
-
     public View viewWAction;
     private AbstractOneActionListAdapter adapter;
 
@@ -31,6 +30,5 @@ public abstract class OneActionViewHolder extends RecyclerView.ViewHolder {
                     adapter.doAction(getAdapterPosition());
                 }
             });
-
     }
 }

@@ -28,7 +28,7 @@ public class RoundRobinTeamsRostersGenerator implements ITeamsRostersGenerator {
         boolean direction_forward = true;
 
         Map<Long, Double> sortedMap = MapComparator.sortByValue(stats);
-        for(Map.Entry<Long, Double> e : sortedMap.entrySet()) {
+        for (Map.Entry<Long, Double> e : sortedMap.entrySet()) {
             // Some players from competition don't have to be in this tournament
             if (players.get(e.getKey()) == null) {
                 continue;

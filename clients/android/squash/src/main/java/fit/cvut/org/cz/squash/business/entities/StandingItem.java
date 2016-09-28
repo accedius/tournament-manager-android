@@ -9,7 +9,6 @@ import android.os.Parcelable;
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingItem implements Parcelable {
-
     public String name;
     public int wins, losses, draws, setsWon, setsLost, points;
 

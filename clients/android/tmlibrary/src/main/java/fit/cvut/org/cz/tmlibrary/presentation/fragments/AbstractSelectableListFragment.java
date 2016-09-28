@@ -22,9 +22,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
  * Created by Vaclav on 3. 4. 2016.
  */
 public abstract class AbstractSelectableListFragment<T extends Parcelable> extends AbstractDataFragment {
-
     private static final String ARG_ID = "arg_id";
-
 
     public static AbstractSelectableListFragment newInstance(long id, Class<? extends AbstractSelectableListFragment> clazz){
         AbstractSelectableListFragment fragment = null;
@@ -84,7 +82,6 @@ public abstract class AbstractSelectableListFragment<T extends Parcelable> exten
 
     @Override
     protected void bindDataOnView(Intent intent) {
-
         ArrayList<T> data = intent.getParcelableArrayListExtra(getDataKey());
         ArrayList<Integer> selected = intent.getIntegerArrayListExtra(getDataSelectedKey());
 

@@ -15,8 +15,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAdapter.StandingsViewHolder> {
-
-
     @Override
     public StandingsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new StandingsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_standings, parent, false));
@@ -24,9 +22,9 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
 
     @Override
     public void onBindViewHolder(StandingsViewHolder holder, int position) {
-        Standing stats = data.get( position );
+        Standing stats = data.get(position);
         holder.name.setText(stats.getName());
-        if( holder.Wot == null ) {
+        if (holder.Wot == null) {
             holder.W.setText(Long.toString(stats.getTotalWins()));
             holder.L.setText(Long.toString(stats.getTotalLosses()));
         }
@@ -34,7 +32,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         holder.SCORE.setText(Long.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
         holder.P.setText(Long.toString(stats.getPoints()));
 
-        if( holder.Wot != null ) {
+        if (holder.Wot != null) {
             holder.W.setText(Long.toString(stats.getWins()));
             holder.Wot.setText(Long.toString(stats.getWinsOt()));
             holder.Wso.setText(Long.toString(stats.getWinsSo()));

@@ -27,7 +27,6 @@ public class TournamentManager implements ITournamentManager {
 
     @Override
     public boolean delete(Context context, long id) {
-
         if (ManagersFactory.getInstance().matchManager.getByTournamentId(context, id).size() != 0) return false;
         if (ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, id).size() != 0) return false;
         if (ManagersFactory.getInstance().teamsManager.getByTournamentId(context, id).size() != 0) return false;
@@ -44,11 +43,10 @@ public class TournamentManager implements ITournamentManager {
 
     @Override
     public ArrayList<Tournament> getByCompetitionId(Context context, long competitionId) {
-
         ArrayList<Tournament> tournaments = new ArrayList<>();
         ArrayList<DTournament> dTournaments = DAOFactory.getInstance().tournamentDAO.getByCompetitionId(context, competitionId);
 
-        for (DTournament t: dTournaments){
+        for (DTournament t: dTournaments) {
             tournaments.add(new Tournament(t));
         }
 

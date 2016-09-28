@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class MatchDAOTest {
-
     @Test
     public void testInsert() throws Exception {
         DMatch toInsert = new DMatch(1, 1, 1, 1, new Date(), "note", false);
@@ -43,7 +42,7 @@ public class MatchDAOTest {
         DAOFactory.getInstance().matchDAO.delete(RuntimeEnvironment.application, 2);
         DMatch returnedMatch = DAOFactory.getInstance().matchDAO.getById(RuntimeEnvironment.application, toInsert.getId());
 
-        assertNull( returnedMatch );
+        assertNull(returnedMatch);
     }
 
     @Test

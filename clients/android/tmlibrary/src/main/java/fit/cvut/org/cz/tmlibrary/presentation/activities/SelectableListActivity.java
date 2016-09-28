@@ -20,11 +20,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by Vaclav on 3. 4. 2016.
  */
 public abstract class SelectableListActivity<T extends Parcelable> extends AbstractToolbarActivity {
-
     public static final String EXTRA_DATA = "extra_data";
     public static final String EXTRA_OMIT_DATA = "extra_omit_data";
     public static final String EXTRA_ID = "extra_id";
-
 
     @Override
     protected View injectView(ViewGroup parent) {
@@ -42,23 +40,20 @@ public abstract class SelectableListActivity<T extends Parcelable> extends Abstr
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null){
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, getListFragment()).commit();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_finish, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_finish){
-
+        if (item.getItemId() == R.id.action_finish) {
             AbstractSelectableListFragment<T> frag = (AbstractSelectableListFragment<T>) (getSupportFragmentManager().findFragmentById(R.id.fragment_container));
             ArrayList<T> data = null;
 

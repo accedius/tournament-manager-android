@@ -35,9 +35,9 @@ public class Standing implements Parcelable {
     public void addLossOt() { this.losses_ot++; }
     public void addLossSo() { this.losses_so++; }
     public void addDraw() { this.draws++; }
-    public void addPoints( long points ) { this.points += points; }
-    public void addGoalsGiven( long gg ) { this.goalsGiven += gg; }
-    public void addGoalsReceived( long gr ) { this.goalsReceived += gr; }
+    public void addPoints(long points) { this.points += points; }
+    public void addGoalsGiven(long gg) { this.goalsGiven += gg; }
+    public void addGoalsReceived(long gr) { this.goalsReceived += gr; }
 
     public String getName() {
         return name;
@@ -118,17 +118,16 @@ public class Standing implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString( name );
-        dest.writeLong( wins );
-        dest.writeLong( losses );
-        dest.writeLong( draws );
-        dest.writeLong( goalsGiven );
-        dest.writeLong( goalsReceived );
-        dest.writeLong( points );
+        dest.writeString(name);
+        dest.writeLong(wins);
+        dest.writeLong(losses);
+        dest.writeLong(draws);
+        dest.writeLong(goalsGiven);
+        dest.writeLong(goalsReceived);
+        dest.writeLong(points);
     }
 
-    public Standing(Parcel in)
-    {
+    public Standing(Parcel in) {
         this.name = in.readString();
         this.wins = in.readLong();
         this.losses = in.readLong();

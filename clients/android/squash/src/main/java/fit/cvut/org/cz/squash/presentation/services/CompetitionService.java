@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 28. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress{
-
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_COMPETITION = "extra_competition";
@@ -47,18 +46,15 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
             case ACTION_CREATE:{
-
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
                 ManagersFactory.getInstance().competitionManager.insert(this, c);
                 break;
             }
             case ACTION_GET_BY_ID:{
-
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
                 Competition c = ManagersFactory.getInstance().competitionManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
@@ -67,13 +63,11 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
                 break;
             }
             case ACTION_UPDATE:{
-
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
                 ManagersFactory.getInstance().competitionManager.update(this, c);
                 break;
             }
             case ACTION_GET_OVERVIEW:{
-
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 Competition c = ManagersFactory.getInstance().competitionManager.getById(this, id);
                 ArrayList<Tournament> tournaments = ManagersFactory.getInstance().tournamentManager.getByCompetitionId(this, id);
@@ -88,6 +82,5 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
                 break;
             }
         }
-
     }
 }

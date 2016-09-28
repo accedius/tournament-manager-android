@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigFragment extends AbstractDataFragment {
-
     private static final String ARG_ID = "arg_id";
     private PointConfig cfg = null;
     private TextView w, l, d;
@@ -65,7 +64,6 @@ public class PointConfigFragment extends AbstractDataFragment {
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
-
         View v = inflater.inflate(R.layout.fragment_point_config, container, false);
         w = (EditText) v.findViewById(R.id.tv_wins);
         l = (EditText) v.findViewById(R.id.tv_loss);
@@ -79,7 +77,7 @@ public class PointConfigFragment extends AbstractDataFragment {
      * @return true or false
      */
     private boolean validate() {
-        if(     w.getText().toString().isEmpty() ||
+        if (    w.getText().toString().isEmpty() ||
                 l.getText().toString().isEmpty() ||
                 d.getText().toString().isEmpty()) {
             return false;

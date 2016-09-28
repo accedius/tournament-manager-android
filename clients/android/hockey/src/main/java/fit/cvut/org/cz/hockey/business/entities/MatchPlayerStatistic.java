@@ -7,7 +7,6 @@ import android.os.Parcelable;
  * Created by atgot_000 on 20. 4. 2016.
  */
 public class MatchPlayerStatistic implements Parcelable {
-
     private long playerId;
     private String name;
     private int goals, assists, plusMinusPoints, saves;
@@ -35,7 +34,6 @@ public class MatchPlayerStatistic implements Parcelable {
         this.saves = saves;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -51,8 +49,7 @@ public class MatchPlayerStatistic implements Parcelable {
         dest.writeInt(saves);
     }
 
-    public MatchPlayerStatistic( Parcel in )
-    {
+    public MatchPlayerStatistic(Parcel in) {
         this.playerId = in.readLong();
         this.name = in.readString();
         this.goals = in.readInt();
@@ -92,7 +89,6 @@ public class MatchPlayerStatistic implements Parcelable {
     public void setSaves(int saves) {
         this.saves = saves;
     }
-
 
     public long getPlayerId() {
         return playerId;

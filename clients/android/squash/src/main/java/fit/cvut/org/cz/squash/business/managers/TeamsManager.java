@@ -88,7 +88,7 @@ public class TeamsManager implements ITeamManager {
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
-            ManagersFactory.getInstance().playerManager.updatePlayersInTeam( context, t.getId(), t.getPlayers());
+            ManagersFactory.getInstance().playerManager.updatePlayersInTeam(context, t.getId(), t.getPlayers());
 
         return res;
     }

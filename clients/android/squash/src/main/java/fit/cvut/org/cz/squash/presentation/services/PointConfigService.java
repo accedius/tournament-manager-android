@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 3. 4. 2016.
  */
 public class PointConfigService extends AbstractIntentServiceWProgress {
-
     public PointConfigService() {
         super("Squash Point CFG Service");
     }
@@ -32,7 +31,6 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action) {
@@ -48,9 +46,7 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }
-
         }
-
     }
 
     public static Intent newStartIntent(String action, Context context){

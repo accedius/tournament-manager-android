@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
  * Created by atgot_000 on 1. 4. 2016.
  */
 public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
-
     private TextView start, end, tourSum, playerSum, note;
     private static final String COMP_KEY = "competition_id_key";
     protected long competitionID;
@@ -41,7 +40,6 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
      * @return Key of int palyers sum saved as extra
      */
     protected abstract String getPlayersSumKey();
-
 
     public static CompetitionOverviewFragment newInstance(long id, Class<? extends CompetitionOverviewFragment> clazz){
         CompetitionOverviewFragment fragment = null;
@@ -76,7 +74,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         note = (TextView) v.findViewById(R.id.comp_note);
 
         if (getArguments() != null)
-            competitionID = getArguments().getLong( COMP_KEY );
+            competitionID = getArguments().getLong(COMP_KEY);
 
         return v;
     }
@@ -104,8 +102,5 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
         note.setText(competition.getNote());
     }
-
-
-
 
 }

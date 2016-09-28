@@ -28,14 +28,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScoredMatch> {
-
     private long tournamentID;
     private static String ARG_ID = "tournament_id";
 
     private MatchReceiver matchReceiver = new MatchReceiver();
 
-
-    public static HockeyMatchesListFragment newInstance( long id ) {
+    public static HockeyMatchesListFragment newInstance(long id) {
         HockeyMatchesListFragment fragment = new HockeyMatchesListFragment();
         Bundle args = new Bundle();
 
@@ -47,9 +45,8 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        if( getArguments() != null ) {
-            tournamentID = getArguments().getLong( ARG_ID, -1 );
+        if (getArguments() != null) {
+            tournamentID = getArguments().getLong(ARG_ID, -1);
         }
 
         super.onCreate(savedInstanceState);
@@ -63,14 +60,14 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
                 super.setOnClickListeners(v, match, position, title);
                 final long fmId = match.getScoredMatch().getId();
 
-                v.setOnClickListener( new View.OnClickListener(){
+                v.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        Intent intent = ShowMatchActivity.newStartIntent( getContext(), fmId );
-                        startActivity( intent );
+                        Intent intent = ShowMatchActivity.newStartIntent(getContext(), fmId);
+                        startActivity(intent);
                     }
                 });
-                v.setOnLongClickListener( new View.OnLongClickListener(){
+                v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
                         EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentID, title);
@@ -89,26 +86,26 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
 
     @Override
     public void askForData() {
-        Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_TOURNAMENT_ID, getContext() );
-        intent.putExtra( MatchService.EXTRA_TOUR_ID, tournamentID );
-        getContext().startService( intent );
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_TOURNAMENT_ID, getContext());
+        intent.putExtra(MatchService.EXTRA_TOUR_ID, tournamentID);
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return MatchService.isWorking( MatchService.ACTION_FIND_BY_TOURNAMENT_ID );
+        return MatchService.isWorking(MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
     }
 
     @Override
     protected void registerReceivers() {
-        IntentFilter filter = new IntentFilter( MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
-        filter.addAction( MatchService.ACTION_CREATE);
-        filter.addAction( MatchService.ACTION_GENERATE_ROUND);
-        filter.addAction( MatchService.ACTION_DELETE);
-        filter.addAction( MatchService.ACTION_RESTART);
-        filter.addAction( MatchService.ACTION_UPDATE);
+        IntentFilter filter = new IntentFilter(MatchService.ACTION_FIND_BY_TOURNAMENT_ID);
+        filter.addAction(MatchService.ACTION_CREATE);
+        filter.addAction(MatchService.ACTION_GENERATE_ROUND);
+        filter.addAction(MatchService.ACTION_DELETE);
+        filter.addAction(MatchService.ACTION_RESTART);
+        filter.addAction(MatchService.ACTION_UPDATE);
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( matchReceiver, filter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(matchReceiver, filter);
     }
 
     @Override
@@ -125,7 +122,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
             public void onClick(View v) {
                final long tourId = getArguments().getLong(ARG_ID, -1);
 
-               if( !((ShowTournamentActivity)getActivity()).isEnoughTeams() ){
+               if (!((ShowTournamentActivity)getActivity()).isEnoughTeams()) {
                    Snackbar.make(getActivity().findViewById(android.R.id.content), fit.cvut.org.cz.tmlibrary.R.string.not_enough_teams_error, Snackbar.LENGTH_LONG).show();
                    return;
                }
@@ -139,7 +136,6 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
     }
 
     public class MatchReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -157,7 +153,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
                 case MatchService.ACTION_DELETE:
                 case MatchService.ACTION_RESTART:
                 case MatchService.ACTION_UPDATE:
-                    contentView.setVisibility( View.GONE );
+                    contentView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     askForData();
             }

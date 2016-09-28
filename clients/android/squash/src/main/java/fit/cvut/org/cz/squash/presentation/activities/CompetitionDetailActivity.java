@@ -30,7 +30,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CompetitionDetailActivity extends AbstractTabActivity {
-
     private long competitionId = -1;
     private DefaultViewPagerAdapter adapter = null;
     private Fragment[] fragments;

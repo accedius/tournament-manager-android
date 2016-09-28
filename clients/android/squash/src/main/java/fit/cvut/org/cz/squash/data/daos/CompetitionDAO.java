@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  * Created by Vaclav on 29. 3. 2016.
  */
 public class CompetitionDAO implements ICompetitionDAO {
-
     SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
     SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
@@ -37,10 +36,8 @@ public class CompetitionDAO implements ICompetitionDAO {
         return cv;
     }
 
-
     @Override
     public void insert(Context context, DCompetition competition) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = serializeCompetition(competition);
@@ -58,7 +55,6 @@ public class CompetitionDAO implements ICompetitionDAO {
         cv.put(DBConstants.cUID, competition.getUid());
         cv.put(DBConstants.cETAG, competition.getEtag());
 
-
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tCOMPETITIONS, cv, where, new String[]{Long.toString(competition.getId())});
         db.close();
@@ -66,7 +62,6 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public void delete(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tCOMPETITIONS, where, new String[]{Long.toString(id)});
@@ -75,7 +70,6 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public DCompetition getById(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", DBConstants.tCOMPETITIONS, DBConstants.cID);
@@ -91,10 +85,6 @@ public class CompetitionDAO implements ICompetitionDAO {
         db.close();
 
         return competition;
-
     }
 }
-
-
-
 

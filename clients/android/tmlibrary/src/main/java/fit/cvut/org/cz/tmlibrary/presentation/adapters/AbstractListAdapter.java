@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * Simple adapter that already provides container where you can store data
  */
 public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-
     protected final ArrayList<T> data = new ArrayList<>();
 
     public void swapData(ArrayList<T> list){

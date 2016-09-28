@@ -37,21 +37,19 @@ public class DBScripts {
             + DBConstants.cLASTMODIFIED + " TEXT, "
             + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
-
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PLAYERS_IN_COMPETITION = "create table " + DBConstants.tPLAYERS_IN_COMPETITION + " ("
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
             + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-            + "PRIMARY KEY ( " + DBConstants.cCOMPETITIONID + ", " + DBConstants.cPLAYER_ID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
+            + "PRIMARY KEY (" + DBConstants.cCOMPETITIONID + ", " + DBConstants.cPLAYER_ID + ") "
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PLAYERS_IN_TOURNAMENT = "create table " + DBConstants.tPLAYERS_IN_TOURNAMENT + " ("
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-            + "PRIMARY KEY ( " + DBConstants.cTOURNAMENT_ID + ", " + DBConstants.cPLAYER_ID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
-
+            + "PRIMARY KEY (" + DBConstants.cTOURNAMENT_ID + ", " + DBConstants.cPLAYER_ID + ") "
+            + "FOREIGN KEY (" + DBConstants.cTOURNAMENT_ID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_TEAMS = "create table " + DBConstants.tTEAMS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
@@ -61,13 +59,13 @@ public class DBScripts {
             + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
             + DBConstants.cNAME + " TEXT NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY (" + DBConstants.cTOURNAMENT_ID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PLAYERS_IN_TEAM = "create table " + DBConstants.tPLAYERS_IN_TEAM + " ("
             + DBConstants.cTEAM_ID + " INTEGER NOT NULL, "
             + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-            + "PRIMARY KEY ( " + DBConstants.cTEAM_ID + ", " + DBConstants.cPLAYER_ID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ));";
+            + "PRIMARY KEY (" + DBConstants.cTEAM_ID + ", " + DBConstants.cPLAYER_ID + ") "
+            + "FOREIGN KEY (" + DBConstants.cTEAM_ID + ") REFERENCES " + DBConstants.tTEAMS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_MATCHES = "create table " + DBConstants.tMATCHES + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
@@ -81,7 +79,7 @@ public class DBScripts {
             + DBConstants.cROUND + " INTEGER NOT NULL, "
             + DBConstants.cPERIOD + " INTEGER NOT NULL, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY (" + DBConstants.cTOURNAMENT_ID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PARTICIPANTS = "create table " + DBConstants.tPARTICIPANTS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
@@ -92,8 +90,8 @@ public class DBScripts {
             + DBConstants.cTEAM_ID + " INTEGER, "
             + DBConstants.cROLE + " TEXT, "
             + DBConstants.cMATCH_ID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY ( " + DBConstants.cTEAM_ID + " ) REFERENCES " + DBConstants.tTEAMS + " ( " + DBConstants.cID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY (" + DBConstants.cTEAM_ID + ") REFERENCES " + DBConstants.tTEAMS + " (" + DBConstants.cID + ") "
+            + "FOREIGN KEY (" + DBConstants.cMATCH_ID + ") REFERENCES " + DBConstants.tMATCHES + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_STATS = "create table " + DBConstants.tSTATS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
@@ -103,35 +101,33 @@ public class DBScripts {
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
             + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
             + DBConstants.cVALUE + " TEXT, "
-            + "FOREIGN KEY ( " + DBConstants.cTOURNAMENT_ID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ) "
-            + "FOREIGN KEY ( " + DBConstants.cCOMPETITIONID + " ) REFERENCES " + DBConstants.tCOMPETITIONS + " ( " + DBConstants.cID + " ));";
-
+            + "FOREIGN KEY (" + DBConstants.cTOURNAMENT_ID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + ") "
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String INSERT_INTO_PLAYERS =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 1, "Martin", "martin@seznam.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_1 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 2, "Aleš", "ales@valenta.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_2 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 3, "Jarda", "jarda@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_3 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 4, "Pavel", "pavel@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_4 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 5, "Honza", "honza@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_5 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 6, "Zdeněk", "zdenda@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_6 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 7, "Tomáš", "tomnas@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
     public static final String INSERT_INTO_PLAYERS_7 =
-            String.format("insert into %s VALUES( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );",
+            String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     DBConstants.tPLAYERS, 8, "Radek", "Radek@frk.cz", "", "abcde", "efgh", "2016-04-04 10:12:14", "2016-04-04 10:12:14");
-
 
     public static final String INSERT_SQUASH_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','SQ T CMP 1','2001-01-01','2001-12-12','1','Pozn1','asdf','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
     public static final String INSERT_SQUASH_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','SQ I CMP 2','2002-01-01','2002-12-12','0','Pozn2','asdf','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";

@@ -26,7 +26,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
  * Created by Vaclav on 14. 4. 2016.
  */
 public abstract class InsertTeamDialog extends DialogFragment{
-
     public static final String ARG_ID = "arg_id";
     public static final String ARG_TOURNAMENT_ID = "arg_tournament_id";
     private ProgressBar progressBar;
@@ -35,8 +34,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
 
     protected long teamId, tournamentId;
 
-
-    public static InsertTeamDialog newInstance(long id, boolean forTournament, Class<? extends InsertTeamDialog> clazz){
+    public static InsertTeamDialog newInstance(long id, boolean forTournament, Class<? extends InsertTeamDialog> clazz) {
         InsertTeamDialog fragment = null;
         try {
             fragment = clazz.getConstructor().newInstance();
@@ -74,9 +72,9 @@ public abstract class InsertTeamDialog extends DialogFragment{
                 if (name.getText().toString().isEmpty() || isDataSourceWorking())
                     return;
 
-                if (tournamentId != -1){
+                if (tournamentId != -1) {
                     insertTeam(new Team(tournamentId, name.getText().toString()));
-                } else if (teamId != -1){
+                } else if (teamId != -1) {
                     team.setName(name.getText().toString());
                     editTeam(team);
                 }
@@ -99,7 +97,7 @@ public abstract class InsertTeamDialog extends DialogFragment{
         teamId = getArguments().getLong(ARG_ID, -1);
         tournamentId = getArguments().getLong(ARG_TOURNAMENT_ID, -1);
 
-        if (teamId != -1){
+        if (teamId != -1) {
             registerReceiver();
             askForData();
             progressBar.setVisibility(View.VISIBLE);

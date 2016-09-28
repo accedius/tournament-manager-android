@@ -36,7 +36,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TournamentManagerTest {
-
     @Mock
     ITournamentDAO mockTournamentDAO;
 
@@ -79,13 +78,11 @@ public class TournamentManagerTest {
         when(mockTournamentDAO.getByCompetitionId(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<DTournament>());
         ManagerFactory.getInstance().tournamentManager.getByCompetitionId(RuntimeEnvironment.application, 1);
         verify(mockTournamentDAO).getByCompetitionId(RuntimeEnvironment.application, 1);
-
     }
 
     @After
     public void tearDown() throws Exception {
         DAOFactory.getInstance().tournamentDAO = new TournamentDAO();
         DAOFactory.getInstance().pointConfigDAO = new PointConfigDAO();
-
     }
 }

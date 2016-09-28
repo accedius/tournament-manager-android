@@ -8,10 +8,10 @@ import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public interface IPointConfigDAO {
-    void update( Context context, DPointConfiguration dPointConfiguration, Long tournamentId);
+    void update(Context context, DPointConfiguration dPointConfiguration, Long tournamentId);
 
-    public long insertDefault( Context context, long tournamentId);
+    public long insertDefault(Context context, long tournamentId);
     void delete(Context context, long tournamentId);
 
-    DPointConfiguration getByTournamentId( Context context, Long tournamentId );
+    DPointConfiguration getByTournamentId(Context context, Long tournamentId);
 }

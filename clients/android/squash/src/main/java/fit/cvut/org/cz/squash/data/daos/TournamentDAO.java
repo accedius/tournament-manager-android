@@ -21,9 +21,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
  * Created by Vaclav on 29. 3. 2016.
  */
 public class TournamentDAO implements ITournamentDAO {
-
     private ContentValues serializeTournament(DTournament tournament) {
-
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
@@ -40,10 +38,8 @@ public class TournamentDAO implements ITournamentDAO {
         return cv;
     }
 
-
     @Override
     public long insert(Context context, DTournament tournament) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = serializeTournament(tournament);
@@ -62,7 +58,6 @@ public class TournamentDAO implements ITournamentDAO {
         cv.put(DBConstants.cUID, tournament.getUid());
         cv.put(DBConstants.cETAG, tournament.getEtag());
 
-
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tTOURNAMENTS, cv, where, new String[]{Long.toString(tournament.getId())});
         db.close();
@@ -70,7 +65,6 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public void delete(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tTOURNAMENTS, where, new String[]{Long.toString(id)});
@@ -79,7 +73,6 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public DTournament getById(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", DBConstants.tTOURNAMENTS, DBConstants.cID);
@@ -95,12 +88,10 @@ public class TournamentDAO implements ITournamentDAO {
         db.close();
 
         return tournament;
-
     }
 
     @Override
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ? order by %s", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITIONID, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
@@ -118,7 +109,4 @@ public class TournamentDAO implements ITournamentDAO {
         return tournaments;
     }
 }
-
-
-
 

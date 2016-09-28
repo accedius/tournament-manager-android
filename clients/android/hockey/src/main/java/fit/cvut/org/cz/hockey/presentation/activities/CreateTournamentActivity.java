@@ -25,7 +25,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_COMP_ID = "comp_id";
     public static final String EXTRA_TOUR_ID = "tour_id";
 
@@ -36,7 +35,7 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
      * @param compId id oc competition
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long tourId, long compId  ) {
+    public static Intent newStartIntent(Context context, long tourId, long compId) {
         Intent res = new Intent(context, CreateTournamentActivity.class);
         res.putExtra(EXTRA_TOUR_ID, tourId);
         res.putExtra(EXTRA_COMP_ID, compId);
@@ -58,10 +57,10 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long tourID, compID;
-        tourID = getIntent().getLongExtra( EXTRA_TOUR_ID, -1 );
-        compID = getIntent().getLongExtra( EXTRA_COMP_ID, -1 );
+        tourID = getIntent().getLongExtra(EXTRA_TOUR_ID, -1);
+        compID = getIntent().getLongExtra(EXTRA_COMP_ID, -1);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
                 getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyTournamentFragment.newInstance(tourID, compID, NewHockeyTournamentFragment.class)).commit();
         }
     }

@@ -20,12 +20,10 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class MatchDAO implements IMatchDAO {
-
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
     private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
-    private ContentValues toContVal(DMatch match)
-    {
+    private ContentValues toContVal(DMatch match) {
         ContentValues cv = new ContentValues();
         //cv.put(DBConstants.cID, match.getId());
         cv.put(DBConstants.cTOURNAMENT_ID, match.getTournamentId());
@@ -35,9 +33,9 @@ public class MatchDAO implements IMatchDAO {
         cv.put(DBConstants.cPERIOD, match.getPeriod());
         cv.put(DBConstants.cPLAYED, match.isPlayed());
         cv.put(DBConstants.cNOTE, match.getNote());
-        if ( match.getDate() != null )
+        if (match.getDate() != null)
             cv.put(DBConstants.cDATE, dateFormat.format(match.getDate()));
-        if ( match.getLastSynchronized() != null )
+        if (match.getLastSynchronized() != null)
             cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(match.getLastSynchronized()));
         cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
 
@@ -63,7 +61,7 @@ public class MatchDAO implements IMatchDAO {
 
         ContentValues values = toContVal(match);
 
-        String where = String.format( "%s = ?", DBConstants.cID );
+        String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(match.getId()) };
         db.update(DBConstants.tMATCHES, values, where, projection);
         db.close();
@@ -73,24 +71,23 @@ public class MatchDAO implements IMatchDAO {
     public void delete(Context context, long id) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ?", DBConstants.cID );
-        String[] projection = new String[]{ Long.toString( id ) };
+        String where = String.format("%s = ?", DBConstants.cID);
+        String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tMATCHES, where, projection);
         db.close();
     }
 
     @Override
     public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
-
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( tournamentId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 
         ArrayList<DMatch> res = new ArrayList<>();
 
         while (cursor.moveToNext())
         {
-            res.add( CursorParser.getInstance().parseDMatch(cursor));
+            res.add(CursorParser.getInstance().parseDMatch(cursor));
         }
 
         cursor.close();
@@ -99,14 +96,13 @@ public class MatchDAO implements IMatchDAO {
         return res;
     }
 
-
     @Override
     public DMatch getById(Context context, long id) {
-        String[] selArgs = { String.valueOf( id ) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        Cursor cursor = db.query( DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null );
+        String[] selArgs = { String.valueOf(id) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if( cursor.getCount() <= 0 )
+        if (cursor.getCount() <= 0)
             return null;
         DMatch res = CursorParser.getInstance().parseDMatch(cursor);
 

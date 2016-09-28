@@ -12,7 +12,6 @@ import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
  * Created by atgot_000 on 12. 4. 2016.
  */
 public class TournamentsDialog extends EditDeleteDialog {
-
     private static final String ARG_ID = "arg_id";
     private static final String ARG_POSITION = "arg_position";
     private static final String SECOND_ID = "second_id";
@@ -40,7 +39,7 @@ public class TournamentsDialog extends EditDeleteDialog {
         };
     }
 
-    public static TournamentsDialog newInstance( long id, long otherId, int position, String name ){
+    public static TournamentsDialog newInstance(long id, long otherId, int position, String name){
         TournamentsDialog fragment = new TournamentsDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);

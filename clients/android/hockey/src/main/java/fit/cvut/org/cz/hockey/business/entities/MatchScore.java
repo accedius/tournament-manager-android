@@ -7,7 +7,6 @@ import android.os.Parcelable;
  * Created by atgot_000 on 20. 4. 2016.
  */
 public class MatchScore implements Parcelable {
-
     private long matchId;
     private int homeScore, awayScore;
     private boolean shootouts, overtime;
@@ -29,14 +28,14 @@ public class MatchScore implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( matchId );
+        dest.writeLong(matchId);
         dest.writeInt(homeScore);
         dest.writeInt(awayScore);
         dest.writeByte((byte) (shootouts ? 1 : 0));
         dest.writeByte((byte) (overtime ? 1 : 0));
     }
 
-    public MatchScore( Parcel in ) {
+    public MatchScore(Parcel in) {
         this.matchId = in.readLong();
         this.homeScore = in.readInt();
         this.awayScore = in.readInt();

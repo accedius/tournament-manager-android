@@ -9,7 +9,6 @@ import android.view.View;
  * Created by Vaclav on 27. 3. 2016.
  */
 public class FABFloatUpBehavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
-
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
         return dependency instanceof TextInputLayout;

@@ -21,7 +21,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CreateMatchActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_MATCH_ID = "match_id";
     public static final String EXTRA_TOURNAMENT_ID = "tournament_id";
 
@@ -47,7 +46,6 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         matchId = getIntent().getLongExtra(EXTRA_MATCH_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
-
             if (matchId == -1)
                 getSupportFragmentManager().beginTransaction().add(R.id.container, CreateSquashMatchFragment.newInstance(tournamentId, CreateSquashMatchFragment.class)).commit();
             else
@@ -69,7 +67,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
-            if (scoredMatch.getId() == -1 && scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId() ) {
+            if (scoredMatch.getId() == -1 && scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId()) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
@@ -81,8 +79,8 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 scoredMatch.setTournamentId(getIntent().getLongExtra(EXTRA_TOURNAMENT_ID, -1));
                 scoredMatch.setPlayed(false);
             } else {
-                intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE_MATCH, this );
-                intent.setAction( MatchService.ACTION_UPDATE_MATCH );
+                intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH, this);
+                intent.setAction(MatchService.ACTION_UPDATE_MATCH);
             }
             intent.putExtra(MatchService.EXTRA_MATCH, scoredMatch);
 

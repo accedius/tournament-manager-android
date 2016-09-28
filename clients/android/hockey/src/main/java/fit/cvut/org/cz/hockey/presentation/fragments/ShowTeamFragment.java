@@ -16,9 +16,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class ShowTeamFragment extends TeamDetailFragment {
-
-
-
     @Override
     protected String getTeamKey() {
         return TeamService.EXTRA_TEAM;
@@ -31,11 +28,11 @@ public class ShowTeamFragment extends TeamDetailFragment {
 
     @Override
     protected void updatePlayers(Team t) {
-        Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_UPDATE_TEAM_PLAYERS, getContext() );
-        intent.putExtra( PlayerService.EXTRA_ID, t.getId() );
+        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE_TEAM_PLAYERS, getContext());
+        intent.putExtra(PlayerService.EXTRA_ID, t.getId());
         intent.putExtra(PlayerService.EXTRA_PLAYERS, t.getPlayers());
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
@@ -64,7 +61,7 @@ public class ShowTeamFragment extends TeamDetailFragment {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TeamService.isWorking( TeamService.ACTION_GET_BY_ID );
+        return TeamService.isWorking(TeamService.ACTION_GET_BY_ID);
     }
 
     @Override

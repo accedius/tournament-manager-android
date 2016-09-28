@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 
 public class HockeyScoredMatch implements Parcelable {
-
     protected MatchScore matchScore;
     protected ScoredMatch scoredMatch;
 
@@ -28,7 +27,7 @@ public class HockeyScoredMatch implements Parcelable {
         dest.writeParcelable(scoredMatch, flags);
     }
 
-    public HockeyScoredMatch(Parcel in ) {
+    public HockeyScoredMatch(Parcel in) {
         this.matchScore = new MatchScore(in);
         this.scoredMatch = new ScoredMatch(in);
     }

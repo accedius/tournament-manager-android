@@ -21,7 +21,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by atgot_000 on 1. 4. 2016.
  */
 public class PlayerDetailFragment extends AbstractDataFragment {
-
     private TextView email, note;
     private static final String PLAYER_KEY = "extra_player";
     protected long playerID;
@@ -52,7 +51,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         Player player = intent.getParcelableExtra(PLAYER_KEY);
 
-        if( player == null ) {
+        if (player == null) {
             getActivity().setTitle("Player not found"); //PROZATIMNI RESENI
             return;
         }
@@ -74,7 +73,6 @@ public class PlayerDetailFragment extends AbstractDataFragment {
         return PlayerService.isWorking(PlayerService.ACTION_GET_BY_ID);
     }
 
-
     @Override
     protected void registerReceivers() {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(PlayerService.ACTION_GET_BY_ID));
@@ -92,7 +90,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
         email  = (TextView) v.findViewById(R.id.player_email);
         note = (TextView) v.findViewById(R.id.player_note);
 
-        if( getArguments() != null )
+        if (getArguments() != null)
             playerID = getArguments().getLong(PLAYER_KEY);
 
         return v;

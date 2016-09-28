@@ -10,8 +10,6 @@ import java.util.ArrayList;
  * Simple Intent service with added methods to check if service is currently handling requests.
  */
 public abstract class AbstractIntentServiceWProgress extends IntentService {
-
-
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *

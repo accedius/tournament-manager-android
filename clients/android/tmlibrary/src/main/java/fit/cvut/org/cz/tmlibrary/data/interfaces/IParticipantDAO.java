@@ -10,13 +10,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
  * Created by atgot_000 on 18. 4. 2016.
  */
 public interface IParticipantDAO {
-
     long insert(Context context, DParticipant participant);
     void update(Context context, DParticipant participant);
-    void delete( Context context, long id );
+    void delete(Context context, long id);
 
-    ArrayList<DParticipant> getParticipantsByMatchId( Context context, long matchId );
-    ArrayList<DParticipant> getParticipantsByTeamId( Context context, long teamId );
-    DParticipant getById( Context context, long id );
+    ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId);
+    ArrayList<DParticipant> getParticipantsByTeamId(Context context, long teamId);
+    DParticipant getById(Context context, long id);
 
 }

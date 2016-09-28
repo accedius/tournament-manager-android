@@ -9,7 +9,6 @@ import android.os.Parcelable;
  * Created by Vaclav on 7. 4. 2016.
  */
 public class SAggregatedStats implements Parcelable {
-
     public long playerId;
     public String playerName;
 

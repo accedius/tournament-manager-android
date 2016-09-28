@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
  * Created by kevin on 7. 4. 2016.
  */
 public class DatabaseFactory {
-
     private static DatabaseFactory ourInstance = new DatabaseFactory();
 
     public static DatabaseFactory getInstance() {

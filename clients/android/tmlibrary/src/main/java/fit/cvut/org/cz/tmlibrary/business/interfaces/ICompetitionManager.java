@@ -8,7 +8,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
  * Created by Vaclav on 29. 3. 2016.
  */
 public interface ICompetitionManager {
-
     /**
      * insert new competition
      * @param context application context

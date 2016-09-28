@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tmlibrary.R;
  * Created by Vaclav on 20. 3. 2016.
  */
 public abstract class AbstractTabActivity extends AbstractToolbarActivity {
-
     public static final String ARG_TABMODE = "arg_tabmode";
 
     protected ViewPager pager;
@@ -37,10 +36,9 @@ public abstract class AbstractTabActivity extends AbstractToolbarActivity {
 
         int tabMode = getIntent().getIntExtra(ARG_TABMODE, -1);
 
-        if (tabMode == TabLayout.MODE_SCROLLABLE ) {
+        if (tabMode == TabLayout.MODE_SCROLLABLE) {
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
-
 
         tabLayout.setupWithViewPager(pager);
 

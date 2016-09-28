@@ -29,7 +29,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchDetailActivity extends AbstractTabActivity {
-
     public static final String ARG_PLAYED = "arg_played";
     public static final String ARG_ID = "arg_id";
     public static final String ARG_TYPE = "arg_type";
@@ -47,7 +46,6 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-
         long id = getIntent().getLongExtra(ARG_ID, -1);
         boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
         CompetitionType type = CompetitionTypes.competitionTypes()[getIntent().getIntExtra(ARG_TYPE, 0)];
@@ -76,21 +74,21 @@ public class MatchDetailActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             SquashMatchOverviewFragment fr  = (SquashMatchOverviewFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
-            if (fr !=null){
+            if (fr !=null) {
                 ArrayList<SetRowItem> list = fr.getSetsFragment().getSets();
                 if (fr.getSetsFragment().hasErrors()) {
                     Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
                 for (SetRowItem set : list) {
-                    if (set.getWinner() == 0){
+                    if (set.getWinner() == 0) {
                         Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
                         return true;
                     }
                 }
             }
 
-            if (fr != null && !fr.isWorking()){
+            if (fr != null && !fr.isWorking()) {
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
                 ArrayList<SetRowItem> list = fr.getSetsFragment().getSets();
                 intent.putExtra(MatchService.EXTRA_MATCHES, list);
@@ -98,9 +96,9 @@ public class MatchDetailActivity extends AbstractTabActivity {
                 startService(intent);
             }
 
-            if (adapter.getCount() > 1){
+            if (adapter.getCount() > 1) {
                 MatchPlayersFragment mfr = (MatchPlayersFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(1));
-                if (mfr != null){
+                if (mfr != null) {
                     ArrayList<Player> players = mfr.getAwayPlayers();
                     Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UDATE_PLAYERS_FOR_MATCH, this);
                     intent.putExtra(PlayerService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));

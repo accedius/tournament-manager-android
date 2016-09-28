@@ -29,12 +29,10 @@ public class PlayerManager implements IPackagePlayerManager {
         DAOFactory.getInstance().playerDAO.addPlayerToTournament(context, playerId, tournamentId);
     }
 
-
     @Override
     public boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
-
         ArrayList<Tournament> tournaments = ManagersFactory.getInstance().tournamentManager.getByCompetitionId(context,competitionId);
-        for (Tournament t : tournaments){
+        for (Tournament t : tournaments) {
             ArrayList<Long> playerIds = DAOFactory.getInstance().playerDAO.getPlayerIdsByTournament(context, t.getId());
             if (playerIds.contains(playerId)) return false;
         }
@@ -44,7 +42,6 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public boolean deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
-
         Player p = new Player(playerId, null, null, null);
         if (DAOFactory.getInstance().statDAO.getByPlayerAndTournament(context, playerId, tournamentId, StatsEnum.MATCH_PARTICIPATION).size() != 0) return false;
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(context, tournamentId);
@@ -53,7 +50,6 @@ public class PlayerManager implements IPackagePlayerManager {
         DAOFactory.getInstance().playerDAO.deletePlayerFromTournament(context, playerId, tournamentId);
         return true;
     }
-
 
     @Override
     public ArrayList<Player> getPlayersByCompetition(Context context, long competitionId) {
@@ -79,7 +75,6 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersByParticipant(Context context, long participantId) {
-
         Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
         ArrayList<Long> ids = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, participantId);
         ArrayList<Player> filtered = new ArrayList<>();
@@ -91,7 +86,6 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersByTeam(Context context, long teamId) {
-
         Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
         ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByTeam(context, teamId);
         ArrayList<Player> filteredPlayers = new ArrayList<>();
@@ -131,7 +125,6 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public ArrayList<Player> getPlayersNotInTournament(Context context, long tournamentId) {
-
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, tournamentId);
         ArrayList<Player> playersInCompetition = getPlayersByCompetition(context, t.getCompetitionId());
         ArrayList<Player> playersInTournament = getPlayersByTournament(context, tournamentId);
@@ -143,14 +136,12 @@ public class PlayerManager implements IPackagePlayerManager {
 
     @Override
     public void updatePlayersInTeam(Context context, long teamId, ArrayList<Player> players) {
-
         DAOFactory.getInstance().playerDAO.deleteAllPlayersFromTeam(context, teamId);
         for (Player p : players) DAOFactory.getInstance().playerDAO.addPlayerToTeam(context, p.getId(), teamId);
     }
 
     @Override
     public ArrayList<Player> getPlayersNotInTeams(Context context, long tournamentId) {
-
         ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
         ArrayList<Player> players = getPlayersByTournament(context, tournamentId);
 
@@ -164,7 +155,7 @@ public class PlayerManager implements IPackagePlayerManager {
     @Override
     public void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, ArrayList<Player> players) {
         DAOFactory.getInstance().statDAO.delete(context, participantId, StatsEnum.MATCH_PARTICIPATION);
-        for (Player p : players){
+        for (Player p : players) {
             DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, competitionId, tournamentId, p.getId(), participantId, 1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
         }
     }

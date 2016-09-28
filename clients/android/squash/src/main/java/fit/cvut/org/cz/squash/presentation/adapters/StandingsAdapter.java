@@ -14,8 +14,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by Vaclav on 7. 4. 2016.
  */
 public class StandingsAdapter extends AbstractListAdapter<StandingItem, StandingsAdapter.StandingItemViewHolder> {
-
-
     @Override
     public StandingItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new StandingItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_standings, parent, false));
@@ -33,7 +31,6 @@ public class StandingsAdapter extends AbstractListAdapter<StandingItem, Standing
     }
 
     public class StandingItemViewHolder extends RecyclerView.ViewHolder{
-
         TextView name, W, L, D, score, points;
 
         public StandingItemViewHolder(View itemView) {
@@ -45,6 +42,5 @@ public class StandingsAdapter extends AbstractListAdapter<StandingItem, Standing
             score = (TextView) itemView.findViewById(R.id.tv_score);
             points = (TextView) itemView.findViewById(R.id.tv_points);
         }
-
     }
 }

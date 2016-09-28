@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
  * Created by Vaclav on 28. 3. 2016.
  */
 public class NewSquashCompetitionFragment extends NewCompetitionFragment {
-
     @Override
     protected void saveCompetition(Competition c) {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_CREATE, getContext());

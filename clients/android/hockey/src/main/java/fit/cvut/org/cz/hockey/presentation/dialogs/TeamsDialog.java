@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
  * Created by atgot_000 on 12. 4. 2016.
  */
 public class TeamsDialog extends EditDeleteDialog {
-
     private static final String ARG_ID = "arg_id";
     private static final String ARG_POSITION = "arg_position";
 
@@ -39,7 +38,7 @@ public class TeamsDialog extends EditDeleteDialog {
         };
     }
 
-    public static TeamsDialog newInstance( long id, int position, String name ){
+    public static TeamsDialog newInstance(long id, int position, String name){
         TeamsDialog fragment = new TeamsDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);

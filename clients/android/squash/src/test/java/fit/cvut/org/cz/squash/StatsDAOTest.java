@@ -24,11 +24,9 @@ import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class StatsDAOTest {
-
     @Before
     public void setUp() throws Exception {
         DatabaseFactory.getInstance().setTest(true);
-
     }
 
     @After
@@ -80,9 +78,7 @@ public class StatsDAOTest {
         DAOFactory.getInstance().statDAO.deleteByParticipant(RuntimeEnvironment.application, 1);
         Assert.assertEquals(0, DAOFactory.getInstance().statDAO.getAll(RuntimeEnvironment.application, StatsEnum.MATCH_PARTICIPATION).size());
         Assert.assertEquals(0, DAOFactory.getInstance().statDAO.getAll(RuntimeEnvironment.application, StatsEnum.MATCH).size());
-
     }
-
 
     private void prepQueryData(){
         DAOFactory.getInstance().statDAO.insert(RuntimeEnvironment.application, new DStat(0, 1, 1, 1, 1, 1, 1, 1, StatsEnum.MATCH_PARTICIPATION));
@@ -94,12 +90,10 @@ public class StatsDAOTest {
         DAOFactory.getInstance().statDAO.insert(RuntimeEnvironment.application, new DStat(0, 1, 2, -1, 6, 1, 4, 15, StatsEnum.MATCH));
         DAOFactory.getInstance().statDAO.insert(RuntimeEnvironment.application, new DStat(0, 2, 3, -1, 7, 1, 4, 15, StatsEnum.SET));
         DAOFactory.getInstance().statDAO.insert(RuntimeEnvironment.application, new DStat(0, 2, 3, -1, 8, 1, 4, 15, StatsEnum.MATCH));
-
     }
 
     @Test
     public void testQueries() throws Exception {
-
         prepQueryData();
         Assert.assertEquals(2, DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 1).size());
         Assert.assertEquals(1, DAOFactory.getInstance().statDAO.getByParticipant(RuntimeEnvironment.application, 1, StatsEnum.SET).size());

@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class CompetitionCP extends ContentProvider {
-
     public static final String AUTHORITY = "fit.cvut.org.cz.squash.data";
 
     private SquashDBHelper helper;

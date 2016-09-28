@@ -47,7 +47,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class MatchManagerTest {
-
     @Mock
     IMatchDAO mockMatchDAO;
     @Mock
@@ -69,12 +68,12 @@ public class MatchManagerTest {
         mockTeamDAO = Mockito.mock(ITeamDAO.class);
         mockPlayerDAO = Mockito.mock(IPackagePlayerDAO.class);
         mockTournamentDAO = Mockito.mock(ITournamentDAO.class);
-        parts.add( new DParticipant(1, 2, id, ParticipantType.home.toString()) );
+        parts.add(new DParticipant(1, 2, id, ParticipantType.home.toString()));
         parts.add(new DParticipant(1, 2, id, ParticipantType.away.toString()));
         when(mockMatchDAO.getById(RuntimeEnvironment.application, id)).thenReturn(new DMatch(id, 1, 1, 1, new Date(), "note", true));
-        when(mockParticipantDAO.getParticipantsByMatchId(RuntimeEnvironment.application, id)).thenReturn( parts );
-        when(mockTeamDAO.getById(RuntimeEnvironment.application, 2)).thenReturn( new DTeam(2, 1, "TestName"));
-        when(mockPlayerDAO.getPlayerIdsByParticipant(RuntimeEnvironment.application, 1)).thenReturn( new ArrayList<Long>());
+        when(mockParticipantDAO.getParticipantsByMatchId(RuntimeEnvironment.application, id)).thenReturn(parts);
+        when(mockTeamDAO.getById(RuntimeEnvironment.application, 2)).thenReturn(new DTeam(2, 1, "TestName"));
+        when(mockPlayerDAO.getPlayerIdsByParticipant(RuntimeEnvironment.application, 1)).thenReturn(new ArrayList<Long>());
 
         DAOFactory.getInstance().tournamentDAO = mockTournamentDAO;
         DAOFactory.getInstance().matchDAO = mockMatchDAO;
@@ -95,7 +94,7 @@ public class MatchManagerTest {
     @Test
     public void testBeginMatchUpdateCalled() throws Exception {
         long thisId = 5;
-        when(mockParticipantDAO.getParticipantsByMatchId(RuntimeEnvironment.application, thisId)).thenReturn( new ArrayList<DParticipant>() );
+        when(mockParticipantDAO.getParticipantsByMatchId(RuntimeEnvironment.application, thisId)).thenReturn(new ArrayList<DParticipant>());
         when(mockTournamentDAO.getById(RuntimeEnvironment.application, 1)).thenReturn(new DTournament(1, "tourn", new Date(), new Date(), "tourNote"));
         ManagerFactory.getInstance().matchManager.beginMatch(RuntimeEnvironment.application, id);
         verify(mockMatchDAO, times(0)).update(any(Context.class), any(DMatch.class));

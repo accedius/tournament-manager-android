@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PackagePlayerDAOTest {
-
     @Test
     public void testComp() throws Exception {
         DAOFactory.getInstance().packagePlayerDAO.addPlayerToCompetition(RuntimeEnvironment.application, 1, 1);

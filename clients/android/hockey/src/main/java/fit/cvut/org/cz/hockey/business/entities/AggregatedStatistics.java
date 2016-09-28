@@ -7,7 +7,6 @@ import android.os.Parcelable;
  * Created by atgot_000 on 7. 4. 2016.
  */
 public class AggregatedStatistics implements Parcelable {
-
     private long playerID;
     private String playerName;
 
@@ -16,7 +15,7 @@ public class AggregatedStatistics implements Parcelable {
 
     private void calcAvg() {
         this.points = this.goals + this.assists;
-        if( this.matches > 0 ) {
+        if (this.matches > 0) {
             this.avgGoals = (double)this.goals/(double)this.matches;
             this.avgPoints = (double)this.points/(double)this.matches;
             this.avgPlusMinus = (double)this.plusMinusPoints/(double)this.matches;
@@ -63,7 +62,7 @@ public class AggregatedStatistics implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( playerID );
+        dest.writeLong(playerID);
         dest.writeString(playerName);
         dest.writeLong(goals);
         dest.writeLong(assists);
@@ -79,7 +78,6 @@ public class AggregatedStatistics implements Parcelable {
         dest.writeDouble(avgPlusMinus);
         dest.writeDouble(avgTeamPoints);
         dest.writeLong(saves);
-
     }
 
     public AggregatedStatistics(Parcel in) {
@@ -106,63 +104,63 @@ public class AggregatedStatistics implements Parcelable {
 
     public long getPlayerID() { return playerID; }
 
-    public void setPlayerID( long playerID ) { this.playerID = playerID; }
+    public void setPlayerID(long playerID) { this.playerID = playerID; }
 
     public String getPlayerName() { return playerName; }
 
-    public void setPlayerName( String playerName ) { this.playerName = playerName; }
+    public void setPlayerName(String playerName) { this.playerName = playerName; }
 
     public long getGoals() { return goals; }
 
-    public void setGoals( long goals ) { this.goals = goals; }
+    public void setGoals(long goals) { this.goals = goals; }
 
     public long getAssists() { return assists; }
 
-    public void setAssists( long assists ) { this.assists = assists; }
+    public void setAssists(long assists) { this.assists = assists; }
 
     public long getPoints() { return points; }
 
-    public void setPoints( long points ) { this.points = points; }
+    public void setPoints(long points) { this.points = points; }
 
     public long getPlusMinusPoints() { return plusMinusPoints; }
 
-    public void setPlusMinusPoints( long plusMinusPoints ) { this.plusMinusPoints = plusMinusPoints; }
+    public void setPlusMinusPoints(long plusMinusPoints) { this.plusMinusPoints = plusMinusPoints; }
 
     public long getTeamPoints() { return teamPoints; }
 
-    public void setTeamPoints( long teamPoints ) { this.teamPoints = teamPoints; }
+    public void setTeamPoints(long teamPoints) { this.teamPoints = teamPoints; }
 
     public long getMatches() { return matches; }
 
-    public void setMatches( long matches ) { this.matches = matches; }
+    public void setMatches(long matches) { this.matches = matches; }
 
     public long getWins() { return wins; }
 
-    public void setWins( long wins ) { this.wins = wins; }
+    public void setWins(long wins) { this.wins = wins; }
 
     public long getLosses() { return losses; }
 
-    public void setLosses( long losses ) { this.losses = losses; }
+    public void setLosses(long losses) { this.losses = losses; }
 
     public long getDraws() { return draws; }
 
-    public void setDraws( long draws ) { this.draws = draws; }
+    public void setDraws(long draws) { this.draws = draws; }
 
     public double getAvgGoals() { return avgGoals; }
 
-    public void setAvgGoals( long avgGoals ) { this.avgGoals = avgGoals; }
+    public void setAvgGoals(long avgGoals) { this.avgGoals = avgGoals; }
 
     public double getAvgPoints() { return avgPoints; }
 
-    public void setAvgPoints( long avgPoints ) { this.avgPoints = avgPoints; }
+    public void setAvgPoints(long avgPoints) { this.avgPoints = avgPoints; }
 
     public double getAvgPlusMinus() { return avgPlusMinus; }
 
-    public void setAvgPlusMinus( long avgPlusMinus ) { this.avgPlusMinus = avgPlusMinus; }
+    public void setAvgPlusMinus(long avgPlusMinus) { this.avgPlusMinus = avgPlusMinus; }
 
     public double getAvgTeamPoints() { return avgTeamPoints; }
 
-    public void setAvgTeamPoints( long avgTeamPoints ) { this.avgTeamPoints = avgTeamPoints; }
+    public void setAvgTeamPoints(long avgTeamPoints) { this.avgTeamPoints = avgTeamPoints; }
 
     public long getSaves() {
         return saves;

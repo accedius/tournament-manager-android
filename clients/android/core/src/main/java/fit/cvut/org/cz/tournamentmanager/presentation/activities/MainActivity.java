@@ -32,7 +32,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
  * Created by kevin on 4.4.2016.
  */
 public class MainActivity extends AbstractToolbarActivity {
-
     private final String frg_competitions = "competitions";
     private final String frg_players = "players";
 

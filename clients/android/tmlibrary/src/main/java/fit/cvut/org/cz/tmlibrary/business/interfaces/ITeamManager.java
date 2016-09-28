@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
  * Created by Vaclav on 13. 4. 2016.
  */
 public interface ITeamManager {
-
     /**
      * insert team
      * @param context application context

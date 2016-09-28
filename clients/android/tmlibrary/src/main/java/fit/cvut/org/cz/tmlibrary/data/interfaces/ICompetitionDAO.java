@@ -8,7 +8,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  * Created by Vaclav on 29. 3. 2016.
  */
 public interface ICompetitionDAO {
-
     /**
      * Insert competition into database
      * @param context application context

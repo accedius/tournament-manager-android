@@ -8,7 +8,6 @@ import android.os.Parcelable;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetRowItem implements Parcelable {
-
     private int homeScore, awayScore, winner;
 
     public SetRowItem() {
@@ -42,7 +41,6 @@ public class SetRowItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(homeScore);
         dest.writeInt(awayScore);
         dest.writeInt(winner);

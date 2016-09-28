@@ -8,14 +8,13 @@ import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public interface IPointConfigManager {
-
     /**
      * Updates the point configuration of a tournament
      * @param context
      * @param pointConfiguration point configuration to be updated to
      * @param tournamentId id of tournament to be updated
      */
-    void update( Context context, PointConfiguration pointConfiguration, Long tournamentId );
+    void update(Context context, PointConfiguration pointConfiguration, Long tournamentId);
 
     /**
      *
@@ -23,6 +22,6 @@ public interface IPointConfigManager {
      * @param tournamentId id of tournament
      * @return the requested configuration of the given tournament
      */
-    PointConfiguration getByTournamentId( Context context, Long tournamentId );
+    PointConfiguration getByTournamentId(Context context, Long tournamentId);
 
 }

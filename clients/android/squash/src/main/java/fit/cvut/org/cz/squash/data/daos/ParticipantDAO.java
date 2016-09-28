@@ -18,7 +18,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
  * Created by Vaclav on 21. 4. 2016.
  */
 public class ParticipantDAO implements IParticipantDAO {
-
     private ContentValues convert(DParticipant participant){
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cROLE, participant.getRole());
@@ -29,7 +28,6 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public long insert(Context context, DParticipant participant) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = convert(participant);
 
@@ -41,7 +39,6 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void update(Context context, DParticipant participant) {
-
     }
 
     @Override
@@ -54,7 +51,6 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
-
         ArrayList<DParticipant> participants = new ArrayList<>();
 
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);

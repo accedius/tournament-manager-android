@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
  * Created by Vaclav on 29. 3. 2016.
  */
 public interface ITournamentManager {
-
     /**
      * insert new tournament
      * @param context application context

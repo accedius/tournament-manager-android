@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class CoreDBHelper extends SQLiteOpenHelper {
-
     private static final String DBName = "TMCore";
     private static final int DBVersion = 1;
 
@@ -30,7 +29,6 @@ public class CoreDBHelper extends SQLiteOpenHelper {
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS_5);
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS_6);
         db.execSQL(DBScripts.INSERT_INTO_PLAYERS_7);
-
     }
 
     @Override

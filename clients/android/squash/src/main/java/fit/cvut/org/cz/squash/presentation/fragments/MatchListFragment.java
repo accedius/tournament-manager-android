@@ -30,7 +30,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
-
     public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
     private ScoredMatchAdapter adapter = null;
@@ -121,13 +120,11 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
 
     private BroadcastReceiver tReceiver = new MatchReceiver();
     public class MatchReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
             switch (intent.getAction()){
                 case MatchService.ACTION_CAN_ADD_MATCH:{
-                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)){
+                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)) {
                         Intent start = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ARG_ID));
                         startActivity(start);
                     }
@@ -139,7 +136,7 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
                     break;
                 }
                 case MatchService.ACTION_GENERATE_ROUND:{
-                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)){
+                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)) {
                         askForData();
                     }
                     else {

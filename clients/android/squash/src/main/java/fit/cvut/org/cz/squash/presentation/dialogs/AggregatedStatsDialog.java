@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
  * Created by Vaclav on 11. 4. 2016.
  */
 public class AggregatedStatsDialog extends DialogFragment {
-
     public AggregatedStatsDialog(){}
 
     public static final String ARG_ID = "arg_id";
@@ -56,7 +55,7 @@ public class AggregatedStatsDialog extends DialogFragment {
                             break;
                         }
                     }
-                    if (getTargetFragment() != null){
+                    if (getTargetFragment() != null) {
                         getTargetFragment().onActivityResult(3, SelectableListActivity.RESULT_OK, null);
                     }
                     dialog.dismiss();

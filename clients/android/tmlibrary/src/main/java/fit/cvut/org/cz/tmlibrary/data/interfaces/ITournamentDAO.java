@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  * Created by Vaclav on 29. 3. 2016.
  */
 public interface ITournamentDAO {
-
     /**
      * insert tournament into database
      * @param context application context

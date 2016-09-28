@@ -18,31 +18,29 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatistic, EditableStatsAdapter.EditableStatsViewHolder> {
-
     @Override
     public EditableStatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new EditableStatsViewHolder( LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_editable_stats, parent, false) );
+        return new EditableStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_editable_stats, parent, false));
     }
 
     @Override
     public void onBindViewHolder(EditableStatsViewHolder holder, int position) {
-        MatchPlayerStatistic rowItem = data.get( position );
+        MatchPlayerStatistic rowItem = data.get(position);
 
-        holder.goalLsnr.updatePosition( position );
-        holder.assLsnr.updatePosition( position );
-        holder.pmpLsnr.updatePosition( position );
-        holder.interLsnr.updatePosition( position );
+        holder.goalLsnr.updatePosition(position);
+        holder.assLsnr.updatePosition(position);
+        holder.pmpLsnr.updatePosition(position);
+        holder.interLsnr.updatePosition(position);
 
         holder.goals.setText(Integer.toString(rowItem.getGoals()));
-        holder.assists.setText( Integer.toString(rowItem.getAssists()) );
-        holder.plusMinus.setText( Integer.toString(rowItem.getPlusMinusPoints()) );
-        holder.interv.setText( Integer.toString(rowItem.getSaves()) );
+        holder.assists.setText(Integer.toString(rowItem.getAssists()));
+        holder.plusMinus.setText(Integer.toString(rowItem.getPlusMinusPoints()));
+        holder.interv.setText(Integer.toString(rowItem.getSaves()));
 
-        holder.name.setText( rowItem.getName() );
+        holder.name.setText(rowItem.getName());
     }
 
-    public class EditableStatsViewHolder extends RecyclerView.ViewHolder
-    {
+    public class EditableStatsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         TextView name;
         EditText goals, assists, plusMinus, interv;
@@ -67,8 +65,6 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
             assists.addTextChangedListener(assLsnr);
             plusMinus.addTextChangedListener(pmpLsnr);
             interv.addTextChangedListener(interLsnr);
-
-
         }
     }
 
@@ -76,7 +72,6 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
      * Listener that changes the data in adapter whenever something changed on the screen
      */
     private class EditDataListener implements TextWatcher{
-
         public static final int LISTEN_GOALS = 0;
         public static final int LISTEN_ASSISTS = 1;
         public static final int LISTEN_PLUSMP = 2;
@@ -85,7 +80,7 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
         private int listenType;
         private int position;
 
-        public EditDataListener( int listenType ){
+        public EditDataListener(int listenType){
             this.listenType = listenType;
         }
 
@@ -95,15 +90,14 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             int value = 0;
-            if( s.length() <= 0 )
+            if (s.length() <= 0)
                 value = 0;
-            else if ( s.length() == 1 ) {
+            else if (s.length() == 1) {
                 if (s.charAt(0) == '-')
                     value = 0;
                 else value = Integer.parseInt(s.toString());
@@ -129,7 +123,6 @@ public class EditableStatsAdapter extends AbstractListAdapter<MatchPlayerStatist
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     }
 }

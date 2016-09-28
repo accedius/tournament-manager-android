@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractOneActionListAdap
  * Created by Vaclav on 15. 3. 2016.
  */
 public class SimpleOneActionViewHolder extends OneActionViewHolder {
-
     public TextView name;
 
     public SimpleOneActionViewHolder(View itemView, AbstractOneActionListAdapter adapter) {

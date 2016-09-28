@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 3. 4. 2016.
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
-
     public PlayerService() {
         super("Squash Player Service");
     }
@@ -41,7 +40,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PLAYERS_FOR_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_players_for_tournament";
     public static final String ACTION_DELETE_PLAYER_FROM_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.delete_player_from_tournament";
 
-
     public static final String ACTION_UPDATE_PLAYERS_IN_TEAM = "fit.cvut.org.cz.squash.presentation.services.update_players_in_team";
     public static final String ACTION_GET_PLAYERS_FOR_TEAM = "fit.cvut.org.cz.squash.presentation.services.get_players_for_team";
 
@@ -51,8 +49,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_home_players_for_match";
     public static final String ACTION_UDATE_PLAYERS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.update_players_for_match";
 
-
-
     @Override
     protected String getActionKey() {
         return EXTRA_ACTION;
@@ -60,7 +56,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
@@ -101,7 +96,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_UPDATE_PLAYERS_IN_TEAM:{
-
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 ManagersFactory.getInstance().playerManager.updatePlayersInTeam(this, id, players);
@@ -169,7 +163,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
                 String role = intent.getStringExtra(EXTRA_ROLE);
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
-                if (players != null){
+                if (players != null) {
                     ManagersFactory.getInstance().participantManager.updatePlayersForMatch(this, matchId, role, players);
                 } else ManagersFactory.getInstance().participantManager.setParticipationValid(this, matchId);
                 break;

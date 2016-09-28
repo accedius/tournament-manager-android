@@ -12,9 +12,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragment {
-
-
-
     @Override
     public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
@@ -28,10 +25,9 @@ public class HockeyCompetitionOverviewFragment extends CompetitionOverviewFragme
         return CompetitionService.isWorking(CompetitionService.ACTION_FIND_BY_ID);
     }
 
-
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
     }
 
     @Override

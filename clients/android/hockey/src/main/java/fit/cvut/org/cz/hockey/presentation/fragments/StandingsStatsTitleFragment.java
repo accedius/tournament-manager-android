@@ -19,15 +19,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsStatsTitleFragment extends Fragment {
-
     private static String ARG_TOUR_ID = "tournament_id";
     private StandingsFragment sf;
 
-    public static StandingsStatsTitleFragment newInstance( long id ) {
+    public static StandingsStatsTitleFragment newInstance(long id) {
         StandingsStatsTitleFragment fragment = new StandingsStatsTitleFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_TOUR_ID, id);
-        fragment.setArguments( args );
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -60,7 +59,7 @@ public class StandingsStatsTitleFragment extends Fragment {
      */
     public void refresh(){
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
-        if (fr != null && fr instanceof AbstractDataFragment){
+        if (fr != null && fr instanceof AbstractDataFragment) {
             ((AbstractDataFragment) fr).customOnResume();
         }
     }
@@ -86,7 +85,7 @@ public class StandingsStatsTitleFragment extends Fragment {
             columns.put("wso", (TextView) v.findViewById(R.id.standings_wins_so));
             columns.put("lso", (TextView) v.findViewById(R.id.standings_losses_so));
         }
-        for(final Map.Entry<String, TextView> e : columns.entrySet()) {
+        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

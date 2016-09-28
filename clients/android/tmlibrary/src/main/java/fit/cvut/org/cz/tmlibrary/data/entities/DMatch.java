@@ -1,13 +1,11 @@
 package fit.cvut.org.cz.tmlibrary.data.entities;
 
-
 import java.util.Date;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class DMatch extends DShareBase {
-
     private long id, tournamentId;
     private int period, round;
     private String note;
@@ -16,8 +14,7 @@ public class DMatch extends DShareBase {
 
     public DMatch(){}
 
-    public DMatch( long id, long tourId, int per, int rnd, Date date, String note, boolean played, String etag, String uid, Date lastModified, Date lastSynchronized )
-    {
+    public DMatch(long id, long tourId, int per, int rnd, Date date, String note, boolean played, String etag, String uid, Date lastModified, Date lastSynchronized) {
         this.id = id;
         this.tournamentId = tourId;
         this.period = per;
@@ -31,8 +28,7 @@ public class DMatch extends DShareBase {
         this.lastSynchronized = lastSynchronized;
     }
 
-    public DMatch( long id, long tourId, int per, int rnd, Date date, String note, boolean played )
-    {
+    public DMatch(long id, long tourId, int per, int rnd, Date date, String note, boolean played) {
         this.id = id;
         this.tournamentId = tourId;
         this.period = per;
@@ -64,7 +60,7 @@ public class DMatch extends DShareBase {
 
     public int getRound() { return round; }
 
-    public void setRound( int round ) { this.round = round; }
+    public void setRound(int round) { this.round = round; }
 
     public Date getDate() {return date; }
 

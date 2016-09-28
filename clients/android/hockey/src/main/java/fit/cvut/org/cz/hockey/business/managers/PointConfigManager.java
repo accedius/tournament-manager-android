@@ -13,13 +13,13 @@ import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
 public class PointConfigManager implements IPointConfigManager {
     @Override
     public void update(Context context, PointConfiguration pointConfiguration, Long tournamentId) {
-        DPointConfiguration dp = PointConfiguration.convertToDPointConfiguration( pointConfiguration );
-        DAOFactory.getInstance().pointConfigDAO.update( context, dp, tournamentId);
+        DPointConfiguration dp = PointConfiguration.convertToDPointConfiguration(pointConfiguration);
+        DAOFactory.getInstance().pointConfigDAO.update(context, dp, tournamentId);
     }
 
     @Override
     public PointConfiguration getByTournamentId(Context context, Long tournamentId) {
-        PointConfiguration configuration = new PointConfiguration( DAOFactory.getInstance().pointConfigDAO.getByTournamentId( context, tournamentId ));
+        PointConfiguration configuration = new PointConfiguration(DAOFactory.getInstance().pointConfigDAO.getByTournamentId(context, tournamentId));
 
         return configuration;
     }

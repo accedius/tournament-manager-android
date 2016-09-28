@@ -25,10 +25,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
  * Created by Vaclav on 5. 4. 2016.
  */
 public class PlayerDAO implements IPackagePlayerDAO {
-
     @Override
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cCOMPETITIONID, competitionId);
@@ -51,7 +49,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToMatch(Context context, long playerId, long matchId) {
-
     }
 
     @Override
@@ -63,7 +60,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         db.insert(DBConstants.tPLAYERS_IN_TEAM, null, cv);
         db.close();
-
     }
 
     @Override
@@ -75,7 +71,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, args);
         db.close();
-
     }
 
     @Override
@@ -91,7 +86,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
-
     }
 
     @Override
@@ -107,7 +101,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_COMPETITION, DBConstants.cCOMPETITIONID),
                 new String[]{Long.toString(competitionId)});
@@ -164,10 +157,8 @@ public class PlayerDAO implements IPackagePlayerDAO {
         return null;
     }
 
-
     @Override
     public Map<Long, DPlayer> getAllPlayers(Context context) {
-
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -185,7 +176,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
             c.close();
 
             return players;
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

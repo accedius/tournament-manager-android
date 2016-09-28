@@ -6,7 +6,6 @@ import java.util.Date;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class DTeam extends DShareBase {
-
     private long id;
     private long tournamentId;
     private String name;

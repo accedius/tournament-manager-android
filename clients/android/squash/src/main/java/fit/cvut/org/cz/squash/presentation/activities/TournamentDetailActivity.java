@@ -90,7 +90,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             @Override
             public void onPageSelected(int position) {
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
-                if (fr != null){
+                if (fr != null) {
                     if (fr instanceof AbstractDataFragment) ((AbstractDataFragment) fr).customOnResume();
                     if (fr instanceof MatchesListWrapperFragment) ((MatchesListWrapperFragment) fr).refresh();
                     if (fr instanceof StandingsWrapperFragment) ((StandingsWrapperFragment) fr).refresh();
@@ -138,7 +138,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
                 if (tournamentID == -1) break;
-                Intent intent = CreateTournamentActivity.newStartIntent( this, competitionID, tournamentID );
+                Intent intent = CreateTournamentActivity.newStartIntent(this, competitionID, tournamentID);
                 startActivity(intent);
                 break;
             }

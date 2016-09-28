@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
  * Class serves to generate all-play-all matches
  */
 public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
-
     @Override
     public ArrayList<ScoredMatch> generateRound(ArrayList<NewMatchSpinnerParticipant> participants, int round) {
         ArrayList<ScoredMatch> matches = new ArrayList<>();

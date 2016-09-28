@@ -27,12 +27,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
  * Created by Vaclav on 15. 4. 2016.
  */
 public abstract class TeamDetailFragment extends AbstractDataFragment {
-
     public static final String ARG_ID = "arg_id";
     public static final String SAVE_TEAM = "save_team";
     public static final String SAVE_SEND = "save_send";
     protected boolean sendForData = true;
-
 
     public static TeamDetailFragment newInstance(long id, Class<? extends TeamDetailFragment> clazz){
         TeamDetailFragment fragment = null;
@@ -109,7 +107,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_add);
-        if (fab != null){
+        if (fab != null) {
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -118,8 +116,6 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
                         fab.show();
                     else fab.hide();
                 }
-
-
             });
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,7 +133,6 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-
         Team t = intent.getParcelableExtra(getTeamKey());
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.team)+" – "+t.getName());
         adapter.swapData(t.getPlayers());
@@ -149,10 +144,9 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             t = savedInstanceState.getParcelable(SAVE_TEAM);
             sendForData = savedInstanceState.getBoolean(SAVE_SEND);
-
         }
     }
 
@@ -170,11 +164,10 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
             super.customOnResume();
     }
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (t != null){
+        if (t != null) {
             t.setPlayers(adapter.getData());
             outState.putParcelable(SAVE_TEAM, t);
         }
@@ -189,8 +182,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_finish){
+        if (item.getItemId() == R.id.action_finish) {
             t.setPlayers(adapter.getData());
             updatePlayers(t);
             getActivity().finish();
@@ -201,13 +193,12 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode != getOKResultCode()) return;
 
         //it will be only one request code so we do not need to check
 
         ArrayList<Player> players = data.getParcelableArrayListExtra(getExtraPlayersKey());
-        for (Player p : players )
+        for (Player p : players)
             if (!t.getPlayers().contains(p)) t.getPlayers().add(p);
         adapter.swapData(t.getPlayers());
     }

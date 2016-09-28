@@ -26,12 +26,12 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 public class PackagePlayerDAO implements IPackagePlayerDAO {
     @Override
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = new ContentValues();
 
-        values.put( DBConstants.cCOMPETITIONID, competitionId );
-        values.put( DBConstants.cPLAYER_ID, playerId );
+        values.put(DBConstants.cCOMPETITIONID, competitionId);
+        values.put(DBConstants.cPLAYER_ID, playerId);
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
@@ -41,12 +41,12 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToTournament(Context context, long playerId, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = new ContentValues();
 
-        values.put( DBConstants.cTOURNAMENT_ID, tournamentId );
-        values.put( DBConstants.cPLAYER_ID, playerId );
+        values.put(DBConstants.cTOURNAMENT_ID, tournamentId);
+        values.put(DBConstants.cPLAYER_ID, playerId);
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
@@ -56,16 +56,15 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToMatch(Context context, long playerId, long matchId) {
-
     }
 
     @Override
     public void addPlayerToTeam(Context context, long playerId, long teamId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = new ContentValues();
-        values.put( DBConstants.cTEAM_ID, teamId );
-        values.put( DBConstants.cPLAYER_ID, playerId);
+        values.put(DBConstants.cTEAM_ID, teamId);
+        values.put(DBConstants.cPLAYER_ID, playerId);
 
         Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
 
@@ -76,8 +75,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID );
-        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( competitionId ) };
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID);
+        String[] projection = new String[]{ Long.toString(playerId), Long.toString(competitionId) };
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, projection);
 
         db.close();
@@ -87,8 +86,8 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID );
-        String[] projection = new String[]{ Long.toString( playerId ), Long.toString( tournamentId ) };
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID);
+        String[] projection = new String[]{ Long.toString(playerId), Long.toString(tournamentId) };
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
 
         db.close();
@@ -96,15 +95,14 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
-
     }
 
     @Override
     public void deleteAllPlayersFromTeam(Context context, long teamId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ?", DBConstants.cTEAM_ID );
-        String[] projection = new String[]{ Long.toString( teamId ) };
+        String where = String.format("%s = ?", DBConstants.cTEAM_ID);
+        String[] projection = new String[]{ Long.toString(teamId) };
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, projection);
 
         db.close();
@@ -112,15 +110,15 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( competitionId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_COMPETITION, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();
 
         while (cursor.moveToNext())
         {
-            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+            res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
@@ -131,15 +129,15 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( tournamentId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_TOURNAMENT, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();
 
         while (cursor.moveToNext())
         {
-            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+            res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
@@ -155,36 +153,34 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId) {
-
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( teamId ) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(teamId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_TEAM, null, DBConstants.cTEAM_ID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();
 
         while (cursor.moveToNext())
         {
-            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+            res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
         db.close();
 
         return res;
-
     }
 
     @Override
     public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        String[] selArgs = { String.valueOf( participantId ), StatsEnum.participates.toString()};
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        String[] selArgs = { String.valueOf(participantId), StatsEnum.participates.toString()};
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
 
         ArrayList<Long> res = new ArrayList<>();
 
         while (cursor.moveToNext())
         {
-            res.add( cursor.getLong( cursor.getColumnIndex(DBConstants.cPLAYER_ID) ));
+            res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
@@ -195,7 +191,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public Map<Long, DPlayer> getAllPlayers(Context context) {
-
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -215,11 +210,9 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
             c.close();
 
             return players;
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return null;
-
     }
 }

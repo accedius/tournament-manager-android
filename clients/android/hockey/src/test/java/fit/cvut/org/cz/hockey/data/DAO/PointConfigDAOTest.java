@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PointConfigDAOTest {
-
     @Test
     public void testInsertUpdateDeleteGet() throws Exception {
         DPointConfiguration conf = new DPointConfiguration(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L);
@@ -34,7 +33,7 @@ public class PointConfigDAOTest {
         DAOFactory.getInstance().pointConfigDAO.update(RuntimeEnvironment.application, conf, 1L);
         ret = DAOFactory.getInstance().pointConfigDAO.getByTournamentId(RuntimeEnvironment.application, 1L);
 
-        assertTrue( ret.ntD == 2L && ret.ntL == 2L && ret.ntW == 2L );
+        assertTrue(ret.ntD == 2L && ret.ntL == 2L && ret.ntW == 2L);
 
         DAOFactory.getInstance().pointConfigDAO.delete(RuntimeEnvironment.application, 1L);
         ret = DAOFactory.getInstance().pointConfigDAO.getByTournamentId(RuntimeEnvironment.application, 1L);

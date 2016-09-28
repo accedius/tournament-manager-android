@@ -20,7 +20,6 @@ import fit.cvut.org.cz.hockey.presentation.adapters.EditableStatsAdapter;
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class MatchEditAtOnceFragment extends Fragment {
-
     private EditableStatsAdapter homeAdp, awayAdp;
     private RecyclerView homeRecyclerView, awayRecyclerView;
     private ArrayList<MatchPlayerStatistic> tmpHomeStat, tmpAwayStat;
@@ -38,7 +37,7 @@ public class MatchEditAtOnceFragment extends Fragment {
         b.putParcelableArrayList(ARG_HOME, newHomeStat);
         b.putParcelableArrayList(ARG_AWAY, newAwayStat);
 
-        fragment.setArguments( b );
+        fragment.setArguments(b);
         return fragment;
     }
 
@@ -77,12 +76,12 @@ public class MatchEditAtOnceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ArrayList<MatchPlayerStatistic> homeData, awayData;
 
-        if( savedInstanceState != null ){
+        if (savedInstanceState != null) {
             homeData = savedInstanceState.getParcelableArrayList(ARG_HOME);
             awayData = savedInstanceState.getParcelableArrayList(ARG_AWAY);
         } else {
-            homeData = getArguments().getParcelableArrayList( ARG_HOME );
-            awayData = getArguments().getParcelableArrayList( ARG_AWAY );
+            homeData = getArguments().getParcelableArrayList(ARG_HOME);
+            awayData = getArguments().getParcelableArrayList(ARG_AWAY);
         }
         tmpHomeStat = homeData;
         tmpAwayStat = awayData;

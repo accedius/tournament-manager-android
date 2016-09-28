@@ -34,17 +34,16 @@ public class MatchManager implements IScoredMatchManager {
         ArrayList<ScoredMatch> matches = new ArrayList<>();
 
         ArrayList<DMatch> dMatches = DAOFactory.getInstance().matchDAO.getByTournamentId(context, tournamentId);
-        for (DMatch dMatch : dMatches){
-
+        for (DMatch dMatch : dMatches) {
             ScoredMatch match = new ScoredMatch(dMatch);
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, dMatch.getId());
             DParticipant home = null;
             DParticipant away = null;
-            for (DParticipant participant : participants){
+            for (DParticipant participant : participants) {
                 if (participant.getRole().equals("home")) home = participant;
                 else away = participant;
             }
-            if (home.getTeamId() != -1){
+            if (home.getTeamId() != -1) {
                 DTeam t = DAOFactory.getInstance().teamDAO.getById(context, home.getTeamId());
                 match.setHomeName(t.getName());
                 t = DAOFactory.getInstance().teamDAO.getById(context, away.getTeamId());
@@ -56,10 +55,10 @@ public class MatchManager implements IScoredMatchManager {
                 match.setAwayName(awayName);
             }
 
-            if (match.isPlayed()){
+            if (match.isPlayed()) {
                 int homeScore = 0, awayScore = 0;
                 ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, home.getId(), StatsEnum.SET);
-                for (DStat stat : stats){
+                for (DStat stat : stats) {
                     if (stat.getStatus() > 0) homeScore++;
                     else awayScore++;
                 }
@@ -89,12 +88,12 @@ public class MatchManager implements IScoredMatchManager {
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, Id);
         DParticipant home = null, away = null;
-        for (DParticipant p : participants){
+        for (DParticipant p : participants) {
             if (p.getRole().equals("home")) home = p;
             else away = p;
         }
 
-        if (type.equals(CompetitionTypes.teams())){
+        if (type.equals(CompetitionTypes.teams())) {
             match.setHomeParticipantId(home.getTeamId());
             match.setAwayParticipantId(away.getTeamId());
             match.setHomeName(ManagersFactory.getInstance().teamsManager.getById(context, home.getTeamId()).getName());
@@ -111,12 +110,10 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void beginMatch(Context context, long matchId) {
-
     }
 
     @Override
     public void generateRound(Context context, long tournamentId) {
-
         DTournament tournament = DAOFactory.getInstance().tournamentDAO.getById(context, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, tournament.getCompetitionId()).getType();
 
@@ -132,7 +129,7 @@ public class MatchManager implements IScoredMatchManager {
 
         ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
 
-        if (type.equals(CompetitionTypes.individuals())){
+        if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
             for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
         } else {
@@ -146,7 +143,7 @@ public class MatchManager implements IScoredMatchManager {
         round++;
         ArrayList<ScoredMatch> newMatches = generator.generateRound(participants, round);
 
-        for (ScoredMatch m : newMatches){
+        for (ScoredMatch m : newMatches) {
             m.setTournamentId(tournamentId);
             insert(context, m);
         }
@@ -161,24 +158,22 @@ public class MatchManager implements IScoredMatchManager {
         DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-        for (DParticipant p : participants){
+        for (DParticipant p : participants) {
             DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH);
             DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.SET);
             if (type.equals(CompetitionTypes.teams()))
                 DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH_PARTICIPATION);
         }
-
     }
 
     @Override
     public void insert(Context context, ScoredMatch match) {
-
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, match.getTournamentId());
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
         DParticipant home = null;
         DParticipant away = null;
-        if (type.equals(CompetitionTypes.individuals())){
+        if (type.equals(CompetitionTypes.individuals())) {
             home = new DParticipant(-1, -1, matchId, "home");
             away = new DParticipant(-1, -1, matchId, "away");
             long homePartipId = DAOFactory.getInstance().participantDAO.insert(context, home);
@@ -192,7 +187,6 @@ public class MatchManager implements IScoredMatchManager {
             DAOFactory.getInstance().participantDAO.insert(context, home);
             DAOFactory.getInstance().participantDAO.insert(context, away);
         }
-
     }
 
     @Override
@@ -202,11 +196,8 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void delete(Context context, long id) {
-
-
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, id);
-        for (DParticipant participant : participants)
-        {
+        for (DParticipant participant : participants) {
             DAOFactory.getInstance().statDAO.deleteByParticipant(context, participant.getId());
             DAOFactory.getInstance().participantDAO.delete(context, participant.getId());
         }

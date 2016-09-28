@@ -33,7 +33,7 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
 
         long id = getIntent().getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashCompetitionFragment.newInstance(id, NewSquashCompetitionFragment.class)).commit();
         }
     }

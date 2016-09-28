@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
  * Created by Vaclav on 20. 4. 2016.
  */
 public class CreateSquashMatchFragment extends NewMatchFragment {
-
     @Override
     protected String getMatchKey() {
         return MatchService.EXTRA_MATCH;
@@ -24,8 +23,7 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
 
     @Override
     public void askForData() {
-
-        if (tournamentId != -1){
+        if (tournamentId != -1) {
             Intent intent = null;
             if (id == -1)
                 intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
@@ -36,7 +34,6 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
             intent.putExtra(MatchService.EXTRA_ID, tournamentId);
             getContext().startService(intent);
         }
-
     }
 
     @Override

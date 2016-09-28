@@ -24,7 +24,6 @@ public class CompetitionManager implements ICompetitionManager {
 
     @Override
     public boolean delete(Context context, long id) {
-
         if (ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, id).size() != 0) return false;
         if (ManagersFactory.getInstance().tournamentManager.getByCompetitionId(context, id).size() != 0) return false;
 
@@ -35,7 +34,7 @@ public class CompetitionManager implements ICompetitionManager {
     @Override
     public Competition getById(Context context, long id) {
         DCompetition res = DAOFactory.getInstance().competitionDAO.getById(context, id);
-        if( res == null ) return null;
-        return new Competition( res );
+        if (res == null) return null;
+        return new Competition(res);
     }
 }

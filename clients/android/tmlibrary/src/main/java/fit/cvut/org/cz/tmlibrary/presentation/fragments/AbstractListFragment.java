@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 
-
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * A simple {@link Fragment} subclass.
  */
 public abstract class AbstractListFragment<T extends Parcelable> extends AbstractDataFragment {
-
     protected AbstractListAdapter adapter;
     protected RecyclerView recyclerView;
     protected FloatingActionButton fab = null;
@@ -46,7 +44,7 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
         recyclerView.setLayoutManager(linearLayoutManager);
 
         final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
-        if (fab != null){
+        if (fab != null) {
             this.fab = fab;
             ((ViewGroup) fragmentView).addView(fab);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -58,8 +56,6 @@ public abstract class AbstractListFragment<T extends Parcelable> extends Abstrac
 
                     else fab.hide();
                 }
-
-
             });
         }
 

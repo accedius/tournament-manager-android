@@ -18,7 +18,6 @@ import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
  * Created by kevin on 4.4.2016.
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
-
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_PLAYER = "extra_player";

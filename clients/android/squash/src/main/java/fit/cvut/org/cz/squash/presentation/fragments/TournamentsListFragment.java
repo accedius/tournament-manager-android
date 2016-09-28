@@ -38,7 +38,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 5. 4. 2016.
  */
 public class TournamentsListFragment extends AbstractListFragment<Tournament> {
-
     public static final String COMP_ID = "comp_id";
     private CompetitionType type = null;
     private TournamentAdapter adapter = null;
@@ -184,16 +183,15 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
         public void onReceive(Context context, Intent intent) {
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
-            if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)){
+            if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)) {
                 TournamentsListFragment.super.bindDataOnView(intent);
                 type = CompetitionTypes.competitionTypes(getResources())[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
-            } else if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
+            } else if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)) {
                     int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
                     adapter.delete(position);
             } else {
                 Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();
             }
-
         }
     }
 }

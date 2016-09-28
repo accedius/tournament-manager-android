@@ -14,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SQLiteOpenHelper {
-
     private static final String DBName = "TMSquash.db";
     private static final int DBVersion = 1;
     private boolean test = false;
@@ -23,7 +22,6 @@ public class SquashDBHelper extends SQLiteOpenHelper {
         super(context, DBName, null, DBVersion);
         this.test = test;
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -95,7 +93,6 @@ public class SquashDBHelper extends SQLiteOpenHelper {
         cv.put(SDBConstants.cTYPE, StatsEnum.MATCH_PARTICIPATION.toString());
         db.insert(SDBConstants.tSTATS_ENUM, null,  cv);
         cv.clear();
-
     }
 
     @Override

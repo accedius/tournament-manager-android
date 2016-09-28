@@ -33,7 +33,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchPlayersFragment extends AbstractDataFragment {
-
     private static final String ARG_ID = "arg_id";
     private static final String SAVE_HOME = "save_home";
     private static final String SAVE_AWAY = "save_away";
@@ -50,7 +49,6 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         f.setArguments(b);
         return f;
     }
-
 
     @Override
     public void askForData() {
@@ -101,7 +99,6 @@ public class MatchPlayersFragment extends AbstractDataFragment {
                         d.show(getFragmentManager(), "DELETE_HOME");
                         return false;
                     }
-
                 });
             }
         };
@@ -116,7 +113,6 @@ public class MatchPlayersFragment extends AbstractDataFragment {
                         d.show(getFragmentManager(), "DELETE_AWAY");
                         return false;
                     }
-
                 });
             }
         };
@@ -141,7 +137,6 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         RecyclerView homeRv = (RecyclerView) v.findViewById(R.id.rv_home);
         RecyclerView awayRv = (RecyclerView) v.findViewById(R.id.rv_away);
 
-
         homeRv.setAdapter(homeAdapter);
         awayRv.setAdapter(awayAdapter);
         homeRv.setLayoutManager(linearLayoutManager);
@@ -165,8 +160,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 fab.hide();
-                if( event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL )
-                {
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     fab.show();
                 }
                 return false;
@@ -179,7 +173,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             askForData = savedInstanceState.getBoolean(SAVE_DATA);
             homeTeam = savedInstanceState.getParcelable(SAVE_HOME);
             awayTeam = savedInstanceState.getParcelable(SAVE_AWAY);
@@ -230,7 +224,6 @@ public class MatchPlayersFragment extends AbstractDataFragment {
                     awayTeam.getPlayers().addAll(players);
                 break;
         }
-
     }
 
     public ArrayList<Player> getHomePlayers() {return homeAdapter.getData();}

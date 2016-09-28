@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class CompetitionDAOTest {
-
     @Test
     public void testInsert() throws Exception {
         DCompetition comp = new DCompetition(1, "name", new Date(), new Date(), "note", CompetitionType.Teams.toString());

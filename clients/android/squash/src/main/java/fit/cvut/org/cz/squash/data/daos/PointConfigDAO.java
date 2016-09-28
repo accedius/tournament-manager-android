@@ -16,9 +16,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigDAO implements IPointConfigDAO {
-
     private ContentValues convert(DPointConfig cfg){
-
         ContentValues cv = new ContentValues();
         cv.put(SDBConstants.cWIN, cfg.getWin());
         cv.put(SDBConstants.cLOSS, cfg.getLoss());
@@ -28,14 +26,12 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     @Override
     public void insert(Context context, long id) {
-
         ContentValues cv = convert(new DPointConfig(id, 3, 1, 0));
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         cv.put(DBConstants.cTOURNAMENT_ID, id);
 
         db.insert(SDBConstants.tPOINT_CONFIG, null, cv);
         db.close();
-
     }
 
     @Override
@@ -57,7 +53,6 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     @Override
     public DPointConfig getById(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", SDBConstants.tPOINT_CONFIG, DBConstants.cTOURNAMENT_ID);
@@ -77,6 +72,5 @@ public class PointConfigDAO implements IPointConfigDAO {
         db.close();
 
         return cfg;
-
     }
 }

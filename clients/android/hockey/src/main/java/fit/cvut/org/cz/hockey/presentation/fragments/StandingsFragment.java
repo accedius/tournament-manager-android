@@ -22,13 +22,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsFragment extends AbstractListFragment<Standing> {
-
     private static String ARG_ID = "tournament_id";
 
     private String orderColumn = "p";
     private String orderType = "DESC";
 
-    public static StandingsFragment newInstance( long id ) {
+    public static StandingsFragment newInstance(long id) {
         StandingsFragment fragment = new StandingsFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
@@ -95,7 +94,6 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
     protected AbstractListAdapter getAdapter() {
         return new StandingsAdapter();
@@ -109,20 +107,20 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
     @Override
     public void askForData() {
         Long tournamentID = getArguments().getLong(ARG_ID, -1);
-        Intent intent = StatsService.newStartIntent( StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext() );
-        intent.putExtra( StatsService.EXTRA_ID, tournamentID );
+        Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext());
+        intent.putExtra(StatsService.EXTRA_ID, tournamentID);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return StatsService.isWorking( StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT);
+        return StatsService.isWorking(StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter( StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT ));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT));
     }
 
     @Override

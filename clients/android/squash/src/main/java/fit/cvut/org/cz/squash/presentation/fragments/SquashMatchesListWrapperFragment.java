@@ -9,7 +9,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
  * Created by Vaclav on 10. 4. 2016.
  */
 public class SquashMatchesListWrapperFragment extends MatchesListWrapperFragment {
-
     @Override
     protected Fragment supplyFragment(long tournamentId) {
         return MatchListFragment.newInstance(tournamentId);

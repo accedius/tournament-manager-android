@@ -28,7 +28,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
-
     public static final String TOUR_ID = "tour_id";
     public static final String COMP_ID = "comp_id";
 
@@ -50,7 +49,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
             protected void setOnClickListeners(View v, final long teamId, final int position, final String name) {
                 super.setOnClickListeners(v, teamId, position, name);
 
-                v.setOnClickListener( new View.OnClickListener(){
+                v.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         Intent i = ShowTeamActivity.newStartIntent(getContext(), teamId);
@@ -58,7 +57,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                     }
                 });
 
-                v.setOnLongClickListener( new View.OnLongClickListener(){
+                v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
                         TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
@@ -66,7 +65,6 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                         return true;
                     }
                 });
-
             }
         };
     }
@@ -126,13 +124,13 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                     break;
                 }
                 case TeamService.ACTION_DELETE: {
-                    if (intent.getIntExtra( TeamService.EXTRA_OUTCOME, -1 ) == TeamService.OUTCOME_OK){
+                    if (intent.getIntExtra(TeamService.EXTRA_OUTCOME, -1) == TeamService.OUTCOME_OK) {
                         int position = intent.getIntExtra(TeamService.EXTRA_POSITION, -1);
                         adapter.delete(position);
                         break;
                     } else {
                         View v = getView();
-                        if(v != null) Snackbar.make(v, R.string.team_not_empty_error, Snackbar.LENGTH_LONG).show();
+                        if (v != null) Snackbar.make(v, R.string.team_not_empty_error, Snackbar.LENGTH_LONG).show();
                     }
                 }
             }

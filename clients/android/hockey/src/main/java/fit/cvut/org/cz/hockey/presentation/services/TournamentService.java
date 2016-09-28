@@ -18,7 +18,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by atgot_000 on 4. 4. 2016.
  */
 public class TournamentService extends AbstractIntentServiceWProgress {
-
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_TOURNAMENT = "extra_tournament";
     public static final String EXTRA_ID = "extra_id";
@@ -74,7 +73,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_CREATE: {
                 Tournament t = intent.getParcelableExtra(EXTRA_TOURNAMENT);
-                ManagerFactory.getInstance().tournamentManager.insert( this, t);
+                ManagerFactory.getInstance().tournamentManager.insert(this, t);
                 break;
             }
             case ACTION_UPDATE: {

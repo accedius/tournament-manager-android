@@ -6,7 +6,6 @@ import java.util.Date;
  * Created by Vaclav on 2. 4. 2016.
  */
 public abstract class DShareBase {
-
     protected String uid;
     protected String etag;
     protected Date lastModified;
@@ -19,7 +18,6 @@ public abstract class DShareBase {
     public void setLastSynchronized(Date lastSynchronized) {
         this.lastSynchronized = lastSynchronized;
     }
-
 
     public String getUid() {
         return uid;

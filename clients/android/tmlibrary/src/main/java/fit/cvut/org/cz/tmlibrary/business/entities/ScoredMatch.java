@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
  * Created by Vaclav on 9. 4. 2016.
  */
 public class ScoredMatch extends Match {
-
     private long homeParticipantId, awayParticipantId;
 
     private ArrayList<Long> homeIds, awayIds;
@@ -67,14 +66,14 @@ public class ScoredMatch extends Match {
         dest.writeInt(awayScore);
 
         long[] winnersArray;
-        if( homeIds != null ) {
+        if (homeIds != null) {
             winnersArray = new long[homeIds.size()];
             for (int i =0; i<homeIds.size();i++) winnersArray[i] = homeIds.get(i);
         } else winnersArray = new long[0];
         dest.writeLongArray(winnersArray);
 
         long[] losersArray;
-        if( awayIds != null ) {
+        if (awayIds != null) {
             losersArray = new long[awayIds.size()];
             for (int i = 0; i < awayIds.size(); i++) losersArray[i] = awayIds.get(i);
         } else losersArray = new long[0];

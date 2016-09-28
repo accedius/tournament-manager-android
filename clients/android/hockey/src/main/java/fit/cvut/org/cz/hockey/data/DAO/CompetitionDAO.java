@@ -19,37 +19,32 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ICompetitionDAO;
  * Created by atgot_000 on 30. 3. 2016.
  */
 public class CompetitionDAO implements ICompetitionDAO {
-
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
     private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
-    private ContentValues toContVal(DCompetition competition)
-    {
+    private ContentValues toContVal(DCompetition competition) {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cUID, competition.getUid());
         cv.put(DBConstants.cETAG, competition.getEtag());
         cv.put(DBConstants.cNAME, competition.getName());
         cv.put(DBConstants.cTYPE, competition.getType());
-        if ( competition.getStartDate() != null )
+        if (competition.getStartDate() != null)
             cv.put(DBConstants.cSTART, dateFormat.format(competition.getStartDate()));
-        if ( competition.getEndDate() != null )
+        if (competition.getEndDate() != null)
             cv.put(DBConstants.cEND, dateFormat.format(competition.getEndDate()));
         cv.put(DBConstants.cNOTE, competition.getNote());
         cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
-        if ( competition.getLastSynchronized() != null )
+        if (competition.getLastSynchronized() != null)
             cv.put(DBConstants.cLASTSYNCHRONIZED, dateTimeFormat.format(competition.getLastSynchronized()));
 
         return cv;
     }
 
-
-
     @Override
     public void insert(Context context, DCompetition competition) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-
-        ContentValues values = toContVal( competition );
+        ContentValues values = toContVal(competition);
 
         long newRowId;
         newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
@@ -59,16 +54,15 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public void update(Context context, DCompetition competition) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        ContentValues values = toContVal( competition );
+        ContentValues values = toContVal(competition);
 
         //values.put(DBConstants.cID, competition.getId());
 
-        String where = String.format( "%s = ?", DBConstants.cID );
+        String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(competition.getId()) };
-        db.update(DBConstants.tCOMPETITIONS, values, where, projection );
+        db.update(DBConstants.tCOMPETITIONS, values, where, projection);
 
         db.close();
     }
@@ -77,8 +71,8 @@ public class CompetitionDAO implements ICompetitionDAO {
     public void delete(Context context, long id) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ?", DBConstants.cID );
-        String[] projection = new String[]{ Long.toString( id ) };
+        String where = String.format("%s = ?", DBConstants.cID);
+        String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tCOMPETITIONS, where, projection);
 
         db.close();
@@ -86,13 +80,13 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public DCompetition getById(Context context, long id) {
-        String[] selArgs = { String.valueOf( id ) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
-        Cursor cursor = db.query( DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null );
+        String[] selArgs = { String.valueOf(id) };
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        Cursor cursor = db.query(DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if( cursor.getCount() <= 0 )
+        if (cursor.getCount() <= 0)
             return null;
-        DCompetition res = CursorParser.getInstance().parseDCompetition( cursor );
+        DCompetition res = CursorParser.getInstance().parseDCompetition(cursor);
         
         cursor.close();
         db.close();

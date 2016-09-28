@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by Vaclav on 12. 4. 2016.
  */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
-
     private static final String ARG_OPTION = "arg_option";
     private static final String ARG_ID = "arg_id";
     private static final String ARG_OMIT = "arg_omit";
@@ -50,7 +49,6 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
             default:
                 break;
         }
-
     }
 
     public AddPlayersFragment() {}
@@ -76,9 +74,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-
         ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT);
-        if (omitPlayers != null){
+        if (omitPlayers != null) {
             ArrayList<Player> players = intent.getParcelableArrayListExtra(getDataKey());
             players.removeAll(omitPlayers);
             intent.putExtra(getDataKey(), players);
@@ -103,7 +100,6 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     public void askForData() {
-
         Long id = getArguments().getLong(ARG_ID, -1);
         if (action == null || id == -1) return;
         Intent intent = PlayerService.newStartIntent(action, getContext());
@@ -125,12 +121,10 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected void unregisterReceivers() {
-
-        try{
+        try {
             LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

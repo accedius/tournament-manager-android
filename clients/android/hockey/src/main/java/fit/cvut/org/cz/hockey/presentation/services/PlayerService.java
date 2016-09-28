@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by atgot_000 on 15. 4. 2016.
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
-
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_PLAYER_ID = "extra_player_id";
@@ -45,8 +44,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         super("Hockey Player Service");
     }
 
-    public static Intent newStartIntent(String action, Context context)
-    {
+    public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, PlayerService.class);
         res.putExtra(EXTRA_ACTION, action);
 
@@ -60,44 +58,43 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
-        String action = intent.getStringExtra( EXTRA_ACTION );
+        String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action)
         {
             case ACTION_GET_PLAYERS_NOT_IN_COMPETITION:
             {
-                Long id = intent.getLongExtra( EXTRA_ID, -1 );
+                Long id = intent.getLongExtra(EXTRA_ID, -1);
                 ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInCompetition(this, id);
                 Intent res = new Intent();
-                res.setAction( ACTION_GET_PLAYERS_NOT_IN_COMPETITION );
+                res.setAction(ACTION_GET_PLAYERS_NOT_IN_COMPETITION);
                 res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
-                res.putParcelableArrayListExtra( EXTRA_PLAYERS, players );
+                res.putParcelableArrayListExtra(EXTRA_PLAYERS, players);
 
-                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
             }
             case ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT:
             {
-                Long id = intent.getLongExtra( EXTRA_ID, -1 );
+                Long id = intent.getLongExtra(EXTRA_ID, -1);
                 ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInTournament(this, id);
                 Intent res = new Intent();
-                res.setAction( ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT );
+                res.setAction(ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT);
                 res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
-                res.putParcelableArrayListExtra( EXTRA_PLAYERS, players );
+                res.putParcelableArrayListExtra(EXTRA_PLAYERS, players);
 
-                LocalBroadcastManager.getInstance( this ).sendBroadcast( res );
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
             }
             case ACTION_ADD_PLAYERS_TO_COMPETITION:
             {
                 Intent result = new Intent(action);
-                ArrayList<Player> players = intent.getParcelableArrayListExtra( EXTRA_PLAYERS );
+                ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
 
-                for( Player p : players ) {
+                for (Player p : players) {
                     ManagerFactory.getInstance().packagePlayerManager.addPlayerToCompetition(this, p.getId(), id);
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -106,43 +103,42 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_ADD_PLAYERS_TO_TOURNAMENT:
             {
                 Intent result = new Intent(action);
-                ArrayList<Player> players = intent.getParcelableArrayListExtra( EXTRA_PLAYERS );
+                ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
 
-                for( Player p : players ) {
+                for (Player p : players) {
                     ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, p.getId(), id);
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
 
                 break;
             }
-            case ACTION_GET_PLAYERS_FOR_TEAM:
-            {
+            case ACTION_GET_PLAYERS_FOR_TEAM: {
                 Intent result = new Intent(action);
                 Team t = ManagerFactory.getInstance().teamManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 t.getPlayers().addAll(ManagerFactory.getInstance().packagePlayerManager.getPlayersNotInTeams(this, t.getTournamentId()));
                 result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
-                LocalBroadcastManager.getInstance( this ).sendBroadcast( result );
+                LocalBroadcastManager.getInstance(this).sendBroadcast(result);
 
                 break;
             }
             case ACTION_UPDATE_TEAM_PLAYERS:
             {
-                long id = intent.getLongExtra( EXTRA_ID, -1 );
-                ArrayList<Player> players = intent.getParcelableArrayListExtra( EXTRA_PLAYERS );
-                ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam( this, id, players );
+                long id = intent.getLongExtra(EXTRA_ID, -1);
+                ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
+                ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, id, players);
 
                 break;
             }
             case ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID:
             {
                 Intent res = new Intent(action);
-                ScoredMatch match = ManagerFactory.getInstance().matchManager.getById( this, intent.getLongExtra( EXTRA_ID, -1 ));
-                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament( this, match.getTournamentId());
+                ScoredMatch match = ManagerFactory.getInstance().matchManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(this, match.getTournamentId());
 
-                res.putParcelableArrayListExtra( EXTRA_PLAYERS, players);
+                res.putParcelableArrayListExtra(EXTRA_PLAYERS, players);
                 res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -150,35 +146,32 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             }
             case ACTION_DELETE_PLAYER_FROM_COMPETITION:
             {
-                Intent res = new Intent( action );
-                long playerId = intent.getLongExtra( EXTRA_PLAYER_ID, -1 );
-                long competitionId = intent.getLongExtra( EXTRA_ID, -1 );
+                Intent res = new Intent(action);
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
+                long competitionId = intent.getLongExtra(EXTRA_ID, -1);
 
-
-                if( ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromCompetition( this, playerId, competitionId ) ){
-                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                if (ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromCompetition(this, playerId, competitionId)) {
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
                 } else {
-                    res.putExtra( EXTRA_OUTCOME, OUTCOME_NOT_OK );
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_NOT_OK);
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
             case ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
             {
-                Intent res = new Intent( action );
-                long playerId = intent.getLongExtra( EXTRA_PLAYER_ID, -1 );
-                long tournamentId = intent.getLongExtra( EXTRA_ID, -1 );
+                Intent res = new Intent(action);
+                long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
+                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
 
-
-                if( ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromTournament( this, playerId, tournamentId ) ){
-                    res.putExtra( EXTRA_OUTCOME, OUTCOME_OK );
+                if (ManagerFactory.getInstance().packagePlayerManager.deletePlayerFromTournament(this, playerId, tournamentId)) {
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
                 } else {
-                    res.putExtra( EXTRA_OUTCOME, OUTCOME_NOT_OK );
+                    res.putExtra(EXTRA_OUTCOME, OUTCOME_NOT_OK);
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
         }
-
     }
 }

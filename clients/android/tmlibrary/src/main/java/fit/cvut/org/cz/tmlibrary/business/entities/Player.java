@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Player extends ShareBase implements Parcelable {
-
     private long id;
     private String name;
     private String email;
@@ -36,7 +35,7 @@ public class Player extends ShareBase implements Parcelable {
         email = in.readString();
         note = in.readString();
 
-        try{
+        try {
             String text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = dateFormat.parse(text);
@@ -87,7 +86,6 @@ public class Player extends ShareBase implements Parcelable {
     }
 
     public static DPlayer convertToDPlayer(Player p){
-
         return new DPlayer(p.getId(), p.getName(), p.getEmail(),p.getNote(),
                 p.getEtag(), p.getUid(), p.getLastModified(), p.getLastSynchronized());
     }
@@ -158,7 +156,6 @@ public class Player extends ShareBase implements Parcelable {
         Player player = (Player) o;
 
         return id == player.id;
-
     }
 
     public String getColumn(String column) {

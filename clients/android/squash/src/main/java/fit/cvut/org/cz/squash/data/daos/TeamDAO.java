@@ -40,7 +40,6 @@ public class TeamDAO implements ITeamDAO {
 
         db.update(DBConstants.tTEAMS, cv, where, new String[]{Long.toString(team.getId())});
         db.close();
-
     }
 
     @Override
@@ -53,7 +52,6 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public DTeam getById(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tTEAMS, DBConstants.cID), new String[]{Long.toString(id)});
@@ -70,7 +68,6 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public ArrayList<DTeam> getByTournamentId(Context context, long tournamentId) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tTEAMS, DBConstants.cTOURNAMENT_ID), new String[]{Long.toString(tournamentId)});

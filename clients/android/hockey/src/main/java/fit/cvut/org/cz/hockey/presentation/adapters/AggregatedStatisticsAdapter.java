@@ -15,8 +15,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedStatistics, AggregatedStatisticsAdapter.AggregatedStatisticsViewHolder> {
-
-
     @Override
     public AggregatedStatisticsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AggregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_aggreg_stats, parent, false));
@@ -24,7 +22,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
     @Override
     public void onBindViewHolder(AggregatedStatisticsViewHolder holder, int position) {
-        AggregatedStatistics stats = data.get( position );
+        AggregatedStatistics stats = data.get(position);
         holder.name.setText(stats.getPlayerName());
         holder.GP.setText(Long.toString(stats.getMatches()));
         holder.G.setText(Long.toString(stats.getGoals()));
@@ -32,7 +30,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         holder.P.setText(Long.toString(stats.getPoints()));
         holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
         holder.S.setText(Long.toString(stats.getSaves()));
-        if( holder.W != null ) {
+        if (holder.W != null) {
             holder.W.setText(Long.toString(stats.getWins()));
             holder.L.setText(Long.toString(stats.getLosses()));
             holder.D.setText(Long.toString(stats.getDraws()));

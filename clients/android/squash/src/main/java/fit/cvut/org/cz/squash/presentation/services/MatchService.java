@@ -22,7 +22,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 3. 4. 2016.
  */
 public class MatchService extends AbstractIntentServiceWProgress {
-
     public MatchService() {
         super("Squash Match Service");
     }
@@ -58,7 +57,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
         if (action == null) action = intent.getAction();
 
@@ -139,7 +137,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
-                if (enoughParticipants(id)){
+                if (enoughParticipants(id)) {
                     result.putExtra(EXTRA_RESULT, true);
                     ManagersFactory.getInstance().matchManager.generateRound(this, id);
                 } else result.putExtra(EXTRA_RESULT, false);
@@ -158,8 +156,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
         }
-
-
     }
 
     public static Intent newStartIntent(String action, Context context){
@@ -169,15 +165,14 @@ public class MatchService extends AbstractIntentServiceWProgress {
         return intent;
     }
 
-    private ArrayList<NewMatchSpinnerParticipant> getParticipantsForMatch(long tournamentId){
+    private ArrayList<NewMatchSpinnerParticipant> getParticipantsForMatch(long tournamentId) {
         Tournament tr = ManagersFactory.getInstance().tournamentManager.getById(this, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, tr.getCompetitionId()).getType();
 
         ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
-        if (type.equals(CompetitionTypes.individuals())){
+        if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, tournamentId);
             for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
-
         } else { // teams
             ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId);
             for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));

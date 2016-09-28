@@ -14,8 +14,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by Vaclav on 7. 4. 2016.
  */
 public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats, AggregatedStatsAdapter.AggregatedStatsViewHolder> {
-
-
     @Override
     public AggregatedStatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AggregatedStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_aggregated_stats, parent, false));

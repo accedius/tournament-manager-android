@@ -14,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMatchAdapter.MatchViewHolder> {
-
     private Resources res;
 
     public ScoredMatchAdapter(Resources res) {
@@ -41,21 +40,20 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
             holder.score.setText(R.string.vs);
         }
 
-        if (position > 0){
+        if (position > 0) {
             holder.roundSeparator1.setVisibility(View.GONE);
             holder.roundSeparator2.setVisibility(View.GONE);
             holder.periodSeparator.setVisibility(View.GONE);
-            if (data.get(position-1).getRound() != m.getRound()){
+            if (data.get(position-1).getRound() != m.getRound()) {
                 holder.roundSeparator1.setVisibility(View.VISIBLE);
                 holder.roundSeparator2.setVisibility(View.VISIBLE);
-            } else if (data.get(position - 1).getPeriod() != m.getPeriod()){
+            } else if (data.get(position - 1).getPeriod() != m.getPeriod()) {
                 holder.periodSeparator.setVisibility(View.VISIBLE);
             }
         }
 
         String title = m.getHomeName() + " " + res.getString(R.string.vs) + " " + m.getAwayName();
         setOnClickListeners(holder.card, m, position, title);
-
     }
 
     public class MatchViewHolder extends RecyclerView.ViewHolder {

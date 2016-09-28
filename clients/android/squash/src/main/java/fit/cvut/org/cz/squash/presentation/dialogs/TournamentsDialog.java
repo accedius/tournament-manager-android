@@ -16,7 +16,6 @@ import fit.cvut.org.cz.squash.presentation.services.TournamentService;
  * Created by Vaclav on 11. 4. 2016.
  */
 public class TournamentsDialog extends DialogFragment {
-
     public TournamentsDialog(){}
 
     public static final String COMP_ID = "comp_id";
@@ -38,7 +37,6 @@ public class TournamentsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setItems(new String[]{getString(R.string.edit), getString(R.string.delete)},

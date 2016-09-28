@@ -19,7 +19,6 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
  * Created by atgot_000 on 29. 4. 2016.
  */
 public class HomeAwayDialog extends DialogFragment {
-
     private static final String ARG_HOME_NAME = "arg_home";
     private static final String ARG_AWAY_NAME = "arg_away";
     private static final String ARG_MATCH_ID = "arg_match_id";
@@ -32,7 +31,7 @@ public class HomeAwayDialog extends DialogFragment {
         b.putString(ARG_HOME_NAME, homeName);
         b.putString(ARG_AWAY_NAME, awayName);
         b.putLong(ARG_MATCH_ID, matchId);
-        fragment.setArguments( b );
+        fragment.setArguments(b);
         return fragment;
     }
 
@@ -70,13 +69,13 @@ public class HomeAwayDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         dialHomeName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_HOME_NAME);
         dialAwayName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_AWAY_NAME);
 
         String[] items = new String[]{ dialHomeName, dialAwayName };
-        builder.setItems( items, supplyListener() );
+        builder.setItems(items, supplyListener());
         builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_player));
         return builder.create();
     }

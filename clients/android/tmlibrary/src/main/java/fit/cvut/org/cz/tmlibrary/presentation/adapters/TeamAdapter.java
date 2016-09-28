@@ -13,8 +13,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
  * Created by Vaclav on 13. 4. 2016.
  */
 public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewHolder> {
-
-
     @Override
     public TeamViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TeamViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_team, parent, false));
@@ -28,9 +26,9 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
         setOnClickListeners(holder.wholeView, t.getId(), position, t.getName());
 
         holder.teamName.setText(t.getName());
-        if (t.getPlayers().size() > 0){
+        if (t.getPlayers().size() > 0) {
             holder.playerNames.setVisibility(View.VISIBLE);
-            holder.playerNames.setText( "" );
+            holder.playerNames.setText("");
             holder.playerNames.append(t.getPlayers().get(0).getName());
             for (int i = 1; i<t.getPlayers().size();i++)
                 holder.playerNames.append(String.format(", %s", t.getPlayers().get(i).getName()));
@@ -39,7 +37,6 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
     }
 
     public class TeamViewHolder extends RecyclerView.ViewHolder{
-
         public TextView teamName, playerNames;
         public View wholeView;
 

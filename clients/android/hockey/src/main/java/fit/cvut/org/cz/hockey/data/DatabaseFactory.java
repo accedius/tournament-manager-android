@@ -9,19 +9,15 @@ import android.database.sqlite.SQLiteDatabase;
 public class DatabaseFactory {
     private static DatabaseFactory instance = new DatabaseFactory();
 
-    public static DatabaseFactory getInstance()
-    {
+    public static DatabaseFactory getInstance() {
         return instance;
     }
 
-    private DatabaseFactory()
-    {
-
+    private DatabaseFactory() {
     }
 
-    public SQLiteDatabase getDatabase( Context context )
-    {
-        HockeyDBHelper helper = new HockeyDBHelper( context );
+    public SQLiteDatabase getDatabase(Context context) {
+        HockeyDBHelper helper = new HockeyDBHelper(context);
         return helper.getWritableDatabase();
     }
 }

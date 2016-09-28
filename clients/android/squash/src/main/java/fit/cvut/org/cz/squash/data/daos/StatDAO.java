@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by Vaclav on 21. 4. 2016.
  */
 public class StatDAO implements IStatDAO {
-
     private ContentValues convert(DStat stat){
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cCOMPETITIONID, stat.getCompetitionId());
@@ -39,7 +38,6 @@ public class StatDAO implements IStatDAO {
     }
 
     private DStat parse(Cursor c){
-
         long playerId = -1;
         int number = -1;
         int value = -1;
@@ -69,7 +67,6 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsForParticipant(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ArrayList<Long> ids = new ArrayList<>();
 
@@ -85,7 +82,6 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public void delete(Context context, long participantId, StatsEnum type) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String where = String.format("%s = ? and %s =?", DBConstants.cPARTICIPANT_ID, SDBConstants.cTYPE);
@@ -106,7 +102,6 @@ public class StatDAO implements IStatDAO {
         db.close();
     }
 
-
     @Override
     public void deleteByParticipant(Context context, long participantId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
@@ -117,7 +112,6 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<DStat> getByParticipant(Context context, long participantId, StatsEnum type) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ArrayList<DStat> stats = new ArrayList<>();
 
@@ -220,6 +214,5 @@ public class StatDAO implements IStatDAO {
 
         return stats;
     }
-
 
 }

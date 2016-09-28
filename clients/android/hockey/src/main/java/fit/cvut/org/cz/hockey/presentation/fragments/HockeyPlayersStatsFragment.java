@@ -35,7 +35,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedStatistics> {
-
     private long competitionID;
     private long tournamentID;
     private static String ARG_COMP_ID = "competition_id";
@@ -50,7 +49,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
-    public static HockeyPlayersStatsFragment newInstance( long id, boolean forComp ) {
+    public static HockeyPlayersStatsFragment newInstance(long id, boolean forComp) {
         HockeyPlayersStatsFragment fragment = new HockeyPlayersStatsFragment();
         Bundle args = new Bundle();
 
@@ -137,8 +136,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             @Override
             protected void setOnClickListeners(View v, final long playerId, final String name) {
                 super.setOnClickListeners(v, playerId, name);
-                v.setOnLongClickListener( new View.OnLongClickListener(){
-
+                v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
                         DeleteOnlyDialog dialog = DeleteOnlyDialog.newInstance(playerId, competitionID, tournamentID, name);
@@ -157,27 +155,26 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     @Override
     public void askForData() {
-        if( !sendForData ) return;
+        if (!sendForData) return;
 
         Intent intent;
         if (competitionID != -1) {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_COMP_ID, getContext());
-            intent.putExtra(StatsService.EXTRA_ID, competitionID );
+            intent.putExtra(StatsService.EXTRA_ID, competitionID);
         } else {
-            intent = StatsService.newStartIntent( StatsService.ACTION_GET_BY_TOUR_ID, getContext() );
-            intent.putExtra(StatsService.EXTRA_ID, tournamentID );
+            intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_TOUR_ID, getContext());
+            intent.putExtra(StatsService.EXTRA_ID, tournamentID);
         }
 
-        getActivity().startService( intent );
+        getActivity().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-
         if (competitionID != -1) {
-            return StatsService.isWorking( StatsService.ACTION_GET_BY_COMP_ID );
+            return StatsService.isWorking(StatsService.ACTION_GET_BY_COMP_ID);
         } else {
-            return StatsService.isWorking( StatsService.ACTION_GET_BY_TOUR_ID );
+            return StatsService.isWorking(StatsService.ACTION_GET_BY_TOUR_ID);
         }
     }
 
@@ -187,25 +184,25 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
         if (competitionID != -1) {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_COMP_ID);
-            filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION );
-            filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION );
+            filter.addAction(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION);
+            filter.addAction(PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION);
         } else {
             filter = new IntentFilter(StatsService.ACTION_GET_BY_TOUR_ID);
-            filter.addAction( PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT );
-            filter.addAction( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT );
+            filter.addAction(PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT);
+            filter.addAction(PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT);
         }
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( statsReceiver, filter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(statsReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance( getContext() ).unregisterReceiver(statsReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(statsReceiver);
     }
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false );
+        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
         fab.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
@@ -233,13 +230,13 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != SelectableListActivity.RESULT_OK){
+        if (resultCode != SelectableListActivity.RESULT_OK) {
             sendForData = true;
             askForData();
             return;
         }
 
-        if( competitionID != -1 ) {
+        if (competitionID != -1) {
             Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
             intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
             intent.putExtra(PlayerService.EXTRA_ID, competitionID);
@@ -272,22 +269,22 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:
-                    if(intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK){
+                    if (intent.getIntExtra(PlayerService.EXTRA_OUTCOME, -1) == PlayerService.OUTCOME_OK) {
                         sendForData = true;
                         askForData();
                         break;
                     } else {
                         View v = getView();
-                        if( v != null ) Snackbar.make(v, R.string.player_delete_from_competition_error, Snackbar.LENGTH_LONG).show();
+                        if (v != null) Snackbar.make(v, R.string.player_delete_from_competition_error, Snackbar.LENGTH_LONG).show();
                     }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT: {
-                    if(intent.getIntExtra( PlayerService.EXTRA_OUTCOME, -1 ) == PlayerService.OUTCOME_OK){
+                    if (intent.getIntExtra(PlayerService.EXTRA_OUTCOME, -1) == PlayerService.OUTCOME_OK) {
                         sendForData = true;
                         askForData();
                         break;
                     } else {
                         View v = getView();
-                        if( v != null ) Snackbar.make(v, R.string.player_delete_from_tournament_error, Snackbar.LENGTH_LONG).show();
+                        if (v != null) Snackbar.make(v, R.string.player_delete_from_tournament_error, Snackbar.LENGTH_LONG).show();
                     }
                 }
             }

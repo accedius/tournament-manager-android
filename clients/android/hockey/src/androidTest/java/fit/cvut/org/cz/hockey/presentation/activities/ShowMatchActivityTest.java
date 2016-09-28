@@ -18,14 +18,13 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShowMatchActivityTest {
-
     @Test
     public void IntentShouldBeCreated() throws Exception {
         Context context = Mockito.mock(Context.class);
-        Intent intent = ShowMatchActivity.newStartIntent( context, 1 );
-        assertNotNull( intent );
+        Intent intent = ShowMatchActivity.newStartIntent(context, 1);
+        assertNotNull(intent);
         Bundle extras = intent.getExtras();
-        assertNotNull( extras );
-        assertEquals( 1, extras.getLong("match_id") );
+        assertNotNull(extras);
+        assertEquals(1, extras.getLong("match_id"));
     }
 }

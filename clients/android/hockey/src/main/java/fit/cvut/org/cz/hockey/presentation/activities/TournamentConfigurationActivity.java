@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class TournamentConfigurationActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_TOUR_ID = "tour_id";
 
     /**
@@ -32,7 +31,7 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
      * @param id id of tournament
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long id  ) {
+    public static Intent newStartIntent(Context context, long id) {
         Intent res = new Intent(context, TournamentConfigurationActivity.class);
 
         res.putExtra(EXTRA_TOUR_ID, id);
@@ -55,11 +54,10 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long tourID;
-        tourID = getIntent().getLongExtra( EXTRA_TOUR_ID, -1 );
+        tourID = getIntent().getLongExtra(EXTRA_TOUR_ID, -1);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, ConfigurePointsFragment.newInstance( tourID )).commit();
-
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.container, ConfigurePointsFragment.newInstance(tourID)).commit();
         }
     }
 
@@ -78,9 +76,9 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
                 return super.onOptionsItemSelected(item);
             }
 
-            Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_SET_CONFIG, this );
-            intent.putExtra( TournamentService.EXTRA_CONFIGURATION, pointConfig );
-            intent.putExtra( TournamentService.EXTRA_ID, getIntent().getLongExtra(EXTRA_TOUR_ID, -1) );
+            Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
+            intent.putExtra(TournamentService.EXTRA_CONFIGURATION, pointConfig);
+            intent.putExtra(TournamentService.EXTRA_ID, getIntent().getLongExtra(EXTRA_TOUR_ID, -1));
             startService(intent);
             finish();
         }

@@ -12,7 +12,6 @@ import fit.cvut.org.cz.hockey.business.entities.HockeyScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMatch,HockeyScoredMatchAdapter.MatchViewHolder> {
-
     protected  Resources res;
 
     public HockeyScoredMatchAdapter(Resources res) {
@@ -44,14 +43,14 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
             holder.score.setText(R.string.vs);
         }
 
-        if (position > 0){
+        if (position > 0) {
             holder.roundSeparator1.setVisibility(View.GONE);
             holder.roundSeparator2.setVisibility(View.GONE);
             holder.periodSeparator.setVisibility(View.GONE);
-            if (data.get(position-1).getScoredMatch().getRound() != m.getScoredMatch().getRound()){
+            if (data.get(position-1).getScoredMatch().getRound() != m.getScoredMatch().getRound()) {
                 holder.roundSeparator1.setVisibility(View.VISIBLE);
                 holder.roundSeparator2.setVisibility(View.VISIBLE);
-            } else if (data.get(position - 1).getScoredMatch().getPeriod() != m.getScoredMatch().getPeriod()){
+            } else if (data.get(position - 1).getScoredMatch().getPeriod() != m.getScoredMatch().getPeriod()) {
                 holder.periodSeparator.setVisibility(View.VISIBLE);
             }
         }

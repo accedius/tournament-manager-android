@@ -9,7 +9,6 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 
 public class SquashScoredMatch implements Parcelable {
-
     protected ScoredMatch scoredMatch;
     List<SetRowItem> sets;
 
@@ -31,7 +30,7 @@ public class SquashScoredMatch implements Parcelable {
         dest.writeTypedList(sets);
     }
 
-    public SquashScoredMatch(Parcel in ) {
+    public SquashScoredMatch(Parcel in) {
         this.scoredMatch = new ScoredMatch(in);
         in.readTypedList(this.sets, SetRowItem.CREATOR);
     }

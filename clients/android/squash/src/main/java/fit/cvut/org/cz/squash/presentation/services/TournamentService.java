@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 28. 3. 2016.
  */
 public class TournamentService extends AbstractIntentServiceWProgress{
-
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TOURNAMENT = "extra_tournament";
@@ -64,7 +63,6 @@ public class TournamentService extends AbstractIntentServiceWProgress{
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
@@ -139,6 +137,5 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 break;
             }
         }
-
     }
 }

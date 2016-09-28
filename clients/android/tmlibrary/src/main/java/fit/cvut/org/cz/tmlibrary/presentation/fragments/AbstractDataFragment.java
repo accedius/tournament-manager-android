@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.R;
  * Children fragment must be able to receive data via BroadcastReceiver
  */
 public abstract class AbstractDataFragment extends Fragment {
-
     /**
      * This methods asks your datasource for data. e.g. start service or async task
      */
@@ -76,7 +75,7 @@ public abstract class AbstractDataFragment extends Fragment {
     protected BroadcastReceiver receiver = new DataReceiver();
 
     public void customOnResume(){
-        if (register){
+        if (register) {
             registerReceivers();
             register = false;
         }
@@ -88,7 +87,7 @@ public abstract class AbstractDataFragment extends Fragment {
     }
 
     protected void customOnPause(){
-        if (!register){
+        if (!register) {
             unregisterReceivers();
             register = true;
         }

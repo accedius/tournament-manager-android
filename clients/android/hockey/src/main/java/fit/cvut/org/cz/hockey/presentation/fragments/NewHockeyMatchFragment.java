@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
  * Created by atgot_000 on 10. 4. 2016.
  */
 public class NewHockeyMatchFragment extends NewMatchFragment {
-
     @Override
     protected String getMatchKey() {
         return MatchService.EXTRA_MATCH;
@@ -25,16 +24,16 @@ public class NewHockeyMatchFragment extends NewMatchFragment {
 
     @Override
     public void askForData() {
-        Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_ID, getContext() );
-        intent.putExtra( MatchService.EXTRA_ID, id );
-        intent.putExtra( MatchService.EXTRA_TOUR_ID, tournamentId );
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID, getContext());
+        intent.putExtra(MatchService.EXTRA_ID, id);
+        intent.putExtra(MatchService.EXTRA_TOUR_ID, tournamentId);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return MatchService.isWorking( MatchService.ACTION_FIND_BY_ID );
+        return MatchService.isWorking(MatchService.ACTION_FIND_BY_ID);
     }
 
     @Override

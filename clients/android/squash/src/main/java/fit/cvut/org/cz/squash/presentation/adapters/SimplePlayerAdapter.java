@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by Vaclav on 4. 5. 2016.
  */
 public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlayerAdapter.PlayerVH> {
-
     @Override
     public PlayerVH onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PlayerVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player, parent, false));

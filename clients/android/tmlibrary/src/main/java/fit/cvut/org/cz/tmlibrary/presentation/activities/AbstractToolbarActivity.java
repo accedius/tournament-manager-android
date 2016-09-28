@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 
 import fit.cvut.org.cz.tmlibrary.R;
 
-
 /**
  * Created by Vaclav on 17. 3. 2016.
  * This activity sets up Toolbar for you. It is meant to be a top-level container
@@ -22,7 +21,6 @@ import fit.cvut.org.cz.tmlibrary.R;
  *
  */
 public abstract class AbstractToolbarActivity extends AppCompatActivity {
-
     /**
      * This activity uses coordinator layout as top level layout in order for Toolbar
      * and floating action button to work properly.

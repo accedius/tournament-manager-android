@@ -15,7 +15,6 @@ import fit.cvut.org.cz.squash.presentation.services.MatchService;
  * Created by Vaclav on 11. 4. 2016.
  */
 public class MatchesDialog extends DialogFragment {
-
     public MatchesDialog(){}
 
     public static final String ARG_ID = "arg_id";

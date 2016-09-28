@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
  * Created by Vaclav on 5. 4. 2016.
  */
 public interface IPackagePlayerDAO {
-
     /**
      *
      * @param context application context
@@ -121,6 +120,5 @@ public interface IPackagePlayerDAO {
      * @return all players in core
      */
     Map<Long, DPlayer> getAllPlayers(Context context);
-
 
 }

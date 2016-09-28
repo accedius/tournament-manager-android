@@ -7,7 +7,6 @@ import fit.cvut.org.cz.tournamentmanager.data.daos.PlayerDAO;
  * Created by kevin on 7. 4. 2016.
  */
 public class DAOFactory {
-
     private static DAOFactory ourInstance = new DAOFactory();
 
     public static DAOFactory getInstance() {

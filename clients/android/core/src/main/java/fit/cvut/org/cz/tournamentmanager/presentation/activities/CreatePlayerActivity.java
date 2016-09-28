@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.NewPlayerFragmen
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 public class CreatePlayerActivity extends AbstractToolbarActivity {
-
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_create_player, parent, false);
@@ -33,7 +32,7 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
 
         long id = getIntent().getLongExtra(PlayerService.EXTRA_ID, -1);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.container) == null )
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null)
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewPlayerFragment.newInstance(id, NewPlayerFragment.class)).commit();
     }
 

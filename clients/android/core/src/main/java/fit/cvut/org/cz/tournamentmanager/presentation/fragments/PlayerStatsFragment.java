@@ -36,7 +36,6 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     private static String ARG_ID = "player_id";
 
-
     public static PlayerStatsFragment newInstance(long id, Class<? extends PlayerStatsFragment> clazz){
         PlayerStatsFragment fragment = null;
         try {
@@ -99,7 +98,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         statsParams.weight = 1;
 
         AggregatedStats ags = intent.getParcelableExtra(CrossPackageComunicationConstants.EXTRA_STATS);
-        for(PlayerAggregatedStats as : ags.getRecords()) {
+        for (PlayerAggregatedStats as : ags.getRecords()) {
             for (PlayerAggregatedStatsRecord asr : as.getRecords()) {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
                     TextView label = new TextView(getContext());

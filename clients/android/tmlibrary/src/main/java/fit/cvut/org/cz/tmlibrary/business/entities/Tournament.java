@@ -14,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Tournament extends ShareBase implements Parcelable {
-
     public static final String col_name = "name";
     public static final String col_start_date = "start_date";
     public static final String col_end_date= "end_date";
@@ -29,7 +28,6 @@ public class Tournament extends ShareBase implements Parcelable {
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
     public static DTournament convertToDTournament(Tournament c){
-
         return new DTournament(c.getId(), c.getName(), c.getStartDate(),
                 c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized(), c.getCompetitionId());
     }
@@ -52,7 +50,6 @@ public class Tournament extends ShareBase implements Parcelable {
         this.setCompetitionId(competitionId);
     }
 
-
     public Tournament(DTournament c) {
         this.id = c.getId();
         this.name = c.getName();
@@ -72,7 +69,7 @@ public class Tournament extends ShareBase implements Parcelable {
         name = in.readString();
         note = in.readString();
 
-        try{
+        try {
             String text = in.readString();
             if (text == null) startDate = null;
             else startDate = dateFormat.parse(text);
@@ -117,7 +114,6 @@ public class Tournament extends ShareBase implements Parcelable {
         dest.writeLong(competitionId);
     }
 
-
     public static final Creator<Tournament> CREATOR = new Creator<Tournament>() {
         @Override
         public Tournament createFromParcel(Parcel in) {
@@ -134,7 +130,6 @@ public class Tournament extends ShareBase implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
 
     public long getId() {
         return id;

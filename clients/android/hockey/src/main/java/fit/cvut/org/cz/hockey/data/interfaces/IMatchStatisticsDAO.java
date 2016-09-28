@@ -10,14 +10,13 @@ import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
  * DAO for the match statistic entity
  */
 public interface IMatchStatisticsDAO {
-
     /**
      * Creates new match statistics in database
      * @param context
      * @param stat stat to be created
      * @return id of inserted stat
      */
-    long createStatsForMatch( Context context, DMatchStat stat);
+    long createStatsForMatch(Context context, DMatchStat stat);
 
     /**
      *
@@ -25,14 +24,14 @@ public interface IMatchStatisticsDAO {
      * @param matchId id of match
      * @return statistics of the requested match
      */
-    DMatchStat getByMatchId( Context context, long matchId);
+    DMatchStat getByMatchId(Context context, long matchId);
 
     /**
      *
      * @param context
      * @param matchStat stat to be updated
      */
-    void update( Context context, DMatchStat matchStat );
+    void update(Context context, DMatchStat matchStat);
 
     /**
      * deletes the statistic of a given match

@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ParticipantDAOTest {
-
     @Test
     public void testInsertUpdateDelete() throws Exception {
         DParticipant part = new DParticipant(1, 1, 1, ParticipantType.home.toString());

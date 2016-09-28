@@ -31,7 +31,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  * Created by Vaclav on 7. 4. 2016.
  */
 public class StatsManager implements IStatsManager {
-
     private void orderPlayers(ArrayList<SAggregatedStats> stats) {
         Collections.sort(stats, new Comparator<SAggregatedStats>() {
             @Override
@@ -98,7 +97,6 @@ public class StatsManager implements IStatsManager {
         }
 
         for (Long key : mappedStats.keySet()) {
-
             double played = mappedStats.get(key).won + mappedStats.get(key).lost + mappedStats.get(key).draws;
             if (played > 0) {
                 mappedStats.get(key).matchWinRate = mappedStats.get(key).won / played * 100;
@@ -118,7 +116,6 @@ public class StatsManager implements IStatsManager {
 
     @Override
     public ArrayList<SAggregatedStats> getAggregatedStatsByCompetitionId(Context context, long competitionId) {
-
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, competitionId);
         ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.MATCH);
         ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByCompetition(context, competitionId, StatsEnum.SET);
@@ -130,7 +127,6 @@ public class StatsManager implements IStatsManager {
 
     @Override
     public ArrayList<SAggregatedStats> getAggregatedStatsByTournamentId(Context context, long tournamentId) {
-
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
         ArrayList<DStat> results = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.MATCH);
         ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByTournament(context, tournamentId, StatsEnum.SET);
@@ -144,7 +140,7 @@ public class StatsManager implements IStatsManager {
     public ArrayList<SAggregatedStats> getAggregatedStatsByPlayerId(Context context, long playerID) {
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getAllPlayers(context);
         ArrayList<Player> filtered_players = new ArrayList<>();
-        for(Player p : players) {
+        for (Player p : players) {
             if (playerID == p.getId())
                 filtered_players.add(p);
         }
@@ -173,14 +169,13 @@ public class StatsManager implements IStatsManager {
         ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByTournament(context, t.getId(), StatsEnum.MATCH);
         PointConfig cfg = ManagersFactory.getInstance().pointConfigManager.getById(context, tournamentId);
 
-        if (type.equals(CompetitionTypes.individuals())){
-
+        if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
             for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getName()));
-            for (DStat stat : stats){
+            for (DStat stat : stats) {
                 long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, stat.getParticipantId()).get(0);
                 ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, stat.getParticipantId(), StatsEnum.SET);
-                for (DStat set : sets){
+                for (DStat set : sets) {
                     if (set.getStatus() == 1) mappedStandings.get(playerId).setsWon++;
                     else mappedStandings.get(playerId).setsLost++;
                 }
@@ -198,17 +193,16 @@ public class StatsManager implements IStatsManager {
                         mappedStandings.get(playerId).points+=cfg.getWin();
                         break;
                 }
-
             }
         } else {
             //team competition
             ArrayList<DTeam> teams = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
             for (DTeam team : teams) mappedStandings.put(team.getId(), new StandingItem(team.getName()));
 
-            for (DStat stat : stats){
+            for (DStat stat : stats) {
                 DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
                 ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.SET);
-                for (DStat set : sets){
+                for (DStat set : sets) {
                     if (set.getStatus() == 1) mappedStandings.get(p.getTeamId()).setsWon++;
                     else mappedStandings.get(p.getTeamId()).setsLost++;
                 }
@@ -226,7 +220,6 @@ public class StatsManager implements IStatsManager {
                         mappedStandings.get(p.getTeamId()).points += cfg.getWin();
                         break;
                 }
-
             }
         }
         for (Long key : mappedStandings.keySet()) standings.add(mappedStandings.get(key));
@@ -240,7 +233,7 @@ public class StatsManager implements IStatsManager {
         ArrayList<DParticipant> dparticipants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
         DParticipant home = null, away = null;
 
-        for (DParticipant participant : dparticipants){
+        for (DParticipant participant : dparticipants) {
             if (participant.getRole().equals("home")) home = participant;
             else away = participant;
         }
@@ -248,7 +241,7 @@ public class StatsManager implements IStatsManager {
         ArrayList<DStat> homeSets = DAOFactory.getInstance().statDAO.getByParticipant(context, home.getId(), StatsEnum.SET);
         ArrayList<DStat> awaySets = DAOFactory.getInstance().statDAO.getByParticipant(context, away.getId(), StatsEnum.SET);
 
-        for (int i = 0; i< homeSets.size(); i++){
+        for (int i = 0; i< homeSets.size(); i++) {
             SetRowItem item = new SetRowItem();
             item.setHomeScore(homeSets.get(i).getValue());
             item.setAwayScore(awaySets.get(i).getValue());
@@ -262,7 +255,6 @@ public class StatsManager implements IStatsManager {
 
     @Override
     public void updateStatsForMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
-
         DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);
         m.setPlayed(true);
         DAOFactory.getInstance().matchDAO.update(context, m);
@@ -270,7 +262,7 @@ public class StatsManager implements IStatsManager {
         ArrayList<DParticipant> dparticipants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
         DParticipant home = null, away = null;
 
-        for (DParticipant participant : dparticipants){
+        for (DParticipant participant : dparticipants) {
             DAOFactory.getInstance().statDAO.delete(context, participant.getId(), StatsEnum.SET);
             DAOFactory.getInstance().statDAO.delete(context, participant.getId(), StatsEnum.MATCH);
             if (participant.getRole().equals("home")) home = participant;
@@ -308,12 +300,12 @@ public class StatsManager implements IStatsManager {
         DParticipant participant = null;
         for (DParticipant p : participants) if (p.getRole().equals(role)) participant = p;
 
-        if (!m.isPlayed()){
+        if (!m.isPlayed()) {
             return ManagersFactory.getInstance().teamsManager.getById(context, participant.getTeamId()).getPlayers();
         } else {
             ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, participant.getId(), StatsEnum.MATCH_PARTICIPATION);
             Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
-            for (DStat stat : stats){
+            for (DStat stat : stats) {
                 players.add(new Player(allPlayers.get(stat.getPlayerId())));
             }
         }

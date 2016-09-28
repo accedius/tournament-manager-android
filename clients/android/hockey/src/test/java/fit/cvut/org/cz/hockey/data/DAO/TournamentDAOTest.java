@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TournamentDAOTest {
-
     @Test
     public void testInsertUpdateDelete() throws Exception {
         DTournament tour = new DTournament(1, "TOURNAME", new Date(), new Date(), "TOURNOTE");
@@ -66,6 +65,6 @@ public class TournamentDAOTest {
 
         ArrayList<DTournament> ret = DAOFactory.getInstance().tournamentDAO.getByCompetitionId(RuntimeEnvironment.application, 1);
 
-        assertTrue( ret.size() == 2 );
+        assertTrue(ret.size() == 2);
     }
 }

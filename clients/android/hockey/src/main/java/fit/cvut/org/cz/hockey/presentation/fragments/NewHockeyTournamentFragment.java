@@ -15,18 +15,18 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 public class NewHockeyTournamentFragment extends NewTournamentFragment {
     @Override
     protected void saveTournament(Tournament t) {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_CREATE, getContext() );
-        intent.putExtra( TournamentService.EXTRA_TOURNAMENT, t );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_CREATE, getContext());
+        intent.putExtra(TournamentService.EXTRA_TOURNAMENT, t);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected void updateTournament(Tournament t) {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_UPDATE, getContext());
-        intent.putExtra( TournamentService.EXTRA_TOURNAMENT, t );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, getContext());
+        intent.putExtra(TournamentService.EXTRA_TOURNAMENT, t);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
@@ -36,15 +36,15 @@ public class NewHockeyTournamentFragment extends NewTournamentFragment {
 
     @Override
     public void askForData() {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_FIND_BY_ID, getContext());
-        intent.putExtra( TournamentService.EXTRA_ID, tournamentId );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, getContext());
+        intent.putExtra(TournamentService.EXTRA_ID, tournamentId);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TournamentService.isWorking( TournamentService.ACTION_FIND_BY_ID );
+        return TournamentService.isWorking(TournamentService.ACTION_FIND_BY_ID);
     }
 
     @Override

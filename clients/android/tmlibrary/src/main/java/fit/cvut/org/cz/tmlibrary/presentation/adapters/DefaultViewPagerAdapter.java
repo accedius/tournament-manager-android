@@ -9,11 +9,9 @@ import android.view.ViewGroup;
  * Created by Vaclav on 20. 3. 2016.
  */
 public class DefaultViewPagerAdapter extends FragmentPagerAdapter {
-
     private Fragment[] fragments;
     private String[] titles;
     private String[] tags;
-
 
     public DefaultViewPagerAdapter(FragmentManager fm, Fragment[] fragments , String[] titles) {
         super(fm);

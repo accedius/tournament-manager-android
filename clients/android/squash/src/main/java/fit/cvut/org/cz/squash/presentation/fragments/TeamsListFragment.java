@@ -29,7 +29,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 13. 4. 2016.
  */
 public class TeamsListFragment extends AbstractListFragment<Team> {
-
     private TeamAdapter adapter = null;
 
     public static final String ARG_ID = "arg_id";
@@ -64,7 +63,6 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                     }
                 });
             }
-
         };
         return adapter;
     }
@@ -107,7 +105,6 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
                 InsertTeamDialog dialog = SquashInsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, SquashInsertTeamDialog.class);
                 dialog.show(getFragmentManager(), "dialog");
             }
-
         });
 
         return fab;
@@ -118,16 +115,15 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
         public void onReceive(Context context, Intent intent) {
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
-            if (intent.getAction().equals(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT)){
+            if (intent.getAction().equals(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT)) {
                 TeamsListFragment.super.bindDataOnView(intent);
             } else {
-                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)){
+                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)) {
                     int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
                     adapter.delete(position);
                 }
                 else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTeam, Snackbar.LENGTH_LONG).show();
             }
-
         }
     }
 }

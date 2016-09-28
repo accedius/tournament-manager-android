@@ -27,7 +27,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
  * Created by atgot_000 on 10. 4. 2016.
  */
 public abstract class NewMatchFragment extends AbstractDataFragment  {
-
     private static final String ARG_ID = "arg_id";
     private static final String ARG_TOUR_ID = "arg_tour_id";
 
@@ -94,23 +93,23 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_new_match, container, false);
 
-        mDate = (EditText) v.findViewById( R.id.et_date );
-        period = (EditText) v.findViewById( R.id.et_period );
-        round = (EditText) v.findViewById( R.id.et_round );
-        note = (EditText) v.findViewById( R.id.et_note );
+        mDate = (EditText) v.findViewById(R.id.et_date);
+        period = (EditText) v.findViewById(R.id.et_period);
+        round = (EditText) v.findViewById(R.id.et_round);
+        note = (EditText) v.findViewById(R.id.et_note);
         homeTeamSpinner = (AppCompatSpinner) v.findViewById(R.id.m_home);
         awayTeamSpinner = (AppCompatSpinner) v.findViewById(R.id.m_away);
 
         if (getArguments() != null) {
-            id = getArguments().getLong(ARG_ID, -1 );
-            tournamentId = getArguments().getLong( ARG_TOUR_ID, -1 );
+            id = getArguments().getLong(ARG_ID, -1);
+            tournamentId = getArguments().getLong(ARG_TOUR_ID, -1);
         }
-        mDate.setKeyListener( null );
+        mDate.setKeyListener(null);
 
         //if the match is created, we do not allow changing teams
         if (id != -1) {
-            homeTeamSpinner.setEnabled( false );
-            awayTeamSpinner.setEnabled( false );
+            homeTeamSpinner.setEnabled(false);
+            awayTeamSpinner.setEnabled(false);
         } else {
             setDatepicker(Calendar.getInstance());
         }
@@ -143,7 +142,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         sm.setRound(sRound);
         sm.setNote(note.getText().toString());
         sm.setDate(sDate);
-        sm.setTournamentId( tournamentId );
+        sm.setTournamentId(tournamentId);
         return sm;
     }
 
@@ -162,17 +161,17 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     @Override
     protected void bindDataOnView(Intent intent) {
         ScoredMatch smatch = null;
-        if( id != -1 ) {
+        if (id != -1) {
             smatch = intent.getParcelableExtra(getMatchKey());
             bindMatchOnView(smatch);
         }
-        ArrayList<NewMatchSpinnerParticipant> participants = intent.getParcelableArrayListExtra( getTournamentParticipantsKey() );
-        bindParticipantsOnView( participants, smatch );
+        ArrayList<NewMatchSpinnerParticipant> participants = intent.getParcelableArrayListExtra(getTournamentParticipantsKey());
+        bindParticipantsOnView(participants, smatch);
     }
 
-    private void bindMatchOnView( ScoredMatch match ) {
+    private void bindMatchOnView(ScoredMatch match) {
         Calendar argDate = Calendar.getInstance();
-        if (match.getDate() != null){
+        if (match.getDate() != null) {
             mDate.setText(DateFormatter.getInstance().getDisplayDateFormat().format(match.getDate()));
             dDate = Calendar.getInstance();
             dDate.setTime(match.getDate());
@@ -180,21 +179,21 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
 
         setDatepicker(argDate);
-        period.setText( Integer.toString( match.getPeriod() ) );
+        period.setText(Integer.toString(match.getPeriod()));
         round.setText(Integer.toString(match.getRound()));
         note.setText(match.getNote());
     }
 
-    private void bindParticipantsOnView( ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match ) {
-        homePartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants );
+    private void bindParticipantsOnView(ArrayList<NewMatchSpinnerParticipant> participants, ScoredMatch match) {
+        homePartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants);
         homePartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        homeTeamSpinner.setAdapter( homePartAdapter );
+        homeTeamSpinner.setAdapter(homePartAdapter);
 
-        awayPartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants );
+        awayPartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants);
         awayPartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         awayTeamSpinner.setAdapter(awayPartAdapter);
 
-        if( match != null ) {
+        if (match != null) {
             int hIndex = homePartAdapter.getPosition(findParticipant(participants, match.getHomeParticipantId()));
             int aIndex = awayPartAdapter.getPosition(findParticipant(participants, match.getAwayParticipantId()));
 
@@ -203,9 +202,9 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
     }
 
-    private NewMatchSpinnerParticipant findParticipant( ArrayList<NewMatchSpinnerParticipant> participants, long id ) {
-        for( NewMatchSpinnerParticipant part : participants )
-            if( part.getParticipantId() == id )
+    private NewMatchSpinnerParticipant findParticipant(ArrayList<NewMatchSpinnerParticipant> participants, long id) {
+        for (NewMatchSpinnerParticipant part : participants)
+            if (part.getParticipantId() == id)
                 return part;
 
         return null;

@@ -5,7 +5,6 @@ package fit.cvut.org.cz.squash.data.entities;
  * Created by Vaclav on 21. 4. 2016.
  */
 public class DStat {
-
     private long id, competitionId, tournamentId, playerId, participantId;
     private int status, lostValue, value;
     private StatsEnum type;

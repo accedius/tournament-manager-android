@@ -35,7 +35,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 5. 4. 2016.
  */
 public class AggregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {
-
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_ACTION = "ARG_ACTION";
     public static final String SAVE_MAIN = "SAVE_MAIN";
@@ -57,7 +56,6 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
     public static AggregatedStatsListFragment newInstance(long id, String action){
-
         AggregatedStatsListFragment fragment = new AggregatedStatsListFragment();
         Bundle b = new Bundle();
         b.putLong(ARG_ID, id);
@@ -81,7 +79,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
         mainAction = getArguments().getString(ARG_ACTION, null);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mainAction = savedInstanceState.getString(SAVE_MAIN);
             addAction = savedInstanceState.getString(SAVE_ADD);
             sendForData = savedInstanceState.getBoolean(SAVE_SEND);
@@ -147,8 +145,6 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         adapter.notifyDataSetChanged();
     }
 
-
-
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.fab_add, parent, false);
@@ -189,7 +185,6 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                         return false;
                     }
                 });
-
             }
         };
         return adapter;
@@ -229,7 +224,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != SelectableListActivity.RESULT_OK){
+        if (resultCode != SelectableListActivity.RESULT_OK) {
             sendForData = true;
             askForData();
             return;
@@ -237,7 +232,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         if (addAction == null)
             return;
 
-        if (requestCode == 3){
+        if (requestCode == 3) {
             progressBar.setVisibility(View.VISIBLE);
             contentView.setVisibility(View.GONE);
             return;
@@ -269,7 +264,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     AggregatedStatsListFragment.super.bindDataOnView(intent);
                     break;
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:{
-                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)){
+                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)) {
                         int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     }
@@ -277,7 +272,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT:{
-                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)){
+                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)) {
                         int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     }
@@ -285,9 +280,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     break;
                 }
             }
-
         }
     }
-
 
 }

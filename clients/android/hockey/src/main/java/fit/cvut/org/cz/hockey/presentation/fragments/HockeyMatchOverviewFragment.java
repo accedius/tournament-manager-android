@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class HockeyMatchOverviewFragment extends AbstractDataFragment {
-
     private TextView homeScore, awayScore, round, period, date, note;
     private ImageButton homePlus, homeMinus, awayPlus, awayMinus;
     private CheckBox overtime, shootouts;
@@ -50,7 +49,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
     @Override
     public void askForData() {
-        Intent intent = MatchService.newStartIntent( MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW, getContext() );
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW, getContext());
         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
 
         getContext().startService(intent);
@@ -60,8 +59,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
             intAwayScore = savedInstanceState.getInt(SAVE_AWAY_SCORE);
             ot = savedInstanceState.getInt(SAVE_OVERTIME);
@@ -78,34 +76,34 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return MatchService.isWorking( MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW);
+        return MatchService.isWorking(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW);
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        ScoredMatch match = intent.getParcelableExtra( MatchService.EXTRA_MATCH );
+        ScoredMatch match = intent.getParcelableExtra(MatchService.EXTRA_MATCH);
         tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
                 match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
 
-        if( intHomeScore == -1 && intAwayScore == -1) {
+        if (intHomeScore == -1 && intAwayScore == -1) {
             intHomeScore = match.getHomeScore();
             intAwayScore = match.getAwayScore();
         }
         homeScore.setText(String.valueOf(intHomeScore));
-        awayScore.setText( String.valueOf(intAwayScore) );
+        awayScore.setText(String.valueOf(intAwayScore));
         round.setText(String.valueOf(match.getRound()));
-        period.setText( String.valueOf(match.getPeriod()) );
-        if( match.getDate()!= null ) {
+        period.setText(String.valueOf(match.getPeriod()));
+        if (match.getDate()!= null) {
             date.setText(DateFormatter.getInstance().getDisplayDateFormat().format(match.getDate()));
         }
-        else date.setText( "--" );
+        else date.setText("--");
         note.setText(match.getNote());
 
-        if( ot == -1 && so == -1 ) {
+        if (ot == -1 && so == -1) {
             MatchScore matchScore = intent.getParcelableExtra(MatchService.EXTRA_MATCH_SCORE);
-            if( matchScore == null ){
+            if (matchScore == null) {
                 ot = 0;
                 so = 0;
                 return;
@@ -123,8 +121,8 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         }
         else
         {
-            overtime.setChecked( ot != 0 );
-            shootouts.setChecked( so != 0 );
+            overtime.setChecked(ot != 0);
+            shootouts.setChecked(so != 0);
         }
     }
 
@@ -175,55 +173,53 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     /**
      * Set listeners for all buttons. This method is called in inject view
      */
-    private void setOnClickListeners()
-    {
-        homePlus.setOnClickListener( new View.OnClickListener(){
+    private void setOnClickListeners() {
+        homePlus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 intHomeScore++;
-                homeScore.setText( String.valueOf( intHomeScore ) );
+                homeScore.setText(String.valueOf(intHomeScore));
             }
         });
-        awayPlus.setOnClickListener( new View.OnClickListener(){
+        awayPlus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 intAwayScore++;
-                awayScore.setText( String.valueOf( intAwayScore ) );
+                awayScore.setText(String.valueOf(intAwayScore));
             }
         });
-        homeMinus.setOnClickListener( new View.OnClickListener(){
+        homeMinus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(intHomeScore <= 0) return;
+                if (intHomeScore <= 0) return;
                 intHomeScore--;
-                homeScore.setText( String.valueOf( intHomeScore ) );
+                homeScore.setText(String.valueOf(intHomeScore));
             }
         });
-        awayMinus.setOnClickListener( new View.OnClickListener(){
+        awayMinus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(intAwayScore <= 0) return;
+                if (intAwayScore <= 0) return;
                 intAwayScore--;
-                awayScore.setText( String.valueOf( intAwayScore ) );
+                awayScore.setText(String.valueOf(intAwayScore));
             }
         });
-        overtime.setOnClickListener( new View.OnClickListener(){
+        overtime.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(!overtime.isChecked())
-                {
+                if (!overtime.isChecked()) {
                     shootouts.setChecked(false);
                     ot = 0;
                     so = 0;
                 }
-                if(overtime.isChecked()) ot = 1;
+                if (overtime.isChecked()) ot = 1;
                 else ot = 0;
             }
         });
-        shootouts.setOnClickListener( new View.OnClickListener(){
+        shootouts.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(shootouts.isChecked()) {
+                if (shootouts.isChecked()) {
                     so = 1;
                     overtime.setChecked(true);
                     ot = 1;
@@ -234,7 +230,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     }
 
     public MatchScore getScore() {
-        MatchScore res = new MatchScore( getArguments().getLong(ARG_ID), intHomeScore, intAwayScore, so != 0, ot != 0 );
+        MatchScore res = new MatchScore(getArguments().getLong(ARG_ID), intHomeScore, intAwayScore, so != 0, ot != 0);
         return res;
     }
 

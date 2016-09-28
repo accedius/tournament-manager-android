@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
  * Created by kevin on 7. 4. 2016.
  */
 public class PlayerDAO implements IPlayerDAO {
-
     private ContentValues serializePlayer(DPlayer player) {
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, player.getName());
@@ -30,10 +29,8 @@ public class PlayerDAO implements IPlayerDAO {
         return cv;
     }
 
-
     @Override
     public void insert(Context context, DPlayer player) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = serializePlayer(player);
@@ -51,7 +48,6 @@ public class PlayerDAO implements IPlayerDAO {
         cv.put(DBConstants.cUID, player.getUid());
         cv.put(DBConstants.cETAG, player.getEtag());
 
-
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tPLAYERS, cv, where, new String[]{Long.toString(player.getId())});
         db.close();
@@ -59,7 +55,6 @@ public class PlayerDAO implements IPlayerDAO {
 
     @Override
     public void delete(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tPLAYERS, where, new String[]{Long.toString(id)});
@@ -68,7 +63,6 @@ public class PlayerDAO implements IPlayerDAO {
 
     @Override
     public DPlayer getById(Context context, long id) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", DBConstants.tPLAYERS, DBConstants.cID);
@@ -83,11 +77,9 @@ public class PlayerDAO implements IPlayerDAO {
         c.close();
 
         return player;
-
     }
 
     public ArrayList<DPlayer> getAll(Context context) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s order by name collate nocase asc", DBConstants.tPLAYERS);
@@ -104,10 +96,6 @@ public class PlayerDAO implements IPlayerDAO {
         c.close();
 
         return players;
-
     }
 }
-
-
-
 

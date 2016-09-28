@@ -21,9 +21,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TeamDAOTest {
-
-
-
     @Test
     public void testInsertUpdateDelete() throws Exception {
         DTeam team1 = new DTeam(1, 1, "TEAMA");
@@ -43,19 +40,18 @@ public class TeamDAOTest {
 
         ret = DAOFactory.getInstance().teamDAO.getByTournamentId(RuntimeEnvironment.application, 1);
         int flag = 0;
-        for(DTeam dt : ret){
-            if(dt.getId() == changeTeam.getId()){
+        for (DTeam dt : ret) {
+            if (dt.getId() == changeTeam.getId()) {
                 assertTrue(dt.getName().equals("ABCD"));
                 flag = 1;
             }
         }
         assertTrue(flag == 1);
 
-        for(DTeam dt : ret){
+        for (DTeam dt : ret) {
             DAOFactory.getInstance().teamDAO.delete(RuntimeEnvironment.application, dt.getId());
         }
         ret = DAOFactory.getInstance().teamDAO.getByTournamentId(RuntimeEnvironment.application, 1);
         assertTrue(ret.isEmpty());
-
     }
 }

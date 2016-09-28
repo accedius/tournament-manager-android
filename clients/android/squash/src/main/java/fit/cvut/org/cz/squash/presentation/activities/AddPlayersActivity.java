@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by Vaclav on 12. 4. 2016.
  */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
-
     public static final String EXTRA_OPTION = "extra_option_key";
 
     /**
@@ -27,7 +26,6 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
      * @return
      */
     public static Intent newStartIntent(Context c, int option, long id){
-
         Intent intent = new Intent(c, AddPlayersActivity.class);
         intent.putExtra(EXTRA_OPTION, option);
         intent.putExtra(EXTRA_ID, id);
@@ -37,7 +35,6 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
 
     @Override
     protected AbstractSelectableListFragment<Player> getListFragment() {
-
         long id = getIntent().getLongExtra(EXTRA_ID, -1);
         int option = getIntent().getIntExtra(EXTRA_OPTION, -1);
         ArrayList<Player> players = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);

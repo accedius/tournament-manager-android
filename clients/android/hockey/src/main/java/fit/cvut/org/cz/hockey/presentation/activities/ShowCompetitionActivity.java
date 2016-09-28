@@ -27,7 +27,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class ShowCompetitionActivity extends AbstractTabActivity {
-
     private long competitionID = -1;
     private DefaultViewPagerAdapter adapter = null;
 
@@ -41,8 +40,8 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
-        Fragment f1 = CompetitionOverviewFragment.newInstance( competitionID, HockeyCompetitionOverviewFragment.class );
-        Fragment f2 = HockeyTournamentsListFragment.newInstance( competitionID );
+        Fragment f1 = CompetitionOverviewFragment.newInstance(competitionID, HockeyCompetitionOverviewFragment.class);
+        Fragment f2 = HockeyTournamentsListFragment.newInstance(competitionID);
         Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
         fragments = new Fragment[]{ f1, f2, f3 };
         super.onCreate(savedInstanceState);

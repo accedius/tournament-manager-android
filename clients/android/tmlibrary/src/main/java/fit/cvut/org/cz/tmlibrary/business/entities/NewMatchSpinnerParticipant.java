@@ -12,11 +12,9 @@ public class NewMatchSpinnerParticipant implements Parcelable
     private String name;
 
     public long getParticipantId() { return participantId; }
-    public void setParticipantId( long participantId ) { this.participantId = participantId; }
+    public void setParticipantId(long participantId) { this.participantId = participantId; }
     public String getName() { return name; }
-    public void setName( String name ) { this.name = name; }
-
-
+    public void setName(String name) { this.name = name; }
 
     public static final Creator<NewMatchSpinnerParticipant> CREATOR = new Creator<NewMatchSpinnerParticipant>() {
         @Override
@@ -30,8 +28,7 @@ public class NewMatchSpinnerParticipant implements Parcelable
         }
     };
 
-    public NewMatchSpinnerParticipant(long id, String n)
-    {
+    public NewMatchSpinnerParticipant(long id, String n) {
         this.participantId = id;
         this.name = n;
     }
@@ -49,14 +46,13 @@ public class NewMatchSpinnerParticipant implements Parcelable
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( participantId );
-        dest.writeString( name );
+        dest.writeLong(participantId);
+        dest.writeString(name);
     }
 
     @Override
     public String toString() {
         return name;
     }
-
 
 }

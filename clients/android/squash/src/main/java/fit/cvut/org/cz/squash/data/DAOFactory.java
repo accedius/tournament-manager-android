@@ -22,7 +22,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITournamentDAO;
  * Created by Vaclav on 29. 3. 2016.
  */
 public class DAOFactory {
-
     private static DAOFactory ourInstance = new DAOFactory();
 
     public static DAOFactory getInstance() {

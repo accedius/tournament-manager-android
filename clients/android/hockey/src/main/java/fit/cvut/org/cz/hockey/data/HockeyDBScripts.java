@@ -8,7 +8,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * static class with scripts for database
  */
 public class HockeyDBScripts {
-
     public static final String CREATE_TABLE_CONFIGURATIONS = "create table " + HockeyDBConstants.tCONFIGURATIONS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + HockeyDBConstants.cNTW + " INTEGER NOT NULL, "
@@ -20,14 +19,14 @@ public class HockeyDBScripts {
             + HockeyDBConstants.cSOW + " INTEGER NOT NULL, "
             + HockeyDBConstants.cSOL + " INTEGER NOT NULL, "
             + HockeyDBConstants.cTOURNAMENTID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY ( " + HockeyDBConstants.cTOURNAMENTID + " ) REFERENCES " + DBConstants.tTOURNAMENTS + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY (" + HockeyDBConstants.cTOURNAMENTID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_MATCH_SCORE = "create table " + HockeyDBConstants.tMATCH_SCORE + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cMATCH_ID + " INTEGER, "
             + HockeyDBConstants.cSHOOTOUTS + " INTEGER, "
             + HockeyDBConstants.cOVERTIME + " INTEGER, "
-            + "FOREIGN KEY ( " + DBConstants.cMATCH_ID + " ) REFERENCES " + DBConstants.tMATCHES + " ( " + DBConstants.cID + " ));";
+            + "FOREIGN KEY (" + DBConstants.cMATCH_ID + ") REFERENCES " + DBConstants.tMATCHES + " (" + DBConstants.cID + "));";
 
     public static final String INSERT_POINT_CONFIG = "insert into " + HockeyDBConstants.tCONFIGURATIONS + " values('1', '3', '1', '0', '2', '1', '1', '2', '1', '1');";
     public static final String INSERT_POINT_CONFIG_1 = "insert into " + HockeyDBConstants.tCONFIGURATIONS + " values('2', '3', '1', '0', '2', '1', '1', '2', '1', '2');";

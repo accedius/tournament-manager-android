@@ -34,7 +34,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
-
     public static final String COMP_ID = "competition_id";
     public static final String TOUR_ID = "tournament_id";
 
@@ -60,11 +59,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
-        Fragment f1 = TournamentOverviewFragment.newInstance( tournamentID, HockeyTournamentOverviewFragment.class );
-        Fragment f2 = StandingsStatsTitleFragment.newInstance( tournamentID );
+        Fragment f1 = TournamentOverviewFragment.newInstance(tournamentID, HockeyTournamentOverviewFragment.class);
+        Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentID);
         Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentID, false);
-        Fragment f4 = MatchesListWrapperFragment.newInstance( tournamentID, HockeyMatchesListWrapperFragment.class );
-        Fragment f5 = HockeyTeamsListFragment.newInstance( tournamentID, competitionID );
+        Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentID, HockeyMatchesListWrapperFragment.class);
+        Fragment f5 = HockeyTeamsListFragment.newInstance(tournamentID, competitionID);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);

@@ -26,7 +26,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
  * Created by Vaclav on 25. 3. 2016.
  */
 public abstract class NewTournamentFragment extends AbstractDataFragment {
-
     private static final String ARG_TOUR_ID = "arg_tour_id";
     private static final String ARG_COMP_ID = "arg_comp_id";
 
@@ -78,7 +77,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             tournamentId = getArguments().getLong(ARG_TOUR_ID, -1);
             competitionId = getArguments().getLong(ARG_COMP_ID, -1);
         }
@@ -95,12 +94,12 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     }
 
     private boolean validate(View v){
-        if (name.getText().toString().isEmpty()){
+        if (name.getText().toString().isEmpty()) {
             Snackbar.make(v, R.string.invalidName, Snackbar.LENGTH_LONG).show();
             return false;
         }
 
-        if (competitionId == -1 && tournamentId == -1){
+        if (competitionId == -1 && tournamentId == -1) {
             Snackbar.make(v, R.string.tournament_id_invalid, Snackbar.LENGTH_LONG).show();
             return false;
         }
@@ -151,13 +150,13 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         Calendar argEnd = Calendar.getInstance();
 
         name.setText(t.getName());
-        if (t.getStartDate() != null){
+        if (t.getStartDate() != null) {
             startDate.setText(dateFormat.format(t.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(t.getStartDate());
             argStart = dStartDate;
         }
-        if (t.getEndDate() != null){
+        if (t.getEndDate() != null) {
             endDate.setText(dateFormat.format(t.getEndDate()));
             dEndDate = Calendar.getInstance();
             dEndDate.setTime(t.getEndDate());
@@ -197,7 +196,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     Bundle b = new Bundle();
                     b.putInt("y", end.get(Calendar.YEAR));
                     b.putInt("m", end.get(Calendar.MONTH));

@@ -24,7 +24,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetsFragment extends AbstractListFragment<SetRowItem> {
-
     private static final String ARG_ID = "arg_id";
     private static final String ARG_PLAYED = "arg_played";
     private static final String EXTRA_ASK = "extra_ask";
@@ -46,7 +45,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             data = savedInstanceState.getParcelableArrayList(EXTRA_DATA);
             askForData = savedInstanceState.getBoolean(EXTRA_ASK);
         } else {
@@ -75,7 +74,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
         adapter = new SetsAdapter(getResources()){
             @Override
             protected void setOnClickListeners(View itemView, final int position, final String title) {
-
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -84,7 +82,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
                         return false;
                     }
                 });
-
             }
         };
         return adapter;
@@ -130,7 +127,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(fit.cvut.org.cz.tmlibrary.R.layout.fab_add, parent, false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +136,6 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
         });
         return fab;
     }
-
 
     public ArrayList<SetRowItem> getSets() {
         return adapter.getData();

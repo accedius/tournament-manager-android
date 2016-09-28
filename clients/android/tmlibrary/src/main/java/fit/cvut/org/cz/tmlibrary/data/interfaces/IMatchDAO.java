@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public interface IMatchDAO {
-
     /**
      * Insert new match to database
      * @param context application context
@@ -39,8 +38,7 @@ public interface IMatchDAO {
      * @param tournamentId id of the tournament
      * @return found matches
      */
-    ArrayList<DMatch> getByTournamentId( Context context, long tournamentId );
-
+    ArrayList<DMatch> getByTournamentId(Context context, long tournamentId);
 
     /**
      * Get match by its id
@@ -48,6 +46,6 @@ public interface IMatchDAO {
      * @param id id of the match to be found
      * @return found match
      */
-    DMatch getById( Context context, long id );
+    DMatch getById(Context context, long id);
 
 }

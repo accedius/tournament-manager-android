@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class StandingsWrapperFragment extends Fragment {
-
     public static final String ARG_ID = "arg_id";
     private StandingsListFragment slf;
 
@@ -47,7 +46,7 @@ public class StandingsWrapperFragment extends Fragment {
 
         Long tournamentID = getArguments().getLong(ARG_ID, -1);
         slf = StandingsListFragment.newInstance(tournamentID);
-        if (getChildFragmentManager().findFragmentById(R.id.fragment_container2) == null){
+        if (getChildFragmentManager().findFragmentById(R.id.fragment_container2) == null) {
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container2, slf)
@@ -76,7 +75,7 @@ public class StandingsWrapperFragment extends Fragment {
         columns.put("l", (TextView) v.findViewById(R.id.tv_losses_label));
         columns.put("d", (TextView) v.findViewById(R.id.tv_draws_label));
 
-        for(final Map.Entry<String, TextView> e : columns.entrySet()) {
+        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -24,7 +24,7 @@ public class PointConfigActivity extends AbstractToolbarActivity {
 
     @Override
     protected View injectView(ViewGroup parent) {
-        return getLayoutInflater().inflate(R.layout.activity_single_container, parent, false );
+        return getLayoutInflater().inflate(R.layout.activity_single_container, parent, false);
     }
 
     @Override
@@ -33,10 +33,9 @@ public class PointConfigActivity extends AbstractToolbarActivity {
 
         long id = getIntent().getLongExtra(ARG_ID, -1);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, PointConfigFragment.newInstance(id)).commit();
         }
-
     }
 
     @Override

@@ -12,7 +12,6 @@ import fit.cvut.org.cz.squash.data.entities.StatsEnum;
  * Created by Vaclav on 21. 4. 2016.
  */
 public interface IStatDAO {
-
     /**
      * Insert stat to datasource
      * @param context

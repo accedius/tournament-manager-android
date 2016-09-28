@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class PlayerCompetitionsListFragment extends AbstractListFragment<Competition> {
-
     private long playerID;
     private String action = "org.cz.cvut.tournamentmanager";
     private String content = "competitions_by_player/";

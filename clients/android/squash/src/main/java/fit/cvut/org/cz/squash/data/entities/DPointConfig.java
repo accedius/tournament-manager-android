@@ -5,7 +5,6 @@ package fit.cvut.org.cz.squash.data.entities;
  * Created by Vaclav on 19. 4. 2016.
  */
 public class DPointConfig {
-
     private long tournamentId;
     private int win, draw, loss;
 

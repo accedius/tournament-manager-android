@@ -181,8 +181,6 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
         return PlayerService.EXTRA_PLAYERS;
     }
 
-
-
     public class PlayersListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

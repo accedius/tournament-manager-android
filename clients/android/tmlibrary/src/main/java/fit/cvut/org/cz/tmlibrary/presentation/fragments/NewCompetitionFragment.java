@@ -29,7 +29,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
  * Created by Vaclav on 25. 3. 2016.
  */
 public abstract class NewCompetitionFragment extends AbstractDataFragment {
-
     private static final String ARG_ID = "arg_id";
 
     /**
@@ -82,14 +81,14 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             competitionId = getArguments().getLong(ARG_ID , -1);
 
         //We do not want to change competition type if it is already created
-        if (competitionId != -1){
+        if (competitionId != -1) {
             type.setEnabled(false);
             //type.setClickable(false);
         }
 
-        if(!isTypeChoosable()) {
-            type.setVisibility( View.GONE );
-            type_label.setVisibility( View.GONE );
+        if (!isTypeChoosable()) {
+            type.setVisibility(View.GONE);
+            type_label.setVisibility(View.GONE);
         }
 
         startDate = (EditText) v.findViewById(R.id.et_startDate);
@@ -161,13 +160,13 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         Calendar argEnd = Calendar.getInstance();
 
         name.setText(c.getName());
-        if (c.getStartDate() != null){
+        if (c.getStartDate() != null) {
             startDate.setText(dateFormat.format(c.getStartDate()));
             dStartDate = Calendar.getInstance();
             dStartDate.setTime(c.getStartDate());
             argStart = dStartDate;
         }
-        if (c.getEndDate() != null){
+        if (c.getEndDate() != null) {
             endDate.setText(dateFormat.format(c.getEndDate()));
             dEndDate = Calendar.getInstance();
             dEndDate.setTime(c.getEndDate());
@@ -209,7 +208,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     Bundle b = new Bundle();
                     b.putInt("y", end.get(Calendar.YEAR));
                     b.putInt("m", end.get(Calendar.MONTH));

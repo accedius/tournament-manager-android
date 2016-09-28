@@ -31,7 +31,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class ShowMatchActivity extends AbstractTabActivity {
-
     private static final String MATCH_ID = "match_id";
 
     private long matchId;
@@ -56,8 +55,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
      * @param matchId - id of the match to be shown
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long matchId ) {
-        Intent intent = new Intent( context, ShowMatchActivity.class);
+    public static Intent newStartIntent(Context context, long matchId) {
+        Intent intent = new Intent(context, ShowMatchActivity.class);
         Bundle b = new Bundle();
 
         b.putLong(MATCH_ID, matchId);
@@ -66,7 +65,6 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return intent;
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         matchId = getIntent().getExtras().getLong(MATCH_ID);
@@ -74,8 +72,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
-        Fragment f1 = HockeyMatchOverviewFragment.newInstance( matchId );
-        Fragment f2 = HockeyMatchStatsFragment.newInstance( matchId );
+        Fragment f1 = HockeyMatchOverviewFragment.newInstance(matchId);
+        Fragment f2 = HockeyMatchStatsFragment.newInstance(matchId);
         fragments = new Fragment[]{ f1, f2 };
 
         super.onCreate(savedInstanceState);
@@ -88,7 +86,6 @@ public class ShowMatchActivity extends AbstractTabActivity {
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
     }
 
     @Override
@@ -110,32 +107,30 @@ public class ShowMatchActivity extends AbstractTabActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_finish){
+        if (item.getItemId() == R.id.action_finish) {
             MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-            if( score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
-                Snackbar.make( findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG ).show();
+            if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
             ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
             ArrayList<MatchPlayerStatistic> awayStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 
-            Intent intent = MatchService.newStartIntent( MatchService.ACTION_UPDATE_FOR_OVERVIEW, this );
-            intent.putExtra( MatchService.EXTRA_MATCH_SCORE, score );
-            intent.putExtra( MatchService.EXTRA_HOME_STATS, homeStats);
-            intent.putExtra( MatchService.EXTRA_AWAY_STATS, awayStats);
+            Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
+            intent.putExtra(MatchService.EXTRA_MATCH_SCORE, score);
+            intent.putExtra(MatchService.EXTRA_HOME_STATS, homeStats);
+            intent.putExtra(MatchService.EXTRA_AWAY_STATS, awayStats);
 
             startService(intent);
 
             finish();
-        } else if(item.getItemId() == R.id.action_edit_stats) {
+        } else if (item.getItemId() == R.id.action_edit_stats) {
             ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
-        } else if(item.getItemId() == R.id.action_edit) {
+        } else if (item.getItemId() == R.id.action_edit) {
             HockeyMatchOverviewFragment fr = (HockeyMatchOverviewFragment) fragments[0];
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
             startActivity(intent);
         }
-
 
         return super.onOptionsItemSelected(item);
     }

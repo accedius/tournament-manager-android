@@ -6,7 +6,6 @@ import java.util.Date;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class DCompetition extends DShareBase {
-
     private long id;
     private String name;
     private Date startDate;

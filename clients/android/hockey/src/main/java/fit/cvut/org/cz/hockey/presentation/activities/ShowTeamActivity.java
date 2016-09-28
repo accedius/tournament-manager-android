@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class ShowTeamActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_TEAM_ID = "team_id";
 
     /**
@@ -29,8 +28,7 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
      * @param id id of the team to be shown
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent( Context context, long id  )
-    {
+    public static Intent newStartIntent(Context context, long id) {
         Intent res = new Intent(context, ShowTeamActivity.class);
 
         res.putExtra(EXTRA_TEAM_ID, id);
@@ -53,11 +51,10 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long teamID;
-        teamID = getIntent().getLongExtra( EXTRA_TEAM_ID, -1 );
+        teamID = getIntent().getLongExtra(EXTRA_TEAM_ID, -1);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.container) == null ) {
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, TeamDetailFragment.newInstance(teamID, ShowTeamFragment.class)).commit();
-
         }
     }
 

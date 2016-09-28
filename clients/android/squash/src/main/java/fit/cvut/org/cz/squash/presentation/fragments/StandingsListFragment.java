@@ -22,7 +22,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingsListFragment extends AbstractListFragment<StandingItem> {
-
     public static final String ARG_ID = "arg_id";
 
     private String orderColumn = "p";

@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
  * Created by Vaclav on 21. 4. 2016.
  */
 public class MatchDAO implements IMatchDAO {
-
     private ContentValues convert(DMatch match){
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
@@ -56,7 +55,6 @@ public class MatchDAO implements IMatchDAO {
 
         db.update(DBConstants.tMATCHES, cv, String.format("%s = ?", DBConstants.cID), new String[] {Long.toString(match.getId())});
         db.close();
-
     }
 
     @Override
@@ -69,7 +67,6 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
-
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", DBConstants.tMATCHES, DBConstants.cTOURNAMENT_ID);

@@ -14,15 +14,13 @@ public enum StatsEnum {
     outcome(true),
     saves(true);
 
-
-
     private boolean forPlayer;
 
     /**
      *
      * @param forPlayer true means that the statistic is saved for player. If false, then the stat has no player Id and is for parrticipant
      */
-    StatsEnum( boolean forPlayer ) {this.forPlayer = forPlayer;}
+    StatsEnum(boolean forPlayer) {this.forPlayer = forPlayer;}
 
     public boolean isForPlayer() {
         return forPlayer;

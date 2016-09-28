@@ -20,13 +20,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class ConfigurePointsFragment extends AbstractDataFragment {
-
     private static final String ARG_TOUR_ID = "tournament_id";
 
     private EditText ntW, ntD, ntL, otW, otD, otL, soW, soL;
     private FloatingActionButton fab;
 
-    public static ConfigurePointsFragment newInstance( long tourId ) {
+    public static ConfigurePointsFragment newInstance(long tourId) {
         ConfigurePointsFragment fragment = new ConfigurePointsFragment();
 
         Bundle args = new Bundle();
@@ -41,14 +40,14 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
      * @return true or false
      */
     private boolean validate() {
-        if(     ntW.getText().toString().isEmpty() ||
+        if (    ntW.getText().toString().isEmpty() ||
                 ntD.getText().toString().isEmpty() ||
                 ntL.getText().toString().isEmpty() ||
                 otW.getText().toString().isEmpty() ||
                 otD.getText().toString().isEmpty() ||
                 otL.getText().toString().isEmpty() ||
                 soW.getText().toString().isEmpty() ||
-                soL.getText().toString().isEmpty() ) {
+                soL.getText().toString().isEmpty()) {
             return false;
         }
 
@@ -57,24 +56,24 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
 
     @Override
     public void askForData() {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_GET_CONFIG_BY_ID, getContext() );
-        intent.putExtra( TournamentService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID) );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_CONFIG_BY_ID, getContext());
+        intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID));
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TournamentService.isWorking( TournamentService.ACTION_GET_CONFIG_BY_ID );
+        return TournamentService.isWorking(TournamentService.ACTION_GET_CONFIG_BY_ID);
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        PointConfiguration pointConfiguration = intent.getParcelableExtra( TournamentService.EXTRA_CONFIGURATION );
-        if( pointConfiguration != null ) {
-            ntW.setText( Long.toString( pointConfiguration.ntW ) );
-            ntD.setText( Long.toString( pointConfiguration.ntD ) );
-            ntL.setText( Long.toString( pointConfiguration.ntL ) );
+        PointConfiguration pointConfiguration = intent.getParcelableExtra(TournamentService.EXTRA_CONFIGURATION);
+        if (pointConfiguration != null) {
+            ntW.setText(Long.toString(pointConfiguration.ntW));
+            ntD.setText(Long.toString(pointConfiguration.ntD));
+            ntL.setText(Long.toString(pointConfiguration.ntL));
 
             otW.setText(Long.toString(pointConfiguration.otW));
             otD.setText(Long.toString(pointConfiguration.otD));
@@ -97,19 +96,18 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(R.layout.fragment_config_points, container, false );
+        View v = inflater.inflate(R.layout.fragment_config_points, container, false);
 
-        ntW = (EditText) v.findViewById( R.id.et_nt_w );
-        ntD = (EditText) v.findViewById( R.id.et_nt_d );
-        ntL = (EditText) v.findViewById( R.id.et_nt_l );
+        ntW = (EditText) v.findViewById(R.id.et_nt_w);
+        ntD = (EditText) v.findViewById(R.id.et_nt_d);
+        ntL = (EditText) v.findViewById(R.id.et_nt_l);
 
-        otW = (EditText) v.findViewById( R.id.et_ot_w );
-        otD = (EditText) v.findViewById( R.id.et_ot_d );
-        otL = (EditText) v.findViewById( R.id.et_ot_l );
+        otW = (EditText) v.findViewById(R.id.et_ot_w);
+        otD = (EditText) v.findViewById(R.id.et_ot_d);
+        otL = (EditText) v.findViewById(R.id.et_ot_l);
 
-        soW = (EditText) v.findViewById( R.id.et_so_w );
-        soL = (EditText) v.findViewById( R.id.et_so_l );
-
+        soW = (EditText) v.findViewById(R.id.et_so_w);
+        soL = (EditText) v.findViewById(R.id.et_so_l);
 
         return v;
     }

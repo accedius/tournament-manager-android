@@ -13,13 +13,11 @@ import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
 
-
 /**
  * Header for aggregated stats list
  * Created by Vaclav on 10. 4. 2016.
  */
 public class StatsListWrapperFragment extends Fragment {
-
     public static final String ARG_ID = "arg_id";
     public static final String ARG_ACTION = "arg_action";
 
@@ -79,7 +77,7 @@ public class StatsListWrapperFragment extends Fragment {
             columns.put("bwavg", (TextView) v.findViewById(R.id.tv_balls_won_avg_label));
             columns.put("blavg", (TextView) v.findViewById(R.id.tv_balls_lost_avg_label));
         }
-        for(final Map.Entry<String, TextView> e : columns.entrySet()) {
+        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

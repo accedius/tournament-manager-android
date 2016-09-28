@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyInsertTeamDialog extends InsertTeamDialog {
-
     @Override
     protected void askForData() {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
@@ -22,12 +21,12 @@ public class HockeyInsertTeamDialog extends InsertTeamDialog {
 
     @Override
     protected void registerReceiver() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter(TeamService.ACTION_GET_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TeamService.ACTION_GET_BY_ID));
     }
 
     @Override
     protected void unregisterReceiver() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver( receiver );
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -51,6 +50,6 @@ public class HockeyInsertTeamDialog extends InsertTeamDialog {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TeamService.isWorking( TeamService.ACTION_GET_BY_ID );
+        return TeamService.isWorking(TeamService.ACTION_GET_BY_ID);
     }
 }

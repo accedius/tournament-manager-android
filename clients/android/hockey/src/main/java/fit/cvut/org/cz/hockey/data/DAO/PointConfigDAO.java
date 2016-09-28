@@ -14,27 +14,23 @@ import fit.cvut.org.cz.hockey.data.interfaces.IPointConfigDAO;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class PointConfigDAO implements IPointConfigDAO {
-
-    private ContentValues toContVal( DPointConfiguration dp )
-    {
+    private ContentValues toContVal(DPointConfiguration dp) {
         ContentValues cv = new ContentValues();
-        cv.put(HockeyDBConstants.cNTW, dp.ntW );
-        cv.put(HockeyDBConstants.cNTD, dp.ntD );
-        cv.put(HockeyDBConstants.cNTL, dp.ntL );
+        cv.put(HockeyDBConstants.cNTW, dp.ntW);
+        cv.put(HockeyDBConstants.cNTD, dp.ntD);
+        cv.put(HockeyDBConstants.cNTL, dp.ntL);
 
-        cv.put(HockeyDBConstants.cOTW, dp.otW );
-        cv.put(HockeyDBConstants.cOTD, dp.otD );
-        cv.put(HockeyDBConstants.cOTL, dp.otL );
+        cv.put(HockeyDBConstants.cOTW, dp.otW);
+        cv.put(HockeyDBConstants.cOTD, dp.otD);
+        cv.put(HockeyDBConstants.cOTL, dp.otL);
 
-        cv.put(HockeyDBConstants.cSOW, dp.soW );
-        cv.put(HockeyDBConstants.cSOL, dp.soL );
-
+        cv.put(HockeyDBConstants.cSOW, dp.soW);
+        cv.put(HockeyDBConstants.cSOL, dp.soL);
 
         return cv;
     }
 
-    private DPointConfiguration parseDPfromCursor( Cursor cursor )
-    {
+    private DPointConfiguration parseDPfromCursor(Cursor cursor) {
         Long ntW, ntD, ntL, otW, otD, otL, soW, soL;
         ntW = cursor.getLong(cursor.getColumnIndex(HockeyDBConstants.cNTW));
         ntD = cursor.getLong(cursor.getColumnIndex(HockeyDBConstants.cNTD));
@@ -47,35 +43,32 @@ public class PointConfigDAO implements IPointConfigDAO {
         soW = cursor.getLong(cursor.getColumnIndex(HockeyDBConstants.cSOW));
         soL = cursor.getLong(cursor.getColumnIndex(HockeyDBConstants.cSOL));
 
-        DPointConfiguration dp = new DPointConfiguration( ntW, ntD, ntL, otW, otD, otL, soW, soL );
+        DPointConfiguration dp = new DPointConfiguration(ntW, ntD, ntL, otW, otD, otL, soW, soL);
         return dp;
     }
 
-    private ContentValues defaultConfig(Long tournamentId)
-    {
+    private ContentValues defaultConfig(Long tournamentId) {
         ContentValues cv = new ContentValues();
-        cv.put(HockeyDBConstants.cNTW, 3 );
-        cv.put(HockeyDBConstants.cNTD, 1 );
-        cv.put(HockeyDBConstants.cNTL, 0 );
+        cv.put(HockeyDBConstants.cNTW, 3);
+        cv.put(HockeyDBConstants.cNTD, 1);
+        cv.put(HockeyDBConstants.cNTL, 0);
 
-        cv.put(HockeyDBConstants.cOTW, 2 );
-        cv.put(HockeyDBConstants.cOTD, 1 );
-        cv.put(HockeyDBConstants.cOTL, 1 );
+        cv.put(HockeyDBConstants.cOTW, 2);
+        cv.put(HockeyDBConstants.cOTD, 1);
+        cv.put(HockeyDBConstants.cOTL, 1);
 
-        cv.put(HockeyDBConstants.cSOW, 2 );
-        cv.put(HockeyDBConstants.cSOL, 1 );
+        cv.put(HockeyDBConstants.cSOW, 2);
+        cv.put(HockeyDBConstants.cSOL, 1);
         cv.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
 
         return cv;
     }
 
-    public long insertDefault( Context context, long tournamentId )
-    {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase( context );
+    public long insertDefault(Context context, long tournamentId) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues values;
 
         Long newRowId;
-
 
         values = defaultConfig(tournamentId);
         newRowId = db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
@@ -89,8 +82,8 @@ public class PointConfigDAO implements IPointConfigDAO {
     public void delete(Context context, long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format( "%s = ?", HockeyDBConstants.cTOURNAMENTID );
-        String[] projection = new String[]{ Long.toString( tournamentId ) };
+        String where = String.format("%s = ?", HockeyDBConstants.cTOURNAMENTID);
+        String[] projection = new String[]{ Long.toString(tournamentId) };
         db.delete(HockeyDBConstants.tCONFIGURATIONS, where, projection);
 
         db.close();
@@ -100,12 +93,12 @@ public class PointConfigDAO implements IPointConfigDAO {
     public void update(Context context, DPointConfiguration dPointConfiguration, Long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        ContentValues values = toContVal( dPointConfiguration );
+        ContentValues values = toContVal(dPointConfiguration);
         values.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
 
-        String where = String.format( "%s = ?", HockeyDBConstants.cTOURNAMENTID );
+        String where = String.format("%s = ?", HockeyDBConstants.cTOURNAMENTID);
         String[] projection = new String[]{ Long.toString(tournamentId) };
-        db.update(HockeyDBConstants.tCONFIGURATIONS, values, where, projection );
+        db.update(HockeyDBConstants.tCONFIGURATIONS, values, where, projection);
 
         db.close();
     }
@@ -117,10 +110,10 @@ public class PointConfigDAO implements IPointConfigDAO {
         Cursor cursor = db.query(HockeyDBConstants.tCONFIGURATIONS, null, HockeyDBConstants.cTOURNAMENTID + "=?", selArgs, null, null, null);
 
         cursor.moveToFirst();
-        if( cursor.getCount() <= 0 )
+        if (cursor.getCount() <= 0)
             return null;
 
-        DPointConfiguration res = parseDPfromCursor( cursor );
+        DPointConfiguration res = parseDPfromCursor(cursor);
         cursor.close();
         db.close();
 

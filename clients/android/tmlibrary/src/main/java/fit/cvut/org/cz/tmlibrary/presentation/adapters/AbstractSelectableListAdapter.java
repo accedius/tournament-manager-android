@@ -7,19 +7,16 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 
-
 /**
  * Created by Vaclav on 15. 3. 2016.
  */
 public abstract class AbstractSelectableListAdapter<T, VH extends OneActionViewHolder> extends AbstractOneActionListAdapter<T, VH>  {
-
     protected SparseBooleanArray selectedIndeces = new SparseBooleanArray();
 
     public void swapData(ArrayList<T> data, SparseBooleanArray selectedIndeces){
-
         super.swapData(data);
         this.selectedIndeces.clear();
-        for (int i =0; i< selectedIndeces.size(); i++){
+        for (int i =0; i< selectedIndeces.size(); i++) {
             int key = selectedIndeces.keyAt(i);
             this.selectedIndeces.append(key, selectedIndeces.get(key));
         }
@@ -27,9 +24,8 @@ public abstract class AbstractSelectableListAdapter<T, VH extends OneActionViewH
     }
 
     public ArrayList<T> getSelectedItems(){
-
         ArrayList<T> selected = new ArrayList<>();
-        for (int i = 0; i < selectedIndeces.size(); i++){
+        for (int i = 0; i < selectedIndeces.size(); i++) {
             int index = selectedIndeces.keyAt(i);
             if (selectedIndeces.get(index))
                 selected.add(data.get(index));
@@ -37,7 +33,6 @@ public abstract class AbstractSelectableListAdapter<T, VH extends OneActionViewH
 
         return selected;
     }
-
 
     @Override
     public final void onBindViewHolder(VH holder, int position) {
@@ -55,11 +50,10 @@ public abstract class AbstractSelectableListAdapter<T, VH extends OneActionViewH
 
     @Override
     public void doAction(int position) {
-        if (!selectedIndeces.get(position, false)){
+        if (!selectedIndeces.get(position, false)) {
             selectedIndeces.delete(position);
             selectedIndeces.append(position, true);
         } else selectedIndeces.delete(position);
     }
 }
-
 

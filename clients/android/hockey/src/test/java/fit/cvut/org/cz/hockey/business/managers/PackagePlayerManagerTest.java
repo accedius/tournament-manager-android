@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PackagePlayerManagerTest {
-
     @Mock
     IPackagePlayerDAO mockPlayerDAO;
 
@@ -89,6 +88,5 @@ public class PackagePlayerManagerTest {
     @After
     public void tearDown() throws Exception {
         DAOFactory.getInstance().packagePlayerDAO = new PackagePlayerDAO();
-
     }
 }

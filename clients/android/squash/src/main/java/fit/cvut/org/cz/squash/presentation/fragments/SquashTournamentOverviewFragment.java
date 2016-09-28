@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  * Created by Vaclav on 13. 4. 2016.
  */
 public class SquashTournamentOverviewFragment extends TournamentOverviewFragment {
-
     private static final String ARG_TYPE = "arg_type";
 
     public static TournamentOverviewFragment newInstance(long tournamentId, CompetitionType type){
@@ -75,10 +74,9 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
     protected void bindDataOnView(Intent intent) {
         CompetitionType type = CompetitionTypes.competitionTypes()[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
         super.bindDataOnView(intent);
-        if (type.equals(CompetitionTypes.individuals())){
+        if (type.equals(CompetitionTypes.individuals())) {
             teamSum.setVisibility(View.GONE);
             teamsLabel.setVisibility(View.GONE);
         }
-
     }
 }

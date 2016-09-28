@@ -6,7 +6,6 @@ import java.util.Date;
  * Created by atgot_000 on 3. 4. 2016.
  */
 public class DTournament extends DShareBase {
-
     private long id;
     private long competitionId;
     private String name;
@@ -25,7 +24,6 @@ public class DTournament extends DShareBase {
         this.lastModified = lastModified;
         this.lastSynchronized = lastSynchronized;
         this.competitionId  = competitionId;
-
     }
 
     public DTournament(long id, String name, Date startDate, Date endDate, String note) {

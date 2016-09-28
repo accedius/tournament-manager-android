@@ -9,7 +9,6 @@ import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class PointConfiguration implements Parcelable {
-
     public Long ntW, ntD, ntL, otW, otD, otL, soW, soL;
 
     public static final Creator<PointConfiguration> CREATOR = new Creator<PointConfiguration>() {
@@ -24,11 +23,11 @@ public class PointConfiguration implements Parcelable {
         }
     };
 
-    public static DPointConfiguration convertToDPointConfiguration( PointConfiguration p ) {
-        return new DPointConfiguration( p.ntW, p.ntD, p.ntL, p.otW, p.otD, p.otL, p.soW, p.soL );
+    public static DPointConfiguration convertToDPointConfiguration(PointConfiguration p) {
+        return new DPointConfiguration(p.ntW, p.ntD, p.ntL, p.otW, p.otD, p.otL, p.soW, p.soL);
     }
 
-    public PointConfiguration( Parcel in ) {
+    public PointConfiguration(Parcel in) {
         this.ntW = in.readLong();
         this.ntD = in.readLong();
         this.ntL = in.readLong();
@@ -48,19 +47,19 @@ public class PointConfiguration implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( ntW );
-        dest.writeLong( ntD );
-        dest.writeLong( ntL );
+        dest.writeLong(ntW);
+        dest.writeLong(ntD);
+        dest.writeLong(ntL);
 
-        dest.writeLong( otW );
-        dest.writeLong( otD );
-        dest.writeLong( otL );
+        dest.writeLong(otW);
+        dest.writeLong(otD);
+        dest.writeLong(otL);
 
-        dest.writeLong( soW );
-        dest.writeLong( soL );
+        dest.writeLong(soW);
+        dest.writeLong(soL);
     }
 
-    public PointConfiguration( Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL  ) {
+    public PointConfiguration(Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL) {
         this.ntW = nW;
         this.ntD = nD;
         this.ntL = nL;

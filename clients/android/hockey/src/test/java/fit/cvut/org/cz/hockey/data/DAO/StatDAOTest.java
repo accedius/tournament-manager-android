@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class StatDAOTest {
-
     @Test
     public void testInsertUpdateDelete() throws Exception {
         long newId = DAOFactory.getInstance().statDAO.insert(RuntimeEnvironment.application, new DStat(1, 1, 1, StatsEnum.goals.toString(), 1, 1, "20"));
@@ -30,7 +29,7 @@ public class StatDAOTest {
         assertTrue(!retStat.isEmpty());
 
         DStat newStat = new DStat(newId, 1, 1, StatsEnum.goals.toString(), 1, 1, "5");
-        DAOFactory.getInstance().statDAO.update(RuntimeEnvironment.application, newStat );
+        DAOFactory.getInstance().statDAO.update(RuntimeEnvironment.application, newStat);
         retStat = DAOFactory.getInstance().statDAO.getStatsByPlayerId(RuntimeEnvironment.application, 1);
         assertTrue(retStat.get(0).getValue().equals("5"));
 

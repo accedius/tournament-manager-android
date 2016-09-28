@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment {
-
     @Override
     protected String getTournamentKey() {
         return TournamentService.EXTRA_TOURNAMENT;
@@ -33,23 +32,22 @@ public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment
         return TournamentService.EXTRA_TEAMS_SUM;
     }
 
-
     @Override
     public void askForData() {
-        Intent intent = TournamentService.newStartIntent( TournamentService.ACTION_FIND_BY_ID, getContext() );
-        intent.putExtra( TournamentService.EXTRA_ID, tournamentID );
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, getContext());
+        intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return TournamentService.isWorking( TournamentService.ACTION_FIND_BY_ID );
+        return TournamentService.isWorking(TournamentService.ACTION_FIND_BY_ID);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver( receiver, new IntentFilter(TournamentService.ACTION_FIND_BY_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_FIND_BY_ID));
     }
 
     @Override

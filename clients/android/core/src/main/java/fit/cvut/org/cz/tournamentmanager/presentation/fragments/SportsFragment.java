@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.SwipeAdapter;
 
 public class SportsFragment extends Fragment {
-
     private ViewPager vp = null;
 
     public SportsFragment() {}

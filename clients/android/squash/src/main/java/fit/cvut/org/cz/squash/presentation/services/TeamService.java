@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 3. 4. 2016.
  */
 public class TeamService extends AbstractIntentServiceWProgress {
-
     public TeamService() {
         super("Squash Team Service");
     }
@@ -38,7 +37,6 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
@@ -46,7 +44,6 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 sendTeamsByTournament(id);
                 break;
-
             }
             case ACTION_ADD_TEAM:{
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
@@ -62,7 +59,6 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_EDIT_TEAM:{
-
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
                 ManagersFactory.getInstance().teamsManager.update(this, t);
                 sendTeamsByTournament(t.getTournamentId());

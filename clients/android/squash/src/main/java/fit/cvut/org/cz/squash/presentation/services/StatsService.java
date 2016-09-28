@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by Vaclav on 3. 4. 2016.
  */
 public class StatsService extends AbstractIntentServiceWProgress {
-
     public StatsService() {
         super("Squash Stats Service");
     }
@@ -32,12 +31,10 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
             case ACTION_GET_STATS_BY_COMPETITION:{
-
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_STATS, ManagersFactory.getInstance().statsManager.getAggregatedStatsByCompetitionId(this, intent.getLongExtra(EXTRA_ID, -1)));
 
@@ -59,8 +56,6 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 break;
             }
         }
-
-
     }
 
     public static Intent newStartIntent(String action, Context context){

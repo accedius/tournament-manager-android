@@ -21,8 +21,7 @@ public class DPointConfiguration implements Parcelable {
         }
     };
 
-    public DPointConfiguration( Parcel in )
-    {
+    public DPointConfiguration(Parcel in) {
         this.ntW = in.readLong();
         this.ntD = in.readLong();
         this.ntL = in.readLong();
@@ -42,20 +41,19 @@ public class DPointConfiguration implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong( ntW );
-        dest.writeLong( ntD );
-        dest.writeLong( ntL );
+        dest.writeLong(ntW);
+        dest.writeLong(ntD);
+        dest.writeLong(ntL);
 
-        dest.writeLong( otW );
-        dest.writeLong( otD );
-        dest.writeLong( otL );
+        dest.writeLong(otW);
+        dest.writeLong(otD);
+        dest.writeLong(otL);
 
-        dest.writeLong( soW );
-        dest.writeLong( soL );
+        dest.writeLong(soW);
+        dest.writeLong(soL);
     }
 
-    public DPointConfiguration( Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL  )
-    {
+    public DPointConfiguration(Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL) {
         this.ntW = nW;
         this.ntD = nD;
         this.ntL = nL;

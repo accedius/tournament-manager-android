@@ -20,7 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by atgot_000 on 15. 4. 2016.
  */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
-
     private static final String ARG_OPTION = "arg_option";
     private static final String ARG_ID = "arg_id";
     private static final String ARG_OMIT = "arg_omit";
@@ -40,8 +39,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
      * @param id to set
      * @return new instance of this fragment
      */
-    public static AddPlayersFragment newInstance( int option, long id )
-    {
+    public static AddPlayersFragment newInstance(int option, long id) {
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_OPTION, option);
@@ -91,9 +89,9 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int option = getArguments().getInt( ARG_OPTION, -1 );
+        int option = getArguments().getInt(ARG_OPTION, -1);
 
-        switch ( option )
+        switch (option)
         {
             case OPTION_COMPETITION :
             {
@@ -125,27 +123,24 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        if( intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_TEAM)
-        {
-            ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList( ARG_OMIT );
-            if( omitPlayers != null ) {
+        if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_TEAM) {
+            ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT);
+            if (omitPlayers != null) {
                 ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
                 allPlayers.removeAll(omitPlayers);
                 intent.putExtra(getDataKey(), allPlayers);
             }
         }
-        if( intent.getAction() == PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID )
-        {
-            ArrayList<MatchPlayerStatistic> omitPlayers = getArguments().getParcelableArrayList( ARG_OMIT_ID );
-            if( omitPlayers != null )
-            {
-                ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra( getDataKey() );
+        if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID) {
+            ArrayList<MatchPlayerStatistic> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT_ID);
+            if (omitPlayers != null) {
+                ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
                 ArrayList<Player> playersToShow = new ArrayList<>(allPlayers);
-                for( Player p : allPlayers ) {
-                    for( MatchPlayerStatistic omitP : omitPlayers )
-                        if( p.getId() == omitP.getPlayerId() ) playersToShow.remove( p );
+                for (Player p : allPlayers) {
+                    for (MatchPlayerStatistic omitP : omitPlayers)
+                        if (p.getId() == omitP.getPlayerId()) playersToShow.remove(p);
                 }
-                intent.putExtra( getDataKey(), playersToShow);
+                intent.putExtra(getDataKey(), playersToShow);
             }
         }
         super.bindDataOnView(intent);
@@ -163,16 +158,16 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     public void askForData() {
-        Intent intent = PlayerService.newStartIntent( action, getContext() );
-        intent.putExtra( PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID) );
+        Intent intent = PlayerService.newStartIntent(action, getContext());
+        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
 
-        getContext().startService( intent );
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
         if (action == null) return true;
-        return PlayerService.isWorking( action );
+        return PlayerService.isWorking(action);
     }
 
     @Override

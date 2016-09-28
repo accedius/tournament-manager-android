@@ -14,7 +14,6 @@ import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
  * Created by atgot_000 on 29. 4. 2016.
  */
 public class DeleteOnlyDialog extends DialogFragment {
-
     private static final String ARG_PLAYER_ID = "arg_player_id";
     private static final String ARG_COMP_ID = "arg_comp_id";
     private static final String ARG_TOUR_ID = "arg_tour_id";
@@ -24,17 +23,17 @@ public class DeleteOnlyDialog extends DialogFragment {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if( which == 0 ){
-                    if(getArguments().getLong(ARG_COMP_ID) != -1){
+                if (which == 0) {
+                    if (getArguments().getLong(ARG_COMP_ID) != -1) {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION, getContext());
-                        intent.putExtra( PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID) );
-                        intent.putExtra( PlayerService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID) );
-                        getContext().startService( intent );
+                        intent.putExtra(PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID));
+                        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
+                        getContext().startService(intent);
                     } else {
-                        Intent intent = PlayerService.newStartIntent( PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
-                        intent.putExtra( PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID) );
-                        intent.putExtra( PlayerService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID) );
-                        getContext().startService( intent );
+                        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
+                        intent.putExtra(PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID));
+                        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID));
+                        getContext().startService(intent);
                     }
                 }
                 dismiss();
@@ -42,7 +41,7 @@ public class DeleteOnlyDialog extends DialogFragment {
         };
     }
 
-    public static DeleteOnlyDialog newInstance( long playerId, long compId, long tourId, String name ){
+    public static DeleteOnlyDialog newInstance(long playerId, long compId, long tourId, String name){
         DeleteOnlyDialog fragment = new DeleteOnlyDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_PLAYER_ID, playerId);

@@ -19,7 +19,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
  * Created by atgot_000 on 8. 4. 2016.
  */
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
-
     private TextView start, end, matchSum, playerSum, note;
     protected TextView teamSum, teamsLabel;
     protected static final String TOUR_KEY = "tournament_id_key";
@@ -48,8 +47,6 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
      * @return String key of number of players participating in the tournament received in Bundle from datasource
      */
     protected abstract String getTeamsSumKey();
-
-
 
     public static TournamentOverviewFragment newInstance(long id, Class<? extends TournamentOverviewFragment> clazz){
         TournamentOverviewFragment fragment = null;
@@ -85,15 +82,14 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         teamsLabel = (TextView) v.findViewById(R.id.teams_label);
         note = (TextView) v.findViewById(R.id.tour_note);
 
-        if( getArguments() != null )
-            tournamentID = getArguments().getLong( TOUR_KEY );
+        if (getArguments() != null)
+            tournamentID = getArguments().getLong(TOUR_KEY);
 
         return v;
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-
         Tournament tournament = intent.getParcelableExtra(getTournamentKey());
 
         if (tournament == null) {
@@ -105,9 +101,9 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
         DateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
-        if(tournament.getStartDate() != null )
+        if (tournament.getStartDate() != null)
             start.setText(dateFormat.format(tournament.getStartDate()));
-        if(tournament.getEndDate() != null )
+        if (tournament.getEndDate() != null)
             end.setText(dateFormat.format(tournament.getEndDate()));
         matchSum.setText(String.valueOf(intent.getIntExtra(getMatchesSumKey(), 0)));
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));

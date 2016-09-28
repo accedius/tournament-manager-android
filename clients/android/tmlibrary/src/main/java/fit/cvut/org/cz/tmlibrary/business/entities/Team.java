@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class Team extends ShareBase implements Parcelable {
-
     private long id;
     private long tournamentId;
     private String name;
@@ -42,7 +41,7 @@ public class Team extends ShareBase implements Parcelable {
         name = in.readString();
         players = in.createTypedArrayList(Player.CREATOR);
         tournamentId = in.readLong();
-        try{
+        try {
             String text = in.readString();
             if (text == null) lastModified = null;
             else lastModified = DateFormatter.getInstance().getDBDateFormat().parse(text);
@@ -68,7 +67,6 @@ public class Team extends ShareBase implements Parcelable {
             return new Team[size];
         }
     };
-
 
     @Override
     public int describeContents() {

@@ -24,7 +24,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class PlayerDetailActivity extends AbstractTabActivity {
-
     private long playerID;
 
     private Fragment[] fragments;
@@ -34,7 +33,6 @@ public class PlayerDetailActivity extends AbstractTabActivity {
     public PlayerDetailActivity() {
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(PlayerService.EXTRA_ID);
@@ -43,7 +41,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         titles[0] = getResources().getString(R.string.player_info);
 
         int i=1;
-        for(ApplicationInfo info : sport_packages) {
+        for (ApplicationInfo info : sport_packages) {
             titles[i] = info.metaData.getString("sport_name");
             i++;
         }
@@ -53,7 +51,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         fragments[0] = f1;
 
         i=1;
-        for(ApplicationInfo info : sport_packages) {
+        for (ApplicationInfo info : sport_packages) {
             PlayerSportFragment psf = new PlayerSportFragment();
             String package_name = info.metaData.getString("package_name");
             Bundle b = new Bundle();
@@ -70,7 +68,6 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {

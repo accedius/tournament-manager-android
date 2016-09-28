@@ -36,7 +36,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyTournamentsListFragment extends AbstractListFragment<Tournament> {
-
     private long competitionId;
     private static String ARG_ID = "competition_id";
 
@@ -126,8 +125,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected void registerReceivers() {
-        IntentFilter filter = new IntentFilter( TournamentService.ACTION_GET_ALL);
-        filter.addAction( TournamentService.ACTION_DELETE );
+        IntentFilter filter = new IntentFilter(TournamentService.ACTION_GET_ALL);
+        filter.addAction(TournamentService.ACTION_DELETE);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(myReceiver, filter);
     }
 
@@ -200,7 +199,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                         adapter.delete(position);
                     } else {
                         View v = getView();
-                        if( v != null )
+                        if (v != null)
                             Snackbar.make(v, R.string.tournament_not_empty_error, Snackbar.LENGTH_LONG).show();
                     }
                     break;

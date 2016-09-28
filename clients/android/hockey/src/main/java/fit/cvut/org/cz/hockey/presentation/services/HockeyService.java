@@ -25,10 +25,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         return CrossPackageComunicationConstants.EXTRA_ACTION;
     }
 
-
     @Override
     protected void doWork(Intent intent) {
-
         String action = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_PACKAGE);
 
@@ -58,7 +56,6 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
                 statsToSend.addPlayerStats(as);
 
-
                 res.putExtra(CrossPackageComunicationConstants.EXTRA_STATS, statsToSend);
                 sendBroadcast(res);
                 break;
@@ -67,13 +64,12 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent(action);
                 long compId = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
-                if( ManagerFactory.getInstance().competitionManager.delete( this, compId) )
+                if (ManagerFactory.getInstance().competitionManager.delete(this, compId))
                     res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_OK);
                 else
                     res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_FAILED);
-                sendBroadcast( res );
+                sendBroadcast(res);
             }
         }
-
     }
 }

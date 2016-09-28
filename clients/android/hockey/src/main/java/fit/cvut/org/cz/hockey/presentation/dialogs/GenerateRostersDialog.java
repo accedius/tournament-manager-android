@@ -14,13 +14,11 @@ import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
  * Created by kevin on 2.9.2016.
  */
 public class GenerateRostersDialog extends DialogFragment {
-
     private static final String ARG_COMP_ID = "competition_id";
     private static final String ARG_TOUR_ID = "tournament_id";
 
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
@@ -33,7 +31,7 @@ public class GenerateRostersDialog extends DialogFragment {
         };
     }
 
-    public static GenerateRostersDialog newInstance( long competitionId, long tournamentId) {
+    public static GenerateRostersDialog newInstance(long competitionId, long tournamentId) {
         GenerateRostersDialog fragment = new GenerateRostersDialog();
 
         Bundle b = new Bundle();
@@ -45,13 +43,13 @@ public class GenerateRostersDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] items = new String[TournamentService.GENERATING_TYPES_CNT];
         items[TournamentService.GENERATE_BY_TEAM_POINTS] = getActivity().getString(R.string.generate_by_team_points);
         items[TournamentService.GENERATE_BY_WINS] = getActivity().getString(R.string.generate_by_wins);
         items[TournamentService.GENERATE_BY_GOALS] = getActivity().getString(R.string.generate_by_goals);
         items[TournamentService.GENERATE_RANDOMLY] = getActivity().getString(R.string.generate_randomly);
-        builder.setItems( items, supplyListener());
+        builder.setItems(items, supplyListener());
 
         builder.setTitle(getResources().getString(R.string.generate_rosters));
         return builder.create();

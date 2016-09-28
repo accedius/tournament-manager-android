@@ -15,7 +15,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by kevin on 4.4.2016.
  */
 public class PlayerCP extends ContentProvider {
-
     public static final String AUTHORITY = "fit.cvut.org.cz.tournamentmanager.data";
 
     private CoreDBHelper helper;

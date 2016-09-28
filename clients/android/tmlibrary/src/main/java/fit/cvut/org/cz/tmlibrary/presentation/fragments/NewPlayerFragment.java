@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
  * Created by kevin on 4. 4. 2016.
  */
 public abstract class NewPlayerFragment extends AbstractDataFragment {
-
     protected static final String ARG_ID = "arg_id";
 
     /**

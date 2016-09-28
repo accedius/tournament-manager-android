@@ -10,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
  * Created by Vaclav on 10. 4. 2016.
  */
 public interface IScoredMatchManager {
-
     /**
      * get all matches in tournament
      * @param context application context
@@ -32,7 +31,7 @@ public interface IScoredMatchManager {
      * @param context application context
      * @param matchId id of match to be started
      */
-    void beginMatch( Context context, long matchId ); //register players to match and other things needed when match is begun
+    void beginMatch(Context context, long matchId); //register players to match and other things needed when match is begun
 
     /**
      * generate next round of matches
@@ -46,26 +45,26 @@ public interface IScoredMatchManager {
      * @param context application context
      * @param matchId id of the match
      */
-    void resetMatch( Context context, long matchId );
+    void resetMatch(Context context, long matchId);
 
     /**
      * insert match
      * @param context application context
      * @param match match to be inserted
      */
-    void insert( Context context, ScoredMatch match);
+    void insert(Context context, ScoredMatch match);
 
     /**
      * update match
      * @param context application context
      * @param match match to be updated
      */
-    void update( Context context, ScoredMatch match );
+    void update(Context context, ScoredMatch match);
 
     /**
      * delete match
      * @param context application context
      * @param id id of the match to be deleted
      */
-    void delete( Context context, long id);
+    void delete(Context context, long id);
 }

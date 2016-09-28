@@ -15,15 +15,13 @@ import fit.cvut.org.cz.hockey.presentation.services.MatchService;
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class AddMatchDialog extends DialogFragment {
-
     private static final String ARG_TOUR_ID = "arg_tour_id";
 
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch ( which ) {
+                switch (which) {
                     case 0: {
                         Intent intent = CreateMatchActivity.newStartIntent(getContext(), getArguments().getLong(ARG_TOUR_ID));
                         startActivity(intent);
@@ -31,8 +29,8 @@ public class AddMatchDialog extends DialogFragment {
                     }
                     case 1: {
                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
-                        intent.putExtra( MatchService.EXTRA_TOUR_ID, getArguments().getLong(ARG_TOUR_ID) );
-                        getContext().startService( intent );
+                        intent.putExtra(MatchService.EXTRA_TOUR_ID, getArguments().getLong(ARG_TOUR_ID));
+                        getContext().startService(intent);
                         break;
                     }
                 }
@@ -41,7 +39,7 @@ public class AddMatchDialog extends DialogFragment {
         };
     }
 
-    public static AddMatchDialog newInstance( long tourId ){
+    public static AddMatchDialog newInstance(long tourId){
         AddMatchDialog fragment = new AddMatchDialog();
         Bundle args = new Bundle();
         args.putLong(ARG_TOUR_ID, tourId);
@@ -51,10 +49,10 @@ public class AddMatchDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_single_match), getActivity().getString(R.string.add_round) };
 
-        builder.setItems( items, supplyListener());
+        builder.setItems(items, supplyListener());
 
         builder.setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.add_match));
         return builder.create();

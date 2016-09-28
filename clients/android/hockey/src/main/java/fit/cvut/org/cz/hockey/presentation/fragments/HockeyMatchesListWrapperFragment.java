@@ -9,9 +9,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyMatchesListWrapperFragment extends MatchesListWrapperFragment {
-
     @Override
     protected Fragment supplyFragment(long tournamentId) {
-        return HockeyMatchesListFragment.newInstance( tournamentId );
+        return HockeyMatchesListFragment.newInstance(tournamentId);
     }
 }

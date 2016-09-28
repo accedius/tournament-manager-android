@@ -31,15 +31,11 @@ public class ManagerFactory {
     public ITeamManager teamManager = new TeamManager();
     public IScoredMatchManager matchManager = new MatchManager();
 
-    public static ManagerFactory getInstance()
-    {
+    public static ManagerFactory getInstance() {
         return instance;
     }
 
-    private ManagerFactory()
-    {
-
+    private ManagerFactory() {
     }
-
 
 }

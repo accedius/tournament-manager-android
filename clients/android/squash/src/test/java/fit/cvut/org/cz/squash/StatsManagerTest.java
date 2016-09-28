@@ -68,7 +68,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class StatsManagerTest {
-
     IPackagePlayerManager mockPlayerManager;
     IStatDAO mockStatsDAO;
     IParticipantDAO mockParticipantDAO;
@@ -82,7 +81,6 @@ public class StatsManagerTest {
 
     @Before
     public void setUp() throws Exception {
-
         mockPlayerManager = Mockito.mock(IPackagePlayerManager.class);
         mockStatsDAO = Mockito.mock(IStatDAO.class);
         mockParticipantDAO = Mockito.mock(IParticipantDAO.class);
@@ -104,7 +102,6 @@ public class StatsManagerTest {
         DAOFactory.getInstance().tournamentDAO = mockTournamentDAO;
         DAOFactory.getInstance().playerDAO = mockPlayerDAO;
         DAOFactory.getInstance().teamDAO = mockTeamDAO;
-
     }
 
     private void prepAgStatData(){
@@ -136,7 +133,6 @@ public class StatsManagerTest {
         when(mockStatsDAO.getPlayerIdsForParticipant(RuntimeEnvironment.application, 5))
                 .thenReturn(new ArrayList<Long>(Arrays.asList(new Long[]{2L})));
 
-
         ArrayList<DStat> sets = new ArrayList<>();
         sets.add(new DStat(0, 0, 0, 0, 0, 1, 3, 15, StatsEnum.SET));
         sets.add(new DStat(0, 0, 0, 0, 1, -1, 15, 3, StatsEnum.SET));
@@ -154,8 +150,6 @@ public class StatsManagerTest {
         sets.add(new DStat(0, 0, 0, 0, 5, -1, 15, 13, StatsEnum.SET));
 
         when(mockStatsDAO.getByCompetition(RuntimeEnvironment.application, 0, StatsEnum.SET)).thenReturn(sets);
-
-
     }
     private void assertAgStat(SAggregatedStats stat, String name, int won, int lost, int draws, int setsWon, int setsLost, int ballsWon,
                              int ballsLost, double setsWonAvg, double setsLostAvg, double ballsWonAvg, double ballsLostAvg, double matchWinRate,
@@ -174,12 +168,10 @@ public class StatsManagerTest {
         assertEquals(ballsLostAvg, stat.ballsLostAvg, 0.001d);
         assertEquals(matchWinRate, stat.matchWinRate, 0.001d);
         assertEquals(setsWinRare, stat.setsWinRate, 0.001d);
-
     }
 
     @Test
     public void testGetAggregatedStats() throws Exception {
-
         prepAgStatData();
 
         ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByCompetitionId(RuntimeEnvironment.application, 0);
@@ -190,8 +182,7 @@ public class StatsManagerTest {
         assertAgStat(stats.get(2), "C", 0, 2, 0, 1, 4, 62, 68, (double) 1 / 2, (double) 4 / 2, (double) 62 / 2, (double) 68 / 2, (double) 0 / 2, (double) 1 * 100 / 5);
     }
 
-    private void prepSetsForMatch(){
-
+    private void prepSetsforMatch() {
         ArrayList<DParticipant> participants = new ArrayList<>();
         participants.add(new DParticipant(1, 1, 1, "home"));
         participants.add(new DParticipant(2, 2, 1, "away"));
@@ -208,7 +199,6 @@ public class StatsManagerTest {
         awaySets.add(new DStat(0, 0, 0, 0, 2, 1, 9, 15, StatsEnum.SET));
         awaySets.add(new DStat(0, 0, 0, 0, 2, -1, 15, 13, StatsEnum.SET));
         when(mockStatsDAO.getByParticipant(RuntimeEnvironment.application, 2, StatsEnum.SET)).thenReturn(awaySets);
-
     }
     private void assertSets(SetRowItem item, int hs, int as, int w){
         assertEquals(hs, item.getHomeScore());
@@ -218,14 +208,12 @@ public class StatsManagerTest {
 
     @Test
     public void testGetSetsForMatch() throws Exception {
-
         prepSetsForMatch();
         ArrayList<SetRowItem> sets = ManagersFactory.getInstance().statsManager.getSetsForMatch(RuntimeEnvironment.application, 1);
         assertEquals(3, sets.size());
         assertSets(sets.get(0), 15, 3, 1);
         assertSets(sets.get(1), 9, 15, -1);
         assertSets(sets.get(2), 15, 13, 1);
-
     }
 
     private void assertStat(DStat stat, long partipId, int status, int lostValue, int value, StatsEnum type){
@@ -237,7 +225,6 @@ public class StatsManagerTest {
     }
     @Test
     public void testUpdateStatsForMatch() throws Exception {
-
         ArrayList<SetRowItem> sets = new ArrayList<>();
         SetRowItem item = new SetRowItem();
         item.setHomeScore(15);
@@ -287,12 +274,10 @@ public class StatsManagerTest {
         assertStat(stats.get(5), 2, -1, 15, 13, StatsEnum.SET);
         assertStat(stats.get(6), 1, 1, -1, -1, StatsEnum.MATCH);
         assertStat(stats.get(7), 2, -1, -1, -1, StatsEnum.MATCH);
-
     }
 
     @Test
     public void testGetPlayersForMatch() throws Exception {
-
         when(mockMatchDAO.getById(RuntimeEnvironment.application, 1)).thenReturn(new DMatch(1, 1, 1, 1, null, null, false));
         when(mockMatchDAO.getById(RuntimeEnvironment.application, 2)).thenReturn(new DMatch(2, 1, 1, 1, null, null, true));
         ArrayList<DParticipant> p = new ArrayList<>();
@@ -324,7 +309,6 @@ public class StatsManagerTest {
         ArrayList<Player> played = ManagersFactory.getInstance().statsManager.getPlayersForMatch(RuntimeEnvironment.application, 2, "home");
         assertEquals("A", played.get(0).getName());
         assertEquals("C", played.get(1).getName());
-
     }
 
     private void prepTestGetStandingsByTournament(){
@@ -373,7 +357,6 @@ public class StatsManagerTest {
         when(mockParticipantDAO.getById(RuntimeEnvironment.application, 4)).thenReturn(new DParticipant(4, 2, 0, "home"));
         when(mockParticipantDAO.getById(RuntimeEnvironment.application, 5)).thenReturn(new DParticipant(5, 1, 0, "home"));
         when(mockParticipantDAO.getById(RuntimeEnvironment.application, 6)).thenReturn(new DParticipant(6, 2, 0, "home"));
-
     }
 
     private void assertStanding(StandingItem item, String name, int won, int lost, int draw, int points, int sw, int sl){
@@ -387,7 +370,6 @@ public class StatsManagerTest {
     }
     @Test
     public void testGetStandingsByTournament() throws Exception {
-
         prepTestGetStandingsByTournament();
 
         ArrayList<StandingItem> singleStandings = ManagersFactory.getInstance().statsManager.getStandingsByTournament(RuntimeEnvironment.application, 1);

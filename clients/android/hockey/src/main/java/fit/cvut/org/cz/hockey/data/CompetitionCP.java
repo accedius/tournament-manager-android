@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Content provider for Core
  */
 public class CompetitionCP extends ContentProvider {
-
     public static final String AUTHORITY = "fit.cvut.org.cz.hockey.data";
 
     private HockeyDBHelper helper;
@@ -45,8 +44,6 @@ public class CompetitionCP extends ContentProvider {
         helper = new HockeyDBHelper(getContext());
         return true;
     }
-
-
 
     @Nullable
     @Override

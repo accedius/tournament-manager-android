@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PointConfigManagerTest {
-
     @Mock
     IPointConfigDAO mockPointConfigDAO;
 
@@ -61,6 +60,5 @@ public class PointConfigManagerTest {
     @After
     public void tearDown() throws Exception {
         DAOFactory.getInstance().pointConfigDAO = new PointConfigDAO();
-
     }
 }

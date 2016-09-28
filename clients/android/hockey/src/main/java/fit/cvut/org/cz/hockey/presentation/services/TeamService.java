@@ -14,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class TeamService extends AbstractIntentServiceWProgress {
-
     private static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TEAM = "extra_team";
@@ -55,7 +54,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(this, id);
         res.putParcelableArrayListExtra(EXTRA_TEAM_LIST, teams);
 
-        LocalBroadcastManager.getInstance(this ).sendBroadcast( res);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(res);
     }
 
     @Override
@@ -66,11 +65,11 @@ public class TeamService extends AbstractIntentServiceWProgress {
             case ACTION_GET_BY_ID: {
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 Team t = ManagerFactory.getInstance().teamManager.getById(this, id);
-                t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam( this, t.getId() ));
+                t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(this, t.getId()));
                 Intent res = new Intent(ACTION_GET_BY_ID);
                 res.putExtra(EXTRA_TEAM, t);
 
-                LocalBroadcastManager.getInstance(this ).sendBroadcast( res);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
             case ACTION_INSERT: {
@@ -95,7 +94,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 long teamId = intent.getLongExtra(EXTRA_ID, -1);
                 if (teamId == -1)
                     break;
-                if (ManagerFactory.getInstance().teamManager.delete( this, teamId)) {
+                if (ManagerFactory.getInstance().teamManager.delete(this, teamId)) {
                     res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
                     int position = intent.getIntExtra(EXTRA_POSITION, -1);
                     res.putExtra(EXTRA_POSITION, position);

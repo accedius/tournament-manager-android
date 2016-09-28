@@ -17,16 +17,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Created by atgot_000 on 23. 4. 2016.
  */
 public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStatistic, MatchStatisticsAdapter.MatchStatisticsViewHolder> {
-
     private Fragment parentFrag;
     private boolean isHome = true;
 
-    public void setIsHome( boolean home ){
+    public void setIsHome(boolean home){
         isHome = home;
     }
 
-    public MatchStatisticsAdapter( Fragment f )
-    {
+    public MatchStatisticsAdapter(Fragment f) {
         this.parentFrag = f;
     }
 
@@ -37,7 +35,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
 
     @Override
     public void onBindViewHolder(MatchStatisticsViewHolder holder, int position) {
-        MatchPlayerStatistic stats = data.get( position );
+        MatchPlayerStatistic stats = data.get(position);
         holder.name.setText(stats.getName());
         holder.G.setText(Long.toString(stats.getGoals()));
         holder.A.setText(Long.toString(stats.getAssists()));
@@ -46,7 +44,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), position, stats.getName());
     }
 
-    private void setOnClickListeners(View v, long playerId, final int position, final String name ) {
+    private void setOnClickListeners(View v, long playerId, final int position, final String name) {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -62,7 +60,7 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
      * removes stats from data
      * @param position position to be removed
      */
-    public void removePos( int position ){
+    public void removePos(int position){
         data.remove(position);
         notifyDataSetChanged();
     }
@@ -81,7 +79,6 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
             PMP = (TextView) itemView.findViewById(R.id.as_pmp);
             I = (TextView) itemView.findViewById(R.id.as_saves);
             wholeView = itemView;
-
         }
     }
 }

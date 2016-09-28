@@ -10,7 +10,6 @@ import java.util.List;
  * Created by kevin on 28.4.2016.
  */
 
-
 public class AggregatedStats implements Parcelable {
     protected List<PlayerAggregatedStats> records = new ArrayList<>();
 

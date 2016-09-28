@@ -11,7 +11,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by kevin on 7. 4. 2016.
  */
 public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fragments.NewPlayerFragment {
-
     @Override
     protected void savePlayer(Player c) {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_CREATE, getContext());
@@ -56,7 +55,7 @@ public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fr
     }
 
     public Player getPlayer() {
-        return new Player( getArguments().getLong(ARG_ID), name.getText().toString(), email.getText().toString(), note.getText().toString() );
+        return new Player(getArguments().getLong(ARG_ID), name.getText().toString(), email.getText().toString(), note.getText().toString());
     }
 
 }

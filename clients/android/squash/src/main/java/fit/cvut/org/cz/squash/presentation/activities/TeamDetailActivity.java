@@ -18,7 +18,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
  * Created by Vaclav on 15. 4. 2016.
  */
 public class TeamDetailActivity extends AbstractToolbarActivity {
-
     private static final String ARG_ID = "arg_id";
 
     public static Intent newStartIntent(long teamId, Context context){
@@ -26,7 +25,6 @@ public class TeamDetailActivity extends AbstractToolbarActivity {
         intent.putExtra(ARG_ID, teamId);
         return intent;
     }
-
 
     @Override
     protected View injectView(ViewGroup parent) {
@@ -39,7 +37,7 @@ public class TeamDetailActivity extends AbstractToolbarActivity {
 
         long id = getIntent().getLongExtra(ARG_ID, -1);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.container) == null){
+        if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, TeamDetailFragment.newInstance(id, SquashTeamDetailFragment.class)).commit();
         }
     }

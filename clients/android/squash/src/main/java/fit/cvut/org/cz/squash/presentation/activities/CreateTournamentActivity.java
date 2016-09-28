@@ -24,7 +24,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {
-
     public static final String EXTRA_COMPETITION_ID = "competition_id";
     public static final String EXTRA_TOURNAMENT_ID = "tournament_id";
 
