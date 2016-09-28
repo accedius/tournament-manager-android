@@ -6,8 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by atgot_000 on 10. 4. 2016.
  */
-public class NewMatchSpinnerParticipant implements Parcelable
-{
+public class MatchParticipant implements Parcelable {
     private long participantId;
     private String name;
 
@@ -16,25 +15,24 @@ public class NewMatchSpinnerParticipant implements Parcelable
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public static final Creator<NewMatchSpinnerParticipant> CREATOR = new Creator<NewMatchSpinnerParticipant>() {
+    public static final Creator<MatchParticipant> CREATOR = new Creator<MatchParticipant>() {
         @Override
-        public NewMatchSpinnerParticipant createFromParcel(Parcel in) {
-            return new NewMatchSpinnerParticipant(in);
+        public MatchParticipant createFromParcel(Parcel in) {
+            return new MatchParticipant(in);
         }
 
         @Override
-        public NewMatchSpinnerParticipant[] newArray(int size) {
-            return new NewMatchSpinnerParticipant[size];
+        public MatchParticipant[] newArray(int size) {
+            return new MatchParticipant[size];
         }
     };
 
-    public NewMatchSpinnerParticipant(long id, String n) {
+    public MatchParticipant(long id, String n) {
         this.participantId = id;
         this.name = n;
     }
 
-    protected NewMatchSpinnerParticipant(Parcel in)
-    {
+    protected MatchParticipant(Parcel in) {
         this.participantId = in.readLong();
         this.name = in.readString();
     }
@@ -54,5 +52,4 @@ public class NewMatchSpinnerParticipant implements Parcelable
     public String toString() {
         return name;
     }
-
 }

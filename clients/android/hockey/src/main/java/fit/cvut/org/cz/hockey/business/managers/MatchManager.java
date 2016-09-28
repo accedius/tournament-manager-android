@@ -11,7 +11,7 @@ import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
+import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
@@ -114,10 +114,10 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void generateRound(Context context, long tournamentId) {
         ArrayList<DTeam> teamsInTournament = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
-        ArrayList<NewMatchSpinnerParticipant> partsForGenerator = new ArrayList<>();
+        ArrayList<MatchParticipant> partsForGenerator = new ArrayList<>();
 
         for (DTeam dTeam : teamsInTournament) {
-            partsForGenerator.add(new NewMatchSpinnerParticipant(dTeam.getId(), dTeam.getName()));
+            partsForGenerator.add(new MatchParticipant(dTeam.getId(), dTeam.getName()));
         }
 
         int lastRound = 0;

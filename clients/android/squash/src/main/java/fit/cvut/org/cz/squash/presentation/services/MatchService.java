@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
+import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -165,17 +165,17 @@ public class MatchService extends AbstractIntentServiceWProgress {
         return intent;
     }
 
-    private ArrayList<NewMatchSpinnerParticipant> getParticipantsForMatch(long tournamentId) {
+    private ArrayList<MatchParticipant> getParticipantsForMatch(long tournamentId) {
         Tournament tr = ManagersFactory.getInstance().tournamentManager.getById(this, tournamentId);
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(this, tr.getCompetitionId()).getType();
 
-        ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
+        ArrayList<MatchParticipant> participants = new ArrayList<>();
         if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(this, tournamentId);
-            for (Player p : players) participants.add(new NewMatchSpinnerParticipant(p.getId(), p.getName()));
+            for (Player p : players) participants.add(new MatchParticipant(p.getId(), p.getName()));
         } else { // teams
             ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(this, tournamentId);
-            for (Team t : teams) participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
+            for (Team t : teams) participants.add(new MatchParticipant(t.getId(), t.getName()));
         }
         return participants;
     }

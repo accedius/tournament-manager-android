@@ -22,8 +22,6 @@ public class Match extends ShareBase {
     private String note;
     private int period, round;
 
-    private ArrayList<Participant> participants;
-
     public static DMatch convertToDMatch(Match m){
         return new DMatch(m.getId(), m.getTournamentId(), m.getPeriod(), m.getRound(), m.getDate(), m.getNote(), m.isPlayed(), m.getEtag(),
                 m.getUid(), m.getLastModified(), m.getLastSynchronized());
@@ -187,13 +185,5 @@ public class Match extends ShareBase {
 
     public void setRound(int round) {
         this.round = round;
-    }
-
-    public ArrayList<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(ArrayList<Participant> participants) {
-        this.participants = participants;
     }
 }

@@ -10,7 +10,7 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.HockeyScoredMatch;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
-import fit.cvut.org.cz.tmlibrary.business.entities.NewMatchSpinnerParticipant;
+import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -107,9 +107,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     res.putExtra(EXTRA_MATCH, m);
                 }
 
-                ArrayList<NewMatchSpinnerParticipant> participants = new ArrayList<>();
+                ArrayList<MatchParticipant> participants = new ArrayList<>();
                 for (Team t : tourTeams) {
-                    participants.add(new NewMatchSpinnerParticipant(t.getId(), t.getName()));
+                    participants.add(new MatchParticipant(t.getId(), t.getName()));
                 }
 
                 res.putParcelableArrayListExtra(EXTRA_PART_LIST, participants);

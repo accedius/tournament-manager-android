@@ -3,7 +3,9 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import android.os.Parcel;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
@@ -18,6 +20,11 @@ public class ScoredMatch extends Match {
     private String homeName, awayName;
 
     public ScoredMatch() {}
+
+    public ScoredMatch(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round) {
+        super(id, tournamentId, type, date, played, note, period, round);
+    }
+
     public ScoredMatch(DMatch match) {super(match);}
 
     public ScoredMatch(Parcel in) {
