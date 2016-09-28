@@ -26,6 +26,7 @@ import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -57,7 +58,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(tournamentID, type),
-                            StandingsWrapperFragment.newInstance(tournamentID),
+                            StandingsWrapperFragment.newInstance(tournamentID, CompetitionTypes.teams()),
                             StatsListWrapperFragment.newInstance(tournamentID, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
                             SquashMatchesListWrapperFragment.newInstance(tournamentID, SquashMatchesListWrapperFragment.class),
                             TeamsListFragment.newInstance(tournamentID)},
@@ -70,7 +71,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             adapter =  new DefaultViewPagerAdapter(manager,
                     new Fragment[]{
                             SquashTournamentOverviewFragment.newInstance(tournamentID, type),
-                            StandingsWrapperFragment.newInstance(tournamentID),
+                            StandingsWrapperFragment.newInstance(tournamentID, CompetitionTypes.individuals()),
                             StatsListWrapperFragment.newInstance(tournamentID, StatsService.ACTION_GET_STATS_BY_TOURNAMENT),
                             SquashMatchesListWrapperFragment.newInstance(tournamentID, SquashMatchesListWrapperFragment.class)},
                     new String[]{getResources().getString(R.string.overview),

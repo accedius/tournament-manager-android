@@ -23,6 +23,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
@@ -51,19 +52,7 @@ public class MainActivity extends AbstractToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-        sport_packages = new ArrayList<>();
-
-        for (ApplicationInfo packageInfo : packages) {
-            if (packageInfo.metaData != null) {
-                if (packageInfo.metaData.containsKey("application_type") == true
-                    && packageInfo.metaData.get("application_type").equals(getString(R.string.tournament_manager_package))) {
-                    sport_packages.add(packageInfo);
-                }
-            }
-        }
-
+        sport_packages = PackagesInfo.getPackages(this, getResources());
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (NavigationView) findViewById(R.id.left_drawer);
 
@@ -115,8 +104,6 @@ public class MainActivity extends AbstractToolbarActivity {
     private void selectItem(int position) {
         selectedItem = position;
         Bundle b = new Bundle();
-        // get list of installed sport packages
-        b.putParcelableArrayList("sport_packages", sport_packages);
         switch (position) {
             case R.id.competitions:
                 active_fragment = frg_competitions;
@@ -124,6 +111,7 @@ public class MainActivity extends AbstractToolbarActivity {
                 sf = new SportsFragment();
                 b.putString("order_column", orderColumn);
                 b.putString("order_type", orderType);
+                b.putParcelableArrayList("sport_packages", sport_packages);
                 sf.setArguments(b);
                 getSupportFragmentManager()
                         .beginTransaction()

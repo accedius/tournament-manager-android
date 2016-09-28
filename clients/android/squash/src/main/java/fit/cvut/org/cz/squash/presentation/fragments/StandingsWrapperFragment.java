@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -20,12 +21,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  */
 public class StandingsWrapperFragment extends Fragment {
     public static final String ARG_ID = "arg_id";
+    public static final String ARG_TYPE = "arg_type";
     private StandingsListFragment slf;
 
-    public static StandingsWrapperFragment newInstance(long id){
+    public static StandingsWrapperFragment newInstance(long id, CompetitionType type){
         StandingsWrapperFragment fragment = new StandingsWrapperFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
+        args.putParcelable(ARG_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +48,8 @@ public class StandingsWrapperFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Long tournamentID = getArguments().getLong(ARG_ID, -1);
-        slf = StandingsListFragment.newInstance(tournamentID);
+        CompetitionType type = getArguments().getParcelable(ARG_TYPE);
+        slf = StandingsListFragment.newInstance(tournamentID, type);
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container2) == null) {
             getChildFragmentManager()
                     .beginTransaction()

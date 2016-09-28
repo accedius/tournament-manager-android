@@ -9,15 +9,18 @@ import android.os.Parcelable;
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingItem implements Parcelable {
+    public Long id;
     public String name;
     public int wins, losses, draws, setsWon, setsLost, points;
 
-    public StandingItem(String name){
+    public StandingItem(Long id, String name){
+        this.id = id;
         this.name = name;
         wins = losses = draws = setsWon = setsLost = points = 0;
     }
 
     protected StandingItem(Parcel in) {
+        id = in.readLong();
         name = in.readString();
         wins = in.readInt();
         losses = in.readInt();
@@ -46,6 +49,7 @@ public class StandingItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeString(name);
         dest.writeInt(wins);
         dest.writeInt(losses);

@@ -20,7 +20,7 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
     protected static final String ARG_ID = "arg_id";
 
     /**
-     * Constructor for this fragment with id of Player that needs to update
+     * Constructor for this fragment with id of player that needs to update
      * @param id
      * @param clazz
      * @return
@@ -48,10 +48,10 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
     }
 
     protected EditText note, name, email;
-    protected long PlayerId = -1;
+    protected long playerId = -1;
     protected View v;
 
-    protected Player Player = null;
+    protected Player player = null;
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
@@ -62,45 +62,45 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
         email = (EditText) v.findViewById(R.id.et_email);
 
         if (getArguments() != null)
-            PlayerId = getArguments().getLong(ARG_ID , -1);
+            playerId = getArguments().getLong(ARG_ID , -1);
 
         return v;
     }
 
     @Override
     public void customOnResume() {
-        if (PlayerId != -1)
+        if (playerId != -1)
             super.customOnResume();
     }
 
     @Override
     protected void customOnPause() {
-        if (PlayerId != -1)
+        if (playerId != -1)
             super.customOnPause();
     }
 
     /**
-     * Called with new Player in param
+     * Called with new player in param
      * @param c
      */
     protected abstract void savePlayer(Player c);
 
     /**
-     * Called when Player in param should be updated
+     * Called when player in param should be updated
      * @param c
      */
     protected abstract void updatePlayer(Player c);
 
     /**
      *
-     * @return String key of Player gotten in Bundle of Intent when receiving from service
+     * @return String key of player gotten in Bundle of Intent when receiving from service
      */
     protected abstract String getPlayerKey();
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        Player = intent.getParcelableExtra(getPlayerKey());
-        bindPlayerOnView(Player);
+        player = intent.getParcelableExtra(getPlayerKey());
+        bindPlayerOnView(player);
     }
 
     private void bindPlayerOnView(Player c){

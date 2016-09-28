@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.squash.presentation.adapters;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +10,31 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListener;
 
 /**Adapter displaying standings of tournament
  * Created by Vaclav on 7. 4. 2016.
  */
 public class StandingsAdapter extends AbstractListAdapter<StandingItem, StandingsAdapter.StandingItemViewHolder> {
+    private CompetitionType type;
+    private Context context;
+    private Resources res;
+
+    public StandingsAdapter(Context c, CompetitionType t) {
+        type = t;
+        context = c;
+    }
+
+    protected void setOnClickListeners(View v, StandingItem item) {
+        // Only individuals are clickable - you can get to Player Detail in Core
+        if (type.equals(CompetitionTypes.individuals())) {
+            v.setOnClickListener(PlayerDetailOnClickListener.getListener(context, item.id));
+        }
+    }
+
     @Override
     public StandingItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new StandingItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_standings, parent, false));
@@ -28,6 +49,8 @@ public class StandingsAdapter extends AbstractListAdapter<StandingItem, Standing
         holder.D.setText(Integer.toString(item.draws));
         holder.points.setText(Integer.toString(item.points));
         holder.score.setText(String.format("%d:%d", item.setsWon, item.setsLost));
+
+        setOnClickListeners(holder.itemView, item);
     }
 
     public class StandingItemViewHolder extends RecyclerView.ViewHolder{

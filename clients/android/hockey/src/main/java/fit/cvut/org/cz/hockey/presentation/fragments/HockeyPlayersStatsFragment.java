@@ -26,9 +26,11 @@ import fit.cvut.org.cz.hockey.presentation.adapters.AggregatedStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListener;
 
 /**
  * Fragment holding aggregated stats
@@ -136,6 +138,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             @Override
             protected void setOnClickListeners(View v, final long playerId, final String name) {
                 super.setOnClickListeners(v, playerId, name);
+                v.setOnClickListener(PlayerDetailOnClickListener.getListener(getContext(), playerId));
                 v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {

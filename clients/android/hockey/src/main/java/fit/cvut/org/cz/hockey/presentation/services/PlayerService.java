@@ -41,7 +41,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID = "action_get_players_in_tournament_by_match_id";
 
     public PlayerService() {
-        super("Hockey Player Service");
+        super("Hockey player Service");
     }
 
     public static Intent newStartIntent(String action, Context context) {

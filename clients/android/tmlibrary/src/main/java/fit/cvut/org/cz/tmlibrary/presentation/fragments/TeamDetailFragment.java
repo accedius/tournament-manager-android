@@ -66,7 +66,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
 
     /**
      *
-     * @return Key of ArrayList<Player> delivered from activity when adding players to the team
+     * @return Key of ArrayList<player> delivered from activity when adding players to the team
      */
     protected abstract String getExtraPlayersKey();
 

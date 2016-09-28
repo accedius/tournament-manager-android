@@ -171,7 +171,7 @@ public class StatsManager implements IStatsManager {
 
         if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
-            for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getName()));
+            for (Player p : players) mappedStandings.put(p.getId(), new StandingItem(p.getId(), p.getName()));
             for (DStat stat : stats) {
                 long playerId = DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, stat.getParticipantId()).get(0);
                 ArrayList<DStat> sets = DAOFactory.getInstance().statDAO.getByParticipant(context, stat.getParticipantId(), StatsEnum.SET);
@@ -197,7 +197,7 @@ public class StatsManager implements IStatsManager {
         } else {
             //team competition
             ArrayList<DTeam> teams = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
-            for (DTeam team : teams) mappedStandings.put(team.getId(), new StandingItem(team.getName()));
+            for (DTeam team : teams) mappedStandings.put(team.getId(), new StandingItem(team.getId(), team.getName()));
 
             for (DStat stat : stats) {
                 DParticipant p = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());

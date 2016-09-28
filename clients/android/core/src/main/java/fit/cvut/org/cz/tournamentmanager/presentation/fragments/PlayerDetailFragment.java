@@ -50,13 +50,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         Player player = intent.getParcelableExtra(PLAYER_KEY);
-
-        if (player == null) {
-            getActivity().setTitle("Player not found"); //PROZATIMNI RESENI
-            return;
-        }
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.player)+" – "+player.getName());
-
         email.setText(player.getEmail());
         note.setText(player.getNote());
     }

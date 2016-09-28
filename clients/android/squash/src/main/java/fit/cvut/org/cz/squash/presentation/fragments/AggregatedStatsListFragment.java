@@ -29,6 +29,7 @@ import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListener;
 
 /**
  * Displays list of aggregated statistics for tournament or competition
@@ -173,9 +174,10 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        adapter =  new AggregatedStatsAdapter(){
+        adapter = new AggregatedStatsAdapter() {
             @Override
             protected void setOnClickListeners(View v, final SAggregatedStats item, final int position, final String name) {
+                v.setOnClickListener(PlayerDetailOnClickListener.getListener(getContext(), item.playerId));
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {

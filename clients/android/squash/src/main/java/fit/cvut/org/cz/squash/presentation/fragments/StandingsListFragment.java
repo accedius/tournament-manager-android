@@ -14,6 +14,7 @@ import java.util.HashMap;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.presentation.adapters.StandingsAdapter;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
@@ -23,14 +24,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class StandingsListFragment extends AbstractListFragment<StandingItem> {
     public static final String ARG_ID = "arg_id";
+    public static final String ARG_TYPE = "arg_type";
 
     private String orderColumn = "p";
     private String orderType = "DESC";
 
-    public static StandingsListFragment newInstance(long id){
+    public static StandingsListFragment newInstance(long id, CompetitionType type) {
         StandingsListFragment fragment = new StandingsListFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
+        args.putParcelable(ARG_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,7 +98,7 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new StandingsAdapter();
+        return new StandingsAdapter(getActivity(), (CompetitionType)getArguments().getParcelable(ARG_TYPE));
     }
 
     @Override

@@ -37,8 +37,9 @@
         </activity>
 
         <activity
-            android:name=".presentation.activities.PlayerDetailActivity"
-            android:label="@string/player" >
+            android:name="fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity"
+            android:label="@string/player"
+            android:exported="true">
         </activity>
     </application>
 

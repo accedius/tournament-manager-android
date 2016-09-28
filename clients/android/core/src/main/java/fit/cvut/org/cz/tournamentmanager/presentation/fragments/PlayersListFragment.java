@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -30,8 +31,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class PlayersListFragment extends AbstractListFragment<Player> {
-    ArrayList<ApplicationInfo> sport_packages;
-
     private String package_name = "fit.cvut.org.cz.tournamentmanager";
     private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
     private String activity_detail_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
@@ -57,7 +56,6 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        sport_packages = getArguments().getParcelableArrayList("sport_packages");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -125,8 +123,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_player);
                         Bundle b = new Bundle();
-                        b.putLong(PlayerService.EXTRA_ID, playerId);
-                        b.putParcelableArrayList(PlayerService.EXTRA_PACKAGES, sport_packages);
+                        b.putLong(CrossPackageComunicationConstants.EXTRA_ID, playerId);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -155,7 +152,6 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                                 Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE, getContext());
                                                 intent.putExtra(PlayerService.EXTRA_ID, playerId);
                                                 intent.putExtra(PlayerService.EXTRA_POSITION, position);
-                                                intent.putParcelableArrayListExtra(PlayerService.EXTRA_PACKAGES, sport_packages);
                                                 getContext().startService(intent);
                                             }
                                         }

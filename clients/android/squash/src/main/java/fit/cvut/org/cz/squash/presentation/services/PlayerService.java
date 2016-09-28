@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
     public PlayerService() {
-        super("Squash Player Service");
+        super("Squash player Service");
     }
 
     private static final String EXTRA_ACTION = "extra_action";
