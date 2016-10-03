@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**

@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business;
+package fit.cvut.org.cz.tmlibrary.business.generators;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import fit.cvut.org.cz.tmlibrary.business.helpers.MapComparator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;

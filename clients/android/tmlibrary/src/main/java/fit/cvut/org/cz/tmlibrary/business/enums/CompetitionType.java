@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business;
+package fit.cvut.org.cz.tmlibrary.business.enums;
 
 import android.content.res.Resources;
 import android.os.Parcel;

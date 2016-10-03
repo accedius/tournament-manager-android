@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 

@@ -10,7 +10,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 
 import static org.junit.Assert.assertNull;

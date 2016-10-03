@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business;
+package fit.cvut.org.cz.tmlibrary.business.helpers;
 
 import java.text.SimpleDateFormat;
 

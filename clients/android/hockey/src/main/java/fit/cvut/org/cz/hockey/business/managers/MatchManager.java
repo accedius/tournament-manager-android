@@ -10,7 +10,7 @@ import java.util.Date;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
-import fit.cvut.org.cz.tmlibrary.business.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;

@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business;
+package fit.cvut.org.cz.tmlibrary.business.enums;
 
 import android.content.res.Resources;
 
@@ -17,8 +17,8 @@ public class CompetitionTypes {
 
     public static CompetitionType [] competitionTypes() {
         CompetitionType [] list = new CompetitionType[2];
-        list[0] = new CompetitionType(null, 0, R.string.type_individuals);
-        list[1] = new CompetitionType(null, 1, R.string.type_teams);
+        list[0] = individuals();
+        list[1] = teams();
         return list;
     }
 

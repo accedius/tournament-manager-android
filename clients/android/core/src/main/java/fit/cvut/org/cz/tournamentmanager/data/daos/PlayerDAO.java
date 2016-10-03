@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;

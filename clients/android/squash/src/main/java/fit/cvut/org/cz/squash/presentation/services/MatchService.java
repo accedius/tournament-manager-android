@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;

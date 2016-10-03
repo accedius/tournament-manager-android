@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 

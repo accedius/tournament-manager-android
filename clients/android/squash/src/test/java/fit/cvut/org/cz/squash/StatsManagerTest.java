@@ -36,7 +36,7 @@ import fit.cvut.org.cz.squash.data.daos.TournamentDAO;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.squash.data.interfaces.IStatDAO;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;

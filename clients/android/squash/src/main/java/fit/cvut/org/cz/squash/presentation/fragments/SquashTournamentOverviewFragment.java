@@ -7,8 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**

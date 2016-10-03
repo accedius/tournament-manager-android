@@ -10,7 +10,7 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.RoundRobinTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;

@@ -14,9 +14,9 @@ import android.widget.TextView;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.R;

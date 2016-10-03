@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 
 /**

@@ -19,9 +19,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 

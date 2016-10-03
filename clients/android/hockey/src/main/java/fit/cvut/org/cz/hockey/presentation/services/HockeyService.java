@@ -5,9 +5,9 @@ import android.content.Intent;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
-import fit.cvut.org.cz.tmlibrary.business.AggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 

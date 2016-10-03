@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business;
+package fit.cvut.org.cz.tmlibrary.business.stats;
 
 import android.os.Parcel;
 import android.os.Parcelable;

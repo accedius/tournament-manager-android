@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.RoundRobinTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
