@@ -5,6 +5,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -58,6 +60,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (savedInstanceState != null) {
             intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
@@ -72,6 +75,12 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
             ot = -1;
             so = -1;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_match_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

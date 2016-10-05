@@ -9,6 +9,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         matchId = getArguments().getLong(ARG_MATCH_ID, -1);
 
         if (savedInstanceState != null) {
@@ -70,6 +73,12 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             tmpHomeStats = null;
             tmpAwayStats = null;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_match_stats, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
