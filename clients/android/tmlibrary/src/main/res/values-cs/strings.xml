@@ -85,7 +85,7 @@
     <string name="player_delete_from_competition_error">Hráče nelze smazat! Účastní se nějakého turnaje, zápasu nebo týmu.</string>
     <string name="team_settings">Nastavení týmu</string>
     <string name="competition_not_empty_error">Soutěž nelze smazat! Obsahuje nějaké turnaje nebo hráče.</string>
-    <string name="failGenerateRosters">Soupisky nelze vygenerovat! Není dostatek týmu nebo již některé týmy mají hráče.</string>
+    <string name="failGenerateRosters">Soupisky nelze vygenerovat! Není dostatek týmů nebo již některé týmy mají hráče.</string>
     <string name="not_enough_teams_error">Není dostatek týmů!</string>
     <string name="add_player">Přidat hráče</string>
     <string name="add_players_away">Přidat hráče k hostům</string>
