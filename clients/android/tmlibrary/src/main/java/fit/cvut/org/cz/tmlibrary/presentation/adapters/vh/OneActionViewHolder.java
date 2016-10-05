@@ -27,6 +27,11 @@ public abstract class OneActionViewHolder extends RecyclerView.ViewHolder {
             viewWAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // In case of really fast click (and deleting item) this may happen
+                    if (getAdapterPosition() == -1)
+                        return;
+
+                    // Normal way
                     adapter.doAction(getAdapterPosition());
                 }
             });
