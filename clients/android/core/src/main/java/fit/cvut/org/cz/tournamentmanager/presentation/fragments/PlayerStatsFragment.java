@@ -36,29 +36,6 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     private static String ARG_ID = "player_id";
 
-    public static PlayerStatsFragment newInstance(long id, Class<? extends PlayerStatsFragment> clazz){
-        PlayerStatsFragment fragment = null;
-        try {
-            Constructor<? extends PlayerStatsFragment> c = clazz.getConstructor();
-            fragment = c.newInstance();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putString("package_name", "hockey");
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
