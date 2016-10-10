@@ -6,12 +6,12 @@ import android.os.Parcelable;
 /**
  * Created by atgot_000 on 10. 4. 2016.
  */
-public class MatchParticipant implements Parcelable {
-    private long participantId;
+public class MatchParticipant implements IEntity, Parcelable {
+    private long id;
     private String name;
 
-    public long getParticipantId() { return participantId; }
-    public void setParticipantId(long participantId) { this.participantId = participantId; }
+    public long getParticipantId() { return id; }
+    public void setParticipantId(long participantId) { this.id = participantId; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -28,12 +28,12 @@ public class MatchParticipant implements Parcelable {
     };
 
     public MatchParticipant(long id, String n) {
-        this.participantId = id;
+        this.id = id;
         this.name = n;
     }
 
     protected MatchParticipant(Parcel in) {
-        this.participantId = in.readLong();
+        this.id = in.readLong();
         this.name = in.readString();
     }
 
@@ -44,7 +44,7 @@ public class MatchParticipant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(participantId);
+        dest.writeLong(id);
         dest.writeString(name);
     }
 

@@ -178,6 +178,10 @@ public class Competition extends ShareBase implements Parcelable {
         this.type = type;
     }
 
+    public String getEntityType() {
+        return "Competition";
+    }
+
     @Override
     public int describeContents() {
         return 0;

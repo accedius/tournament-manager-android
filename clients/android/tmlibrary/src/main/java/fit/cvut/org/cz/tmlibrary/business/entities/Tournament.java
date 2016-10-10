@@ -190,4 +190,8 @@ public class Tournament extends ShareBase implements Parcelable {
             return "";
         }
     }
+
+    public String getEntityType() {
+        return "Tournament";
+    }
 }

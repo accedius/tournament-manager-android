@@ -185,4 +185,8 @@ public class Match extends ShareBase {
     public void setRound(int round) {
         this.round = round;
     }
+
+    public String getEntityType() {
+        return "Match";
+    }
 }

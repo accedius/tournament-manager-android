@@ -48,11 +48,15 @@ public class MatchManager implements IScoredMatchManager {
                 match.setHomeName(t.getName());
                 t = DAOFactory.getInstance().teamDAO.getById(context, away.getTeamId());
                 match.setAwayName(t.getName());
+                match.setHomeParticipantId(home.getTeamId());
+                match.setAwayParticipantId(away.getTeamId());
             } else {
-                String homeName = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0).getName();
-                String awayName = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0).getName();
-                match.setHomeName(homeName);
-                match.setAwayName(awayName);
+                Player homePlayer = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0);
+                Player awayPlayer = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0);
+                match.setHomeName(homePlayer.getName());
+                match.setAwayName(awayPlayer.getName());
+                match.setHomeParticipantId(homePlayer.getId());
+                match.setAwayParticipantId(awayPlayer.getId());
             }
 
             if (match.isPlayed()) {
