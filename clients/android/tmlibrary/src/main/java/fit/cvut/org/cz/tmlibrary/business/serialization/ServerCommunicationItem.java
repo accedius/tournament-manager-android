@@ -26,10 +26,8 @@ public class ServerCommunicationItem {
     public HashMap<String, String> syncData;
     public List<ServerCommunicationItem> subItems = new ArrayList<>();
 
-    public boolean serializeToken;
+    public transient boolean serializeToken;
     public String toJson() {
-        Collection collection = new ArrayList();
-
         return new Gson().toJson(this);
     }
 
