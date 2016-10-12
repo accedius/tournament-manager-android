@@ -16,7 +16,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -35,7 +35,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        competitionID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
+        competitionID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
@@ -78,7 +78,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
-                intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionID);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionID);
                 startActivity(intent);
                 break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_order:

@@ -3,7 +3,7 @@ package fit.cvut.org.cz.tmlibrary.presentation;
 /**
  * Created by Vaclav on 10. 4. 2016.
  */
-public class CrossPackageComunicationConstants {
+public class CrossPackageCommunicationConstants {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_ACTION = "extra_action";

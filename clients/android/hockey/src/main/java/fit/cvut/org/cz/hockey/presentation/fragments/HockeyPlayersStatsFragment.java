@@ -26,7 +26,6 @@ import fit.cvut.org.cz.hockey.presentation.adapters.AggregatedStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;

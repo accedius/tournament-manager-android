@@ -17,7 +17,7 @@ import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
@@ -37,7 +37,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        competitionId = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
+        competitionId = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         fragments = new Fragment[]{
                 CompetitionOverviewFragment.newInstance(competitionId, SquashCompetitionOverviewFragment.class),
                 TournamentsListFragment.newInstance(competitionId),
@@ -80,7 +80,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
         switch (item.getItemId()) {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
-                intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
                 break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_order:

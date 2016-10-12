@@ -6,13 +6,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
@@ -55,7 +54,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
-                        b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -76,7 +75,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                                                 Intent intent = new Intent();
                                                 intent.setClassName(package_name, activity_create_competition);
                                                 Bundle b = new Bundle();
-                                                b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                                                b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                                                 intent.putExtras(b);
                                                 startActivity(intent);
                                                 break;

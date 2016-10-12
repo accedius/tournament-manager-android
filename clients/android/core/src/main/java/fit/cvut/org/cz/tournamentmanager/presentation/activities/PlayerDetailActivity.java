@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
@@ -33,7 +33,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        playerID = getIntent().getExtras().getLong(CrossPackageComunicationConstants.EXTRA_ID);
+        playerID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         sport_packages = PackagesInfo.getPackages(this, getResources());
         titles = new String[1+sport_packages.size()];
         titles[0] = getResources().getString(R.string.player_info);
