@@ -8,7 +8,7 @@ import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -22,19 +22,19 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
     @Override
     protected String getActionKey() {
-        return CrossPackageComunicationConstants.EXTRA_ACTION;
+        return CrossPackageCommunicationConstants.EXTRA_ACTION;
     }
 
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_ACTION);
-        String package_name = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_PACKAGE);
+        String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
+        String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
 
         switch (action)
         {
-            case CrossPackageComunicationConstants.ACTION_GET_STATS:
+            case CrossPackageCommunicationConstants.ACTION_GET_STATS:
             {
-                long id = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
+                long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent res = new Intent(package_name+action);
                 AggregatedStatistics ags = ManagerFactory.getInstance().statisticsManager.getByPlayerID(this, id);
                 AggregatedStats statsToSend = new AggregatedStats();
@@ -56,18 +56,18 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
                 statsToSend.addPlayerStats(as);
 
-                res.putExtra(CrossPackageComunicationConstants.EXTRA_STATS, statsToSend);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageComunicationConstants.ACTION_DELETE_COMPETITION:
+            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION:
             {
                 Intent res = new Intent(action);
-                long compId = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
+                long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 if (ManagerFactory.getInstance().competitionManager.delete(this, compId))
-                    res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_OK);
+                    res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
-                    res.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_FAILED);
+                    res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
                 sendBroadcast(res);
             }
         }

@@ -9,7 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.CompetitionsListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
@@ -37,7 +37,7 @@ public class CompetitionDialog extends DialogFragment {
                             Intent intent = new Intent();
                             intent.setClassName(package_name, activity_create_competition);
                             Bundle b = new Bundle();
-                            b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competition_id);
+                            b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
                             intent.putExtras(b);
                             startActivity(intent);
                             dialog.dismiss();

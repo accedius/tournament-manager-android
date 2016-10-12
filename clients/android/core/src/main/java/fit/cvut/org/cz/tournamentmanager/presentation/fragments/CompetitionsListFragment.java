@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -67,7 +67,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
-                        b.putLong(CrossPackageComunicationConstants.EXTRA_ID, competitionId);
+                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                         intent.putExtras(b);
                         startActivity(intent);
                     }

@@ -11,7 +11,7 @@ import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 
 /**
  * Allows Core to delete Competition and get stats for player
@@ -24,24 +24,24 @@ public class SquashExportedService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String action = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_ACTION);
-        String package_name = intent.getStringExtra(CrossPackageComunicationConstants.EXTRA_PACKAGE);
+        String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
+        String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
 
         switch (action){
-            case CrossPackageComunicationConstants.ACTION_DELETE_COMPETITION:{
-                long id = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
+            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION:{
+                long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
                 if (ManagersFactory.getInstance().competitionManager.delete(this, id))
-                    result.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_OK);
+                    result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
-                    result.putExtra(CrossPackageComunicationConstants.EXTRA_OUTCOME, CrossPackageComunicationConstants.OUTCOME_FAILED);
+                    result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
 
                 sendBroadcast(result);
                 break;
             }
-            case CrossPackageComunicationConstants.ACTION_GET_STATS:{
-                long id = intent.getLongExtra(CrossPackageComunicationConstants.EXTRA_ID, -1);
+            case CrossPackageCommunicationConstants.ACTION_GET_STATS:{
+                long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByPlayerId(this, id);
                 AggregatedStats statsForExport = new AggregatedStats();
 
@@ -64,7 +64,7 @@ public class SquashExportedService extends IntentService {
                     statsForExport.addPlayerStats(exportStat);
                 }
                 Intent result = new Intent(package_name+action);
-                result.putExtra(CrossPackageComunicationConstants.EXTRA_STATS, statsForExport);
+                result.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsForExport);
                 sendBroadcast(result);
                 break;
             }

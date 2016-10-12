@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -123,7 +122,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_player);
                         Bundle b = new Bundle();
-                        b.putLong(CrossPackageComunicationConstants.EXTRA_ID, playerId);
+                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
                         intent.putExtras(b);
                         startActivity(intent);
                     }

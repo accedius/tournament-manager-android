@@ -11,13 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageComunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
 
@@ -49,9 +46,9 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = new Intent();
         intent.setClassName(package_name, stats_service);
-        intent.putExtra(CrossPackageComunicationConstants.EXTRA_ACTION, CrossPackageComunicationConstants.ACTION_GET_STATS);
-        intent.putExtra(CrossPackageComunicationConstants.EXTRA_PACKAGE, package_name);
-        intent.putExtra(CrossPackageComunicationConstants.EXTRA_ID, playerID);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_STATS);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerID);
         getContext().startService(intent);
     }
 
@@ -74,7 +71,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         labelParams.weight = 1;
         statsParams.weight = 1;
 
-        AggregatedStats ags = intent.getParcelableExtra(CrossPackageComunicationConstants.EXTRA_STATS);
+        AggregatedStats ags = intent.getParcelableExtra(CrossPackageCommunicationConstants.EXTRA_STATS);
         for (PlayerAggregatedStats as : ags.getRecords()) {
             for (PlayerAggregatedStatsRecord asr : as.getRecords()) {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
@@ -96,7 +93,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void registerReceivers() {
-        getActivity().registerReceiver(receiver, new IntentFilter(package_name + CrossPackageComunicationConstants.ACTION_GET_STATS));
+        getActivity().registerReceiver(receiver, new IntentFilter(package_name + CrossPackageCommunicationConstants.ACTION_GET_STATS));
     }
 
     @Override
