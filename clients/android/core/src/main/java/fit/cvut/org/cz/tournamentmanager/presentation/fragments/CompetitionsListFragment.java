@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,6 +41,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String package_name;
     private String activity_create_competition;
     private String activity_detail_competition;
+    private String stats_service;
 
     private BroadcastReceiver receiver;
 
@@ -52,7 +58,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         package_name = sport_package.metaData.getString("package_name");
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
-
+        stats_service = sport_package.metaData.getString("service_stats");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -76,7 +82,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, activity_create_competition);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, activity_create_competition, stats_service);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
@@ -88,26 +94,29 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content, getContext());
+        Intent intent = CompetitionService.getStartIntent(action, package_name, content, getContext());
         getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking(this.action);
+        return CompetitionService.isWorking(action);
     }
 
     @Override
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
-        IntentFilter filter = new IntentFilter(this.action);
+        IntentFilter filter = new IntentFilter(action);
+        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
         filter.addAction(CompetitionDialog.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override
@@ -168,6 +177,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
             contentView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+
             if (type.equals(CompetitionService.EXTRA_COMPETITION)) {
                 CompetitionsListFragment.super.bindDataOnView(intent);
             } else if (type.equals(CompetitionService.EXTRA_DELETE)) {
@@ -180,7 +190,36 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     if (v != null)
                         Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
+            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_JSON)) {
+                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
+                if (isExternalStorageWritable()) {
+                    File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/"+filename);
+                    try {
+                        file.createNewFile();
+                        OutputStream os = new FileOutputStream(file);
+                        os.write(json.getBytes());
+                        os.close();
+                        View v = getView().findFocus();
+                        if (v != null) {
+                            Snackbar.make(v, "File has been created in your Download folder.", Snackbar.LENGTH_LONG).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
+
         }
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
 }

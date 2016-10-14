@@ -43,6 +43,8 @@
     <string name="sort_by_start_date">Sort by start date</string>
     <string name="sort_by_end_date">Sort by end date</string>
 
+    <string name="export_to_file">Export to file</string>
+
     <string name="home">Home</string>
     <string name="away">Away</string>
     <string name="match_sum">Matches played</string>

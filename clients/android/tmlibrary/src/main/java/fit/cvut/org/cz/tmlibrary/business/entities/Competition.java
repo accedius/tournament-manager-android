@@ -178,6 +178,10 @@ public class Competition extends ShareBase implements Parcelable {
         this.type = type;
     }
 
+    public String getEntityType() {
+        return "Competition";
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -197,5 +201,9 @@ public class Competition extends ShareBase implements Parcelable {
         } else {
             return "";
         }
+    }
+
+    public String getFilename() {
+        return (name + "_" + DateFormatter.getInstance().getDBDateTimeFormat().format(new Date())).replace(" ", "_");
     }
 }

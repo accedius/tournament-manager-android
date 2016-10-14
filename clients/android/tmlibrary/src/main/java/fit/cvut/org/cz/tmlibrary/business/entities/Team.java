@@ -124,4 +124,8 @@ public class Team extends ShareBase implements Parcelable {
     public void addPlayer(Player player) {
         players.add(player);
     }
+
+    public String getEntityType() {
+        return "Team";
+    }
 }

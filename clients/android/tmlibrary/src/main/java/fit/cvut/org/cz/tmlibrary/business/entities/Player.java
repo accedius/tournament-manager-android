@@ -172,4 +172,8 @@ public class Player extends ShareBase implements Parcelable {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public String getEntityType() {
+        return "Player";
+    }
 }

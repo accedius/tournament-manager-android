@@ -5,6 +5,8 @@ import android.content.Intent;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
@@ -30,10 +32,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
 
-        switch (action)
-        {
-            case CrossPackageCommunicationConstants.ACTION_GET_STATS:
-            {
+        switch (action) {
+            case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent res = new Intent(package_name+action);
                 AggregatedStatistics ags = ManagerFactory.getInstance().statisticsManager.getByPlayerID(this, id);
@@ -60,8 +60,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION:
-            {
+            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 if (ManagerFactory.getInstance().competitionManager.delete(this, compId))
@@ -69,6 +68,19 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 else
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
                 sendBroadcast(res);
+                break;
+            }
+            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
+                Intent res = new Intent(package_name + action);
+                long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+                Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compId);
+                String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                sendBroadcast(res);
+                break;
             }
         }
     }
