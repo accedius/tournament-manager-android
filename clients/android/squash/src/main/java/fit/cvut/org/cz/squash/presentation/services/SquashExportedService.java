@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
+import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
@@ -28,7 +30,7 @@ public class SquashExportedService extends IntentService {
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
 
         switch (action){
-            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION:{
+            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
@@ -40,7 +42,7 @@ public class SquashExportedService extends IntentService {
                 sendBroadcast(result);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_GET_STATS:{
+            case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 ArrayList<SAggregatedStats> stats = ManagersFactory.getInstance().statsManager.getAggregatedStatsByPlayerId(this, id);
                 AggregatedStats statsForExport = new AggregatedStats();
@@ -66,6 +68,18 @@ public class SquashExportedService extends IntentService {
                 Intent result = new Intent(package_name+action);
                 result.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsForExport);
                 sendBroadcast(result);
+                break;
+            }
+            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
+                Intent res = new Intent(package_name + action);
+                long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+                Competition c = ManagersFactory.getInstance().competitionManager.getById(this, compId);
+                String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                sendBroadcast(res);
                 break;
             }
         }

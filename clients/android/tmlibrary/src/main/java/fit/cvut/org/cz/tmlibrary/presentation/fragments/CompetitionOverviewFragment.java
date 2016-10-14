@@ -22,6 +22,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     private TextView start, end, tourSum, playerSum, note;
     private static final String COMP_KEY = "competition_id_key";
     protected long competitionID;
+    protected Competition competition = null;
 
     /**
      *
@@ -81,7 +82,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        Competition competition = intent.getParcelableExtra(getCompetitionKey());
+        competition = intent.getParcelableExtra(getCompetitionKey());
 
         if (competition == null) {
             getActivity().setTitle(getResources().getString(R.string.competitionNotFound));
@@ -101,6 +102,10 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         tourSum.setText(String.valueOf(intent.getIntExtra(getTournamentsSumKey(), 0)));
         playerSum.setText(String.valueOf(intent.getIntExtra(getPlayersSumKey(), 0)));
         note.setText(competition.getNote());
+    }
+
+    public Competition getCompetition() {
+        return competition;
     }
 
 }

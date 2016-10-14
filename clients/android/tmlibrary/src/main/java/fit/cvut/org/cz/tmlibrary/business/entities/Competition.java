@@ -202,4 +202,8 @@ public class Competition extends ShareBase implements Parcelable {
             return "";
         }
     }
+
+    public String getFilename() {
+        return (name + "_" + DateFormatter.getInstance().getDBDateTimeFormat().format(new Date())).replace(" ", "_");
+    }
 }
