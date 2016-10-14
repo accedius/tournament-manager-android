@@ -25,8 +25,16 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
     public HashMap<String, String> serializeSyncData(Tournament entity) {
         HashMap<String, String> hm = new HashMap<>();
         hm.put("name", entity.getName());
-        hm.put("start_date", entity.getStartDate().toString());
-        hm.put("end_date", entity.getEndDate().toString());
+        if (entity.getStartDate() == null) {
+            hm.put("start_date", null);
+        } else {
+            hm.put("start_date", entity.getStartDate().toString());
+        }
+        if (entity.getEndDate() == null) {
+            hm.put("end_date", null);
+        } else {
+            hm.put("end_date", entity.getEndDate().toString());
+        }
         hm.put("note", entity.getNote());
         return hm;
     }
