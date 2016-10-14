@@ -40,7 +40,7 @@ public class MatchesDialog extends DialogFragment {
         builder.setItems(new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.edit),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.delete),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.restart)},
+                getString(fit.cvut.org.cz.tmlibrary.R.string.reset)},
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
