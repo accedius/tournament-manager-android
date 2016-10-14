@@ -51,6 +51,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private static final String ARG_MATCH_ID = "arg_match_id";
     private static final String SAVE_HOME_LIST = "save_home_list";
     private static final String SAVE_AWAY_LIST = "save_away_list";
+    private Fragment thisFragment;
 
     public static HockeyMatchStatsFragment newInstance(long matchId) {
         HockeyMatchStatsFragment fragment = new HockeyMatchStatsFragment();
@@ -73,6 +74,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             tmpHomeStats = null;
             tmpAwayStats = null;
         }
+        thisFragment = this;
     }
 
     @Override
@@ -186,6 +188,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             @Override
             public void onClick(View v) {
                 HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
+                dialog.setTargetFragment(thisFragment, 0);
                 dialog.show(getFragmentManager(), "tag211");
             }
         });
