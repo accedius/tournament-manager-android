@@ -41,7 +41,7 @@ public interface IScoredMatchManager {
     void generateRound(Context context, long tournamentId);
 
     /**
-     * restart the match - delete its stats and players and set it to not played
+     * reset the match - delete its stats and players and set it to not played
      * @param context application context
      * @param matchId id of the match
      */

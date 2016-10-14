@@ -36,7 +36,7 @@ public class EditDeleteResetDialog extends DialogFragment {
                         break;
                     }
                     case 2: {
-                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_RESTART, getContext());
+                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_RESET, getContext());
                         intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_MATCH_ID));
                         getContext().startService(intent);
                         break;
@@ -60,7 +60,7 @@ public class EditDeleteResetDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete), getActivity().getString(R.string.restart) };
+        String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete), getActivity().getString(R.string.reset) };
         builder.setItems(items, supplyListener());
 
         builder.setTitle(getArguments().getString(ARG_TITLE));

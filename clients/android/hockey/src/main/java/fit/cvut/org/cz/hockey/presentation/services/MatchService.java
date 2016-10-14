@@ -34,7 +34,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_FIND_BY_TOURNAMENT_ID = "action_find_match_by_tournament_id";
     public static final String ACTION_CREATE = "action_create_match";
     public static final String ACTION_DELETE = "action_delete_match";
-    public static final String ACTION_RESTART = "action_restart_match";
+    public static final String ACTION_RESET = "action_reset_match";
     public static final String ACTION_UPDATE = "action_update_match";
     public static final String ACTION_GENERATE_ROUND = "action_generate_round";
     public static final String ACTION_FIND_BY_ID_FOR_OVERVIEW = "action_find_match_for_match_overview";
@@ -167,7 +167,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
-            case ACTION_RESTART: {
+            case ACTION_RESET: {
                 Intent res = new Intent(action);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
 

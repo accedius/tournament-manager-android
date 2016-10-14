@@ -31,7 +31,7 @@
     <string name="edit_stats">Edit stats</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="restart">Restart</string>
+    <string name="reset">Reset</string>
     <string name="generate_rosters">Generate rosters</string>
     <string name="generate_by_team_points">Generate by team points</string>
     <string name="generate_randomly">Generate randomly</string>

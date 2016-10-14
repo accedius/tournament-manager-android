@@ -102,7 +102,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
         filter.addAction(MatchService.ACTION_CREATE);
         filter.addAction(MatchService.ACTION_GENERATE_ROUND);
         filter.addAction(MatchService.ACTION_DELETE);
-        filter.addAction(MatchService.ACTION_RESTART);
+        filter.addAction(MatchService.ACTION_RESET);
         filter.addAction(MatchService.ACTION_UPDATE);
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(matchReceiver, filter);
@@ -151,7 +151,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
                 case MatchService.ACTION_CREATE:
                 case MatchService.ACTION_UPDATE_FOR_OVERVIEW:
                 case MatchService.ACTION_DELETE:
-                case MatchService.ACTION_RESTART:
+                case MatchService.ACTION_RESET:
                 case MatchService.ACTION_UPDATE:
                     contentView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);

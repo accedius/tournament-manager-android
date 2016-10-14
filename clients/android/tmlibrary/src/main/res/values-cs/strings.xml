@@ -23,7 +23,7 @@
     <string name="edit">Upravit</string>
     <string name="delete">Odstranit</string>
     <string name="cancel">Zrušit</string>
-    <string name="restart">Restartovat</string>
+    <string name="reset">Vynulovat</string>
     <string name="generate_rosters">Generovat soupisky</string>
 
     <string name="date">Datum</string>
