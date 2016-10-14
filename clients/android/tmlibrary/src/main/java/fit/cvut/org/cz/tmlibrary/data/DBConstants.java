@@ -14,8 +14,6 @@ public class DBConstants {
     public static final String tPLAYERS_IN_TEAM = "players_in_team";
     public static final String tMATCHES = "matches";
     public static final String tPARTICIPANTS = "participants";
-    public static final String tPLAYER_IN_PARTICIPANT = "player_in_participant";
-    public static final String tSTATS_ENUM = "stats_enum";
     public static final String tSTATS = "stats";
 
     //c prefix stands for column
@@ -37,7 +35,6 @@ public class DBConstants {
     public static final String cPERIOD = "period";
     public static final String cMATCH_ID = "match_id";
     public static final String cPARTICIPANT_ID = "participant_id";
-    public static final String cPLAYER_IN_PARTICIPANT_ID = "player_in_participant_id";
     public static final String cSTATS_ENUM_ID = "stats_enum_id";
     public static final String cVALUE = "value";
     public static final String cROLE = "role";

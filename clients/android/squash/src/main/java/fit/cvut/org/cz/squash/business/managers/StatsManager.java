@@ -85,6 +85,10 @@ public class StatsManager implements IStatsManager {
             }
         }
         for (DStat set : sets) {
+            // TODO ? Match is not saved yet completely and the stats for them should be loaded
+            if (mappedParticipants.get(set.getParticipantId()) == null) {
+                continue;
+            }
             for (Long playerId : mappedParticipants.get(set.getParticipantId())) {
                 if (mappedStats.get(playerId) == null)
                     continue;
