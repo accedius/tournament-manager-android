@@ -5,7 +5,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     private static final String ARG_PLAYED = "arg_played";
     private static final String EXTRA_ASK = "extra_ask";
     private static final String EXTRA_DATA = "extra_data";
+    private Fragment thisFragment;
 
     public static SetsFragment newInstance(long id, boolean played){
         SetsFragment fragment = new SetsFragment();
@@ -52,6 +55,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
             askForData = getArguments().getBoolean(ARG_PLAYED);
             receiverRegistered = askForData;
         }
+        thisFragment = this;
     }
 
     @Override
@@ -78,6 +82,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
                     @Override
                     public boolean onLongClick(View v) {
                         AdapterDialog dialog = AdapterDialog.newInstance(position, 0, title);
+                        dialog.setTargetFragment(thisFragment, 0);
                         dialog.show(getFragmentManager(), "DELETE_DIALOG");
                         return false;
                     }
@@ -132,6 +137,8 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
             @Override
             public void onClick(View v) {
                 adapter.addItem(new SetRowItem());
+                recyclerView = (RecyclerView) getActivity().findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
+                recyclerView.scrollToPosition(adapter.getItemCount()-1);
             }
         });
         return fab;

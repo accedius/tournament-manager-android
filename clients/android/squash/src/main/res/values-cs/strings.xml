@@ -8,7 +8,7 @@
     <string name="draws">R</string>
     <string name="loses">P</string>
     <string name="loss">Prohra</string>
-    <string name="parse_number_error">Chyba při parsování hodnoty</string>
+    <string name="parse_number_error">Všechny hodnoty musí být číselné!</string>
     <string name="points">B</string>
     <string name="rosters">Soupisky</string>
     <string name="score">Skóre</string>
