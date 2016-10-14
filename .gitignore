@@ -8,6 +8,7 @@
 /clients/android/captures
 /clients/android/**/*.log
 /clients/android/.idea/*
-/clients/android/install*
+/clients/android/install_tournament_manager.bat
+/clients/android/copy_databases.bat
 
 .idea/
