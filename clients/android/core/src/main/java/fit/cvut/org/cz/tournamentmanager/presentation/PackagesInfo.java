@@ -20,6 +20,8 @@ public class PackagesInfo {
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         ArrayList<ApplicationInfo> sport_packages = new ArrayList<>();
 
+        // TODO r.string.tournament_manager_package -- define as constant somewhere
+
         for (ApplicationInfo packageInfo : packages) {
             if (packageInfo.metaData != null) {
                 if (packageInfo.metaData.containsKey("application_type") == true

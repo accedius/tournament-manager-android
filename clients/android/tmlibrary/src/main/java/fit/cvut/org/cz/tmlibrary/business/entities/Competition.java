@@ -191,13 +191,17 @@ public class Competition extends ShareBase implements Parcelable {
         if (column.equals(col_name)) {
             return getName();
         } else if (column.equals(col_start_date)) {
+            if (startDate == null) return "";
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(startDate);
-            return Integer.toString(cal.get(Calendar.YEAR))+Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+            return Integer.toString(cal.get(Calendar.YEAR)) + Integer.toString(cal.get(Calendar.MONTH)) + Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
         } else if (column.equals(col_end_date)) {
+            if (endDate == null) return "";
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(endDate);
-            return Integer.toString(cal.get(Calendar.YEAR))+Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+            return Integer.toString(cal.get(Calendar.YEAR)) + Integer.toString(cal.get(Calendar.MONTH)) + Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
         } else {
             return "";
         }

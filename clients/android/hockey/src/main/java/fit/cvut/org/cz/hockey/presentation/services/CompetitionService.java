@@ -63,18 +63,18 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 break;
 
             case ACTION_FIND_BY_ID:
-            Intent res = new Intent();
-            long compID = intent.getLongExtra(EXTRA_ID, -1);
-            res.setAction(ACTION_FIND_BY_ID);
-            c = ManagerFactory.getInstance().competitionManager.getById(this, compID);
-            ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
-            ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition(this, compID);
+                Intent res = new Intent();
+                long compID = intent.getLongExtra(EXTRA_ID, -1);
+                res.setAction(ACTION_FIND_BY_ID);
+                c = ManagerFactory.getInstance().competitionManager.getById(this, compID);
+                ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
+                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition(this, compID);
 
-            res.putExtra(EXTRA_COMPETITION, c);
-            res.putExtra(EXTRA_PLAYERS_COUNT, players.size());
-            res.putExtra(EXTRA_TOURNAMENT_COUNT, tournaments.size());
-            LocalBroadcastManager.getInstance(this).sendBroadcast(res);
-            break;
+                res.putExtra(EXTRA_COMPETITION, c);
+                res.putExtra(EXTRA_PLAYERS_COUNT, players.size());
+                res.putExtra(EXTRA_TOURNAMENT_COUNT, tournaments.size());
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+                break;
         }
     }
 }
