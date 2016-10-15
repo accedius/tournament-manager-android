@@ -1,12 +1,13 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -17,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
@@ -52,6 +53,7 @@ public class MainActivity extends AbstractToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         sport_packages = PackagesInfo.getPackages(this, getResources());
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (NavigationView) findViewById(R.id.left_drawer);
@@ -60,7 +62,7 @@ public class MainActivity extends AbstractToolbarActivity {
         mDrawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(!item.isChecked());
+                item.setChecked(true);
                 mDrawerLayout.closeDrawers();
 
                 selectItem(item.getItemId());
@@ -85,7 +87,8 @@ public class MainActivity extends AbstractToolbarActivity {
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
-        selectItem(R.id.competitions);
+        mDrawerList.getMenu().getItem(1).setChecked(true);
+        selectItem(R.id.players);
     }
 
     @Override
@@ -106,17 +109,9 @@ public class MainActivity extends AbstractToolbarActivity {
         Bundle b = new Bundle();
         switch (position) {
             case R.id.competitions:
-                active_fragment = frg_competitions;
-                setTitle(fit.cvut.org.cz.tmlibrary.R.string.competitions);
-                sf = new SportsFragment();
-                b.putString("order_column", orderColumn);
-                b.putString("order_type", orderType);
-                b.putParcelableArrayList("sport_packages", sport_packages);
-                sf.setArguments(b);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, sf)
-                        .commit();
+                Intent intent = new Intent(this, SportsActivity.class);
+                intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
+                startActivity(intent);
                 break;
             case R.id.players:
                 active_fragment = frg_players;

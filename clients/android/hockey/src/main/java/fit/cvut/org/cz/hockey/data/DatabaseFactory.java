@@ -3,6 +3,8 @@ package fit.cvut.org.cz.hockey.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
+
 /**
  * Created by atgot_000 on 31. 3. 2016.
  */
@@ -17,7 +19,8 @@ public class DatabaseFactory {
     }
 
     public SQLiteDatabase getDatabase(Context context) {
-        HockeyDBHelper helper = new HockeyDBHelper(context);
+        String name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
+        HockeyDBHelper helper = new HockeyDBHelper(context, name);
         return helper.getWritableDatabase();
     }
 }

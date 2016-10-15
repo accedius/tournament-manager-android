@@ -42,6 +42,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String activity_create_competition;
     private String activity_detail_competition;
     private String stats_service;
+    private String sport_context;
 
     private BroadcastReceiver receiver;
 
@@ -59,6 +60,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
         stats_service = sport_package.metaData.getString("service_stats");
+        sport_context = getArguments().getString("sport_context");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -74,6 +76,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                        b.putString("sport_context", sport_context);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -94,7 +97,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(action, package_name, content, getContext());
+        Intent intent = CompetitionService.getStartIntent(action, package_name, content, sport_context, getContext());
         getContext().startService(intent);
     }
 

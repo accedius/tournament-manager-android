@@ -24,6 +24,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_RESULT= "extra_result";
     public static final String EXTRA_POSITION= "extra_position";
     public static final String EXTRA_CONTENT = "extra_content";
+    public static final String EXTRA_SPORT_CONTEXT = "extra_sport_context";
     public static final String EXTRA_TYPE= "extra_type";
     public static final String EXTRA_DELETE= "extra_delete";;
 
@@ -74,6 +75,15 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return intent;
     }
 
+    public static Intent getStartIntent(String action, String package_name, String content, String sport_context, Context context){
+        Intent intent = new Intent(context, CompetitionService.class);
+        intent.putExtra(EXTRA_ACTION, action);
+        intent.putExtra(EXTRA_PACKAGE, package_name);
+        intent.putExtra(EXTRA_CONTENT, content);
+        intent.putExtra(EXTRA_SPORT_CONTEXT, sport_context);
+        return intent;
+    }
+
     @Override
     protected String getActionKey() {
         return EXTRA_ACTION;
@@ -92,8 +102,9 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             result.putExtra(EXTRA_RESULT, deleteCompetition(package_name, Long.parseLong(content)));
             result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
         } else {
+            String sport_context = intent.getStringExtra(EXTRA_SPORT_CONTEXT);
             result.putExtra(EXTRA_TYPE, EXTRA_COMPETITION);
-            result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, content));
+            result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, sport_context+content));
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }

@@ -21,18 +21,21 @@ public class CompetitionCP extends ContentProvider {
 
     private HockeyDBHelper helper;
 
-    private static final int COMPETITIONS_ALL = 0;
     private static final int COMPETITION_ONE = 1;
     private static final int DELETE_COMPETITION = 2;
     private static final int EMPTY_COMPETITION_ONE = 3;
     private static final int COMPETITIONS_BY_PLAYER = 4;
+    private static final int COMPETITIONS_ALL_FLOORBALL = 5;
+    private static final int COMPETITIONS_ALL_HOCKEY = 6;
 
     private static final int SEGMENT_ID = 1;
 
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(AUTHORITY, CPConstants.uCompetitions, COMPETITIONS_ALL);
+        // TODO strings set to Constants
+        matcher.addURI(AUTHORITY, "Floorball"+CPConstants.uCompetitions, COMPETITIONS_ALL_FLOORBALL);
+        matcher.addURI(AUTHORITY, "Hockey"+CPConstants.uCompetitions, COMPETITIONS_ALL_HOCKEY);
         matcher.addURI(AUTHORITY, CPConstants.uCompetitions + "#", COMPETITION_ONE);
         matcher.addURI(AUTHORITY, CPConstants.uDeleteCompetition + "#", DELETE_COMPETITION);
         matcher.addURI(AUTHORITY, CPConstants.uEmptyCompetition + "#", EMPTY_COMPETITION_ONE);
@@ -41,7 +44,6 @@ public class CompetitionCP extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        helper = new HockeyDBHelper(getContext());
         return true;
     }
 
@@ -55,7 +57,11 @@ public class CompetitionCP extends ContentProvider {
         }
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        if (uriType == COMPETITIONS_ALL) {
+        if (uriType == COMPETITIONS_ALL_HOCKEY) {
+            helper = new HockeyDBHelper(getContext(), "Hockey");
+            builder.setTables(DBConstants.tCOMPETITIONS);
+        } else if (uriType == COMPETITIONS_ALL_FLOORBALL) {
+            helper = new HockeyDBHelper(getContext(), "Floorball");
             builder.setTables(DBConstants.tCOMPETITIONS);
         } else if (uriType == COMPETITIONS_BY_PLAYER) {
             String playerID = uri.getPathSegments().get(SEGMENT_ID);

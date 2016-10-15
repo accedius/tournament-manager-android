@@ -7,6 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Hockey"
         android:supportsRtl="true"
+        android:name="fit.cvut.org.cz.hockey.presentation.HockeyPackage"
         android:theme="@style/AppTheme">
 
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.CreateCompetitionActivity"

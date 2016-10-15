@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
@@ -35,6 +36,9 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String context = getIntent().getExtras().getString("context");
+        ((HockeyPackage) this.getApplication()).setSportContext(context);
+
         competitionID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
