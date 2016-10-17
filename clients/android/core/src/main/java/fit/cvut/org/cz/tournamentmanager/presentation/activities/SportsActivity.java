@@ -77,9 +77,12 @@ public class SportsActivity extends AbstractTabActivity {
         mDrawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.isChecked()) {
+                    mDrawerLayout.closeDrawers();
+                    return true;
+                }
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
-
                 selectItem(item.getItemId());
                 return true;
             }
@@ -90,7 +93,6 @@ public class SportsActivity extends AbstractTabActivity {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
             }
-
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
