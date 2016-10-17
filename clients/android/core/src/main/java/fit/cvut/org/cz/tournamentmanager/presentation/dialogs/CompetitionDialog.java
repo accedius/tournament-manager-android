@@ -44,8 +44,8 @@ public class CompetitionDialog extends DialogFragment {
                     }
                     case 1: {
                         Intent intent = new Intent();
-                        intent.putExtra("sport_context", sport_context);
                         intent.setClassName(package_name, activity_create_competition);
+                        intent.putExtra("sport_context", sport_context);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
                         intent.putExtras(b);

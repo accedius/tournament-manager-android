@@ -66,14 +66,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return data;
     }
 
-    public static Intent getStartIntent(String action, String package_name, String content, Context context){
-        Intent intent = new Intent(context, CompetitionService.class);
-        intent.putExtra(EXTRA_ACTION, action);
-        intent.putExtra(EXTRA_PACKAGE, package_name);
-        intent.putExtra(EXTRA_CONTENT, content);
-        return intent;
-    }
-
     public static Intent getStartIntent(String action, String package_name, String sport_context, String content, Context context){
         Intent intent = new Intent(context, CompetitionService.class);
         intent.putExtra(EXTRA_ACTION, action);
@@ -104,7 +96,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
         } else {
             result.putExtra(EXTRA_TYPE, EXTRA_COMPETITION);
-            result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, sport_context+content));
+            result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, sport_context + content));
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }

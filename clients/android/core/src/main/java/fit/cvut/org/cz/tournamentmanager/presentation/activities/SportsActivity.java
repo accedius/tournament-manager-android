@@ -44,12 +44,7 @@ public class SportsActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Map<String, ApplicationInfo> contexts = new TreeMap<>();
-        for (ApplicationInfo app : PackagesInfo.getPackages(this, getResources())) {
-            for (String context : app.metaData.getString("context_names").split(",")) {
-                contexts.put(context, app);
-            }
-        }
+        Map<String, ApplicationInfo> contexts = PackagesInfo.getSportContexts(this, getResources());
 
         titles = new String[contexts.size()];
         fragments = new Fragment[contexts.size()];

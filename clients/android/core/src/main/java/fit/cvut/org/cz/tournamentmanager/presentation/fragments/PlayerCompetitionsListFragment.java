@@ -27,6 +27,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     private String content = "competitions_by_player/";
 
     private String package_name;
+    private String sport_context;
     private String activity_create_competition;
     private String activity_detail_competition;
 
@@ -36,9 +37,10 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
+        sport_context = getArguments().getString("sport_context");
         activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
-        action += "." + package_name;
+        action += "." + package_name + sport_context;
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -55,6 +57,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                        b.putString("sport_context", sport_context);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -76,6 +79,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                                                 intent.setClassName(package_name, activity_create_competition);
                                                 Bundle b = new Bundle();
                                                 b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                                                b.putString("sport_context", sport_context);
                                                 intent.putExtras(b);
                                                 startActivity(intent);
                                                 break;
@@ -104,18 +108,18 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(this.action, this.package_name, this.content + this.playerID, getContext());
+        Intent intent = CompetitionService.getStartIntent(action, package_name, sport_context, content + playerID, getContext());
         getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking(this.action);
+        return CompetitionService.isWorking(action);
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(this.action));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(action));
     }
 
     @Override

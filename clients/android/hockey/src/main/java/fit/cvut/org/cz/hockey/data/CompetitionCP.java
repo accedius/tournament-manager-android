@@ -57,9 +57,9 @@ public class CompetitionCP extends ContentProvider {
             matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uCompetitions, COMPETITIONS_ALL + sport.getValue());
             matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uDeleteCompetition + "#", DELETE_COMPETITION + sport.getValue());
             matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uEmptyCompetition + "#", EMPTY_COMPETITION_ONE + sport.getValue());
+            matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uCompetitionsByPlayer + "#", COMPETITIONS_BY_PLAYER + sport.getValue());
         }
         matcher.addURI(AUTHORITY, CPConstants.uCompetitions + "#", COMPETITION_ONE);
-        matcher.addURI(AUTHORITY, CPConstants.uCompetitionsByPlayer + "#", COMPETITIONS_BY_PLAYER);
     }
 
     @Override
@@ -82,6 +82,7 @@ public class CompetitionCP extends ContentProvider {
             helper = new HockeyDBHelper(getContext(), sport);
             builder.setTables(DBConstants.tCOMPETITIONS);
         } else if (uriType == COMPETITIONS_BY_PLAYER) {
+            helper = new HockeyDBHelper(getContext(), sport);
             String playerID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tPLAYERS_IN_COMPETITION + " join " + DBConstants.tCOMPETITIONS + " ON " +
