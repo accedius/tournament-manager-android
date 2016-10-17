@@ -68,7 +68,7 @@
     <string name="matches">Zápasy</string>
     <string name="name_empty_error">Název nesmí být prázdný!</string>
     <string name="not_all_fields_error">Všechna pole jsou povinná!</string>
-    <string name="name_email_empty_error">Jméno a e-mail nesmí být prázdná!</string>
+    <string name="name_email_empty_error">Jméno a e-mail nesmí být prázdné!</string>
     <string name="standings">Tabulka</string>
     <string name="set_nr">Set č.</string>
     <string name="point_configuration">Nastavení bodového zisku</string>
