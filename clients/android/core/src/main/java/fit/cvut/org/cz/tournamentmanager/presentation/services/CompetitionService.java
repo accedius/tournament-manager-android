@@ -32,15 +32,15 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         super("Competition Service");
     }
 
-    private boolean deleteCompetition(String package_name, Long competitionId) {
-        String uri = "content://"+package_name+".data/empty_competition/"+competitionId;
+    private boolean deleteCompetition(String package_name, String sport_context, Long competitionId) {
+        String uri = "content://"+package_name+".data/"+sport_context+"empty_competition/"+competitionId;
         Uri myUri = Uri.parse(uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null || cur.getCount() == 0) {
             return false;
         }
 
-        uri = "content://"+package_name+".data/delete_competition/"+competitionId;
+        uri = "content://"+package_name+".data/"+sport_context+"delete_competition/"+competitionId;
         myUri = Uri.parse(uri);
         getContentResolver().delete(myUri, null, null);
         return true;

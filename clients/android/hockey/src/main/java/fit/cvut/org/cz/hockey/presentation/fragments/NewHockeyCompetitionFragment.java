@@ -6,6 +6,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
@@ -13,22 +15,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
-    @Override
-    protected void saveCompetition(Competition c) {
-        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_CREATE, getContext());
-        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
-
-        getContext().startService(intent);
-    }
-
-    @Override
-    protected void updateCompetition(Competition c) {
-        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, getContext());
-        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
-
-        getContext().startService(intent);
-    }
-
     @Override
     protected String getCompetitionKey() {
         return CompetitionService.EXTRA_COMPETITION;
@@ -60,5 +46,10 @@ public class NewHockeyCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected boolean isTypeChoosable() {
         return false;
+    }
+
+    @Override
+    protected CompetitionType defaultCompetitionType() {
+        return CompetitionTypes.teams();
     }
 }

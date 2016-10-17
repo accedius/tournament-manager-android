@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyCompetitionFragment;
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -31,6 +32,9 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String sport_context = getIntent().getExtras().getString("sport_context");
+        ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
+
         super.onCreate(savedInstanceState);
 
         long id = getIntent().getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);

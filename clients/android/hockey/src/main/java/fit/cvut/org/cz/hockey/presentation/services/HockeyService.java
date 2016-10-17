@@ -76,6 +76,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compId);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra("extra_sport_context", intent.getStringExtra("sport_context"));
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);

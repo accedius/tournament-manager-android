@@ -20,7 +20,6 @@ public class DatabaseFactory {
 
     public SQLiteDatabase getDatabase(Context context) {
         String name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
-        HockeyDBHelper helper = new HockeyDBHelper(context, name);
-        return helper.getWritableDatabase();
+        return new HockeyDBHelper(context, name).getWritableDatabase();
     }
 }
