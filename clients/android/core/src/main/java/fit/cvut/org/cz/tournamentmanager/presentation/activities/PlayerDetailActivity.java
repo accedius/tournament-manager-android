@@ -11,7 +11,6 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.R;
@@ -59,7 +58,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putString("stats_service", info.metaData.getString("service_stats"));
             psf.setArguments(b);
             fragments[i] = psf;
-            titles[i] = sport_context.getKey();
+            titles[i] = getResources().getString(getResources().getIdentifier(sport_context.getKey(), "string", getPackageName()));
             i++;
         }
 
@@ -71,8 +70,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
-        return res;
+        return new DefaultViewPagerAdapter(manager, fragments, titles);
     }
 
     @Override

@@ -102,4 +102,11 @@
     <string name="sort">Seřadit</string>
     <string name="sort_by_player_name">Podle jména</string>
     <string name="export_to_file">Exportovat do souboru</string>
+    <string name="Badminton">Badminton</string>
+    <string name="Beach">Plážový volejbal</string>
+    <string name="Floorball">Florbal</string>
+    <string name="Hockey">Hokej</string>
+    <string name="Squash">Squash</string>
+    <string name="Tennis">Tenis</string>
+    <string name="Volleyball">Volejbal</string>
 </resources>

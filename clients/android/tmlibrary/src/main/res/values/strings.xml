@@ -1,4 +1,12 @@
 <resources>
+    <string name="Badminton">Badminton</string>
+    <string name="Beach">Beach volleyball</string>
+    <string name="Floorball">Floorball</string>
+    <string name="Hockey">Hockey</string>
+    <string name="Squash">Squash</string>
+    <string name="Tennis">Tennis</string>
+    <string name="Volleyball">Volleyball</string>
+
     <string name="competition">Competition</string>
     <string name="competitions">Competitions</string>
     <string name="competition_settings">Competition settings</string>

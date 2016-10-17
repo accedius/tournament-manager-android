@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -61,8 +60,7 @@ public class SportsActivity extends AbstractTabActivity {
             // TODO možná vynechat setAction, zbytečné, competitions list receiver může filtrovat také...
             clf.setAction(sport_context + clf.getAction() + "." + entry.getValue().metaData.getString("package_name"));
             clf.setArguments(b);
-
-            titles[i] = sport_context;
+            titles[i] = getResources().getString(getResources().getIdentifier(sport_context, "string", getPackageName()));
             fragments[i] = clf;
             i++;
         }
