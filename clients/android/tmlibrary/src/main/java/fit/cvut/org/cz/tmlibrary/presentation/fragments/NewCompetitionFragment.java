@@ -125,18 +125,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     /**
-     * Called with new Competition in param
-     * @param c
-     */
-    protected abstract void saveCompetition(Competition c);
-
-    /**
-     * Called when competition in param should be updated
-     * @param c
-     */
-    protected abstract void updateCompetition(Competition c);
-
-    /**
      *
      * @return String key of competition gotten in Bundle of Intent when receiving from service
      */
