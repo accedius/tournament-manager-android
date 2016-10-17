@@ -24,6 +24,7 @@ public class CompetitionDialog extends DialogFragment {
     private String package_name;
     private String activity_create_competition;
     private String stats_service;
+    private String sport_context;
 
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
@@ -33,6 +34,7 @@ public class CompetitionDialog extends DialogFragment {
                     case 0: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, stats_service);
+                        intent.putExtra("sport_context", sport_context);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
@@ -42,6 +44,7 @@ public class CompetitionDialog extends DialogFragment {
                     }
                     case 1: {
                         Intent intent = new Intent();
+                        intent.putExtra("sport_context", sport_context);
                         intent.setClassName(package_name, activity_create_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
@@ -51,7 +54,7 @@ public class CompetitionDialog extends DialogFragment {
                         break;
                     }
                     case 2: {
-                        Intent intent = CompetitionService.getStartIntent(ACTION_DELETE_COMPETITION, package_name, competition_id.toString(), getContext());
+                        Intent intent = CompetitionService.getStartIntent(ACTION_DELETE_COMPETITION, package_name, sport_context, competition_id.toString(), getContext());
                         intent.putExtra(CompetitionService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
                         getContext().startService(intent);
                         dialog.dismiss();
@@ -63,11 +66,12 @@ public class CompetitionDialog extends DialogFragment {
     }
 
     // TODO rename stats_service to SPORT_SERVICE ... in all application
-    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String activity_create_competition, String stats_service) {
+    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String sport_context, String activity_create_competition, String stats_service) {
         CompetitionDialog fragment = new CompetitionDialog();
         fragment.competition_id = competitionId;
         fragment.competition_name = name;
         fragment.package_name = package_name;
+        fragment.sport_context = sport_context;
         fragment.activity_create_competition = activity_create_competition;
         fragment.stats_service = stats_service;
 

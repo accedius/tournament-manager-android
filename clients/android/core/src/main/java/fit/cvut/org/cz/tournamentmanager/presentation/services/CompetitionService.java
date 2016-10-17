@@ -48,7 +48,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
     private ArrayList<Competition> getCompetitions(String package_name, String content) {
         ArrayList<Competition> data = new ArrayList<>();
-
         String uri = "content://"+package_name+".data/"+content;
         Uri myUri = Uri.parse(uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
@@ -75,7 +74,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         return intent;
     }
 
-    public static Intent getStartIntent(String action, String package_name, String content, String sport_context, Context context){
+    public static Intent getStartIntent(String action, String package_name, String sport_context, String content, Context context){
         Intent intent = new Intent(context, CompetitionService.class);
         intent.putExtra(EXTRA_ACTION, action);
         intent.putExtra(EXTRA_PACKAGE, package_name);
@@ -92,17 +91,18 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     @Override
     protected void doWork(Intent intent) {
         String package_name = intent.getStringExtra(EXTRA_PACKAGE);
+        String sport_context = intent.getStringExtra(EXTRA_SPORT_CONTEXT);
         String content = intent.getStringExtra(EXTRA_CONTENT);
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         Intent result = new Intent(action);
         result.putExtra(EXTRA_PACKAGE, package_name);
+        result.putExtra(EXTRA_SPORT_CONTEXT, sport_context);
         if (action.equals(CompetitionDialog.ACTION_DELETE_COMPETITION)) {
             result.putExtra(EXTRA_TYPE, EXTRA_DELETE);
-            result.putExtra(EXTRA_RESULT, deleteCompetition(package_name, Long.parseLong(content)));
+            result.putExtra(EXTRA_RESULT, deleteCompetition(package_name, sport_context, Long.parseLong(content)));
             result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
         } else {
-            String sport_context = intent.getStringExtra(EXTRA_SPORT_CONTEXT);
             result.putExtra(EXTRA_TYPE, EXTRA_COMPETITION);
             result.putParcelableArrayListExtra(EXTRA_COMPETITION, getCompetitions(package_name, sport_context+content));
         }

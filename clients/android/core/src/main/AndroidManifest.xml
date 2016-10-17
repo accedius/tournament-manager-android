@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme.NoActionBar" >
         <activity
             android:name=".presentation.activities.MainActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:noHistory="true">
         </activity>
 
         <service android:name=".presentation.services.CompetitionService" />
@@ -34,7 +35,8 @@
 
         <activity
             android:name="fit.cvut.org.cz.tournamentmanager.presentation.activities.SportsActivity"
-            android:label="@string/competitions">
+            android:label="@string/competitions"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
