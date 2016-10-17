@@ -37,7 +37,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
-        sport_context = getArguments().getString("sport_context");
+        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
         action += "." + package_name + sport_context;
@@ -57,7 +57,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        b.putString("sport_context", sport_context);
+                        b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -79,7 +79,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                                                 intent.setClassName(package_name, activity_create_competition);
                                                 Bundle b = new Bundle();
                                                 b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                                                b.putString("sport_context", sport_context);
+                                                b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                                                 intent.putExtras(b);
                                                 startActivity(intent);
                                                 break;

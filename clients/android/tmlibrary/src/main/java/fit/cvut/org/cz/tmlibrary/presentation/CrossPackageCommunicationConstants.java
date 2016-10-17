@@ -8,6 +8,7 @@ public class CrossPackageCommunicationConstants {
     public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_ACTION = "extra_action";
     public static final String EXTRA_PACKAGE = "extra_package";
+    public static final String EXTRA_SPORT_CONTEXT = "extra_sport_context";
     public static final String EXTRA_OUTCOME = "extra_outcome";
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_NAME = "extra_name";

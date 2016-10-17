@@ -32,7 +32,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
-        String sport_context = intent.getStringExtra("sport_context");
+        String sport_context = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         ((HockeyPackage) getApplicationContext()).setSportContext(sport_context);
 
         switch (action) {
@@ -60,7 +60,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 Intent res = new Intent(sport_context + package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
-                res.putExtra("extra_sport_context", sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 sendBroadcast(res);
                 break;
             }
@@ -80,7 +80,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compId);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra("extra_sport_context", sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);

@@ -32,7 +32,7 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString("sport_context");
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
 
         super.onCreate(savedInstanceState);

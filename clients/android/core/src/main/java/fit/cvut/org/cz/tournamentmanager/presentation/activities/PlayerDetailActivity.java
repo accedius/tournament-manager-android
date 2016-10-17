@@ -53,7 +53,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putLong("player_id", playerID);
             b.putString("package_name", package_name);
             b.putString("sport_name", info.metaData.getString("sport_name"));
-            b.putString("sport_context", sport_context.getKey());
+            b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
             b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
             b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
             b.putString("stats_service", info.metaData.getString("service_stats"));

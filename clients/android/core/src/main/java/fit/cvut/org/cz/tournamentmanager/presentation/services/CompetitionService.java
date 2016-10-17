@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 
@@ -18,14 +19,14 @@ import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress {
-    public static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_PACKAGE = "extra_package";
+    public static final String EXTRA_ACTION = CrossPackageCommunicationConstants.EXTRA_ACTION;
+    public static final String EXTRA_PACKAGE = CrossPackageCommunicationConstants.EXTRA_PACKAGE;
     public static final String EXTRA_COMPETITION = "extra_competition";
     public static final String EXTRA_RESULT= "extra_result";
     public static final String EXTRA_POSITION= "extra_position";
     public static final String EXTRA_CONTENT = "extra_content";
-    public static final String EXTRA_SPORT_CONTEXT = "extra_sport_context";
-    public static final String EXTRA_TYPE= "extra_type";
+    public static final String EXTRA_SPORT_CONTEXT = CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT;
+    public static final String EXTRA_TYPE= CrossPackageCommunicationConstants.EXTRA_TYPE;
     public static final String EXTRA_DELETE= "extra_delete";;
 
     public CompetitionService() {

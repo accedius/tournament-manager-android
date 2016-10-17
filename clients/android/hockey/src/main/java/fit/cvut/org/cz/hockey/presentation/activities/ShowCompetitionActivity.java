@@ -36,7 +36,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString("sport_context");
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
 
         competitionID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
@@ -83,7 +83,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionID);
-                intent.putExtra("sport_context", ((HockeyPackage) this.getApplication()).getSportContext());
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, ((HockeyPackage) this.getApplication()).getSportContext());
                 startActivity(intent);
                 break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_order:

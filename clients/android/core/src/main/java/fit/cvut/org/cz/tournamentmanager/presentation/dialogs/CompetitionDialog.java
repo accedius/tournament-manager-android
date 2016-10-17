@@ -34,7 +34,7 @@ public class CompetitionDialog extends DialogFragment {
                     case 0: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, stats_service);
-                        intent.putExtra("sport_context", sport_context);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
@@ -45,7 +45,7 @@ public class CompetitionDialog extends DialogFragment {
                     case 1: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra("sport_context", sport_context);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
                         intent.putExtras(b);

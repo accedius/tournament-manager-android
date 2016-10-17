@@ -60,7 +60,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
         stats_service = sport_package.metaData.getString("service_stats");
-        sport_context = getArguments().getString("sport_context");
+        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -76,7 +76,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        b.putString("sport_context", sport_context);
+                        b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -135,7 +135,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClassName(package_name, activity_create_competition);
-                intent.putExtra("sport_context", sport_context);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 startActivity(intent);
             }
         });

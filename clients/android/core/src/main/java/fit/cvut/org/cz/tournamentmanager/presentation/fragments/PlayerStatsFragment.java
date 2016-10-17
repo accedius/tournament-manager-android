@@ -39,7 +39,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
-        sport_context = getArguments().getString("sport_context");
+        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         stats_service = getArguments().getString("stats_service");
 
         super.onCreate(savedInstanceState);
@@ -51,7 +51,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         intent.setClassName(package_name, stats_service);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_STATS);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-        intent.putExtra("sport_context", sport_context);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerID);
         getContext().startService(intent);
     }

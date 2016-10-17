@@ -53,7 +53,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString("sport_context");
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         ((SquashPackage) this.getApplication()).setSportContext(sport_context);
 
         super.onCreate(savedInstanceState);
@@ -84,7 +84,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
         switch (item.getItemId()) {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
-                intent.putExtra("sport_context", ((SquashPackage) this.getApplication()).getSportContext());
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, ((SquashPackage) this.getApplication()).getSportContext());
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
                 break;

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -54,7 +55,7 @@ public class SportsActivity extends AbstractTabActivity {
             CompetitionsListFragment clf = new CompetitionsListFragment();
             Bundle b = new Bundle();
             b.putParcelable("sport_package", entry.getValue());
-            b.putString("sport_context", sport_context);
+            b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
             b.putString("order_column", orderColumn);
             b.putString("order_type", orderType);
             // TODO možná vynechat setAction, zbytečné, competitions list receiver může filtrovat také...
