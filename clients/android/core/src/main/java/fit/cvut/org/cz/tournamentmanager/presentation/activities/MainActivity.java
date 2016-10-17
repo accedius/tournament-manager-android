@@ -90,8 +90,7 @@ public class MainActivity extends AbstractToolbarActivity {
 
     @Override
     protected View injectView(ViewGroup parent) {
-        v = getLayoutInflater().inflate(R.layout.activity_main, parent, false);
-        return v;
+        return getLayoutInflater().inflate(R.layout.activity_main, parent, false);
     }
 
     @Override
@@ -103,7 +102,6 @@ public class MainActivity extends AbstractToolbarActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         selectedItem = position;
-        Bundle b = new Bundle();
         switch (position) {
             case R.id.competitions:
                 active_fragment = frg_competitions;
@@ -122,7 +120,6 @@ public class MainActivity extends AbstractToolbarActivity {
                 active_fragment = frg_players;
                 setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
                 plf = new PlayersListFragment();
-                plf.setArguments(b);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, plf)
