@@ -56,6 +56,8 @@
     <string name="competition_import_server">Import from server</string>
     <string name="export_to_file">Export to file</string>
 
+    <string name="choose_file">Choose file to import</string>
+
     <string name="home">Home</string>
     <string name="away">Away</string>
     <string name="match_sum">Matches played</string>
@@ -93,6 +95,7 @@
     <string name="name_email_empty_error">Name and/or email is empty!</string>
     <string name="not_all_fields_error">Not all fields are properly filled!</string>
     <string name="not_enough_teams_error">Not enough teams!</string>
+    <string name="no_competition_file_error">No competition file in Download folder has been found.</string>
 
     <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>

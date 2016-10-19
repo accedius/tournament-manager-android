@@ -112,4 +112,6 @@
     <string name="competition_create_manually">Vytvořit soutěž</string>
     <string name="competition_import_file">Importovat ze souboru</string>
     <string name="competition_import_server">Importovat ze serveru</string>
+    <string name="choose_file">Vyberte soubor</string>
+    <string name="no_competition_file_error">Nebyl nalezen žádný soubor ve složce Download.</string>
 </resources>

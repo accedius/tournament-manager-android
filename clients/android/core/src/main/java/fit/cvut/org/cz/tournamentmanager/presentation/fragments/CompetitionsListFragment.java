@@ -28,6 +28,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.AddCompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
@@ -133,7 +134,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = AddCompetitionDialog.newInstance(package_name, sport_context, activity_create_competition, stats_service);
+                DialogFragment dialog = AddCompetitionDialog.newInstance(view, package_name, sport_context, activity_create_competition, stats_service);
                 dialog.show(getFragmentManager(), "ADD_COMPETITION");
             }
         });
@@ -193,39 +194,20 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     adapter.delete(position);
                 } else {
                     View v = getView().findFocus();
-                    if (v != null)
-                        Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
             } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_JSON)) {
+                // TODO move to separate class / file
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
-                if (isExternalStorageWritable()) {
-                    File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/"+filename);
-                    try {
-                        file.createNewFile();
-                        OutputStream os = new FileOutputStream(file);
-                        os.write(json.getBytes());
-                        os.close();
-                        View v = getView().findFocus();
-                        if (v != null) {
-                            Snackbar.make(v, "File has been created in your Download folder.", Snackbar.LENGTH_LONG).show();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                View v = getView().findFocus();
+                if (FilesHelper.saveFile(filename, json)) {
+                    Snackbar.make(v, "File has been created in your Download folder.", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(v, "File could not be created. Please try again later.", Snackbar.LENGTH_LONG).show();
                 }
             }
 
         }
-    }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
     }
 }
