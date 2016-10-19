@@ -32,6 +32,8 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
     public ServerCommunicationItem serialize(Competition entity) {
         /* Serialize Competition itself */
         ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        item.setId(entity.getId());
+        item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */

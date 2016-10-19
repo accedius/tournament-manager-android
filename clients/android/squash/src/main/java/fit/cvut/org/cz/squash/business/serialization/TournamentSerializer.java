@@ -34,6 +34,8 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     public ServerCommunicationItem serialize(Tournament entity) {
         /* Serialize Tournament itself */
         ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        item.setId(entity.getId());
+        item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */

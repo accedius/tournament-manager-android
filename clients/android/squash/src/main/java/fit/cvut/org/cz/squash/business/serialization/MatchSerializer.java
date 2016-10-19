@@ -48,6 +48,8 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     public ServerCommunicationItem serialize(ScoredMatch entity) {
         /* Serialize Match itself */
         ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        item.setId(entity.getId());
+        item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
         // TODO fix serializing teams and rosters - if there's change in roster among team matches

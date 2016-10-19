@@ -28,6 +28,8 @@ public class PlayerSerializer extends BaseSerializer<Player> {
     @Override
     public ServerCommunicationItem serialize(Player entity) {
         ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        item.setId(entity.getId());
+        item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
         return item;
     }

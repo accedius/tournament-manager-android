@@ -39,6 +39,8 @@ public class TeamSerializer extends BaseSerializer<Team> {
     public ServerCommunicationItem serialize(Team entity) {
         /* Serialize Team itself */
         ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        item.setId(entity.getId());
+        item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
