@@ -17,9 +17,7 @@ public class PlayerDetailOnClickListener {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClassName(CrossPackageCommunicationConstants.CORE, CrossPackageCommunicationConstants.ACTIVITY_PLAYER_DETAIL);
-                Bundle b = new Bundle();
-                b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
-                intent.putExtras(b);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
                 context.startActivity(intent);
             }
         };

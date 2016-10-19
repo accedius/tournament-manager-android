@@ -57,11 +57,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
      */
     public static Intent newStartIntent(Context context, long matchId) {
         Intent intent = new Intent(context, ShowMatchActivity.class);
-        Bundle b = new Bundle();
-
-        b.putLong(MATCH_ID, matchId);
-        intent.putExtras(b);
-
+        intent.putExtra(MATCH_ID, matchId);
         return intent;
     }
 

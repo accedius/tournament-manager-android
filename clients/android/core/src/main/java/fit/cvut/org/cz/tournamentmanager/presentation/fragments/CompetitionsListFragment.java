@@ -74,10 +74,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
-                        Bundle b = new Bundle();
-                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        intent.putExtras(b);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                     }
                 });
