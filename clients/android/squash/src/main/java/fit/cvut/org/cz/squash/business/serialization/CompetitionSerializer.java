@@ -40,7 +40,7 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
         ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, entity.getId());
         PlayerSerializer ps = PlayerSerializer.getInstance(context);
         for (Player p : players) {
-            item.subItems.add(ps.serializeToMinimal(p));
+            item.subItems.add(ps.serialize(p));
         }
 
         /* Serialize Tournaments */
@@ -54,9 +54,9 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
 
     @Override
     public Competition deserialize(ServerCommunicationItem item) {
-        Competition c = new Competition(item.id, item.uid, null, null, null, null, null);
+        Competition c = new Competition(item.getId(), item.getUid(), "", null, null, "", null);
         c.setEtag(item.getEtag());
-        //deserializeSyncData(item.syncData, c);
+        deserializeSyncData(item.syncData, c);
         return c;
     }
 }
