@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fit.cvut.org.cz.tournamentmanager">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +11,6 @@
         <activity
             android:name=".presentation.activities.MainActivity"
             android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".presentation.services.CompetitionService" />
@@ -28,20 +23,27 @@
             android:exported="true"
             android:multiprocess="true" />
 
-        <meta-data
-            android:name="player_cp_authority"
-            android:value="@string/player_cp_authority" />
-
         <activity
             android:name=".presentation.activities.CreatePlayerActivity"
-            android:label="@string/player_settings" >
-        </activity>
+            android:label="@string/player_settings"/>
 
         <activity
             android:name="fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity"
             android:label="@string/player"
-            android:exported="true">
+            android:exported="true"/>
+
+        <activity
+            android:name="fit.cvut.org.cz.tournamentmanager.presentation.activities.SportsActivity"
+            android:label="@string/competitions">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="player_cp_authority"
+            android:value="@string/player_cp_authority" />
     </application>
 
 </manifest>

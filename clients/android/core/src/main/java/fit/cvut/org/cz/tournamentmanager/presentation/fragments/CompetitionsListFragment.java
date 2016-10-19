@@ -42,6 +42,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String activity_create_competition;
     private String activity_detail_competition;
     private String stats_service;
+    private String sport_context;
 
     private BroadcastReceiver receiver;
 
@@ -59,6 +60,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
         stats_service = sport_package.metaData.getString("service_stats");
+        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -74,6 +76,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                         intent.setClassName(package_name, activity_detail_competition);
                         Bundle b = new Bundle();
                         b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                        b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtras(b);
                         startActivity(intent);
                     }
@@ -82,7 +85,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, activity_create_competition, stats_service);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
@@ -94,7 +97,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(action, package_name, content, getContext());
+        Intent intent = CompetitionService.getStartIntent(action, package_name, sport_context, content, getContext());
         getContext().startService(intent);
     }
 
@@ -132,6 +135,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClassName(package_name, activity_create_competition);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 startActivity(intent);
             }
         });
@@ -140,31 +144,30 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void afterBindData() {
-        ArrayList<Competition> data = adapter.getData();
-        orderData(data, getArguments().getString("order_column"), getArguments().getString("order_type"));
-        adapter.swapData(data);
-        adapter.notifyDataSetChanged();
+        orderData(getArguments().getString("order_column"), getArguments().getString("order_type"));
     }
 
-    public void orderData(ArrayList<Competition> data, final String column, final String order) {
+    public void orderData(final String column, final String order) {
         if (adapter == null) return;
 
-        ArrayList<Competition> players = data;
+        ArrayList<Competition> competitions = adapter.getData();
         if (order.equals("DESC")) {
-            Collections.sort(players, new Comparator<Competition>() {
+            Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {
                     return rs.getColumn(column).compareToIgnoreCase(ls.getColumn(column));
                 }
             });
         } else {
-            Collections.sort(players, new Comparator<Competition>() {
+            Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {
                     return ls.getColumn(column).compareToIgnoreCase(rs.getColumn(column));
                 }
             });
         }
+        adapter.swapData(competitions);
+        adapter.notifyDataSetChanged();
     }
 
     public class CompetitionsListReceiver extends BroadcastReceiver {
@@ -173,6 +176,11 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             if (!package_name.equals(intent.getStringExtra(CompetitionService.EXTRA_PACKAGE))) {
                 return;
             }
+
+            if (!sport_context.equals(intent.getStringExtra(CompetitionService.EXTRA_SPORT_CONTEXT))) {
+                return;
+            }
+
             String type = intent.getStringExtra(CompetitionService.EXTRA_TYPE);
 
             contentView.setVisibility(View.VISIBLE);

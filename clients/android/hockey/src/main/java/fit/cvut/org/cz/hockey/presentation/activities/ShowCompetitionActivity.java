@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
@@ -35,6 +36,9 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
+
         competitionID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
@@ -79,6 +83,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionID);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, ((HockeyPackage) this.getApplication()).getSportContext());
                 startActivity(intent);
                 break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_order:

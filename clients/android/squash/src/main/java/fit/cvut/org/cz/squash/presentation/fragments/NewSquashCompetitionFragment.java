@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
@@ -13,22 +15,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
  * Created by Vaclav on 28. 3. 2016.
  */
 public class NewSquashCompetitionFragment extends NewCompetitionFragment {
-    @Override
-    protected void saveCompetition(Competition c) {
-        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_CREATE, getContext());
-        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
-
-        getContext().startService(intent);
-    }
-
-    @Override
-    protected void updateCompetition(Competition c) {
-        Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, getContext());
-        intent.putExtra(CompetitionService.EXTRA_COMPETITION, c);
-
-        getContext().startService(intent);
-    }
-
     @Override
     protected String getCompetitionKey() {
         return CompetitionService.EXTRA_COMPETITION;
@@ -55,5 +41,18 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected boolean isTypeChoosable() {
+        String sport_context = ((SquashPackage)getActivity().getApplication()).getSportContext();
+        if (sport_context.equals("Volleyball"))
+            return false;
+        return true;
+    }
+
+    @Override
+    protected CompetitionType defaultCompetitionType() {
+        return CompetitionTypes.teams();
     }
 }
