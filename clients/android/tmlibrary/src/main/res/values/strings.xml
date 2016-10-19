@@ -51,6 +51,9 @@
     <string name="sort_by_start_date">Sort by start date</string>
     <string name="sort_by_end_date">Sort by end date</string>
 
+    <string name="competition_create_manually">Create competition manually</string>
+    <string name="competition_import_file">Import from file</string>
+    <string name="competition_import_server">Import from server</string>
     <string name="export_to_file">Export to file</string>
 
     <string name="home">Home</string>
