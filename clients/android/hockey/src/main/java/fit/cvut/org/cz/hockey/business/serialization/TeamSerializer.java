@@ -62,9 +62,8 @@ public class TeamSerializer extends BaseSerializer<Team> {
     }
 
     @Override
-    public void deserializeSyncData(String syncData, Team entity) {
-        String[] data = new Gson().fromJson(syncData, new TypeToken<ArrayList<String>>(){}.getType());
-        entity.setName(data[0]);
+    public void deserializeSyncData(HashMap<String, String> syncData, Team entity) {
+        entity.setName(syncData.get("name"));
     }
 
     @Override

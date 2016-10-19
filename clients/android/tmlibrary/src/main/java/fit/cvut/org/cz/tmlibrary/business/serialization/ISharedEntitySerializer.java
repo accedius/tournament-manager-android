@@ -14,6 +14,6 @@ public interface ISharedEntitySerializer<T extends ISharedEntity> {
     ServerCommunicationItem serializeToMinimal (T entity);
     T deserialize(ServerCommunicationItem item);
     HashMap<String, String> serializeSyncData(T entity);
-    void deserializeSyncData(String syncData, T entity);
+    void deserializeSyncData(HashMap<String, String> syncData, T entity);
     String getEntityType();
 }

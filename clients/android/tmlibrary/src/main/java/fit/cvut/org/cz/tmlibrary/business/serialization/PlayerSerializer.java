@@ -47,11 +47,10 @@ public class PlayerSerializer extends BaseSerializer<Player> {
     }
 
     @Override
-    public void deserializeSyncData(String syncData, Player entity) {
-        String[] data = new Gson().fromJson(syncData, String[].class);
-        entity.setName(data[0]);
-        entity.setEmail(data[1]);
-        entity.setNote(data[2]);
+    public void deserializeSyncData(HashMap<String, String> syncData, Player entity) {
+        entity.setName(syncData.get("name"));
+        entity.setEmail(syncData.get("email"));
+        entity.setNote(syncData.get("note"));
     }
 
     @Override

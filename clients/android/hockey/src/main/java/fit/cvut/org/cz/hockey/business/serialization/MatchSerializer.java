@@ -119,16 +119,15 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     }
 
     @Override
-    public void deserializeSyncData(String syncData, ScoredMatch entity) {
+    public void deserializeSyncData(HashMap<String, String> syncData, ScoredMatch entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-        String[] data = new Gson().fromJson(syncData, new TypeToken<ArrayList<String>>(){}.getType());
         try {
-            entity.setDate(dateFormat.parse(data[0]));
+            entity.setDate(dateFormat.parse(syncData.get("date")));
         } catch (ParseException e) {}
-        entity.setPlayed(Boolean.parseBoolean(data[1]));
-        entity.setNote(data[2]);
-        entity.setPeriod(Integer.parseInt(data[3]));
-        entity.setRound(Integer.parseInt(data[4]));
+        entity.setPlayed(Boolean.parseBoolean(syncData.get("played")));
+        entity.setNote(syncData.get("note"));
+        entity.setPeriod(Integer.parseInt(syncData.get("period")));
+        entity.setRound(Integer.parseInt(syncData.get("round")));
     }
 
     @Override

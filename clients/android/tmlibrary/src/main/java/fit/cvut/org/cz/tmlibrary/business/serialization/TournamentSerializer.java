@@ -40,14 +40,13 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
     }
 
     @Override
-    public void deserializeSyncData(String syncData, Tournament entity) {
+    public void deserializeSyncData(HashMap<String, String> syncData, Tournament entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-        String[] data = new Gson().fromJson(syncData, String[].class);
-        entity.setName(data[0]);
-        entity.setNote(data[3]);
+        entity.setName(syncData.get("name"));
+        entity.setNote(syncData.get("note"));
         try {
-            entity.setStartDate(dateFormat.parse(data[1]));
-            entity.setEndDate(dateFormat.parse(data[2]));
+            entity.setStartDate(dateFormat.parse(syncData.get("start_date")));
+            entity.setEndDate(dateFormat.parse(syncData.get("end_date")));
         } catch (ParseException e) {}
     }
 

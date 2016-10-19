@@ -43,16 +43,15 @@ abstract public class CompetitionSerializer extends BaseSerializer<Competition> 
     }
 
     @Override
-    public void deserializeSyncData(String syncData, Competition entity) {
+    public void deserializeSyncData(HashMap<String, String> syncData, Competition entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-        String[] data = new Gson().fromJson(syncData, String[].class);
-        entity.setName(data[0]);
-        entity.setNote(data[3]);
-        entity.setType(CompetitionTypes.competitionTypes()[Integer.parseInt(data[4])]);
+        entity.setName(syncData.get("name"));
+        entity.setNote(syncData.get("note"));
+        entity.setType(CompetitionTypes.competitionTypes()[Integer.parseInt(syncData.get("type"))]);
         try {
-            entity.setStartDate(dateFormat.parse(data[1]));
-            entity.setEndDate(dateFormat.parse(data[2]));
-        } catch (ParseException e) {}
+            entity.setStartDate(dateFormat.parse(syncData.get("start_date")));
+            entity.setEndDate(dateFormat.parse(syncData.get("end_date")));
+        } catch (ParseException e) {} catch (NullPointerException e) {}
     }
 
     @Override
