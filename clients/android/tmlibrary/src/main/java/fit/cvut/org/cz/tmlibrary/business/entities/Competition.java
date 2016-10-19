@@ -22,6 +22,8 @@ public class Competition extends ShareBase implements Parcelable {
     public final static String col_end_date = "end_date";
 
     private long id;
+
+    private String sport_context;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -180,6 +182,14 @@ public class Competition extends ShareBase implements Parcelable {
 
     public String getEntityType() {
         return "Competition";
+    }
+
+    public String getSportContext() {
+        return sport_context;
+    }
+
+    public void setSportContext(String sport_context) {
+        this.sport_context = sport_context;
     }
 
     @Override

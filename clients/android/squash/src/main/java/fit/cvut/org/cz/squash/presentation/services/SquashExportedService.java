@@ -78,6 +78,7 @@ public class SquashExportedService extends IntentService {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Competition c = ManagersFactory.getInstance().competitionManager.getById(this, compId);
+                c.setSportContext(sport_context);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);

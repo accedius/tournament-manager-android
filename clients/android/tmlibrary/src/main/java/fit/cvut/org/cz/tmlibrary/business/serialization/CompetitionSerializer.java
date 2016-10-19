@@ -25,6 +25,7 @@ abstract public class CompetitionSerializer extends BaseSerializer<Competition> 
     @Override
     public HashMap<String, String> serializeSyncData(Competition entity) {
         HashMap<String, String> hm = new HashMap<>();
+        hm.put("sport_context", entity.getSportContext());
         hm.put("name", entity.getName());
         if (entity.getStartDate() == null) {
             hm.put("start_date", null);

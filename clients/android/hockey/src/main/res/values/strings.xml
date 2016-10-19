@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO sport_name => module name, context_names => sport_contexts -->
     <string name="sport_name">Hockey</string>
     <string name="context_names" translatable="false">Floorball,Hockey</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
