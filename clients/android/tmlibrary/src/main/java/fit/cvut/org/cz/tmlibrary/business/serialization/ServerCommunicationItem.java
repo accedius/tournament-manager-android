@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,10 +29,13 @@ public class ServerCommunicationItem {
 
     public transient boolean serializeToken;
     public String toJson() {
-        return new Gson().toJson(this);
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        return gson.toJson(this);
     }
 
-    public ServerCommunicationItem() {}
+    public ServerCommunicationItem() {
+        id = 0L;
+    }
 
     public ServerCommunicationItem(String uid, String etag, ServerToken token) {
         this.uid = uid;

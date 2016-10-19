@@ -1,6 +1,13 @@
 package fit.cvut.org.cz.hockey.presentation.services;
 
 import android.content.Intent;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
@@ -8,6 +15,7 @@ import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
@@ -86,6 +94,33 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
+                break;
+            }
+            case CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION: {
+                Intent res = new Intent(package_name + action);
+                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                Gson gson = new GsonBuilder().serializeNulls().create();
+                ServerCommunicationItem item = gson.fromJson(json, ServerCommunicationItem.class);
+                Log.d("IMPORT", "Item "+item);
+                Log.d("IMPORT", "Sync data "+item.syncData);
+                Competition c = CompetitionSerializer.getInstance(getApplicationContext()).deserialize(item);
+                List<ServerCommunicationItem> allSubItems = item.getSubItems();
+                List<ServerCommunicationItem> players = new ArrayList<>();
+                List<ServerCommunicationItem> tournaments = new ArrayList<>();
+                for (ServerCommunicationItem subItem : allSubItems) {
+                    if (subItem.getType().equals("Player")) {
+                        players.add(subItem);
+                    } else if (subItem.getType().equals("Tournament")) {
+                        tournaments.add(subItem);
+                    }
+                }
+                Log.d("IMPORT", "Competition: "+c);
+                for (ServerCommunicationItem p : players) {
+                    Log.d("IMPORT", "Player: "+p.syncData);
+                }
+                for (ServerCommunicationItem t : tournaments) {
+                    Log.d("IMPORT", "Tournament: "+t.syncData);
+                }
                 break;
             }
         }

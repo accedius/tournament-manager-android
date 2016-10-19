@@ -2,17 +2,15 @@ package fit.cvut.org.cz.tournamentmanager.presentation.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
-import com.google.gson.Gson;
 
 import java.io.File;
 
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
 
@@ -28,11 +26,18 @@ public class ImportFileDialog extends DialogFragment {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /* Deserialize for specified file */
+                /* Send request for deserialize specified file */
                 File competitionFile = FilesHelper.getFiles(sport_context).get(which);
                 String fileContent = FilesHelper.loadFileContent(competitionFile);
-                ServerCommunicationItem item = new Gson().fromJson(fileContent, ServerCommunicationItem.class);
-                Log.d("IMPORT", item.getSyncData().get("name")+ " chosen for import");
+
+                Intent intent = new Intent();
+                intent.setClassName(package_name, stats_service);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, fileContent);
+                getContext().startService(intent);
+                dialog.dismiss();
             }
         };
     }

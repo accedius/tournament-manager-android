@@ -8,6 +8,7 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 
@@ -54,9 +55,9 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
 
     @Override
     public Competition deserialize(ServerCommunicationItem item) {
-        Competition c = new Competition(item.id, item.uid, null, null, null, null, null);
+        Competition c = new Competition(item.getId(), item.getUid(), "", null, null, "", CompetitionTypes.teams());
         c.setEtag(item.getEtag());
-        //deserializeSyncData(item.syncData, c);
+        deserializeSyncData(item.syncData, c);
         return c;
     }
 }
