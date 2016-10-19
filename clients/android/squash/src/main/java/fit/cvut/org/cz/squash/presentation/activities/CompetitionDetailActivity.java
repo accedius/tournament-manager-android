@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashCompetitionOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
@@ -52,6 +53,9 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        ((SquashPackage) this.getApplication()).setSportContext(sport_context);
+
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -80,6 +84,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
         switch (item.getItemId()) {
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, ((SquashPackage) this.getApplication()).getSportContext());
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
                 startActivity(intent);
                 break;

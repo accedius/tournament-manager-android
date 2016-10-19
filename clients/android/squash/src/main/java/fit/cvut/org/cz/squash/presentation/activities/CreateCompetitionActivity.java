@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashCompetitionFragment;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -29,6 +30,9 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        ((SquashPackage) this.getApplication()).setSportContext(sport_context);
+
         super.onCreate(savedInstanceState);
 
         long id = getIntent().getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);

@@ -3,6 +3,8 @@ package fit.cvut.org.cz.squash.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
+
 /**
  * This class allows acess to application database
  * Created by Vaclav on 29. 3. 2016.
@@ -17,11 +19,8 @@ public class DatabaseFactory {
     private DatabaseFactory() {
     }
 
-    private boolean test = false;
-    public void setTest(boolean test) {this.test = test;}
-
     public SQLiteDatabase getDatabase(Context context) {
-        return new SquashDBHelper(context, test).getWritableDatabase();
+        String name = ((SquashPackage) context.getApplicationContext()).getSportContext();
+        return new SquashDBHelper(context, name).getWritableDatabase();
     }
-
 }

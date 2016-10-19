@@ -1,12 +1,12 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -16,43 +16,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
-import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
 
 /**
  * Created by kevin on 4.4.2016.
  */
 public class MainActivity extends AbstractToolbarActivity {
-    private final String frg_competitions = "competitions";
-    private final String frg_players = "players";
-
     private DrawerLayout mDrawerLayout;
     private NavigationView mDrawerList;
-    private View v;
 
-    ArrayList<ApplicationInfo> sport_packages;
-    private String active_fragment;
     private PlayersListFragment plf = null;
-    private SportsFragment sf = null;
     private int selectedItem;
-
-    private String orderColumn = Competition.col_end_date;
-    private String orderType = "DESC";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sport_packages = PackagesInfo.getPackages(this, getResources());
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (NavigationView) findViewById(R.id.left_drawer);
 
@@ -60,7 +44,7 @@ public class MainActivity extends AbstractToolbarActivity {
         mDrawerList.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(!item.isChecked());
+                item.setChecked(true);
                 mDrawerLayout.closeDrawers();
 
                 selectItem(item.getItemId());
@@ -85,13 +69,18 @@ public class MainActivity extends AbstractToolbarActivity {
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
-        selectItem(R.id.competitions);
+        mDrawerList.getMenu().getItem(1).setChecked(true);
+
+        setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
+        plf = new PlayersListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, plf).commit();
+
+        selectItem(R.id.players);
     }
 
     @Override
     protected View injectView(ViewGroup parent) {
-        v = getLayoutInflater().inflate(R.layout.activity_main, parent, false);
-        return v;
+        return getLayoutInflater().inflate(R.layout.activity_main, parent, false);
     }
 
     @Override
@@ -103,30 +92,13 @@ public class MainActivity extends AbstractToolbarActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         selectedItem = position;
-        Bundle b = new Bundle();
         switch (position) {
             case R.id.competitions:
-                active_fragment = frg_competitions;
-                setTitle(fit.cvut.org.cz.tmlibrary.R.string.competitions);
-                sf = new SportsFragment();
-                b.putString("order_column", orderColumn);
-                b.putString("order_type", orderType);
-                b.putParcelableArrayList("sport_packages", sport_packages);
-                sf.setArguments(b);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, sf)
-                        .commit();
+                Intent intent = new Intent(this, SportsActivity.class);
+                intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
+                startActivity(intent);
                 break;
             case R.id.players:
-                active_fragment = frg_players;
-                setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
-                plf = new PlayersListFragment();
-                plf.setArguments(b);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, plf)
-                        .commit();
                 break;
         }
     }
@@ -137,35 +109,12 @@ public class MainActivity extends AbstractToolbarActivity {
         return true;
     }
 
-    private String getColumnForDialogId(int which) {
-        switch (which) {
-            case 0: return Competition.col_name;
-            case 1: return Competition.col_start_date;
-            case 2: return Competition.col_end_date;
-            default: return Competition.col_name;
-        }
-    }
-
-    private void switchOrder() {
-        if (orderType.equals("DESC")) {
-            orderType = "ASC";
-        } else {
-            orderType = "DESC";
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_order) {
-            if (active_fragment.equals(frg_competitions)) {
-                SortingCompetitionsDialog dialog = SortingCompetitionsDialog.newInstance();
-                dialog.setListener(getSortingCompetitionsListener());
-                dialog.show(getSupportFragmentManager(), "SORT_COMPETITIONS");
-            } else if (active_fragment.equals(frg_players)) {
-                SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
-                dialog.setListener(getSortingPlayersListener());
-                dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
-            }
+            SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
+            dialog.setListener(getSortingPlayersListener());
+            dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
         }
         return true;
     }
@@ -185,34 +134,6 @@ public class MainActivity extends AbstractToolbarActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    private DialogInterface.OnClickListener getSortingCompetitionsListener() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (orderColumn == getColumnForDialogId(which)) {
-                    switchOrder();
-                } else {
-                    orderColumn = getColumnForDialogId(which);
-                    orderType = "ASC";
-                }
-
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("sport_packages", sport_packages);
-                b.putString("order_column", orderColumn);
-                b.putString("order_type", orderType);
-                b.putInt("current_item", sf.getCurrentItem());
-                SportsFragment ssf = new SportsFragment();
-                ssf.setArguments(b);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, ssf)
-                        .commit();
-                sf = ssf;
-                dialog.dismiss();
-            }
-        };
     }
 
     private DialogInterface.OnClickListener getSortingPlayersListener() {

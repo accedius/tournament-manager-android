@@ -1,5 +1,6 @@
 <resources>
     <string name="sport_name">Squash</string>
+    <string name="context_names" translatable="false">Badminton,Beach,Squash,Volleyball,Tennis</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
     <string name="title_activity_main" translatable="false">Squash Main Activity</string>
     <string name="squashpcg" translatable="false">Squash PCG</string>
@@ -24,7 +25,7 @@
     <string name="draw">Draw</string>
     <string name="loss">Loss</string>
     <string name="set_divider" translatable="false">:</string>
-    <string name="parse_number_error">Could not parse lostValue</string>
+    <string name="parse_number_error">Some value is not a number!</string>
     <string name="zero_score">Score cannot be lower than zero!</string>
     <string name="tie_set">Set cannot end in tie!</string>
     <string name="sets_error">Some sets have invalid values, either unfilled or tie!</string>

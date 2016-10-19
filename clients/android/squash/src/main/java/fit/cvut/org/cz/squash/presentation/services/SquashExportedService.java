@@ -9,6 +9,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
@@ -28,6 +29,8 @@ public class SquashExportedService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
+        String sport_context = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        ((SquashPackage) getApplicationContext()).setSportContext(sport_context);
 
         switch (action){
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
@@ -65,8 +68,9 @@ public class SquashExportedService extends IntentService {
 
                     statsForExport.addPlayerStats(exportStat);
                 }
-                Intent result = new Intent(package_name+action);
+                Intent result = new Intent(sport_context + package_name + action);
                 result.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsForExport);
+                result.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 sendBroadcast(result);
                 break;
             }
@@ -76,6 +80,7 @@ public class SquashExportedService extends IntentService {
                 Competition c = ManagersFactory.getInstance().competitionManager.getById(this, compId);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);

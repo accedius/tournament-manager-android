@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import java.util.HashMap;
+
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
@@ -21,27 +23,59 @@ public class CompetitionCP extends ContentProvider {
 
     private SquashDBHelper helper;
 
-    private static final int COMPETITIONS_ALL = 0;
     private static final int COMPETITION_ONE = 1;
-    private static final int DELETE_COMPETITION = 2;
-    private static final int EMPTY_COMPETITION_ONE = 3;
+    private static final int EMPTY_COMPETITION_ONE = 2;
+    private static final int COMPETITIONS_ALL = 3;
     private static final int COMPETITIONS_BY_PLAYER = 4;
+    private static final int DELETE_COMPETITION = 5;
 
     private static final int SEGMENT_ID = 1;
+
+    private static final int BADMINTON = 100;
+    private static final int BEACH = 200;
+    private static final int SQUASH = 300;
+    private static final int TENNIS = 400;
+    private static final int VOLLEYBALL = 500;
+
+    // TODO strings set to Constants
+    private static final HashMap<String, Integer> sport_contexts = new HashMap<String, Integer>(){{
+        put("Badminton", BADMINTON);
+        put("Beach", BEACH);
+        put("Squash", SQUASH);
+        put("Tennis", TENNIS);
+        put("Volleyball", VOLLEYBALL);
+    }};
+
+    // TODO strings set to Constants
+    private String getSport(int uriID) {
+        if (uriID > VOLLEYBALL)
+            return "Volleyball";
+        else if (uriID > TENNIS)
+            return "Tennis";
+        else if (uriID > SQUASH)
+            return "Squash";
+        else if (uriID > BEACH)
+            return "Beach";
+        else if (uriID > BADMINTON)
+            return "Badminton";
+        else
+            return "";
+    }
 
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(AUTHORITY, CPConstants.uCompetitions, COMPETITIONS_ALL);
+        for (HashMap.Entry<String, Integer> sport : sport_contexts.entrySet()) {
+            matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uCompetitions, COMPETITIONS_ALL + sport.getValue());
+            matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uDeleteCompetition + "#", DELETE_COMPETITION + sport.getValue());
+            matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uEmptyCompetition + "#", EMPTY_COMPETITION_ONE + sport.getValue());
+            matcher.addURI(AUTHORITY, sport.getKey()+CPConstants.uCompetitionsByPlayer + "#", COMPETITIONS_BY_PLAYER + sport.getValue());
+        }
         matcher.addURI(AUTHORITY, CPConstants.uCompetitions + "#", COMPETITION_ONE);
-        matcher.addURI(AUTHORITY, CPConstants.uDeleteCompetition + "#", DELETE_COMPETITION);
-        matcher.addURI(AUTHORITY, CPConstants.uEmptyCompetition + "#", EMPTY_COMPETITION_ONE);
-        matcher.addURI(AUTHORITY, CPConstants.uCompetitionsByPlayer + "#", COMPETITIONS_BY_PLAYER);
     }
 
     @Override
     public boolean onCreate() {
-        helper = new SquashDBHelper(getContext(), false);
         return true;
     }
 
@@ -49,15 +83,18 @@ public class CompetitionCP extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriType = matcher.match(uri);
-
-        if (uriType == matcher.NO_MATCH) {
+        if (uriType == matcher.NO_MATCH)
             return null;
-        }
 
+        String sport = getSport(uriType);
+        uriType %= 100;
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+
         if (uriType == COMPETITIONS_ALL) {
+            helper = new SquashDBHelper(getContext(), sport);
             builder.setTables(DBConstants.tCOMPETITIONS);
         } else if (uriType == COMPETITIONS_BY_PLAYER) {
+            helper = new SquashDBHelper(getContext(), sport);
             String playerID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tPLAYERS_IN_COMPETITION + " join " + DBConstants.tCOMPETITIONS + " ON " +
@@ -67,6 +104,7 @@ public class CompetitionCP extends ContentProvider {
             projection = new String[]{DBConstants.tCOMPETITIONS + ".*"};
             selection = DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cPLAYER_ID + " = " + playerID;
         } else if (uriType == EMPTY_COMPETITION_ONE) {
+            helper = new SquashDBHelper(getContext(), sport);
             String competitionID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tCOMPETITIONS +
@@ -85,7 +123,6 @@ public class CompetitionCP extends ContentProvider {
 
         Cursor cursor = builder.query(helper.getWritableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
         return cursor;
     }
 
@@ -104,7 +141,10 @@ public class CompetitionCP extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int uriType = matcher.match(uri);
+        String sport = getSport(uriType);
+        uriType %= 100;
         if (uriType == DELETE_COMPETITION) {
+            helper = new SquashDBHelper(getContext(), sport);
             String competitionID = uri.getPathSegments().get(SEGMENT_ID);
             String where = DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " + competitionID;
             return helper.getWritableDatabase().delete(DBConstants.tCOMPETITIONS, where, null);

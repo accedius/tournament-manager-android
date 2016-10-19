@@ -29,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
  * Created by Vaclav on 25. 3. 2016.
  */
 public abstract class NewCompetitionFragment extends AbstractDataFragment {
-    private static final String ARG_ID = "arg_id";
+    protected static final String ARG_ID = "arg_id";
 
     /**
      * Constructor for this fragment with id of competition that needs to update
@@ -125,18 +125,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
     }
 
     /**
-     * Called with new Competition in param
-     * @param c
-     */
-    protected abstract void saveCompetition(Competition c);
-
-    /**
-     * Called when competition in param should be updated
-     * @param c
-     */
-    protected abstract void updateCompetition(Competition c);
-
-    /**
      *
      * @return String key of competition gotten in Bundle of Intent when receiving from service
      */
@@ -147,6 +135,12 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
      * @return true, if you want to permit choosing between team and individuals
      */
     protected boolean isTypeChoosable() { return true; }
+
+    /**
+     *
+     * @return default competition type if type is not chooseable
+     */
+    abstract protected CompetitionType defaultCompetitionType();
 
     @Override
     protected void bindDataOnView(Intent intent) {
@@ -238,7 +232,10 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         if (dEndDate != null)
             eDate = dEndDate.getTime();
 
-        CompetitionType t = (CompetitionType) type.getSelectedItem();
+        CompetitionType t = defaultCompetitionType();
+        if (isTypeChoosable()) {
+            t = (CompetitionType) type.getSelectedItem();
+        }
         return new Competition(getArguments().getLong(ARG_ID), name.getText().toString(), sDate, eDate, note.getText().toString(), t);
     }
 }

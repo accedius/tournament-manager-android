@@ -14,13 +14,10 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SQLiteOpenHelper {
-    private static final String DBName = "TMSquash.db";
     private static final int DBVersion = 1;
-    private boolean test = false;
 
-    public SquashDBHelper(Context context, boolean test) {
-        super(context, DBName, null, DBVersion);
-        this.test = test;
+    public SquashDBHelper(Context context, String name) {
+        super(context, name+".db", null, DBVersion);
     }
 
     @Override
@@ -119,7 +116,7 @@ public class SquashDBHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        if (!db.isReadOnly() && !test) {
+        if (!db.isReadOnly()) {
             // Enable foreign key constraints
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
