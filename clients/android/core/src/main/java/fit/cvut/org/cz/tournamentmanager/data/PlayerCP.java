@@ -39,7 +39,6 @@ public class PlayerCP extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriType = matcher.match(uri);
-
         if (uriType != PLAYERS_ALL) return null;
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -60,7 +59,11 @@ public class PlayerCP extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        int uriType = matcher.match(uri);
+        if (uriType != PLAYERS_ALL) return null;
+
+        Long rowId = helper.getWritableDatabase().insert(DBConstants.tPLAYERS, null, values);
+        return Uri.parse(uri.toString()+rowId);
     }
 
     @Override

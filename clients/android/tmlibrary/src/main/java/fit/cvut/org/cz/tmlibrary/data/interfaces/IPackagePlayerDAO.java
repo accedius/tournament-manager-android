@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.data.interfaces;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -120,5 +121,13 @@ public interface IPackagePlayerDAO {
      * @return all players in core
      */
     Map<Long, DPlayer> getAllPlayers(Context context);
+
+    /**
+     * insert player to DB
+     * @param context application context
+     * @param values player values - name, email, note
+     * @return playerID of inserted player
+     */
+    Long insertPlayer(Context context, ContentValues values);
 
 }
