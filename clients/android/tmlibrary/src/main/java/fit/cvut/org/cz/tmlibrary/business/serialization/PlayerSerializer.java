@@ -36,7 +36,9 @@ public class PlayerSerializer extends BaseSerializer<Player> {
 
     @Override
     public Player deserialize(ServerCommunicationItem item) {
-        return null;
+        Player p = new Player(-1L, "", "", "");
+        deserializeSyncData(item.syncData, p);
+        return p;
     }
 
     @Override
