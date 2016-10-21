@@ -7,18 +7,22 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
@@ -107,7 +111,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem item = gson.fromJson(json, ServerCommunicationItem.class);
                 Competition c = CompetitionSerializer.getInstance(getApplicationContext()).deserialize(item);
-                Long competitionId = ManagerFactory.getInstance().competitionManager.insert(getApplicationContext(), c);
+                c.setName(c.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
+                long competitionId = ManagerFactory.getInstance().competitionManager.insert(getApplicationContext(), c);
 
                 List<ServerCommunicationItem> allSubItems = item.getSubItems();
                 List<ServerCommunicationItem> players = new ArrayList<>();
@@ -130,11 +135,13 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 /* Import players
                     - add if not exists
-                    - add to competition */
+                    - add to competition
+                    - create HashMap<uid, player> */
+                HashMap<String, Player> importedPlayers = new HashMap<>();
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
                     Player imported = PlayerSerializer.getInstance(getApplicationContext()).deserialize(p);
-                    Long playerId;
+                    long playerId;
                     if (allPlayersMap.containsKey(imported.getEmail())) {
                         playerId = allPlayersMap.get(imported.getEmail()).getId();
                         if (allPlayersMap.get(imported.getEmail()).samePlayer(imported)) {
@@ -146,17 +153,59 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, imported);
                         Log.d("IMPORT", "\tADDED "+playerId);
                     }
+                    imported.setId(playerId);
+                    importedPlayers.put(imported.getUid(), imported);
 
                     // Add player to competition.
                     ManagerFactory.getInstance().packagePlayerManager.addPlayerToCompetition(this, playerId, competitionId);
                 }
 
+                Log.d("IMPORT", "HASHMAP "+importedPlayers);
+
                 /* TOURNAMENTS HANDLING */
                 for (ServerCommunicationItem t : tournaments) {
+                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
+
                     Log.d("IMPORT", "Tournament: "+t.syncData);
                     Tournament imported = TournamentSerializer.getInstance(getApplicationContext()).deserialize(t);
                     imported.setCompetitionId(competitionId);
-                    ManagerFactory.getInstance().tournamentManager.insert(this, imported);
+                    long tournamentId = ManagerFactory.getInstance().tournamentManager.insert(this, imported);
+
+                    for (ServerCommunicationItem subItem : t.subItems) {
+                        if (subItem.getType().equals("Player")) {
+                            tournamentPlayers.add(subItem);
+                        } else if (subItem.getType().equals("Team")) {
+                            tournamentTeams.add(subItem);
+                        } else if (subItem.getType().equals("Match")) {
+                            tournamentMatches.add(subItem);
+                        }
+                    }
+
+                    for (ServerCommunicationItem p : tournamentPlayers) {
+                        // Add player to tournament.
+                        long playerId = importedPlayers.get(p.getUid()).getId();
+                        ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, playerId, tournamentId); ;
+                    }
+
+                    for (ServerCommunicationItem team : tournamentTeams) {
+                        // Add team to tournament.
+                        Team importedTeam = TeamSerializer.getInstance(getApplicationContext()).deserialize(team);
+                        importedTeam.setTournamentId(tournamentId);
+                        long teamId = ManagerFactory.getInstance().teamManager.insert(this, importedTeam);
+
+                        // Add players to team.
+                        ArrayList<Player> teamPlayers = new ArrayList<>();
+                        for (ServerCommunicationItem teamPlayer: team.subItems) {
+                            if (teamPlayer.getType().equals("Player")) {
+                                teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
+                            }
+                        }
+                        ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, teamId, teamPlayers);
+                    }
+
+                    // TODO Add matches
                 }
                 break;
             }
