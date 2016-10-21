@@ -9,6 +9,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 
@@ -17,12 +18,12 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
  */
 public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.CompetitionSerializer {
     protected static CompetitionSerializer instance = null;
-
     protected CompetitionSerializer(Context context) {
         super(context);
     }
 
     public static CompetitionSerializer getInstance(Context context) {
+        strategy = new FileSerializingStrategy();
         if (instance == null) {
             instance = new CompetitionSerializer(context);
         }
@@ -32,7 +33,7 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
     @Override
     public ServerCommunicationItem serialize(Competition entity) {
         /* Serialize Competition itself */
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));

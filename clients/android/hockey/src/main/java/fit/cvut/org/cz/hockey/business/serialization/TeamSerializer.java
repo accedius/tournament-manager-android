@@ -21,9 +21,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
  * Created by kevin on 8.10.2016.
  */
 public class TeamSerializer extends BaseSerializer<Team> {
-    protected static Context context = null;
     protected static TeamSerializer instance = null;
-
     protected TeamSerializer(Context context) {
         this.context = context;
     }

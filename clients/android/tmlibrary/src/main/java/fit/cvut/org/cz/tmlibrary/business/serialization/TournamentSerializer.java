@@ -15,8 +15,6 @@ import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
  * Created by kevin on 8.10.2016.
  */
 abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
-    protected static Context context = null;
-
     protected TournamentSerializer(Context context) {
         this.context = context;
     }

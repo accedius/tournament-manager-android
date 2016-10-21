@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -12,22 +10,22 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
  * Created by kevin on 8.10.2016.
  */
 public class PlayerSerializer extends BaseSerializer<Player> {
-    protected static Context context = null;
     protected static PlayerSerializer instance = null;
-
     protected PlayerSerializer(Context context) {
         this.context = context;
     }
 
     public static PlayerSerializer getInstance(Context context) {
-        if (instance == null)
+        strategy = new FileSerializingStrategy();
+        if (instance == null) {
             return new PlayerSerializer(context);
+        }
         return instance;
     }
 
     @Override
     public ServerCommunicationItem serialize(Player entity) {
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));

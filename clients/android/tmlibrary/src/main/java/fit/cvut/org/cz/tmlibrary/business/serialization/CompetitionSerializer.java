@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -16,8 +14,6 @@ import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
  * Created by kevin on 8.10.2016.
  */
 abstract public class CompetitionSerializer extends BaseSerializer<Competition> {
-    protected static Context context = null;
-
     protected CompetitionSerializer(Context context) {
         this.context = context;
     }

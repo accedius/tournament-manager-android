@@ -31,9 +31,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
  * Created by kevin on 8.10.2016.
  */
 public class MatchSerializer extends BaseSerializer<ScoredMatch> {
-    protected static Context context = null;
     protected static MatchSerializer instance = null;
-
     protected MatchSerializer(Context context) {
         this.context = context;
     }
