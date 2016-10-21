@@ -14,6 +14,7 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
@@ -34,6 +35,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -115,6 +117,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION: {
+                // TODO brutal refactor NEEDED
+
                 Intent res = new Intent(package_name + action);
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
@@ -215,7 +219,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, teamId, teamPlayers);
                     }
 
-                    // TODO Add stats
+                    // Add stats
                     for (ServerCommunicationItem match : tournamentMatches) {
                         ScoredMatch importedMatch = MatchSerializer.getInstance(this).deserialize(match);
                         importedMatch.setTournamentId(tournamentId);
@@ -255,14 +259,65 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             MatchScore score = new MatchScore(matchId, homeScore, awayScore, shootouts, overtime);
                             ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId(this, matchId, score);
                             /* END statistics manager - set match score by match id */
-                            /* statistics manager - update players in match */
-                            /* statistics manager - update player stats in match */
+
+                            /* START statistics manager - update players in match */
+                            home = true;
+                            ParticipantType partType = ParticipantType.home;
+                            ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch(
+                                    this, matchId, ParticipantType.home,
+                                    getPlayerIds(match, "home", importedPlayers));
+                            ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch(
+                                    this, matchId, ParticipantType.away,
+                                    getPlayerIds(match, "away", importedPlayers));
+                            /* END statistics manager - update players in match */
+
+                            /* START statistics manager - update player stats in match */
+                            updatePlayersMatchStats(match, matchId, importedPlayers);
+                            /* END statistics manager - update player stats in match */
 
                         }
                     }
                 }
                 break;
             }
+        }
+    }
+
+    ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
+        ArrayList<Long> playerIds = new ArrayList<>();
+        int playersCnt = Integer.parseInt(match.syncData.get("players_"+role));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_"+role+"_"+i);
+            playerIds.add(players.get(uid).getId());
+        }
+        return playerIds;
+    }
+
+    void updatePlayersMatchStats(ServerCommunicationItem match, long matchId, HashMap<String, Player> players) {
+        int playersCnt = Integer.parseInt(match.syncData.get("players_home"));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_home_"+i);
+            long id = players.get(uid).getId();
+            int goals = Integer.parseInt(match.syncData.get("stat_goals_"+uid));
+            int assists = Integer.parseInt(match.syncData.get("stat_assists_"+uid));
+            int plusMinusPoints = Integer.parseInt(match.syncData.get("stat_plus_minus_points_"+uid));
+            int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
+
+            MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
+            ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
+        }
+
+        playersCnt = Integer.parseInt(match.syncData.get("players_away"));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_away_"+i);
+            long id = players.get(uid).getId();
+            int goals = Integer.parseInt(match.syncData.get("stat_goals_"+uid));
+            int assists = Integer.parseInt(match.syncData.get("stat_assists_"+uid));
+            int plusMinusPoints = Integer.parseInt(match.syncData.get("stat_plus_minus_points_"+uid));
+            int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
+
+            MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
+            ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
         }
     }
 }
