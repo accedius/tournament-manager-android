@@ -51,8 +51,9 @@ public interface IScoredMatchManager {
      * insert match
      * @param context application context
      * @param match match to be inserted
+     * @return id of inserted match
      */
-    void insert(Context context, ScoredMatch match);
+    long insert(Context context, ScoredMatch match);
 
     /**
      * update match

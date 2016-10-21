@@ -84,7 +84,6 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public ScoredMatch getById(Context context, long Id) {
         DMatch dm = DAOFactory.getInstance().matchDAO.getById(context, Id);
-
         return fillMatch(context, dm);
     }
 
@@ -143,7 +142,6 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void resetMatch(Context context, long matchId) {
         ScoredMatch match = getById(context, matchId);
-
         if (!match.isPlayed()) return;
 
         delete(context, matchId);
@@ -151,7 +149,7 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
-    public void insert(Context context, ScoredMatch match) {
+    public long insert(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch(match);
 
         dMatch.setLastModified(new Date());
@@ -162,13 +160,13 @@ public class MatchManager implements IScoredMatchManager {
 
         DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
         DAOFactory.getInstance().participantDAO.insert(context, awayParticipant);
+        return matchId;
     }
 
     @Override
     public void update(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch(match);
         dMatch.setLastModified(new Date());
-
         DAOFactory.getInstance().matchDAO.update(context, dMatch);
     }
 
