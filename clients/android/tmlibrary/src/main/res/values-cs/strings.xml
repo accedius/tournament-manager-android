@@ -114,4 +114,6 @@
     <string name="competition_import_server">Importovat ze serveru</string>
     <string name="choose_file">Vyberte soubor</string>
     <string name="no_competition_file_error">Nebyl nalezen žádný soubor ve složce Download.</string>
+    <string name="export_file_created">Soubor byl vytvořen ve složce Download.</string>
+    <string name="export_file_failed">Soubor se nepodařilo uložit. Zkuste to prosím později.</string>
 </resources>

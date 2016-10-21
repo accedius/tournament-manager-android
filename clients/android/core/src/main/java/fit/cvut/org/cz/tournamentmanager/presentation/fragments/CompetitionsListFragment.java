@@ -202,9 +202,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
                 View v = getView().findFocus();
                 if (FilesHelper.saveFile(filename, json)) {
-                    Snackbar.make(v, "File has been created in your Download folder.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_created, Snackbar.LENGTH_LONG).show();
                 } else {
-                    Snackbar.make(v, "File could not be created. Please try again later.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_failed, Snackbar.LENGTH_LONG).show();
                 }
             }
 
