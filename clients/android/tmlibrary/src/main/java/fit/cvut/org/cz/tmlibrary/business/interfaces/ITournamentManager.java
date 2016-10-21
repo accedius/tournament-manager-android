@@ -14,8 +14,9 @@ public interface ITournamentManager {
      * insert new tournament
      * @param context application context
      * @param tournament tournament to be inserted
+     * @return id of inserted tournament
      */
-    void insert(Context context, Tournament tournament);
+    long insert(Context context, Tournament tournament);
 
     /**
      * update existing tournament

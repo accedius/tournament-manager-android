@@ -51,7 +51,11 @@ public class TeamSerializer extends BaseSerializer<Team> {
 
     @Override
     public Team deserialize(ServerCommunicationItem item) {
-        return null;
+        Team t = new Team(-1, "");
+        t.setUid(item.getUid());
+        t.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, t);
+        return t;
     }
 
     @Override

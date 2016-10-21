@@ -182,4 +182,8 @@ public class Player extends ShareBase implements Parcelable {
     public String getEntityType() {
         return "Player";
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

@@ -36,15 +36,15 @@ public class TeamDAO implements ITeamDAO {
     }
 
     @Override
-    public void insert(Context context, DTeam team) {
+    public long insert(Context context, DTeam team) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = toContVal(team);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tTEAMS, null, values);
+        Long newRowId = db.insert(DBConstants.tTEAMS, null, values);
 
         db.close();
+        return newRowId;
     }
 
     @Override

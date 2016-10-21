@@ -34,7 +34,10 @@ public class PlayerSerializer extends BaseSerializer<Player> {
 
     @Override
     public Player deserialize(ServerCommunicationItem item) {
-        Player p = new Player(-1L, "", "", "");
+        Player p = new Player(-1, "", "", "");
+        p.setUid(item.getUid());
+        p.setEtag(item.getEtag());
+        p.setLastModified(item.getModified());
         deserializeSyncData(item.syncData, p);
         return p;
     }

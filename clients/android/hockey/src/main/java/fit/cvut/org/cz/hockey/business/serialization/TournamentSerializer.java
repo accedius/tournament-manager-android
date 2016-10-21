@@ -61,9 +61,10 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
 
     @Override
     public Tournament deserialize(ServerCommunicationItem item) {
-        Tournament c = new Tournament(item.getId(), item.getUid(), "", null, null, "");
-        c.setEtag(item.getEtag());
-        deserializeSyncData(item.syncData, c);
-        return c;
+        Tournament t = new Tournament(item.getId(), item.getUid(), "", null, null, "");
+        t.setEtag(item.getEtag());
+        t.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, t);
+        return t;
     }
 }

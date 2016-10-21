@@ -14,8 +14,9 @@ public interface ITeamDAO {
      * insert team into database
      * @param context application context
      * @param team team to be inserted
+     * @return id of inserted team
      */
-    void insert(Context context, DTeam team);
+    long insert(Context context, DTeam team);
 
     /**
      * update team in database

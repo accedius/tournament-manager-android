@@ -14,8 +14,9 @@ public interface ITeamManager {
      * insert team
      * @param context application context
      * @param team team to be inserted
+     * @return id of inserted team
      */
-    void insert(Context context, Team team);
+    long insert(Context context, Team team);
 
     /**
      * update a team (including its rosters)
