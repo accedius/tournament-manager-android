@@ -80,18 +80,6 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
     }
 
     /**
-     * Called with new player in param
-     * @param c
-     */
-    protected abstract void savePlayer(Player c);
-
-    /**
-     * Called when player in param should be updated
-     * @param c
-     */
-    protected abstract void updatePlayer(Player c);
-
-    /**
      *
      * @return String key of player gotten in Bundle of Intent when receiving from service
      */

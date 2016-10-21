@@ -12,22 +12,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  */
 public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fragments.NewPlayerFragment {
     @Override
-    protected void savePlayer(Player c) {
-        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_CREATE, getContext());
-        intent.putExtra(PlayerService.EXTRA_PLAYER, c);
-
-        getContext().startService(intent);
-    }
-
-    @Override
-    protected void updatePlayer(Player c) {
-        Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE, getContext());
-        intent.putExtra(PlayerService.EXTRA_PLAYER, c);
-
-        getContext().startService(intent);
-    }
-
-    @Override
     protected String getPlayerKey() {
         return PlayerService.EXTRA_PLAYER;
     }
