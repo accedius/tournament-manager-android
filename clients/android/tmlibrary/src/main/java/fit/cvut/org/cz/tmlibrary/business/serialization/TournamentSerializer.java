@@ -28,12 +28,12 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
         if (entity.getStartDate() == null) {
             hm.put("start_date", null);
         } else {
-            hm.put("start_date", entity.getStartDate().toString());
+            hm.put("start_date", DateFormatter.getInstance().getDBDateFormat().format(entity.getStartDate()));
         }
         if (entity.getEndDate() == null) {
             hm.put("end_date", null);
         } else {
-            hm.put("end_date", entity.getEndDate().toString());
+            hm.put("end_date", DateFormatter.getInstance().getDBDateFormat().format(entity.getEndDate()));
         }
         hm.put("note", entity.getNote());
         return hm;
