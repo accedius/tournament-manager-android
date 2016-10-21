@@ -128,19 +128,27 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     allPlayersMap.put(p.getEmail(), p);
                 }
 
+                /* Import players
+                    - add if not exists
+                    - add to competition */
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
                     Player imported = PlayerSerializer.getInstance(getApplicationContext()).deserialize(p);
+                    Long playerId;
                     if (allPlayersMap.containsKey(imported.getEmail())) {
+                        playerId = allPlayersMap.get(imported.getEmail()).getId();
                         if (allPlayersMap.get(imported.getEmail()).samePlayer(imported)) {
                             Log.d("IMPORT", "\tSKIP");
                         } else {
                             Log.d("IMPORT", "\tCONFLICT!");
                         }
                     } else {
-                        Long playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, imported);
+                        playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, imported);
                         Log.d("IMPORT", "\tADDED "+playerId);
                     }
+
+                    // Add player to competition.
+                    ManagerFactory.getInstance().packagePlayerManager.addPlayerToCompetition(this, playerId, competitionId);
                 }
 
                 /* TOURNAMENTS HANDLING */
