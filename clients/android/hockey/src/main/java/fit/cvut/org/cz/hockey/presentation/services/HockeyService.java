@@ -14,9 +14,13 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
+import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.StatsEnum;
+import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
@@ -30,6 +34,9 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -221,7 +228,37 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             }
                             home = false;
                         }
-                        ManagerFactory.getInstance().matchManager.insert(this, importedMatch);
+                        long matchId = ManagerFactory.getInstance().matchManager.insert(this, importedMatch);
+                        if (importedMatch.isPlayed()) {
+                            /* START match manager "begin match" */
+                            DTournament tour = DAOFactory.getInstance().tournamentDAO.getById(this, importedMatch.getTournamentId());
+                            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(this, matchId);
+                            for (DParticipant dp : participants) {
+                                for (StatsEnum statEn : StatsEnum.values()) {
+                                    if (statEn.isForPlayer()) continue;
+                                    DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
+                                    DAOFactory.getInstance().statDAO.insert(this, statToAdd);
+                                }
+                            }
+                            importedMatch.setPlayed(true);
+                            ManagerFactory.getInstance().matchManager.update(this, importedMatch);
+
+                            DMatchStat matchStat = new DMatchStat(matchId, false, false);
+                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(this, matchStat);
+                            /* END match manager "begin match" */
+
+                            /* START statistics manager - set match score by match id */
+                            int homeScore = Integer.parseInt(match.syncData.get("score_home"));
+                            int awayScore = Integer.parseInt(match.syncData.get("score_away"));
+                            boolean overtime = Boolean.parseBoolean(match.syncData.get("overtime"));
+                            boolean shootouts = Boolean.parseBoolean(match.syncData.get("shootouts"));
+                            MatchScore score = new MatchScore(matchId, homeScore, awayScore, shootouts, overtime);
+                            ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId(this, matchId, score);
+                            /* END statistics manager - set match score by match id */
+                            /* statistics manager - update players in match */
+                            /* statistics manager - update player stats in match */
+
+                        }
                     }
                 }
                 break;
