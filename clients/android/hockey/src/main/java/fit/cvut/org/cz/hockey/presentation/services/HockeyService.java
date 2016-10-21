@@ -13,10 +13,12 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
@@ -105,9 +107,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem item = gson.fromJson(json, ServerCommunicationItem.class);
                 Competition c = CompetitionSerializer.getInstance(getApplicationContext()).deserialize(item);
-                Log.d("IMPORT", "Item "+item);
-                Log.d("IMPORT", "Sync data "+item.syncData);
-                Log.d("IMPORT", "Competition: "+c);
+                Long competitionId = ManagerFactory.getInstance().competitionManager.insert(getApplicationContext(), c);
+
                 List<ServerCommunicationItem> allSubItems = item.getSubItems();
                 List<ServerCommunicationItem> players = new ArrayList<>();
                 List<ServerCommunicationItem> tournaments = new ArrayList<>();
@@ -145,6 +146,9 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 /* TOURNAMENTS HANDLING */
                 for (ServerCommunicationItem t : tournaments) {
                     Log.d("IMPORT", "Tournament: "+t.syncData);
+                    Tournament imported = TournamentSerializer.getInstance(getApplicationContext()).deserialize(t);
+                    imported.setCompetitionId(competitionId);
+                    ManagerFactory.getInstance().tournamentManager.insert(this, imported);
                 }
                 break;
             }
