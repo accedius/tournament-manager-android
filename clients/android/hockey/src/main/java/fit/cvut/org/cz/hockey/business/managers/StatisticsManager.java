@@ -230,8 +230,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         return score;
     }
 
-    public void setMatchScoreByMatchId(Context context, long id, MatchScore score) {
-        DMatchStat matchStat = new DMatchStat(id, score.isOvertime(), score.isShootouts());
+    public void setMatchScoreByMatchId(Context context, long matchId, MatchScore score) {
+        DMatchStat matchStat = new DMatchStat(matchId, score.isOvertime(), score.isShootouts());
         DAOFactory.getInstance().matchStatisticsDAO.update(context, matchStat);
 
         int homeOutcome = 0, awayOutcome = 0;
@@ -245,7 +245,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             homeOutcome = 3;
             awayOutcome = 1;
         }
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, id);
+        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
         DStat homeScoreStat = new DStat();
         DStat awayScoreStat = new DStat();
         for (DParticipant dp : participants) {

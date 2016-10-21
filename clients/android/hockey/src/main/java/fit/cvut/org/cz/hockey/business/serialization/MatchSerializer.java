@@ -135,9 +135,6 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         entity.setNote(syncData.get("note"));
         entity.setPeriod(Integer.parseInt(syncData.get("period")));
         entity.setRound(Integer.parseInt(syncData.get("round")));
-
-        entity.setHomeScore(Integer.parseInt(syncData.get("score_home")));
-        entity.setAwayScore(Integer.parseInt(syncData.get("score_away")));
     }
 
     @Override

@@ -111,12 +111,12 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(package_name + action);
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
-                ServerCommunicationItem item = gson.fromJson(json, ServerCommunicationItem.class);
-                Competition c = CompetitionSerializer.getInstance(getApplicationContext()).deserialize(item);
+                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
                 c.setName(c.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
-                long competitionId = ManagerFactory.getInstance().competitionManager.insert(getApplicationContext(), c);
+                long competitionId = ManagerFactory.getInstance().competitionManager.insert(this, c);
 
-                List<ServerCommunicationItem> allSubItems = item.getSubItems();
+                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
                 List<ServerCommunicationItem> players = new ArrayList<>();
                 List<ServerCommunicationItem> tournaments = new ArrayList<>();
 
@@ -142,7 +142,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 HashMap<String, Player> importedPlayers = new HashMap<>();
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
-                    Player importedPlayer = PlayerSerializer.getInstance(getApplicationContext()).deserialize(p);
+                    Player importedPlayer = PlayerSerializer.getInstance(this).deserialize(p);
                     long playerId;
                     if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
                         playerId = allPlayersMap.get(importedPlayer.getEmail()).getId();
@@ -169,7 +169,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
 
                     Log.d("IMPORT", "Tournament: "+t.syncData);
-                    Tournament imported = TournamentSerializer.getInstance(getApplicationContext()).deserialize(t);
+                    Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
                     imported.setCompetitionId(competitionId);
                     long tournamentId = ManagerFactory.getInstance().tournamentManager.insert(this, imported);
 
@@ -192,7 +192,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     HashMap<String, Team> importedTeams = new HashMap<>();
                     for (ServerCommunicationItem team : tournamentTeams) {
                         // Add team to tournament.
-                        Team importedTeam = TeamSerializer.getInstance(getApplicationContext()).deserialize(team);
+                        Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
                         importedTeam.setTournamentId(tournamentId);
                         long teamId = ManagerFactory.getInstance().teamManager.insert(this, importedTeam);
                         importedTeam.setId(teamId);
@@ -210,7 +210,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                     // TODO Add stats
                     for (ServerCommunicationItem match : tournamentMatches) {
-                        ScoredMatch importedMatch = MatchSerializer.getInstance(getApplicationContext()).deserialize(match);
+                        ScoredMatch importedMatch = MatchSerializer.getInstance(this).deserialize(match);
                         importedMatch.setTournamentId(tournamentId);
                         boolean home = true;
                         for (ServerCommunicationItem matchTeam : match.subItems) {
