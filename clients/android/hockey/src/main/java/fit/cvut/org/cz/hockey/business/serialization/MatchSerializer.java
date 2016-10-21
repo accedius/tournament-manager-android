@@ -104,7 +104,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
             homePlayerId++;
             hm.put("player_home_"+homePlayerId, strategy.getUid(p));
             hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
-            hm.put("stat_assits_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
+            hm.put("stat_assists_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
             hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
             hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
         }
@@ -117,7 +117,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
             awayPlayerId++;
             hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
             hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
-            hm.put("stat_assits_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
+            hm.put("stat_assists_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
             hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
             hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
         }
