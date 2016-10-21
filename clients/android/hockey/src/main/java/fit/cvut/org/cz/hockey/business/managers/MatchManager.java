@@ -155,12 +155,11 @@ public class MatchManager implements IScoredMatchManager {
         DMatch dMatch = ScoredMatch.convertToDMatch(match);
 
         dMatch.setLastModified(new Date());
-        dMatch.setPlayed(false);
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
         DParticipant homeParticipant = new DParticipant(-1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString());
-
         DParticipant awayParticipant = new DParticipant(-1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString());
+
         DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
         DAOFactory.getInstance().participantDAO.insert(context, awayParticipant);
     }

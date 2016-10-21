@@ -157,4 +157,6 @@ public class ScoredMatch extends Match {
     public void setAwayName(String awayName) {
         this.awayName = awayName;
     }
+
+
 }

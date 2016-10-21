@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
@@ -21,6 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ISharedEntitySerializer;
@@ -46,7 +48,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     @Override
     public ServerCommunicationItem serialize(ScoredMatch entity) {
         /* Serialize Match itself */
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
@@ -61,7 +63,12 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
 
     @Override
     public ScoredMatch deserialize(ServerCommunicationItem item) {
-        return null;
+        ScoredMatch sm = new ScoredMatch();
+        sm.setEtag(item.getEtag());
+        sm.setLastModified(item.getModified());
+        sm.setType(CompetitionTypes.teams());
+        deserializeSyncData(item.syncData, sm);
+        return sm;
     }
 
     @Override
@@ -70,7 +77,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         if (entity.getDate() == null) {
             hm.put("date", null);
         } else {
-            hm.put("date", entity.getDate().toString());
+            hm.put("date", DateFormatter.getInstance().getDBDateFormat().format(entity.getDate()));
         }
         hm.put("played", Boolean.toString(entity.isPlayed()));
         hm.put("note", entity.getNote());
@@ -95,11 +102,11 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
             MatchPlayerStatistic stat = ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch(context, playerId, entity.getId());
             Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, stat.getPlayerId());
             homePlayerId++;
-            hm.put("player_home_"+homePlayerId, p.getUid());
-            hm.put("stat_goals_"+p.getUid(), Integer.toString(stat.getGoals()));
-            hm.put("stat_assits_"+p.getUid(), Integer.toString(stat.getAssists()));
-            hm.put("stat_saves_"+p.getUid(), Integer.toString(stat.getSaves()));
-            hm.put("stat_plus_minus_points_"+p.getUid(), Integer.toString(stat.getPlusMinusPoints()));
+            hm.put("player_home_"+homePlayerId, strategy.getUid(p));
+            hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
+            hm.put("stat_assits_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
+            hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
+            hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
         }
         hm.put("players_home", Integer.toString(homePlayerId));
 
@@ -108,11 +115,11 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
             MatchPlayerStatistic stat = ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch(context, playerId, entity.getId());
             Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, stat.getPlayerId());
             awayPlayerId++;
-            hm.put("player_away_"+awayPlayerId, p.getUid());
-            hm.put("stat_goals_"+p.getUid(), Integer.toString(stat.getGoals()));
-            hm.put("stat_assits_"+p.getUid(), Integer.toString(stat.getAssists()));
-            hm.put("stat_saves_"+p.getUid(), Integer.toString(stat.getSaves()));
-            hm.put("stat_plus_minus_points_"+p.getUid(), Integer.toString(stat.getPlusMinusPoints()));
+            hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
+            hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
+            hm.put("stat_assits_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
+            hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
+            hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
         }
         hm.put("players_away", Integer.toString(awayPlayerId));
         return hm;
@@ -128,6 +135,9 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         entity.setNote(syncData.get("note"));
         entity.setPeriod(Integer.parseInt(syncData.get("period")));
         entity.setRound(Integer.parseInt(syncData.get("round")));
+
+        entity.setHomeScore(Integer.parseInt(syncData.get("score_home")));
+        entity.setAwayScore(Integer.parseInt(syncData.get("score_away")));
     }
 
     @Override

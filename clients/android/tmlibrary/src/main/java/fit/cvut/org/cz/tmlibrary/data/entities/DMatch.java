@@ -10,7 +10,7 @@ public class DMatch extends DShareBase {
     private int period, round;
     private String note;
     private Date date;
-    private boolean played;
+    private boolean played = false;
 
     public DMatch(){}
 

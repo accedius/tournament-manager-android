@@ -36,7 +36,7 @@ public class TeamSerializer extends BaseSerializer<Team> {
     @Override
     public ServerCommunicationItem serialize(Team entity) {
         /* Serialize Team itself */
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
@@ -52,7 +52,7 @@ public class TeamSerializer extends BaseSerializer<Team> {
     @Override
     public Team deserialize(ServerCommunicationItem item) {
         Team t = new Team(-1, "");
-        t.setUid(item.getUid());
+        t.setEtag(item.getEtag());
         t.setLastModified(item.getModified());
         deserializeSyncData(item.syncData, t);
         return t;
