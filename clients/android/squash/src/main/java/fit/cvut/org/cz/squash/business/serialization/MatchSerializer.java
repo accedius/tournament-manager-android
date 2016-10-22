@@ -22,6 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ISharedEntitySerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -30,14 +31,13 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
  * Created by kevin on 8.10.2016.
  */
 public class MatchSerializer extends BaseSerializer<ScoredMatch> {
-    protected static Context context = null;
     protected static MatchSerializer instance = null;
-
     protected MatchSerializer(Context context) {
         this.context = context;
     }
 
     public static MatchSerializer getInstance(Context context) {
+        strategy = new FileSerializingStrategy();
         if (instance == null) {
             instance = new MatchSerializer(context);
         }
@@ -47,12 +47,10 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     @Override
     public ServerCommunicationItem serialize(ScoredMatch entity) {
         /* Serialize Match itself */
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
-
-        // TODO fix serializing teams and rosters - if there's change in roster among team matches
 
         /* Serialize Participants */
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, entity.getTournamentId());
@@ -109,7 +107,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
 
         int homePlayerId = 1;
         for (Player p : homePlayers) {
-            hm.put("player_home_"+homePlayerId, p.getUid());
+            hm.put("player_home_"+homePlayerId, strategy.getUid(p));
             homePlayerId++;
         }
 
@@ -118,7 +116,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
 
         int awayPlayerId = 1;
         for (Player p : awayPlayers) {
-            hm.put("player_away_"+awayPlayerId, p.getUid());
+            hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
             awayPlayerId++;
         }
         return hm;

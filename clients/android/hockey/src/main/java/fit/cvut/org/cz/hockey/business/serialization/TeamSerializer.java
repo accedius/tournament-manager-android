@@ -13,6 +13,7 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ISharedEntitySerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -27,6 +28,7 @@ public class TeamSerializer extends BaseSerializer<Team> {
     }
 
     public static TeamSerializer getInstance(Context context) {
+        strategy = new FileSerializingStrategy();
         if (instance == null) {
             instance = new TeamSerializer(context);
         }

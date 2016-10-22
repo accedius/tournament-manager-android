@@ -10,6 +10,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 
@@ -18,12 +19,12 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
  */
 public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.TournamentSerializer {
     protected static TournamentSerializer instance = null;
-
     protected TournamentSerializer(Context context) {
         super(context);
     }
 
     public static TournamentSerializer getInstance(Context context) {
+        strategy = new FileSerializingStrategy();
         if (instance == null) {
             instance = new TournamentSerializer(context);
         }
@@ -33,7 +34,7 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     @Override
     public ServerCommunicationItem serialize(Tournament entity) {
         /* Serialize Tournament itself */
-        ServerCommunicationItem item = new ServerCommunicationItem(entity.getUid(), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
+        ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
@@ -60,9 +61,10 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
 
     @Override
     public Tournament deserialize(ServerCommunicationItem item) {
-        Tournament c = new Tournament(item.id, item.uid, null, null, null, null);
-        c.setEtag(item.getEtag());
-        //deserializeSyncData(item.syncData, c);
-        return c;
+        Tournament t = new Tournament(item.getId(), item.getUid(), "", null, null, "");
+        t.setEtag(item.getEtag());
+        t.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, t);
+        return t;
     }
 }

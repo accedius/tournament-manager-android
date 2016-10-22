@@ -25,6 +25,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ISharedEntitySerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -39,6 +40,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     }
 
     public static MatchSerializer getInstance(Context context) {
+        strategy = new FileSerializingStrategy();
         if (instance == null) {
             instance = new MatchSerializer(context);
         }
