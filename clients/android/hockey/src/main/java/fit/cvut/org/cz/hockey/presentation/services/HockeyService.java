@@ -197,7 +197,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     for (ServerCommunicationItem p : tournamentPlayers) {
                         // Add player to tournament.
                         long playerId = importedPlayers.get(p.getUid()).getId();
-                        ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, playerId, tournamentId); ;
+                        ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, playerId, tournamentId);
                     }
 
                     HashMap<String, Team> importedTeams = new HashMap<>();
