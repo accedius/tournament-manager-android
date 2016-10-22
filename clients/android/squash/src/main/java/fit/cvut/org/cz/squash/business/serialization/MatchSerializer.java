@@ -125,7 +125,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         try {
             entity.setDate(dateFormat.parse(syncData.get("date")));
-        } catch (ParseException e) {}
+        } catch (ParseException e) {} catch (NullPointerException e) {}
         entity.setPlayed(Boolean.parseBoolean(syncData.get("played")));
         entity.setNote(syncData.get("note"));
         entity.setPeriod(Integer.parseInt(syncData.get("period")));
