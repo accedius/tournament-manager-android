@@ -171,7 +171,7 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
-    public void insert(Context context, ScoredMatch match) {
+    public long insert(Context context, ScoredMatch match) {
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, match.getTournamentId());
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
@@ -191,6 +191,7 @@ public class MatchManager implements IScoredMatchManager {
             DAOFactory.getInstance().participantDAO.insert(context, home);
             DAOFactory.getInstance().participantDAO.insert(context, away);
         }
+        return matchId;
     }
 
     @Override

@@ -22,8 +22,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  */
 public class TeamsManager implements ITeamManager {
     @Override
-    public void insert(Context context, Team team) {
-        DAOFactory.getInstance().teamDAO.insert(context, Team.convertToDTeam(team));
+    public long insert(Context context, Team team) {
+        return DAOFactory.getInstance().teamDAO.insert(context, Team.convertToDTeam(team));
     }
 
     @Override

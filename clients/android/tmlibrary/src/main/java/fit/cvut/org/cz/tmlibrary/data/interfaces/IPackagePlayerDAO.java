@@ -128,6 +128,6 @@ public interface IPackagePlayerDAO {
      * @param values player values - name, email, note
      * @return playerID of inserted player
      */
-    Long insertPlayer(Context context, ContentValues values);
+    long insertPlayer(Context context, ContentValues values);
 
 }

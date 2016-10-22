@@ -37,13 +37,14 @@ public class CompetitionDAO implements ICompetitionDAO {
     }
 
     @Override
-    public void insert(Context context, DCompetition competition) {
+    public long insert(Context context, DCompetition competition) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues cv = serializeCompetition(competition);
 
-        db.insert(DBConstants.tCOMPETITIONS, null, cv);
+        long competitionId = db.insert(DBConstants.tCOMPETITIONS, null, cv);
         db.close();
+        return competitionId;
     }
 
     @Override

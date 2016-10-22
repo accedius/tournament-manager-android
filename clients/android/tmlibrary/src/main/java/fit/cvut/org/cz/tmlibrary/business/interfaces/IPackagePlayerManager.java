@@ -97,7 +97,7 @@ public interface IPackagePlayerManager {
      * @param player inserted player
      * @return player id
      */
-    Long insertPlayer(Context context, Player player);
+    long insertPlayer(Context context, Player player);
 
     /**
      * get players that are not registered in certain competition

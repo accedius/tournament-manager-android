@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.data.daos;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -180,5 +181,22 @@ public class PlayerDAO implements IPackagePlayerDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public long insertPlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers);
+            Uri insertUri = context.getContentResolver().insert(uri, values);
+            return ContentUris.parseId(insertUri);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1L;
     }
 }

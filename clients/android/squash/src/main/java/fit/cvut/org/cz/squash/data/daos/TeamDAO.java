@@ -19,14 +19,15 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
  */
 public class TeamDAO implements ITeamDAO {
     @Override
-    public void insert(Context context, DTeam team) {
+    public long insert(Context context, DTeam team) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.cNAME, team.getName());
         cv.put(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
 
-        db.insert(DBConstants.tTEAMS, null, cv);
+        long teamId = db.insert(DBConstants.tTEAMS, null, cv);
         db.close();
+        return teamId;
     }
 
     @Override

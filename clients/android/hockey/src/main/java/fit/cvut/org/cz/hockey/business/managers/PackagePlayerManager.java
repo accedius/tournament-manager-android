@@ -133,7 +133,7 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     }
 
     @Override
-    public Long insertPlayer(Context context, Player player) {
+    public long insertPlayer(Context context, Player player) {
         ContentValues values = new ContentValues();
         values.put("email", player.getEmail());
         values.put("name", player.getName());

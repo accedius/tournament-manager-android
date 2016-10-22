@@ -14,7 +14,7 @@ public interface ICompetitionDAO {
      * @param competition competition to be inserted
      * @return id of inserted competition
      */
-    Long insert(Context context, DCompetition competition);
+    long insert(Context context, DCompetition competition);
 
     /**
      * Update existing competition in database

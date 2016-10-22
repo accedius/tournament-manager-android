@@ -218,7 +218,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public Long insertPlayer(Context context, ContentValues values) {
+    public long insertPlayer(Context context, ContentValues values) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai;
         try {

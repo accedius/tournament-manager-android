@@ -14,7 +14,7 @@ public interface ICompetitionManager {
      * @param competition competition to be inserted
      * @return id of inserted competition
      */
-    Long insert(Context context, Competition competition);
+    long insert(Context context, Competition competition);
 
     /**
      * update competition

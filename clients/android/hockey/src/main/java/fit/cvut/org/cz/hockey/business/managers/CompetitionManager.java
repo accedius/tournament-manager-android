@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
  */
 public class CompetitionManager implements ICompetitionManager {
     @Override
-    public Long insert(Context context, Competition competition) {
+    public long insert(Context context, Competition competition) {
         DCompetition dc = Competition.convertToDCompetition(competition);
         return DAOFactory.getInstance().competitionDAO.insert(context, dc);
     }
