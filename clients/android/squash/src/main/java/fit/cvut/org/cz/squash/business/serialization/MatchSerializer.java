@@ -1,10 +1,6 @@
 package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +10,6 @@ import java.util.HashMap;
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -23,7 +18,6 @@ import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ISharedEntitySerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 
@@ -72,7 +66,11 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
 
     @Override
     public ScoredMatch deserialize(ServerCommunicationItem item) {
-        return null;
+        ScoredMatch sm = new ScoredMatch();
+        sm.setEtag(item.getEtag());
+        sm.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, sm);
+        return sm;
     }
 
     @Override
@@ -81,7 +79,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         if (entity.getDate() == null) {
             hm.put("date", null);
         } else {
-            hm.put("date", entity.getDate().toString());
+            hm.put("date", DateFormatter.getInstance().getDBDateFormat().format(entity.getDate()));
         }
         hm.put("played", Boolean.toString(entity.isPlayed()));
         hm.put("note", entity.getNote());
