@@ -85,8 +85,10 @@ public class TournamentDAO implements ITournamentDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
 
         DTournament res = CursorParser.getInstance().parseDTournament(cursor);
 

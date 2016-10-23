@@ -105,8 +105,10 @@ public class ParticipantDAO implements IParticipantDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(DBConstants.tPARTICIPANTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
         DParticipant res = CursorParser.getInstance().parseDParticipant(cursor);
 
         cursor.close();

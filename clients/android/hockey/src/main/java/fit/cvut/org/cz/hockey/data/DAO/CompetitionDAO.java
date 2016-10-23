@@ -84,8 +84,10 @@ public class CompetitionDAO implements ICompetitionDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
         DCompetition res = CursorParser.getInstance().parseDCompetition(cursor);
         
         cursor.close();

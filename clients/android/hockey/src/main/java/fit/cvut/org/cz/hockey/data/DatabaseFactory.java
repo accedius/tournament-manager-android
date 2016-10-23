@@ -3,6 +3,8 @@ package fit.cvut.org.cz.hockey.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.HashMap;
+
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 
 /**
@@ -10,6 +12,7 @@ import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
  */
 public class DatabaseFactory {
     private static DatabaseFactory instance = new DatabaseFactory();
+    private static HashMap<String, HockeyDBHelper> dbHelpers = new HashMap<>();
 
     public static DatabaseFactory getInstance() {
         return instance;
@@ -20,6 +23,9 @@ public class DatabaseFactory {
 
     public SQLiteDatabase getDatabase(Context context) {
         String name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
-        return new HockeyDBHelper(context, name).getWritableDatabase();
+        if (!dbHelpers.containsKey(name)) {
+            dbHelpers.put(name, new HockeyDBHelper(context, name));
+        }
+        return dbHelpers.get(name).getWritableDatabase();
     }
 }

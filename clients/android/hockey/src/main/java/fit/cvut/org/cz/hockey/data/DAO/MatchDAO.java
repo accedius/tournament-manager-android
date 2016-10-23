@@ -102,8 +102,10 @@ public class MatchDAO implements IMatchDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
         DMatch res = CursorParser.getInstance().parseDMatch(cursor);
 
         cursor.close();
