@@ -20,6 +20,7 @@ import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
@@ -118,7 +119,10 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             }
             case CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION: {
                 // TODO brutal refactor NEEDED
-
+                // Begin transaction
+                /*DatabaseFactory.getInstance().getDatabase(this).beginTransaction();
+                try {
+                */
                 Intent res = new Intent(package_name + action);
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
@@ -179,7 +183,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
                     List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
 
-                    Log.d("IMPORT", "Tournament: "+t.syncData);
+                    Log.d("IMPORT", "Tournament: " + t.syncData);
                     Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
                     imported.setCompetitionId(competitionId);
                     long tournamentId = ManagerFactory.getInstance().tournamentManager.insert(this, imported);
@@ -278,6 +282,12 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         }
                     }
                 }
+                /*
+                } catch(Exception e) {} finally {
+                    DatabaseFactory.getInstance().getDatabase(this).setTransactionSuccessful();
+                }
+                DatabaseFactory.getInstance().getDatabase(this).endTransaction();
+                */
                 break;
             }
         }
