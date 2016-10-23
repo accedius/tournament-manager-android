@@ -43,8 +43,10 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(HockeyDBConstants.tMATCH_SCORE, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
         DMatchStat res = new DMatchStat();
         boolean ot, so;
         ot = !(0 == cursor.getInt(cursor.getColumnIndex(HockeyDBConstants.cOVERTIME)));

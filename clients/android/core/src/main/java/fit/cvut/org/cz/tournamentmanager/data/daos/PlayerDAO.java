@@ -75,7 +75,7 @@ public class PlayerDAO implements IPlayerDAO {
             player = CursorParser.getInstance().parseDPlayer(c);
 
         c.close();
-
+        db.close();
         return player;
     }
 
@@ -88,12 +88,15 @@ public class PlayerDAO implements IPlayerDAO {
         ArrayList<DPlayer> players = new ArrayList<>();
 
         c.moveToFirst();
-        if (c.getCount() == 0)
+        if (c.getCount() == 0) {
+            db.close();
             return players;
+        }
         do {
             players.add(CursorParser.getInstance().parseDPlayer(c));
         } while (c.moveToNext());
         c.close();
+        db.close();
 
         return players;
     }

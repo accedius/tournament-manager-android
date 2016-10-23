@@ -77,8 +77,10 @@ public class TeamDAO implements ITeamDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         Cursor cursor = db.query(DBConstants.tTEAMS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
         DTeam res = CursorParser.getInstance().parseDTeam(cursor);
 
         cursor.close();

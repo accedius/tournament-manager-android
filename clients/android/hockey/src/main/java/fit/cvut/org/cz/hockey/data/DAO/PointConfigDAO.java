@@ -110,8 +110,10 @@ public class PointConfigDAO implements IPointConfigDAO {
         Cursor cursor = db.query(HockeyDBConstants.tCONFIGURATIONS, null, HockeyDBConstants.cTOURNAMENTID + "=?", selArgs, null, null, null);
 
         cursor.moveToFirst();
-        if (cursor.getCount() <= 0)
+        if (cursor.getCount() <= 0) {
+            db.close();
             return null;
+        }
 
         DPointConfiguration res = parseDPfromCursor(cursor);
         cursor.close();
