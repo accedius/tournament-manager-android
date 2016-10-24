@@ -12,6 +12,13 @@ public class Conflict {
     private HashMap<String, String> leftValues;
     private HashMap<String, String> rightValues;
 
+    public Conflict(String title, ArrayList<String> attributes, HashMap<String, String> leftValues, HashMap<String, String> rightValues) {
+        this.title = title;
+        this.attributes = attributes;
+        this.leftValues = leftValues;
+        this.rightValues = rightValues;
+    }
+
     public String getTitle() {
         return title;
     }

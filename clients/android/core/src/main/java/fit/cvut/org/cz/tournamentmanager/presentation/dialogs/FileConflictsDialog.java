@@ -6,17 +6,29 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.business.entities.Conflict;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ConflictAdapter;
 
 /**
  * Created by kevin on 24.10.2016.
  */
 public class FileConflictsDialog extends DialogFragment {
     private View view;
+    private RecyclerView recyclerView;
+    private AbstractListAdapter adapter;
 
     public static FileConflictsDialog newInstance(View v) {
         FileConflictsDialog fragment = new FileConflictsDialog();
@@ -31,16 +43,36 @@ public class FileConflictsDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         builder.setTitle("There is a conflict!");
-        View v = inflater.inflate(R.layout.dialog_conflict, null);
-        builder.setView(v);
+        View fragmentView = inflater.inflate(R.layout.dialog_conflict, null);
+        recyclerView = (RecyclerView) fragmentView.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
+        adapter = getAdapter();
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ArrayList<Conflict> data = new ArrayList<>();
+        data.add(
+                new Conflict(
+                        "martin@seznam.cz",
+                        new ArrayList<>(Arrays.asList("name", "note")),
+                        new HashMap<String, String>(){{ put("name", "Tonda"); put("note", "Poznamka pro tondu"); }},
+                        new HashMap<String, String>(){{ put("name", "Toník"); put("note", "Poznamka pro toníka"); }}
+                )
+        );
+        builder.setView(fragmentView);
 
         final AlertDialog fileConflictsDialog = builder.create();
+        adapter.swapData(data);
 
-        final Button keepLocalButton = (Button) v.findViewById(R.id.keep_local);
-        final Button takeFileButton = (Button) v.findViewById(R.id.take_file);
+        final Button keepLocalButton = (Button) fragmentView.findViewById(R.id.keep_local);
+        final Button takeFileButton = (Button) fragmentView.findViewById(R.id.take_file);
         keepLocalButton.setOnClickListener(getKeepLocalListener(fileConflictsDialog));
         takeFileButton.setOnClickListener(getTakeFileListener(fileConflictsDialog));
         return fileConflictsDialog;
+    }
+
+    private AbstractListAdapter getAdapter() {
+        return new ConflictAdapter();
     }
 
     private View.OnClickListener getKeepLocalListener(final AlertDialog fileConflictsDialog) {

@@ -27,6 +27,7 @@ import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.AddCompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.FileConflictsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
@@ -81,7 +82,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
+                        //CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
+                        FileConflictsDialog dialog = FileConflictsDialog.newInstance(v);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
