@@ -19,65 +19,11 @@
             android:layout_marginBottom="8dp" />
 
         <!-- Each conflict value on each row in each linear layout -->
-        <LinearLayout android:layout_width="match_parent"
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Peter"
-                    android:gravity="right" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Vynikajici uzocnik"
-                    android:gravity="right" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:gravity="center_horizontal"
-                    style="@style/Base.TextAppearance.AppCompat.Button" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Note"
-                    android:gravity="center_horizontal"
-                    style="@style/Base.TextAppearance.AppCompat.Button" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Paulus"
-                    android:gravity="left" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:gravity="left" />
-
-            </LinearLayout>
-        </LinearLayout>
+            android:id="@+id/recycler_view_conflict">
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

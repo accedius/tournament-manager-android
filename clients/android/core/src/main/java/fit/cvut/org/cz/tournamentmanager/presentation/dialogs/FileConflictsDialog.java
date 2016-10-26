@@ -20,6 +20,7 @@ import java.util.HashMap;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.entities.Conflict;
+import fit.cvut.org.cz.tournamentmanager.business.entities.ConflictValue;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ConflictAdapter;
 
 /**
@@ -29,10 +30,12 @@ public class FileConflictsDialog extends DialogFragment {
     private View view;
     private RecyclerView recyclerView;
     private AbstractListAdapter adapter;
+    private ArrayList<Conflict> conflicts;
 
-    public static FileConflictsDialog newInstance(View v) {
+    public static FileConflictsDialog newInstance(View v, ArrayList<Conflict> conflicts) {
         FileConflictsDialog fragment = new FileConflictsDialog();
         fragment.view = v;
+        fragment.conflicts = conflicts;
         return fragment;
     }
 
@@ -50,19 +53,10 @@ public class FileConflictsDialog extends DialogFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        ArrayList<Conflict> data = new ArrayList<>();
-        data.add(
-                new Conflict(
-                        "martin@seznam.cz",
-                        new ArrayList<>(Arrays.asList("name", "note")),
-                        new HashMap<String, String>(){{ put("name", "Tonda"); put("note", "Poznamka pro tondu"); }},
-                        new HashMap<String, String>(){{ put("name", "Toník"); put("note", "Poznamka pro toníka"); }}
-                )
-        );
         builder.setView(fragmentView);
 
         final AlertDialog fileConflictsDialog = builder.create();
-        adapter.swapData(data);
+        adapter.swapData(conflicts);
 
         final Button keepLocalButton = (Button) fragmentView.findViewById(R.id.keep_local);
         final Button takeFileButton = (Button) fragmentView.findViewById(R.id.take_file);
@@ -72,7 +66,7 @@ public class FileConflictsDialog extends DialogFragment {
     }
 
     private AbstractListAdapter getAdapter() {
-        return new ConflictAdapter();
+        return new ConflictAdapter(getActivity());
     }
 
     private View.OnClickListener getKeepLocalListener(final AlertDialog fileConflictsDialog) {

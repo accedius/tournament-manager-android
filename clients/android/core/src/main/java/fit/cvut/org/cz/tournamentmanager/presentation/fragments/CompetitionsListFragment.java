@@ -82,8 +82,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        //CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
-                        FileConflictsDialog dialog = FileConflictsDialog.newInstance(v);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }

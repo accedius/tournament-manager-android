@@ -8,15 +8,11 @@ import java.util.HashMap;
  */
 public class Conflict {
     private String title;
-    private ArrayList<String> attributes;
-    private HashMap<String, String> leftValues;
-    private HashMap<String, String> rightValues;
+    private ArrayList<ConflictValue> values;
 
-    public Conflict(String title, ArrayList<String> attributes, HashMap<String, String> leftValues, HashMap<String, String> rightValues) {
+    public Conflict(String title, ArrayList<ConflictValue> values) {
         this.title = title;
-        this.attributes = attributes;
-        this.leftValues = leftValues;
-        this.rightValues = rightValues;
+        this.values = values;
     }
 
     public String getTitle() {
@@ -27,27 +23,7 @@ public class Conflict {
         this.title = title;
     }
 
-    public ArrayList<String> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(ArrayList<String> attributes) {
-        this.attributes = attributes;
-    }
-
-    public HashMap<String, String> getLeftValues() {
-        return leftValues;
-    }
-
-    public void setLeftValues(HashMap<String, String> leftValues) {
-        this.leftValues = leftValues;
-    }
-
-    public HashMap<String, String> getRightValues() {
-        return rightValues;
-    }
-
-    public void setRightValues(HashMap<String, String> rightValues) {
-        this.rightValues = rightValues;
+    public ArrayList<ConflictValue> getValues() {
+        return values;
     }
 }
