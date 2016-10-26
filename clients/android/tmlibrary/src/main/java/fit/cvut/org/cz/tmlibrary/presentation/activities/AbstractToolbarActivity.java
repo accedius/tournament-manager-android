@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -37,6 +38,27 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
      */
     protected FloatingActionButton getFloatingActionButton(ViewGroup root) {return null;}
 
+    /**
+     * If true activity displays Up button for navigation
+     * @return
+     */
+    protected boolean displayUpButton() {return true;}
+
+    /**
+     * specifies behavior what happens if user clicks on Up button.
+     */
+    protected void onUpButtonClicked() {onBackPressed();}
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onUpButtonClicked();
+            return true;
+        }
+        else return false;
+    }
+
     protected Toolbar toolbar;
     protected ProgressBar progressBar;
 
@@ -47,6 +69,7 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_abstract_toolbar);
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(displayUpButton());
 
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
 

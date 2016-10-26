@@ -92,6 +92,6 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             default:
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

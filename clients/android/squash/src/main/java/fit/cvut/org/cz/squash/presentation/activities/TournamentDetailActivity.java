@@ -159,6 +159,6 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             }
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 }

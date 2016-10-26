@@ -147,7 +147,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
             }
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     /**

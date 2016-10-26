@@ -115,6 +115,6 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
                 break;
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

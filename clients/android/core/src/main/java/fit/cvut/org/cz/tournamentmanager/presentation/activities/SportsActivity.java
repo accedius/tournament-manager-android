@@ -160,8 +160,16 @@ public class SportsActivity extends AbstractTabActivity {
             dialog.setListener(getSortingCompetitionsListener());
             dialog.show(getSupportFragmentManager(), "SORT_COMPETITIONS");
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected boolean displayUpButton() {
+        return false;
+    }
+
+    @Override
+    protected void onUpButtonClicked() {}
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {

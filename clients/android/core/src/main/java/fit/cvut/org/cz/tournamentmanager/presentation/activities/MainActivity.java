@@ -110,13 +110,23 @@ public class MainActivity extends AbstractToolbarActivity {
     }
 
     @Override
+    protected boolean displayUpButton() {
+        return false;
+    }
+
+    @Override
+    protected void onUpButtonClicked() {
+        //we want this method to be empty by default
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_order) {
             SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
             dialog.setListener(getSortingPlayersListener());
             dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
