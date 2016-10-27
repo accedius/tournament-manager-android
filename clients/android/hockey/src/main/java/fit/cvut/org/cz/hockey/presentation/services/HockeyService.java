@@ -26,10 +26,12 @@ import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -154,17 +156,22 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     - add if not exists
                     - add to competition
                     - create HashMap<uid, player> */
+                ArrayList<Conflict> conflicts = new ArrayList<>();
                 HashMap<String, Player> importedPlayers = new HashMap<>();
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
                     Player importedPlayer = PlayerSerializer.getInstance(this).deserialize(p);
                     long playerId;
                     if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
-                        playerId = allPlayersMap.get(importedPlayer.getEmail()).getId();
-                        if (allPlayersMap.get(importedPlayer.getEmail()).samePlayer(importedPlayer)) {
+                        Player matchedPlayer = allPlayersMap.get(importedPlayer.getEmail());
+                        playerId = matchedPlayer.getId();
+                        if (allPlayersMap.get(matchedPlayer).samePlayer(importedPlayer)) {
                             Log.d("IMPORT", "\tSKIP");
                         } else {
                             Log.d("IMPORT", "\tCONFLICT!");
+                            conflicts.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer));
+                            // TODO vytvorit a zobrazit dialog
+                            // TODO poslat Resources do ConflictCreatoru
                         }
                     } else {
                         playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, importedPlayer);
@@ -265,8 +272,6 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             /* END statistics manager - set match score by match id */
 
                             /* START statistics manager - update players in match */
-                            home = true;
-                            ParticipantType partType = ParticipantType.home;
                             ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch(
                                     this, matchId, ParticipantType.home,
                                     getPlayerIds(match, "home", importedPlayers));
@@ -278,7 +283,6 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             /* START statistics manager - update player stats in match */
                             updatePlayersMatchStats(match, matchId, importedPlayers);
                             /* END statistics manager - update player stats in match */
-
                         }
                     }
                 }
