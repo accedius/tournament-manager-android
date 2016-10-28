@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tournamentmanager.business.entities;
+package fit.cvut.org.cz.tmlibrary.business.entities;
 
 /**
  * Created by kevin on 26.10.2016.

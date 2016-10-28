@@ -6,14 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.entities.Conflict;
-import fit.cvut.org.cz.tournamentmanager.business.entities.ConflictValue;
+import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
 
 /**
  * Created by kevin on 24.10.2016.
@@ -38,6 +39,8 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
     @Override
     public void onBindViewHolder(ConflictAdapter.ConflictViewHolder holder, int position) {
         Conflict conflict = data.get(position);
+        holder.listener.position = position;
+
         holder.title.setText(conflict.getTitle());
 
         recyclerView = (RecyclerView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view_conflict);
@@ -58,10 +61,15 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
     public class ConflictViewHolder extends RecyclerView.ViewHolder{
         public TextView title;
         public View wholeView;
+        public RadioGroup radioGroup;
+        public EditActionListener listener;
         public ConflictViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.tv_title);
+            radioGroup = (RadioGroup) itemView.findViewById(R.id.radio_group);
             wholeView = itemView;
+            listener = new EditActionListener();
+            radioGroup.setOnCheckedChangeListener(listener);
         }
     }
 
@@ -92,6 +100,19 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
                 attribute = (TextView) itemView.findViewById(R.id.conflict_attribute);
                 leftValue = (TextView) itemView.findViewById(R.id.conflict_left);
                 rightValue = (TextView) itemView.findViewById(R.id.conflict_right);
+            }
+        }
+    }
+
+    private class EditActionListener implements RadioGroup.OnCheckedChangeListener {
+        public int position;
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (checkedId == R.id.button_keep_local) {
+                data.get(position).setAction(Conflict.KEEP_LOCAL);
+            } else if (checkedId == R.id.button_take_file) {
+                data.get(position).setAction(Conflict.TAKE_FILE);
             }
         }
     }

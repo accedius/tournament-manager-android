@@ -8,19 +8,16 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.entities.Conflict;
-import fit.cvut.org.cz.tournamentmanager.business.entities.ConflictValue;
+import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ConflictAdapter;
 
 /**
@@ -72,6 +69,10 @@ public class FileConflictsDialog extends DialogFragment {
     private View.OnClickListener getKeepLocalListener(final AlertDialog fileConflictsDialog) {
         return new View.OnClickListener() {
             public void onClick(View v) {
+                for(Object o : adapter.getData()) {
+                    Conflict c = (Conflict) o;
+                    Log.d("IMPORT", c.getTitle()+" "+c.getAction());
+                };
                 fileConflictsDialog.dismiss();
                 Snackbar.make(view, "Local data has been kept!", Snackbar.LENGTH_LONG).show();
             }

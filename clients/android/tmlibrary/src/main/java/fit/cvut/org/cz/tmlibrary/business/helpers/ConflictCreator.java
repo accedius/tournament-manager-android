@@ -14,12 +14,13 @@ public class ConflictCreator {
         Conflict c = new Conflict();
         ArrayList<ConflictValue> values = new ArrayList<>();
         c.setTitle(p1.getEmail());
-        if (p1.getName().equals(p2.getName())) {
+        if (!p1.getName().equals(p2.getName())) {
             values.add(new ConflictValue("name", p1.getName(), p2.getName()));
         }
-        if (p1.getNote().equals(p2.getNote())) {
-            values.add(new ConflictValue("name", p1.getNote(), p2.getNote()));
+        if (!p1.getNote().equals(p2.getNote())) {
+            values.add(new ConflictValue("note", p1.getNote(), p2.getNote()));
         }
+        c.setValues(values);
         return c;
     }
 }

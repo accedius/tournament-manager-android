@@ -20,18 +20,17 @@ import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
-import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+//import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
+//import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -156,7 +155,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     - add if not exists
                     - add to competition
                     - create HashMap<uid, player> */
-                ArrayList<Conflict> conflicts = new ArrayList<>();
+                //ArrayList<Conflict> conflicts = new ArrayList<>();
                 HashMap<String, Player> importedPlayers = new HashMap<>();
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
@@ -169,7 +168,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             Log.d("IMPORT", "\tSKIP");
                         } else {
                             Log.d("IMPORT", "\tCONFLICT!");
-                            conflicts.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer));
+                            //conflicts.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer));
                             // TODO vytvorit a zobrazit dialog
                             // TODO poslat Resources do ConflictCreatoru
                         }
