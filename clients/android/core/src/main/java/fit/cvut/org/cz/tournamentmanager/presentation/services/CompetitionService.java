@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 
 /**
  * Created by Vaclav on 12. 3. 2016.

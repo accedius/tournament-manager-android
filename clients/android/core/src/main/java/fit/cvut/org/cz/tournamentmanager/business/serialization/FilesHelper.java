@@ -1,12 +1,7 @@
 package fit.cvut.org.cz.tournamentmanager.business.serialization;
 
-import android.content.Context;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
-
-import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,11 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseFileValidator;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 
 /**
  * Created by kevin on 19.10.2016.
