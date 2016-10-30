@@ -42,6 +42,8 @@
         <activity android:name="fit.cvut.org.cz.hockey.presentation.activities.EditAtOnceActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/edit_stats"/>
+        <activity android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service android:name=".presentation.services.CompetitionService"/>
         <service android:name=".presentation.services.TournamentService"/>

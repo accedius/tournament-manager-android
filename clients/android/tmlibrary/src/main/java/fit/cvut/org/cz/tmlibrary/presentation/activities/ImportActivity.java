@@ -4,22 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.ImportFragment;
 
 /**
  * Created by kevin on 28.10.2016.
  */
-public class ImportActivity extends AbstractToolbarActivity {
+abstract public class ImportActivity extends AbstractToolbarActivity {
     public static final String COMPETITION = "competition";
     public static final String TOURNAMENTS = "tournaments";
     public static final String PLAYERS = "players";
@@ -35,14 +30,21 @@ public class ImportActivity extends AbstractToolbarActivity {
         setTitle("Import summary – "+competition.getName());
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
-            fragment = ImportFragment.newInstance();
+            fragment = getImportFragment();
             fragment.setArguments(intent.getExtras());
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
     }
 
+    abstract public Fragment getImportFragment();
+
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_import, parent, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

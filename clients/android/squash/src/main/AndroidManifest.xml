@@ -39,6 +39,8 @@
         <activity android:name=".presentation.activities.AddPlayersActivity"
             android:label="@string/add_players"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service android:name=".presentation.services.CompetitionService"/>
         <service android:name=".presentation.services.PlayerService"/>

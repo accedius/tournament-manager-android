@@ -19,9 +19,10 @@ public class CrossPackageCommunicationConstants {
     public static final String ACTIVITY_PLAYER_DETAIL = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
 
     public static final String ACTION_GET_STATS = "fit.cvut.org.cz.tournamentmanager.action_get_stats";
-    public static final String ACTION_FILE_IMPORT_COMPETITION = "fit.cvut.org.cz.tournamentmanager.file_import_competition";
+    public static final String ACTION_GET_COMPETITION_IMPORT_INFO = "fit.cvut.org.cz.tournamentmanager.get_competition_import_info";
     public static final String ACTION_DELETE_COMPETITION = "fit.cvut.org.cz.tournamentmanager.action_delete_competition";
     public static final String ACTION_GET_COMPETITION_SERIALIZED = "fit.cvut.org.cz.tournamentmanager.get_competition_serialized";
+    public static final String ACTION_IMPORT_FILE_COMPETITION = "fit.cvut.org.cz.tournamentmanager.import_file_competition";
 
     public static final int OUTCOME_OK = 0;
     public static final int OUTCOME_FAILED = 1;

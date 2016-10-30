@@ -5,18 +5,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ConflictAdapter;
@@ -26,28 +28,33 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportTournamentAdapter;
 /**
  * Created by kevin on 28.10.2016.
  */
-public class ImportFragment extends Fragment {
+abstract public class ImportFragment extends Fragment {
 
-    private ArrayList<TournamentImportInfo> tournaments;
-    private ArrayList<PlayerImportInfo> players;
-    private ArrayList<Conflict> conflicts;
-    private AbstractListAdapter tournamentsAdapter;
-    private AbstractListAdapter playersAdapter;
-    private AbstractListAdapter conflictsAdapter;
+    protected ArrayList<TournamentImportInfo> tournaments;
+    protected ArrayList<PlayerImportInfo> players;
+    protected ArrayList<Conflict> conflicts;
 
-    public static Fragment newInstance() {
-        return new ImportFragment();
-    }
+    protected AbstractListAdapter tournamentsAdapter;
+    protected AbstractListAdapter playersAdapter;
+    protected AbstractListAdapter conflictsAdapter;
+
+    protected String jsonContent;
+    protected String sportContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tournaments = getArguments().getParcelableArrayList(ImportActivity.TOURNAMENTS);
-        players = getArguments().getParcelableArrayList(ImportActivity.PLAYERS);
-        conflicts = getArguments().getParcelableArrayList(ImportActivity.CONFLICTS);
-        tournamentsAdapter = new ImportTournamentAdapter();
+        Bundle args = getArguments();
+        tournaments = args.getParcelableArrayList(ImportActivity.TOURNAMENTS);
+        players = args.getParcelableArrayList(ImportActivity.PLAYERS);
+        conflicts = args.getParcelableArrayList(ImportActivity.CONFLICTS);
+        jsonContent = args.getString(CrossPackageCommunicationConstants.EXTRA_JSON);
+        sportContext = args.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+
+        tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ImportActivity.COMPETITION));
         playersAdapter = new ImportPlayerAdapter();
         conflictsAdapter = new ConflictAdapter(getContext());
+
         tournamentsAdapter.swapData(tournaments);
         playersAdapter.swapData(players);
         conflictsAdapter.swapData(conflicts);
@@ -85,14 +92,11 @@ public class ImportFragment extends Fragment {
         Button confirmButton = (Button) v.findViewById(R.id.confirm_import);
         confirmButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                for (Object o : conflictsAdapter.getData()) {
-                    Conflict c = (Conflict) o;
-                    Log.d("IMPORT", c.getTitle()+" "+c.getAction());
-                }
-                // TODO odeslat požadavek na import dle daných okolností
-                getActivity().finish();
+                onConfirmClick();
             }
         });
         return v;
     }
+
+    abstract public void onConfirmClick();
 }
