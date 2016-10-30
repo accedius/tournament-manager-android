@@ -122,6 +122,15 @@ public class PlayerManager implements IPackagePlayerManager {
     }
 
     @Override
+    public void updatePlayer(Context context, Player player) {
+        ContentValues values = new ContentValues();
+        values.put("email", player.getEmail());
+        values.put("name", player.getName());
+        values.put("note", player.getNote());
+        DAOFactory.getInstance().playerDAO.updatePlayer(context, values);
+    }
+
+    @Override
     public ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId) {
         Map<Long, DPlayer> players = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
         ArrayList<Long> ids = DAOFactory.getInstance().playerDAO.getPlayerIdsByCompetition(context, competitionId);

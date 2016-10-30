@@ -190,4 +190,20 @@ public class PlayerDAO implements IPackagePlayerDAO {
         }
         return -1L;
     }
+
+    @Override
+    public void updatePlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            String where = DBConstants.tPLAYERS + "." + DBConstants.cEMAIL + " = '" + values.getAsString("email")+"'";
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayerUpdate);
+            context.getContentResolver().update(uri, values, where, null);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
