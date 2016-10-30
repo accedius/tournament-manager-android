@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import java.io.File;
 
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
-import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
 
 /**
@@ -32,7 +31,7 @@ public class ImportFileDialog extends DialogFragment {
 
                 Intent intent = new Intent();
                 intent.setClassName(package_name, stats_service);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION);
+                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, fileContent);
