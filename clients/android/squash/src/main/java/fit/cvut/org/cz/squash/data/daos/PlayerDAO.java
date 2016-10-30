@@ -34,7 +34,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, cv);
-        db.close();
     }
 
     @Override
@@ -45,7 +44,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, cv);
-        db.close();
     }
 
     @Override
@@ -60,7 +58,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_TEAM, null, cv);
-        db.close();
     }
 
     @Override
@@ -71,7 +68,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(competitionId), Long.toString(playerId)};
 
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, args);
-        db.close();
     }
 
     @Override
@@ -82,7 +78,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(tournamentId), Long.toString(playerId)};
 
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, args);
-        db.close();
     }
 
     @Override
@@ -97,7 +92,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(teamId)};
 
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, args);
-        db.close();
     }
 
     @Override
@@ -108,11 +102,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -124,11 +117,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -145,11 +137,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 

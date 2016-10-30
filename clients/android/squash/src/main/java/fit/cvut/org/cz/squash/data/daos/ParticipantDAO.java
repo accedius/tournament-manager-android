@@ -32,8 +32,6 @@ public class ParticipantDAO implements IParticipantDAO {
         ContentValues cv = convert(participant);
 
         long id = db.insert(DBConstants.tPARTICIPANTS, null, cv);
-        db.close();
-
         return id;
     }
 
@@ -46,7 +44,6 @@ public class ParticipantDAO implements IParticipantDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tPARTICIPANTS, where, new String[]{Long.toString(id)});
-        db.close();
     }
 
     @Override
@@ -60,7 +57,6 @@ public class ParticipantDAO implements IParticipantDAO {
         while (c.moveToNext())
             participants.add(CursorParser.getInstance().parseDParticipant(c));
         c.close();
-        db.close();
 
         return participants;
     }
@@ -76,7 +72,6 @@ public class ParticipantDAO implements IParticipantDAO {
         while (c.moveToNext())
             participants.add(CursorParser.getInstance().parseDParticipant(c));
         c.close();
-        db.close();
 
         return participants;
     }
@@ -92,7 +87,6 @@ public class ParticipantDAO implements IParticipantDAO {
         if (c.moveToNext())
             participant = CursorParser.getInstance().parseDParticipant(c);
         c.close();
-        db.close();
 
         return participant;
     }

@@ -31,7 +31,6 @@ public class PointConfigDAO implements IPointConfigDAO {
         cv.put(DBConstants.cTOURNAMENT_ID, id);
 
         db.insert(SDBConstants.tPOINT_CONFIG, null, cv);
-        db.close();
     }
 
     @Override
@@ -40,7 +39,6 @@ public class PointConfigDAO implements IPointConfigDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         db.update(SDBConstants.tPOINT_CONFIG, cv, DBConstants.cTOURNAMENT_ID + "= ?", new String[]{Long.toString(cfg.getTournamentId())});
-        db.close();
     }
 
     @Override
@@ -48,7 +46,6 @@ public class PointConfigDAO implements IPointConfigDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         db.delete(SDBConstants.tPOINT_CONFIG, DBConstants.cTOURNAMENT_ID + "= ?", new String[]{Long.toString(id)});
-        db.close();
     }
 
     @Override
@@ -69,8 +66,6 @@ public class PointConfigDAO implements IPointConfigDAO {
         }
 
         c.close();
-        db.close();
-
         return cfg;
     }
 }

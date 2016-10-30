@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +35,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cCOMPETITIONID, competitionId);
         values.put(DBConstants.cPLAYER_ID, playerId);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
     }
 
     @Override
@@ -49,10 +47,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cTOURNAMENT_ID, tournamentId);
         values.put(DBConstants.cPLAYER_ID, playerId);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
     }
 
     @Override
@@ -68,8 +63,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cPLAYER_ID, playerId);
 
         Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
-
-        db.close();
     }
 
     @Override
@@ -79,8 +72,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(competitionId) };
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -91,8 +82,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(tournamentId) };
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
 
-        db.close();
-    }
+            }
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
@@ -105,26 +95,18 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ?", DBConstants.cTEAM_ID);
         String[] projection = new String[]{ Long.toString(teamId) };
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, projection);
-
-        db.close();
     }
 
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<Long> res = new ArrayList<>();
         String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_COMPETITION, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
-
-        ArrayList<Long> res = new ArrayList<>();
-
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
-
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -136,14 +118,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -160,14 +139,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -179,14 +155,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 

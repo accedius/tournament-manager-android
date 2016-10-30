@@ -29,7 +29,6 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         ContentValues values = toContVal(stat);
 
         long newRowId = db.insert(HockeyDBConstants.tMATCH_SCORE, null, values);
-        db.close();
         return newRowId;
     }
 
@@ -40,7 +39,6 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         Cursor cursor = db.query(HockeyDBConstants.tMATCH_SCORE, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
         DMatchStat res = new DMatchStat();
@@ -52,7 +50,6 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         res.setShootouts(so);
 
         cursor.close();
-        db.close();
 
         return res;
     }
@@ -63,7 +60,6 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         String where = String.format("%s = ?", DBConstants.cMATCH_ID);
         String[] projection = new String[]{ Long.toString(matchStat.getMatchId()) };
         db.update(HockeyDBConstants.tMATCH_SCORE, values, where, projection);
-        db.close();
     }
 
     public void delete(Context context, long matchId) {
@@ -71,7 +67,6 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
         String where = String.format("%s = ?", DBConstants.cMATCH_ID);
         String[] projection = new String[]{ Long.toString(matchId) };
         db.delete(HockeyDBConstants.tMATCH_SCORE, where, projection);
-        db.close();
     }
 
 }

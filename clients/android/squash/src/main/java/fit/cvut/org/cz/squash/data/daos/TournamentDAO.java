@@ -41,11 +41,9 @@ public class TournamentDAO implements ITournamentDAO {
     @Override
     public long insert(Context context, DTournament tournament) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-
         ContentValues cv = serializeTournament(tournament);
 
         long id = db.insert(DBConstants.tTOURNAMENTS, null, cv);
-        db.close();
         return id;
     }
 
@@ -60,7 +58,6 @@ public class TournamentDAO implements ITournamentDAO {
 
         String where = String.format("%s = ?", DBConstants.cID);
         db.update(DBConstants.tTOURNAMENTS, cv, where, new String[]{Long.toString(tournament.getId())});
-        db.close();
     }
 
     @Override
@@ -68,44 +65,33 @@ public class TournamentDAO implements ITournamentDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tTOURNAMENTS, where, new String[]{Long.toString(id)});
-        db.close();
     }
 
     @Override
     public DTournament getById(Context context, long id) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-
         String selection = String.format("select * from %s where %s = ?", DBConstants.tTOURNAMENTS, DBConstants.cID);
-
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(id)});
-
         DTournament tournament = null;
 
         if (c.moveToFirst())
             tournament = CursorParser.getInstance().parseDTournament(c);
 
         c.close();
-        db.close();
-
         return tournament;
     }
 
     @Override
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-
         String selection = String.format("select * from %s where %s = ? order by %s", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITIONID, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
-
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(competitionId)});
-
         ArrayList<DTournament> tournaments = new ArrayList<>();
 
         while (c.moveToNext())
             tournaments.add(CursorParser.getInstance().parseDTournament(c));
 
         c.close();
-        db.close();
-
         return tournaments;
     }
 }

@@ -36,8 +36,6 @@ public class StatDAO implements IStatDAO {
 
         Long newRowId;
         newRowId = db.insert(DBConstants.tSTATS, null, values);
-
-        db.close();
         return newRowId;
     }
 
@@ -52,7 +50,6 @@ public class StatDAO implements IStatDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(stat.getId()) };
         db.update(DBConstants.tSTATS, values, where, projection);
-        db.close();
     }
 
     @Override
@@ -62,7 +59,6 @@ public class StatDAO implements IStatDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tSTATS, where, projection);
-        db.close();
     }
 
     @Override
@@ -73,14 +69,11 @@ public class StatDAO implements IStatDAO {
 
         ArrayList<DStat> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDStat(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -92,14 +85,11 @@ public class StatDAO implements IStatDAO {
 
         ArrayList<DStat> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDStat(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -111,14 +101,11 @@ public class StatDAO implements IStatDAO {
 
         ArrayList<DStat> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDStat(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -130,14 +117,11 @@ public class StatDAO implements IStatDAO {
 
         ArrayList<DStat> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDStat(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 }
