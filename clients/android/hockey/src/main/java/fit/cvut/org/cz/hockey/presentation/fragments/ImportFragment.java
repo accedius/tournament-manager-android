@@ -33,8 +33,10 @@ public class ImportFragment extends fit.cvut.org.cz.tmlibrary.presentation.fragm
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, jsonContent);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION);
-        intent.putExtra(HockeyService.EXTRA_CONFLICTS, playersModified);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS, playersModified);
+        intent.putExtras(b);
+        getActivity().startService(intent);
         getActivity().finish();
     }
 }

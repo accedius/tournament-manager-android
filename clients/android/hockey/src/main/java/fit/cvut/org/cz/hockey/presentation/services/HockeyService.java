@@ -19,18 +19,24 @@ import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
+import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
+import fit.cvut.org.cz.hockey.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
-//import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-//import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
+import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -118,7 +124,86 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_FILE_IMPORT_COMPETITION: {
+            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
+                // TODO refactor
+                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                Gson gson = new GsonBuilder().serializeNulls().create();
+                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
+
+                ImportInfo competitionInfo = new CompetitionImportInfo(c.getName(), CompetitionTypes.teams());
+                ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
+                ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
+                ArrayList<Conflict> playersModified = new ArrayList<>();
+
+                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
+                List<ServerCommunicationItem> players = new ArrayList<>();
+                List<ServerCommunicationItem> tournaments = new ArrayList<>();
+
+                for (ServerCommunicationItem subItem : allSubItems) {
+                    if (subItem.getType().equals("Player")) {
+                        players.add(subItem);
+                    } else if (subItem.getType().equals("Tournament")) {
+                        tournaments.add(subItem);
+                    }
+                }
+
+                /* TOURNAMENTS HANDLING */
+                for (ServerCommunicationItem t : tournaments) {
+                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
+
+                    Tournament tournament = TournamentSerializer.getInstance(this).deserialize(t);
+
+                    for (ServerCommunicationItem subItem : t.subItems) {
+                        if (subItem.getType().equals("Player")) {
+                            tournamentPlayers.add(subItem);
+                        } else if (subItem.getType().equals("Team")) {
+                            tournamentTeams.add(subItem);
+                        } else if (subItem.getType().equals("ScoredMatch")) {
+                            tournamentMatches.add(subItem);
+                        }
+                    }
+
+                    tournamentsInfo.add(new TournamentImportInfo(tournament.getName(), tournamentPlayers.size(), tournamentTeams.size(), tournamentMatches.size()));
+                }
+
+                /* PLAYERS HANDLING */
+                ArrayList<Player> allPlayers = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers(this);
+                HashMap<String, Player> allPlayersMap = new HashMap<>();
+                for (Player p : allPlayers) {
+                    allPlayersMap.put(p.getEmail(), p);
+                }
+
+                /* Import players */
+                for (ServerCommunicationItem p : players) {
+                    Player player = PlayerSerializer.getInstance(this).deserialize(p);
+                    if (allPlayersMap.containsKey(player.getEmail())) {
+                        Player matchedPlayer = allPlayersMap.get(player.getEmail());
+                        if (!matchedPlayer.samePlayer(player)) {
+                            playersModified.add(ConflictCreator.createConflict(matchedPlayer, player));
+                            // TODO všechny attributes přeložit
+                        }
+                    } else {
+                        playersInfo.add(new PlayerImportInfo(player.getName(), player.getEmail()));
+                    }
+                }
+
+                Intent res = new Intent(this, ImportActivity.class);
+                // TODO vrátit intent s výsledkem (import info, ten pak založí novou aktivitu)
+                // Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag
+                res.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                res.putExtra(ImportActivity.COMPETITION, competitionInfo);
+                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
+                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
+                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, playersModified);
+                startActivity(res);
+                break;
+            }
+            case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {
                 // TODO brutal refactor NEEDED
                 // Begin transaction
                 /*DatabaseFactory.getInstance().getDatabase(this).beginTransaction();
@@ -129,7 +214,11 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
                 Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
+                String competitionName = c.getName();
                 c.setName(c.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
+
+                HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
+
                 long competitionId = ManagerFactory.getInstance().competitionManager.insert(this, c);
 
                 List<ServerCommunicationItem> allSubItems = competition.getSubItems();
@@ -155,7 +244,6 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     - add if not exists
                     - add to competition
                     - create HashMap<uid, player> */
-                //ArrayList<Conflict> conflicts = new ArrayList<>();
                 HashMap<String, Player> importedPlayers = new HashMap<>();
                 for (ServerCommunicationItem p : players) {
                     Log.d("IMPORT", "Player: "+p.syncData);
@@ -164,13 +252,14 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
                         Player matchedPlayer = allPlayersMap.get(importedPlayer.getEmail());
                         playerId = matchedPlayer.getId();
-                        if (allPlayersMap.get(matchedPlayer).samePlayer(importedPlayer)) {
-                            Log.d("IMPORT", "\tSKIP");
-                        } else {
-                            Log.d("IMPORT", "\tCONFLICT!");
-                            //conflicts.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer));
-                            // TODO vytvorit a zobrazit dialog
-                            // TODO poslat Resources do ConflictCreatoru
+                        if (!matchedPlayer.samePlayer(importedPlayer)) {
+                            if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
+                                if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
+                                    ManagerFactory.getInstance().packagePlayerManager.updatePlayer(this, importedPlayer);
+                                    Log.d("IMPORT", "\tCONFLICT!");
+                                    Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
+                                }
+                            }
                         }
                     } else {
                         playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, importedPlayer);
@@ -296,7 +385,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         }
     }
 
-    ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
+    private ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
         ArrayList<Long> playerIds = new ArrayList<>();
         int playersCnt = Integer.parseInt(match.syncData.get("players_"+role));
         for (int i=1; i<=playersCnt; i++) {
@@ -306,7 +395,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         return playerIds;
     }
 
-    void updatePlayersMatchStats(ServerCommunicationItem match, long matchId, HashMap<String, Player> players) {
+    private void updatePlayersMatchStats(ServerCommunicationItem match, long matchId, HashMap<String, Player> players) {
         int playersCnt = Integer.parseInt(match.syncData.get("players_home"));
         for (int i=1; i<=playersCnt; i++) {
             String uid = match.syncData.get("player_home_"+i);

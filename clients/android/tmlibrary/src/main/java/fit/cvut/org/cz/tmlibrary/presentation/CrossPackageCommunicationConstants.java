@@ -13,6 +13,7 @@ public class CrossPackageCommunicationConstants {
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_NAME = "extra_name";
     public static final String EXTRA_JSON = "extra_json";
+    public static final String EXTRA_CONFLICTS = "extra_conflits";
 
     public static final String CORE = "fit.cvut.org.cz.tournamentmanager";
 
