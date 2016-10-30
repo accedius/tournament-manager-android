@@ -20,13 +20,13 @@ public class PlayerCP extends ContentProvider {
     private CoreDBHelper helper;
 
     private static final int PLAYERS_ALL = 0;
-    //private static final int COMPETITION_ONE = 1;
+    private static final int PLAYER_UPDATE = 1;
 
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, CPConstants.uPlayers, PLAYERS_ALL);
-        //matcher.addURI(AUTHORITY, CPConstants.uPlayers + "#", PLAYER_ONE);
+        matcher.addURI(AUTHORITY, CPConstants.uPlayerUpdate, PLAYER_UPDATE);
     }
 
     @Override
@@ -73,6 +73,9 @@ public class PlayerCP extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        int uriType = matcher.match(uri);
+        if (uriType != PLAYER_UPDATE) return -1;
+
+        return helper.getWritableDatabase().update(DBConstants.tPLAYERS, values, selection, null);
     }
 }

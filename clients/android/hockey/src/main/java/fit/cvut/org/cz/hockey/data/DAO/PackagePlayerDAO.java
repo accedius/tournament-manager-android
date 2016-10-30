@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,8 +80,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(tournamentId) };
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
-
-            }
+    }
 
     @Override
     public void deletePlayerFromMatch(Context context, long playerId, long matchId) {
@@ -205,5 +203,21 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
             e.printStackTrace();
         }
         return -1L;
+    }
+
+    @Override
+    public void updatePlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            String where = DBConstants.tPLAYERS + "." + DBConstants.cEMAIL + " = '" + values.getAsString("email")+"'";
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayerUpdate);
+            context.getContentResolver().update(uri, values, where, null);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

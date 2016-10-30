@@ -130,4 +130,11 @@ public interface IPackagePlayerDAO {
      */
     long insertPlayer(Context context, ContentValues values);
 
+    /**
+     * insert player to DB
+     * @param context application context
+     * @param values player values - name, email, note
+     */
+    void updatePlayer(Context context, ContentValues values);
+
 }
