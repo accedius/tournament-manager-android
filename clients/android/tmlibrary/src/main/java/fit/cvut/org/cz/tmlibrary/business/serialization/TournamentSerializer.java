@@ -45,7 +45,7 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
         try {
             entity.setStartDate(dateFormat.parse(syncData.get("start_date")));
             entity.setEndDate(dateFormat.parse(syncData.get("end_date")));
-        } catch (ParseException e) {}
+        } catch (ParseException e) {} catch(NullPointerException e) {}
     }
 
     @Override
