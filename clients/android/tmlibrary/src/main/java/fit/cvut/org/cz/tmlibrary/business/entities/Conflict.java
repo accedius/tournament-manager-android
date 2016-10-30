@@ -1,5 +1,8 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
@@ -7,7 +10,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
 /**
  * Created by kevin on 24.10.2016.
  */
-public class Conflict {
+public class Conflict implements Parcelable {
     public static final String KEEP_LOCAL = "keep";
     public static final String TAKE_FILE = "take";
 
@@ -21,6 +24,24 @@ public class Conflict {
         this.title = title;
         this.values = values;
     }
+
+    protected Conflict(Parcel in) {
+        title = in.readString();
+        action = in.readString();
+        values = in.createTypedArrayList(ConflictValue.CREATOR);
+    }
+
+    public static final Creator<Conflict> CREATOR = new Creator<Conflict>() {
+        @Override
+        public Conflict createFromParcel(Parcel in) {
+            return new Conflict(in);
+        }
+
+        @Override
+        public Conflict[] newArray(int size) {
+            return new Conflict[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -44,5 +65,17 @@ public class Conflict {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(action);
+        dest.writeTypedList(values);
     }
 }

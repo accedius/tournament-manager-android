@@ -1,9 +1,12 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by kevin on 26.10.2016.
  */
-public class ConflictValue {
+public class ConflictValue implements Parcelable {
     private String attribute;
     private String leftValue;
     private String rightValue;
@@ -13,6 +16,24 @@ public class ConflictValue {
         this.leftValue = leftValue;
         this.rightValue = rightValue;
     }
+
+    protected ConflictValue(Parcel in) {
+        attribute = in.readString();
+        leftValue = in.readString();
+        rightValue = in.readString();
+    }
+
+    public static final Creator<ConflictValue> CREATOR = new Creator<ConflictValue>() {
+        @Override
+        public ConflictValue createFromParcel(Parcel in) {
+            return new ConflictValue(in);
+        }
+
+        @Override
+        public ConflictValue[] newArray(int size) {
+            return new ConflictValue[size];
+        }
+    };
 
     public String getAttribute() {
         return attribute;
@@ -36,5 +57,17 @@ public class ConflictValue {
 
     public void setRightValue(String rightValue) {
         this.rightValue = rightValue;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(attribute);
+        dest.writeString(leftValue);
+        dest.writeString(rightValue);
     }
 }
