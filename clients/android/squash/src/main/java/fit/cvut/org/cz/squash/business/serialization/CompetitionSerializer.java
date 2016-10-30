@@ -8,6 +8,8 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
@@ -55,7 +57,9 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
 
     @Override
     public Competition deserialize(ServerCommunicationItem item) {
-        Competition c = new Competition(item.getId(), item.getUid(), "", null, null, "", null);
+        // default type is necessary for constructor, but is overridden in deserializeSyncData
+        CompetitionType defaultType = CompetitionTypes.teams();
+        Competition c = new Competition(item.getId(), item.getUid(), "", null, null, "", defaultType);
         c.setEtag(item.getEtag());
         deserializeSyncData(item.syncData, c);
         return c;
