@@ -24,7 +24,7 @@ import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.hockey.presentation.activities.ImportActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
@@ -119,7 +119,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
                 break;
@@ -190,17 +190,16 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     }
                 }
 
-                Intent res = new Intent(this, ImportActivity.class);
-                // TODO vrátit intent s výsledkem (import info, ten pak založí novou aktivitu)
-                // Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag
-                res.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent res = new Intent(package_name + action);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 res.putExtra(ImportActivity.COMPETITION, competitionInfo);
                 res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
                 res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
                 res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, playersModified);
-                startActivity(res);
+                sendBroadcast(res);
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {

@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.ImportFragment;
 /**
  * Created by kevin on 28.10.2016.
  */
-abstract public class ImportActivity extends AbstractToolbarActivity {
+public class ImportActivity extends AbstractToolbarActivity {
     public static final String COMPETITION = "competition";
     public static final String TOURNAMENTS = "tournaments";
     public static final String PLAYERS = "players";
@@ -36,15 +36,12 @@ abstract public class ImportActivity extends AbstractToolbarActivity {
         }
     }
 
-    abstract public Fragment getImportFragment();
+    public Fragment getImportFragment() {
+        return ImportFragment.newInstance();
+    }
 
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_import, parent, false);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }

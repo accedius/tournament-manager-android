@@ -20,6 +20,7 @@ import java.util.Comparator;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -106,7 +107,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
-        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
+        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
         filter.addAction(CompetitionService.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
         getActivity().registerReceiver(receiver, filter);
@@ -191,8 +192,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     View v = getView().findFocus();
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
-            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_JSON)) {
-                // TODO move to separate class / file
+            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_EXPORT)) {
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
                 View v = getView().findFocus();
@@ -201,8 +201,19 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 } else {
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_failed, Snackbar.LENGTH_LONG).show();
                 }
+            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO)) {
+                Intent res = new Intent(getActivity(), ImportActivity.class);
+                res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE, stats_service);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON));
+                res.putExtra(ImportActivity.COMPETITION, intent.getParcelableExtra(ImportActivity.COMPETITION));
+                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, intent.getParcelableArrayListExtra(ImportActivity.TOURNAMENTS));
+                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, intent.getParcelableArrayListExtra(ImportActivity.PLAYERS));
+                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, intent.getParcelableArrayListExtra(ImportActivity.CONFLICTS));
+                startActivity(res);
             }
-
         }
     }
 }

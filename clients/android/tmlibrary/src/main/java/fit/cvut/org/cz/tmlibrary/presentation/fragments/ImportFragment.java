@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportTournamentAdapter;
 /**
  * Created by kevin on 28.10.2016.
  */
-abstract public class ImportFragment extends Fragment {
+public class ImportFragment extends Fragment {
 
     protected ArrayList<TournamentImportInfo> tournaments;
     protected ArrayList<PlayerImportInfo> players;
@@ -38,13 +39,24 @@ abstract public class ImportFragment extends Fragment {
     protected AbstractListAdapter playersAdapter;
     protected AbstractListAdapter conflictsAdapter;
 
+    protected String packageName;
+    protected String sportService;
     protected String jsonContent;
     protected String sportContext;
+
+    public static ImportFragment newInstance() {
+        Bundle args = new Bundle();
+        ImportFragment fragment = new ImportFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+        packageName = args.getString(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
+        sportService = args.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE);
         tournaments = args.getParcelableArrayList(ImportActivity.TOURNAMENTS);
         players = args.getParcelableArrayList(ImportActivity.PLAYERS);
         conflicts = args.getParcelableArrayList(ImportActivity.CONFLICTS);
@@ -98,5 +110,21 @@ abstract public class ImportFragment extends Fragment {
         return v;
     }
 
-    abstract public void onConfirmClick();
+    public void onConfirmClick() {
+        HashMap<String, String> playersModified = new HashMap<>();
+        for (Conflict c : (ArrayList<Conflict>)conflictsAdapter.getData()) {
+            playersModified.put(c.getTitle(), c.getAction());
+        }
+
+        Intent intent = new Intent();
+        intent.setClassName(packageName, sportService);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, jsonContent);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
+        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION);
+        Bundle b = new Bundle();
+        b.putSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS, playersModified);
+        intent.putExtras(b);
+        getContext().startService(intent);
+        getActivity().finish();
+    }
 }

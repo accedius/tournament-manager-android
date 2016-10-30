@@ -4,6 +4,7 @@ package fit.cvut.org.cz.tmlibrary.presentation;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class CrossPackageCommunicationConstants {
+    public static final String EXTRA_SPORT_SERVICE = "extra_sport_service";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_ACTION = "extra_action";
@@ -13,6 +14,8 @@ public class CrossPackageCommunicationConstants {
     public static final String EXTRA_TYPE = "extra_type";
     public static final String EXTRA_NAME = "extra_name";
     public static final String EXTRA_JSON = "extra_json";
+    public static final String EXTRA_EXPORT = "extra_export";
+    public static final String EXTRA_IMPORT_INFO = "extra_import_info";
     public static final String EXTRA_CONFLICTS = "extra_conflits";
 
     public static final String CORE = "fit.cvut.org.cz.tournamentmanager";

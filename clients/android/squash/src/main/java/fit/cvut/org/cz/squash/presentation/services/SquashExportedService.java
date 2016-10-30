@@ -24,7 +24,7 @@ import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
-import fit.cvut.org.cz.squash.presentation.activities.ImportActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
@@ -113,7 +113,7 @@ public class SquashExportedService extends IntentService {
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
                 break;
@@ -184,15 +184,16 @@ public class SquashExportedService extends IntentService {
                     }
                 }
 
-                Intent res = new Intent(this, ImportActivity.class);
-                res.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent res = new Intent(package_name + action);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 res.putExtra(ImportActivity.COMPETITION, competitionInfo);
                 res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
                 res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
                 res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, playersModified);
-                startActivity(res);
+                sendBroadcast(res);
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {
