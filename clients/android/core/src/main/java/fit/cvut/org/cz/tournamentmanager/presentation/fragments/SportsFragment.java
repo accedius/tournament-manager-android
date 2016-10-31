@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -28,9 +27,6 @@ public class SportsFragment extends Fragment {
     private DefaultViewPagerAdapter adapter = null;
     private CompetitionsListFragment[] fragments;
     private String[] titles;
-
-    private String orderColumn = Competition.col_end_date;
-    private String orderType = "DESC";
 
     public SportsFragment() {}
 
@@ -56,8 +52,6 @@ public class SportsFragment extends Fragment {
             Bundle b = new Bundle();
             b.putParcelable("sport_package", entry.getValue());
             b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_name);
-            b.putString("order_column", orderColumn);
-            b.putString("order_type", orderType);
 
             CompetitionsListFragment clf = new CompetitionsListFragment();
             String sport_context = b.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
@@ -96,5 +90,11 @@ public class SportsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_sport_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void orderData(final String type) {
+        for (CompetitionsListFragment f : fragments) {
+            f.orderData(type);
+        }
     }
 }

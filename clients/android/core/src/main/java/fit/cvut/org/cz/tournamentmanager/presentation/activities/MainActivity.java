@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
@@ -178,19 +179,21 @@ public class MainActivity extends AbstractToolbarActivity {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /*if (orderColumn == getColumnForDialogId(which)) {
-                    switchOrder();
-                } else {
-                    orderColumn = getColumnForDialogId(which);
-                    orderType = "ASC";
+                switch (which){
+                    case 0:{
+                        cf.orderData(Competition.col_name);
+                        break;
+                    }
+                    case 1:{
+                        cf.orderData(Competition.col_start_date);
+                        break;
+                    }
+                    case 2:{
+                        cf.orderData(Competition.col_end_date);
+                        break;
+                    }
                 }
-
-                for (Fragment f : fragments) {
-                    CompetitionsListFragment clf = (CompetitionsListFragment) f;
-                    clf.orderData(orderColumn, orderType);
-                }
-
-                dialog.dismiss();*/
+                dialog.dismiss();
             }
         };
     }
