@@ -107,6 +107,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
+        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
         filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
         filter.addAction(CompetitionService.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
