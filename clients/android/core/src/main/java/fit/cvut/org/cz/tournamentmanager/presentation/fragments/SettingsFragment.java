@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +23,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
+import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 
@@ -27,16 +32,18 @@ import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
  * Created by kevin on 23. 10. 2016.
  */
 public class SettingsFragment extends Fragment {
+    private CoordinatorLayout v;
+
     private SparseBooleanArray sparse;
-    private ArrayList<String> sportSettings;
-    private AbstractSelectableListAdapter<String, ? extends OneActionViewHolder> adapter;
+    private ArrayList<Setting> sportSettings;
+    private AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> adapter;
 
     public SettingsFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
         Map<String, ApplicationInfo> sports = PackagesInfo.getSportContexts(getContext(), getResources());
         sparse = new SparseBooleanArray();
         sportSettings = new ArrayList<>();
@@ -45,7 +52,7 @@ public class SettingsFragment extends Fragment {
             for (Map.Entry<String, ApplicationInfo> sport: sports.entrySet()) {
                 String package_name = sport.getValue().metaData.getString("package_name");
                 String sport_name = sport.getKey();
-                sportSettings.add(getResources().getString(getResources().getIdentifier(sport_name, "string", getContext().getPackageName())));
+                sportSettings.add(new Setting(package_name, sport_name));
                 Setting setting = ManagersFactory.getInstance().settingManager.getByPackageSport(getContext(), package_name, sport_name);
                 if (setting == null) {
                     sparse.put(i, true);
@@ -58,7 +65,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        CoordinatorLayout v = (CoordinatorLayout) inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_data, container, false);
+        v = (CoordinatorLayout) inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_data, container, false);
         View fragmentView = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_list, container, false);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
         adapter = getAdapter();
@@ -72,14 +79,36 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
-    protected AbstractSelectableListAdapter<String, ? extends OneActionViewHolder> getAdapter() {
+    protected AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> getAdapter() {
         return new SelectSportsAdapter();
     }
 
-    class SelectSportsAdapter extends AbstractSelectableListAdapter<String, SimpleOneActionViewHolder> {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_finish, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_finish) {
+            ManagersFactory.getInstance().settingManager.deleteAll(getContext());
+            ArrayList<Setting> settings = adapter.getSelectedItems();
+            for (Setting s : sportSettings) {
+                if (!settings.contains(s)) {
+                    ManagersFactory.getInstance().settingManager.insert(getContext(), s);
+                }
+            }
+            Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_saved, Snackbar.LENGTH_LONG).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    class SelectSportsAdapter extends AbstractSelectableListAdapter<Setting, SimpleOneActionViewHolder> {
         @Override
         protected void bindView(SimpleOneActionViewHolder holder, int position) {
-            holder.name.setText(data.get(position));
+            Setting s = data.get(position);
+            String sport = getResources().getString(getResources().getIdentifier(s.getSportName(), "string", getContext().getPackageName()));
+            holder.name.setText(sport);
         }
 
         @Override
@@ -87,6 +116,5 @@ public class SettingsFragment extends Fragment {
             View v = LayoutInflater.from(parent.getContext()).inflate(fit.cvut.org.cz.tmlibrary.R.layout.row_select_item, parent, false);
             return new SimpleOneActionViewHolder(v, this);
         }
-
     }
 }

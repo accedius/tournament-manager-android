@@ -92,6 +92,7 @@
     <string name="tournament_created">Tournament created.</string>
     <string name="player_created">Player created.</string>
     <string name="competitionNotFound">Competition not found.</string>
+    <string name="settings_saved">Settings have been saved.</string>
     <string name="tournamentNotFound">Tournament not found.</string>
 
     <string name="name_empty_error">Name is empty!</string>

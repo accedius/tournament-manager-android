@@ -14,6 +14,11 @@ public class Setting {
         sportName = dSetting.getSportName();
     }
 
+    public Setting(String packageName, String sportName) {
+        this.packageName = packageName;
+        this.sportName = sportName;
+    }
+
     public static DSetting convertToDSetting(Setting s) {
         return new DSetting(s.packageName, s.sportName);
     }
@@ -24,5 +29,14 @@ public class Setting {
 
     public String getSportName() {
         return sportName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Setting))
+            return false;
+
+        Setting s = (Setting)o;
+        return this.sportName.equals(s.sportName) && this.packageName.equals(s.packageName);
     }
 }
