@@ -22,6 +22,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SettingsFragment;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
 
 /**
  * Created by kevin on 4.4.2016.
@@ -30,7 +32,9 @@ public class MainActivity extends AbstractToolbarActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mDrawerList;
 
+    private SportsFragment cf = null;
     private PlayersListFragment plf = null;
+    private SettingsFragment sf = null;
     private int selectedItem;
 
     @Override
@@ -71,10 +75,6 @@ public class MainActivity extends AbstractToolbarActivity {
         actionBarDrawerToggle.syncState();
         mDrawerList.getMenu().getItem(1).setChecked(true);
 
-        setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
-        plf = new PlayersListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, plf).commit();
-
         selectItem(R.id.players);
     }
 
@@ -94,19 +94,21 @@ public class MainActivity extends AbstractToolbarActivity {
         selectedItem = position;
         switch (position) {
             case R.id.competitions:
-                Intent intent = new Intent(this, SportsActivity.class);
-                intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                startActivity(intent);
+                setTitle(fit.cvut.org.cz.tmlibrary.R.string.competitions);
+                cf = new SportsFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, cf).commit();
                 break;
             case R.id.players:
+                setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
+                plf = new PlayersListFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, plf).commit();
+                break;
+            case R.id.settings:
+                setTitle(fit.cvut.org.cz.tmlibrary.R.string.settings);
+                sf = new SettingsFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, sf).commit();
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_sport_detail, menu);
-        return true;
     }
 
     @Override
@@ -121,7 +123,7 @@ public class MainActivity extends AbstractToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_order) {
+        if (item.getItemId() == R.id.action_players_order) {
             SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
             dialog.setListener(getSortingPlayersListener());
             dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");

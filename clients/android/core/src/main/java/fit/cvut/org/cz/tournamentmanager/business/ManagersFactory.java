@@ -2,6 +2,7 @@ package fit.cvut.org.cz.tournamentmanager.business;
 
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
+import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 
 /**
  * Created by kevin on 30. 3. 2016.
@@ -17,4 +18,5 @@ public class ManagersFactory {
     }
 
     public IPlayerManager playerManager = new PlayerManager();
+    public SettingManager settingManager= new SettingManager();
 }
