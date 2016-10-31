@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,10 +39,5 @@ public class TeamDetailActivity extends AbstractToolbarActivity {
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, TeamDetailFragment.newInstance(id, SquashTeamDetailFragment.class)).commit();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
     }
 }
