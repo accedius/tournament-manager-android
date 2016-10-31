@@ -77,9 +77,9 @@ public class MainActivity extends AbstractToolbarActivity {
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
-        mDrawerList.getMenu().getItem(1).setChecked(true);
+        mDrawerList.getMenu().getItem(0).setChecked(true);
 
-        selectItem(R.id.players);
+        selectItem(R.id.competitions);
     }
 
     @Override
