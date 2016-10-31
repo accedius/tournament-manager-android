@@ -37,6 +37,12 @@ public class SettingDAO {
         db.close();
     }
 
+    public void deleteAll(Context context) {
+        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        db.delete(DBConstants.tSETTINGS, null, null);
+        db.close();
+    }
+
     public DSetting getByPackageSport(Context context, String packageName, String sportName) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String selection = String.format("select * from %s where %s = ? and %s = ?", DBConstants.tSETTINGS, DBConstants.cPACKAGE_NAME, DBConstants.cSPORT_NAME);

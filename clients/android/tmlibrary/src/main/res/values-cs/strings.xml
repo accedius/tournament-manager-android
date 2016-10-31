@@ -117,4 +117,5 @@
     <string name="export_file_created">Soubor byl vytvořen ve složce Download.</string>
     <string name="export_file_failed">Soubor se nepodařilo uložit. Zkuste to prosím později.</string>
     <string name="settings">Nastavení</string>
+    <string name="settings_saved">Nastavení bylo uloženo.</string>
 </resources>

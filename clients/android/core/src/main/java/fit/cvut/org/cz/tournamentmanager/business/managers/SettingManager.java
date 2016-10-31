@@ -20,6 +20,10 @@ public class SettingManager {
         DAOFactory.getInstance().settingDAO.delete(context, packageName, sportName);
     }
 
+    public void deleteAll(Context context) {
+        DAOFactory.getInstance().settingDAO.deleteAll(context);
+    }
+
     public Setting getByPackageSport(Context context, String packageName, String sportName) {
         DSetting dSetting = DAOFactory.getInstance().settingDAO.getByPackageSport(context, packageName, sportName);
         if (dSetting == null)
