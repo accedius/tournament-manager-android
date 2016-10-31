@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -20,7 +21,9 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.CompetitionsListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SettingsFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
@@ -127,6 +130,10 @@ public class MainActivity extends AbstractToolbarActivity {
             SortingPlayersDialog dialog = SortingPlayersDialog.newInstance();
             dialog.setListener(getSortingPlayersListener());
             dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
+        } else if (item.getItemId() == R.id.action_order) {
+            SortingCompetitionsDialog dialog = SortingCompetitionsDialog.newInstance();
+            dialog.setListener(getSortingCompetitionsListener());
+            dialog.show(getSupportFragmentManager(), "SORT_COMPETITIONS");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -163,6 +170,27 @@ public class MainActivity extends AbstractToolbarActivity {
                     }
                 }
                 dialog.dismiss();
+            }
+        };
+    }
+
+    private DialogInterface.OnClickListener getSortingCompetitionsListener() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*if (orderColumn == getColumnForDialogId(which)) {
+                    switchOrder();
+                } else {
+                    orderColumn = getColumnForDialogId(which);
+                    orderType = "ASC";
+                }
+
+                for (Fragment f : fragments) {
+                    CompetitionsListFragment clf = (CompetitionsListFragment) f;
+                    clf.orderData(orderColumn, orderType);
+                }
+
+                dialog.dismiss();*/
             }
         };
     }
