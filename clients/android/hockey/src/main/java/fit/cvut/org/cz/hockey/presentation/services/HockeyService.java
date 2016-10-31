@@ -1,16 +1,52 @@
 package fit.cvut.org.cz.hockey.presentation.services;
 
 import android.content.Intent;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
-import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
+import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
+import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
+import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.StatsEnum;
+import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
+import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -78,15 +114,311 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Competition c = ManagerFactory.getInstance().competitionManager.getById(this, compId);
+                c.setSportContext(sport_context);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_JSON);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
                 break;
             }
+            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
+                // TODO refactor
+                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                Gson gson = new GsonBuilder().serializeNulls().create();
+                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
+
+                ImportInfo competitionInfo = new CompetitionImportInfo(c.getName(), CompetitionTypes.teams());
+                ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
+                ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
+                ArrayList<Conflict> playersModified = new ArrayList<>();
+
+                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
+                List<ServerCommunicationItem> players = new ArrayList<>();
+                List<ServerCommunicationItem> tournaments = new ArrayList<>();
+
+                for (ServerCommunicationItem subItem : allSubItems) {
+                    if (subItem.getType().equals("Player")) {
+                        players.add(subItem);
+                    } else if (subItem.getType().equals("Tournament")) {
+                        tournaments.add(subItem);
+                    }
+                }
+
+                /* TOURNAMENTS HANDLING */
+                for (ServerCommunicationItem t : tournaments) {
+                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
+
+                    Tournament tournament = TournamentSerializer.getInstance(this).deserialize(t);
+
+                    for (ServerCommunicationItem subItem : t.subItems) {
+                        if (subItem.getType().equals("Player")) {
+                            tournamentPlayers.add(subItem);
+                        } else if (subItem.getType().equals("Team")) {
+                            tournamentTeams.add(subItem);
+                        } else if (subItem.getType().equals("ScoredMatch")) {
+                            tournamentMatches.add(subItem);
+                        }
+                    }
+
+                    tournamentsInfo.add(new TournamentImportInfo(tournament.getName(), tournamentPlayers.size(), tournamentTeams.size(), tournamentMatches.size()));
+                }
+
+                /* PLAYERS HANDLING */
+                ArrayList<Player> allPlayers = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers(this);
+                HashMap<String, Player> allPlayersMap = new HashMap<>();
+                for (Player p : allPlayers) {
+                    allPlayersMap.put(p.getEmail(), p);
+                }
+
+                /* Import players */
+                for (ServerCommunicationItem p : players) {
+                    Player player = PlayerSerializer.getInstance(this).deserialize(p);
+                    if (allPlayersMap.containsKey(player.getEmail())) {
+                        Player matchedPlayer = allPlayersMap.get(player.getEmail());
+                        if (!matchedPlayer.samePlayer(player)) {
+                            playersModified.add(ConflictCreator.createConflict(matchedPlayer, player));
+                            // TODO všechny attributes přeložit
+                        }
+                    } else {
+                        playersInfo.add(new PlayerImportInfo(player.getName(), player.getEmail()));
+                    }
+                }
+
+                Intent res = new Intent(package_name + action);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                res.putExtra(ImportActivity.COMPETITION, competitionInfo);
+                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
+                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
+                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, playersModified);
+                sendBroadcast(res);
+                break;
+            }
+            case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {
+                // TODO brutal refactor NEEDED
+                // Begin transaction
+                /*DatabaseFactory.getInstance().getDatabase(this).beginTransaction();
+                try {
+                */
+                Intent res = new Intent(package_name + action);
+                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                Gson gson = new GsonBuilder().serializeNulls().create();
+                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
+                String competitionName = c.getName();
+                c.setName(c.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
+
+                HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
+
+                long competitionId = ManagerFactory.getInstance().competitionManager.insert(this, c);
+
+                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
+                List<ServerCommunicationItem> players = new ArrayList<>();
+                List<ServerCommunicationItem> tournaments = new ArrayList<>();
+
+                for (ServerCommunicationItem subItem : allSubItems) {
+                    if (subItem.getType().equals("Player")) {
+                        players.add(subItem);
+                    } else if (subItem.getType().equals("Tournament")) {
+                        tournaments.add(subItem);
+                    }
+                }
+
+                /* PLAYERS HANDLING */
+                ArrayList<Player> allPlayers = ManagerFactory.getInstance().packagePlayerManager.getAllPlayers(this);
+                HashMap<String, Player> allPlayersMap = new HashMap<>();
+                for (Player p : allPlayers) {
+                    allPlayersMap.put(p.getEmail(), p);
+                }
+
+                /* Import players
+                    - add if not exists
+                    - add to competition
+                    - create HashMap<uid, player> */
+                HashMap<String, Player> importedPlayers = new HashMap<>();
+                for (ServerCommunicationItem p : players) {
+                    Log.d("IMPORT", "Player: "+p.syncData);
+                    Player importedPlayer = PlayerSerializer.getInstance(this).deserialize(p);
+                    long playerId;
+                    if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
+                        Player matchedPlayer = allPlayersMap.get(importedPlayer.getEmail());
+                        playerId = matchedPlayer.getId();
+                        if (!matchedPlayer.samePlayer(importedPlayer)) {
+                            if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
+                                if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
+                                    ManagerFactory.getInstance().packagePlayerManager.updatePlayer(this, importedPlayer);
+                                    Log.d("IMPORT", "\tCONFLICT!");
+                                    Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
+                                }
+                            }
+                        }
+                    } else {
+                        playerId = ManagerFactory.getInstance().packagePlayerManager.insertPlayer(this, importedPlayer);
+                        Log.d("IMPORT", "\tADDED "+playerId);
+                    }
+                    importedPlayer.setId(playerId);
+                    importedPlayers.put(importedPlayer.getUid(), importedPlayer);
+
+                    // Add player to competition.
+                    ManagerFactory.getInstance().packagePlayerManager.addPlayerToCompetition(this, playerId, competitionId);
+                }
+
+                /* TOURNAMENTS HANDLING */
+                for (ServerCommunicationItem t : tournaments) {
+                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
+                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
+
+                    Log.d("IMPORT", "Tournament: " + t.syncData);
+                    Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
+                    imported.setCompetitionId(competitionId);
+                    long tournamentId = ManagerFactory.getInstance().tournamentManager.insert(this, imported);
+
+                    for (ServerCommunicationItem subItem : t.subItems) {
+                        if (subItem.getType().equals("Player")) {
+                            tournamentPlayers.add(subItem);
+                        } else if (subItem.getType().equals("Team")) {
+                            tournamentTeams.add(subItem);
+                        } else if (subItem.getType().equals("ScoredMatch")) {
+                            tournamentMatches.add(subItem);
+                        }
+                    }
+
+                    for (ServerCommunicationItem p : tournamentPlayers) {
+                        // Add player to tournament.
+                        long playerId = importedPlayers.get(p.getUid()).getId();
+                        ManagerFactory.getInstance().packagePlayerManager.addPlayerToTournament(this, playerId, tournamentId);
+                    }
+
+                    HashMap<String, Team> importedTeams = new HashMap<>();
+                    for (ServerCommunicationItem team : tournamentTeams) {
+                        // Add team to tournament.
+                        Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
+                        importedTeam.setTournamentId(tournamentId);
+                        long teamId = ManagerFactory.getInstance().teamManager.insert(this, importedTeam);
+                        importedTeam.setId(teamId);
+                        importedTeams.put(team.getUid(), importedTeam);
+
+                        // Add players to team.
+                        ArrayList<Player> teamPlayers = new ArrayList<>();
+                        for (ServerCommunicationItem teamPlayer : team.subItems) {
+                            if (teamPlayer.getType().equals("Player")) {
+                                teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
+                            }
+                        }
+                        ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, teamId, teamPlayers);
+                    }
+
+                    // Add stats
+                    for (ServerCommunicationItem match : tournamentMatches) {
+                        ScoredMatch importedMatch = MatchSerializer.getInstance(this).deserialize(match);
+                        importedMatch.setTournamentId(tournamentId);
+                        boolean home = true;
+                        for (ServerCommunicationItem matchTeam : match.subItems) {
+                            if (home) {
+                                importedMatch.setHomeParticipantId(importedTeams.get(matchTeam.getUid()).getId());
+                            } else {
+                                importedMatch.setAwayParticipantId(importedTeams.get(matchTeam.getUid()).getId());
+                            }
+                            home = false;
+                        }
+                        long matchId = ManagerFactory.getInstance().matchManager.insert(this, importedMatch);
+                        if (importedMatch.isPlayed()) {
+                            /* START match manager "begin match" */
+                            DTournament tour = DAOFactory.getInstance().tournamentDAO.getById(this, importedMatch.getTournamentId());
+                            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(this, matchId);
+                            for (DParticipant dp : participants) {
+                                for (StatsEnum statEn : StatsEnum.values()) {
+                                    if (statEn.isForPlayer()) continue;
+                                    DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
+                                    DAOFactory.getInstance().statDAO.insert(this, statToAdd);
+                                }
+                            }
+                            importedMatch.setPlayed(true);
+                            ManagerFactory.getInstance().matchManager.update(this, importedMatch);
+
+                            DMatchStat matchStat = new DMatchStat(matchId, false, false);
+                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(this, matchStat);
+                            /* END match manager "begin match" */
+
+                            /* START statistics manager - set match score by match id */
+                            int homeScore = Integer.parseInt(match.syncData.get("score_home"));
+                            int awayScore = Integer.parseInt(match.syncData.get("score_away"));
+                            boolean overtime = Boolean.parseBoolean(match.syncData.get("overtime"));
+                            boolean shootouts = Boolean.parseBoolean(match.syncData.get("shootouts"));
+                            MatchScore score = new MatchScore(matchId, homeScore, awayScore, shootouts, overtime);
+                            ManagerFactory.getInstance().statisticsManager.setMatchScoreByMatchId(this, matchId, score);
+                            /* END statistics manager - set match score by match id */
+
+                            /* START statistics manager - update players in match */
+                            ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch(
+                                    this, matchId, ParticipantType.home,
+                                    getPlayerIds(match, "home", importedPlayers));
+                            ManagerFactory.getInstance().statisticsManager.updatePlayersInMatch(
+                                    this, matchId, ParticipantType.away,
+                                    getPlayerIds(match, "away", importedPlayers));
+                            /* END statistics manager - update players in match */
+
+                            /* START statistics manager - update player stats in match */
+                            updatePlayersMatchStats(match, matchId, importedPlayers);
+                            /* END statistics manager - update player stats in match */
+                        }
+                    }
+                }
+                /*
+                } catch(Exception e) {} finally {
+                    DatabaseFactory.getInstance().getDatabase(this).setTransactionSuccessful();
+                }
+                DatabaseFactory.getInstance().getDatabase(this).endTransaction();
+                */
+                break;
+            }
+        }
+    }
+
+    private ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
+        ArrayList<Long> playerIds = new ArrayList<>();
+        int playersCnt = Integer.parseInt(match.syncData.get("players_"+role));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_"+role+"_"+i);
+            playerIds.add(players.get(uid).getId());
+        }
+        return playerIds;
+    }
+
+    private void updatePlayersMatchStats(ServerCommunicationItem match, long matchId, HashMap<String, Player> players) {
+        int playersCnt = Integer.parseInt(match.syncData.get("players_home"));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_home_"+i);
+            long id = players.get(uid).getId();
+            int goals = Integer.parseInt(match.syncData.get("stat_goals_"+uid));
+            int assists = Integer.parseInt(match.syncData.get("stat_assists_"+uid));
+            int plusMinusPoints = Integer.parseInt(match.syncData.get("stat_plus_minus_points_"+uid));
+            int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
+
+            MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
+            ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
+        }
+
+        playersCnt = Integer.parseInt(match.syncData.get("players_away"));
+        for (int i=1; i<=playersCnt; i++) {
+            String uid = match.syncData.get("player_away_"+i);
+            long id = players.get(uid).getId();
+            int goals = Integer.parseInt(match.syncData.get("stat_goals_"+uid));
+            int assists = Integer.parseInt(match.syncData.get("stat_assists_"+uid));
+            int plusMinusPoints = Integer.parseInt(match.syncData.get("stat_plus_minus_points_"+uid));
+            int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
+
+            MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
+            ManagerFactory.getInstance().statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
         }
     }
 }

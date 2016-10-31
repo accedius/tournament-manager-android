@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -27,7 +26,9 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_CONTENT = "extra_content";
     public static final String EXTRA_SPORT_CONTEXT = CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT;
     public static final String EXTRA_TYPE= CrossPackageCommunicationConstants.EXTRA_TYPE;
-    public static final String EXTRA_DELETE= "extra_delete";;
+    public static final String EXTRA_DELETE= "extra_delete";
+
+    public static final String ACTION_DELETE_COMPETITION = "action_delete_competition";
 
     public CompetitionService() {
         super("Competition Service");
@@ -91,7 +92,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         Intent result = new Intent(action);
         result.putExtra(EXTRA_PACKAGE, package_name);
         result.putExtra(EXTRA_SPORT_CONTEXT, sport_context);
-        if (action.equals(CompetitionDialog.ACTION_DELETE_COMPETITION)) {
+        if (action.equals(ACTION_DELETE_COMPETITION)) {
             result.putExtra(EXTRA_TYPE, EXTRA_DELETE);
             result.putExtra(EXTRA_RESULT, deleteCompetition(package_name, sport_context, Long.parseLong(content)));
             result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));

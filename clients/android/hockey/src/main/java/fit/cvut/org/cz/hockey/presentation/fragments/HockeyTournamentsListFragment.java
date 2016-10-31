@@ -84,10 +84,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                          @Override
                          public void onClick(View v) {
                              Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
-                             Bundle b = new Bundle();
-                             b.putLong(ShowTournamentActivity.COMP_ID, compId);
-                             b.putLong(ShowTournamentActivity.TOUR_ID, tourId);
-                             intent.putExtras(b);
+                             intent.putExtra(ShowTournamentActivity.COMP_ID, compId);
+                             intent.putExtra(ShowTournamentActivity.TOUR_ID, tourId);
                              intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                              startActivity(intent);
                          }

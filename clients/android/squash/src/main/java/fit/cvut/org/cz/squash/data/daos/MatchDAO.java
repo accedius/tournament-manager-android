@@ -44,7 +44,6 @@ public class MatchDAO implements IMatchDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         long id = db.insert(DBConstants.tMATCHES, null, cv);
-        db.close();
         return id;
     }
 
@@ -54,7 +53,6 @@ public class MatchDAO implements IMatchDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         db.update(DBConstants.tMATCHES, cv, String.format("%s = ?", DBConstants.cID), new String[] {Long.toString(match.getId())});
-        db.close();
     }
 
     @Override
@@ -62,7 +60,6 @@ public class MatchDAO implements IMatchDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cID);
         db.delete(DBConstants.tMATCHES, where, new String[]{Long.toString(id)});
-        db.close();
     }
 
     @Override
@@ -70,17 +67,13 @@ public class MatchDAO implements IMatchDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         String selection = String.format("select * from %s where %s = ?", DBConstants.tMATCHES, DBConstants.cTOURNAMENT_ID);
-
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(tournamentId)});
-
         ArrayList<DMatch> matches = new ArrayList<>();
 
         while (c.moveToNext())
             matches.add(CursorParser.getInstance().parseDMatch(c));
 
         c.close();
-        db.close();
-
         return matches;
     }
 
@@ -96,8 +89,6 @@ public class MatchDAO implements IMatchDAO {
             match = CursorParser.getInstance().parseDMatch(c);
 
         c.close();
-        db.close();
-
         return match;
     }
 }

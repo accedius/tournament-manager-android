@@ -92,6 +92,21 @@ public interface IPackagePlayerManager {
     ArrayList<Player> getAllPlayers(Context context);
 
     /**
+     * get all player from core
+     * @param context application context
+     * @param player inserted player
+     * @return player id
+     */
+    long insertPlayer(Context context, Player player);
+
+    /**
+     * get all player from core
+     * @param context application context
+     * @param player inserted player
+     */
+    void updatePlayer(Context context, Player player);
+
+    /**
      * get players that are not registered in certain competition
      * @param context application context
      * @param competitionId id of the competition

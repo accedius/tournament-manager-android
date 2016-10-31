@@ -10,14 +10,14 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
@@ -171,7 +171,7 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
-    public void insert(Context context, ScoredMatch match) {
+    public long insert(Context context, ScoredMatch match) {
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));
         Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, match.getTournamentId());
         CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
@@ -191,6 +191,7 @@ public class MatchManager implements IScoredMatchManager {
             DAOFactory.getInstance().participantDAO.insert(context, home);
             DAOFactory.getInstance().participantDAO.insert(context, away);
         }
+        return matchId;
     }
 
     @Override

@@ -17,7 +17,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionServic
  */
 public class CompetitionDialog extends DialogFragment {
     public static final String ARG_POSITION = "arg_position";
-    public static final String ACTION_DELETE_COMPETITION = "action_delete_competition";
 
     private Long competition_id;
     private String competition_name;
@@ -46,15 +45,13 @@ public class CompetitionDialog extends DialogFragment {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_create_competition);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        Bundle b = new Bundle();
-                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
-                        intent.putExtras(b);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
                         startActivity(intent);
                         dialog.dismiss();
                         break;
                     }
                     case 2: {
-                        Intent intent = CompetitionService.getStartIntent(ACTION_DELETE_COMPETITION, package_name, sport_context, competition_id.toString(), getContext());
+                        Intent intent = CompetitionService.getStartIntent(CompetitionService.ACTION_DELETE_COMPETITION, package_name, sport_context, competition_id.toString(), getContext());
                         intent.putExtra(CompetitionService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
                         getContext().startService(intent);
                         dialog.dismiss();

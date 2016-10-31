@@ -40,6 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity"/>
 
         <meta-data
             android:name="player_cp_authority"

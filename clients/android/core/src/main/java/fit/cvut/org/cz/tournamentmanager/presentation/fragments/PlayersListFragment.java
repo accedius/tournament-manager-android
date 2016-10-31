@@ -123,10 +123,8 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_player);
-                        Bundle b = new Bundle();
-                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                        intent.putExtras(b);
                         startActivity(intent);
                     }
                 });
@@ -144,9 +142,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                             case 0:{
                                                 Intent intent = new Intent();
                                                 intent.setClassName(package_name, activity_create_player);
-                                                Bundle b = new Bundle();
-                                                b.putLong(PlayerService.EXTRA_ID, playerId);
-                                                intent.putExtras(b);
+                                                intent.putExtra(PlayerService.EXTRA_ID, playerId);
                                                 startActivity(intent);
                                                 break;
                                             }

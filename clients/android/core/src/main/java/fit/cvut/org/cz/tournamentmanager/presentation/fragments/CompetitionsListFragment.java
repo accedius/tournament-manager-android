@@ -6,28 +6,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.AddCompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
@@ -74,10 +73,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
-                        Bundle b = new Bundle();
-                        b.putLong(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        intent.putExtras(b);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
+                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                     }
                 });
@@ -110,8 +107,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
-        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
-        filter.addAction(CompetitionDialog.ACTION_DELETE_COMPETITION);
+        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
+        filter.addAction(CompetitionService.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
         getActivity().registerReceiver(receiver, filter);
     }
@@ -133,10 +130,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClassName(package_name, activity_create_competition);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                startActivity(intent);
+                DialogFragment dialog = AddCompetitionDialog.newInstance(view, package_name, sport_context, activity_create_competition, stats_service);
+                dialog.show(getFragmentManager(), "ADD_COMPETITION");
             }
         });
         return fab;
@@ -195,39 +190,30 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     adapter.delete(position);
                 } else {
                     View v = getView().findFocus();
-                    if (v != null)
-                        Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
-            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_JSON)) {
+            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_EXPORT)) {
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
-                if (isExternalStorageWritable()) {
-                    File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/"+filename);
-                    try {
-                        file.createNewFile();
-                        OutputStream os = new FileOutputStream(file);
-                        os.write(json.getBytes());
-                        os.close();
-                        View v = getView().findFocus();
-                        if (v != null) {
-                            Snackbar.make(v, "File has been created in your Download folder.", Snackbar.LENGTH_LONG).show();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                View v = getView().findFocus();
+                if (FilesHelper.saveFile(filename, json)) {
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_created, Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_failed, Snackbar.LENGTH_LONG).show();
                 }
+            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO)) {
+                Intent res = new Intent(getActivity(), ImportActivity.class);
+                res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE, stats_service);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON));
+                res.putExtra(ImportActivity.COMPETITION, intent.getParcelableExtra(ImportActivity.COMPETITION));
+                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, intent.getParcelableArrayListExtra(ImportActivity.TOURNAMENTS));
+                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, intent.getParcelableArrayListExtra(ImportActivity.PLAYERS));
+                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, intent.getParcelableArrayListExtra(ImportActivity.CONFLICTS));
+                startActivity(res);
             }
-
         }
-    }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
     }
 }

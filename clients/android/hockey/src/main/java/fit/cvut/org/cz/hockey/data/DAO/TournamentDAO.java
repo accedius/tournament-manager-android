@@ -46,10 +46,7 @@ public class TournamentDAO implements ITournamentDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues values = toContVal(tournament);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
         return newRowId;
     }
 
@@ -58,14 +55,11 @@ public class TournamentDAO implements ITournamentDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = toContVal(tournament);
-
         values.put(DBConstants.cID, tournament.getId());
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(tournament.getId()) };
         db.update(DBConstants.tTOURNAMENTS, values, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -75,8 +69,6 @@ public class TournamentDAO implements ITournamentDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tTOURNAMENTS, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -86,15 +78,11 @@ public class TournamentDAO implements ITournamentDAO {
         Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
 
         DTournament res = CursorParser.getInstance().parseDTournament(cursor);
-
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -111,8 +99,6 @@ public class TournamentDAO implements ITournamentDAO {
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 }

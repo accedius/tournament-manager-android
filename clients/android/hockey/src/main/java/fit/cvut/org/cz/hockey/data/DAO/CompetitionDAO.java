@@ -41,15 +41,11 @@ public class CompetitionDAO implements ICompetitionDAO {
     }
 
     @Override
-    public void insert(Context context, DCompetition competition) {
+    public long insert(Context context, DCompetition competition) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-
         ContentValues values = toContVal(competition);
-
-        long newRowId;
-        newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
-
-        db.close();
+        long newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
+        return newRowId;
     }
 
     @Override
@@ -63,8 +59,6 @@ public class CompetitionDAO implements ICompetitionDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(competition.getId()) };
         db.update(DBConstants.tCOMPETITIONS, values, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -74,8 +68,6 @@ public class CompetitionDAO implements ICompetitionDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tCOMPETITIONS, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -85,14 +77,10 @@ public class CompetitionDAO implements ICompetitionDAO {
         Cursor cursor = db.query(DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
         DCompetition res = CursorParser.getInstance().parseDCompetition(cursor);
-        
         cursor.close();
-        db.close();
-
         return res;
     }
 }

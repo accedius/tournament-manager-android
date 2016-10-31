@@ -10,10 +10,10 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
@@ -23,9 +23,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  */
 public class TeamManager implements ITeamManager {
     @Override
-    public void insert(Context context, Team team) {
+    public long insert(Context context, Team team) {
         DTeam dt = Team.convertToDTeam(team);
-        DAOFactory.getInstance().teamDAO.insert(context, dt);
+        return DAOFactory.getInstance().teamDAO.insert(context, dt);
     }
 
     @Override

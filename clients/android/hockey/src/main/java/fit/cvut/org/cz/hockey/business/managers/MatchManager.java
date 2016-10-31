@@ -10,9 +10,9 @@ import java.util.Date;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -84,7 +84,6 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public ScoredMatch getById(Context context, long Id) {
         DMatch dm = DAOFactory.getInstance().matchDAO.getById(context, Id);
-
         return fillMatch(context, dm);
     }
 
@@ -143,7 +142,6 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void resetMatch(Context context, long matchId) {
         ScoredMatch match = getById(context, matchId);
-
         if (!match.isPlayed()) return;
 
         delete(context, matchId);
@@ -151,25 +149,24 @@ public class MatchManager implements IScoredMatchManager {
     }
 
     @Override
-    public void insert(Context context, ScoredMatch match) {
+    public long insert(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch(match);
 
         dMatch.setLastModified(new Date());
-        dMatch.setPlayed(false);
         long matchId = DAOFactory.getInstance().matchDAO.insert(context, dMatch);
 
         DParticipant homeParticipant = new DParticipant(-1, match.getHomeParticipantId(), matchId, ParticipantType.home.toString());
-
         DParticipant awayParticipant = new DParticipant(-1, match.getAwayParticipantId(), matchId, ParticipantType.away.toString());
+
         DAOFactory.getInstance().participantDAO.insert(context, homeParticipant);
         DAOFactory.getInstance().participantDAO.insert(context, awayParticipant);
+        return matchId;
     }
 
     @Override
     public void update(Context context, ScoredMatch match) {
         DMatch dMatch = ScoredMatch.convertToDMatch(match);
         dMatch.setLastModified(new Date());
-
         DAOFactory.getInstance().matchDAO.update(context, dMatch);
     }
 

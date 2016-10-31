@@ -16,8 +16,8 @@ import android.widget.TextView;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -67,9 +67,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
             intAwayScore = savedInstanceState.getInt(SAVE_AWAY_SCORE);
             ot = savedInstanceState.getInt(SAVE_OVERTIME);
             so = savedInstanceState.getInt(SAVE_SHOOTOUTS);
-        }
-        else
-        {
+        } else {
             intHomeScore = -1;
             intAwayScore = -1;
             ot = -1;
@@ -120,16 +118,12 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
             if (matchScore.isOvertime()) {
                 overtime.setChecked(true);
                 ot = 1;
-            }
-            else ot = 0;
+            } else ot = 0;
             if (matchScore.isShootouts()) {
                 shootouts.setChecked(true);
                 so = 1;
-            }
-            else so = 0;
-        }
-        else
-        {
+            } else so = 0;
+        } else {
             overtime.setChecked(ot != 0);
             shootouts.setChecked(so != 0);
         }

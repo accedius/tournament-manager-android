@@ -51,7 +51,14 @@
     <string name="sort_by_start_date">Sort by start date</string>
     <string name="sort_by_end_date">Sort by end date</string>
 
+    <string name="competition_create_manually">Create competition manually</string>
+    <string name="competition_import_file">Import from file</string>
+    <string name="competition_import_server">Import from server</string>
+
     <string name="export_to_file">Export to file</string>
+    <string name="export_file_created">File has been created in your Download folder.</string>
+    <string name="export_file_failed">File could not be created. Please try again later.</string>
+    <string name="choose_file">Choose file to import</string>
 
     <string name="home">Home</string>
     <string name="away">Away</string>
@@ -90,6 +97,7 @@
     <string name="name_email_empty_error">Name and/or email is empty!</string>
     <string name="not_all_fields_error">Not all fields are properly filled!</string>
     <string name="not_enough_teams_error">Not enough teams!</string>
+    <string name="no_competition_file_error">No competition file in Download folder has been found.</string>
 
     <string name="invalidEmail">Email is not valid!</string>
     <string name="invalidName">Name is not valid!</string>

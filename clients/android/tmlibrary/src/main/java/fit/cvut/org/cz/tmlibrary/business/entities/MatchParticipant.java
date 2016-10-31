@@ -52,4 +52,9 @@ public class MatchParticipant implements IEntity, Parcelable {
     public String toString() {
         return name;
     }
+
+    @Override
+    public long getId() {
+        return id;
+    }
 }

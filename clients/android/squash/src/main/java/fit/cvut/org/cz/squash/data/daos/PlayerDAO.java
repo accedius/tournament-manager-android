@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.data.daos;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -33,7 +34,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, cv);
-        db.close();
     }
 
     @Override
@@ -44,7 +44,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, cv);
-        db.close();
     }
 
     @Override
@@ -59,7 +58,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_TEAM, null, cv);
-        db.close();
     }
 
     @Override
@@ -70,7 +68,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(competitionId), Long.toString(playerId)};
 
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, args);
-        db.close();
     }
 
     @Override
@@ -81,7 +78,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(tournamentId), Long.toString(playerId)};
 
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, args);
-        db.close();
     }
 
     @Override
@@ -96,7 +92,6 @@ public class PlayerDAO implements IPackagePlayerDAO {
         String[] args = new String[]{Long.toString(teamId)};
 
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, args);
-        db.close();
     }
 
     @Override
@@ -107,11 +102,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -123,11 +117,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -144,11 +137,10 @@ public class PlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> ids = new ArrayList<>();
 
-        while (c.moveToNext()) ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
+        while (c.moveToNext())
+            ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -180,5 +172,38 @@ public class PlayerDAO implements IPackagePlayerDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public long insertPlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers);
+            Uri insertUri = context.getContentResolver().insert(uri, values);
+            return ContentUris.parseId(insertUri);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1L;
+    }
+
+    @Override
+    public void updatePlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            String where = DBConstants.tPLAYERS + "." + DBConstants.cEMAIL + " = '" + values.getAsString("email")+"'";
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayerUpdate);
+            context.getContentResolver().update(uri, values, where, null);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

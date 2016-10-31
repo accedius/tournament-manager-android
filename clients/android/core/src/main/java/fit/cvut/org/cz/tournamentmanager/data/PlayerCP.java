@@ -20,13 +20,13 @@ public class PlayerCP extends ContentProvider {
     private CoreDBHelper helper;
 
     private static final int PLAYERS_ALL = 0;
-    //private static final int COMPETITION_ONE = 1;
+    private static final int PLAYER_UPDATE = 1;
 
     private static final UriMatcher matcher ;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, CPConstants.uPlayers, PLAYERS_ALL);
-        //matcher.addURI(AUTHORITY, CPConstants.uPlayers + "#", PLAYER_ONE);
+        matcher.addURI(AUTHORITY, CPConstants.uPlayerUpdate, PLAYER_UPDATE);
     }
 
     @Override
@@ -39,7 +39,6 @@ public class PlayerCP extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriType = matcher.match(uri);
-
         if (uriType != PLAYERS_ALL) return null;
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -60,7 +59,11 @@ public class PlayerCP extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        int uriType = matcher.match(uri);
+        if (uriType != PLAYERS_ALL) return null;
+
+        Long rowId = helper.getWritableDatabase().insert(DBConstants.tPLAYERS, null, values);
+        return Uri.parse(uri.toString()+rowId);
     }
 
     @Override
@@ -70,6 +73,9 @@ public class PlayerCP extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        int uriType = matcher.match(uri);
+        if (uriType != PLAYER_UPDATE) return -1;
+
+        return helper.getWritableDatabase().update(DBConstants.tPLAYERS, values, selection, null);
     }
 }

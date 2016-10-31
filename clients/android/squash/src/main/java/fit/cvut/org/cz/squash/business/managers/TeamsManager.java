@@ -10,9 +10,9 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
@@ -22,8 +22,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
  */
 public class TeamsManager implements ITeamManager {
     @Override
-    public void insert(Context context, Team team) {
-        DAOFactory.getInstance().teamDAO.insert(context, Team.convertToDTeam(team));
+    public long insert(Context context, Team team) {
+        return DAOFactory.getInstance().teamDAO.insert(context, Team.convertToDTeam(team));
     }
 
     @Override

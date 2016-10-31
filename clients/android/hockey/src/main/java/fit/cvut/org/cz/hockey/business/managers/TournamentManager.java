@@ -16,10 +16,11 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
  */
 public class TournamentManager implements ITournamentManager {
     @Override
-    public void insert(Context context, Tournament tournament) {
+    public long insert(Context context, Tournament tournament) {
         DTournament dt = Tournament.convertToDTournament(tournament);
         long tourId = DAOFactory.getInstance().tournamentDAO.insert(context, dt);
         DAOFactory.getInstance().pointConfigDAO.insertDefault(context, tourId);
+        return tourId;
     }
 
     @Override

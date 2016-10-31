@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.business.managers;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -109,6 +110,24 @@ public class PlayerManager implements IPackagePlayerManager {
         for (Long key : dPlayers.keySet()) players.add(new Player(dPlayers.get(key)));
 
         return players;
+    }
+
+    @Override
+    public long insertPlayer(Context context, Player player) {
+        ContentValues values = new ContentValues();
+        values.put("email", player.getEmail());
+        values.put("name", player.getName());
+        values.put("note", player.getNote());
+        return DAOFactory.getInstance().playerDAO.insertPlayer(context, values);
+    }
+
+    @Override
+    public void updatePlayer(Context context, Player player) {
+        ContentValues values = new ContentValues();
+        values.put("email", player.getEmail());
+        values.put("name", player.getName());
+        values.put("note", player.getNote());
+        DAOFactory.getInstance().playerDAO.updatePlayer(context, values);
     }
 
     @Override

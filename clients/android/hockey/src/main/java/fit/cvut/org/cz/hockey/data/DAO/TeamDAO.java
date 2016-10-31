@@ -36,15 +36,13 @@ public class TeamDAO implements ITeamDAO {
     }
 
     @Override
-    public void insert(Context context, DTeam team) {
+    public long insert(Context context, DTeam team) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
         ContentValues values = toContVal(team);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tTEAMS, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tTEAMS, null, values);
+        return newRowId;
     }
 
     @Override
@@ -58,7 +56,6 @@ public class TeamDAO implements ITeamDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(team.getId()) };
         db.update(DBConstants.tTEAMS, values, where, projection);
-        db.close();
     }
 
     @Override
@@ -68,7 +65,6 @@ public class TeamDAO implements ITeamDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tTEAMS, where, projection);
-        db.close();
     }
 
     @Override
@@ -78,14 +74,11 @@ public class TeamDAO implements ITeamDAO {
         Cursor cursor = db.query(DBConstants.tTEAMS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
         DTeam res = CursorParser.getInstance().parseDTeam(cursor);
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -97,14 +90,11 @@ public class TeamDAO implements ITeamDAO {
 
         ArrayList<DTeam> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDTeam(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 }

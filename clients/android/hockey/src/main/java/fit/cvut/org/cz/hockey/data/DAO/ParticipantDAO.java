@@ -40,13 +40,8 @@ public class ParticipantDAO implements IParticipantDAO {
     @Override
     public long insert(Context context, DParticipant participant) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-
         ContentValues values = toContVal(participant);
-
-        long newRowId;
-        newRowId = db.insert(DBConstants.tPARTICIPANTS, null, values);
-
-        db.close();
+        long newRowId = db.insert(DBConstants.tPARTICIPANTS, null, values);
         return newRowId;
     }
 
@@ -61,7 +56,6 @@ public class ParticipantDAO implements IParticipantDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(participant.getId()) };
         db.update(DBConstants.tPARTICIPANTS, values, where, projection);
-        db.close();
     }
 
     @Override
@@ -71,7 +65,6 @@ public class ParticipantDAO implements IParticipantDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tPARTICIPANTS, where, projection);
-        db.close();
     }
 
     @Override
@@ -82,14 +75,12 @@ public class ParticipantDAO implements IParticipantDAO {
 
         ArrayList<DParticipant> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             DParticipant dp = CursorParser.getInstance().parseDParticipant(cursor);
             res.add(dp);
         }
 
         cursor.close();
-        db.close();
 
         return res;
     }
@@ -106,14 +97,10 @@ public class ParticipantDAO implements IParticipantDAO {
         Cursor cursor = db.query(DBConstants.tPARTICIPANTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
         DParticipant res = CursorParser.getInstance().parseDParticipant(cursor);
-
         cursor.close();
-        db.close();
-
         return res;
     }
 }

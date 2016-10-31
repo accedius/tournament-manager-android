@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -158,6 +159,11 @@ public class Player extends ShareBase implements Parcelable {
         return id == player.id;
     }
 
+    public boolean samePlayer(Player p) {
+        if (this == p) return true;
+        return (email.equals(p.email) && note.equals(p.note) && name.equals(p.name));
+    }
+
     public String getColumn(String column) {
         if (column.equals(col_name)) {
             return getName();
@@ -175,5 +181,9 @@ public class Player extends ShareBase implements Parcelable {
 
     public String getEntityType() {
         return "Player";
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

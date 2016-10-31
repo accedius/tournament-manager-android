@@ -50,8 +50,6 @@ public class MatchDAO implements IMatchDAO {
 
         long newRowId;
         newRowId = db.insert(DBConstants.tMATCHES, null, values);
-
-        db.close();
         return newRowId;
     }
 
@@ -64,7 +62,6 @@ public class MatchDAO implements IMatchDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(match.getId()) };
         db.update(DBConstants.tMATCHES, values, where, projection);
-        db.close();
     }
 
     @Override
@@ -74,7 +71,6 @@ public class MatchDAO implements IMatchDAO {
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
         db.delete(DBConstants.tMATCHES, where, projection);
-        db.close();
     }
 
     @Override
@@ -85,14 +81,11 @@ public class MatchDAO implements IMatchDAO {
 
         ArrayList<DMatch> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(CursorParser.getInstance().parseDMatch(cursor));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -103,14 +96,10 @@ public class MatchDAO implements IMatchDAO {
         Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
-            db.close();
             return null;
         }
         DMatch res = CursorParser.getInstance().parseDMatch(cursor);
-
         cursor.close();
-        db.close();
-
         return res;
     }
 }

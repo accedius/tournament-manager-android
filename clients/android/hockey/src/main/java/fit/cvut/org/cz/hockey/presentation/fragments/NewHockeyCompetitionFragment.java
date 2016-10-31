@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;

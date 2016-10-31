@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.hockey.data.DAO;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -33,10 +34,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cCOMPETITIONID, competitionId);
         values.put(DBConstants.cPLAYER_ID, playerId);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, values);
     }
 
     @Override
@@ -48,10 +46,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cTOURNAMENT_ID, tournamentId);
         values.put(DBConstants.cPLAYER_ID, playerId);
 
-        Long newRowId;
-        newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
-
-        db.close();
+        Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TOURNAMENT, null, values);
     }
 
     @Override
@@ -67,8 +62,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         values.put(DBConstants.cPLAYER_ID, playerId);
 
         Long newRowId = db.insert(DBConstants.tPLAYERS_IN_TEAM, null, values);
-
-        db.close();
     }
 
     @Override
@@ -78,8 +71,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(competitionId) };
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -89,8 +80,6 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(tournamentId) };
         db.delete(DBConstants.tPLAYERS_IN_TOURNAMENT, where, projection);
-
-        db.close();
     }
 
     @Override
@@ -104,26 +93,18 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
         String where = String.format("%s = ?", DBConstants.cTEAM_ID);
         String[] projection = new String[]{ Long.toString(teamId) };
         db.delete(DBConstants.tPLAYERS_IN_TEAM, where, projection);
-
-        db.close();
     }
 
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        ArrayList<Long> res = new ArrayList<>();
         String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_COMPETITION, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
-
-        ArrayList<Long> res = new ArrayList<>();
-
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
-
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -135,14 +116,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -159,14 +137,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -178,14 +153,11 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
         ArrayList<Long> res = new ArrayList<>();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             res.add(cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID)));
         }
 
         cursor.close();
-        db.close();
-
         return res;
     }
 
@@ -214,5 +186,38 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public long insertPlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers);
+            Uri insertUri = context.getContentResolver().insert(uri, values);
+            return ContentUris.parseId(insertUri);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1L;
+    }
+
+    @Override
+    public void updatePlayer(Context context, ContentValues values) {
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo("fit.cvut.org.cz.tournamentmanager", PackageManager.GET_META_DATA);
+            String cpUri = ai.metaData.getString("player_cp_authority");
+
+            String where = DBConstants.tPLAYERS + "." + DBConstants.cEMAIL + " = '" + values.getAsString("email")+"'";
+            Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayerUpdate);
+            context.getContentResolver().update(uri, values, where, null);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

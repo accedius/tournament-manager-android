@@ -62,7 +62,6 @@ public class StatDAO implements IStatDAO {
         ContentValues cv = convert(stat);
 
         db.insert(SDBConstants.tSTATS, null, cv);
-        db.close();
     }
 
     @Override
@@ -75,8 +74,6 @@ public class StatDAO implements IStatDAO {
             ids.add(c.getLong(c.getColumnIndex(DBConstants.cPLAYER_ID)));
 
         c.close();
-        db.close();
-
         return ids;
     }
 
@@ -86,8 +83,6 @@ public class StatDAO implements IStatDAO {
 
         String where = String.format("%s = ? and %s =?", DBConstants.cPARTICIPANT_ID, SDBConstants.cTYPE);
         db.delete(SDBConstants.tSTATS, where, new String[] { Long.toString(participantId), type.toString()});
-
-        db.close();
     }
 
     @Override
@@ -99,7 +94,6 @@ public class StatDAO implements IStatDAO {
 
         String where = String.format("%s = ?", DBConstants.cID);
         long rows = db.update(SDBConstants.tSTATS, cv, where, new String[]{Long.toString(stat.getId())});
-        db.close();
     }
 
     @Override
@@ -107,7 +101,6 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cPARTICIPANT_ID);
         db.delete(SDBConstants.tSTATS, where, new String[]{Long.toString(participantId)});
-        db.close();
     }
 
     @Override
@@ -120,8 +113,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -135,8 +126,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -150,8 +139,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -165,8 +152,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -180,8 +165,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -195,8 +178,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
@@ -210,8 +191,6 @@ public class StatDAO implements IStatDAO {
             stats.add(parse(c));
 
         c.close();
-        db.close();
-
         return stats;
     }
 
