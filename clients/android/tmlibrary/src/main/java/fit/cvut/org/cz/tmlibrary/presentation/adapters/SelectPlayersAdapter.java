@@ -19,7 +19,7 @@ public class SelectPlayersAdapter extends AbstractSelectableListAdapter<Player, 
 
     @Override
     public SimpleOneActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_select_player, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_select_item, parent, false);
         return new SimpleOneActionViewHolder(v, this);
     }
 

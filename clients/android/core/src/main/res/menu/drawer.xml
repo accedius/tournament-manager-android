@@ -11,5 +11,10 @@
             android:checked="false"
             android:icon="@drawable/ic_people_white_24dp"
             android:title="@string/players" />
+        <item
+            android:id="@+id/settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="@string/settings" />
     </group>
 </menu>

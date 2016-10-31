@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
+        Log.d("CLF", "Asked for data "+sport_context);
         Intent intent = CompetitionService.getStartIntent(action, package_name, sport_context, content, getContext());
         getContext().startService(intent);
     }
@@ -105,6 +107,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void registerReceivers() {
+        Log.d("CLF", "Registered for "+sport_context);
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
         filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
@@ -116,6 +119,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void unregisterReceivers() {
+        Log.d("CLF", "Unregistered for "+sport_context);
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
         getActivity().unregisterReceiver(receiver);
     }

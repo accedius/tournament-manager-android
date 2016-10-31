@@ -11,6 +11,10 @@
         <activity
             android:name=".presentation.activities.MainActivity"
             android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <service android:name=".presentation.services.CompetitionService" />
@@ -35,10 +39,6 @@
         <activity
             android:name="fit.cvut.org.cz.tournamentmanager.presentation.activities.SportsActivity"
             android:label="@string/competitions">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity"/>
