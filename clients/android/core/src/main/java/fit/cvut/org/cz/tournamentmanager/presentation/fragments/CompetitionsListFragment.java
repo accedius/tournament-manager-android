@@ -44,6 +44,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String stats_service;
     private String sport_context;
 
+    private String orderColumn = Competition.col_end_date;
+    private String orderType = "DESC";
+
     private BroadcastReceiver receiver;
 
     public void setAction(String action) {
@@ -95,7 +98,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     public void askForData() {
-        Log.d("CLF", "Asked for data "+sport_context);
         Intent intent = CompetitionService.getStartIntent(action, package_name, sport_context, content, getContext());
         getContext().startService(intent);
     }
@@ -107,7 +109,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void registerReceivers() {
-        Log.d("CLF", "Registered for "+sport_context);
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
         filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
@@ -119,7 +120,6 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void unregisterReceivers() {
-        Log.d("CLF", "Unregistered for "+sport_context);
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
         getActivity().unregisterReceiver(receiver);
     }
@@ -144,28 +144,34 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
 
     @Override
     protected void afterBindData() {
-        orderData(getArguments().getString("order_column"), getArguments().getString("order_type"));
+        orderData(orderType);
     }
 
-    public void orderData(final String column, final String order) {
+    public void orderData(final String type) {
         if (adapter == null) return;
 
         ArrayList<Competition> competitions = adapter.getData();
-        if (order.equals("DESC")) {
+        if (orderColumn.equals(type) && orderType.equals("ASC")) {
+            orderType = "DESC";
             Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {
-                    return rs.getColumn(column).compareToIgnoreCase(ls.getColumn(column));
+                    return rs.getColumn(type).compareToIgnoreCase(ls.getColumn(type));
                 }
             });
         } else {
+            if (!orderColumn.equals(type)) {
+                orderColumn = type;
+            }
+            orderType = "ASC";
             Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {
-                    return ls.getColumn(column).compareToIgnoreCase(rs.getColumn(column));
+                    return ls.getColumn(type).compareToIgnoreCase(rs.getColumn(type));
                 }
             });
         }
+
         adapter.swapData(competitions);
         adapter.notifyDataSetChanged();
     }
