@@ -14,6 +14,10 @@ public class DBScripts {
             + DBConstants.cLASTMODIFIED + " TEXT, "
             + DBConstants.cLASTSYNCHRONIZED + " TEXT);";
 
+    public static final String CREATE_TABLE_SETTINGS = "create table " + DBConstants.tSETTINGS+ " ("
+            + DBConstants.cPACKAGE_NAME + " TEXT, "
+            + DBConstants.cSPORT_NAME + " TEXT);";
+
     public static final String CREATE_TABLE_COMPETITIONS = "create table " + DBConstants.tCOMPETITIONS + " ("
             + DBConstants.cID + " INTEGER PRIMARY KEY, "
             + DBConstants.cNAME + " TEXT NOT NULL, "

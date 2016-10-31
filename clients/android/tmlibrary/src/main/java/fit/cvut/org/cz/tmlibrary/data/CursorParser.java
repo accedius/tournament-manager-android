@@ -11,6 +11,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.DSetting;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -82,6 +83,12 @@ public class CursorParser {
         }
 
         return new DPlayer(id, name, email, note, etag, uid, lastModified, lastSynchronized);
+    }
+
+    public DSetting parseDSetting(Cursor cursor) {
+        String packageName = cursor.getString(cursor.getColumnIndex(DBConstants.cPACKAGE_NAME));
+        String sportName = cursor.getString(cursor.getColumnIndex(DBConstants.cSPORT_NAME));
+        return new DSetting(packageName, sportName);
     }
 
     public DTournament parseDTournament(Cursor cursor) {

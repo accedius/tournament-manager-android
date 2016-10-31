@@ -7,6 +7,7 @@ public class DBConstants {
     // t prefix stands for table
     public static final String tCOMPETITIONS = "competitions";
     public static final String tPLAYERS = "players";
+    public static final String tSETTINGS = "settings";
     public static final String tTOURNAMENTS = "tournaments";
     public static final String tPLAYERS_IN_COMPETITION = "players_in_competition";
     public static final String tPLAYERS_IN_TOURNAMENT = "players_in_tournament";
@@ -19,6 +20,8 @@ public class DBConstants {
     //c prefix stands for column
     public static final String cID = "_id";
     public static final String cUID = "uid";
+    public static final String cSPORT_NAME = "sport_name";
+    public static final String cPACKAGE_NAME = "package_name";
     public static final String cNAME = "name";
     public static final String cEMAIL = "email";
     public static final String cSTART = "start";
