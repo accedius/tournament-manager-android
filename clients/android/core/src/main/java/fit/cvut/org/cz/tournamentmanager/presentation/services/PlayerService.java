@@ -8,11 +8,14 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
+import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 
 /**
  * Created by kevin on 4.4.2016.
@@ -22,7 +25,6 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_PLAYER = "extra_player";
     public static final String EXTRA_PLAYERS = "extra_players";
-    public static final String EXTRA_PACKAGES = "extra_packages";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_RESULT = "extra_result";
 
@@ -36,8 +38,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         super("Player Service");
     }
 
-    private boolean existsCompetitionsForPlayer(String package_name, String content) {
-        String uri = "content://"+package_name+".data/"+content;
+    private boolean existsCompetitionsForPlayer(String packageName, String sportName, String content) {
+        String uri = "content://"+packageName+".data/"+sportName+content;
         Uri myUri = Uri.parse(uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null)
@@ -96,10 +98,10 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 Long playerId = intent.getLongExtra(EXTRA_ID, -1);
                 int position = intent.getIntExtra(EXTRA_POSITION, -1);
                 boolean deleted = true;
-                ArrayList<ApplicationInfo> sport_packages = intent.getParcelableArrayListExtra(EXTRA_PACKAGES);
-                for (ApplicationInfo info : sport_packages) {
-                    String package_name = info.metaData.getString("package_name");
-                    if (existsCompetitionsForPlayer(package_name, CPConstants.uCompetitionsByPlayer+playerId)) {
+                Map<String, ApplicationInfo> sportContexts = PackagesInfo.getSportContexts(this, getResources());
+                for (Map.Entry<String, ApplicationInfo>  sport : sportContexts.entrySet()) {
+                    String package_name = sport.getValue().metaData.getString("package_name");
+                    if (existsCompetitionsForPlayer(package_name, sport.getKey(), CPConstants.uCompetitionsByPlayer + playerId)) {
                         deleted = false;
                         break;
                     }
