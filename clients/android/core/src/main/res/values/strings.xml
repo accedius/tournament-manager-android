@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">TournamentManager</string>
+    <string name="app_name" translatable="false">Tournament Manager</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
 
     <string name="player_cp_authority" translatable="false">fit.cvut.org.cz.tournamentmanager.data</string>
