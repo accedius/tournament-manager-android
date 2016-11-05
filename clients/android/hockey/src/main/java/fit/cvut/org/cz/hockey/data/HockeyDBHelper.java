@@ -1,26 +1,44 @@
 package fit.cvut.org.cz.hockey.data;
 
 import android.content.Context;
+import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+
+import fit.cvut.org.cz.hockey.data.ormlite.Soutez;
+import fit.cvut.org.cz.hockey.data.ormlite.Turnaj;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
+import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class HockeyDBHelper extends SQLiteOpenHelper {
-    private static final int DBVersion = 1;
+public class HockeyDBHelper extends SportDBHelper {
+    private static final int DBVersion = 6;
+    private Dao<Soutez, Integer> soutezDao;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name+".db", null, DBVersion);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
+    public Dao<Soutez, Integer> getHospitalDao() throws SQLException {
+        if (soutezDao == null) {
+            soutezDao = getDao(Soutez.class);
+        }
+        return soutezDao;
+    }
 
+    @Override
+    public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
+        try {
+            TableUtils.createTable(connectionSource, Soutez.class);
+            TableUtils.createTable(connectionSource, Turnaj.class);
+        } catch (SQLException e) {}
+        db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
         db.execSQL(DBScripts.CREATE_TABLE_TOURNAMENTS);
 
         db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
@@ -79,7 +97,8 @@ public class HockeyDBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS souteze");
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tCOMPETITIONS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTOURNAMENTS);
         db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tCONFIGURATIONS);
