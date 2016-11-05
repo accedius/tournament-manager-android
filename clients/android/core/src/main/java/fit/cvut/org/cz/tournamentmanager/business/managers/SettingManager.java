@@ -2,41 +2,57 @@ package fit.cvut.org.cz.tournamentmanager.business.managers;
 
 import android.content.Context;
 
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.data.entities.DSetting;
-import fit.cvut.org.cz.tournamentmanager.data.DAOFactory;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
 
 /**
  * Created by kevin on 23.10.2016.
  */
 public class SettingManager {
     public void insert(Context context, Setting setting) {
-        DAOFactory.getInstance().settingDAO.insert(context, Setting.convertToDSetting(setting));
-    }
-
-    public void delete(Context context, String packageName, String sportName) {
-        DAOFactory.getInstance().settingDAO.delete(context, packageName, sportName);
+        try {
+            Dao<Setting, Long> dao = DatabaseFactory.getDBHelper(context).getSettingDao();
+            dao.create(setting);
+        } catch (SQLException e) {}
     }
 
     public void deleteAll(Context context) {
-        DAOFactory.getInstance().settingDAO.deleteAll(context);
+        try {
+            Dao<Setting, Long> dao = DatabaseFactory.getDBHelper(context).getSettingDao();
+            dao.delete(dao.queryForAll());
+        } catch (SQLException e) {}
     }
 
     public Setting getByPackageSport(Context context, String packageName, String sportName) {
-        DSetting dSetting = DAOFactory.getInstance().settingDAO.getByPackageSport(context, packageName, sportName);
-        if (dSetting == null)
+        try {
+            Dao<Setting, Long> dao = DatabaseFactory.getDBHelper(context).getSettingDao();
+            List<Setting> settings = dao.queryBuilder()
+                    .where()
+                    .eq(DBConstants.cSPORT_NAME, sportName)
+                    .and()
+                    .eq(DBConstants.cPACKAGE_NAME, packageName)
+                    .query();
+            if (settings.isEmpty())
+                return null;
+            return settings.get(0);
+        } catch (SQLException e) {
             return null;
-        return new Setting(dSetting);
+        }
     }
 
-    public ArrayList<Setting> getAll(Context context) {
-        ArrayList<Setting> settings = new ArrayList<>();
-        ArrayList<DSetting> dSettings = DAOFactory.getInstance().settingDAO.getAll(context);
-        for (DSetting d : dSettings) {
-            settings.add(new Setting(d));
+    public List<Setting> getAll(Context context) {
+        try {
+            Dao<Setting, Long> dao = DatabaseFactory.getDBHelper(context).getSettingDao();
+            return dao.queryForAll();
+        } catch (SQLException e) {
+            return new ArrayList<Setting>();
         }
-        return settings;
     }
 }

@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -63,7 +63,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void doWork(Intent intent) {
+    protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){

@@ -44,5 +44,7 @@ public class DBConstants {
     public static final String cDATE = "date";
     public static final String cLASTSYNCHRONIZED = "last_synchronized";
     public static final String cPLAYED = "played";
+    public static final String cTOKEN_VALUE= "token_value";
+    public static final String cTOKEN_TYPE = "token_type";
 
 }

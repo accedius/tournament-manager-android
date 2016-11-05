@@ -1,13 +1,26 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.DSetting;
 
 /**
  * Created by kevin on 31.10.2016.
  */
+@DatabaseTable(tableName = DBConstants.tSETTINGS)
 public class Setting {
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
+    private Long id;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cPACKAGE_NAME)
     private String packageName;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cSPORT_NAME)
     private String sportName;
+
+    public Setting() {}
 
     public Setting(DSetting dSetting) {
         packageName = dSetting.getPackageName();

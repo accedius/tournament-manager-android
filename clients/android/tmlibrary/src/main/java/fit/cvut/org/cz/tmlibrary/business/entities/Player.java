@@ -4,9 +4,11 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -15,10 +17,18 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
+@DatabaseTable (tableName = DBConstants.tPLAYERS)
 public class Player extends ShareBase implements Parcelable {
-    private long id;
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
+    private Long id;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cNAME)
     private String name;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cEMAIL)
     private String email;
+
+    @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
     public static final String col_name = "name";
@@ -29,6 +39,8 @@ public class Player extends ShareBase implements Parcelable {
     public static Creator<Player> getCREATOR() {
         return CREATOR;
     }
+
+    public Player() {}
 
     protected Player(Parcel in) {
         id = in.readLong();
@@ -172,11 +184,6 @@ public class Player extends ShareBase implements Parcelable {
         } else {
             return "";
         }
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
     }
 
     public String getEntityType() {
