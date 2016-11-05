@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 
 /**
@@ -150,7 +150,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public Map<Long, DPlayer> getAllPlayers(Context context) {
+    public Map<Long, Player> getAllPlayers(Context context) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -160,9 +160,9 @@ public class PlayerDAO implements IPackagePlayerDAO {
             String[] projection = new String[] {DBConstants.cID, DBConstants.cNAME, DBConstants.cETAG, DBConstants.cUID, DBConstants.cLASTMODIFIED, DBConstants.cEMAIL, DBConstants.cNOTE, DBConstants.cLASTSYNCHRONIZED};
 
             Cursor c = context.getContentResolver().query(Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers), projection, null, null, null);
-            Map<Long, DPlayer> players = new HashMap<>();
+            Map<Long, Player> players = new HashMap<>();
             while (c.moveToNext()){
-                DPlayer player = CursorParser.getInstance().parseDPlayer(c);
+                Player player = CursorParser.getInstance().parsePlayer(c);
                 players.put(player.getId(), player);
             }
             c.close();

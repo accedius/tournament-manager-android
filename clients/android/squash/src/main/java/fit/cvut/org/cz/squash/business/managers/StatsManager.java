@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
@@ -308,9 +307,9 @@ public class StatsManager implements IStatsManager {
             return ManagersFactory.getInstance().teamsManager.getById(context, participant.getTeamId()).getPlayers();
         } else {
             ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, participant.getId(), StatsEnum.MATCH_PARTICIPATION);
-            Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
+            Map<Long, Player> allPlayers = DAOFactory.getInstance().playerDAO.getAllPlayers(context);
             for (DStat stat : stats) {
-                players.add(new Player(allPlayers.get(stat.getPlayerId())));
+                players.add(allPlayers.get(stat.getPlayerId()));
             }
         }
 
