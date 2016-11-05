@@ -39,7 +39,7 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public long insert(Context context, DParticipant participant) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values = toContVal(participant);
         long newRowId = db.insert(DBConstants.tPARTICIPANTS, null, values);
         return newRowId;
@@ -47,7 +47,7 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void update(Context context, DParticipant participant) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(participant);
 
@@ -60,7 +60,7 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -69,7 +69,7 @@ public class ParticipantDAO implements IParticipantDAO {
 
     @Override
     public ArrayList<DParticipant> getParticipantsByMatchId(Context context, long matchId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(matchId) };
         Cursor cursor = db.query(DBConstants.tPARTICIPANTS, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null);
 
@@ -93,7 +93,7 @@ public class ParticipantDAO implements IParticipantDAO {
     @Override
     public DParticipant getById(Context context, long id) {
         String[] selArgs = { String.valueOf(id) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(DBConstants.tPARTICIPANTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {

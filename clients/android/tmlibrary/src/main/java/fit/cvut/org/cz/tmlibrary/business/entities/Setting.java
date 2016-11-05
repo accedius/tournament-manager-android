@@ -4,7 +4,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DSetting;
 
 /**
  * Created by kevin on 31.10.2016.
@@ -20,20 +19,12 @@ public class Setting {
     @DatabaseField(canBeNull = false, columnName = DBConstants.cSPORT_NAME)
     private String sportName;
 
+    // Necessary for ORMLite
     public Setting() {}
-
-    public Setting(DSetting dSetting) {
-        packageName = dSetting.getPackageName();
-        sportName = dSetting.getSportName();
-    }
 
     public Setting(String packageName, String sportName) {
         this.packageName = packageName;
         this.sportName = sportName;
-    }
-
-    public static DSetting convertToDSetting(Setting s) {
-        return new DSetting(s.packageName, s.sportName);
     }
 
     public String getPackageName() {

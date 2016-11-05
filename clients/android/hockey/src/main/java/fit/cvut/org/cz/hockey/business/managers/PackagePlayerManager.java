@@ -13,7 +13,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
@@ -71,10 +70,10 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersByCompetition(Context context, long competitionId) {
         ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByCompetition(context, competitionId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
         for (Long pId : playerIds) {
-            res.add(new Player(allPlayers.get(pId)));
+            res.add(allPlayers.get(pId));
         }
 
         return res;
@@ -83,10 +82,10 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersByTournament(Context context, long tournamentId) {
         ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTournament(context, tournamentId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
         for (Long pId : playerIds) {
-            res.add(new Player(allPlayers.get(pId)));
+            res.add(allPlayers.get(pId));
         }
 
         return res;
@@ -95,10 +94,10 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersByParticipant(Context context, long participantId) {
         ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(context, participantId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
         for (Long pId : playerIds) {
-            res.add(new Player(allPlayers.get(pId)));
+            res.add(allPlayers.get(pId));
         }
 
         return res;
@@ -107,10 +106,10 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersByTeam(Context context, long teamId) {
         ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTeam(context, teamId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
         for (Long pId : playerIds) {
-            res.add(new Player(allPlayers.get(pId)));
+            res.add(allPlayers.get(pId));
         }
 
         return res;
@@ -118,16 +117,16 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public Player getPlayerById(Context context, long playerId) {
-        Map<Long, DPlayer> players = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
-        return new Player(players.get(playerId));
+        Map<Long, Player> players = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        return players.get(playerId);
     }
 
     @Override
     public ArrayList<Player> getAllPlayers(Context context) {
-        Map<Long, DPlayer> dPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> dPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
-        for (Map.Entry<Long, DPlayer> entry : dPlayers.entrySet()) {
-            res.add(new Player(entry.getValue()));
+        for (Map.Entry<Long, Player> entry : dPlayers.entrySet()) {
+            res.add(entry.getValue());
         }
         return res;
     }
@@ -153,13 +152,13 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersNotInCompetition(Context context, long competitionId) {
         ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByCompetition(context, competitionId);
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> res = new ArrayList<>();
         for (Long pId : playerIds) {
             allPlayers.remove(pId);
         }
-        for (Map.Entry<Long, DPlayer> entry : allPlayers.entrySet()) {
-            res.add(new Player(entry.getValue()));
+        for (Map.Entry<Long, Player> entry : allPlayers.entrySet()) {
+            res.add(entry.getValue());
         }
         return res;
     }

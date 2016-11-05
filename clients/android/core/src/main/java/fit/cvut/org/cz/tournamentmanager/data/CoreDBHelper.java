@@ -10,6 +10,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
@@ -21,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBScripts;
  */
 public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 4;
+    private static final int DBVersion = 5;
     private Dao<Player, Long> playerDAO;
     private Dao<Setting, Long> settingDAO;
 
@@ -34,16 +35,20 @@ public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Player.class);
             TableUtils.createTable(connectionSource, Setting.class);
+            ArrayList<Player> playerArrayList = new ArrayList<Player>() {
+                {
+                    add(new Player(1, "Martin", "martin@seznam.cz", ""));
+                    add(new Player(2, "Aleš", "ales@valenta.cz", ""));
+                    add(new Player(3, "Jarda", "jarda@frk.cz", ""));
+                    add(new Player(4, "Pavel", "pavel@frk.cz", ""));
+                    add(new Player(5, "Honza", "honza@frk.cz", ""));
+                    add(new Player(6, "Zdeněk", "zdenda@frk.cz", ""));
+                    add(new Player(7, "Tomáš", "tomnas@frk.cz", ""));
+                    add(new Player(8, "Radek", "Radek@frk.cz", ""));
+                }
+            };
+            getPlayerDao().create(playerArrayList);
         } catch (SQLException e) {}
-        /*
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_1);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_2);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_3);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_4);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_5);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_6);
-        db.execSQL(DBScripts.INSERT_INTO_PLAYERS_7);*/
     }
 
     @Override

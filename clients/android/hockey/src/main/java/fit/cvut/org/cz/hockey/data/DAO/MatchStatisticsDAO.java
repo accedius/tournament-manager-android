@@ -25,7 +25,7 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
 
     @Override
     public long createStatsForMatch(Context context, DMatchStat stat) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values = toContVal(stat);
 
         long newRowId = db.insert(HockeyDBConstants.tMATCH_SCORE, null, values);
@@ -35,7 +35,7 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
 
     public DMatchStat getByMatchId(Context context, long matchId) {
         String[] selArgs = { String.valueOf(matchId) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(HockeyDBConstants.tMATCH_SCORE, null, DBConstants.cMATCH_ID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
@@ -55,7 +55,7 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
     }
 
     public void update(Context context, DMatchStat matchStat) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values = toContVal(matchStat);
         String where = String.format("%s = ?", DBConstants.cMATCH_ID);
         String[] projection = new String[]{ Long.toString(matchStat.getMatchId()) };
@@ -63,7 +63,7 @@ public class MatchStatisticsDAO implements IMatchStatisticsDAO {
     }
 
     public void delete(Context context, long matchId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String where = String.format("%s = ?", DBConstants.cMATCH_ID);
         String[] projection = new String[]{ Long.toString(matchId) };
         db.delete(HockeyDBConstants.tMATCH_SCORE, where, projection);

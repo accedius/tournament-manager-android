@@ -44,7 +44,7 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public long insert(Context context, DMatch match) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(match);
 
@@ -55,7 +55,7 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public void update(Context context, DMatch match) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(match);
 
@@ -66,7 +66,7 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -75,7 +75,7 @@ public class MatchDAO implements IMatchDAO {
 
     @Override
     public ArrayList<DMatch> getByTournamentId(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 
@@ -92,7 +92,7 @@ public class MatchDAO implements IMatchDAO {
     @Override
     public DMatch getById(Context context, long id) {
         String[] selArgs = { String.valueOf(id) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(DBConstants.tMATCHES, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {

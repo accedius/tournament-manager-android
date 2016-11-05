@@ -15,10 +15,10 @@ import java.util.Map;
 
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 
 /**
@@ -27,7 +27,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 public class PackagePlayerDAO implements IPackagePlayerDAO {
     @Override
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = new ContentValues();
 
@@ -39,7 +39,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToTournament(Context context, long playerId, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = new ContentValues();
 
@@ -55,7 +55,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void addPlayerToTeam(Context context, long playerId, long teamId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.cTEAM_ID, teamId);
@@ -66,7 +66,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cCOMPETITIONID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(competitionId) };
@@ -75,7 +75,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deletePlayerFromTournament(Context context, long playerId, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ? AND %s = ?", DBConstants.cPLAYER_ID, DBConstants.cTOURNAMENT_ID);
         String[] projection = new String[]{ Long.toString(playerId), Long.toString(tournamentId) };
@@ -88,7 +88,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public void deleteAllPlayersFromTeam(Context context, long teamId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cTEAM_ID);
         String[] projection = new String[]{ Long.toString(teamId) };
@@ -97,7 +97,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ArrayList<Long> res = new ArrayList<>();
         String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_COMPETITION, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
@@ -110,7 +110,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByTournament(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_TOURNAMENT, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 
@@ -131,7 +131,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByTeam(Context context, long teamId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(teamId) };
         Cursor cursor = db.query(DBConstants.tPLAYERS_IN_TEAM, null, DBConstants.cTEAM_ID + "=?", selArgs, null, null, null);
 
@@ -147,7 +147,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
 
     @Override
     public ArrayList<Long> getPlayerIdsByParticipant(Context context, long participantId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(participantId), StatsEnum.participates.toString()};
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPARTICIPANT_ID + "=? AND " + DBConstants.cSTATS_ENUM_ID + "=?", selArgs, null, null, null);
 
@@ -162,7 +162,7 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
     }
 
     @Override
-    public Map<Long, DPlayer> getAllPlayers(Context context) {
+    public Map<Long, Player> getAllPlayers(Context context) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -174,9 +174,9 @@ public class PackagePlayerDAO implements IPackagePlayerDAO {
             Uri uri = Uri.parse("content://" + cpUri + "/" + CPConstants.uPlayers);
 
             Cursor c = context.getContentResolver().query(uri, projection, null, null, null);
-            Map<Long, DPlayer> players = new HashMap<>();
+            Map<Long, Player> players = new HashMap<>();
             while (c.moveToNext()){
-                DPlayer player = CursorParser.getInstance().parseDPlayer(c);
+                Player player = CursorParser.getInstance().parsePlayer(c);
                 players.put(player.getId(), player);
             }
             c.close();

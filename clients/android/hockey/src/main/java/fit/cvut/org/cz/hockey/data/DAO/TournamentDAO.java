@@ -43,7 +43,7 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public long insert(Context context, DTournament tournament) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values = toContVal(tournament);
 
         Long newRowId = db.insert(DBConstants.tTOURNAMENTS, null, values);
@@ -52,7 +52,7 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public void update(Context context, DTournament tournament) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(tournament);
         values.put(DBConstants.cID, tournament.getId());
@@ -64,7 +64,7 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -74,7 +74,7 @@ public class TournamentDAO implements ITournamentDAO {
     @Override
     public DTournament getById(Context context, long id) {
         String[] selArgs = { String.valueOf(id) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
@@ -88,7 +88,7 @@ public class TournamentDAO implements ITournamentDAO {
 
     @Override
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tTOURNAMENTS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
 

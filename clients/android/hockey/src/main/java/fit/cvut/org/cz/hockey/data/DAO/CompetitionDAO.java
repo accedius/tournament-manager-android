@@ -42,7 +42,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public long insert(Context context, DCompetition competition) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values = toContVal(competition);
         long newRowId = db.insert(DBConstants.tCOMPETITIONS, null, values);
         return newRowId;
@@ -50,7 +50,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public void update(Context context, DCompetition competition) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(competition);
 
@@ -63,7 +63,7 @@ public class CompetitionDAO implements ICompetitionDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -73,7 +73,7 @@ public class CompetitionDAO implements ICompetitionDAO {
     @Override
     public DCompetition getById(Context context, long id) {
         String[] selArgs = { String.valueOf(id) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(DBConstants.tCOMPETITIONS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {

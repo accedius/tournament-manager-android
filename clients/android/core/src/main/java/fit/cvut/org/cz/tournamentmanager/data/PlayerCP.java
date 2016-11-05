@@ -43,9 +43,7 @@ public class PlayerCP extends ContentProvider {
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(DBConstants.tPLAYERS);
-
         Cursor cursor = builder.query(helper.getWritableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
-
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }

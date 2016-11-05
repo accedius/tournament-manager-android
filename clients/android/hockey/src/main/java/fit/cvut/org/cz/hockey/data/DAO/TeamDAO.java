@@ -37,7 +37,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public long insert(Context context, DTeam team) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(team);
 
@@ -47,7 +47,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public void update(Context context, DTeam team) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(team);
 
@@ -60,7 +60,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -70,7 +70,7 @@ public class TeamDAO implements ITeamDAO {
     @Override
     public DTeam getById(Context context, long id) {
         String[] selArgs = { String.valueOf(id) };
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         Cursor cursor = db.query(DBConstants.tTEAMS, null, DBConstants.cID + "=?", selArgs, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() <= 0) {
@@ -84,7 +84,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public ArrayList<DTeam> getByTournamentId(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tTEAMS, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 

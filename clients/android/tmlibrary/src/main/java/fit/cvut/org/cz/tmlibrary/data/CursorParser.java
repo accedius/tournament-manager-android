@@ -6,12 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
-import fit.cvut.org.cz.tmlibrary.data.entities.DSetting;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
@@ -61,7 +60,7 @@ public class CursorParser {
         return new DCompetition(id, name, startDate, endDate, note, type, etag, uid, lastModified, lastSynchronized);
     }
 
-    public DPlayer parseDPlayer(Cursor cursor) {
+    public Player parsePlayer(Cursor cursor) {
         long id;
         String uid, name, email, note, etag;
         Date lastModified = null;
@@ -82,13 +81,11 @@ public class CursorParser {
             e.printStackTrace();
         }
 
-        return new DPlayer(id, name, email, note, etag, uid, lastModified, lastSynchronized);
-    }
-
-    public DSetting parseDSetting(Cursor cursor) {
-        String packageName = cursor.getString(cursor.getColumnIndex(DBConstants.cPACKAGE_NAME));
-        String sportName = cursor.getString(cursor.getColumnIndex(DBConstants.cSPORT_NAME));
-        return new DSetting(packageName, sportName);
+        Player p = new Player(id, uid, name, email, note);
+        p.setEtag(etag);
+        p.setLastModified(lastModified);
+        p.setLastSynchronized(lastSynchronized);
+        return p;
     }
 
     public DTournament parseDTournament(Cursor cursor) {

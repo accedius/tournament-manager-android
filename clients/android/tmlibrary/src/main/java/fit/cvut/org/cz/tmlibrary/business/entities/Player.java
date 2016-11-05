@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -84,23 +83,6 @@ public class Player extends ShareBase implements Parcelable {
         this.name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
         this.email = cursor.getString(cursor.getColumnIndex(DBConstants.cEMAIL));
         this.note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
-    }
-
-    public Player(DPlayer p) {
-        this.id = p.getId();
-        this.name = p.getName();
-        this.email = p.getEmail();
-        this.note = p.getNote();
-
-        this.uid = p.getUid();
-        this.etag = p.getEtag();
-        this.lastModified = p.getLastModified();
-        this.lastSynchronized = p.getLastSynchronized();
-    }
-
-    public static DPlayer convertToDPlayer(Player p){
-        return new DPlayer(p.getId(), p.getName(), p.getEmail(),p.getNote(),
-                p.getEtag(), p.getUid(), p.getLastModified(), p.getLastSynchronized());
     }
 
     public static final Creator<Player> CREATOR = new Creator<Player>() {

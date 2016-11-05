@@ -65,7 +65,7 @@ public class PointConfigDAO implements IPointConfigDAO {
     }
 
     public long insertDefault(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         ContentValues values;
 
         Long newRowId;
@@ -79,7 +79,7 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     @Override
     public void delete(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", HockeyDBConstants.cTOURNAMENTID);
         String[] projection = new String[]{ Long.toString(tournamentId) };
@@ -88,7 +88,7 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     @Override
     public void update(Context context, DPointConfiguration dPointConfiguration, Long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(dPointConfiguration);
         values.put(HockeyDBConstants.cTOURNAMENTID, tournamentId);
@@ -100,7 +100,7 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     @Override
     public DPointConfiguration getByTournamentId(Context context, Long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { Long.toString(tournamentId) };
         Cursor cursor = db.query(HockeyDBConstants.tCONFIGURATIONS, null, HockeyDBConstants.cTOURNAMENTID + "=?", selArgs, null, null, null);
 

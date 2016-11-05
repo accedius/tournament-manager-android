@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 
 /**
@@ -362,10 +361,10 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         if (currentPart == null)
             return;
 
-        Map<Long, DPlayer> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
+        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers(context);
         ArrayList<Player> playerListToUpdate = new ArrayList<>();
         for (Long pId : playerIds) {
-            playerListToUpdate.add(new Player(allPlayers.get(pId)));
+            playerListToUpdate.add(allPlayers.get(pId));
         }
 
         long tourId = DAOFactory.getInstance().matchDAO.getById(context, matchId).getTournamentId();

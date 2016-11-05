@@ -6,7 +6,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 
 /**
  * Created by Vaclav on 5. 4. 2016.
@@ -120,7 +120,7 @@ public interface IPackagePlayerDAO {
      * @param context application context
      * @return all players in core
      */
-    Map<Long, DPlayer> getAllPlayers(Context context);
+    Map<Long, Player> getAllPlayers(Context context);
 
     /**
      * insert player to DB

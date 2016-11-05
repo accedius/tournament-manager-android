@@ -30,7 +30,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public long insert(Context context, DStat stat) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(stat);
 
@@ -41,7 +41,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public void update(Context context, DStat stat) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         ContentValues values = toContVal(stat);
 
@@ -54,7 +54,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public void delete(Context context, long id) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
 
         String where = String.format("%s = ?", DBConstants.cID);
         String[] projection = new String[]{ Long.toString(id) };
@@ -63,7 +63,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<DStat> getStatsByPlayerId(Context context, long playerId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(playerId) };
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPLAYER_ID + "=?", selArgs, null, null, null);
 
@@ -79,7 +79,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<DStat> getStatsByParticipantId(Context context, long participantId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(participantId) };
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cPARTICIPANT_ID + "=?", selArgs, null, null, null);
 
@@ -95,7 +95,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<DStat> getStatsByTournamentId(Context context, long tournamentId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(tournamentId) };
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cTOURNAMENT_ID + "=?", selArgs, null, null, null);
 
@@ -111,7 +111,7 @@ public class StatDAO implements IStatDAO {
 
     @Override
     public ArrayList<DStat> getStatsByCompetitionId(Context context, long competitionId) {
-        SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
+        SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(competitionId) };
         Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
 
