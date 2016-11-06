@@ -6,6 +6,7 @@ package fit.cvut.org.cz.tmlibrary.data;
 public class DBConstants {
     // t prefix stands for table
     public static final String tCOMPETITIONS = "competitions";
+    public static final String tCOMPETITION_TYPES = "competition_types";
     public static final String tPLAYERS = "players";
     public static final String tSETTINGS = "settings";
     public static final String tTOURNAMENTS = "tournaments";

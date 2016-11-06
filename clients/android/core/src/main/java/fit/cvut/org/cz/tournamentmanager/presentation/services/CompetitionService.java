@@ -63,7 +63,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
         cur.moveToFirst();
         do {
-            data.add(new Competition(cp.parseDCompetition(cur)));
+            data.add(cp.parseCompetition(cur));
         } while (cur.moveToNext());
         return data;
     }

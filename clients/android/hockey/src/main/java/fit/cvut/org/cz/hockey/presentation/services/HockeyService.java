@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void doWork(Intent intent) {
+    protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
         String sport_context = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);

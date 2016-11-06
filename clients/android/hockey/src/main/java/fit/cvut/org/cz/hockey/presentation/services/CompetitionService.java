@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
@@ -47,7 +48,7 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void doWork(Intent intent) {
+    protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(EXTRA_ACTION);
         Competition c;
 

@@ -118,6 +118,10 @@ public class Player extends ShareBase implements Parcelable {
         dest.writeString(etag);
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -170,9 +174,5 @@ public class Player extends ShareBase implements Parcelable {
 
     public String getEntityType() {
         return "Player";
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

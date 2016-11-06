@@ -141,10 +141,6 @@ public class DBScripts {
     public static final String INSERT_SQUASH_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS+ " values('2','SQ TOUR 2','2001-01-01','2001-12-12','PoznTour2','sq_tour2','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_SQUASH_TOURNAMENTS_2 = "insert into " + DBConstants.tTOURNAMENTS + " values('3','SQ TOUR 3','2002-01-01','2002-12-12','PoznTour3','sq_tour3','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10', '2');";
 
-    public static final String INSERT_HOCKEY_COMPETITIONS = "insert into " + DBConstants.tCOMPETITIONS + " values('1','H CMP 1','2001-01-01','2001-12-12','1','Pozn1','h_comp1','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10');";
-    public static final String INSERT_HOCKEY_COMPETITIONS_1 = "insert into " + DBConstants.tCOMPETITIONS + " values('2','H CMP 2','2002-01-01','2002-12-12','1','Pozn2','h_comp2','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10');";
-    public static final String INSERT_HOCKEY_COMPETITIONS_2 = "insert into " + DBConstants.tCOMPETITIONS + " values('3','H CMP 3','2003-01-01','2003-12-12','1','Pozn3','h_comp3','lkjh','2004-01-01 10:10:10','2004-01-01 10:10:10');";
-
     public static final String INSERT_HOCKEY_TOURNAMENTS = "insert into " + DBConstants.tTOURNAMENTS + " values('1','H TOUR 1','2001-01-01','2001-12-12','PoznTour1','h_tour1','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_HOCKEY_TOURNAMENTS_1 = "insert into " + DBConstants.tTOURNAMENTS + " values('2','H TOUR 2','2001-01-01','2001-12-12','PoznTour2','h_tour2','lkjh','2002-01-01 10:10:10','2002-01-01 10:10:10', '1');";
     public static final String INSERT_HOCKEY_TOURNAMENTS_2 = "insert into " + DBConstants.tTOURNAMENTS + " values('3','H TOUR 3','2002-01-01','2002-12-12','PoznTour3','h_tour3','lkjh','2003-01-01 10:10:10','2003-01-01 10:10:10', '2');";

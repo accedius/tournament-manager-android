@@ -4,6 +4,11 @@ import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+
 /**
  * Created by Vaclav on 2. 4. 2016.
  */
