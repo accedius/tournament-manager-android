@@ -219,7 +219,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
 
-                long competitionId = ManagerFactory.getInstance().competitionManager.insert(this, c);
+                ManagerFactory.getInstance().competitionManager.insert(this, c);
+                long competitionId = c.getId();
 
                 List<ServerCommunicationItem> allSubItems = competition.getSubItems();
                 List<ServerCommunicationItem> players = new ArrayList<>();

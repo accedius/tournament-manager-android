@@ -1,5 +1,8 @@
 package fit.cvut.org.cz.tournamentmanager.business;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
@@ -8,15 +11,6 @@ import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
  * Created by kevin on 30. 3. 2016.
  */
 public class ManagersFactory {
-    private static ManagersFactory ourInstance = new ManagersFactory();
-
-    public static ManagersFactory getInstance() {
-        return ourInstance;
-    }
-
-    private ManagersFactory() {
-    }
-
-    public IPlayerManager playerManager = new PlayerManager();
-    public SettingManager settingManager= new SettingManager();
+    public static IManager<Player> playerManager() { return new PlayerManager(); }
+    public static SettingManager settingManager() { return new SettingManager(); }
 }

@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by kevin on 31.10.2016.
  */
 @DatabaseTable(tableName = DBConstants.tSETTINGS)
-public class Setting {
+public class Setting implements IEntity {
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private Long id;
 
@@ -25,6 +25,10 @@ public class Setting {
     public Setting(String packageName, String sportName) {
         this.packageName = packageName;
         this.sportName = sportName;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getPackageName() {
