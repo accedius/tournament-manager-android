@@ -44,7 +44,7 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
         try {
             List<Tournament> tournaments = getDao(context).queryBuilder()
                     .where()
-                    .eq(DBConstants.cCOMPETITIONID, competitionId)
+                    .eq(DBConstants.cCOMPETITION_ID, competitionId)
                     .query();
             res.addAll(tournaments);
             return res;

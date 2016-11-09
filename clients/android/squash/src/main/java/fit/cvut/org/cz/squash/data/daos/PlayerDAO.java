@@ -30,7 +30,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.cCOMPETITIONID, competitionId);
+        cv.put(DBConstants.cCOMPETITION_ID, competitionId);
         cv.put(DBConstants.cPLAYER_ID, playerId);
 
         db.insert(DBConstants.tPLAYERS_IN_COMPETITION, null, cv);
@@ -64,7 +64,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
     public void deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
 
-        String where = String.format("%s = ? AND %s = ?", DBConstants.cCOMPETITIONID, DBConstants.cPLAYER_ID);
+        String where = String.format("%s = ? AND %s = ?", DBConstants.cCOMPETITION_ID, DBConstants.cPLAYER_ID);
         String[] args = new String[]{Long.toString(competitionId), Long.toString(playerId)};
 
         db.delete(DBConstants.tPLAYERS_IN_COMPETITION, where, args);
@@ -97,7 +97,7 @@ public class PlayerDAO implements IPackagePlayerDAO {
     @Override
     public ArrayList<Long> getPlayerIdsByCompetition(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_COMPETITION, DBConstants.cCOMPETITIONID),
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ?", DBConstants.tPLAYERS_IN_COMPETITION, DBConstants.cCOMPETITION_ID),
                 new String[]{Long.toString(competitionId)});
 
         ArrayList<Long> ids = new ArrayList<>();

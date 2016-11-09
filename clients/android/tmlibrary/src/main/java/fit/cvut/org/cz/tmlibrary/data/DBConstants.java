@@ -31,7 +31,7 @@ public class DBConstants {
     public static final String cNOTE = "note";
     public static final String cETAG = "etag";
     public static final String cLASTMODIFIED = "last_modified";
-    public static final String cCOMPETITIONID = "competition_id";
+    public static final String cCOMPETITION_ID = "competition_id";
     public static final String cPLAYER_ID = "player_id";
     public static final String cTOURNAMENT_ID = "tournament_id";
     public static final String cTEAM_ID = "team_id";

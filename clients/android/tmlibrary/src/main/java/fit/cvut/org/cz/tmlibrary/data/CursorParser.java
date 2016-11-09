@@ -106,7 +106,7 @@ public class CursorParser {
         id = cursor.getInt(cursor.getColumnIndex(DBConstants.cID));
         uid = cursor.getString(cursor.getColumnIndex(DBConstants.cUID));
         name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
-        competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITIONID));
+        competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITION_ID));
 
         try {
             if (cursor.getString(cursor.getColumnIndex(DBConstants.cSTART)) != null)
@@ -223,7 +223,7 @@ public class CursorParser {
         playerId = cursor.getLong(cursor.getColumnIndex(DBConstants.cPLAYER_ID));
         statsEnumId = cursor.getString(cursor.getColumnIndex(DBConstants.cSTATS_ENUM_ID));
         tournamentId = cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID));
-        competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITIONID));
+        competitionId = cursor.getLong(cursor.getColumnIndex(DBConstants.cCOMPETITION_ID));
         value = cursor.getString(cursor.getColumnIndex(DBConstants.cVALUE));
 
         return new DStat(id, playerId, participantId, statsEnumId, tournamentId, competitionId, value);

@@ -21,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 public class StatDAO implements IStatDAO {
     private ContentValues convert(DStat stat){
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.cCOMPETITIONID, stat.getCompetitionId());
+        cv.put(DBConstants.cCOMPETITION_ID, stat.getCompetitionId());
         cv.put(DBConstants.cTOURNAMENT_ID, stat.getTournamentId());
         cv.put(DBConstants.cPARTICIPANT_ID, stat.getParticipantId());
         if (stat.getPlayerId() != -1)
@@ -47,7 +47,7 @@ public class StatDAO implements IStatDAO {
         if (!c.isNull(c.getColumnIndex(SDBConstants.cVALUE))) value = c.getInt(c.getColumnIndex(SDBConstants.cVALUE));
 
         long id = c.getLong(c.getColumnIndex(DBConstants.cID));
-        long competitionId = c.getLong(c.getColumnIndex(DBConstants.cCOMPETITIONID));
+        long competitionId = c.getLong(c.getColumnIndex(DBConstants.cCOMPETITION_ID));
         long tournamentId = c.getLong(c.getColumnIndex(DBConstants.cTOURNAMENT_ID));
         long participantId = c.getLong(c.getColumnIndex(DBConstants.cPARTICIPANT_ID));
         StatsEnum type = StatsEnum.valueOf(c.getString(c.getColumnIndex(SDBConstants.cTYPE)));
@@ -134,7 +134,7 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ArrayList<DStat> stats = new ArrayList<>();
 
-        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cCOMPETITIONID, SDBConstants.cTYPE), new String[]{Long.toString(competitionId), type.toString()});
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cCOMPETITION_ID, SDBConstants.cTYPE), new String[]{Long.toString(competitionId), type.toString()});
         while (c.moveToNext())
             stats.add(parse(c));
 
@@ -186,7 +186,7 @@ public class StatDAO implements IStatDAO {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
         ArrayList<DStat> stats = new ArrayList<>();
 
-        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cPLAYER_ID, SDBConstants.cTYPE, DBConstants.cCOMPETITIONID), new String[]{Long.toString(playerId), type.toString(), Long.toString(competitionId)});
+        Cursor c = db.rawQuery(String.format("select * from %s where %s = ? and %s = ? and %s = ?", SDBConstants.tSTATS, DBConstants.cPLAYER_ID, SDBConstants.cTYPE, DBConstants.cCOMPETITION_ID), new String[]{Long.toString(playerId), type.toString(), Long.toString(competitionId)});
         while (c.moveToNext())
             stats.add(parse(c));
 

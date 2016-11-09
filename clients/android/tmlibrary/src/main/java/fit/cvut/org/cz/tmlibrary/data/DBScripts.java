@@ -40,14 +40,14 @@ public class DBScripts {
             + DBConstants.cETAG + " TEXT, "
             + DBConstants.cLASTMODIFIED + " TEXT, "
             + DBConstants.cLASTSYNCHRONIZED + " TEXT, "
-            + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
-            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
+            + DBConstants.cCOMPETITION_ID + " INTEGER NOT NULL, "
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITION_ID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PLAYERS_IN_COMPETITION = "create table " + DBConstants.tPLAYERS_IN_COMPETITION + " ("
-            + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
+            + DBConstants.cCOMPETITION_ID + " INTEGER NOT NULL, "
             + DBConstants.cPLAYER_ID + " INTEGER NOT NULL, "
-            + "PRIMARY KEY (" + DBConstants.cCOMPETITIONID + ", " + DBConstants.cPLAYER_ID + ") "
-            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
+            + "PRIMARY KEY (" + DBConstants.cCOMPETITION_ID + ", " + DBConstants.cPLAYER_ID + ") "
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITION_ID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String CREATE_TABLE_PLAYERS_IN_TOURNAMENT = "create table " + DBConstants.tPLAYERS_IN_TOURNAMENT + " ("
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
@@ -103,10 +103,10 @@ public class DBScripts {
             + DBConstants.cSTATS_ENUM_ID + " TEXT, "
             + DBConstants.cPLAYER_ID + " INTEGER, "
             + DBConstants.cTOURNAMENT_ID + " INTEGER NOT NULL, "
-            + DBConstants.cCOMPETITIONID + " INTEGER NOT NULL, "
+            + DBConstants.cCOMPETITION_ID + " INTEGER NOT NULL, "
             + DBConstants.cVALUE + " TEXT, "
             + "FOREIGN KEY (" + DBConstants.cTOURNAMENT_ID + ") REFERENCES " + DBConstants.tTOURNAMENTS + " (" + DBConstants.cID + ") "
-            + "FOREIGN KEY (" + DBConstants.cCOMPETITIONID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
+            + "FOREIGN KEY (" + DBConstants.cCOMPETITION_ID + ") REFERENCES " + DBConstants.tCOMPETITIONS + " (" + DBConstants.cID + "));";
 
     public static final String INSERT_INTO_PLAYERS =
             String.format("insert into %s VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",

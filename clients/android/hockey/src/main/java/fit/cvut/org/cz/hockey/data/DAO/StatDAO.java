@@ -24,7 +24,7 @@ public class StatDAO implements IStatDAO {
         cv.put(DBConstants.cPARTICIPANT_ID, stat.getParticipantId());
         cv.put(DBConstants.cSTATS_ENUM_ID, stat.getStatsEnumId());
         cv.put(DBConstants.cTOURNAMENT_ID, stat.getTournamentId());
-        cv.put(DBConstants.cCOMPETITIONID, stat.getCompetitionId());
+        cv.put(DBConstants.cCOMPETITION_ID, stat.getCompetitionId());
         return cv;
     }
 
@@ -113,7 +113,7 @@ public class StatDAO implements IStatDAO {
     public ArrayList<DStat> getStatsByCompetitionId(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getDatabase(context);
         String[] selArgs = { String.valueOf(competitionId) };
-        Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cCOMPETITIONID + "=?", selArgs, null, null, null);
+        Cursor cursor = db.query(DBConstants.tSTATS, null, DBConstants.cCOMPETITION_ID + "=?", selArgs, null, null, null);
 
         ArrayList<DStat> res = new ArrayList<>();
 

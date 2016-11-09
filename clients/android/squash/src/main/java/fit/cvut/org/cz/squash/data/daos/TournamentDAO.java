@@ -33,7 +33,7 @@ public class TournamentDAO implements ITournamentDAO {
         if (tournament.getEndDate() != null)
             cv.put(DBConstants.cEND, dateFormat.format(tournament.getEndDate()));
         cv.put(DBConstants.cLASTMODIFIED, dateTimeFormat.format(new Date()));
-        cv.put(DBConstants.cCOMPETITIONID, tournament.getCompetitionId());
+        cv.put(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId());
 
         return cv;
     }
@@ -84,7 +84,7 @@ public class TournamentDAO implements ITournamentDAO {
     @Override
     public ArrayList<DTournament> getByCompetitionId(Context context, long competitionId) {
         SQLiteDatabase db = DatabaseFactory.getInstance().getDatabase(context);
-        String selection = String.format("select * from %s where %s = ? order by %s", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITIONID, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
+        String selection = String.format("select * from %s where %s = ? order by %s", DBConstants.tTOURNAMENTS, DBConstants.cCOMPETITION_ID, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
         Cursor c = db.rawQuery(selection, new String[]{Long.toString(competitionId)});
         ArrayList<DTournament> tournaments = new ArrayList<>();
 

@@ -25,7 +25,7 @@ public class Tournament extends ShareBase implements Parcelable {
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
 
-    @DatabaseField(columnName = DBConstants.cCOMPETITIONID)
+    @DatabaseField(columnName = DBConstants.cCOMPETITION_ID)
     private long competitionId;
 
     @DatabaseField(columnName = DBConstants.cNAME)
