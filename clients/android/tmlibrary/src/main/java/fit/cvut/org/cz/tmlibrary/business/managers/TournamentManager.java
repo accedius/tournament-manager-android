@@ -18,17 +18,17 @@ abstract public class TournamentManager implements ITournamentManager {
     protected abstract Dao<Tournament, Long> getDao(Context context);
 
     @Override
-    public void insert(Context context, Tournament competition) {
+    public void insert(Context context, Tournament tournament) {
         // TODO check if id is filled
         try {
-            getDao(context).create(competition);
+            getDao(context).create(tournament);
         } catch (SQLException e) {}
     }
 
     @Override
-    public void update(Context context, Tournament competition) {
+    public void update(Context context, Tournament tournament) {
         try {
-            getDao(context).update(competition);
+            getDao(context).update(tournament);
         } catch (SQLException e) {}
     }
 

@@ -11,6 +11,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
@@ -26,6 +27,7 @@ public class HockeyDBHelper extends SportDBHelper {
     private Dao<Competition, Long> competitionDao;
     private Dao<Tournament, Long> tournamentDao;
     private String DBName;
+    private Dao<PointConfiguration, Long> pointConfigurationDao;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name+".db", null, DBVersion);
@@ -54,6 +56,17 @@ public class HockeyDBHelper extends SportDBHelper {
         return tournamentDao;
     }
 
+    public Dao<PointConfiguration, Long> getPointConfigurationDao() {
+        if (pointConfigurationDao == null) {
+            try {
+                pointConfigurationDao = getDao(PointConfiguration.class);
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        return pointConfigurationDao;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
@@ -71,8 +84,8 @@ public class HockeyDBHelper extends SportDBHelper {
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
         db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
 
+        /* Create competitions. */
         ArrayList<Competition> competitionArrayList = new ArrayList<>();
-        ArrayList<Tournament> tournamentArrayList = new ArrayList<>();
         Date date1 = new Date();
         Date date2 = new Date();
         date1.setTime(1420074061000L);
@@ -80,9 +93,6 @@ public class HockeyDBHelper extends SportDBHelper {
         competitionArrayList.add(new Competition(1, "H CMP1", date1, date2, "Pozn 1", CompetitionTypes.teams()));
         competitionArrayList.add(new Competition(2, "H CMP2", date1, date2, "Pozn 2", CompetitionTypes.teams()));
         competitionArrayList.add(new Competition(3, "H CMP3", date1, date2, "Pozn 3", CompetitionTypes.teams()));
-        tournamentArrayList.add(new Tournament(1, 1, "Tour 1 - CMP1", date1, date2, "Pozn Tour 11"));
-        tournamentArrayList.add(new Tournament(2, 1, "Tour 2 - CMP1", date1, date2, "Pozn Tour 21"));
-        tournamentArrayList.add(new Tournament(3, 2, "Tour 1 - CMP2", date1, date2, "Pozn Tour 12"));
 
         for (Competition c : competitionArrayList) {
             c.setEtag("etag_"+getDatabaseName());
@@ -93,6 +103,11 @@ public class HockeyDBHelper extends SportDBHelper {
             c.setTokenValue("token_value");
         }
 
+        /* Create tournaments. */
+        ArrayList<Tournament> tournamentArrayList = new ArrayList<>();
+        tournamentArrayList.add(new Tournament(1, 1, "Tour 1 - CMP1", date1, date2, "Pozn Tour 11"));
+        tournamentArrayList.add(new Tournament(2, 1, "Tour 2 - CMP1", date1, date2, "Pozn Tour 21"));
+        tournamentArrayList.add(new Tournament(3, 2, "Tour 1 - CMP2", date1, date2, "Pozn Tour 12"));
         for (Tournament t : tournamentArrayList) {
             t.setEtag("etag_"+getDatabaseName());
             t.setUid("UID_"+t.getName());
@@ -101,14 +116,17 @@ public class HockeyDBHelper extends SportDBHelper {
             t.setTokenValue("token_value");
         }
 
+        /* Create point config for tournaments. */
+        ArrayList<PointConfiguration> pointConfigurationArrayList = new ArrayList<>();
+        pointConfigurationArrayList.add(new PointConfiguration(1, 3, 1, 0, 2, 1, 1, 2, 1));
+        pointConfigurationArrayList.add(new PointConfiguration(2, 3, 1, 0, 2, 1, 1, 2, 1));
+        pointConfigurationArrayList.add(new PointConfiguration(3, 3, 1, 0, 2, 1, 1, 2, 1));
+
         try {
             getCompetitionDao().create(competitionArrayList);
             getTournamentDao().create(tournamentArrayList);
+            getPointConfigurationDao().create(pointConfigurationArrayList);
         } catch (SQLException e) {}
-
-        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG);
-        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG_1);
-        db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG_2);
 
         db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION);
         db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_1);

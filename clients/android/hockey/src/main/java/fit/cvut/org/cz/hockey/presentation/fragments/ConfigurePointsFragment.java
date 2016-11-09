@@ -117,14 +117,15 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
             return null;
         try {
             return new PointConfiguration(
-                    Long.parseLong(ntW.getText().toString()),
-                    Long.parseLong(ntD.getText().toString()),
-                    Long.parseLong(ntL.getText().toString()),
-                    Long.parseLong(otW.getText().toString()),
-                    Long.parseLong(otD.getText().toString()),
-                    Long.parseLong(otL.getText().toString()),
-                    Long.parseLong(soW.getText().toString()),
-                    Long.parseLong(soL.getText().toString()));
+                    getArguments().getLong(ARG_TOUR_ID),
+                    Integer.parseInt(ntW.getText().toString()),
+                    Integer.parseInt(ntD.getText().toString()),
+                    Integer.parseInt(ntL.getText().toString()),
+                    Integer.parseInt(otW.getText().toString()),
+                    Integer.parseInt(otD.getText().toString()),
+                    Integer.parseInt(otL.getText().toString()),
+                    Integer.parseInt(soW.getText().toString()),
+                    Integer.parseInt(soL.getText().toString()));
         } catch(NumberFormatException ex) {
             return null;
         }

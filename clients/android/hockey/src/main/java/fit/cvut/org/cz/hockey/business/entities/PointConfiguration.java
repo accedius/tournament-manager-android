@@ -3,13 +3,59 @@ package fit.cvut.org.cz.hockey.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
+import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.
  */
-public class PointConfiguration implements Parcelable {
-    public Long ntW, ntD, ntL, otW, otD, otL, soW, soL;
+@DatabaseTable(tableName = HockeyDBConstants.tCONFIGURATIONS)
+public class PointConfiguration implements Parcelable, IEntity {
+    @DatabaseField(id = true, columnName = HockeyDBConstants.cTOURNAMENTID)
+    public long tournamentId;
+
+    @DatabaseField(columnName = HockeyDBConstants.cNTW)
+    public int ntW;
+
+    @DatabaseField(columnName = HockeyDBConstants.cNTD)
+    public int ntD;
+
+    @DatabaseField(columnName = HockeyDBConstants.cNTL)
+    public int ntL;
+
+    @DatabaseField(columnName = HockeyDBConstants.cOTW)
+    public int otW;
+
+    @DatabaseField(columnName = HockeyDBConstants.cOTD)
+    public int otD;
+
+    @DatabaseField(columnName = HockeyDBConstants.cOTL)
+    public int otL;
+
+    @DatabaseField(columnName = HockeyDBConstants.cSOW)
+    public int soW;
+
+    @DatabaseField(columnName = HockeyDBConstants.cSOL)
+    public int soL;
+
+    public PointConfiguration() {}
+
+    public PointConfiguration(Parcel in) {
+        this.tournamentId = in.readLong();
+        this.ntW = in.readInt();
+        this.ntD = in.readInt();
+        this.ntL = in.readInt();
+
+        this.otW = in.readInt();
+        this.otD = in.readInt();
+        this.otL = in.readInt();
+
+        this.soW = in.readInt();
+        this.soL = in.readInt();
+    }
 
     public static final Creator<PointConfiguration> CREATOR = new Creator<PointConfiguration>() {
         @Override
@@ -23,23 +69,6 @@ public class PointConfiguration implements Parcelable {
         }
     };
 
-    public static DPointConfiguration convertToDPointConfiguration(PointConfiguration p) {
-        return new DPointConfiguration(p.ntW, p.ntD, p.ntL, p.otW, p.otD, p.otL, p.soW, p.soL);
-    }
-
-    public PointConfiguration(Parcel in) {
-        this.ntW = in.readLong();
-        this.ntD = in.readLong();
-        this.ntL = in.readLong();
-
-        this.otW = in.readLong();
-        this.otD = in.readLong();
-        this.otL = in.readLong();
-
-        this.soW = in.readLong();
-        this.soL = in.readLong();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -47,19 +76,21 @@ public class PointConfiguration implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(ntW);
-        dest.writeLong(ntD);
-        dest.writeLong(ntL);
+        dest.writeLong(tournamentId);
+        dest.writeInt(ntW);
+        dest.writeInt(ntD);
+        dest.writeInt(ntL);
 
-        dest.writeLong(otW);
-        dest.writeLong(otD);
-        dest.writeLong(otL);
+        dest.writeInt(otW);
+        dest.writeInt(otD);
+        dest.writeInt(otL);
 
-        dest.writeLong(soW);
-        dest.writeLong(soL);
+        dest.writeInt(soW);
+        dest.writeInt(soL);
     }
 
-    public PointConfiguration(Long nW, Long nD, Long nL, Long oW, Long oD, Long oL, Long sW, Long sL) {
+    public PointConfiguration(long tournamentId, int nW, int nD, int nL, int oW, int oD, int oL, int sW, int sL) {
+        this.tournamentId = tournamentId;
         this.ntW = nW;
         this.ntD = nD;
         this.ntL = nL;
@@ -72,16 +103,16 @@ public class PointConfiguration implements Parcelable {
         this.soL = sL;
     }
 
-    public PointConfiguration (DPointConfiguration dp) {
-        this.ntW = dp.ntW;
-        this.ntD = dp.ntD;
-        this.ntL = dp.ntL;
+    @Override
+    public long getId() {
+        return tournamentId;
+    }
 
-        this.otW = dp.otW;
-        this.otD = dp.otD;
-        this.otL = dp.otL;
+    public void setTournamentId(long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
 
-        this.soW = dp.soW;
-        this.soL = dp.soL;
+    public static PointConfiguration defaultConfig() {
+        return new PointConfiguration(-1, 3, 1, 0, 2, 1, 1, 2, 1);
     }
 }

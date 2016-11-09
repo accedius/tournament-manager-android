@@ -11,12 +11,12 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.business.interfaces.IHockeyStatisticsManager;
 import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
-import fit.cvut.org.cz.hockey.data.entities.DPointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -29,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class StatisticsManager implements IHockeyStatisticsManager {
-    private long calculatePoints(int outcome, DPointConfiguration pointConfig, DMatchStat matchStat) {
+    private long calculatePoints(int outcome, PointConfiguration pointConfig, DMatchStat matchStat) {
         switch (outcome) {
             case 1:
                 if (matchStat.isShootouts())
@@ -77,7 +77,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
                     saves += value;
                     break;
                 case outcome:
-                    DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId(context, stat.getTournamentId());
+                    PointConfiguration pointConfiguration = new PointConfigManager().getByTournamentId(context, stat.getTournamentId());
                     DParticipant participant = DAOFactory.getInstance().participantDAO.getById(context, stat.getParticipantId());
                     DMatchStat matchStat = DAOFactory.getInstance().matchStatisticsDAO.getByMatchId(context, participant.getMatchId());
 
@@ -148,7 +148,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     public ArrayList<Standing> getStandingsByTournamentId(Context context, long tourId) {
         ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(context, tourId);
         ArrayList<Standing> standings = new ArrayList<>();
-        DPointConfiguration pointConfiguration = DAOFactory.getInstance().pointConfigDAO.getByTournamentId(context, tourId);
+        PointConfigManager pcm = new PointConfigManager();
+        PointConfiguration pointConfiguration = pcm.getByTournamentId(context, tourId);
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, t.getId()));
@@ -368,8 +369,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         }
 
         long tourId = DAOFactory.getInstance().matchDAO.getById(context, matchId).getTournamentId();
-        TournamentManager tm = new TournamentManager();
-        long compId = tm.getById(context, tourId).getCompetitionId();
+        long compId = new TournamentManager().getById(context, tourId).getCompetitionId();
 
         ManagerFactory.getInstance().packagePlayerManager.updatePlayersInParticipant(context, currentPart.getId(), compId, tourId, playerListToUpdate);
     }

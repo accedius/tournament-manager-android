@@ -3,19 +3,12 @@ package fit.cvut.org.cz.hockey.business.interfaces;
 import android.content.Context;
 
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IManager;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.
  */
-public interface IPointConfigManager {
-    /**
-     * Updates the point configuration of a tournament
-     * @param context
-     * @param pointConfiguration point configuration to be updated to
-     * @param tournamentId id of tournament to be updated
-     */
-    void update(Context context, PointConfiguration pointConfiguration, Long tournamentId);
-
+public interface IPointConfigManager extends IManager<PointConfiguration> {
     /**
      *
      * @param context

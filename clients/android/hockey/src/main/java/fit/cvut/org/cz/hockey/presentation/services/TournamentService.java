@@ -127,8 +127,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             }
             case ACTION_SET_CONFIG: {
                 PointConfiguration pc = intent.getParcelableExtra(EXTRA_CONFIGURATION);
-                Long tourId = intent.getLongExtra(EXTRA_ID, -1);
-                ManagerFactory.getInstance().pointConfigManager.update(this, pc, tourId);
+                ManagerFactory.getInstance().pointConfigManager.update(this, pc);
                 break;
             }
             case ACTION_GENERATE_ROSTERS: {

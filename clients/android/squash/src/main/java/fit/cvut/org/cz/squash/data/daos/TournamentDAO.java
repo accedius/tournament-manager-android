@@ -75,7 +75,7 @@ public class TournamentDAO implements ITournamentDAO {
         DTournament tournament = null;
 
         if (c.moveToFirst())
-            tournament = CursorParser.getInstance().parseDTournament(c);
+            tournament = CursorParser.getInstance().parseTournament(c);
 
         c.close();
         return tournament;
@@ -89,7 +89,7 @@ public class TournamentDAO implements ITournamentDAO {
         ArrayList<DTournament> tournaments = new ArrayList<>();
 
         while (c.moveToNext())
-            tournaments.add(CursorParser.getInstance().parseDTournament(c));
+            tournaments.add(CursorParser.getInstance().parseTournament(c));
 
         c.close();
         return tournaments;
