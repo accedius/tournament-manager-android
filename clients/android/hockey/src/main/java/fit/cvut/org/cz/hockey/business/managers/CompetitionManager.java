@@ -10,7 +10,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 /**
  * Created by atgot_000 on 30. 3. 2016.
  */
-public class CompetitionManager extends fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager{
+public class CompetitionManager extends fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager {
     @Override
     protected Dao<Competition, Long> getDao(Context context) {
         return DatabaseFactory.getDBeHelper(context).getCompetitionDao();

@@ -46,7 +46,7 @@ public interface IManager<T extends IEntity> {
     T getById(Context context, long id);
 
     /**
-     * get competition by its id
+     * get all competitions
      * @param context application context
      * @return all competitions
      */

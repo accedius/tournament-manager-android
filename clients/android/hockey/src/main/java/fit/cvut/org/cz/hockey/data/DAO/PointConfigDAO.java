@@ -66,15 +66,8 @@ public class PointConfigDAO implements IPointConfigDAO {
 
     public long insertDefault(Context context, long tournamentId) {
         SQLiteDatabase db = DatabaseFactory.getDatabase(context);
-        ContentValues values;
-
-        Long newRowId;
-
-        values = defaultConfig(tournamentId);
-        newRowId = db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
-
-
-        return newRowId;
+        ContentValues values = defaultConfig(tournamentId);
+        return db.insert(HockeyDBConstants.tCONFIGURATIONS, null, values);
     }
 
     @Override
