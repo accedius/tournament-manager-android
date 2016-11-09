@@ -12,6 +12,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
@@ -23,6 +24,7 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class HockeyDBHelper extends SportDBHelper {
     private static final int DBVersion = 1;
     private Dao<Competition, Long> competitionDao;
+    private Dao<Tournament, Long> tournamentDao;
     private String DBName;
 
     public HockeyDBHelper(Context context, String name) {
@@ -41,13 +43,23 @@ public class HockeyDBHelper extends SportDBHelper {
         return competitionDao;
     }
 
+    public Dao<Tournament, Long> getTournamentDao() {
+        if (tournamentDao == null) {
+            try {
+                tournamentDao = getDao(Tournament.class);
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        return tournamentDao;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Competition.class);
+            TableUtils.createTable(connectionSource, Tournament.class);
         } catch (SQLException e) {}
-        //db.execSQL(DBScripts.CREATE_TABLE_COMPETITIONS);
-        db.execSQL(DBScripts.CREATE_TABLE_TOURNAMENTS);
 
         db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
@@ -60,15 +72,17 @@ public class HockeyDBHelper extends SportDBHelper {
         db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
 
         ArrayList<Competition> competitionArrayList = new ArrayList<>();
+        ArrayList<Tournament> tournamentArrayList = new ArrayList<>();
         Date date1 = new Date();
         Date date2 = new Date();
         date1.setTime(1420074061000L);
         date2.setTime(1422666061000L);
         competitionArrayList.add(new Competition(1, "H CMP1", date1, date2, "Pozn 1", CompetitionTypes.teams()));
-        competitionArrayList.add(new Competition(3, "H CMP3", date1, date2, "Pozn 3", CompetitionTypes.teams()));
-        date1.setTime(1451610061000L);
-        date2.setTime(1454202061000L);
         competitionArrayList.add(new Competition(2, "H CMP2", date1, date2, "Pozn 2", CompetitionTypes.teams()));
+        competitionArrayList.add(new Competition(3, "H CMP3", date1, date2, "Pozn 3", CompetitionTypes.teams()));
+        tournamentArrayList.add(new Tournament(1, 1, "Tour 1 - CMP1", date1, date2, "Pozn Tour 11"));
+        tournamentArrayList.add(new Tournament(2, 1, "Tour 2 - CMP1", date1, date2, "Pozn Tour 21"));
+        tournamentArrayList.add(new Tournament(3, 2, "Tour 1 - CMP2", date1, date2, "Pozn Tour 12"));
 
         for (Competition c : competitionArrayList) {
             c.setEtag("etag_"+getDatabaseName());
@@ -79,13 +93,18 @@ public class HockeyDBHelper extends SportDBHelper {
             c.setTokenValue("token_value");
         }
 
+        for (Tournament t : tournamentArrayList) {
+            t.setEtag("etag_"+getDatabaseName());
+            t.setUid("UID_"+t.getName());
+            t.setLastModified(new Date());
+            t.setLastSynchronized(new Date());
+            t.setTokenValue("token_value");
+        }
+
         try {
             getCompetitionDao().create(competitionArrayList);
+            getTournamentDao().create(tournamentArrayList);
         } catch (SQLException e) {}
-
-        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS);
-        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS_1);
-        db.execSQL(DBScripts.INSERT_HOCKEY_TOURNAMENTS_2);
 
         db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG);
         db.execSQL(HockeyDBScripts.INSERT_POINT_CONFIG_1);
@@ -128,8 +147,8 @@ public class HockeyDBHelper extends SportDBHelper {
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Competition.class, true);
+            TableUtils.dropTable(connectionSource, Tournament.class, true);
         } catch (SQLException e) {}
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTOURNAMENTS);
         db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tCONFIGURATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_COMPETITION);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TOURNAMENT);

@@ -8,6 +8,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
@@ -15,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by atgot_000 on 4. 4. 2016.
@@ -95,7 +95,7 @@ public class CursorParser {
         return p;
     }
 
-    public DTournament parseDTournament(Cursor cursor) {
+    public Tournament parseTournament(Cursor cursor) {
         long id, competitionId;
         String uid, name, note, etag;
         Date startDate = null;
@@ -124,7 +124,12 @@ public class CursorParser {
         note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DTournament(id, name, startDate, endDate, note, etag, uid, lastModified, lastSynchronized, competitionId);
+        Tournament t = new Tournament(id, uid, name, startDate, endDate, note);
+        t.setCompetitionId(competitionId);
+        t.setEtag(etag);
+        t.setLastModified(lastModified);
+        t.setLastSynchronized(lastSynchronized);
+        return t;
     }
 
     public DTeam parseDTeam(Cursor cursor){

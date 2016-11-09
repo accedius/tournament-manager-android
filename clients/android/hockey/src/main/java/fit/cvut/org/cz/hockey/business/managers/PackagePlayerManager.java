@@ -14,7 +14,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
@@ -32,10 +31,11 @@ public class PackagePlayerManager implements IPackagePlayerManager {
 
     @Override
     public boolean deletePlayerFromCompetition(Context context, long playerId, long competitionId) {
-        ArrayList<DTournament> tournaments = DAOFactory.getInstance().tournamentDAO.getByCompetitionId(context, competitionId);
+        TournamentManager tm = new TournamentManager();
+        ArrayList<Tournament> tournaments = tm.getByCompetitionId(context, competitionId);
 
         //Check if player is not in any tournament
-        for (DTournament tourn : tournaments) {
+        for (Tournament tourn : tournaments) {
             ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByTournament(context, tourn.getId());
             if (playerIds.contains(playerId)) return false;
         }

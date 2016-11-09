@@ -17,6 +17,7 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
@@ -47,7 +48,6 @@ import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -282,7 +282,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     Log.d("IMPORT", "Tournament: " + t.syncData);
                     Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
                     imported.setCompetitionId(competitionId);
-                    long tournamentId = ManagerFactory.getInstance().tournamentManager.insert(this, imported);
+                    ManagerFactory.getInstance().tournamentManager.insert(this, imported);
+                    long tournamentId = imported.getId();
 
                     for (ServerCommunicationItem subItem : t.subItems) {
                         if (subItem.getType().equals("Player")) {
@@ -335,7 +336,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         long matchId = ManagerFactory.getInstance().matchManager.insert(this, importedMatch);
                         if (importedMatch.isPlayed()) {
                             /* START match manager "begin match" */
-                            DTournament tour = DAOFactory.getInstance().tournamentDAO.getById(this, importedMatch.getTournamentId());
+                            TournamentManager tm = new TournamentManager();
+                            Tournament tour = tm.getById(this, importedMatch.getTournamentId());
                             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(this, matchId);
                             for (DParticipant dp : participants) {
                                 for (StatsEnum statEn : StatsEnum.values()) {

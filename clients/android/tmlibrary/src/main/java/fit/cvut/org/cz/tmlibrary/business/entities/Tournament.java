@@ -3,34 +3,46 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
+@DatabaseTable(tableName = DBConstants.tTOURNAMENTS)
 public class Tournament extends ShareBase implements Parcelable {
     public static final String col_name = "name";
     public static final String col_start_date = "start_date";
     public static final String col_end_date= "end_date";
 
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
+
+    @DatabaseField(columnName = DBConstants.cCOMPETITIONID)
     private long competitionId;
+
+    @DatabaseField(columnName = DBConstants.cNAME)
     private String name;
+
+    @DatabaseField(columnName = DBConstants.cSTART)
     private Date startDate;
+
+    @DatabaseField(columnName = DBConstants.cEND)
     private Date endDate;
+
+    @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
-    public static DTournament convertToDTournament(Tournament c){
-        return new DTournament(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized(), c.getCompetitionId());
-    }
+    public Tournament() {}
 
     public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note) {
         this.id = id;
@@ -48,20 +60,6 @@ public class Tournament extends ShareBase implements Parcelable {
         this.endDate = endDate;
         this.note = note;
         this.setCompetitionId(competitionId);
-    }
-
-    public Tournament(DTournament c) {
-        this.id = c.getId();
-        this.name = c.getName();
-        this.startDate = c.getStartDate();
-        this.endDate = c.getEndDate();
-        this.note = c.getNote();
-        this.competitionId = c.getCompetitionId();
-
-        this.uid = c.getUid();
-        this.etag = c.getEtag();
-        this.lastModified = c.getLastModified();
-        this.lastSynchronized = c.getLastSynchronized();
     }
 
     protected Tournament(Parcel in) {

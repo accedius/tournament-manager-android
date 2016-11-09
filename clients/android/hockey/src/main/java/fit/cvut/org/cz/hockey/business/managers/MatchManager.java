@@ -8,19 +8,21 @@ import java.util.Comparator;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.*;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
@@ -90,9 +92,10 @@ public class MatchManager implements IScoredMatchManager {
     @Override
     public void beginMatch(Context context, long matchId) {
         ScoredMatch match = getById(context, matchId);
+        TournamentManager tm = new TournamentManager();
 
         if (!(match.isPlayed())) {
-            DTournament tour = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
+            Tournament tour = tm.getById(context, match.getTournamentId());
             ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
             for (DParticipant dp : participants) {
                 for (StatsEnum statEn : StatsEnum.values()) {

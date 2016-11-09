@@ -368,7 +368,8 @@ public class StatisticsManager implements IHockeyStatisticsManager {
         }
 
         long tourId = DAOFactory.getInstance().matchDAO.getById(context, matchId).getTournamentId();
-        long compId = DAOFactory.getInstance().tournamentDAO.getById(context, tourId).getCompetitionId();
+        TournamentManager tm = new TournamentManager();
+        long compId = tm.getById(context, tourId).getCompetitionId();
 
         ManagerFactory.getInstance().packagePlayerManager.updatePlayersInParticipant(context, currentPart.getId(), compId, tourId, playerListToUpdate);
     }
