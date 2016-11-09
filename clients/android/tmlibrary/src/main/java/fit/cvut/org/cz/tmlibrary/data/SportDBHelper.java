@@ -24,23 +24,35 @@ abstract public class SportDBHelper extends OrmLiteSqliteOpenHelper {
         super(context, databaseName, factory, databaseVersion);
     }
 
-    public Dao<Competition, Long> getCompetitionDao() throws SQLException {
+    public Dao<Competition, Long> getCompetitionDao() {
         if (competitionDAO == null) {
-            competitionDAO = getDao(Competition.class);
+            try {
+                competitionDAO = getDao(Competition.class);
+            } catch (SQLException e) {
+                return null;
+            }
         }
         return competitionDAO;
     }
 
-    public Dao<Tournament, Long> getTournamentDao() throws SQLException {
+    public Dao<Tournament, Long> getTournamentDao() {
         if (tournamentDAO == null) {
-            tournamentDAO = getDao(Tournament.class);
+            try {
+                tournamentDAO = getDao(Tournament.class);
+            } catch (SQLException e) {
+                return null;
+            }
         }
         return tournamentDAO;
     }
 
-    public Dao<Team, Long> getTeamDao() throws SQLException {
+    public Dao<Team, Long> getTeamDao() {
         if (teamDAO == null) {
-            teamDAO = getDao(Team.class);
+            try {
+                teamDAO = getDao(Team.class);
+            } catch (SQLException e) {
+                return null;
+            }
         }
         return teamDAO;
     }

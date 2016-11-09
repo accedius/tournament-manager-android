@@ -28,7 +28,7 @@ public class ManagerFactory {
     public IHockeyStatisticsManager statisticsManager = new StatisticsManager();
     public IPackagePlayerManager packagePlayerManager = new PackagePlayerManager();
     public IPointConfigManager pointConfigManager = new PointConfigManager();
-    public ITeamManager teamManager = new TeamManager();
+    public ITeamManager teamManager = new TeamManager(packagePlayerManager);
     public IScoredMatchManager matchManager = new MatchManager();
 
     public static ManagerFactory getInstance() {

@@ -9,38 +9,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 /**
  * Created by Vaclav on 13. 4. 2016.
  */
-public interface ITeamManager {
-    /**
-     * insert team
-     * @param context application context
-     * @param team team to be inserted
-     * @return id of inserted team
-     */
-    long insert(Context context, Team team);
-
-    /**
-     * update a team (including its rosters)
-     * @param context application context
-     * @param team team to be updated
-     */
-    void update(Context context, Team team);
-
-    /**
-     * delete a team
-     * @param context application context
-     * @param id id of the team to be deleted
-     * @return true if ok, false if  team is in match and cannot be deleted
-     */
-    boolean delete(Context context, long id);
-
-    /**
-     * get team by its id
-     * @param context application context
-     * @param id id of the team
-     * @return found team
-     */
-    Team getById(Context context, long id);
-
+public interface ITeamManager extends IManager<Team> {
     /**
      * get all teams in tournament
      * @param context application context

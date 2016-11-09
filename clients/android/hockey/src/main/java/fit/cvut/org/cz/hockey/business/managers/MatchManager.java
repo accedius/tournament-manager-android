@@ -13,16 +13,16 @@ import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.*;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
@@ -30,6 +30,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 public class MatchManager implements IScoredMatchManager {
     private ScoredMatch fillMatch (Context context, DMatch dm) {
         ScoredMatch match = new ScoredMatch(dm);
+        IPackagePlayerManager packagePlayerManager = new PackagePlayerManager();
 
         ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, dm.getId());
 
@@ -44,7 +45,7 @@ public class MatchManager implements IScoredMatchManager {
 
             if (dp.getRole().equals(ParticipantType.home.toString())) {
                 match.setHomeParticipantId(dp.getTeamId());
-                DTeam dt = DAOFactory.getInstance().teamDAO.getById(context, dp.getTeamId());
+                Team dt = new TeamManager(packagePlayerManager).getById(context, dp.getTeamId());
                 match.setHomeName(dt.getName());
                 ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(context, dp.getId());
                 match.setHomeIds(playerIds);
@@ -52,7 +53,7 @@ public class MatchManager implements IScoredMatchManager {
             }
             if (dp.getRole().equals(ParticipantType.away.toString())) {
                 match.setAwayParticipantId(dp.getTeamId());
-                DTeam dt = DAOFactory.getInstance().teamDAO.getById(context, dp.getTeamId());
+                Team dt = new TeamManager(packagePlayerManager).getById(context, dp.getTeamId());
                 match.setAwayName(dt.getName());
                 ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(context, dp.getId());
                 match.setAwayIds(playerIds);
@@ -115,10 +116,11 @@ public class MatchManager implements IScoredMatchManager {
 
     @Override
     public void generateRound(Context context, long tournamentId) {
-        ArrayList<DTeam> teamsInTournament = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
+        IPackagePlayerManager packagePlayerManager = new PackagePlayerManager();
+        ArrayList<Team> teamsInTournament = new TeamManager(packagePlayerManager).getByTournamentId(context, tournamentId);
         ArrayList<MatchParticipant> partsForGenerator = new ArrayList<>();
 
-        for (DTeam dTeam : teamsInTournament) {
+        for (Team dTeam : teamsInTournament) {
             partsForGenerator.add(new MatchParticipant(dTeam.getId(), dTeam.getName()));
         }
 

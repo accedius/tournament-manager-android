@@ -5,13 +5,11 @@ import fit.cvut.org.cz.hockey.data.DAO.MatchStatisticsDAO;
 import fit.cvut.org.cz.hockey.data.DAO.PackagePlayerDAO;
 import fit.cvut.org.cz.hockey.data.DAO.ParticipantDAO;
 import fit.cvut.org.cz.hockey.data.DAO.StatDAO;
-import fit.cvut.org.cz.hockey.data.DAO.TeamDAO;
 import fit.cvut.org.cz.hockey.data.interfaces.IMatchStatisticsDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IMatchDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IPackagePlayerDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IParticipantDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IStatDAO;
-import fit.cvut.org.cz.tmlibrary.data.interfaces.ITeamDAO;
 
 /**
  * Created by atgot_000 on 31. 3. 2016.
@@ -22,7 +20,6 @@ public class DAOFactory {
     private static DAOFactory instance = new DAOFactory();
 
     public IPackagePlayerDAO packagePlayerDAO = new PackagePlayerDAO();
-    public ITeamDAO teamDAO = new TeamDAO();
     public IMatchDAO matchDAO = new MatchDAO();
     public IParticipantDAO participantDAO = new ParticipantDAO();
     public IMatchStatisticsDAO matchStatisticsDAO = new MatchStatisticsDAO();

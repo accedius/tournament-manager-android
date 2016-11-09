@@ -306,8 +306,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         // Add team to tournament.
                         Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
                         importedTeam.setTournamentId(tournamentId);
-                        long teamId = ManagerFactory.getInstance().teamManager.insert(this, importedTeam);
-                        importedTeam.setId(teamId);
+                        ManagerFactory.getInstance().teamManager.insert(this, importedTeam);
                         importedTeams.put(team.getUid(), importedTeam);
 
                         // Add players to team.
@@ -317,7 +316,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                                 teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                             }
                         }
-                        ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, teamId, teamPlayers);
+                        ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(this, importedTeam.getId(), teamPlayers);
                     }
 
                     // Add stats

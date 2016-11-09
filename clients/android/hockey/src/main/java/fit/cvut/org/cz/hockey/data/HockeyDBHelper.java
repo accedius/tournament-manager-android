@@ -13,6 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -23,37 +24,13 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class HockeyDBHelper extends SportDBHelper {
-    private static final int DBVersion = 1;
-    private Dao<Competition, Long> competitionDao;
-    private Dao<Tournament, Long> tournamentDao;
+    private static final int DBVersion = 2;
     private String DBName;
     private Dao<PointConfiguration, Long> pointConfigurationDao;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name+".db", null, DBVersion);
         DBName = name;
-    }
-
-    public Dao<Competition, Long> getCompetitionDao() {
-        if (competitionDao == null) {
-            try {
-                competitionDao = getDao(Competition.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return competitionDao;
-    }
-
-    public Dao<Tournament, Long> getTournamentDao() {
-        if (tournamentDao == null) {
-            try {
-                tournamentDao = getDao(Tournament.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return tournamentDao;
     }
 
     public Dao<PointConfiguration, Long> getPointConfigurationDao() {
@@ -72,15 +49,15 @@ public class HockeyDBHelper extends SportDBHelper {
         try {
             TableUtils.createTable(connectionSource, Competition.class);
             TableUtils.createTable(connectionSource, Tournament.class);
+            TableUtils.createTable(connectionSource, PointConfiguration.class);
+            TableUtils.createTable(connectionSource, Team.class);
         } catch (SQLException e) {}
 
-        db.execSQL(HockeyDBScripts.CREATE_TABLE_CONFIGURATIONS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
         db.execSQL(DBScripts.CREATE_TABLE_MATCHES);
         db.execSQL(DBScripts.CREATE_TABLE_PARTICIPANTS);
         db.execSQL(DBScripts.CREATE_TABLE_STATS);
-        db.execSQL(DBScripts.CREATE_TABLE_TEAMS);
         db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
         db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
 
@@ -122,10 +99,25 @@ public class HockeyDBHelper extends SportDBHelper {
         pointConfigurationArrayList.add(new PointConfiguration(2, 3, 1, 0, 2, 1, 1, 2, 1));
         pointConfigurationArrayList.add(new PointConfiguration(3, 3, 1, 0, 2, 1, 1, 2, 1));
 
+        /* Create teams. */
+        ArrayList<Team> teamArrayList = new ArrayList<>();
+        teamArrayList.add(new Team(1, 1, "A team"));
+        teamArrayList.add(new Team(2, 1, "B team"));
+        teamArrayList.add(new Team(3, 1, "C team"));
+        teamArrayList.add(new Team(4, 1, "D team"));
+        for (Team t : teamArrayList) {
+            t.setEtag("etag_"+getDatabaseName());
+            t.setUid("UID_"+t.getName());
+            t.setLastModified(new Date());
+            t.setLastSynchronized(new Date());
+            t.setTokenValue("token_value");
+        }
+
         try {
             getCompetitionDao().create(competitionArrayList);
             getTournamentDao().create(tournamentArrayList);
             getPointConfigurationDao().create(pointConfigurationArrayList);
+            getTeamDao().create(teamArrayList);
         } catch (SQLException e) {}
 
         db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION);
@@ -146,11 +138,6 @@ public class HockeyDBHelper extends SportDBHelper {
         db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_6);
         db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_7);
 
-        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS);
-        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_1);
-        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_2);
-        db.execSQL(DBScripts.INSERT_TOURNAMENT_TEAMS_3);
-
         db.execSQL(DBScripts.INSERT_PLAYER_TEAMS);
         db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_1);
         db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_2);
@@ -166,11 +153,11 @@ public class HockeyDBHelper extends SportDBHelper {
         try {
             TableUtils.dropTable(connectionSource, Competition.class, true);
             TableUtils.dropTable(connectionSource, Tournament.class, true);
+            TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+            TableUtils.dropTable(connectionSource, Team.class, true);
         } catch (SQLException e) {}
-        db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tCONFIGURATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_COMPETITION);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TOURNAMENT);
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tTEAMS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tMATCHES);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPARTICIPANTS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS);

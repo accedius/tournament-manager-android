@@ -8,6 +8,7 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
@@ -15,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
 
 /**
  * Created by atgot_000 on 4. 4. 2016.
@@ -132,7 +132,7 @@ public class CursorParser {
         return t;
     }
 
-    public DTeam parseDTeam(Cursor cursor){
+    public Team parseTeam(Cursor cursor) {
         String uid, etag;
         Date lastModified = null;
         Date lastSynchronized = null;
@@ -148,10 +148,15 @@ public class CursorParser {
         }
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DTeam(
+        Team t = new Team(
                 cursor.getLong(cursor.getColumnIndex(DBConstants.cID)),
                 cursor.getLong(cursor.getColumnIndex(DBConstants.cTOURNAMENT_ID)),
-                cursor.getString(cursor.getColumnIndex(DBConstants.cNAME)), etag, uid, lastModified, lastSynchronized);
+                cursor.getString(cursor.getColumnIndex(DBConstants.cNAME)));
+        t.setEtag(etag);
+        t.setUid(uid);
+        t.setLastModified(lastModified);
+        t.setLastSynchronized(lastSynchronized);
+        return t;
     }
 
     public DMatch parseDMatch(Cursor cursor) {

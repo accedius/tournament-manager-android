@@ -10,6 +10,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by kevin on 30. 3. 2016.
@@ -54,12 +55,25 @@ abstract public class TournamentManager implements ITournamentManager {
 
     @Override
     public Tournament getById(Context context, long id) {
-        Tournament t = null;
         try {
-            t = getDao(context).queryForId(id);
+            return getDao(context).queryForId(id);
         } catch (SQLException e) {
             return null;
         }
-        return t;
+    }
+
+    @Override
+    public ArrayList<Tournament> getByCompetitionId(Context context, long competitionId) {
+        ArrayList<Tournament> res = new ArrayList<>();
+        try {
+            List<Tournament> tournaments = getDao(context).queryBuilder()
+                    .where()
+                    .eq(DBConstants.cCOMPETITION_ID, competitionId)
+                    .query();
+            res.addAll(tournaments);
+            return res;
+        } catch (SQLException e) {
+            return res;
+        }
     }
 }
