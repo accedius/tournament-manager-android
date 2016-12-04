@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -150,7 +151,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     public void orderData(final String type) {
         if (adapter == null) return;
 
-        ArrayList<Competition> competitions = adapter.getData();
+        List<Competition> competitions = adapter.getData();
         if (orderColumn.equals(type) && orderType.equals("ASC")) {
             orderType = "DESC";
             Collections.sort(competitions, new Comparator<Competition>() {

@@ -53,7 +53,7 @@ public class SettingsFragment extends Fragment {
                 String package_name = sport.getValue().metaData.getString("package_name");
                 String sport_name = sport.getKey();
                 sportSettings.add(new Setting(package_name, sport_name));
-                Setting setting = ManagersFactory.settingManager().getByPackageSport(getContext(), package_name, sport_name);
+                Setting setting = ManagersFactory.getInstance().settingManager.getByPackageSport(getContext(), package_name, sport_name);
                 if (setting == null) {
                     sparse.put(i, true);
                 }
@@ -91,11 +91,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish) {
-            ManagersFactory.settingManager().deleteAll(getContext());
+            ManagersFactory.getInstance().settingManager.deleteAll(getContext());
             ArrayList<Setting> settings = adapter.getSelectedItems();
             for (Setting s : sportSettings) {
                 if (!settings.contains(s)) {
-                    ManagersFactory.settingManager().insert(getContext(), s);
+                    ManagersFactory.getInstance().settingManager.insert(getContext(), s);
                 }
             }
             Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_saved, Snackbar.LENGTH_LONG).show();

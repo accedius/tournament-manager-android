@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
@@ -82,14 +85,18 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            ScoredMatch scoredMatch = ((NewHockeyMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
+            fit.cvut.org.cz.tmlibrary.business.entities.Match match = ((NewHockeyMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
+            Match scoredMatch = new Match(match);
             if (scoredMatch == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
-            if (scoredMatch.getId() == -1 && scoredMatch.getHomeParticipantId() == scoredMatch.getAwayParticipantId()) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
+            if (scoredMatch.getId() == -1) {
+                List<Participant> participants = scoredMatch.getParticipants();
+                if (participants.get(0).getParticipantId() == participants.get(1).getParticipantId()) {
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
+                    return super.onOptionsItemSelected(item);
+                }
             }
 
             Intent intent;

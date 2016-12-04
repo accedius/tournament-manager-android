@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -83,6 +84,14 @@ public class Player extends ShareBase implements Parcelable {
         this.name = cursor.getString(cursor.getColumnIndex(DBConstants.cNAME));
         this.email = cursor.getString(cursor.getColumnIndex(DBConstants.cEMAIL));
         this.note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues values = new ContentValues();
+        values.put("email", getEmail());
+        values.put("name", getName());
+        values.put("note", getNote());
+        return values;
     }
 
     public static final Creator<Player> CREATOR = new Creator<Player>() {

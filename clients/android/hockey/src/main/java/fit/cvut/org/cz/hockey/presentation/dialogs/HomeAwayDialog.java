@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
@@ -51,7 +52,7 @@ public class HomeAwayDialog extends DialogFragment {
      * Override to do something when the home team was clicked
      */
     protected void homeClicked() {
-        ArrayList<MatchPlayerStatistic> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
+        ArrayList<PlayerStat> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID));
         intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
         getTargetFragment().startActivityForResult(intent, HockeyMatchStatsFragment.REQUEST_HOME);
@@ -61,7 +62,7 @@ public class HomeAwayDialog extends DialogFragment {
      * Override to do something when the away team was clicked
      */
     protected void awayClicked() {
-        ArrayList<MatchPlayerStatistic> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
+        ArrayList<PlayerStat> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
         Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID));
         intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
         getTargetFragment().startActivityForResult(intent, HockeyMatchStatsFragment.REQUEST_AWAY);

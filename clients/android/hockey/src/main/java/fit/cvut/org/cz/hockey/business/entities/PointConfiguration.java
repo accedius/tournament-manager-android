@@ -14,10 +14,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
  */
 // TODO point configuration is not exported and imported
 @DatabaseTable(tableName = HockeyDBConstants.tCONFIGURATIONS)
-public class PointConfiguration implements Parcelable, IEntity {
-    @DatabaseField(id = true, columnName = HockeyDBConstants.cTOURNAMENTID)
-    public long tournamentId;
-
+public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entities.PointConfiguration implements Parcelable, IEntity {
     @DatabaseField(columnName = HockeyDBConstants.cNTW)
     public int ntW;
 

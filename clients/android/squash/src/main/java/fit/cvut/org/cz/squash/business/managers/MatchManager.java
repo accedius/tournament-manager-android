@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.squash.data.DAOFactory;
 import fit.cvut.org.cz.squash.data.entities.DStat;
 import fit.cvut.org.cz.squash.data.entities.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -131,14 +131,14 @@ public class MatchManager implements IScoredMatchManager {
             }
         });
 
-        ArrayList<MatchParticipant> participants = new ArrayList<>();
+        ArrayList<Participant> participants = new ArrayList<>();
 
         if (type.equals(CompetitionTypes.individuals())) {
             ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
-            for (Player p : players) participants.add(new MatchParticipant(p.getId(), p.getName()));
+            for (Player p : players) participants.add(new Participant(p.getId(), p.getName()));
         } else {
             ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
-            for (Team t : teams) participants.add(new MatchParticipant(t.getId(), t.getName()));
+            for (Team t : teams) participants.add(new Participant(t.getId(), t.getName()));
         }
 
         IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();

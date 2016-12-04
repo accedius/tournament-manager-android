@@ -6,13 +6,13 @@ import android.os.Parcelable;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 
 public class HockeyScoredMatch implements Parcelable {
-    protected MatchScore matchScore;
+    protected Match match;
     protected ScoredMatch scoredMatch;
 
     public HockeyScoredMatch() {}
 
-    public HockeyScoredMatch(ScoredMatch sm, MatchScore ms) {
-        this.matchScore = ms;
+    public HockeyScoredMatch(ScoredMatch sm, Match ms) {
+        this.match = ms;
         this.scoredMatch = sm;
     }
 
@@ -23,12 +23,12 @@ public class HockeyScoredMatch implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(matchScore, flags);
+        dest.writeParcelable(match, flags);
         dest.writeParcelable(scoredMatch, flags);
     }
 
     public HockeyScoredMatch(Parcel in) {
-        this.matchScore = new MatchScore(in);
+        this.match = new Match(in);
         this.scoredMatch = new ScoredMatch(in);
     }
 
@@ -48,8 +48,8 @@ public class HockeyScoredMatch implements Parcelable {
         return scoredMatch;
     }
 
-    public MatchScore getMatchScore() {
-        return matchScore;
+    public Match getMatch() {
+        return match;
     }
 
 }

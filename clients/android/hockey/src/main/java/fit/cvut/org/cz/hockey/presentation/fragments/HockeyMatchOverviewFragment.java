@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +15,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.hockey.business.managers.MatchManager;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -88,7 +90,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        ScoredMatch match = intent.getParcelableExtra(MatchService.EXTRA_MATCH);
+        Match match = intent.getParcelableExtra(MatchService.EXTRA_MATCH);
         tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
@@ -109,17 +111,11 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         note.setText(match.getNote());
 
         if (ot == -1 && so == -1) {
-            MatchScore matchScore = intent.getParcelableExtra(MatchService.EXTRA_MATCH_SCORE);
-            if (matchScore == null) {
-                ot = 0;
-                so = 0;
-                return;
-            }
-            if (matchScore.isOvertime()) {
+            if (match.isOvertime()) {
                 overtime.setChecked(true);
                 ot = 1;
             } else ot = 0;
-            if (matchScore.isShootouts()) {
+            if (match.isShootouts()) {
                 shootouts.setChecked(true);
                 so = 1;
             } else so = 0;
@@ -232,8 +228,13 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
         });
     }
 
-    public MatchScore getScore() {
-        MatchScore res = new MatchScore(getArguments().getLong(ARG_ID), intHomeScore, intAwayScore, so != 0, ot != 0);
+    public Match getScore() {
+        Match res = ManagerFactory.getInstance(getContext()).matchManager.getById(getContext(), getArguments().getLong(ARG_ID));
+        res.setOvertime(ot != 0);
+        res.setShootouts(so != 0);
+        res.setPlayed(true);
+        res.setHomeScore(intHomeScore);
+        res.setAwayScore(intAwayScore);
         return res;
     }
 

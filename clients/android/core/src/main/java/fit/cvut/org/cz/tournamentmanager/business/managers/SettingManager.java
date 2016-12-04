@@ -4,14 +4,7 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IManager;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
 
 /**

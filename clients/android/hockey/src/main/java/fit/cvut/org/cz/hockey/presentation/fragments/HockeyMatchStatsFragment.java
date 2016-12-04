@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,15 +19,20 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.EditAtOnceActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -42,7 +48,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private FloatingActionButton fab;
     private ScrollView scrv;
     private long matchId;
-    ArrayList<MatchPlayerStatistic> tmpHomeStats, tmpAwayStats;
+    List<PlayerStat> tmpHomeStats, tmpAwayStats;
 
     public static final int REQUEST_HOME = 1;
     public static final int REQUEST_AWAY = 2;
@@ -88,8 +94,8 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
         super.onSaveInstanceState(outState);
         tmpHomeStats = homeAdapter.getData();
         tmpAwayStats = awayAdapter.getData();
-        outState.putParcelableArrayList(SAVE_HOME_LIST, tmpHomeStats);
-        outState.putParcelableArrayList(SAVE_AWAY_LIST, tmpAwayStats);
+        outState.putParcelableArrayList(SAVE_HOME_LIST, new ArrayList<>(tmpHomeStats));
+        outState.putParcelableArrayList(SAVE_AWAY_LIST, new ArrayList<>(tmpAwayStats));
     }
 
     @Override
@@ -200,36 +206,44 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             return;
 
         if (requestCode == REQUEST_EDIT) {
-            ArrayList<MatchPlayerStatistic> stats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_HOME_STATS);
-            homeAdapter.swapData(stats);
-            tmpHomeStats = stats;
-            stats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_AWAY_STATS);
-            awayAdapter.swapData(stats);
-            tmpAwayStats = stats;
+            ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_HOME_PLAYERS_STATS);
+            homeAdapter.swapData(homeStats);
+            tmpHomeStats = homeStats;
+            ArrayList<PlayerStat> awayStats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_AWAY_PLAYERS_STATS);
+            awayAdapter.swapData(awayStats);
+            tmpAwayStats = awayStats;
             return;
         }
 
+        Participant participant;
         ArrayList<Player> players = data.getParcelableArrayListExtra(SelectableListActivity.EXTRA_DATA);
-        ArrayList<MatchPlayerStatistic> playerStatistics;
-        if (requestCode == REQUEST_HOME)
+        List<PlayerStat> playerStatistics;
+        if (requestCode == REQUEST_HOME) {
             playerStatistics = homeAdapter.getData();
-        else
+            participant = ManagerFactory.getInstance(getContext()).participantManager.getByRoleAndMatchId(getContext(), ParticipantType.home.toString(), matchId);
+        }
+        else {
             playerStatistics = awayAdapter.getData();
+            participant = ManagerFactory.getInstance(getContext()).participantManager.getByRoleAndMatchId(getContext(), ParticipantType.away.toString(), matchId);
+        }
 
-        for (Player p : players)
-            playerStatistics.add(new MatchPlayerStatistic(p.getId(), p.getName(), 0, 0, 0, 0));
+        for (Player player : players) {
+            PlayerStat playerStat = new PlayerStat(participant.getId(), player.getId());
+            playerStat.setName(player.getName());
+            playerStatistics.add(playerStat);
+        }
 
         if (requestCode == REQUEST_HOME) {
             homeAdapter.swapData(playerStatistics);
             tmpHomeStats = playerStatistics;
-        } else{
+        } else {
             awayAdapter.swapData(playerStatistics);
             tmpAwayStats = playerStatistics;
         }
     }
 
-    public ArrayList<MatchPlayerStatistic> getOmitPlayers() {
-        ArrayList<MatchPlayerStatistic> res = new ArrayList<>();
+    public ArrayList<PlayerStat> getOmitPlayers() {
+        ArrayList<PlayerStat> res = new ArrayList<>();
         res.addAll(homeAdapter.getData());
         res.addAll(awayAdapter.getData());
         return res;
@@ -239,7 +253,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      *
      * @return current list of statistics of home team
      */
-    public ArrayList<MatchPlayerStatistic> getHomeList() {
+    public List<PlayerStat> getHomeList() {
         return homeAdapter.getData();
     }
 
@@ -247,7 +261,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      *
      * @return current list of statistics of away team
      */
-    public ArrayList<MatchPlayerStatistic> getAwayList() {
+    public List<PlayerStat> getAwayList() {
         return awayAdapter.getData();
     }
 
@@ -268,14 +282,14 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
      * @param position position in data
      * @param statistic statistic to be changed to
      */
-    public void setPlayerStats(boolean home, int position, MatchPlayerStatistic statistic) {
+    public void setPlayerStats(boolean home, int position, PlayerStat statistic) {
         if (home) {
-            ArrayList<MatchPlayerStatistic> dat = homeAdapter.getData();
+            List<PlayerStat> dat = homeAdapter.getData();
             dat.remove(position);
             dat.add(position, statistic);
             homeAdapter.swapData(dat);
         } else {
-            ArrayList<MatchPlayerStatistic> dat = awayAdapter.getData();
+            List<PlayerStat> dat = awayAdapter.getData();
             dat.remove(position);
             dat.add(position, statistic);
             awayAdapter.swapData(dat);

@@ -11,10 +11,17 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionPlayer;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.DBScripts;
@@ -27,13 +34,16 @@ public class HockeyDBHelper extends SportDBHelper {
     private static final int DBVersion = 2;
     private String DBName;
     private Dao<PointConfiguration, Long> pointConfigurationDao;
+    private Dao<Match, Long> matchDao;
+    private Dao<ParticipantStat, Long> participantStatDAO;
+    private Dao<PlayerStat, Long> playerStatDAO;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name+".db", null, DBVersion);
         DBName = name;
     }
 
-    public Dao<PointConfiguration, Long> getPointConfigurationDao() {
+    public Dao<PointConfiguration, Long> getHockeyPointConfigurationDAO() {
         if (pointConfigurationDao == null) {
             try {
                 pointConfigurationDao = getDao(PointConfiguration.class);
@@ -44,22 +54,56 @@ public class HockeyDBHelper extends SportDBHelper {
         return pointConfigurationDao;
     }
 
+    public Dao<Match, Long> getHockeyMatchDAO() {
+        if (matchDao == null) {
+            try {
+                matchDao = getDao(Match.class);
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        return matchDao;
+    }
+
+    public Dao<ParticipantStat, Long> getHockeyParticipantStatDAO() {
+        if (participantStatDAO == null) {
+            try {
+                participantStatDAO = getDao(ParticipantStat.class);
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        return participantStatDAO;
+    }
+
+    public Dao<PlayerStat, Long> getHockeyPlayerStatDAO() {
+        if (playerStatDAO == null) {
+            try {
+                playerStatDAO = getDao(PlayerStat.class);
+            } catch (SQLException e) {
+                return null;
+            }
+        }
+        return playerStatDAO;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Competition.class);
+            TableUtils.createTable(connectionSource, CompetitionPlayer.class);
             TableUtils.createTable(connectionSource, Tournament.class);
+            TableUtils.createTable(connectionSource, TournamentPlayer.class);
             TableUtils.createTable(connectionSource, PointConfiguration.class);
             TableUtils.createTable(connectionSource, Team.class);
+            TableUtils.createTable(connectionSource, TeamPlayer.class);
+            TableUtils.createTable(connectionSource, Match.class);
+            TableUtils.createTable(connectionSource, Participant.class);
+            TableUtils.createTable(connectionSource, ParticipantStat.class);
+            TableUtils.createTable(connectionSource, PlayerStat.class);
         } catch (SQLException e) {}
 
-        db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_COMPETITION);
-        db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TOURNAMENT);
-        db.execSQL(DBScripts.CREATE_TABLE_MATCHES);
-        db.execSQL(DBScripts.CREATE_TABLE_PARTICIPANTS);
         db.execSQL(DBScripts.CREATE_TABLE_STATS);
-        db.execSQL(DBScripts.CREATE_TABLE_PLAYERS_IN_TEAM);
-        db.execSQL(HockeyDBScripts.CREATE_TABLE_MATCH_SCORE);
 
         /* Create competitions. */
         ArrayList<Competition> competitionArrayList = new ArrayList<>();
@@ -114,55 +158,29 @@ public class HockeyDBHelper extends SportDBHelper {
         }
 
         try {
-            getCompetitionDao().create(competitionArrayList);
-            getTournamentDao().create(tournamentArrayList);
-            getPointConfigurationDao().create(pointConfigurationArrayList);
-            getTeamDao().create(teamArrayList);
+            getCompetitionDAO().create(competitionArrayList);
+            getTournamentDAO().create(tournamentArrayList);
+            getHockeyPointConfigurationDAO().create(pointConfigurationArrayList);
+            getTeamDAO().create(teamArrayList);
         } catch (SQLException e) {}
-
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_1);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_2);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_3);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_4);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_5);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_6);
-        db.execSQL(DBScripts.INSERT_PLAYER_COMPETITION_7);
-
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_1);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_2);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_3);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_4);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_5);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_6);
-        db.execSQL(DBScripts.INSERT_PLAYER_TOURNAMENT_7);
-
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_1);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_2);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_3);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_4);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_5);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_6);
-        db.execSQL(DBScripts.INSERT_PLAYER_TEAMS_7);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Competition.class, true);
+            TableUtils.dropTable(connectionSource, CompetitionPlayer.class, true);
             TableUtils.dropTable(connectionSource, Tournament.class, true);
+            TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
             TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
             TableUtils.dropTable(connectionSource, Team.class, true);
+            TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Match.class, true);
+            TableUtils.dropTable(connectionSource, Participant.class, true);
+            TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
+            TableUtils.dropTable(connectionSource, PlayerStat.class, true);
         } catch (SQLException e) {}
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_COMPETITION);
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TOURNAMENT);
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tMATCHES);
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPARTICIPANTS);
         db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tSTATS);
-        db.execSQL("DROP TABLE IF EXISTS " + DBConstants.tPLAYERS_IN_TEAM);
-        db.execSQL("DROP TABLE IF EXISTS " + HockeyDBConstants.tMATCH_SCORE);
         onCreate(db);
     }
 

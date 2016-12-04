@@ -71,7 +71,7 @@ public class MatchDAO implements IMatchDAO {
         ArrayList<DMatch> matches = new ArrayList<>();
 
         while (c.moveToNext())
-            matches.add(CursorParser.getInstance().parseDMatch(c));
+            matches.add(CursorParser.getInstance().parseMatch(c));
 
         c.close();
         return matches;
@@ -86,7 +86,7 @@ public class MatchDAO implements IMatchDAO {
         DMatch match = null;
 
         if (c.moveToNext())
-            match = CursorParser.getInstance().parseDMatch(c);
+            match = CursorParser.getInstance().parseMatch(c);
 
         c.close();
         return match;

@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tmlibrary.business.generators;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
  */
 public class RoundRobinTeamsRostersGenerator implements ITeamsRostersGenerator {
     @Override
-    public boolean generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats) {
+    public boolean generateRosters(List<Team> teams, Map<Long, Player> players, Map<Long, Double> stats) {
         if (teams.isEmpty())
             return false;
 

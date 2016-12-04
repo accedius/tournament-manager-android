@@ -59,6 +59,7 @@ public class Competition extends ShareBase implements Parcelable {
         this.endDate = endDate;
         this.note = note;
         this.type = type;
+        this.typeId = type.id;
     }
 
     public Competition(long id, String name, Date startDate, Date endDate, String note, CompetitionType type) {
@@ -76,6 +77,7 @@ public class Competition extends ShareBase implements Parcelable {
         name = in.readString();
         note = in.readString();
         type = in.readParcelable(CompetitionType.class.getClassLoader());
+        typeId = type.id;
 
         try {
             String text = in.readString();

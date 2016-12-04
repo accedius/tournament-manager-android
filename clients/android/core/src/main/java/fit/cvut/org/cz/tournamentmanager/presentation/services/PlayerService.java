@@ -70,14 +70,14 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         switch (action){
             case ACTION_CREATE:{
                 Player c = intent.getParcelableExtra(EXTRA_PLAYER);
-                ManagersFactory.playerManager().insert(this, c);
+                ManagersFactory.getInstance().playerManager.insert(this, c);
                 break;
             }
             case ACTION_GET_ALL:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_ALL);
                 ArrayList<Player> players = new ArrayList<>();
-                players.addAll(ManagersFactory.playerManager().getAll(this));
+                players.addAll(ManagersFactory.getInstance().playerManager.getAll(this));
                 result.putExtra(EXTRA_PLAYERS, players);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
@@ -85,14 +85,14 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Player p = ManagersFactory.playerManager().getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                Player p = ManagersFactory.getInstance().playerManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_PLAYER, p);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
                 Player p = intent.getParcelableExtra(EXTRA_PLAYER);
-                ManagersFactory.playerManager().update(this, p);
+                ManagersFactory.getInstance().playerManager.update(this, p);
                 break;
             }
             case ACTION_DELETE: {
@@ -110,7 +110,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 }
 
                 if (deleted)
-                    ManagersFactory.playerManager().delete(this, playerId);
+                    ManagersFactory.getInstance().playerManager.delete(this, playerId);
 
                 result.putExtra(EXTRA_POSITION, position);
                 result.putExtra(EXTRA_RESULT, deleted);

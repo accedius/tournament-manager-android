@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -39,7 +40,7 @@ public class TeamSerializer extends BaseSerializer<Team> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
-        ArrayList<Player> teamPlayers = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, entity.getId());
+        List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(context, entity);
         for (Player p : teamPlayers) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
         }

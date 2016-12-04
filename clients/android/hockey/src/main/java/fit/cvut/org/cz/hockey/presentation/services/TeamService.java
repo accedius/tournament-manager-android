@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -51,8 +52,8 @@ public class TeamService extends AbstractIntentServiceWProgress {
      */
     private void sendTeams(long id) {
         Intent res = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
-        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(this, id);
-        res.putParcelableArrayListExtra(EXTRA_TEAM_LIST, teams);
+        List<Team> teams = ManagerFactory.getInstance(this).teamManager.getByTournamentId(this, id);
+        res.putParcelableArrayListExtra(EXTRA_TEAM_LIST, new ArrayList<>(teams));
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(res);
     }
@@ -64,8 +65,8 @@ public class TeamService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_GET_BY_ID: {
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                Team t = ManagerFactory.getInstance().teamManager.getById(this, id);
-                t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(this, t.getId()));
+                Team t = ManagerFactory.getInstance(this).teamManager.getById(this, id);
+                t.setPlayers(ManagerFactory.getInstance(this).teamManager.getTeamPlayers(this, t));
                 Intent res = new Intent(ACTION_GET_BY_ID);
                 res.putExtra(EXTRA_TEAM, t);
 
@@ -74,13 +75,13 @@ public class TeamService extends AbstractIntentServiceWProgress {
             }
             case ACTION_INSERT: {
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
-                ManagerFactory.getInstance().teamManager.insert(this, t);
+                ManagerFactory.getInstance(this).teamManager.insert(this, t);
                 sendTeams(t.getTournamentId());
                 break;
             }
             case ACTION_EDIT: {
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
-                ManagerFactory.getInstance().teamManager.update(this, t);
+                ManagerFactory.getInstance(this).teamManager.update(this, t);
                 sendTeams(t.getTournamentId());
                 break;
             }
@@ -94,7 +95,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 long teamId = intent.getLongExtra(EXTRA_ID, -1);
                 if (teamId == -1)
                     break;
-                if (ManagerFactory.getInstance().teamManager.delete(this, teamId)) {
+                if (ManagerFactory.getInstance(this).teamManager.delete(this, teamId)) {
                     res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
                     int position = intent.getIntExtra(EXTRA_POSITION, -1);
                     res.putExtra(EXTRA_POSITION, position);

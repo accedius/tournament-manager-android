@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagersFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -61,7 +62,9 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         switch (action){
             case ACTION_GET_PLAYERS_FOR_COMPETITION:{
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().playerManager.getPlayersNotInCompetition(this, intent.getLongExtra(EXTRA_ID, -1)));
+                long competitionId = intent.getLongExtra(EXTRA_ID, -1);
+                List<Player> players = ManagersFactory.getInstance().playerManager.getPlayersNotInCompetition(this, competitionId);
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(players));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -69,7 +72,9 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_PLAYERS_FOR_TOURNAMENT:{
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(EXTRA_PLAYERS, ManagersFactory.getInstance().playerManager.getPlayersNotInTournament(this, intent.getLongExtra(EXTRA_ID, -1)));
+                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
+                List<Player> players = ManagersFactory.getInstance().playerManager.getPlayersNotInTournament(this, tournamentId);
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(players));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -106,7 +111,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 Intent result = new Intent(action);
                 Team t = ManagersFactory.getInstance().teamsManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 t.getPlayers().addAll(ManagersFactory.getInstance().playerManager.getPlayersNotInTeams(this, t.getTournamentId()));
-                result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -153,7 +158,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_PLAYERS_FOR_MATCH:{
                 Intent result = new Intent(action);
                 Team t = ManagersFactory.getInstance().teamsManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
-                result.putParcelableArrayListExtra(EXTRA_PLAYERS, t.getPlayers());
+                result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -185,7 +190,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
                 long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
                 result.putExtra(EXTRA_POSITION, position);
-                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().playerManager.deletePlayerFromTournament(this, playerId, tournamentId));
+                result.putExtra(EXTRA_RESULT, ManagersFactory.getInstance().tournamentManager.removePlayerFromTournament(this, playerId, tournamentId));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

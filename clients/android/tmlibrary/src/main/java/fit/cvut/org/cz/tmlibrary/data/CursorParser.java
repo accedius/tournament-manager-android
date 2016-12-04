@@ -7,13 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 
@@ -159,10 +159,10 @@ public class CursorParser {
         return t;
     }
 
-    public DMatch parseDMatch(Cursor cursor) {
+    public Match parseMatch(Cursor cursor) {
         long id, tournamentId;
         int period, round;
-        String uid, name, note, etag;
+        String uid, note, etag;
         Date date = null;
         Date lastModified = null;
         Date lastSynchronized = null;
@@ -189,7 +189,12 @@ public class CursorParser {
 
         etag = cursor.getString(cursor.getColumnIndex(DBConstants.cETAG));
 
-        return new DMatch(id, tournamentId, period, round, date, note, played, etag, uid, lastModified, lastSynchronized);
+        Match m = new Match(id, tournamentId, null, date, played, note, period, round);
+        m.setEtag(etag);
+        m.setUid(uid);
+        m.setLastModified(lastModified);
+        m.setLastSynchronized(lastSynchronized);
+        return m;
     }
 
     public DParticipant parseDParticipant(Cursor cursor) {

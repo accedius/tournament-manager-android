@@ -1,10 +1,12 @@
 package fit.cvut.org.cz.tmlibrary.business.generators;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.MatchParticipant;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by kevin on 13.4.2016.
@@ -13,8 +15,8 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
  */
 public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
     @Override
-    public ArrayList<ScoredMatch> generateRound(ArrayList<MatchParticipant> participants, int round) {
-        ArrayList<ScoredMatch> matches = new ArrayList<>();
+    public List<Match> generateRound(List<Participant> participants, int round) {
+        ArrayList<Match> matches = new ArrayList<>();
         int periods_number = participants.size() - (participants.size() + 1) % 2;
         int participants_even_number = participants.size() + participants.size() % 2;
         boolean oddness = participants.size() % 2 == 1 ? true : false;
@@ -53,12 +55,17 @@ public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
         return matches;
     }
 
-    private ScoredMatch createMatch(ArrayList<MatchParticipant> participants, int home_idx, int away_idx, int period, int round) {
-        ScoredMatch sm = new ScoredMatch();
+    private Match createMatch(List<Participant> participants, int home_idx, int away_idx, int period, int round) {
+        Match sm = new Match();
         sm.setPeriod(period);
         sm.setRound(round);
-        sm.setHomeParticipantId(participants.get(home_idx).getParticipantId());
-        sm.setAwayParticipantId(participants.get(away_idx).getParticipantId());
+        // Set Match to Participants
+        Participant home = new Participant(participants.get(home_idx));
+        home.setRole(ParticipantType.home.toString());
+        Participant away = new Participant(participants.get(away_idx));
+        away.setRole(ParticipantType.away.toString());
+        sm.addParticipant(home);
+        sm.addParticipant(away);
         return sm;
     }
 

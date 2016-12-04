@@ -2,12 +2,8 @@ package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
 
 /**

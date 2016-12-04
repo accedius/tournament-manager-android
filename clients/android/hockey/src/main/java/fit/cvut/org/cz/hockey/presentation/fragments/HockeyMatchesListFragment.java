@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.HockeyScoredMatch;
+import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.HockeyScoredMatchAdapter;
@@ -27,7 +28,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Fragment for list of matches
  * Created by atgot_000 on 17. 4. 2016.
  */
-public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScoredMatch> {
+public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
     private long tournamentID;
     private static String ARG_ID = "tournament_id";
 
@@ -56,9 +57,9 @@ public class HockeyMatchesListFragment extends AbstractListFragment<HockeyScored
     protected AbstractListAdapter getAdapter() {
         return new HockeyScoredMatchAdapter(getResources()) {
             @Override
-            protected void setOnClickListeners(View v, HockeyScoredMatch match, int position, final String title) {
+            protected void setOnClickListeners(View v, Match match, int position, final String title) {
                 super.setOnClickListeners(v, match, position, title);
-                final long fmId = match.getScoredMatch().getId();
+                final long fmId = match.getId();
 
                 v.setOnClickListener(new View.OnClickListener(){
                     @Override

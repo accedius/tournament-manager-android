@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -102,7 +103,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     public void orderData(final String type) {
         if (adapter == null) return;
 
-        ArrayList<Player> players = adapter.getData();
+        List<Player> players = adapter.getData();
         if (orderColumn.equals(type) && orderType.equals("ASC")) {
             orderType = "DESC";
             Collections.sort(players, new Comparator<Player>() {

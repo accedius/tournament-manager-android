@@ -36,7 +36,7 @@ public class SportsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         Map<String, ApplicationInfo> contexts = PackagesInfo.getSportContexts(getContext(), getResources());
-        List<Setting> ignoredSports = ManagersFactory.settingManager().getAll(getContext());
+        List<Setting> ignoredSports = ManagersFactory.getInstance().settingManager.getAll(getContext());
         for (Setting s : ignoredSports) {
             if (contexts.containsKey(s.getSportName())) {
                 contexts.remove(s.getSportName());

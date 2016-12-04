@@ -8,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.HockeyScoredMatch;
+import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMatch,HockeyScoredMatchAdapter.MatchViewHolder> {
-    protected  Resources res;
+public class HockeyScoredMatchAdapter extends AbstractListAdapter<Match,HockeyScoredMatchAdapter.MatchViewHolder> {
+    protected Resources res;
 
     public HockeyScoredMatchAdapter(Resources res) {
         this.res = res;
     }
 
-    protected void setOnClickListeners(View v, HockeyScoredMatch match, int position, String title){}
+    protected void setOnClickListeners(View v, Match match, int position, String title){}
 
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,17 +27,17 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
 
     @Override
     public void onBindViewHolder(MatchViewHolder holder, int position) {
-        HockeyScoredMatch m = data.get(position);
-        holder.home.setText(m.getScoredMatch().getHomeName());
-        holder.away.setText(m.getScoredMatch().getAwayName());
+        Match m = data.get(position);
+        holder.home.setText(m.getHomeName());
+        holder.away.setText(m.getAwayName());
 
-        if (m.getScoredMatch().isPlayed()) {
-            if (m.getMatchScore().isShootouts()) {
-                holder.score.setText(String.format("%d:%d %s", m.getScoredMatch().getHomeScore(), m.getScoredMatch().getAwayScore(), res.getString(R.string.so)));
-            } else if (m.getMatchScore().isOvertime()) {
-                holder.score.setText(String.format("%d:%d %s", m.getScoredMatch().getHomeScore(), m.getScoredMatch().getAwayScore(), res.getString(R.string.ot)));
+        if (m.isPlayed()) {
+            if (m.isShootouts()) {
+                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.so)));
+            } else if (m.isOvertime()) {
+                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.ot)));
             } else {
-                holder.score.setText(String.format("%d:%d", m.getScoredMatch().getHomeScore(), m.getScoredMatch().getAwayScore()));
+                holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
             }
         } else {
             holder.score.setText(R.string.vs);
@@ -47,15 +47,15 @@ public class HockeyScoredMatchAdapter extends AbstractListAdapter<HockeyScoredMa
             holder.roundSeparator1.setVisibility(View.GONE);
             holder.roundSeparator2.setVisibility(View.GONE);
             holder.periodSeparator.setVisibility(View.GONE);
-            if (data.get(position-1).getScoredMatch().getRound() != m.getScoredMatch().getRound()) {
+            if (data.get(position-1).getRound() != m.getRound()) {
                 holder.roundSeparator1.setVisibility(View.VISIBLE);
                 holder.roundSeparator2.setVisibility(View.VISIBLE);
-            } else if (data.get(position - 1).getScoredMatch().getPeriod() != m.getScoredMatch().getPeriod()) {
+            } else if (data.get(position - 1).getPeriod() != m.getPeriod()) {
                 holder.periodSeparator.setVisibility(View.VISIBLE);
             }
         }
 
-        String title = m.getScoredMatch().getHomeName()+" "+res.getString(R.string.vs)+" "+m.getScoredMatch().getAwayName();
+        String title = m.getHomeName()+" "+res.getString(R.string.vs)+" "+m.getAwayName();
         setOnClickListeners(holder.card, m, position, title);
     }
 

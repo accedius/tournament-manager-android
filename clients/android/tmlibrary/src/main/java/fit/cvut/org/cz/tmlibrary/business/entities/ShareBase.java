@@ -1,10 +1,12 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.j256.ormlite.field.DatabaseField;
 
 import java.util.Date;
+import java.util.UUID;
 
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerToken;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerTokenType;
@@ -14,6 +16,12 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by Vaclav on 2. 4. 2016.
  */
 public abstract class ShareBase implements ISharedEntity, Parcelable {
+    protected ShareBase() {
+        if (uid == null || uid.isEmpty()) {
+            uid = UUID.randomUUID().toString();
+        }
+    }
+
     @DatabaseField(columnName = DBConstants.cUID)
     protected String uid;
 

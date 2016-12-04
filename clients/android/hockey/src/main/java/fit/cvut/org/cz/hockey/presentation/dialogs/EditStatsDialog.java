@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**
@@ -22,9 +23,9 @@ public class EditStatsDialog extends DialogFragment {
     public static final String ARG_HOME = "arg_home";
 
     private TextView goals, assists, plusMinusPoints, saves;
-    private MatchPlayerStatistic stat;
+    private PlayerStat stat;
 
-    public static EditStatsDialog newInstance(MatchPlayerStatistic statistic, int pos, boolean isHome) {
+    public static EditStatsDialog newInstance(PlayerStat statistic, int pos, boolean isHome) {
         EditStatsDialog fragment = new EditStatsDialog();
         Bundle b = new Bundle();
         b.putParcelable(ARG_DATA, statistic);
@@ -60,7 +61,7 @@ public class EditStatsDialog extends DialogFragment {
 
                 stat.setGoals(Integer.parseInt(goals.getText().toString()));
                 stat.setAssists(Integer.parseInt(assists.getText().toString()));
-                stat.setPlusMinusPoints(Integer.parseInt(plusMinusPoints.getText().toString()));
+                stat.setPlusMinus(Integer.parseInt(plusMinusPoints.getText().toString()));
                 stat.setSaves(Integer.parseInt(saves.getText().toString()));
 
                 saveStats();
@@ -83,7 +84,7 @@ public class EditStatsDialog extends DialogFragment {
 
         goals.setText(String.valueOf(stat.getGoals()));
         assists.setText(String.valueOf(stat.getAssists()));
-        plusMinusPoints.setText(String.valueOf(stat.getPlusMinusPoints()));
+        plusMinusPoints.setText(String.valueOf(stat.getPlusMinus()));
         saves.setText(String.valueOf(stat.getSaves()));
 
         builder.setTitle(stat.getName());

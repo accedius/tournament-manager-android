@@ -3,8 +3,10 @@ package fit.cvut.org.cz.hockey.business.serialization;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -39,20 +41,20 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */
-        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, entity.getId());
+        List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, entity.getId());
         for (Player p : players) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
         }
 
         /* Serialize Teams */
-        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(context, entity.getId());
+        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, entity.getId());
         for (Team t : teams) {
             item.subItems.add(TeamSerializer.getInstance(context).serialize(t));
         }
 
         /* Serialize Matches */
-        ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId(context, entity.getId());
-        for (ScoredMatch sm : matches) {
+        List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(context, entity.getId());
+        for (Match sm : matches) {
             item.subItems.add(MatchSerializer.getInstance(context).serialize(sm));
         }
         return item;

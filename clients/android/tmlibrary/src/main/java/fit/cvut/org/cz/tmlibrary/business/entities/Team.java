@@ -8,8 +8,10 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.managers.TeamManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
@@ -26,7 +28,7 @@ public class Team extends ShareBase implements Parcelable {
     @DatabaseField(columnName = DBConstants.cNAME)
     private String name;
 
-    ArrayList<Player> players = new ArrayList<>();
+    List<Player> players = new ArrayList<>();
 
     public Team() {}
 
@@ -116,11 +118,11 @@ public class Team extends ShareBase implements Parcelable {
         this.name = name;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
@@ -130,5 +132,10 @@ public class Team extends ShareBase implements Parcelable {
 
     public String getEntityType() {
         return "Team";
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

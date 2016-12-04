@@ -2,12 +2,13 @@ package fit.cvut.org.cz.hockey.business.interfaces;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.*;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
@@ -20,7 +21,7 @@ public interface IHockeyStatisticsManager {
      * @param context application context
      * @return aggregated statistics for all players in application throughout all competitions
      */
-    ArrayList<AggregatedStatistics> getAllAggregated(Context context);
+    List<AggregatedStatistics> getAllAggregated(Context context);
 
     /**
      *
@@ -36,7 +37,7 @@ public interface IHockeyStatisticsManager {
      * @param compId id of competition
      * @return aggregated statistics for players in competition
      */
-    ArrayList<AggregatedStatistics> getByCompetitionID(Context context, long compId);
+    List<AggregatedStatistics> getByCompetitionID(Context context, long compId);
 
     /**
      *
@@ -44,7 +45,7 @@ public interface IHockeyStatisticsManager {
      * @param tourId id of tournament
      * @return aggregated statistics for players in tournament
      */
-    ArrayList<AggregatedStatistics> getByTournamentID(Context context, long tourId);
+    List<AggregatedStatistics> getByTournamentID(Context context, long tourId);
 
     /**
      *
@@ -52,23 +53,23 @@ public interface IHockeyStatisticsManager {
      * @param tourId id of tournament
      * @return standings of teams participating in tournament. Ordered by point
      */
-    ArrayList<Standing> getStandingsByTournamentId(Context context, long tourId);
+    List<Standing> getStandingsByTournamentId(Context context, long tourId);
 
     /**
      *
      * @param context application context
      * @param id id of match
-     * @return entity MatchScore containing overtime and shootouts
+     * @return entity Match containing overtime and shootouts
      */
-    MatchScore getMatchScoreByMatchId(Context context, long id);
+    Match getMatchScoreByMatchId(Context context, long id);
 
     /**
      * Sets the score of a match and gives all players the correct outcome
      * @param context application context
      * @param id id of match
-     * @param score MatchScore entity containing the score and overtime and shootouts
+     * @param score Match entity containing the score and overtime and shootouts
      */
-    void setMatchScoreByMatchId(Context context, long id, MatchScore score);
+    void setMatchScoreByMatchId(Context context, long id, Match score);
 
     /**
      *
@@ -86,7 +87,7 @@ public interface IHockeyStatisticsManager {
      * @param parType type of participant - Home or Away
      * @param playerIds players to be set as participating
      */
-    void updatePlayersInMatch(Context context, long matchId, ParticipantType parType, ArrayList<Long> playerIds);
+    void updatePlayersInMatch(Context context, long matchId, ParticipantType parType, List<Long> playerIds);
 
     /**
      * Updates statistics of given player in a match

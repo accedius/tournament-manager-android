@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
@@ -95,7 +96,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         String originalText = text.substring(0, text.length()-2);
         col.setText(originalText);
 
-        ArrayList<AggregatedStatistics> stats = adapter.getData();
+        List<AggregatedStatistics> stats = adapter.getData();
         if (orderColumn.equals(stat) && orderType == "DESC") {
             orderType = "ASC";
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {

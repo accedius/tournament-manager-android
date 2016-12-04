@@ -7,7 +7,6 @@ import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
 
 /**
  * Created by Vaclav on 9. 4. 2016.
@@ -25,7 +24,9 @@ public class ScoredMatch extends Match {
         super(id, tournamentId, type, date, played, note, period, round);
     }
 
-    public ScoredMatch(DMatch match) {super(match);}
+    public ScoredMatch(Match match) {
+        super(match.getId(), match.getTournamentId(), match.getType(), match.getDate(), match.isPlayed(), match.getNote(), match.getPeriod(), match.getRound());
+    }
 
     public ScoredMatch(Parcel in) {
         super(in);
