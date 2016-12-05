@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;

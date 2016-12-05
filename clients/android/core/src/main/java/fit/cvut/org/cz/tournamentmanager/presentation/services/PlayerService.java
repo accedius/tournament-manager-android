@@ -9,7 +9,6 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;

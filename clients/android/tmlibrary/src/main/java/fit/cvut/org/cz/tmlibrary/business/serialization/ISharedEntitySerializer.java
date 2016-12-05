@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.serialization;
 
-import android.content.Context;
-
 import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.ISharedEntity;

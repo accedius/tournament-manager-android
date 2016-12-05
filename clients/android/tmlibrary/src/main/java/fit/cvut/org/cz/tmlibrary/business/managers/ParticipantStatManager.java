@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,7 @@ abstract public class ParticipantStatManager extends BaseManager<ParticipantStat
     @Override
     public List<ParticipantStat> getByParticipantId(Context context, long participantId) {
         try {
-            return getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, participantId)
-                    .query();
+            return getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, participantId);
         } catch (SQLException e) {
             return new ArrayList<>();
         }

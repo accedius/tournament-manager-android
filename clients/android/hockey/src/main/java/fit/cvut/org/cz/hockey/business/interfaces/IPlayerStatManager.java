@@ -12,6 +12,13 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.IManager;
  */
 public interface IPlayerStatManager extends IManager<PlayerStat> {
     /**
+     * get all player stats for player
+     * @param context application context
+     * @param playerId id of the player
+     * @return found player stats
+     */
+    List<PlayerStat> getByPlayerId(Context context, long playerId);
+    /**
      * get all player stats for participant
      * @param context application context
      * @param participantId id of the participant

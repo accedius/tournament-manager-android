@@ -2,7 +2,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.listeners;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;

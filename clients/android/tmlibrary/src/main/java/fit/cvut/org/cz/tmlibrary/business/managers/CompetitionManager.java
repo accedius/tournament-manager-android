@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -68,10 +67,8 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
         Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
         List<Player> res = new ArrayList<>();
         try {
-            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cCOMPETITION_ID, competitionId)
-                    .query();
+            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO()
+                    .queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 res.add(allPlayers.get(competitionPlayer.getPlayerId()));
             }
@@ -86,10 +83,8 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     public List<Player> getCompetitionPlayersComplement(Context context, long competitionId) {
         Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
         try {
-            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cCOMPETITION_ID, competitionId)
-                    .query();
+            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO()
+                    .queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allPlayers.remove(competitionPlayer.getPlayerId());
             }
@@ -114,15 +109,15 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     @Override
     public boolean removePlayerFromCompetition(Context context, long playerId, long competitionId) {
         try {
-            List<Tournament> tournaments = sportDBHelper.getTournamentDAO().queryBuilder()
-                    .where().eq(DBConstants.cCOMPETITION_ID, competitionId).query();
+            List<Tournament> tournaments = sportDBHelper.getTournamentDAO()
+                    .queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (Tournament tournament : tournaments) {
                 List<TournamentPlayer> tournamentPlayers;
                 List<Player> players = new ArrayList<>();
                 Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
 
-                tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
-                        .where().eq(DBConstants.cTOURNAMENT_ID, tournament.getId()).query();
+                tournamentPlayers = sportDBHelper.getTournamentPlayerDAO()
+                        .queryForEq(DBConstants.cTOURNAMENT_ID, tournament.getId());
                 for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                     players.add(allPlayers.get(tournamentPlayer.getPlayerId()));
                 }

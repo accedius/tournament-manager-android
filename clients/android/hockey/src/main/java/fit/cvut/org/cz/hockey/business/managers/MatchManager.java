@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -16,16 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.interfaces.IMatchManager;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
@@ -43,6 +40,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         super(corePlayerManager, sportDBHelper);
     }
 
+    @Override
     protected Dao<Match, Long> getDao(Context context) {
         return DatabaseFactory.getDBeHelper(context).getHockeyMatchDAO();
     }
@@ -85,47 +83,50 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public List<Match> getByTournamentId(Context context, long tournamentId) {
-        ArrayList<Match> res = new ArrayList<>();
         try {
-            List<Match> matches = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .query();
-            res.addAll(matches);
+            List<Match> matches = getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             //return fillMatch(context, dm);
-            // TODO load match stats, match participant stats and match players stats
+            for (Match match : matches) {
+                List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, match.getId());
+                match.addParticipants(participants);
 
-            Collections.sort(res, new Comparator<Match>() {
+                for (Participant participant : participants) {
+                    if (ParticipantType.home.toString().equals(participant.getRole()))
+                        match.setHomeScore(ManagerFactory.getInstance(context).participantStatManager.getScoreByParticipantId(context, participant.getId()));
+                    else if (ParticipantType.away.toString().equals(participant.getRole()))
+                        match.setAwayScore(ManagerFactory.getInstance(context).participantStatManager.getScoreByParticipantId(context, participant.getId()));
+                }
+            }
+            // TODO match participant stats and match players stats
+
+            Collections.sort(matches, new Comparator<Match>() {
                 @Override
                 public int compare(Match lhs, Match rhs) {
                     if (lhs.getRound() != rhs.getRound()) return lhs.getRound() - rhs.getRound();
                     return lhs.getPeriod() - rhs.getPeriod();
                 }
             });
-            return res;
+            return matches;
         } catch (SQLException e) {
-            return res;
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
+    @Override
     public Match getById(Context context, long id) {
         Match match = super.getById(context, id);
         //return fillMatch(context, dm);
         // TODO load match stats, match participant stats and match players stats
-        try {
-            List<Participant> participants = sportDBHelper.getParticipantDAO().queryBuilder()
-                    .where().eq(DBConstants.cMATCH_ID, id).query();
-            for (Participant participant : participants) {
-                match.addParticipant(participant);
-                if (ParticipantType.home.toString().equals(participant.getRole()))
-                    match.setHomeName(participant.getName());
-                else if (ParticipantType.away.toString().equals(participant.getRole()))
-                    match.setAwayName(participant.getName());
-            }
-            return match;
-        } catch (SQLException e) {
-            return null;
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
+        for (Participant participant : participants) {
+            match.addParticipant(participant);
+            if (ParticipantType.home.toString().equals(participant.getRole()))
+                match.setHomeName(participant.getName());
+            else if (ParticipantType.away.toString().equals(participant.getRole()))
+                match.setAwayName(participant.getName());
         }
+        return match;
     }
 
     @Override
@@ -137,34 +138,15 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     public void beginMatch(Context context, long matchId) {
         Match match = getById(context, matchId);
         if (!(match.isPlayed())) {
-            try {
-                Tournament tour = sportDBHelper.getTournamentDAO().queryForId(match.getTournamentId());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            /*ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-            for (DParticipant dp : participants) {
-                for (StatsEnum statEn : StatsEnum.values()) {
-                    if (statEn.isForPlayer()) continue;
-                    DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), match.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
-                    DAOFactory.getInstance().statDAO.insert(context, statToAdd);
-                }
-            }*/
             match.setPlayed(true);
             match.setLastModified(new Date());
             update(context, match);
-
-            /*DMatchStat matchStat = new DMatchStat(matchId, false, false);
-            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(context, matchStat);*/
         }
     }
 
+    @Override
     public void generateRound(Context context, long tournamentId) {
-        List<Team> teamsInTournament = null;
-        try {
-            teamsInTournament = sportDBHelper.getTeamDAO().queryBuilder()
-                    .where().eq(DBConstants.cTOURNAMENT_ID, tournamentId).query();
-        } catch (SQLException e) { return; }
+        List<Team> teamsInTournament = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
 
         Map<Long, Team> teamMap = new HashMap<>();
         ArrayList<fit.cvut.org.cz.tmlibrary.business.entities.Participant> partsForGenerator = new ArrayList<>();
@@ -194,28 +176,25 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setTournamentId(tournamentId);
             Match hockeyMatch = new Match(match);
             insert(context, hockeyMatch);
-            Collection<fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat> playerStats = new ArrayList<>();
-            for (fit.cvut.org.cz.tmlibrary.business.entities.Participant participant : match.getParticipants()) {
-                for (Player player : teamMap.get(participant.getParticipantId()).getPlayers()) {
-                    playerStats.add(new fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat(participant.getId(), player.getId()));
-                }
-            }
+            Collection<PlayerStat> playerStats = new ArrayList<>();
+            for (fit.cvut.org.cz.tmlibrary.business.entities.Participant participant : match.getParticipants())
+                for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
+                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
 
-            try {
-                sportDBHelper.getPlayerStatDAO().create(playerStats);
-            } catch (SQLException e) {}
+            for (PlayerStat playerStat : playerStats)
+                ManagerFactory.getInstance(context).playerStatManager.insert(context, playerStat);
         }
     }
 
+    @Override
     public void resetMatch(Context context, long matchId) {
         Match match = getById(context, matchId);
-        if (!match.isPlayed()) return;
+        if (!match.isPlayed())
+            return;
 
-        List<Participant> participants = null;
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, matchId);
+
         try {
-            participants = sportDBHelper.getParticipantDAO().queryBuilder()
-                    .where().eq(DBConstants.cMATCH_ID, matchId).query();
-
             // Remove Participant and Player Stats
             for (Participant participant : participants) {
                 DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
@@ -226,40 +205,32 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 playerStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 playerStatBuilder.delete();
             }
-
-            match.setPlayed(false);
-            match.setOvertime(false);
-            match.setShootouts(false);
-            update(context, match);
         } catch (SQLException e) {}
+
+        match.setPlayed(false);
+        match.setOvertime(false);
+        match.setShootouts(false);
+        update(context, match);
     }
 
+    @Override
     public void insert(Context context, Match match) {
-        // TODO check if id is filled
-        try {
-            match.setLastModified(new Date());
-            getDao(context).create(match);
-        } catch (SQLException e) {}
+        // TODO check if id is filled ?
+        match.setLastModified(new Date());
+        super.insert(context, match);
 
         for (Participant participant : match.getParticipants()) {
             participant.setMatchId(match.getId());
         }
 
-        try {
-            sportDBHelper.getParticipantDAO().create(match.getParticipants());
-        } catch (SQLException e) {}
+        for (Participant participant : match.getParticipants())
+            ManagerFactory.getInstance(context).participantManager.insert(context, participant);
     }
 
-    public void update(Context context, Match match) {
-        try {
-            getDao(context).update(match);
-        } catch (SQLException e) {}
-    }
-
+    @Override
     public boolean delete(Context context, long id) {
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
         try {
-            List<Participant> participants = sportDBHelper.getParticipantDAO().queryBuilder()
-                    .where().eq(DBConstants.cMATCH_ID, id).query();
             for (Participant participant : participants) {
                 DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
@@ -272,12 +243,12 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             DeleteBuilder<Participant, Long> participantBuilder = sportDBHelper.getParticipantDAO().deleteBuilder();
             participantBuilder.where().eq(DBConstants.cMATCH_ID, id);
             participantBuilder.delete();
-
-            sportDBHelper.getMatchDAO().deleteById(id);
-            return true;
         } catch (SQLException e) {
-            Log.d("MATCH_DELETE", e.getMessage());
+            e.printStackTrace();
             return false;
         }
+
+        super.delete(context, id);
+        return true;
     }
 }

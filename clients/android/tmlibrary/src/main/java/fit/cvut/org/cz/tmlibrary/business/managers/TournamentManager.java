@@ -7,10 +7,12 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -88,16 +90,22 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
     @Override
     public List<Player> getTournamentPlayersComplement(Context context, long tournamentId) {
         Tournament tournament = getById(context, tournamentId);
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
         try {
+            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryBuilder()
+                    .where().eq(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId()).query();
+            Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+            Map<Long, Player> allCompetitionPlayers = new HashMap<>();
+            for (CompetitionPlayer competitionPlayer : competitionPlayers) {
+                allCompetitionPlayers.put(competitionPlayer.getPlayerId(), allPlayers.get(competitionPlayer.getPlayerId()));
+            }
             List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
                     .where()
                     .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
                     .query();
             for (TournamentPlayer competitionPlayer : tournamentPlayers) {
-                allPlayers.remove(competitionPlayer.getPlayerId());
+                allCompetitionPlayers.remove(competitionPlayer.getPlayerId());
             }
-            return new ArrayList<>(allPlayers.values());
+            return new ArrayList<>(allCompetitionPlayers.values());
         }
         catch (SQLException e) {
             return new ArrayList<>();
@@ -126,6 +134,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
         try {
             Tournament tournament = sportDBHelper.getTournamentDAO().queryForId(tournamentId);
             Competition competition = sportDBHelper.getCompetitionDAO().queryForId(tournament.getCompetitionId());
+            competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
 
             if (CompetitionTypes.teams().equals(competition.getType())) {
                 // Check if some team contains player

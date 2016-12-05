@@ -34,7 +34,7 @@ abstract public class CoreBaseManager<T extends IEntity> implements IManager<T> 
     @Override
     public boolean delete(Context context, long id) {
         try {
-            getDao(context).delete(getDao(context).queryForId(id));
+            getDao(context).deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;

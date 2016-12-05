@@ -1,15 +1,15 @@
 package fit.cvut.org.cz.hockey.data;
 
 import android.content.Context;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
@@ -31,7 +31,7 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class HockeyDBHelper extends SportDBHelper {
-    private static final int DBVersion = 2;
+    private static final int DBVersion = 1;
     private String DBName;
     private Dao<PointConfiguration, Long> pointConfigurationDao;
     private Dao<Match, Long> matchDao;

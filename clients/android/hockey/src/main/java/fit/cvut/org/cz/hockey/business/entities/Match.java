@@ -9,8 +9,10 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by atgot_000 on 20. 4. 2016.
@@ -121,5 +123,21 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
 
     public void setAwayScore(int awayScore) {
         this.awayScore = awayScore;
+    }
+
+    public long getHomeParticipantId() {
+        for (Participant participant : participants) {
+            if (ParticipantType.home.toString().equals(participant.getRole()))
+                return participant.getParticipantId();
+        }
+        return -1;
+    }
+
+    public long getAwayParticipantId() {
+        for (Participant participant : participants) {
+            if (ParticipantType.away.toString().equals(participant.getRole()))
+                return participant.getParticipantId();
+        }
+        return -1;
     }
 }

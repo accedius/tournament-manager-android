@@ -2,7 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;

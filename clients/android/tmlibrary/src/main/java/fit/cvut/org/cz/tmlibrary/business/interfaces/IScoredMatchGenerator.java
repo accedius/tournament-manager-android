@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;

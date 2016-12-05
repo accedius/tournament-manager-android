@@ -148,6 +148,10 @@ public class Match extends ShareBase {
         participants.add(participant);
     }
 
+    public void addParticipants(List<Participant> participants) {
+        this.participants.addAll(participants);
+    }
+
     public List<Participant> getParticipants() {
         return participants;
     }

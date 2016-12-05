@@ -3,15 +3,16 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
@@ -32,34 +33,39 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     }
 
     @Override
-    public ArrayList<PlayerStat> getByParticipantId(Context context, long participantId) {
-        ArrayList<PlayerStat> res = new ArrayList<>();
+    public List<PlayerStat> getByPlayerId(Context context, long playerId) {
         try {
-            List<PlayerStat> playerStats = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cPARTICIPANT_ID, participantId)
-                    .query();
+            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, playerId);
             Map<Long, Player> playerMap = corePlayerManager.getAllPlayers(context);
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
             }
-            res.addAll(playerStats);
-            return res;
+            return playerStats;
         } catch (SQLException e) {
-            return res;
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<PlayerStat> getByParticipantId(Context context, long participantId) {
+        try {
+            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            Map<Long, Player> playerMap = corePlayerManager.getAllPlayers(context);
+            for (PlayerStat playerStat : playerStats) {
+                playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
+            }
+            return playerStats;
+        } catch (SQLException e) {
+            return new ArrayList<>();
         }
     }
 
     @Override
     public void deleteByParticipantId(Context context, long participantId) {
         try {
-            List<PlayerStat> playerStats = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cPARTICIPANT_ID, participantId)
-                    .query();
-            for (PlayerStat playerStat : playerStats) {
-                delete(context, playerStat.getId());
-            }
+            DeleteBuilder<PlayerStat, Long> deleteBuilder = getDao(context).deleteBuilder();
+            deleteBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participantId);
+            deleteBuilder.delete();
         } catch (SQLException e) {}
     }
 }

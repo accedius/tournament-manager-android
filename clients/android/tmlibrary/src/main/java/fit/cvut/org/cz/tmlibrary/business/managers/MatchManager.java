@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,7 @@ abstract public class MatchManager extends BaseManager<Match> implements IMatchM
     @Override
     public List<Match> getByTournamentId(Context context, long tournamentId) {
         try {
-            return getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .query();
+            return getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
         } catch (SQLException e) {
             return new ArrayList<>();
         }

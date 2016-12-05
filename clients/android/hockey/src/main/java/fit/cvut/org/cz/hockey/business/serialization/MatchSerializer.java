@@ -6,11 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
-import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
@@ -80,14 +76,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("score_away", Integer.toString(entity.getAwayScore()));
         */
 
-        Match ms = ManagerFactory.getInstance(context).statisticsManager.getMatchScoreByMatchId(context, entity.getId());
-        if (ms != null) {
-            hm.put("overtime", Boolean.toString(ms.isOvertime()));
-            hm.put("shootouts", Boolean.toString(ms.isShootouts()));
-        } else {
-            hm.put("overtime", Boolean.toString(false));
-            hm.put("shootouts", Boolean.toString(false));
-        }
+        hm.put("overtime", Boolean.toString(entity.isOvertime()));
+        hm.put("shootouts", Boolean.toString(entity.isShootouts()));
 
         /* Serialize rosters and stats */
         int homePlayerId=0;

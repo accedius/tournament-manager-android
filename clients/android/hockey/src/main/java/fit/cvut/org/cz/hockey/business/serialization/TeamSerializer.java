@@ -2,7 +2,6 @@ package fit.cvut.org.cz.hockey.business.serialization;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

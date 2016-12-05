@@ -1,21 +1,5 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
-import android.content.ContentValues;
-import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.data.DAOFactory;
-import fit.cvut.org.cz.hockey.data.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
-
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */

@@ -5,8 +5,6 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
 
 /**

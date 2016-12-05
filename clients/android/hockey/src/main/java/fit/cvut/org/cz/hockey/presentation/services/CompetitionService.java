@@ -6,7 +6,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;

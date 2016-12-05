@@ -114,4 +114,12 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PlayerStat)
+            return id == ((PlayerStat)o).getId();
+
+        return super.equals(o);
+    }
 }

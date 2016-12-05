@@ -43,20 +43,34 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interface
     public IPlayerStatManager playerStatManager;
     public IMatchManager matchManager;
 
+    public static ManagerFactory getInstanceForceContext(Context context, String sportContext) {
+        ManagerFactory factory = new ManagerFactory(context, sportContext);
+        factory.setManagers();
+        return factory;
+    }
+
     public static ManagerFactory getInstance(Context context) {
         if (instance == null) {
             instance = new ManagerFactory(context);
-            instance.competitionManager = new CompetitionManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.tournamentManager = new TournamentManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.teamManager = new TeamManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.matchManager = new MatchManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.participantManager = new ParticipantManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.participantStatManager = new ParticipantStatManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.statisticsManager = new StatisticsManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.pointConfigManager = new PointConfigurationManager(instance.corePlayerManager, instance.sportDBHelper);
-            instance.playerStatManager = new PlayerStatManager(instance.corePlayerManager, instance.sportDBHelper);
+            instance.setManagers();
         }
         return instance;
+    }
+
+    private void setManagers() {
+        competitionManager = new CompetitionManager(corePlayerManager, sportDBHelper);
+        tournamentManager = new TournamentManager(corePlayerManager, sportDBHelper);
+        teamManager = new TeamManager(corePlayerManager, sportDBHelper);
+        matchManager = new MatchManager(corePlayerManager, sportDBHelper);
+        participantManager = new ParticipantManager(corePlayerManager, sportDBHelper);
+        participantStatManager = new ParticipantStatManager(corePlayerManager, sportDBHelper);
+        statisticsManager = new StatisticsManager(corePlayerManager, sportDBHelper);
+        pointConfigManager = new PointConfigurationManager(corePlayerManager, sportDBHelper);
+        playerStatManager = new PlayerStatManager(corePlayerManager, sportDBHelper);
+    }
+
+    private ManagerFactory(Context context, String name) {
+        sportDBHelper = new HockeyDBHelper(context, name);
     }
 
     private ManagerFactory(Context context) {

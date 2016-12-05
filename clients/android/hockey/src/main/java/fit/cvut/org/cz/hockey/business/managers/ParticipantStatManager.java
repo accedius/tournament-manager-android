@@ -32,10 +32,7 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     @Override
     public List<ParticipantStat> getByParticipantId(Context context, long participantId) {
         try {
-            List<ParticipantStat> stats = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cPARTICIPANT_ID, participantId)
-                    .query();
+            List<ParticipantStat> stats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
             return new ArrayList<>(stats);
         } catch (SQLException e) {
             return new ArrayList<>();
@@ -45,10 +42,7 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     @Override
     public int getScoreByParticipantId(Context context, long participantId) {
         try {
-            List<ParticipantStat> stats = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cPARTICIPANT_ID, participantId)
-                    .query();
+            List<ParticipantStat> stats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
             if (stats.isEmpty())
                 return 0;
             return stats.get(0).getScore();

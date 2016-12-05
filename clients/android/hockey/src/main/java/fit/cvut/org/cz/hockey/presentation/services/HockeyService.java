@@ -18,7 +18,6 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
@@ -27,14 +26,12 @@ import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
 import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
@@ -50,6 +47,7 @@ import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
 import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -70,13 +68,13 @@ public class HockeyService extends AbstractIntentServiceWProgress {
     protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
-        String sport_context = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
-        ((HockeyPackage) getApplicationContext()).setSportContext(sport_context);
+        String sportContext = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        ((HockeyPackage) getApplicationContext()).setSportContext(sportContext);
 
         switch (action) {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerID(this, id);
+                AggregatedStatistics ags = ManagerFactory.getInstanceForceContext(this, sportContext).statisticsManager.getByPlayerId(this, id);
                 AggregatedStats statsToSend = new AggregatedStats();
 
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -96,10 +94,11 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
                 statsToSend.addPlayerStats(as);
 
-                Intent res = new Intent(sport_context + package_name + action);
+                Intent res = new Intent(sportContext + package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 sendBroadcast(res);
+                Log.d("STATS", "Return for "+id+" for "+sportContext);
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
@@ -116,10 +115,10 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Competition c = ManagerFactory.getInstance(this).competitionManager.getById(this, compId);
-                c.setSportContext(sport_context);
+                c.setSportContext(sportContext);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
@@ -194,7 +193,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 Intent res = new Intent(package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 res.putExtra(ImportActivity.COMPETITION, competitionInfo);

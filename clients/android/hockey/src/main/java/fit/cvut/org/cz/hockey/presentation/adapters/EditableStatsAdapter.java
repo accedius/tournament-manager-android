@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 

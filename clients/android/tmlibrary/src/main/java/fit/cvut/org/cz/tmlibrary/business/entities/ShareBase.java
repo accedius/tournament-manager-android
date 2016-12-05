@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.j256.ormlite.field.DatabaseField;
 

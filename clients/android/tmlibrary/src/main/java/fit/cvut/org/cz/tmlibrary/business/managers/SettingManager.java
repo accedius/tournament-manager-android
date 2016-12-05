@@ -23,12 +23,9 @@ abstract public class SettingManager extends CoreBaseManager<Setting> implements
     @Override
     public Setting getByPackageSport(Context context, String packageName, String sportName) {
         try {
-            List<Setting> settings = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cSPORT_NAME, sportName)
-                    .and()
-                    .eq(DBConstants.cPACKAGE_NAME, packageName)
-                    .query();
+            List<Setting> settings = getDao(context).queryBuilder().where()
+                    .eq(DBConstants.cSPORT_NAME, sportName).and()
+                    .eq(DBConstants.cPACKAGE_NAME, packageName).query();
             if (settings.isEmpty())
                 return null;
             return settings.get(0);

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager;
@@ -42,10 +42,7 @@ public class ParticipantManager extends BaseManager<Participant> implements IPar
     @Override
     public List<Participant> getByMatchId(Context context, long matchId) {
         try {
-            List<Participant> participants = getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cMATCH_ID, matchId)
-                    .query();
+            List<Participant> participants = getDao(context).queryForEq(DBConstants.cMATCH_ID, matchId);
             for (Participant participant : participants) {
                 Team team = ManagerFactory.getInstance(context).teamManager.getById(context, participant.getParticipantId());
                 participant.setName(team.getName());

@@ -2,9 +2,7 @@ package fit.cvut.org.cz.hockey.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +10,9 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -67,7 +61,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByCompetitionID(this, compID);
+                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByCompetitionId(this, compID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -79,7 +73,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_TOUR_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByTournamentID(this, tourID);
+                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByTournamentId(this, tourID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);

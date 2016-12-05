@@ -86,13 +86,13 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             fit.cvut.org.cz.tmlibrary.business.entities.Match match = ((NewHockeyMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
-            Match scoredMatch = new Match(match);
-            if (scoredMatch == null) {
+            Match hockeyMatch = new Match(match);
+            if (hockeyMatch == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
-            if (scoredMatch.getId() == -1) {
-                List<Participant> participants = scoredMatch.getParticipants();
+            if (hockeyMatch.getId() == -1) {
+                List<Participant> participants = hockeyMatch.getParticipants();
                 if (participants.get(0).getParticipantId() == participants.get(1).getParticipantId()) {
                     Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
                     return super.onOptionsItemSelected(item);
@@ -100,14 +100,14 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
             }
 
             Intent intent;
-            if (scoredMatch.getId() == -1) {
+            if (hockeyMatch.getId() == -1) {
                 intent = MatchService.newStartIntent(MatchService.ACTION_CREATE, this);
                 intent.setAction(MatchService.ACTION_CREATE);
             } else {
                 intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE, this);
                 intent.setAction(MatchService.ACTION_UPDATE);
             }
-            intent.putExtra(MatchService.EXTRA_MATCH, scoredMatch);
+            intent.putExtra(MatchService.EXTRA_MATCH, hockeyMatch);
 
             startService(intent);
             finish();

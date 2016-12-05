@@ -60,10 +60,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
     public boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
         List<Player> players = getTournamentPlayers(context, tournamentId);
         List<Team> teams = getByTournamentId(context, tournamentId);
-        //List<AggregatedStatistics> stats = getFactory(context).statisticsManager.getByCompetitionID(context, competitionId);
-        // TODO how to call statistic manager? :\
-        // put StatisticManager as a parameter of function ?
-        List<AggregatedStatistics> stats = new ArrayList<>();
+        List<AggregatedStatistics> stats = ManagerFactory.getInstance(context).statisticsManager.getByCompetitionId(context, competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
