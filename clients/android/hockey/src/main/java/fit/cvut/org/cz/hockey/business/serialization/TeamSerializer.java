@@ -56,15 +56,15 @@ public class TeamSerializer extends BaseSerializer<Team> {
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(Team entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Team entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         hm.put("name", entity.getName());
         return hm;
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, Team entity) {
-        entity.setName(syncData.get("name"));
+    public void deserializeSyncData(HashMap<String, Object> syncData, Team entity) {
+        entity.setName(String.valueOf(syncData.get("name")));
     }
 
     @Override

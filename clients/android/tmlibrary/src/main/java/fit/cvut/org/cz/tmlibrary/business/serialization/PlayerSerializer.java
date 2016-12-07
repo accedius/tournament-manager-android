@@ -43,8 +43,8 @@ public class PlayerSerializer extends BaseSerializer<Player> {
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(Player entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Player entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         hm.put("name", entity.getName());
         hm.put("email", entity.getEmail());
         hm.put("note", entity.getNote());
@@ -52,10 +52,10 @@ public class PlayerSerializer extends BaseSerializer<Player> {
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, Player entity) {
-        entity.setName(syncData.get("name"));
-        entity.setEmail(syncData.get("email"));
-        entity.setNote(syncData.get("note"));
+    public void deserializeSyncData(HashMap<String, Object> syncData, Player entity) {
+        entity.setName(String.valueOf(syncData.get("name")));
+        entity.setEmail(String.valueOf(syncData.get("email")));
+        entity.setNote(String.valueOf(syncData.get("note")));
     }
 
     @Override

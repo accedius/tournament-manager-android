@@ -38,6 +38,8 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
+        /* Serialize Point Configuration */
+
         /* Serialize Players */
         List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, entity.getId());
         for (Player p : players) {

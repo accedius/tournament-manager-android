@@ -1,17 +1,23 @@
 package fit.cvut.org.cz.hockey.business.serialization;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -31,7 +37,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
     }
 
     @Override
-    public ServerCommunicationItem serialize(fit.cvut.org.cz.hockey.business.entities.Match entity) {
+    public ServerCommunicationItem serialize(Match entity) {
         /* Serialize Match itself */
         ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
@@ -39,11 +45,10 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Teams */
-        // TODO serialize participants - teams
-        /*Team home = ManagerFactory.getInstance().teamManager.getById(context, entity.getHomeParticipantId());
+        Team home = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getHomeParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-        Team away = ManagerFactory.getInstance().teamManager.getById(context, entity.getAwayParticipantId());
-        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));*/
+        Team away = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getAwayParticipantId());
+        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         return item;
     }
 
@@ -58,8 +63,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(Match entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Match entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         if (entity.getDate() == null) {
             hm.put("date", null);
         } else {
@@ -70,11 +75,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("period", Integer.toString(entity.getPeriod()));
         hm.put("round", Integer.toString(entity.getRound()));
 
-        /*
-        TODO set score
         hm.put("score_home", Integer.toString(entity.getHomeScore()));
         hm.put("score_away", Integer.toString(entity.getAwayScore()));
-        */
 
         hm.put("overtime", Boolean.toString(entity.isOvertime()));
         hm.put("shootouts", Boolean.toString(entity.isShootouts()));
@@ -82,45 +84,30 @@ public class MatchSerializer extends BaseSerializer<Match> {
         /* Serialize rosters and stats */
         int homePlayerId=0;
         // TODO get home players
-        /*
-        for (Long playerId : entity.getHomeIds()) {
-            MatchPlayerStatistic stat = ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch(context, playerId, entity.getId());
-            Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, stat.getPlayerId());
-            homePlayerId++;
-            hm.put("player_home_"+homePlayerId, strategy.getUid(p));
-            hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
-            hm.put("stat_assists_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
-            hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
-            hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
-        }
-        hm.put("players_home", Integer.toString(homePlayerId));
 
-        int awayPlayerId=0;
-        for (Long playerId : entity.getAwayIds()) {
-            MatchPlayerStatistic stat = ManagerFactory.getInstance().statisticsManager.getPlayerStatsInMatch(context, playerId, entity.getId());
-            Player p = ManagerFactory.getInstance().packagePlayerManager.getPlayerById(context, stat.getPlayerId());
-            awayPlayerId++;
-            hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
-            hm.put("stat_goals_"+strategy.getUid(p), Integer.toString(stat.getGoals()));
-            hm.put("stat_assists_"+strategy.getUid(p), Integer.toString(stat.getAssists()));
-            hm.put("stat_saves_"+strategy.getUid(p), Integer.toString(stat.getSaves()));
-            hm.put("stat_plus_minus_points_"+strategy.getUid(p), Integer.toString(stat.getPlusMinusPoints()));
+        for (Participant participant : entity.getParticipants()) {
+            if (ParticipantType.home.toString().equals(participant.getRole())) {
+                hm.put("players_home", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, participant.getId()));
+            } else if (ParticipantType.away.toString().equals(participant.getRole())) {
+                hm.put("players_away", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, participant.getId()));
+            }
         }
-        hm.put("players_away", Integer.toString(awayPlayerId));
-        */
         return hm;
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, fit.cvut.org.cz.hockey.business.entities.Match entity) {
+    public void deserializeSyncData(HashMap<String, Object> syncData, fit.cvut.org.cz.hockey.business.entities.Match entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         try {
-            entity.setDate(dateFormat.parse(syncData.get("date")));
+            entity.setDate(dateFormat.parse(String.valueOf(syncData.get("date"))));
         } catch (ParseException e) {} catch (NullPointerException e) {}
-        entity.setPlayed(Boolean.parseBoolean(syncData.get("played")));
-        entity.setNote(syncData.get("note"));
-        entity.setPeriod(Integer.parseInt(syncData.get("period")));
-        entity.setRound(Integer.parseInt(syncData.get("round")));
+        entity.setPlayed(Boolean.parseBoolean(String.valueOf(syncData.get("played"))));
+        entity.setNote(String.valueOf(syncData.get("note")));
+        entity.setPeriod(Integer.parseInt(String.valueOf(syncData.get("period"))));
+        entity.setRound(Integer.parseInt(String.valueOf(syncData.get("round"))));
+
+        // TODO overtime
+        // TODO shootouts
     }
 
     @Override

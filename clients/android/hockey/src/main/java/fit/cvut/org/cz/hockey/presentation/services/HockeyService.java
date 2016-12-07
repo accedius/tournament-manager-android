@@ -30,6 +30,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -354,25 +355,25 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             /* END match manager "begin match" */
 
                             /* START statistics manager - set match score by match id */
-                            int homeScore = Integer.parseInt(match.syncData.get("score_home"));
-                            int awayScore = Integer.parseInt(match.syncData.get("score_away"));
-                            boolean overtime = Boolean.parseBoolean(match.syncData.get("overtime"));
-                            boolean shootouts = Boolean.parseBoolean(match.syncData.get("shootouts"));
+                            int homeScore = Integer.parseInt(String.valueOf(match.syncData.get("score_home")));
+                            int awayScore = Integer.parseInt(String.valueOf(match.syncData.get("score_away")));
+                            boolean overtime = Boolean.parseBoolean(String.valueOf(match.syncData.get("overtime")));
+                            boolean shootouts = Boolean.parseBoolean(String.valueOf(match.syncData.get("shootouts")));
 //                            Match score = new Match(matchId, homeScore, awayScore, shootouts, overtime);
 //                            ManagerFactory.getInstance(this).statisticsManager.setMatchScoreByMatchId(this, matchId, score);
                             /* END statistics manager - set match score by match id */
 
                             /* START statistics manager - update players in match */
-                            ManagerFactory.getInstance(this).statisticsManager.updatePlayersInMatch(
+                            /*ManagerFactory.getInstance(this).statisticsManager.updatePlayersInMatch(
                                     this, matchId, ParticipantType.home,
                                     getPlayerIds(match, "home", importedPlayers));
                             ManagerFactory.getInstance(this).statisticsManager.updatePlayersInMatch(
                                     this, matchId, ParticipantType.away,
-                                    getPlayerIds(match, "away", importedPlayers));
+                                    getPlayerIds(match, "away", importedPlayers));*/
                             /* END statistics manager - update players in match */
 
                             /* START statistics manager - update player stats in match */
-                            updatePlayersMatchStats(match, matchId, importedPlayers);
+                            //updatePlayersMatchStats(match, matchId, importedPlayers);
                             /* END statistics manager - update player stats in match */
                         }
                     }
@@ -388,7 +389,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         }
     }
 
-    private ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
+    /*private ArrayList<Long> getPlayerIds(ServerCommunicationItem match, String role, HashMap<String, Player> players) {
         ArrayList<Long> playerIds = new ArrayList<>();
         int playersCnt = Integer.parseInt(match.syncData.get("players_"+role));
         for (int i=1; i<=playersCnt; i++) {
@@ -424,5 +425,5 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
             ManagerFactory.getInstance(this).statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
         }
-    }
+    }*/
 }
