@@ -136,6 +136,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
 
     @Override
     public String getEntityType() {
-        return "ScoredMatch";
+        return "Match";
     }
 }

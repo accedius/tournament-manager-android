@@ -156,7 +156,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             tournamentPlayers.add(subItem);
                         } else if (subItem.getType().equals("Team")) {
                             tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("ScoredMatch")) {
+                        } else if (subItem.getType().equals("Match")) {
                             tournamentMatches.add(subItem);
                         }
                     }
@@ -285,7 +285,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             tournamentPlayers.add(subItem);
                         } else if (subItem.getType().equals("Team")) {
                             tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("ScoredMatch")) {
+                        } else if (subItem.getType().equals("Match")) {
                             tournamentMatches.add(subItem);
                         }
                     }

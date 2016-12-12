@@ -5,7 +5,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
  *
  * Class serves to generate all-play-all matches
  */
-public class RoundRobinScoredMatchGenerator implements IScoredMatchGenerator {
+public class RoundRobinMatchGenerator implements IMatchGenerator {
     @Override
     public List<Match> generateRound(List<Participant> participants, int round) {
         ArrayList<Match> matches = new ArrayList<>();

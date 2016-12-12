@@ -23,9 +23,9 @@ import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -45,42 +45,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     protected Dao<Match, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getHockeyMatchDAO();
     }
-
-    /*private ScoredMatch fillMatch (Match dm) {
-        ScoredMatch match = new ScoredMatch(dm);
-        IPackagePlayerManager packagePlayerManager = new PackagePlayerManager();
-
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(dm.getId());
-
-        for (DParticipant dp : participants) {
-            ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(dp.getId());
-            int teamGoals = 0;
-            for (DStat stat : partStats) {
-                if (StatsEnum.valueOf(stat.getStatsEnumId()) == StatsEnum.team_goals) {
-                    teamGoals = Integer.parseInt(stat.getValue());
-                }
-            }
-
-            if (dp.getRole().equals(ParticipantType.home.toString())) {
-                match.setHomeParticipantId(dp.getTeamId());
-                Team dt = new TeamManager(packagePlayerManager).getById(dp.getTeamId());
-                match.setHomeName(dt.getName());
-                ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(dp.getId());
-                match.setHomeIds(playerIds);
-                match.setHomeScore(teamGoals);
-            }
-            if (dp.getRole().equals(ParticipantType.away.toString())) {
-                match.setAwayParticipantId(dp.getTeamId());
-                Team dt = new TeamManager(packagePlayerManager).getById(dp.getTeamId());
-                match.setAwayName(dt.getName());
-                ArrayList<Long> playerIds = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(dp.getId());
-                match.setAwayIds(playerIds);
-                match.setAwayScore(teamGoals);
-            }
-        }
-
-        return match;
-    }*/
 
     @Override
     public List<Match> getByTournamentId(long tournamentId) {
@@ -159,7 +123,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 lastRound = match.getRound();
         }
 
-        IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
+        IMatchGenerator generator = new RoundRobinMatchGenerator();
         List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
         for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {

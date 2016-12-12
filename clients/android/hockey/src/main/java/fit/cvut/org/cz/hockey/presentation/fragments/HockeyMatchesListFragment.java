@@ -16,7 +16,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
-import fit.cvut.org.cz.hockey.presentation.adapters.HockeyScoredMatchAdapter;
+import fit.cvut.org.cz.hockey.presentation.adapters.HockeyMatchAdapter;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -54,7 +54,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new HockeyScoredMatchAdapter(getResources()) {
+        return new HockeyMatchAdapter(getResources()) {
             @Override
             protected void setOnClickListeners(View v, Match match, int position, final String title) {
                 super.setOnClickListeners(v, match, position, title);

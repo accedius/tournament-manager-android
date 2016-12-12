@@ -29,9 +29,9 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -139,7 +139,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 lastRound = match.getRound();
         }
 
-        IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
+        IMatchGenerator generator = new RoundRobinMatchGenerator();
         List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
         for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {

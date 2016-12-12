@@ -8,7 +8,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 /**
  * Created by Vaclav on 29. 3. 2016.
  */
-public interface IScoredMatchGenerator {
+public interface IMatchGenerator {
     /**
      * generates round robin of matches
      * @param participants participants to be divided into teams

@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.presentation.adapters;
+package fit.cvut.org.cz.hockey.presentation.adapters;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -7,16 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
+import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-/**
- * Created by Vaclav on 10. 4. 2016.
- */
-public class ScoredMatchAdapter extends AbstractListAdapter<Match,ScoredMatchAdapter.MatchViewHolder> {
-    private Resources res;
+public class HockeyMatchAdapter extends AbstractListAdapter<Match,HockeyMatchAdapter.MatchViewHolder> {
+    protected Resources res;
 
-    public ScoredMatchAdapter(Resources res) {
+    public HockeyMatchAdapter(Resources res) {
         this.res = res;
     }
 
@@ -30,12 +28,17 @@ public class ScoredMatchAdapter extends AbstractListAdapter<Match,ScoredMatchAda
     @Override
     public void onBindViewHolder(MatchViewHolder holder, int position) {
         Match m = data.get(position);
-
         holder.home.setText(m.getHomeName());
         holder.away.setText(m.getAwayName());
 
         if (m.isPlayed()) {
-            holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
+            if (m.isShootouts()) {
+                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.so)));
+            } else if (m.isOvertime()) {
+                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.ot)));
+            } else {
+                holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
+            }
         } else {
             holder.score.setText(R.string.vs);
         }
@@ -52,7 +55,7 @@ public class ScoredMatchAdapter extends AbstractListAdapter<Match,ScoredMatchAda
             }
         }
 
-        String title = m.getHomeName() + " " + res.getString(R.string.vs) + " " + m.getAwayName();
+        String title = m.getHomeName()+" "+res.getString(R.string.vs)+" "+m.getAwayName();
         setOnClickListeners(holder.card, m, position, title);
     }
 

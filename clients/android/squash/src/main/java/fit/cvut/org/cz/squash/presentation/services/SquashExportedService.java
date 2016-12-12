@@ -149,7 +149,7 @@ public class SquashExportedService extends IntentService {
                             tournamentPlayers.add(subItem);
                         } else if (subItem.getType().equals("Team")) {
                             tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("ScoredMatch")) {
+                        } else if (subItem.getType().equals("Match")) {
                             tournamentMatches.add(subItem);
                         }
                     }
@@ -273,7 +273,7 @@ public class SquashExportedService extends IntentService {
                             tournamentPlayers.add(subItem);
                         } else if (subItem.getType().equals("Team")) {
                             tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("ScoredMatch")) {
+                        } else if (subItem.getType().equals("Match")) {
                             tournamentMatches.add(subItem);
                         }
                     }

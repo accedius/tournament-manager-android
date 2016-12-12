@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.ScoredMatchAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.MatchAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
@@ -32,7 +32,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 public class MatchListFragment extends AbstractListFragment<Match> {
     public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
-    private ScoredMatchAdapter adapter = null;
+    private MatchAdapter adapter = null;
 
     public static MatchListFragment newInstance(long tournamentId){
         MatchListFragment fragment = new MatchListFragment();
@@ -44,7 +44,7 @@ public class MatchListFragment extends AbstractListFragment<Match> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        adapter = new ScoredMatchAdapter(getResources()){
+        adapter = new MatchAdapter(getResources()){
             @Override
             protected void setOnClickListeners(View v, final Match match, final int position, final String title) {
                 v.setOnClickListener(new View.OnClickListener() {
