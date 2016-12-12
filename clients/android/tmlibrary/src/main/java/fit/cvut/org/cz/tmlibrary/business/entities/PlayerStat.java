@@ -16,6 +16,9 @@ public class PlayerStat implements IEntity, Parcelable {
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     protected long id;
 
+    // Set in synchronization, same as Player UID
+    protected String uid;
+
     @DatabaseField(columnName = DBConstants.cPARTICIPANT_ID)
     protected long participant_id;
 
@@ -93,5 +96,13 @@ public class PlayerStat implements IEntity, Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

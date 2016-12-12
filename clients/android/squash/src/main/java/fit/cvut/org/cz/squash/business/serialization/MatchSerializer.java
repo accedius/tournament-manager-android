@@ -3,12 +3,18 @@ package fit.cvut.org.cz.squash.business.serialization;
 import android.content.Context;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
@@ -17,6 +23,8 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.ServerSerializingStrategy;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -87,33 +95,30 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("score_away", Integer.toString(entity.getAwayWonSets()));
 
         /* Serialize sets */
-        /*ArrayList<SetRowItem> sets = ManagerFactory.getInstance(context).statisticManager.getSetsForMatch(entity.getId());
-        hm.put("sets", Integer.toString(sets.size()));
-        int set_id = 1;
-        for (SetRowItem set : sets) {
-            hm.put("set_home_"+set_id, Integer.toString(set.getHomeScore()));
-            hm.put("set_away_"+set_id, Integer.toString(set.getAwayScore()));
-            set_id++;
-        }*/
+        List<SetRowItem> sets = ManagerFactory.getInstance(context).statisticManager.getMatchSets(entity.getId());
+        hm.put("sets", sets);
 
         /* Serialize players */
-        /*ArrayList<Player> homePlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(entity.getId(), "home");
-        hm.put("players_home", Integer.toString(homePlayers.size()));
-
-        int homePlayerId = 1;
-        for (Player p : homePlayers) {
-            hm.put("player_home_"+homePlayerId, strategy.getUid(p));
-            homePlayerId++;
+        Participant home = null, away = null;
+        for (Participant participant : entity.getParticipants()) {
+            if (ParticipantType.home.toString().equals(participant.getRole()))
+                home = participant;
+            else if (ParticipantType.away.toString().equals(participant.getRole()))
+                away = participant;
         }
 
-        ArrayList<Player> awayPlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(entity.getId(), "away");
-        hm.put("players_away", Integer.toString(awayPlayers.size()));
+        Map<Long, Player> playerMap = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers();
+        List<PlayerStat> homePlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(home.getId());
+        for (PlayerStat stat : homePlayers) {
+            stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
+        }
+        hm.put("players_home", homePlayers);
 
-        int awayPlayerId = 1;
-        for (Player p : awayPlayers) {
-            hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
-            awayPlayerId++;
-        }*/
+        List<PlayerStat> awayPlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(away.getId());
+        for (PlayerStat stat : awayPlayers) {
+            stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
+        }
+        hm.put("players_away", awayPlayers);
         return hm;
     }
 

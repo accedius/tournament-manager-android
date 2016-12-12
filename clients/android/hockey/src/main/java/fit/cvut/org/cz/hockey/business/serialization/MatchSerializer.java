@@ -80,9 +80,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("shootouts", Boolean.toString(entity.isShootouts()));
 
         /* Serialize rosters and stats */
-        int homePlayerId=0;
-        // TODO get home players
-
         for (Participant participant : entity.getParticipants()) {
             if (ParticipantType.home.toString().equals(participant.getRole())) {
                 hm.put("players_home", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId()));
@@ -103,9 +100,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setNote(String.valueOf(syncData.get("note")));
         entity.setPeriod(Integer.parseInt(String.valueOf(syncData.get("period"))));
         entity.setRound(Integer.parseInt(String.valueOf(syncData.get("round"))));
-
-        // TODO overtime
-        // TODO shootouts
+        entity.setOvertime(Boolean.parseBoolean(String.valueOf(syncData.get("overtime"))));
+        entity.setShootouts(Boolean.parseBoolean(String.valueOf(syncData.get("shootouts"))));
     }
 
     @Override
