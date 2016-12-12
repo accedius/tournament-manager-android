@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.PointConfig;
+import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.presentation.services.PointConfigService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -21,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  */
 public class PointConfigFragment extends AbstractDataFragment {
     private static final String ARG_ID = "arg_id";
-    private PointConfig cfg = null;
+    private PointConfiguration cfg = null;
     private TextView w, l, d;
 
     public static PointConfigFragment newInstance(long id){
@@ -85,12 +85,12 @@ public class PointConfigFragment extends AbstractDataFragment {
         return true;
     }
 
-    public PointConfig getPointConfig() {
+    public PointConfiguration getPointConfig() {
         if (!validate())
             return null;
 
         try {
-            return new PointConfig(
+            return new PointConfiguration(
                     getArguments().getLong(ARG_ID),
                     Integer.parseInt(w.getText().toString()),
                     Integer.parseInt(d.getText().toString()),

@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -32,19 +33,15 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     @Override
     public boolean delete(Context context, long id) {
         try {
-            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cCOMPETITION_ID, id)
-                    .query();
+            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryForEq(DBConstants.cCOMPETITION_ID, id);
             if (!competitionPlayers.isEmpty())
                 return false;
 
-            List<Tournament> tournaments = sportDBHelper.getTournamentDAO().queryBuilder()
-                    .where().eq(DBConstants.cCOMPETITION_ID, id).query();
+            List<Tournament> tournaments = sportDBHelper.getTournamentDAO().queryForEq(DBConstants.cCOMPETITION_ID, id);
             if (!tournaments.isEmpty())
                 return false;
 
-            getDao(context).delete(getDao(context).queryForId(id));
+            getDao(context).deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;

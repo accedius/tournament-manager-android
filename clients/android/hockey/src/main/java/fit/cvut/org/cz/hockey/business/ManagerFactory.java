@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.business;
 
 import android.content.Context;
+import android.util.Log;
 
 import fit.cvut.org.cz.hockey.business.interfaces.IHockeyStatisticsManager;
 import fit.cvut.org.cz.hockey.business.interfaces.IMatchManager;
@@ -43,16 +44,14 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interface
     public IPlayerStatManager playerStatManager;
     public IMatchManager matchManager;
 
-    public static ManagerFactory getInstanceForceContext(Context context, String sportContext) {
-        ManagerFactory factory = new ManagerFactory(context, sportContext);
-        factory.setManagers();
-        return factory;
-    }
-
     public static ManagerFactory getInstance(Context context) {
-        if (instance == null) {
+        String requestedContext = ((HockeyPackage) context.getApplicationContext()).getSportContext();
+        if (instance == null || !instance.sportDBHelper.getDBName().equals(requestedContext)) {
             instance = new ManagerFactory(context);
             instance.setManagers();
+        }
+        if (!requestedContext.equals(instance.sportDBHelper.getDBName())) {
+            Log.d("ERROR", "Requested context "+requestedContext+", got "+instance.sportDBHelper.getDBName());
         }
         return instance;
     }

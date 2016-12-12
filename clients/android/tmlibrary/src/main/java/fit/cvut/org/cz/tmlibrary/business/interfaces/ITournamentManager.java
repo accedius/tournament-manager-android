@@ -51,4 +51,12 @@ public interface ITournamentManager extends IManager<Tournament> {
      * @param tournamentId id of tournament
      */
     void addPlayer(Context context, long playerId, long tournamentId);
+
+    /**
+     * get all tournaments for player
+     * @param context application context
+     * @param playerId id of player
+     * @return found tournaments
+     */
+    List<Tournament> getByPlayer(Context context, long playerId);
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
@@ -22,8 +23,11 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 30.11.2016.
  */
 public class ParticipantManager extends BaseManager<Participant> implements IParticipantManager {
-    public ParticipantManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    protected HockeyDBHelper sportDBHelper;
+
+    public ParticipantManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         super(corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override

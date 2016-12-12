@@ -2,9 +2,9 @@ package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
@@ -40,14 +40,14 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */
-        ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByCompetition(context, entity.getId());
+        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(context, entity.getId());
         PlayerSerializer ps = PlayerSerializer.getInstance(context);
         for (Player p : players) {
             item.subItems.add(ps.serialize(p));
         }
 
         /* Serialize Tournaments */
-        ArrayList<Tournament> tournaments = ManagersFactory.getInstance().tournamentManager.getByCompetitionId(context, entity.getId());
+        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(context, entity.getId());
         TournamentSerializer ts = TournamentSerializer.getInstance(context);
         for (Tournament t : tournaments) {
             item.subItems.add(ts.serialize(t));

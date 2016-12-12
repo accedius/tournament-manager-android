@@ -2,211 +2,313 @@ package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.data.DAOFactory;
-import fit.cvut.org.cz.squash.data.entities.DStat;
-import fit.cvut.org.cz.squash.data.entities.StatsEnum;
+import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.interfaces.IMatchManager;
+import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.squash.data.SquashDBHelper;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinScoredMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IScoredMatchManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
-import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
  */
-public class MatchManager implements IScoredMatchManager {
-    @Override
-    public ArrayList<ScoredMatch> getByTournamentId(Context context, long tournamentId) {
-        ArrayList<ScoredMatch> matches = new ArrayList<>();
+public class MatchManager extends BaseManager<Match> implements IMatchManager {
+    protected SquashDBHelper sportDBHelper;
 
-        ArrayList<DMatch> dMatches = DAOFactory.getInstance().matchDAO.getByTournamentId(context, tournamentId);
-        for (DMatch dMatch : dMatches) {
-            ScoredMatch match = new ScoredMatch(dMatch);
-            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, dMatch.getId());
-            DParticipant home = null;
-            DParticipant away = null;
-            for (DParticipant participant : participants) {
-                if (participant.getRole().equals("home")) home = participant;
-                else away = participant;
-            }
-            if (home.getTeamId() != -1) {
-                DTeam t = DAOFactory.getInstance().teamDAO.getById(context, home.getTeamId());
-                match.setHomeName(t.getName());
-                t = DAOFactory.getInstance().teamDAO.getById(context, away.getTeamId());
-                match.setAwayName(t.getName());
-                match.setHomeParticipantId(home.getTeamId());
-                match.setAwayParticipantId(away.getTeamId());
-            } else {
-                Player homePlayer = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0);
-                Player awayPlayer = ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0);
-                match.setHomeName(homePlayer.getName());
-                match.setAwayName(awayPlayer.getName());
-                match.setHomeParticipantId(homePlayer.getId());
-                match.setAwayParticipantId(awayPlayer.getId());
-            }
-
-            if (match.isPlayed()) {
-                int homeScore = 0, awayScore = 0;
-                ArrayList<DStat> stats = DAOFactory.getInstance().statDAO.getByParticipant(context, home.getId(), StatsEnum.SET);
-                for (DStat stat : stats) {
-                    if (stat.getStatus() > 0) homeScore++;
-                    else awayScore++;
-                }
-                match.setHomeScore(homeScore);
-                match.setAwayScore(awayScore);
-            }
-
-            matches.add(match);
-        }
-
-        Collections.sort(matches, new Comparator<ScoredMatch>() {
-            @Override
-            public int compare(ScoredMatch lhs, ScoredMatch rhs) {
-                if (rhs.getRound() - lhs.getRound() == 0)
-                    return lhs.getPeriod() - rhs.getPeriod();
-                return lhs.getRound() - rhs.getRound();
-            }
-        });
-        return matches;
+    public MatchManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    public ScoredMatch getById(Context context, long Id) {
-        ScoredMatch match = new ScoredMatch(DAOFactory.getInstance().matchDAO.getById(context, Id));
+    protected Dao<Match, Long> getDao(Context context) {
+        return DatabaseFactory.getDBeHelper(context).getSquashMatchDAO();
+    }
 
-        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
-        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, Id);
-        DParticipant home = null, away = null;
-        for (DParticipant p : participants) {
-            if (p.getRole().equals("home")) home = p;
-            else away = p;
+    @Override
+    public List<Match> getByTournamentId(Context context, long tournamentId) {
+        try {
+            List<Match> matches = getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            for (Match match : matches) {
+                List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, match.getId());
+                match.addParticipants(participants);
+                for (Participant participant : participants) {
+                    if (ParticipantType.home.toString().equals(participant.getRole()))
+                        match.setHomeName(getParticipantName(context, match, participant));
+                    else if (ParticipantType.away.toString().equals(participant.getRole()))
+                        match.setAwayName(getParticipantName(context, match, participant));
+                }
+                loadMatchScore(context, match);
+            }
+
+            Collections.sort(matches, new Comparator<Match>() {
+                @Override
+                public int compare(Match lhs, Match rhs) {
+                    if (lhs.getRound() != rhs.getRound()) return lhs.getRound() - rhs.getRound();
+                    return lhs.getPeriod() - rhs.getPeriod();
+                }
+            });
+            return matches;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
+    }
 
-        if (type.equals(CompetitionTypes.teams())) {
-            match.setHomeParticipantId(home.getTeamId());
-            match.setAwayParticipantId(away.getTeamId());
-            match.setHomeName(ManagersFactory.getInstance().teamsManager.getById(context, home.getTeamId()).getName());
-            match.setAwayName(ManagersFactory.getInstance().teamsManager.getById(context, away.getTeamId()).getName());
+    private String getParticipantName(Context context, Match match, Participant participant) {
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, match.getTournamentId());
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+        if (CompetitionTypes.teams().equals(competition.getType())) {
+            Team team = ManagerFactory.getInstance(context).teamManager.getById(context, participant.getParticipantId());
+            return team.getName();
         } else {
-            match.setHomeParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, home.getId()).get(0));
-            match.setAwayParticipantId(DAOFactory.getInstance().statDAO.getPlayerIdsForParticipant(context, away.getId()).get(0));
-            match.setHomeName(ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, home.getId()).get(0).getName());
-            match.setAwayName(ManagersFactory.getInstance().playerManager.getPlayersByParticipant(context, away.getId()).get(0).getName());
+            Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, participant.getParticipantId());
+            return player.getName();
         }
+    }
 
+    @Override
+    public Match getById(Context context, long id) {
+        Match match = super.getById(context, id);
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
+        for (Participant participant : participants) {
+            match.addParticipant(participant);
+
+            if (ParticipantType.home.toString().equals(participant.getRole()))
+                match.setHomeName(getParticipantName(context, match, participant));
+            else if (ParticipantType.away.toString().equals(participant.getRole()))
+                match.setAwayName(getParticipantName(context, match, participant));
+        }
+        loadMatchScore(context, match);
         return match;
     }
 
     @Override
-    public void beginMatch(Context context, long matchId) {
-    }
-
-    @Override
     public void generateRound(Context context, long tournamentId) {
-        DTournament tournament = DAOFactory.getInstance().tournamentDAO.getById(context, tournamentId);
-        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, tournament.getCompetitionId()).getType();
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, tournamentId);
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+        CompetitionType type = competition.getType();
 
-        ArrayList<DMatch> matches = DAOFactory.getInstance().matchDAO.getByTournamentId(context, tournamentId);
-        Collections.sort(matches, new Comparator<DMatch>() {
-            @Override
-            public int compare(DMatch lhs, DMatch rhs) {
-                if (rhs.getRound() - lhs.getRound() == 0)
-                    return lhs.getPeriod() - rhs.getPeriod();
-                return lhs.getRound() - rhs.getRound();
+        ArrayList<fit.cvut.org.cz.tmlibrary.business.entities.Participant> partsForGenerator = new ArrayList<>();
+
+        if (CompetitionTypes.individuals().equals(type)) {
+            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, tournamentId);
+            for (Player player : players) {
+                // match_id and role will be added by generator
+                partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, player.getId(), null));
             }
-        });
-
-        ArrayList<Participant> participants = new ArrayList<>();
-
-        if (type.equals(CompetitionTypes.individuals())) {
-            ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getPlayersByTournament(context, tournamentId);
-            for (Player p : players) participants.add(new Participant(p.getId(), p.getName()));
         } else {
-            ArrayList<Team> teams = ManagersFactory.getInstance().teamsManager.getByTournamentId(context, tournamentId);
-            for (Team t : teams) participants.add(new Participant(t.getId(), t.getName()));
+            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
+            for (Team team : teams) {
+                // match_id and role will be added by generator
+                partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, team.getId(), null));
+            }
+        }
+
+        int lastRound = 0;
+        List<Match> matches = getByTournamentId(context, tournamentId);
+        for (Match match : matches) {
+            if (match.getRound() > lastRound)
+                lastRound = match.getRound();
         }
 
         IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
-        int round = -1;
-        if (matches.size() != 0) round = matches.get(matches.size() -1).getRound();
-        round++;
-        ArrayList<ScoredMatch> newMatches = generator.generateRound(participants, round);
+        List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
-        for (ScoredMatch m : newMatches) {
-            m.setTournamentId(tournamentId);
-            insert(context, m);
+        for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {
+            match.setDate(new Date());
+            match.setNote("");
+            match.setTournamentId(tournamentId);
+            Match squashMatch = new Match(match);
+            insert(context, squashMatch);
         }
     }
 
     @Override
     public void resetMatch(Context context, long matchId) {
-        ScoredMatch match = new ScoredMatch(DAOFactory.getInstance().matchDAO.getById(context, matchId));
+        Match match = getById(context, matchId);
+        if (!match.isPlayed())
+            return;
+
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, matchId);
+
+        try {
+            // Remove Participant Stats and Player Stats
+            for (Participant participant : participants) {
+                DeleteBuilder<ParticipantStat, Long> participantStatBuilder = sportDBHelper.getSquashParticipantStatDAO().deleteBuilder();
+                participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                participantStatBuilder.delete();
+
+                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat, Long> playerStatBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
+                playerStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                playerStatBuilder.delete();
+            }
+        } catch (SQLException e) {}
+
         match.setPlayed(false);
+        match.setSetsNumber(0);
+        update(context, match);
+    }
+
+    @Override
+    public void insert(Context context, Match match) {
+        // TODO check if id is filled ?
+        match.setLastModified(new Date());
+
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, match.getTournamentId());
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+        match.setType(competition.getType());
+        super.insert(context, match);
+
+        for (Participant participant : match.getParticipants()) {
+            participant.setMatchId(match.getId());
+        }
+
+        for (Participant participant : match.getParticipants())
+            ManagerFactory.getInstance(context).participantManager.insert(context, participant);
+
+        Map<Long, Team> teamMap = new HashMap<>();
+        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, match.getTournamentId());
+        for (Team team : teams) {
+            teamMap.put(team.getId(), team);
+        }
+
+        List<PlayerStat> playerStats = new ArrayList<>();
+        for (Participant participant : match.getParticipants()) {
+            if (CompetitionTypes.individuals().equals(match.getType())) {
+                playerStats.add(new PlayerStat(participant.getId(), participant.getParticipantId()));
+            } else {
+                for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
+                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
+            }
+        }
+
+        for (PlayerStat playerStat : playerStats)
+            ManagerFactory.getInstance(context).playerStatManager.insert(context, playerStat);
+    }
+
+    @Override
+    public boolean delete(Context context, long id) {
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
+        try {
+            for (Participant participant : participants) {
+                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
+                participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                participantStatBuilder.delete();
+
+                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat, Long> statBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
+                statBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                statBuilder.delete();
+            }
+            DeleteBuilder<Participant, Long> participantBuilder = sportDBHelper.getParticipantDAO().deleteBuilder();
+            participantBuilder.where().eq(DBConstants.cMATCH_ID, id);
+            participantBuilder.delete();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        super.delete(context, id);
+        return true;
+    }
+
+    private void loadMatchScore(Context context, Match match) {
+        if (!match.isPlayed())
+            return;
+
+        Participant home = null, away = null;
+        for (Participant participant : match.getParticipants()) {
+            if (ParticipantType.home.toString().equals(participant.getRole())) {
+                home = participant;
+            } else if (ParticipantType.away.toString().equals(participant.getRole())) {
+                away = participant;
+            }
+        }
+
+        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, home.getId());
+        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, away.getId());
+        Map<Integer, Integer> homePointsMap = new HashMap<>();
+        Map<Integer, Integer> awayPointsMap = new HashMap<>();
+
+        home.setParticipantStats(homeStats);
+        away.setParticipantStats(awayStats);
+
+        for (ParticipantStat stat : homeStats) {
+            homePointsMap.put(stat.getSetNumber(), stat.getPoints());
+        }
+        for (ParticipantStat stat : awayStats) {
+            awayPointsMap.put(stat.getSetNumber(), stat.getPoints());
+        }
+
+        int homeWonSets = 0;
+        int awayWonSets = 0;
+        for (int i=1; i <= match.getSetsNumber(); i++) {
+            if (homePointsMap.get(i) > awayPointsMap.get(i))
+                homeWonSets++;
+            else if (homePointsMap.get(i) < awayPointsMap.get(i))
+                awayWonSets++;
+        }
+        match.setHomeWonSets(homeWonSets);
+        match.setAwayWonSets(awayWonSets);
+    }
+
+    @Override
+    public void updateMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
+        Match match = getById(context, matchId);
+        // Delete all sets in match
+        ManagerFactory.getInstance(context).participantStatManager.deleteByMatchId(context, matchId);
+
+        if (sets.isEmpty()) {
+            match.setSetsNumber(sets.size());
+            update(context, match);
+            return;
+        }
+
+        // Add new sets
+        List<ParticipantStat> stats = new ArrayList<>();
+        match.setSetsNumber(sets.size());
+        match.setPlayed(true);
         update(context, match);
 
-        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, match.getTournamentId());
-        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-        for (DParticipant p : participants) {
-            DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH);
-            DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.SET);
-            if (type.equals(CompetitionTypes.teams()))
-                DAOFactory.getInstance().statDAO.delete(context, p.getId(), StatsEnum.MATCH_PARTICIPATION);
-        }
-    }
-
-    @Override
-    public long insert(Context context, ScoredMatch match) {
-        long matchId = DAOFactory.getInstance().matchDAO.insert(context, ScoredMatch.convertToDMatch(match));
-        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, match.getTournamentId());
-        CompetitionType type = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId()).getType();
-        DParticipant home = null;
-        DParticipant away = null;
-        if (type.equals(CompetitionTypes.individuals())) {
-            home = new DParticipant(-1, -1, matchId, "home");
-            away = new DParticipant(-1, -1, matchId, "away");
-            long homePartipId = DAOFactory.getInstance().participantDAO.insert(context, home);
-            long awayPartipId = DAOFactory.getInstance().participantDAO.insert(context, away);
-            //for individuals we have to insert match participation as well else we could not link match to player
-            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), match.getHomeParticipantId(), homePartipId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
-            DAOFactory.getInstance().statDAO.insert(context, new DStat(-1, t.getCompetitionId(), t.getId(), match.getAwayParticipantId(), awayPartipId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
-        } else {
-            home = new DParticipant(-1, match.getHomeParticipantId(), matchId, "home");
-            away = new DParticipant(-1, match.getAwayParticipantId(), matchId, "away");
-            DAOFactory.getInstance().participantDAO.insert(context, home);
-            DAOFactory.getInstance().participantDAO.insert(context, away);
-        }
-        return matchId;
-    }
-
-    @Override
-    public void update(Context context, ScoredMatch match) {
-        DAOFactory.getInstance().matchDAO.update(context, ScoredMatch.convertToDMatch(match));
-    }
-
-    @Override
-    public void delete(Context context, long id) {
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, id);
-        for (DParticipant participant : participants) {
-            DAOFactory.getInstance().statDAO.deleteByParticipant(context, participant.getId());
-            DAOFactory.getInstance().participantDAO.delete(context, participant.getId());
+        int i=1;
+        for (SetRowItem set : sets) {
+            for (Participant participant : match.getParticipants()) {
+                if (ParticipantType.home.toString().equals(participant.getRole()))
+                    stats.add(new ParticipantStat(participant.getId(), i, set.getHomeScore()));
+                else if (ParticipantType.away.toString().equals(participant.getRole()))
+                    stats.add(new ParticipantStat(participant.getId(), i, set.getAwayScore()));
+            }
+            i++;
         }
 
-        DAOFactory.getInstance().matchDAO.delete(context, id);
+        for (ParticipantStat stat : stats)
+            ManagerFactory.getInstance(context).participantStatManager.insert(context, stat);
     }
 }

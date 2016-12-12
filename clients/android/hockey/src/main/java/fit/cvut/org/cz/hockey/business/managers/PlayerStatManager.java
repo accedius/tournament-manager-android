@@ -13,6 +13,7 @@ import java.util.Map;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
@@ -23,8 +24,11 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 2.12.2016.
  */
 public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlayerStatManager {
-    public PlayerStatManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    protected HockeyDBHelper sportDBHelper;
+
+    public PlayerStatManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         super(corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     @Override
     public List<PlayerStat> getByPlayerId(Context context, long playerId) {
         try {
-            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, playerId);
+            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPLAYER_ID, playerId);
             Map<Long, Player> playerMap = corePlayerManager.getAllPlayers(context);
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.business.entities.PointConfig;
+import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -35,12 +35,12 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
 
         switch (action) {
             case ACTION_EDIT_CFG:{
-                PointConfig cfg = intent.getParcelableExtra(EXTRA_CFG);
-                ManagersFactory.getInstance().pointConfigManager.update(this, cfg);
+                PointConfiguration cfg = intent.getParcelableExtra(EXTRA_CFG);
+                ManagerFactory.getInstance(this).pointConfigManager.update(this, cfg);
                 break;
             }
             case ACTION_GET_BY_ID:{
-                PointConfig cfg = ManagersFactory.getInstance().pointConfigManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                PointConfiguration cfg = ManagerFactory.getInstance(this).pointConfigManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_CFG, cfg);
 

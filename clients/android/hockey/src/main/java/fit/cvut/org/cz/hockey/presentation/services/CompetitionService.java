@@ -68,14 +68,8 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long competitionId = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
-                Log.d("ERR", "Get By Id before");
                 c = ManagerFactory.getInstance(this).competitionManager.getById(this, competitionId);
-                Log.d("ERR", "Get By Id after");
-                if (ManagerFactory.getInstance(this).sportDBHelper == null)
-                    Log.d("ERR", "Sport db helper is null already :(");
                 List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(this, competitionId);
-                if (ManagerFactory.getInstance(this).sportDBHelper == null)
-                    Log.d("ERR", "Sport db helper is null already :(");
                 List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(this, competitionId);
 
                 res.putExtra(EXTRA_COMPETITION, c);

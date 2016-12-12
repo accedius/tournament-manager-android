@@ -27,8 +27,6 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
     @DatabaseField(columnName = HockeyDBConstants.cSAVES)
     private int saves;
 
-    private String name;
-
     public PlayerStat() {}
 
     public PlayerStat(long participantId, long playerId) {
@@ -47,7 +45,6 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
         dest.writeInt(assists);
         dest.writeInt(plus_minus);
         dest.writeInt(saves);
-        dest.writeString(name);
     }
 
     public PlayerStat(fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat p) {
@@ -60,7 +57,6 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
         assists = in.readInt();
         plus_minus = in.readInt();
         saves = in.readInt();
-        name = in.readString();
     }
 
     public static final Creator<PlayerStat> CREATOR = new Creator<PlayerStat>() {
@@ -105,14 +101,6 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
 
     public void setSaves(int saves) {
         this.saves = saves;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

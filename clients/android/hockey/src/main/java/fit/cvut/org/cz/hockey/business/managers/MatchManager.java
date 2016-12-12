@@ -20,6 +20,7 @@ import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.interfaces.IMatchManager;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -35,9 +36,11 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class MatchManager extends BaseManager<Match> implements IMatchManager {
+    protected HockeyDBHelper sportDBHelper;
 
-    public MatchManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    public MatchManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         super(corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
@@ -130,11 +133,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
-    public List<Match> getAll(Context context) {
-        return null;
-    }
-
-    @Override
     public void beginMatch(Context context, long matchId) {
         Match match = getById(context, matchId);
         if (!(match.isPlayed())) {
@@ -146,28 +144,24 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public void generateRound(Context context, long tournamentId) {
-        List<Team> teamsInTournament = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
-
+        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
         Map<Long, Team> teamMap = new HashMap<>();
         ArrayList<fit.cvut.org.cz.tmlibrary.business.entities.Participant> partsForGenerator = new ArrayList<>();
 
-        for (Team team : teamsInTournament) {
+        for (Team team : teams) {
             teamMap.put(team.getId(), team);
             // match_id and role will be added by generator
             partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, team.getId(), null));
         }
 
         int lastRound = 0;
-
-        List<Match> tournMatches = getByTournamentId(context, tournamentId);
-
-        for (Match match : tournMatches) {
+        List<Match> matches = getByTournamentId(context, tournamentId);
+        for (Match match : matches) {
             if (match.getRound() > lastRound)
                 lastRound = match.getRound();
         }
 
         IScoredMatchGenerator generator = new RoundRobinScoredMatchGenerator();
-
         List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
         for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {
@@ -176,7 +170,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setTournamentId(tournamentId);
             Match hockeyMatch = new Match(match);
             insert(context, hockeyMatch);
-            Collection<PlayerStat> playerStats = new ArrayList<>();
+            List<PlayerStat> playerStats = new ArrayList<>();
             for (fit.cvut.org.cz.tmlibrary.business.entities.Participant participant : match.getParticipants())
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
                     playerStats.add(new PlayerStat(participant.getId(), player.getId()));
@@ -195,7 +189,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, matchId);
 
         try {
-            // Remove Participant and Player Stats
+            // Remove Participant Stats and Player Stats
             for (Participant participant : participants) {
                 DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());

@@ -38,13 +38,11 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
     @Override
     public boolean delete(Context context, long id) {
         try {
-            List<Team> teams = sportDBHelper.getTeamDAO().queryBuilder()
-                    .where().eq(DBConstants.cTOURNAMENT_ID, id).query();
+            List<Team> teams = sportDBHelper.getTeamDAO().queryForEq(DBConstants.cTOURNAMENT_ID, id);
             if (!teams.isEmpty())
                 return false;
 
-            List<TournamentPlayer> players = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
-                    .where().eq(DBConstants.cTOURNAMENT_ID, id).query();
+            List<TournamentPlayer> players = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, id);
             if (!players.isEmpty())
                 return false;
 
@@ -59,10 +57,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
     @Override
     public List<Tournament> getByCompetitionId(Context context, long competitionId) {
         try {
-            return getDao(context).queryBuilder()
-                    .where()
-                    .eq(DBConstants.cCOMPETITION_ID, competitionId)
-                    .query();
+            return getDao(context).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
         } catch (SQLException e) {
             return new ArrayList<>();
         }
@@ -73,17 +68,30 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
         Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
         List<Player> res = new ArrayList<>();
         try {
-            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .query();
+            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                 res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
             }
             return res;
         }
         catch (SQLException e) {
+            e.printStackTrace();
             return res;
+        }
+    }
+
+    @Override
+    public List<Tournament> getByPlayer(Context context, long playerId) {
+        try {
+            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cPLAYER_ID, playerId);
+            List<Tournament> tournaments = new ArrayList<>();
+            for (TournamentPlayer player : tournamentPlayers) {
+                tournaments.add(getById(context, player.getTournamentId()));
+            }
+            return tournaments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -91,17 +99,14 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
     public List<Player> getTournamentPlayersComplement(Context context, long tournamentId) {
         Tournament tournament = getById(context, tournamentId);
         try {
-            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryBuilder()
-                    .where().eq(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId()).query();
+            List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO()
+                    .queryForEq(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId());
             Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
             Map<Long, Player> allCompetitionPlayers = new HashMap<>();
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allCompetitionPlayers.put(competitionPlayer.getPlayerId(), allPlayers.get(competitionPlayer.getPlayerId()));
             }
-            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .query();
+            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer competitionPlayer : tournamentPlayers) {
                 allCompetitionPlayers.remove(competitionPlayer.getPlayerId());
             }
@@ -118,8 +123,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             List<Player> players = new ArrayList<>();
             Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
 
-            teamPlayers = sportDBHelper.getTeamPlayerDAO().queryBuilder()
-                    .where().eq(DBConstants.cTEAM_ID, team.getId()).query();
+            teamPlayers = sportDBHelper.getTeamPlayerDAO().queryForEq(DBConstants.cTEAM_ID, team.getId());
             for (TeamPlayer teamPlayer : teamPlayers) {
                 players.add(allPlayers.get(teamPlayer.getPlayerId()));
             }
@@ -138,8 +142,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
 
             if (CompetitionTypes.teams().equals(competition.getType())) {
                 // Check if some team contains player
-                List<Team> teams = sportDBHelper.getTeamDAO().queryBuilder()
-                        .where().eq(DBConstants.cTOURNAMENT_ID, tournamentId).query();
+                List<Team> teams = sportDBHelper.getTeamDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
                 for (Team team : teams) {
                     List<Player> teamPlayers = getTeamPlayers(context, team);
                     for (Player player : teamPlayers)
@@ -149,18 +152,15 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             }
 
             // Check if player participates in match
-            List<Match> matches = sportDBHelper.getMatchDAO().queryBuilder()
-                    .where().eq(DBConstants.cTOURNAMENT_ID, tournamentId).query();
+            List<Match> matches = sportDBHelper.getMatchDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Match match : matches) {
-                List<Participant> matchParticipants = sportDBHelper.getParticipantDAO().queryBuilder()
-                        .where().eq(DBConstants.cMATCH_ID, match.getId()).query();
+                List<Participant> matchParticipants = sportDBHelper.getParticipantDAO().queryForEq(DBConstants.cMATCH_ID, match.getId());
                 for (Participant participant : matchParticipants) {
                     // Check if some participant is player
                     if (CompetitionTypes.individuals().equals(competition.getType()) && participant.getParticipantId() == playerId)
                         return false;
 
-                    List<PlayerStat> playerStats = sportDBHelper.getPlayerStatDAO().queryBuilder()
-                            .where().eq(DBConstants.cPARTICIPANT_ID, participant.getId()).query();
+                    List<PlayerStat> playerStats = sportDBHelper.getPlayerStatDAO().queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
                     for (PlayerStat playerStat : playerStats)
                         if (playerStat.getPlayerId() == playerId)
                             return false;
@@ -171,8 +171,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             Dao<TournamentPlayer, Long> tournamentPlayerDao = sportDBHelper.getTournamentPlayerDAO();
             DeleteBuilder<TournamentPlayer, Long> tournamentPlayerBuilder = tournamentPlayerDao.deleteBuilder();
             tournamentPlayerBuilder.where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .and()
+                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId).and()
                     .eq(DBConstants.cPLAYER_ID, playerId);
             tournamentPlayerBuilder.delete();
             return true;

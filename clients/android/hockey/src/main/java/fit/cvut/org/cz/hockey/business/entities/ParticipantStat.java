@@ -37,10 +37,6 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.business.entities
         dest.writeInt(score);
     }
 
-    public ParticipantStat(PlayerStat p) {
-        super(p.getId());
-    }
-
     public ParticipantStat(Parcel in) {
         super(in);
         this.score = in.readInt();

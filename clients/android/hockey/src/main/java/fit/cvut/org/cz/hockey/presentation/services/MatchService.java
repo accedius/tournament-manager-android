@@ -77,11 +77,17 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_UPDATE_FOR_OVERVIEW: {
-                Intent res = new Intent(ACTION_UPDATE_FOR_OVERVIEW);
+                Intent res = new Intent(action);
                 Match match = intent.getParcelableExtra(EXTRA_MATCH_SCORE);
-                if (!ManagerFactory.getInstance(this).matchManager.getById(this, match.getId()).isPlayed()) {
+                Match original = ManagerFactory.getInstance(this).matchManager.getById(this, match.getId());
+                if (!original.isPlayed()) {
                     ManagerFactory.getInstance(this).matchManager.beginMatch(this, match.getId());
                 }
+                match.setTournamentId(original.getTournamentId());
+                match.setDate(original.getDate());
+                match.setNote(original.getNote());
+                match.setPeriod(original.getPeriod());
+                match.setRound(original.getRound());
                 ManagerFactory.getInstance(this).matchManager.update(this, match);
                 List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(this, match.getId());
                 for (Participant participant : participants) {
@@ -101,7 +107,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     ManagerFactory.getInstance(this).playerStatManager.deleteByParticipantId(this, participant.getId());
                 }
 
-
                 ArrayList<PlayerStat> homeStats = intent.getParcelableArrayListExtra(EXTRA_HOME_STATS);
                 ArrayList<PlayerStat> awayStats = intent.getParcelableArrayListExtra(EXTRA_AWAY_STATS);
 
@@ -115,8 +120,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_FIND_BY_ID: {
-                Intent res = new Intent();
-                res.setAction(ACTION_FIND_BY_ID);
+                Intent res = new Intent(action);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
                 long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
                 List<Team> tourTeams = ManagerFactory.getInstance(this).teamManager.getByTournamentId(this, tourId);
@@ -125,9 +129,11 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     res.putExtra(EXTRA_MATCH, m);
                 }
 
-                ArrayList<Team> participants = new ArrayList<>();
-                for (Team t : tourTeams) {
-                    participants.add(t);
+                ArrayList<Participant> participants = new ArrayList<>();
+                for (Team team : tourTeams) {
+                    Participant participant = new Participant(matchId, team.getId(), null);
+                    participant.setName(team.getName());
+                    participants.add(participant);
                     //participants.add(new Participant(-1, t.getId(), null));
                 }
 
@@ -136,7 +142,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_FIND_BY_TOURNAMENT_ID: {
-                Intent res = new Intent(ACTION_FIND_BY_TOURNAMENT_ID);
+                Intent res = new Intent(action);
 
                 long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
                 ArrayList<Match> matches = new ArrayList<>(ManagerFactory.getInstance(this).matchManager.getByTournamentId(this, tourId));
@@ -163,7 +169,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_GENERATE_ROUND: {
-                Intent res = new Intent(ACTION_GENERATE_ROUND);
+                Intent res = new Intent(action);
                 long tourId = intent.getLongExtra(EXTRA_TOUR_ID, -1);
 
                 ManagerFactory.getInstance(this).matchManager.generateRound(this, tourId);
@@ -172,8 +178,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_FIND_BY_ID_FOR_OVERVIEW: {
-                Intent res = new Intent();
-                res.setAction(ACTION_FIND_BY_ID_FOR_OVERVIEW);
+                Intent res = new Intent(action);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
 
                 Match match = ManagerFactory.getInstance(this).matchManager.getById(this, matchId);

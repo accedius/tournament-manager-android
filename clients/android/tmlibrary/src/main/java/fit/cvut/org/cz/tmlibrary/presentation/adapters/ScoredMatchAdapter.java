@@ -8,19 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
  */
-public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMatchAdapter.MatchViewHolder> {
+public class ScoredMatchAdapter extends AbstractListAdapter<Match,ScoredMatchAdapter.MatchViewHolder> {
     private Resources res;
 
     public ScoredMatchAdapter(Resources res) {
         this.res = res;
     }
 
-    protected void setOnClickListeners(View v, ScoredMatch match, int position, String title){}
+    protected void setOnClickListeners(View v, Match match, int position, String title){}
 
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,7 +29,7 @@ public class ScoredMatchAdapter extends AbstractListAdapter<ScoredMatch,ScoredMa
 
     @Override
     public void onBindViewHolder(MatchViewHolder holder, int position) {
-        ScoredMatch m = data.get(position);
+        Match m = data.get(position);
 
         holder.home.setText(m.getHomeName());
         holder.away.setText(m.getAwayName());

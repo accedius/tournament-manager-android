@@ -10,9 +10,14 @@ import android.os.Parcelable;
 public class SetRowItem implements Parcelable {
     private int homeScore, awayScore, winner;
 
+    public SetRowItem(int homeScore, int awayScore) {
+        this.homeScore = homeScore;
+        this.awayScore = awayScore;
+        winner = 0;
+    }
+
     public SetRowItem() {
-        homeScore = 0;
-        awayScore = 0;
+        this(0,0);
         winner = 0;
     }
 

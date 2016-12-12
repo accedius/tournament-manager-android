@@ -27,8 +27,6 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
 
     private String homeName;
     private String awayName;
-    private int homeScore;
-    private int awayScore;
 
     public Match() {}
     public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
@@ -53,16 +51,12 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         super.writeToParcel(dest, flags);
         dest.writeByte((byte) (shootouts ? 1 : 0));
         dest.writeByte((byte) (overtime ? 1 : 0));
-        dest.writeInt(homeScore);
-        dest.writeInt(awayScore);
     }
 
     public Match(Parcel in) {
         super(in);
-        this.shootouts = in.readByte() != 0;
-        this.overtime = in.readByte() != 0;
-        this.homeScore = in.readInt();
-        this.awayScore = in.readInt();
+        shootouts = in.readByte() != 0;
+        overtime = in.readByte() != 0;
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -101,28 +95,12 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         return awayName;
     }
 
-    public int getHomeScore() {
-        return homeScore;
-    }
-
-    public int getAwayScore() {
-        return awayScore;
-    }
-
     public void setHomeName(String homeName) {
         this.homeName = homeName;
     }
 
     public void setAwayName(String awayName) {
         this.awayName = awayName;
-    }
-
-    public void setHomeScore(int homeScore) {
-        this.homeScore = homeScore;
-    }
-
-    public void setAwayScore(int awayScore) {
-        this.awayScore = awayScore;
     }
 
     public long getHomeParticipantId() {

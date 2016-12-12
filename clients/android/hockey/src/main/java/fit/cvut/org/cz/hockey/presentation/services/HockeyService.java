@@ -22,9 +22,7 @@ import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
-import fit.cvut.org.cz.hockey.data.DAOFactory;
 import fit.cvut.org.cz.hockey.data.StatsEnum;
-import fit.cvut.org.cz.hockey.data.entities.DMatchStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
@@ -75,7 +73,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         switch (action) {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ManagerFactory.getInstanceForceContext(this, sportContext).statisticsManager.getByPlayerId(this, id);
+                AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerId(this, id);
                 AggregatedStats statsToSend = new AggregatedStats();
 
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -99,7 +97,6 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 sendBroadcast(res);
-                Log.d("STATS", "Return for "+id+" for "+sportContext);
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
@@ -339,19 +336,19 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         if (importedMatch.isPlayed()) {
                             /* START match manager "begin match" */
                             Tournament tour = ManagerFactory.getInstance(this).tournamentManager.getById(this, importedMatch.getTournamentId());
-                            ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(this, matchId);
-                            for (DParticipant dp : participants) {
+                            List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(this, matchId);
+                            for (Participant participant : participants) {
                                 for (StatsEnum statEn : StatsEnum.values()) {
                                     if (statEn.isForPlayer()) continue;
-                                    DStat statToAdd = new DStat(-1, -1, dp.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
-                                    DAOFactory.getInstance().statDAO.insert(this, statToAdd);
+                                    DStat statToAdd = new DStat(-1, -1, participant.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
+                                    //DAOFactory.getInstance().statDAO.insert(this, statToAdd);
                                 }
                             }
                             importedMatch.setPlayed(true);
                             ManagerFactory.getInstance(this).matchManager.update(this, importedMatch);
 
-                            DMatchStat matchStat = new DMatchStat(matchId, false, false);
-                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(this, matchStat);
+//                            DMatchStat matchStat = new DMatchStat(matchId, false, false);
+//                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(this, matchStat);
                             /* END match manager "begin match" */
 
                             /* START statistics manager - set match score by match id */

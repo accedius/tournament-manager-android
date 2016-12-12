@@ -33,16 +33,16 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     private static final int DRAW = 2;
     private static final int LOSS = 3;
 
-    private ICorePlayerManager corePlayerManager;
-    private HockeyDBHelper sportDBHelper;
+    protected ICorePlayerManager corePlayerManager;
+    protected HockeyDBHelper sportDBHelper;
 
     public StatisticsManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         this.corePlayerManager = corePlayerManager;
         this.sportDBHelper = sportDBHelper;
     }
 
-    private int calculatePoints(int outcome, PointConfiguration pointConfig, Match match) {
-        switch (outcome) {
+    private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
+        switch (result) {
             case WIN:
                 if (match.isShootouts())
                     return pointConfig.soW;

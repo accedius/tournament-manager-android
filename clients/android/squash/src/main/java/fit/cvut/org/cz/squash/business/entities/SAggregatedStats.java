@@ -99,4 +99,8 @@ public class SAggregatedStats implements Parcelable {
             default: return 0;
         }
     }
+
+    public int getTotalSets() {
+        return setsWon + setsLost;
+    }
 }

@@ -14,6 +14,7 @@ import java.util.Random;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -28,9 +29,11 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
+    protected HockeyDBHelper sportDBHelper;
 
-    public TeamManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    public TeamManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         super(corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
@@ -42,10 +45,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
         List<Player> res = new ArrayList<>();
         try {
-            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryBuilder()
-                    .where()
-                    .eq(DBConstants.cTOURNAMENT_ID, tournamentId)
-                    .query();
+            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                 res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
             }

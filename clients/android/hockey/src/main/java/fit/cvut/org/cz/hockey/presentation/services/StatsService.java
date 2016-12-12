@@ -28,6 +28,8 @@ public class StatsService extends AbstractIntentServiceWProgress {
     public static final String EXTRA_AWAY_STATS = "extra_away_statistics";
     public static final String EXTRA_HOME_NAME = "extra_home_name";
     public static final String EXTRA_AWAY_NAME = "extra_away_name";
+    public static final String EXTRA_HOME_PARTICIPANT = "extra_home_participant";
+    public static final String EXTRA_AWAY_PARTICIPANT = "extra_away_participant";
 
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
@@ -100,10 +102,14 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 List<PlayerStat> awayStats = new ArrayList<>();
 
                 for (Participant participant : participants) {
-                    if (ParticipantType.home.toString().equals(participant.getRole()))
+                    if (ParticipantType.home.toString().equals(participant.getRole())) {
                         homeStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(this, participant.getId());
-                    else if (ParticipantType.away.toString().equals(participant.getRole()))
+                        res.putExtra(EXTRA_HOME_PARTICIPANT, participant);
+                    }
+                    else if (ParticipantType.away.toString().equals(participant.getRole())) {
                         awayStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(this, participant.getId());
+                        res.putExtra(EXTRA_AWAY_PARTICIPANT, participant);
+                    }
                 }
 
                 res.putParcelableArrayListExtra(EXTRA_HOME_STATS, new ArrayList<>(homeStats));

@@ -35,9 +35,11 @@ abstract public class SportDBHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Participant, Long> participantDAO;
     private Dao<ParticipantStat, Long> participantStatDAO;
     private Dao<PlayerStat, Long> playerStatDAO;
+    protected String DBName;
 
     public SportDBHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
+        DBName = databaseName;
     }
 
     public Dao<Competition, Long> getCompetitionDAO() {
@@ -159,5 +161,9 @@ abstract public class SportDBHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return pointConfigurationDAO;
+    }
+
+    public String getDBName() {
+        return DBName;
     }
 }

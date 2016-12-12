@@ -18,6 +18,7 @@ import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
@@ -44,10 +45,9 @@ public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        final Context c = getContext();
         adapter = new ScoredMatchAdapter(getResources()){
             @Override
-            protected void setOnClickListeners(View v, final ScoredMatch match, final int position, final String title) {
+            protected void setOnClickListeners(View v, final Match match, final int position, final String title) {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

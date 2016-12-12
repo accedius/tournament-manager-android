@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +23,16 @@ public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewH
 
     @Override
     public void onBindViewHolder(TeamViewHolder holder, int position) {
-        Team t = data.get(position);
-        setOnClickListeners(holder.wholeView, t.getId(), position, t.getName());
+        Team team = data.get(position);
+        setOnClickListeners(holder.wholeView, team.getId(), position, team.getName());
 
-        holder.teamName.setText(t.getName());
-        if (t.getPlayers().size() > 0) {
+        holder.teamName.setText(team.getName());
+        if (team.getPlayers().size() > 0) {
             holder.playerNames.setVisibility(View.VISIBLE);
             holder.playerNames.setText("");
-            holder.playerNames.append(t.getPlayers().get(0).getName());
-            for (int i = 1; i<t.getPlayers().size();i++)
-                holder.playerNames.append(String.format(", %s", t.getPlayers().get(i).getName()));
+            holder.playerNames.append(team.getPlayers().get(0).getName());
+            for (int i = 1; i<team.getPlayers().size();i++)
+                holder.playerNames.append(String.format(", %s", team.getPlayers().get(i).getName()));
         } else
             holder.playerNames.setVisibility(View.GONE);
     }

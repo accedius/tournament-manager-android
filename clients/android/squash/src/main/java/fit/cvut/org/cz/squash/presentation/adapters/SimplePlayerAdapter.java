@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Adapter holding player names
  * Created by Vaclav on 4. 5. 2016.
  */
-public class SimplePlayerAdapter extends AbstractListAdapter<Player, SimplePlayerAdapter.PlayerVH> {
+public class SimplePlayerAdapter extends AbstractListAdapter<PlayerStat, SimplePlayerAdapter.PlayerVH> {
     @Override
     public PlayerVH onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PlayerVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player, parent, false));

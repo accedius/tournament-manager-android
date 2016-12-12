@@ -1,24 +1,9 @@
 package fit.cvut.org.cz.squash.business.managers;
 
-import android.content.ContentValues;
-import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.data.DAOFactory;
-import fit.cvut.org.cz.squash.data.entities.DStat;
-import fit.cvut.org.cz.squash.data.entities.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IPackagePlayerManager;
-
 /**
  * Created by Vaclav on 5. 4. 2016.
  */
-public class PlayerManager implements IPackagePlayerManager {
+public class PlayerManager {/*implements IPackagePlayerManager {
     @Override
     public void addPlayerToCompetition(Context context, long playerId, long competitionId) {
         DAOFactory.getInstance().playerDAO.addPlayerToCompetition(context, playerId, competitionId);
@@ -181,5 +166,5 @@ public class PlayerManager implements IPackagePlayerManager {
     @Override
     public ArrayList<Player> getPlayersNotInParticipant(Context context, long participantId) {
         return null;
-    }
+    }*/
 }

@@ -2,16 +2,13 @@ package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
@@ -24,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 /**
  * Created by kevin on 8.10.2016.
  */
-public class MatchSerializer extends BaseSerializer<ScoredMatch> {
+public class MatchSerializer extends BaseSerializer<Match> {
     protected static MatchSerializer instance = null;
     protected MatchSerializer(Context context) {
         this.context = context;
@@ -39,7 +36,7 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     }
 
     @Override
-    public ServerCommunicationItem serialize(ScoredMatch entity) {
+    public ServerCommunicationItem serialize(Match entity) {
         /* Serialize Match itself */
         ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
@@ -47,17 +44,17 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Participants */
-        Tournament t = ManagersFactory.getInstance().tournamentManager.getById(context, entity.getTournamentId());
-        Competition c = ManagersFactory.getInstance().competitionManager.getById(context, t.getCompetitionId());
+        Tournament t = ManagerFactory.getInstance(context).tournamentManager.getById(context, entity.getTournamentId());
+        Competition c = ManagerFactory.getInstance(context).competitionManager.getById(context, t.getCompetitionId());
         if (c.getType().equals(CompetitionTypes.teams())) {
-            Team home = ManagersFactory.getInstance().teamsManager.getById(context, entity.getHomeParticipantId());
+            Team home = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getHomeParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-            Team away = ManagersFactory.getInstance().teamsManager.getById(context, entity.getAwayParticipantId());
+            Team away = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getAwayParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         } else {
-            Player home = ManagersFactory.getInstance().playerManager.getPlayerById(context, entity.getHomeParticipantId());
+            Player home = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, entity.getHomeParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(home));
-            Player away = ManagersFactory.getInstance().playerManager.getPlayerById(context, entity.getAwayParticipantId());
+            Player away = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, entity.getAwayParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(away));
         }
 
@@ -65,8 +62,8 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     }
 
     @Override
-    public ScoredMatch deserialize(ServerCommunicationItem item) {
-        ScoredMatch sm = new ScoredMatch();
+    public Match deserialize(ServerCommunicationItem item) {
+        Match sm = new Match();
         sm.setEtag(item.getEtag());
         sm.setLastModified(item.getModified());
         deserializeSyncData(item.syncData, sm);
@@ -74,8 +71,8 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(ScoredMatch entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Match entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         if (entity.getDate() == null) {
             hm.put("date", null);
         } else {
@@ -86,21 +83,21 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
         hm.put("period", Integer.toString(entity.getPeriod()));
         hm.put("round", Integer.toString(entity.getRound()));
 
-        hm.put("score_home", Integer.toString(entity.getHomeScore()));
-        hm.put("score_away", Integer.toString(entity.getAwayScore()));
+        hm.put("score_home", Integer.toString(entity.getHomeWonSets()));
+        hm.put("score_away", Integer.toString(entity.getAwayWonSets()));
 
         /* Serialize sets */
-        ArrayList<SetRowItem> sets = ManagersFactory.getInstance().statsManager.getSetsForMatch(context, entity.getId());
+        /*ArrayList<SetRowItem> sets = ManagerFactory.getInstance(context).statisticManager.getSetsForMatch(context, entity.getId());
         hm.put("sets", Integer.toString(sets.size()));
         int set_id = 1;
         for (SetRowItem set : sets) {
             hm.put("set_home_"+set_id, Integer.toString(set.getHomeScore()));
             hm.put("set_away_"+set_id, Integer.toString(set.getAwayScore()));
             set_id++;
-        }
+        }*/
 
         /* Serialize players */
-        ArrayList<Player> homePlayers = ManagersFactory.getInstance().statsManager.getPlayersForMatch(context, entity.getId(), "home");
+        /*ArrayList<Player> homePlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(context, entity.getId(), "home");
         hm.put("players_home", Integer.toString(homePlayers.size()));
 
         int homePlayerId = 1;
@@ -109,27 +106,27 @@ public class MatchSerializer extends BaseSerializer<ScoredMatch> {
             homePlayerId++;
         }
 
-        ArrayList<Player> awayPlayers = ManagersFactory.getInstance().statsManager.getPlayersForMatch(context, entity.getId(), "away");
+        ArrayList<Player> awayPlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(context, entity.getId(), "away");
         hm.put("players_away", Integer.toString(awayPlayers.size()));
 
         int awayPlayerId = 1;
         for (Player p : awayPlayers) {
             hm.put("player_away_"+awayPlayerId, strategy.getUid(p));
             awayPlayerId++;
-        }
+        }*/
         return hm;
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, ScoredMatch entity) {
+    public void deserializeSyncData(HashMap<String, Object> syncData, Match entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-        try {
+        /*try {
             entity.setDate(dateFormat.parse(syncData.get("date")));
         } catch (ParseException e) {} catch (NullPointerException e) {}
         entity.setPlayed(Boolean.parseBoolean(syncData.get("played")));
         entity.setNote(syncData.get("note"));
         entity.setPeriod(Integer.parseInt(syncData.get("period")));
-        entity.setRound(Integer.parseInt(syncData.get("round")));
+        entity.setRound(Integer.parseInt(syncData.get("round")));*/
     }
 
     @Override

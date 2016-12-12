@@ -22,6 +22,8 @@ public class PlayerStat implements IEntity, Parcelable {
     @DatabaseField(columnName = DBConstants.cPLAYER_ID)
     protected long player_id;
 
+    private String name;
+
     public PlayerStat() {}
 
     public PlayerStat(long participant_id, long player_id) {
@@ -42,9 +44,10 @@ public class PlayerStat implements IEntity, Parcelable {
     };
 
     protected PlayerStat(Parcel in) {
-        this.id = in.readLong();
-        this.participant_id = in.readLong();
-        this.player_id = in.readLong();
+        id = in.readLong();
+        participant_id = in.readLong();
+        player_id = in.readLong();
+        name = in.readString();
     }
 
     @Override
@@ -57,6 +60,7 @@ public class PlayerStat implements IEntity, Parcelable {
         dest.writeLong(id);
         dest.writeLong(participant_id);
         dest.writeLong(player_id);
+        dest.writeString(name);
     }
     @Override
     public long getId() {
@@ -81,5 +85,13 @@ public class PlayerStat implements IEntity, Parcelable {
 
     public void setPlayerId(long player_id) {
         this.player_id = player_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

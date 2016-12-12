@@ -42,8 +42,6 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
         ArrayList<PlayerStat> newHomeStat = new ArrayList<>(homeStats);
         ArrayList<PlayerStat> newAwayStat = new ArrayList<>(awayStats);
 
-        Log.d("newStartIntent", "home: "+newHomeStat+", away:"+newAwayStat);
-
         res.putParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS, newHomeStat);
         res.putParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS, newAwayStat);
 

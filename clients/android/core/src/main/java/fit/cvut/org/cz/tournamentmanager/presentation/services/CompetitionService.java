@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -54,12 +55,16 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         Uri myUri = Uri.parse(uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, DBConstants.cSTART + " DESC, " + DBConstants.cEND + " DESC");
         if (cur == null) {
+            Log.d("STATS", "Cursor is null");
             return data;
         }
 
         CursorParser cp = CursorParser.getInstance();
-        if (cur.getCount() == 0)
+        if (cur.getCount() == 0) {
+            Log.d("STATS", "No competitions found");
             return data;
+        }
+        Log.d("STATS", cur.getCount()+" competitions found");
 
         cur.moveToFirst();
         do {

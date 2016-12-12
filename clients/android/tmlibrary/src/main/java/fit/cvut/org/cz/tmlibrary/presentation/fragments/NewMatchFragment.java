@@ -19,10 +19,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -91,7 +93,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     private EditText mDate, period, round, note;
 
     // TODO aby fungovalo i pro pole hráčů (individuals competition), bude potřeba mít Array<Participant> a v Participant nastavit jméno...
-    private ArrayAdapter<Team> homePartAdapter, awayPartAdapter;
+    private ArrayAdapter<Participant> homePartAdapter, awayPartAdapter;
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
@@ -132,13 +134,14 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         Date sDate = null;
         if (dDate != null)
             sDate = dDate.getTime();
-        long homeTeamId = ((Team) homeTeamSpinner.getSelectedItem()).getId();
-        long awayTeamId = ((Team) awayTeamSpinner.getSelectedItem()).getId();
+
+        long homeParticipantId = ((Participant) homeTeamSpinner.getSelectedItem()).getParticipantId();
+        long awayParticipantId = ((Participant) awayTeamSpinner.getSelectedItem()).getParticipantId();
 
         Match sm = new Match(id, tournamentId, null, sDate, false, note.getText().toString(), sPeriod, sRound);
         if (id == -1) {
-            sm.addParticipant(new Participant(id, homeTeamId, ParticipantType.home.toString()));
-            sm.addParticipant(new Participant(id, awayTeamId, ParticipantType.away.toString()));
+            sm.addParticipant(new Participant(id, homeParticipantId, ParticipantType.home.toString()));
+            sm.addParticipant(new Participant(id, awayParticipantId, ParticipantType.away.toString()));
         }
 
         return sm;
@@ -163,7 +166,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
             smatch = intent.getParcelableExtra(getMatchKey());
             bindMatchOnView(smatch);
         }
-        ArrayList<Team> participants = intent.getParcelableArrayListExtra(getTournamentParticipantsKey());
+        ArrayList<Participant> participants = intent.getParcelableArrayListExtra(getTournamentParticipantsKey());
         bindParticipantsOnView(participants, smatch);
     }
 
@@ -182,7 +185,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         note.setText(match.getNote());
     }
 
-    private void bindParticipantsOnView(ArrayList<Team> participants, Match match) {
+    private void bindParticipantsOnView(ArrayList<Participant> participants, Match match) {
         homePartAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants);
         homePartAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         homeTeamSpinner.setAdapter(homePartAdapter);
@@ -193,7 +196,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
 
         if (match != null) {
             int hIndex = 0, aIndex = 0;
-            Log.d("NEW_MATCH", "Particiapnts: "+match.getParticipants().size());
             for (Participant p : match.getParticipants()) {
                 if (ParticipantType.home.toString().equals(p.getRole())) {
                     hIndex = homePartAdapter.getPosition(findParticipant(participants, p.getParticipantId()));
@@ -207,10 +209,10 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
     }
 
-    private Team findParticipant(ArrayList<Team> participants, long id) {
-        for (Team part : participants)
-            if (part.getId() == id)
-                return part;
+    private Participant findParticipant(ArrayList<Participant> participants, long id) {
+        for (Participant participant : participants)
+            if (participant.getParticipantId() == id)
+                return participant;
 
         return null;
     }

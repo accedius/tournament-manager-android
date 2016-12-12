@@ -9,15 +9,16 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
@@ -110,7 +111,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         String originalText = text.substring(0, text.length()-2);
         col.setText(originalText);
 
-        ArrayList<SAggregatedStats> stats = adapter.getData();
+        List<SAggregatedStats> stats = adapter.getData();
         if (orderColumn.equals(stat) && orderType == "DESC") {
             orderType = "ASC";
             Collections.sort(stats, new Comparator<SAggregatedStats>() {

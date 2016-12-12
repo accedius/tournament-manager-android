@@ -16,11 +16,11 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.managers.TournamentManager {
-    protected HockeyDBHelper hockeyDBHelper;
+    protected HockeyDBHelper sportDBHelper;
 
     public TournamentManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
         super(corePlayerManager, sportDBHelper);
-        hockeyDBHelper = sportDBHelper;
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
             super.insert(context, tournament);
             PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();
             pointConfiguration.setTournamentId(tournament.getId());
-            hockeyDBHelper.getHockeyPointConfigurationDAO().create(pointConfiguration);
+            sportDBHelper.getHockeyPointConfigurationDAO().create(pointConfiguration);
 
         } catch (SQLException e) {
             e.printStackTrace();

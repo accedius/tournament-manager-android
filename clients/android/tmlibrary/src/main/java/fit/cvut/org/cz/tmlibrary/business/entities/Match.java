@@ -45,6 +45,8 @@ public class Match extends ShareBase {
     @DatabaseField(columnName = DBConstants.cROUND)
     private int round;
 
+    protected int homeScore;
+    protected int awayScore;
     protected List<Participant> participants = new ArrayList<>();
 
     public Match() {}
@@ -102,6 +104,8 @@ public class Match extends ShareBase {
 
         uid = in.readString();
         etag = in.readString();
+        homeScore = in.readInt();
+        awayScore = in.readInt();
         in.readTypedList(participants, Participant.CREATOR);
     }
 
@@ -141,6 +145,8 @@ public class Match extends ShareBase {
         else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
+        dest.writeInt(homeScore);
+        dest.writeInt(awayScore);
         dest.writeTypedList(participants);
     }
 
@@ -222,5 +228,29 @@ public class Match extends ShareBase {
 
     public String getEntityType() {
         return "Match";
+    }
+
+    public String getHomeName() {
+        return null;
+    }
+
+    public String getAwayName() {
+        return null;
+    }
+
+    public int getHomeScore() {
+        return homeScore;
+    }
+
+    public int getAwayScore() {
+        return awayScore;
+    }
+
+    public void setHomeScore(int homeScore) {
+        this.homeScore = homeScore;
+    }
+
+    public void setAwayScore(int awayScore) {
+        this.awayScore = awayScore;
     }
 }

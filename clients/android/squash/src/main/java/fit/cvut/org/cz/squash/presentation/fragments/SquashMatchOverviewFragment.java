@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.business.entities.Match;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -24,7 +24,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
     private static final String ARG_ID = "arg_id";
     private static final String ARG_PLAYED = "arg_played";
 
-    private ScoredMatch match = null;
+    private Match match = null;
 
     private Long tournament_id;
 

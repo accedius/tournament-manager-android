@@ -86,11 +86,11 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             fit.cvut.org.cz.tmlibrary.business.entities.Match match = ((NewHockeyMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
-            Match hockeyMatch = new Match(match);
-            if (hockeyMatch == null) {
+            if (match == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
+            Match hockeyMatch = new Match(match);
             if (hockeyMatch.getId() == -1) {
                 List<Participant> participants = hockeyMatch.getParticipants();
                 if (participants.get(0).getParticipantId() == participants.get(1).getParticipantId()) {

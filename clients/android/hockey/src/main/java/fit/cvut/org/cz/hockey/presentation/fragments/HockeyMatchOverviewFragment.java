@@ -227,7 +227,8 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     }
 
     public Match getScore() {
-        Match res = ManagerFactory.getInstance(getContext()).matchManager.getById(getContext(), getArguments().getLong(ARG_ID));
+        Match res = new Match();
+        res.setId(getArguments().getLong(ARG_ID));
         res.setOvertime(ot != 0);
         res.setShootouts(so != 0);
         res.setPlayed(true);
