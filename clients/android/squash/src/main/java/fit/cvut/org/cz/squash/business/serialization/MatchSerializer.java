@@ -44,17 +44,17 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Participants */
-        Tournament t = ManagerFactory.getInstance(context).tournamentManager.getById(context, entity.getTournamentId());
-        Competition c = ManagerFactory.getInstance(context).competitionManager.getById(context, t.getCompetitionId());
+        Tournament t = ManagerFactory.getInstance(context).tournamentManager.getById(entity.getTournamentId());
+        Competition c = ManagerFactory.getInstance(context).competitionManager.getById(t.getCompetitionId());
         if (c.getType().equals(CompetitionTypes.teams())) {
-            Team home = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getHomeParticipantId());
+            Team home = ManagerFactory.getInstance(context).teamManager.getById(entity.getHomeParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-            Team away = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getAwayParticipantId());
+            Team away = ManagerFactory.getInstance(context).teamManager.getById(entity.getAwayParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         } else {
-            Player home = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, entity.getHomeParticipantId());
+            Player home = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(entity.getHomeParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(home));
-            Player away = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, entity.getAwayParticipantId());
+            Player away = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(entity.getAwayParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(away));
         }
 
@@ -87,7 +87,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("score_away", Integer.toString(entity.getAwayWonSets()));
 
         /* Serialize sets */
-        /*ArrayList<SetRowItem> sets = ManagerFactory.getInstance(context).statisticManager.getSetsForMatch(context, entity.getId());
+        /*ArrayList<SetRowItem> sets = ManagerFactory.getInstance(context).statisticManager.getSetsForMatch(entity.getId());
         hm.put("sets", Integer.toString(sets.size()));
         int set_id = 1;
         for (SetRowItem set : sets) {
@@ -97,7 +97,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
         }*/
 
         /* Serialize players */
-        /*ArrayList<Player> homePlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(context, entity.getId(), "home");
+        /*ArrayList<Player> homePlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(entity.getId(), "home");
         hm.put("players_home", Integer.toString(homePlayers.size()));
 
         int homePlayerId = 1;
@@ -106,7 +106,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
             homePlayerId++;
         }
 
-        ArrayList<Player> awayPlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(context, entity.getId(), "away");
+        ArrayList<Player> awayPlayers = ManagerFactory.getInstance(context).statisticManager.getPlayersForMatch(entity.getId(), "away");
         hm.put("players_away", Integer.toString(awayPlayers.size()));
 
         int awayPlayerId = 1;

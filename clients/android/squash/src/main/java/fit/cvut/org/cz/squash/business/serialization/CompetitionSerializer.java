@@ -40,14 +40,14 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */
-        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(context, entity.getId());
+        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(entity.getId());
         PlayerSerializer ps = PlayerSerializer.getInstance(context);
         for (Player p : players) {
             item.subItems.add(ps.serialize(p));
         }
 
         /* Serialize Tournaments */
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(context, entity.getId());
+        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(entity.getId());
         TournamentSerializer ts = TournamentSerializer.getInstance(context);
         for (Tournament t : tournaments) {
             item.subItems.add(ts.serialize(t));

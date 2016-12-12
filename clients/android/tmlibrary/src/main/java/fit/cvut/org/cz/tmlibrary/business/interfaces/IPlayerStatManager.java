@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
-import android.content.Context;
-
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
@@ -12,23 +10,20 @@ import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 public interface IPlayerStatManager extends IManager<PlayerStat> {
     /**
      * get all player stats for player
-     * @param context application context
      * @param playerId id of the player
      * @return found player stats
      */
-    List<PlayerStat> getByPlayerId(Context context, long playerId);
+    List<PlayerStat> getByPlayerId(long playerId);
     /**
      * get all player stats for participant
-     * @param context application context
      * @param participantId id of the participant
      * @return found player stats
      */
-    List<PlayerStat> getByParticipantId(Context context, long participantId);
+    List<PlayerStat> getByParticipantId(long participantId);
 
     /**
      * delete all player stats for participant
-     * @param context application context
      * @param participantId id of the participant
      */
-    void deleteByParticipantId(Context context, long participantId);
+    void deleteByParticipantId(long participantId);
 }

@@ -39,7 +39,7 @@ public class TeamSerializer extends BaseSerializer<Team> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
-        List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(context, entity);
+        List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(entity);
         for (Player p : teamPlayers) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
         }

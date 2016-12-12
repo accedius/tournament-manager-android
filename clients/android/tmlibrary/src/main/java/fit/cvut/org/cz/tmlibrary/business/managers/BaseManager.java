@@ -17,33 +17,35 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 30.11.2016.
  */
 abstract public class BaseManager<T extends IEntity> implements IManager<T> {
+    protected Context context;
     protected SportDBHelper sportDBHelper;
     protected ICorePlayerManager corePlayerManager;
 
-    abstract protected Dao<T, Long> getDao(Context context);
-    public BaseManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    abstract protected Dao<T, Long> getDao();
+    public BaseManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+        this.context = context;
         this.corePlayerManager = corePlayerManager;
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    public void insert(Context context, T entity) {
+    public void insert(T entity) {
         try {
-            getDao(context).create(entity);
+            getDao().create(entity);
         } catch (SQLException e) {}
     }
 
     @Override
-    public void update(Context context, T entity) {
+    public void update(T entity) {
         try {
-            getDao(context).update(entity);
+            getDao().update(entity);
         } catch (SQLException e) {}
     }
 
     @Override
-    public boolean delete(Context context, long id) {
+    public boolean delete(long id) {
         try {
-            getDao(context).deleteById(id);
+            getDao().deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;
@@ -51,18 +53,18 @@ abstract public class BaseManager<T extends IEntity> implements IManager<T> {
     }
 
     @Override
-    public T getById(Context context, long id) {
+    public T getById(long id) {
         try {
-            return getDao(context).queryForId(id);
+            return getDao().queryForId(id);
         } catch (SQLException e) {
             return null;
         }
     }
 
     @Override
-    public List<T> getAll(Context context) {
+    public List<T> getAll() {
         try {
-            return getDao(context).queryForAll();
+            return getDao().queryForAll();
         } catch (SQLException e) {
             return new ArrayList<T>();
         }

@@ -3,7 +3,6 @@ package fit.cvut.org.cz.hockey.presentation.services;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -56,21 +55,21 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_CREATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.insert(this, c);
+                ManagerFactory.getInstance(this).competitionManager.insert(c);
                 break;
 
             case ACTION_UPDATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.update(this, c);
+                ManagerFactory.getInstance(this).competitionManager.update(c);
                 break;
 
             case ACTION_FIND_BY_ID:
                 Intent res = new Intent();
                 long competitionId = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
-                c = ManagerFactory.getInstance(this).competitionManager.getById(this, competitionId);
-                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(this, competitionId);
-                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(this, competitionId);
+                c = ManagerFactory.getInstance(this).competitionManager.getById(competitionId);
+                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(competitionId);
+                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(competitionId);
 
                 res.putExtra(EXTRA_COMPETITION, c);
                 res.putExtra(EXTRA_PLAYERS_COUNT, players.size());

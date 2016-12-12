@@ -8,7 +8,6 @@ import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 30. 3. 2016.
@@ -16,13 +15,13 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class CompetitionManager extends fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager {
     protected SquashDBHelper sportDBHelper;
 
-    public CompetitionManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public CompetitionManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<Competition, Long> getDao(Context context) {
+    protected Dao<Competition, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getCompetitionDAO();
     }
 }

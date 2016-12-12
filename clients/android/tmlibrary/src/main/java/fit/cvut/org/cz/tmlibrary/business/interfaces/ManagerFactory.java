@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
@@ -11,7 +10,7 @@ abstract public class ManagerFactory {
     public ICompetitionManager competitionManager;
     public ITournamentManager tournamentManager;
     public ITeamManager teamManager;
-    public ICorePlayerManager corePlayerManager = new CorePlayerManager();
+    public ICorePlayerManager corePlayerManager;
     //IStatisticManager statisticsManager;
     public IParticipantManager participantManager;
     public IParticipantStatManager participantStatManager;

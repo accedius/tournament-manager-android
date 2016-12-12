@@ -21,8 +21,14 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by kevin on 2.12.2016.
  */
 public class CorePlayerManager implements ICorePlayerManager {
+    protected Context context;
+
+    public CorePlayerManager(Context context) {
+        this.context = context;
+    }
+
     @Override
-    public Map<Long, Player> getAllPlayers(Context context) {
+    public Map<Long, Player> getAllPlayers() {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -49,13 +55,13 @@ public class CorePlayerManager implements ICorePlayerManager {
     }
 
     @Override
-    public Player getPlayerById(Context context, long playerId) {
-        Map<Long, Player> players = getAllPlayers(context);
+    public Player getPlayerById(long playerId) {
+        Map<Long, Player> players = getAllPlayers();
         return players.get(playerId);
     }
 
     @Override
-    public void insertPlayer(Context context, Player player) {
+    public void insertPlayer(Player player) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai;
         try {
@@ -71,7 +77,7 @@ public class CorePlayerManager implements ICorePlayerManager {
     }
 
     @Override
-    public void updatePlayer(Context context, Player player) {
+    public void updatePlayer(Player player) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai;
         try {

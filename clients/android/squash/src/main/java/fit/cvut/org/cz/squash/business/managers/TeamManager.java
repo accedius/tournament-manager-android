@@ -23,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGener
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
@@ -31,18 +30,18 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
     protected SquashDBHelper sportDBHelper;
 
-    public TeamManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public TeamManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<Team, Long> getDao(Context context) {
+    protected Dao<Team, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getTeamDAO();
     }
 
-    public List<Player> getTournamentPlayers(Context context, long tournamentId) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+    public List<Player> getTournamentPlayers(long tournamentId) {
+        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
         List<Player> res = new ArrayList<>();
         try {
             List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
@@ -56,10 +55,10 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         }
     }
     @Override
-    public boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
-        List<Player> players = getTournamentPlayers(context, tournamentId);
-        List<Team> teams = getByTournamentId(context, tournamentId);
-        List<SAggregatedStats> stats = ManagerFactory.getInstance(context).statisticManager.getByCompetitionId(context, competitionId);
+    public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
+        List<Player> players = getTournamentPlayers(tournamentId);
+        List<Team> teams = getByTournamentId(tournamentId);
+        List<SAggregatedStats> stats = ManagerFactory.getInstance(context).statisticManager.getByCompetitionId(competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
@@ -83,7 +82,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
-            ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(context, t.getId(), t.getPlayers());
+            ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(t.getId(), t.getPlayers());
 
         return res;
     }

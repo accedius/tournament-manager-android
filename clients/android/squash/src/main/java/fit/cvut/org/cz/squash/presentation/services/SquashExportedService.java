@@ -63,7 +63,7 @@ public class SquashExportedService extends IntentService {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
-                if (ManagerFactory.getInstance(this).competitionManager.delete(this, id))
+                if (ManagerFactory.getInstance(this).competitionManager.delete(id))
                     result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
                     result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
@@ -73,7 +73,7 @@ public class SquashExportedService extends IntentService {
             }
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                SAggregatedStats stat = ManagerFactory.getInstance(this).statisticManager.getByPlayerId(this, id);
+                SAggregatedStats stat = ManagerFactory.getInstance(this).statisticManager.getByPlayerId(id);
                 AggregatedStats statsForExport = new AggregatedStats();
 
                 PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
@@ -101,7 +101,7 @@ public class SquashExportedService extends IntentService {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(this, compId);
+                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(compId);
                 c.setSportContext(sport_context);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
@@ -158,7 +158,7 @@ public class SquashExportedService extends IntentService {
                 }
 
                 /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers(this);
+                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
                 HashMap<String, Player> allPlayersMap = new HashMap<>();
                 for (Player p : allPlayers.values()) {
                     allPlayersMap.put(p.getEmail(), p);
@@ -199,7 +199,7 @@ public class SquashExportedService extends IntentService {
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
                 Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
                 c.setName(c.getName() + " " + DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
-                ManagerFactory.getInstance(this).competitionManager.insert(this, c);
+                ManagerFactory.getInstance(this).competitionManager.insert(c);
                 long competitionId = c.getId();
 
                 HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
@@ -217,7 +217,7 @@ public class SquashExportedService extends IntentService {
                 }
 
                 /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers(this);
+                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
                 HashMap<String, Player> allPlayersMap = new HashMap<>();
                 for (Player p : allPlayers.values()) {
                     allPlayersMap.put(p.getEmail(), p);
@@ -238,14 +238,14 @@ public class SquashExportedService extends IntentService {
                         if (!matchedPlayer.samePlayer(importedPlayer)) {
                             if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
                                 if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
-                                    ManagerFactory.getInstance(this).corePlayerManager.updatePlayer(this, importedPlayer);
+                                    ManagerFactory.getInstance(this).corePlayerManager.updatePlayer(importedPlayer);
                                     Log.d("IMPORT", "\tCONFLICT!");
                                     Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
                                 }
                             }
                         }
                     } else {
-                        ManagerFactory.getInstance(this).corePlayerManager.insertPlayer(this, importedPlayer);
+                        ManagerFactory.getInstance(this).corePlayerManager.insertPlayer(importedPlayer);
                         playerId = importedPlayer.getId();
                         Log.d("IMPORT", "\tADDED " + playerId);
                     }
@@ -253,7 +253,7 @@ public class SquashExportedService extends IntentService {
                     importedPlayers.put(importedPlayer.getUid(), importedPlayer);
 
                     // Add player to competition.
-                    ManagerFactory.getInstance(this).competitionManager.addPlayer(this, c, importedPlayer);
+                    ManagerFactory.getInstance(this).competitionManager.addPlayer(c, importedPlayer);
                 }
 
                 /* TOURNAMENTS HANDLING */
@@ -265,7 +265,7 @@ public class SquashExportedService extends IntentService {
                     Log.d("IMPORT", "Tournament: " + t.syncData);
                     Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
                     imported.setCompetitionId(competitionId);
-                    ManagerFactory.getInstance(this).tournamentManager.insert(this, imported);
+                    ManagerFactory.getInstance(this).tournamentManager.insert(imported);
                     long tournamentId = imported.getId();
 
                     for (ServerCommunicationItem subItem : t.subItems) {
@@ -281,7 +281,7 @@ public class SquashExportedService extends IntentService {
                     for (ServerCommunicationItem p : tournamentPlayers) {
                         // Add player to tournament.
                         long playerId = importedPlayers.get(p.getUid()).getId();
-                        ManagerFactory.getInstance(this).tournamentManager.addPlayer(this, playerId, tournamentId);
+                        ManagerFactory.getInstance(this).tournamentManager.addPlayer(playerId, tournamentId);
                     }
 
                     HashMap<String, Team> importedTeams = new HashMap<>();
@@ -289,7 +289,7 @@ public class SquashExportedService extends IntentService {
                         // Add team to tournament.
                         Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
                         importedTeam.setTournamentId(tournamentId);
-                        ManagerFactory.getInstance(this).teamManager.insert(this, importedTeam);
+                        ManagerFactory.getInstance(this).teamManager.insert(importedTeam);
                         long teamId = importedTeam.getId();
                         importedTeam.setId(teamId);
                         importedTeams.put(team.getUid(), importedTeam);
@@ -301,7 +301,7 @@ public class SquashExportedService extends IntentService {
                                 teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                             }
                         }
-                        ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(this, teamId, teamPlayers);
+                        ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(teamId, teamPlayers);
                     }
 
                     // Add match
@@ -330,31 +330,31 @@ public class SquashExportedService extends IntentService {
 //                        importedMatch.setAwayParticipantId(awayParticipantId);
 
                         /* START Match Manager - insert */
-                        /*long matchId = DAOFactory.getInstance().matchDAO.insert(this, ScoredMatch.convertToDMatch(importedMatch));
+                        /*long matchId = DAOFactory.getInstance().matchDAO.insert(ScoredMatch.convertToDMatch(importedMatch));
                         DParticipant homeParticipant = null;
                         DParticipant awayParticipant = null;
                         if (c.getType().equals(CompetitionTypes.individuals())) {
                             homeParticipant = new DParticipant(-1, -1, matchId, "home");
                             awayParticipant = new DParticipant(-1, -1, matchId, "away");
-                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(this, homeParticipant);
-                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(this, awayParticipant);
+                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(homeParticipant);
+                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(awayParticipant);
                             //for individuals we have to insert match participation as well else we could not link match to player
-                            DAOFactory.getInstance().statDAO.insert(this, new DStat(-1, competitionId, t.getId(), importedMatch.getHomeParticipantId(), homeParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
-                            DAOFactory.getInstance().statDAO.insert(this, new DStat(-1, competitionId, t.getId(), importedMatch.getAwayParticipantId(), awayParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
+                            DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, t.getId(), importedMatch.getHomeParticipantId(), homeParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
+                            DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, t.getId(), importedMatch.getAwayParticipantId(), awayParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
                         } else {
                             homeParticipant = new DParticipant(-1, importedMatch.getHomeParticipantId(), matchId, "home");
                             awayParticipant = new DParticipant(-1, importedMatch.getAwayParticipantId(), matchId, "away");
-                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(this, homeParticipant);
-                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(this, awayParticipant);
+                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(homeParticipant);
+                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(awayParticipant);
                         }*/
                         /* END Match Manager - insert */
 
                         // Add teams rosters to match
                         /*if (CompetitionTypes.teams().equals(c.getType())) {
                             ArrayList<Player> matchPlayers = getPlayers(match, "home", importedPlayers);
-                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(this, matchId, "home", matchPlayers);
+                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(matchId, "home", matchPlayers);
                             matchPlayers = getPlayers(match, "away", importedPlayers);
-                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(this, matchId, "away", matchPlayers);
+                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(matchId, "away", matchPlayers);
                         }*/
 
                         // Add sets
@@ -381,18 +381,18 @@ public class SquashExportedService extends IntentService {
             else if (item.getHomeScore() < item.getAwayScore())
                 item.setWinner(-1);
 
-            DAOFactory.getInstance().statDAO.insert(this, new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
+            DAOFactory.getInstance().statDAO.insert(new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
                     item.getWinner(), item.getAwayScore(), item.getHomeScore(), StatsEnum.SET));
-            DAOFactory.getInstance().statDAO.insert(this, new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
+            DAOFactory.getInstance().statDAO.insert(new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
                     item.getWinner() * -1, item.getHomeScore(), item.getAwayScore(), StatsEnum.SET));
             setsWon += item.getWinner();
         }
         int result = 0;
         if (setsWon > 0) result = 1;
         if (setsWon < 0) result = -1;
-        DAOFactory.getInstance().statDAO.insert(this, new DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
+        DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
                 result, -1, -1, StatsEnum.MATCH));
-        DAOFactory.getInstance().statDAO.insert(this, new DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
+        DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
                 result * -1, -1, -1, StatsEnum.MATCH));
     }
 

@@ -63,7 +63,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByCompetitionId(this, compID);
+                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByCompetitionId(compID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -75,7 +75,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_TOUR_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByTournamentId(this, tourID);
+                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByTournamentId(tourID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -86,7 +86,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent(action);
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
-                List<Standing> standings = ManagerFactory.getInstance(this).statisticsManager.getStandingsByTournamentId(this, tourID);
+                List<Standing> standings = ManagerFactory.getInstance(this).statisticsManager.getStandingsByTournamentId(tourID);
 
                 res.putParcelableArrayListExtra(EXTRA_STANDINGS, new ArrayList<>(standings));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -96,18 +96,18 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_MATCH_PLAYER_STATISTICS: {
                 Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
-                Match match = ManagerFactory.getInstance(this).matchManager.getById(this, matchId);
-                List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(this, matchId);
+                Match match = ManagerFactory.getInstance(this).matchManager.getById(matchId);
+                List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(matchId);
                 List<PlayerStat> homeStats = new ArrayList<>();
                 List<PlayerStat> awayStats = new ArrayList<>();
 
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
-                        homeStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(this, participant.getId());
+                        homeStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_HOME_PARTICIPANT, participant);
                     }
                     else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                        awayStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(this, participant.getId());
+                        awayStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_AWAY_PARTICIPANT, participant);
                     }
                 }

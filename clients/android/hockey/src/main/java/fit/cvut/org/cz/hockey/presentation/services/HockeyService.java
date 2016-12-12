@@ -17,7 +17,6 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.hockey.business.serialization.TeamSerializer;
@@ -42,9 +41,6 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
-import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DStat;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -73,7 +69,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         switch (action) {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerId(this, id);
+                AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerId(id);
                 AggregatedStats statsToSend = new AggregatedStats();
 
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -102,7 +98,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                if (ManagerFactory.getInstance(this).competitionManager.delete(this, compId))
+                if (ManagerFactory.getInstance(this).competitionManager.delete(compId))
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
@@ -112,7 +108,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(this, compId);
+                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(compId);
                 c.setSportContext(sportContext);
                 String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
@@ -169,7 +165,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 }
 
                 /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers(this);
+                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
                 HashMap<String, Player> allPlayersMap = new HashMap<>();
                 for (Player p : allPlayers.values()) {
                     allPlayersMap.put(p.getEmail(), p);
@@ -217,7 +213,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
                 HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
 
-                ManagerFactory.getInstance(this).competitionManager.insert(this, c);
+                ManagerFactory.getInstance(this).competitionManager.insert(c);
                 long competitionId = c.getId();
 
                 List<ServerCommunicationItem> allSubItems = competition.getSubItems();
@@ -233,7 +229,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 }
 
                 /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers(this);
+                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
                 HashMap<String, Player> allPlayersMap = new HashMap<>();
                 for (Player p : allPlayers.values()) {
                     allPlayersMap.put(p.getEmail(), p);
@@ -254,14 +250,14 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         if (!matchedPlayer.samePlayer(importedPlayer)) {
                             if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
                                 if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
-                                    ManagerFactory.getInstance(this).corePlayerManager.updatePlayer(this, importedPlayer);
+                                    ManagerFactory.getInstance(this).corePlayerManager.updatePlayer(importedPlayer);
                                     Log.d("IMPORT", "\tCONFLICT!");
                                     Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
                                 }
                             }
                         }
                     } else {
-                        ManagerFactory.getInstance(this).corePlayerManager.insertPlayer(this, importedPlayer);
+                        ManagerFactory.getInstance(this).corePlayerManager.insertPlayer(importedPlayer);
                         playerId = importedPlayer.getId();
                         Log.d("IMPORT", "\tADDED "+playerId);
                     }
@@ -269,7 +265,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     importedPlayers.put(importedPlayer.getUid(), importedPlayer);
 
                     // Add player to competition.
-                    ManagerFactory.getInstance(this).competitionManager.addPlayer(this, c, importedPlayer);
+                    ManagerFactory.getInstance(this).competitionManager.addPlayer(c, importedPlayer);
                 }
 
                 /* TOURNAMENTS HANDLING */
@@ -281,7 +277,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     Log.d("IMPORT", "Tournament: " + t.syncData);
                     Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
                     imported.setCompetitionId(competitionId);
-                    ManagerFactory.getInstance(this).tournamentManager.insert(this, imported);
+                    ManagerFactory.getInstance(this).tournamentManager.insert(imported);
                     long tournamentId = imported.getId();
 
                     for (ServerCommunicationItem subItem : t.subItems) {
@@ -297,7 +293,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                     for (ServerCommunicationItem p : tournamentPlayers) {
                         // Add player to tournament.
                         long playerId = importedPlayers.get(p.getUid()).getId();
-                        ManagerFactory.getInstance(this).tournamentManager.addPlayer(this, playerId, tournamentId);
+                        ManagerFactory.getInstance(this).tournamentManager.addPlayer(playerId, tournamentId);
                     }
 
                     HashMap<String, Team> importedTeams = new HashMap<>();
@@ -305,7 +301,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                         // Add team to tournament.
                         Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
                         importedTeam.setTournamentId(tournamentId);
-                        ManagerFactory.getInstance(this).teamManager.insert(this, importedTeam);
+                        ManagerFactory.getInstance(this).teamManager.insert(importedTeam);
                         importedTeams.put(team.getUid(), importedTeam);
 
                         // Add players to team.
@@ -315,7 +311,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                                 teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                             }
                         }
-                        ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(this, importedTeam.getId(), teamPlayers);
+                        ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(importedTeam.getId(), teamPlayers);
                     }
 
                     // Add stats
@@ -331,24 +327,24 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             }
                             home = false;
                         }
-                        ManagerFactory.getInstance(this).matchManager.insert(this, importedMatch);
+                        ManagerFactory.getInstance(this).matchManager.insert(importedMatch);
                         long matchId = importedMatch.getId();
                         if (importedMatch.isPlayed()) {
                             /* START match manager "begin match" */
-                            Tournament tour = ManagerFactory.getInstance(this).tournamentManager.getById(this, importedMatch.getTournamentId());
-                            List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(this, matchId);
+                            Tournament tour = ManagerFactory.getInstance(this).tournamentManager.getById(importedMatch.getTournamentId());
+                            List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(matchId);
                             for (Participant participant : participants) {
                                 for (StatsEnum statEn : StatsEnum.values()) {
                                     if (statEn.isForPlayer()) continue;
-                                    DStat statToAdd = new DStat(-1, -1, participant.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
-                                    //DAOFactory.getInstance().statDAO.insert(this, statToAdd);
+                                    //DStat statToAdd = new DStat(-1, -1, participant.getId(), statEn.toString(), importedMatch.getTournamentId(), tour.getCompetitionId(), String.valueOf(0));
+                                    //DAOFactory.getInstance().statDAO.insert(statToAdd);
                                 }
                             }
                             importedMatch.setPlayed(true);
-                            ManagerFactory.getInstance(this).matchManager.update(this, importedMatch);
+                            ManagerFactory.getInstance(this).matchManager.update(importedMatch);
 
 //                            DMatchStat matchStat = new DMatchStat(matchId, false, false);
-//                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(this, matchStat);
+//                            DAOFactory.getInstance().matchStatisticsDAO.createStatsForMatch(matchStat);
                             /* END match manager "begin match" */
 
                             /* START statistics manager - set match score by match id */
@@ -357,15 +353,15 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                             boolean overtime = Boolean.parseBoolean(String.valueOf(match.syncData.get("overtime")));
                             boolean shootouts = Boolean.parseBoolean(String.valueOf(match.syncData.get("shootouts")));
 //                            Match score = new Match(matchId, homeScore, awayScore, shootouts, overtime);
-//                            ManagerFactory.getInstance(this).statisticsManager.setMatchScoreByMatchId(this, matchId, score);
+//                            ManagerFactory.getInstance(this).statisticsManager.setMatchScoreByMatchId(matchId, score);
                             /* END statistics manager - set match score by match id */
 
                             /* START statistics manager - update players in match */
                             /*ManagerFactory.getInstance(this).statisticsManager.updatePlayersInMatch(
-                                    this, matchId, ParticipantType.home,
+                                    matchId, ParticipantType.home,
                                     getPlayerIds(match, "home", importedPlayers));
                             ManagerFactory.getInstance(this).statisticsManager.updatePlayersInMatch(
-                                    this, matchId, ParticipantType.away,
+                                    matchId, ParticipantType.away,
                                     getPlayerIds(match, "away", importedPlayers));*/
                             /* END statistics manager - update players in match */
 
@@ -407,7 +403,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
 
             MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
-            ManagerFactory.getInstance(this).statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
+            ManagerFactory.getInstance(this).statisticsManager.updatePlayerStatsInMatch(statistic, matchId);
         }
 
         playersCnt = Integer.parseInt(match.syncData.get("players_away"));
@@ -420,7 +416,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             int saves = Integer.parseInt(match.syncData.get("stat_saves_"+uid));
 
             MatchPlayerStatistic statistic = new MatchPlayerStatistic(id, "", goals, assists, plusMinusPoints, saves);
-            ManagerFactory.getInstance(this).statisticsManager.updatePlayerStatsInMatch(this, statistic, matchId);
+            ManagerFactory.getInstance(this).statisticsManager.updatePlayerStatsInMatch(statistic, matchId);
         }
     }*/
 }

@@ -20,20 +20,21 @@ import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
 
 /**
  * Created by atgot_000 on 31. 3. 2016.
- *
- * factory class returning managers
  */
 public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interfaces.ManagerFactory {
     private static ManagerFactory instance;
     private String name;
     public HockeyDBHelper sportDBHelper;
 
+    public ICorePlayerManager corePlayerManager;
     public ICompetitionManager competitionManager;
     public ITournamentManager tournamentManager;
     public ITeamManager teamManager;
@@ -48,7 +49,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interface
         String requestedContext = ((HockeyPackage) context.getApplicationContext()).getSportContext();
         if (instance == null || !instance.sportDBHelper.getDBName().equals(requestedContext)) {
             instance = new ManagerFactory(context);
-            instance.setManagers();
+            instance.setManagers(context);
         }
         if (!requestedContext.equals(instance.sportDBHelper.getDBName())) {
             Log.d("ERROR", "Requested context "+requestedContext+", got "+instance.sportDBHelper.getDBName());
@@ -56,20 +57,17 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interface
         return instance;
     }
 
-    private void setManagers() {
-        competitionManager = new CompetitionManager(corePlayerManager, sportDBHelper);
-        tournamentManager = new TournamentManager(corePlayerManager, sportDBHelper);
-        teamManager = new TeamManager(corePlayerManager, sportDBHelper);
-        matchManager = new MatchManager(corePlayerManager, sportDBHelper);
-        participantManager = new ParticipantManager(corePlayerManager, sportDBHelper);
-        participantStatManager = new ParticipantStatManager(corePlayerManager, sportDBHelper);
-        statisticsManager = new StatisticsManager(corePlayerManager, sportDBHelper);
-        pointConfigManager = new PointConfigurationManager(corePlayerManager, sportDBHelper);
-        playerStatManager = new PlayerStatManager(corePlayerManager, sportDBHelper);
-    }
-
-    private ManagerFactory(Context context, String name) {
-        sportDBHelper = new HockeyDBHelper(context, name);
+    private void setManagers(Context context) {
+        corePlayerManager = new CorePlayerManager(context);
+        competitionManager = new CompetitionManager(context, corePlayerManager, sportDBHelper);
+        tournamentManager = new TournamentManager(context, corePlayerManager, sportDBHelper);
+        teamManager = new TeamManager(context, corePlayerManager, sportDBHelper);
+        matchManager = new MatchManager(context, corePlayerManager, sportDBHelper);
+        participantManager = new ParticipantManager(context, corePlayerManager, sportDBHelper);
+        participantStatManager = new ParticipantStatManager(context, corePlayerManager, sportDBHelper);
+        statisticsManager = new StatisticsManager(context, corePlayerManager, sportDBHelper);
+        pointConfigManager = new PointConfigurationManager(context, corePlayerManager, sportDBHelper);
+        playerStatManager = new PlayerStatManager(context, corePlayerManager, sportDBHelper);
     }
 
     private ManagerFactory(Context context) {

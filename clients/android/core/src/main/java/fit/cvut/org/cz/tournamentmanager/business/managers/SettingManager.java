@@ -11,7 +11,11 @@ import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
  * Created by kevin on 23.10.2016.
  */
 public class SettingManager extends fit.cvut.org.cz.tmlibrary.business.managers.SettingManager {
-    protected Dao<Setting, Long> getDao(Context context) {
+    public SettingManager(Context context) {
+        super(context);
+    }
+
+    protected Dao<Setting, Long> getDao() {
         return DatabaseFactory.getDBHelper(context).getSettingDao();
     }
 }

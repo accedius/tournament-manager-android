@@ -1,7 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -26,12 +25,12 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 30. 3. 2016.
  */
 abstract public class CompetitionManager extends BaseManager<Competition> implements ICompetitionManager {
-    public CompetitionManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public CompetitionManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
     }
 
     @Override
-    public boolean delete(Context context, long id) {
+    public boolean delete(long id) {
         try {
             List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO().queryForEq(DBConstants.cCOMPETITION_ID, id);
             if (!competitionPlayers.isEmpty())
@@ -41,7 +40,7 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
             if (!tournaments.isEmpty())
                 return false;
 
-            getDao(context).deleteById(id);
+            getDao().deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;
@@ -49,9 +48,9 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     }
 
     @Override
-    public Competition getById(Context context, long id) {
+    public Competition getById(long id) {
         try {
-            Competition c = getDao(context).queryForId(id);
+            Competition c = getDao().queryForId(id);
             c.setType(CompetitionTypes.competitionTypes()[c.getTypeId()]);
             return c;
         } catch (SQLException e) {
@@ -60,8 +59,8 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     }
 
     @Override
-    public List<Player> getCompetitionPlayers(Context context, long competitionId) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+    public List<Player> getCompetitionPlayers(long competitionId) {
+        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
         List<Player> res = new ArrayList<>();
         try {
             List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO()
@@ -77,8 +76,8 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     }
 
     @Override
-    public List<Player> getCompetitionPlayersComplement(Context context, long competitionId) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+    public List<Player> getCompetitionPlayersComplement(long competitionId) {
+        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
         try {
             List<CompetitionPlayer> competitionPlayers = sportDBHelper.getCompetitionPlayerDAO()
                     .queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
@@ -93,7 +92,7 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     }
 
     @Override
-    public void addPlayer(Context context, Competition competition, Player player) {
+    public void addPlayer(Competition competition, Player player) {
         if (competition == null || player == null)
             return;
         Dao<CompetitionPlayer, Long> competitionPlayerDao = sportDBHelper.getCompetitionPlayerDAO();
@@ -104,14 +103,14 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     }
 
     @Override
-    public boolean removePlayerFromCompetition(Context context, long playerId, long competitionId) {
+    public boolean removePlayerFromCompetition(long playerId, long competitionId) {
         try {
             List<Tournament> tournaments = sportDBHelper.getTournamentDAO()
                     .queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (Tournament tournament : tournaments) {
                 List<TournamentPlayer> tournamentPlayers;
                 List<Player> players = new ArrayList<>();
-                Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+                Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
 
                 tournamentPlayers = sportDBHelper.getTournamentPlayerDAO()
                         .queryForEq(DBConstants.cTOURNAMENT_ID, tournament.getId());

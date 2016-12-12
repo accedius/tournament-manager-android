@@ -16,7 +16,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 27. 4. 2016.
@@ -24,22 +23,22 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class ParticipantManager extends BaseManager<Participant> implements fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager {
     protected SquashDBHelper sportDBHelper;
 
-    public ParticipantManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public ParticipantManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<Participant, Long> getDao(Context context) {
+    protected Dao<Participant, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getParticipantDAO();
     }
 
     @Override
-    public List<Participant> getByMatchId(Context context, long matchId) {
+    public List<Participant> getByMatchId(long matchId) {
         try {
-            List<Participant> participants = getDao(context).queryForEq(DBConstants.cMATCH_ID, matchId);
+            List<Participant> participants = getDao().queryForEq(DBConstants.cMATCH_ID, matchId);
             for (Participant participant : participants) {
-                List<ParticipantStat> participantStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, participant.getId());
+                List<ParticipantStat> participantStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(participant.getId());
                 participant.setParticipantStats(participantStats);
             }
             return new ArrayList<>(participants);
@@ -49,10 +48,10 @@ public class ParticipantManager extends BaseManager<Participant> implements fit.
     }
 
     @Override
-    public Participant getByRoleAndMatchId(Context context, String role, long matchId) {
+    public Participant getByRoleAndMatchId(String role, long matchId) {
         if (role == null)
             return null;
-        List<Participant> participants = getByMatchId(context, matchId);
+        List<Participant> participants = getByMatchId(matchId);
         for (Participant participant : participants) {
             if (role.equals(participant.getRole())) {
                 return participant;

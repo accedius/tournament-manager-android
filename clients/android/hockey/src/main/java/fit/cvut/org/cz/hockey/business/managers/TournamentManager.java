@@ -18,20 +18,20 @@ import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.managers.TournamentManager {
     protected HockeyDBHelper sportDBHelper;
 
-    public TournamentManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public TournamentManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<Tournament, Long> getDao(Context context) {
+    protected Dao<Tournament, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getTournamentDAO();
     }
 
     @Override
-    public void insert(Context context, Tournament tournament) {
+    public void insert(Tournament tournament) {
         try {
-            super.insert(context, tournament);
+            super.insert(tournament);
             PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();
             pointConfiguration.setTournamentId(tournament.getId());
             sportDBHelper.getHockeyPointConfigurationDAO().create(pointConfiguration);

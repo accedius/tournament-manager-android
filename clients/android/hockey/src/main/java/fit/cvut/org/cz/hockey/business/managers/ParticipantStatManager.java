@@ -15,7 +15,6 @@ import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by kevin on 2.12.2016.
@@ -23,20 +22,20 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class ParticipantStatManager extends BaseManager<ParticipantStat> implements IParticipantStatManager {
     protected HockeyDBHelper sportDBHelper;
 
-    public ParticipantStatManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public ParticipantStatManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<ParticipantStat, Long> getDao(Context context) {
+    protected Dao<ParticipantStat, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getHockeyParticipantStatDAO();
     }
 
     @Override
-    public List<ParticipantStat> getByParticipantId(Context context, long participantId) {
+    public List<ParticipantStat> getByParticipantId(long participantId) {
         try {
-            List<ParticipantStat> stats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            List<ParticipantStat> stats = getDao().queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
             return new ArrayList<>(stats);
         } catch (SQLException e) {
             return new ArrayList<>();
@@ -44,9 +43,9 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     }
 
     @Override
-    public int getScoreByParticipantId(Context context, long participantId) {
+    public int getScoreByParticipantId(long participantId) {
         try {
-            List<ParticipantStat> stats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            List<ParticipantStat> stats = getDao().queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
             if (stats.isEmpty())
                 return 0;
             return stats.get(0).getScore();

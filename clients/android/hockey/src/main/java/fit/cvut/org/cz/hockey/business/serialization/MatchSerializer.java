@@ -1,9 +1,7 @@
 package fit.cvut.org.cz.hockey.business.serialization;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -45,9 +43,9 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Teams */
-        Team home = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getHomeParticipantId());
+        Team home = ManagerFactory.getInstance(context).teamManager.getById(entity.getHomeParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-        Team away = ManagerFactory.getInstance(context).teamManager.getById(context, entity.getAwayParticipantId());
+        Team away = ManagerFactory.getInstance(context).teamManager.getById(entity.getAwayParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         return item;
     }
@@ -87,9 +85,9 @@ public class MatchSerializer extends BaseSerializer<Match> {
 
         for (Participant participant : entity.getParticipants()) {
             if (ParticipantType.home.toString().equals(participant.getRole())) {
-                hm.put("players_home", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, participant.getId()));
+                hm.put("players_home", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId()));
             } else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                hm.put("players_away", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, participant.getId()));
+                hm.put("players_away", ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId()));
             }
         }
         return hm;

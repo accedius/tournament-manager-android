@@ -16,14 +16,14 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 30.11.2016.
  */
 abstract public class ParticipantStatManager extends BaseManager<ParticipantStat> implements IParticipantStatManager {
-    public ParticipantStatManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public ParticipantStatManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
     }
 
     @Override
-    public List<ParticipantStat> getByParticipantId(Context context, long participantId) {
+    public List<ParticipantStat> getByParticipantId(long participantId) {
         try {
-            return getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, participantId);
+            return getDao().queryForEq(DBConstants.cTOURNAMENT_ID, participantId);
         } catch (SQLException e) {
             return new ArrayList<>();
         }

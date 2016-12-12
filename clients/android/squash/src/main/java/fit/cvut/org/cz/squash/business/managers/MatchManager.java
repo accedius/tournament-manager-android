@@ -42,30 +42,30 @@ import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 public class MatchManager extends BaseManager<Match> implements IMatchManager {
     protected SquashDBHelper sportDBHelper;
 
-    public MatchManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public MatchManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<Match, Long> getDao(Context context) {
+    protected Dao<Match, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getSquashMatchDAO();
     }
 
     @Override
-    public List<Match> getByTournamentId(Context context, long tournamentId) {
+    public List<Match> getByTournamentId(long tournamentId) {
         try {
-            List<Match> matches = getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Match> matches = getDao().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Match match : matches) {
-                List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, match.getId());
+                List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(match.getId());
                 match.addParticipants(participants);
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole()))
-                        match.setHomeName(getParticipantName(context, match, participant));
+                        match.setHomeName(getParticipantName(match, participant));
                     else if (ParticipantType.away.toString().equals(participant.getRole()))
-                        match.setAwayName(getParticipantName(context, match, participant));
+                        match.setAwayName(getParticipantName(match, participant));
                 }
-                loadMatchScore(context, match);
+                loadMatchScore(match);
             }
 
             Collections.sort(matches, new Comparator<Match>() {
@@ -82,50 +82,50 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
     }
 
-    private String getParticipantName(Context context, Match match, Participant participant) {
-        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, match.getTournamentId());
-        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+    private String getParticipantName(Match match, Participant participant) {
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(match.getTournamentId());
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
         if (CompetitionTypes.teams().equals(competition.getType())) {
-            Team team = ManagerFactory.getInstance(context).teamManager.getById(context, participant.getParticipantId());
+            Team team = ManagerFactory.getInstance(context).teamManager.getById(participant.getParticipantId());
             return team.getName();
         } else {
-            Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, participant.getParticipantId());
+            Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(participant.getParticipantId());
             return player.getName();
         }
     }
 
     @Override
-    public Match getById(Context context, long id) {
-        Match match = super.getById(context, id);
-        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
+    public Match getById(long id) {
+        Match match = super.getById(id);
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
 
             if (ParticipantType.home.toString().equals(participant.getRole()))
-                match.setHomeName(getParticipantName(context, match, participant));
+                match.setHomeName(getParticipantName(match, participant));
             else if (ParticipantType.away.toString().equals(participant.getRole()))
-                match.setAwayName(getParticipantName(context, match, participant));
+                match.setAwayName(getParticipantName(match, participant));
         }
-        loadMatchScore(context, match);
+        loadMatchScore(match);
         return match;
     }
 
     @Override
-    public void generateRound(Context context, long tournamentId) {
-        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, tournamentId);
-        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+    public void generateRound(long tournamentId) {
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(tournamentId);
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
         CompetitionType type = competition.getType();
 
         ArrayList<fit.cvut.org.cz.tmlibrary.business.entities.Participant> partsForGenerator = new ArrayList<>();
 
         if (CompetitionTypes.individuals().equals(type)) {
-            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, tournamentId);
+            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
             for (Player player : players) {
                 // match_id and role will be added by generator
                 partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, player.getId(), null));
             }
         } else {
-            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
+            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(tournamentId);
             for (Team team : teams) {
                 // match_id and role will be added by generator
                 partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, team.getId(), null));
@@ -133,7 +133,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
 
         int lastRound = 0;
-        List<Match> matches = getByTournamentId(context, tournamentId);
+        List<Match> matches = getByTournamentId(tournamentId);
         for (Match match : matches) {
             if (match.getRound() > lastRound)
                 lastRound = match.getRound();
@@ -147,17 +147,17 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setNote("");
             match.setTournamentId(tournamentId);
             Match squashMatch = new Match(match);
-            insert(context, squashMatch);
+            insert(squashMatch);
         }
     }
 
     @Override
-    public void resetMatch(Context context, long matchId) {
-        Match match = getById(context, matchId);
+    public void resetMatch(long matchId) {
+        Match match = getById(matchId);
         if (!match.isPlayed())
             return;
 
-        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, matchId);
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(matchId);
 
         try {
             // Remove Participant Stats and Player Stats
@@ -174,28 +174,28 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
         match.setPlayed(false);
         match.setSetsNumber(0);
-        update(context, match);
+        update(match);
     }
 
     @Override
-    public void insert(Context context, Match match) {
+    public void insert(Match match) {
         // TODO check if id is filled ?
         match.setLastModified(new Date());
 
-        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, match.getTournamentId());
-        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(match.getTournamentId());
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
         match.setType(competition.getType());
-        super.insert(context, match);
+        super.insert(match);
 
         for (Participant participant : match.getParticipants()) {
             participant.setMatchId(match.getId());
         }
 
         for (Participant participant : match.getParticipants())
-            ManagerFactory.getInstance(context).participantManager.insert(context, participant);
+            ManagerFactory.getInstance(context).participantManager.insert(participant);
 
         Map<Long, Team> teamMap = new HashMap<>();
-        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, match.getTournamentId());
+        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(match.getTournamentId());
         for (Team team : teams) {
             teamMap.put(team.getId(), team);
         }
@@ -211,12 +211,12 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
 
         for (PlayerStat playerStat : playerStats)
-            ManagerFactory.getInstance(context).playerStatManager.insert(context, playerStat);
+            ManagerFactory.getInstance(context).playerStatManager.insert(playerStat);
     }
 
     @Override
-    public boolean delete(Context context, long id) {
-        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(context, id);
+    public boolean delete(long id) {
+        List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(id);
         try {
             for (Participant participant : participants) {
                 DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
@@ -235,11 +235,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             return false;
         }
 
-        super.delete(context, id);
+        super.delete(id);
         return true;
     }
 
-    private void loadMatchScore(Context context, Match match) {
+    private void loadMatchScore(Match match) {
         if (!match.isPlayed())
             return;
 
@@ -252,8 +252,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             }
         }
 
-        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, home.getId());
-        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, away.getId());
+        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(home.getId());
+        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(away.getId());
         Map<Integer, Integer> homePointsMap = new HashMap<>();
         Map<Integer, Integer> awayPointsMap = new HashMap<>();
 
@@ -280,14 +280,14 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
-    public void updateMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
-        Match match = getById(context, matchId);
+    public void updateMatch(long matchId, ArrayList<SetRowItem> sets) {
+        Match match = getById(matchId);
         // Delete all sets in match
-        ManagerFactory.getInstance(context).participantStatManager.deleteByMatchId(context, matchId);
+        ManagerFactory.getInstance(context).participantStatManager.deleteByMatchId(matchId);
 
         if (sets.isEmpty()) {
             match.setSetsNumber(sets.size());
-            update(context, match);
+            update(match);
             return;
         }
 
@@ -295,7 +295,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<ParticipantStat> stats = new ArrayList<>();
         match.setSetsNumber(sets.size());
         match.setPlayed(true);
-        update(context, match);
+        update(match);
 
         int i=1;
         for (SetRowItem set : sets) {
@@ -309,6 +309,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
 
         for (ParticipantStat stat : stats)
-            ManagerFactory.getInstance(context).participantStatManager.insert(context, stat);
+            ManagerFactory.getInstance(context).participantStatManager.insert(stat);
     }
 }

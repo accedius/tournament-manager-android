@@ -37,10 +37,12 @@ public class StatisticManager implements ISquashStatisticManager {
     private static final int DRAW = 2;
     private static final int LOSS = 3;
 
+    protected Context context;
     protected ICorePlayerManager corePlayerManager;
     protected SquashDBHelper sportDBHelper;
 
-    public StatisticManager(ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+    public StatisticManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        this.context = context;
         this.corePlayerManager = corePlayerManager;
         this.sportDBHelper = sportDBHelper;
     }
@@ -86,7 +88,7 @@ public class StatisticManager implements ISquashStatisticManager {
         });
     }
 
-    private List<SAggregatedStats> getStats(Context context, List<Player> players, List<Tournament> tournaments) {
+    private List<SAggregatedStats> getStats(List<Player> players, List<Tournament> tournaments) {
         if (players.isEmpty())
             return new ArrayList<>();
 
@@ -95,8 +97,8 @@ public class StatisticManager implements ISquashStatisticManager {
             mappedStats.put(player.getId(), new SAggregatedStats(player.getName(), player.getId()));
 
         for (Tournament tournament : tournaments) {
-            PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(context, tournament.getId());
-            List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(context, tournament.getId());
+            PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(tournament.getId());
+            List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournament.getId());
             // Tournament does not have matches yet.
             if (matches.isEmpty())
                 continue;
@@ -114,7 +116,7 @@ public class StatisticManager implements ISquashStatisticManager {
                         awayParticipant = participant;
                 }
 
-                List<PlayerStat> homePlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, homeParticipant.getId());
+                List<PlayerStat> homePlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(homeParticipant.getId());
                 for (PlayerStat playerStat : homePlayerStats) {
                     // This player is not in requested array of players.
                     if (!mappedStats.containsKey(playerStat.getPlayerId()))
@@ -139,14 +141,14 @@ public class StatisticManager implements ISquashStatisticManager {
                     }
 
                     /* Add Balls to Standing */
-                    List<SetRowItem> sets = getMatchSets(context, match.getId());
+                    List<SetRowItem> sets = getMatchSets(match.getId());
                     for (SetRowItem set : sets) {
                         currentStat.ballsWon += set.getHomeScore();
                         currentStat.ballsLost += set.getAwayScore();
                     }
                 }
 
-                List<PlayerStat> awayPlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(context, awayParticipant.getId());
+                List<PlayerStat> awayPlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(awayParticipant.getId());
                 for (PlayerStat playerStat : awayPlayerStats) {
                     // This player is not in requested array of players.
                     if (!mappedStats.containsKey(playerStat.getPlayerId()))
@@ -171,7 +173,7 @@ public class StatisticManager implements ISquashStatisticManager {
                     }
 
                     /* Add Balls to Standing */
-                    List<SetRowItem> sets = getMatchSets(context, match.getId());
+                    List<SetRowItem> sets = getMatchSets(match.getId());
                     for (SetRowItem set : sets) {
                         currentStat.ballsWon += set.getAwayScore();
                         currentStat.ballsLost += set.getHomeScore();
@@ -196,7 +198,7 @@ public class StatisticManager implements ISquashStatisticManager {
         return new ArrayList<>(mappedStats.values());
     }
     /*
-    private List<SAggregatedStats> getStats(Context context, List<Player> players, List<Tournament> tournaments){
+    private List<SAggregatedStats> getStats(List<Player> players, List<Tournament> tournaments){
         List<SAggregatedStats> stats = new ArrayList<>();
         Map<Long, SAggregatedStats> mappedStats = new HashMap<>();
         Map<Long, ArrayList<Long>> mappedParticipants = new HashMap<>();
@@ -275,28 +277,28 @@ public class StatisticManager implements ISquashStatisticManager {
     }*/
 
     @Override
-    public List<SAggregatedStats> getByCompetitionId(Context context, long competitionId) {
-        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(context, competitionId);
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(context, competitionId);
+    public List<SAggregatedStats> getByCompetitionId(long competitionId) {
+        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(competitionId);
+        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(competitionId);
 
-        List<SAggregatedStats> res = getStats(context, players, tournaments);
+        List<SAggregatedStats> res = getStats(players, tournaments);
         orderPlayers(res);
         return res;
     }
 
     @Override
-    public List<SAggregatedStats> getByTournamentId(Context context, long tournamentId) {
-        List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, tournamentId);
+    public List<SAggregatedStats> getByTournamentId(long tournamentId) {
+        List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
         List<Tournament> tournaments = new ArrayList<>();
-        tournaments.add(ManagerFactory.getInstance(context).tournamentManager.getById(context, tournamentId));
-        List<SAggregatedStats> res = getStats(context, players, tournaments);
+        tournaments.add(ManagerFactory.getInstance(context).tournamentManager.getById(tournamentId));
+        List<SAggregatedStats> res = getStats(players, tournaments);
         orderPlayers(res);
         return res;
     }
 
     @Override
-    public List<SetRowItem> getMatchSets(Context context, long matchId) {
-        Match match = ManagerFactory.getInstance(context).matchManager.getById(context, matchId);
+    public List<SetRowItem> getMatchSets(long matchId) {
+        Match match = ManagerFactory.getInstance(context).matchManager.getById(matchId);
         if (!match.isPlayed())
             return new ArrayList<>();
 
@@ -309,8 +311,8 @@ public class StatisticManager implements ISquashStatisticManager {
             }
         }
 
-        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, homeParticipantId);
-        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(context, awayParticipantId);
+        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(homeParticipantId);
+        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(awayParticipantId);
 
         List<SetRowItem> sets = new ArrayList<>();
         for (int i=0; i < match.getSetsNumber(); i++) {
@@ -320,12 +322,12 @@ public class StatisticManager implements ISquashStatisticManager {
     }
 
     @Override
-    public SAggregatedStats getByPlayerId(Context context, long playerId) {
-        Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(context, playerId);
+    public SAggregatedStats getByPlayerId(long playerId) {
+        Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(playerId);
         List<Player> filtered_players = new ArrayList<>();
         filtered_players.add(player);
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByPlayer(context, playerId);
-        List<SAggregatedStats> stats = getStats(context, filtered_players, tournaments);
+        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByPlayer(playerId);
+        List<SAggregatedStats> stats = getStats( filtered_players, tournaments);
         if (stats.isEmpty())
             return null;
         return stats.get(0);
@@ -334,7 +336,7 @@ public class StatisticManager implements ISquashStatisticManager {
     @Override
     public List<SAggregatedStats> getAllAggregated(Context context) {
         return new ArrayList<>();
-        /*Map<Long, Player> playerMap = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers(context);
+        /*Map<Long, Player> playerMap = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers();
         List<Player> players = new ArrayList<>();
         for (Map.Entry<Long, Player> playerEntry : playerMap.entrySet()) {
             players.add(playerEntry.getValue());
@@ -363,21 +365,21 @@ public class StatisticManager implements ISquashStatisticManager {
     }
 
     @Override
-    public List<StandingItem> getStandingsByTournamentId(Context context, long tournamentId) {
-        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(context, tournamentId);
-        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(context, tournament.getCompetitionId());
+    public List<StandingItem> getStandingsByTournamentId(long tournamentId) {
+        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(tournamentId);
+        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
         CompetitionType type = competition.getType();
         Map<Long, StandingItem> mappedStandings = new HashMap<>();
 
-        List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(context, tournamentId);
-        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(context, tournamentId);
+        List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournamentId);
+        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(tournamentId);
 
         if (CompetitionTypes.individuals().equals(type)) {
-            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(context, tournamentId);
+            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
             for (Player player : players)
                 mappedStandings.put(player.getId(), new StandingItem(player.getId(), player.getName()));
         } else {
-            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(context, tournamentId);
+            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(tournamentId);
             for (Team team : teams)
                 mappedStandings.put(team.getId(), new StandingItem(team.getId(), team.getName()));
         }
@@ -427,7 +429,7 @@ public class StatisticManager implements ISquashStatisticManager {
             }
 
             /* Add Balls to Standing */
-            List<SetRowItem> sets = getMatchSets(context, match.getId());
+            List<SetRowItem> sets = getMatchSets(match.getId());
             for (SetRowItem set : sets) {
                 homeStanding.ballsWon += set.getHomeScore();
                 awayStanding.ballsWon += set.getAwayScore();
@@ -441,7 +443,7 @@ public class StatisticManager implements ISquashStatisticManager {
         return standings;
     }
 
-    public void updateStatsForMatch(Context context, long matchId, ArrayList<SetRowItem> sets) {
+    public void updateStatsForMatch(long matchId, ArrayList<SetRowItem> sets) {
 /*        DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);
         m.setPlayed(true);
         DAOFactory.getInstance().matchDAO.update(context, m);

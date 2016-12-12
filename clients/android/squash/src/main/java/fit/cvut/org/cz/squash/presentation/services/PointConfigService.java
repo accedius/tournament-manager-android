@@ -36,11 +36,11 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_EDIT_CFG:{
                 PointConfiguration cfg = intent.getParcelableExtra(EXTRA_CFG);
-                ManagerFactory.getInstance(this).pointConfigManager.update(this, cfg);
+                ManagerFactory.getInstance(this).pointConfigManager.update(cfg);
                 break;
             }
             case ACTION_GET_BY_ID:{
-                PointConfiguration cfg = ManagerFactory.getInstance(this).pointConfigManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                PointConfiguration cfg = ManagerFactory.getInstance(this).pointConfigManager.getById(intent.getLongExtra(EXTRA_ID, -1));
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_CFG, cfg);
 

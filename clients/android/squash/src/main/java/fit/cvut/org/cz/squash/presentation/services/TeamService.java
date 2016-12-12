@@ -49,27 +49,27 @@ public class TeamService extends AbstractIntentServiceWProgress {
             }
             case ACTION_ADD_TEAM:{
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
-                ManagerFactory.getInstance(this).teamManager.insert(this, t);
+                ManagerFactory.getInstance(this).teamManager.insert(t);
                 sendTeamsByTournament(t.getTournamentId());
                 break;
             }
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_TEAM, ManagerFactory.getInstance(this).teamManager.getById(this, intent.getLongExtra(EXTRA_ID, -1)));
+                result.putExtra(EXTRA_TEAM, ManagerFactory.getInstance(this).teamManager.getById(intent.getLongExtra(EXTRA_ID, -1)));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_EDIT_TEAM:{
                 Team t = intent.getParcelableExtra(EXTRA_TEAM);
-                ManagerFactory.getInstance(this).teamManager.update(this, t);
+                ManagerFactory.getInstance(this).teamManager.update(t);
                 sendTeamsByTournament(t.getTournamentId());
                 break;
             }
             case ACTION_DELETE:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_RESULT, ManagerFactory.getInstance(this).teamManager.delete(this, id));
+                result.putExtra(EXTRA_RESULT, ManagerFactory.getInstance(this).teamManager.delete(id));
                 result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -80,7 +80,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
     private void sendTeamsByTournament(long tournamentId){
         Intent result = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
-        ArrayList<Team> teams = new ArrayList<>(ManagerFactory.getInstance(this).teamManager.getByTournamentId(this, tournamentId));
+        ArrayList<Team> teams = new ArrayList<>(ManagerFactory.getInstance(this).teamManager.getByTournamentId(tournamentId));
         result.putParcelableArrayListExtra(EXTRA_TEAMS, teams);
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
     }

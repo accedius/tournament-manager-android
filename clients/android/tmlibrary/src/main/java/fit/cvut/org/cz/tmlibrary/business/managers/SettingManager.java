@@ -13,17 +13,21 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by kevin on 6.11.2016.
  */
 abstract public class SettingManager extends CoreBaseManager<Setting> implements ISettingManager {
+    public SettingManager(Context context) {
+        super(context);
+    }
+
     @Override
-    public void deleteAll(Context context) {
+    public void deleteAll() {
         try {
-            getDao(context).delete(getDao(context).queryForAll());
+            getDao().delete(getDao().queryForAll());
         } catch (SQLException e) {}
     }
 
     @Override
-    public Setting getByPackageSport(Context context, String packageName, String sportName) {
+    public Setting getByPackageSport(String packageName, String sportName) {
         try {
-            List<Setting> settings = getDao(context).queryBuilder().where()
+            List<Setting> settings = getDao().queryBuilder().where()
                     .eq(DBConstants.cSPORT_NAME, sportName).and()
                     .eq(DBConstants.cPACKAGE_NAME, packageName).query();
             if (settings.isEmpty())

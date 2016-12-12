@@ -26,16 +26,16 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
  * Created by kevin on 9.11.2016.
  */
 abstract public class TeamManager extends BaseManager<Team> implements ITeamManager {
-    public TeamManager(ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public TeamManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
     }
 
     @Override
-    public List<Team> getByTournamentId(Context context, long tournamentId) {
+    public List<Team> getByTournamentId(long tournamentId) {
         try {
-            List<Team> teams = getDao(context).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Team> teams = getDao().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Team team : teams) {
-                team.setPlayers(getTeamPlayers(context, team));
+                team.setPlayers(getTeamPlayers(team));
             }
             return new ArrayList<>(teams);
         } catch (SQLException e) {
@@ -44,9 +44,9 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public boolean delete(Context context, long id) {
+    public boolean delete(long id) {
         // Delete only if does not have matches
-        Team team = getById(context, id);
+        Team team = getById(id);
         List<Match> matches;
         try {
             matches = sportDBHelper.getMatchDAO().queryForEq(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
@@ -57,7 +57,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
                         return false;
             }
             // Delete team
-            getDao(context).delete(getDao(context).queryForId(id));
+            getDao().delete(getDao().queryForId(id));
             return true;
         }
         catch (SQLException e) {
@@ -66,10 +66,10 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public Team getById(Context context, long id) {
+    public Team getById(long id) {
         try {
-            Team team = getDao(context).queryForId(id);
-            team.setPlayers(getTeamPlayers(context, team));
+            Team team = getDao().queryForId(id);
+            team.setPlayers(getTeamPlayers(team));
             return team;
         } catch (SQLException e) {
             return null;
@@ -77,11 +77,11 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public List<Team> getAll(Context context) {
+    public List<Team> getAll() {
         try {
-            List<Team> teams = getDao(context).queryForAll();
+            List<Team> teams = getDao().queryForAll();
             for (Team team : teams) {
-                team.setPlayers(getTeamPlayers(context, team));
+                team.setPlayers(getTeamPlayers(team));
             }
             return teams;
         } catch (SQLException e) {
@@ -90,13 +90,13 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
+    public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
         return false;
     }
 
     @Override
-    public List<Player> getTeamPlayers(Context context, Team team) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+    public List<Player> getTeamPlayers(Team team) {
+        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
         List<Player> res = new ArrayList<>();
         try {
             List<TeamPlayer> teamPlayers = sportDBHelper.getTeamPlayerDAO().queryForEq(DBConstants.cTEAM_ID, team.getId());
@@ -111,7 +111,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public void addPlayer(Context context, Team team, Player player) {
+    public void addPlayer(Team team, Player player) {
         if (team == null || player == null)
             return;
         Dao<TeamPlayer, Long> teamPlayerDao = sportDBHelper.getTeamPlayerDAO();
@@ -122,8 +122,8 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     }
 
     @Override
-    public void updatePlayersInTeam(Context context, long teamId, List<Player> players) {
-        Team team = getById(context, teamId);
+    public void updatePlayersInTeam(long teamId, List<Player> players) {
+        Team team = getById(teamId);
         try {
             DeleteBuilder<TeamPlayer, Long> teamBuilder = sportDBHelper.getTeamPlayerDAO().deleteBuilder();
             teamBuilder.where().eq(DBConstants.cTEAM_ID, teamId);
@@ -131,16 +131,16 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
         } catch (SQLException e) {}
 
         for (Player player : players) {
-            addPlayer(context, team, player);
+            addPlayer(team, player);
         }
     }
 
     @Override
-    public List<Player> getFreePlayers(Context context, long tournamentId) {
+    public List<Player> getFreePlayers(long tournamentId) {
         try {
             List<TournamentPlayer> tournamentPlayers;
             List<Player> players = new ArrayList<>();
-            Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers(context);
+            Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
 
             tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
@@ -151,7 +151,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
             for (Player player : players)
                 tournamentPlayersMap.put(player.getId(), player);
 
-            List<Team> teams = getByTournamentId(context, tournamentId);
+            List<Team> teams = getByTournamentId(tournamentId);
             for (Team team : teams) {
                 for (Player player : team.getPlayers()) {
                     tournamentPlayersMap.remove(player.getId());

@@ -51,27 +51,27 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
         switch (action){
             case ACTION_CREATE:{
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.insert(this, c);
+                ManagerFactory.getInstance(this).competitionManager.insert(c);
                 break;
             }
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_COMPETITION, c);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.update(this, c);
+                ManagerFactory.getInstance(this).competitionManager.update(c);
                 break;
             }
             case ACTION_GET_OVERVIEW:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(this, id);
-                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(this, id);
-                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(this, id);
+                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(id);
+                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(id);
+                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(id);
 
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_COMPETITION, c);

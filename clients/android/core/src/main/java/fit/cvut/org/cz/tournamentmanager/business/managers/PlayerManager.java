@@ -11,7 +11,11 @@ import fit.cvut.org.cz.tournamentmanager.data.DatabaseFactory;
  * Created by kevin on 30. 3. 2016.
  */
 public class PlayerManager extends fit.cvut.org.cz.tmlibrary.business.managers.PlayerManager {
-    protected Dao<Player, Long> getDao(Context context) {
+    public PlayerManager(Context context) {
+        super(context);
+    }
+
+    protected Dao<Player, Long> getDao() {
         return DatabaseFactory.getDBHelper(context).getPlayerDao();
     }
 }

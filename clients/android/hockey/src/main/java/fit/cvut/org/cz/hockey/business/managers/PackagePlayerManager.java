@@ -6,12 +6,12 @@ package fit.cvut.org.cz.hockey.business.managers;
 public class PackagePlayerManager {//implements IPackagePlayerManager {
 /*
     @Override
-    public void updatePlayersInParticipant(Context context, long participantId, long competitionId, long tournamentId, List<Player> players) {
-        ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(context, participantId);
+    public void updatePlayersInParticipant(long participantId, long competitionId, long tournamentId, List<Player> players) {
+        ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(participantId);
         ArrayList<Long> playerIds = new ArrayList<>();
         for (Player p : players) playerIds.add(p.getId());
 
-        ArrayList<Long> currentPlayers = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(context, participantId);
+        ArrayList<Long> currentPlayers = DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(participantId);
 
         ArrayList<Long> toDelete = new ArrayList<>(currentPlayers);
         toDelete.removeAll(playerIds);
@@ -20,25 +20,25 @@ public class PackagePlayerManager {//implements IPackagePlayerManager {
         toAdd.removeAll(currentPlayers);
 
         for (Long id : toAdd) {
-            createStatistics(context, id, participantId, tournamentId, competitionId);
+            createStatistics(id, participantId, tournamentId, competitionId);
         }
         for (Long id : toDelete) {
-            removeStatistics(context, id, partStats);
+            removeStatistics(id, partStats);
         }
     }
 
-    private void createStatistics(Context context, long playerId, long participantId, long tournamentId, long competitionId) {
+    private void createStatistics(long playerId, long participantId, long tournamentId, long competitionId) {
         for (StatsEnum statEn : StatsEnum.values()) {
             if (!statEn.isForPlayer()) continue;
             DStat toInsert = new DStat(-1, playerId, participantId, statEn.toString(), tournamentId, competitionId, String.valueOf(0));
-            DAOFactory.getInstance().statDAO.insert(context, toInsert);
+            DAOFactory.getInstance().statDAO.insert(toInsert);
         }
     }
 
-    private void removeStatistics(Context context, long playerId, ArrayList<DStat> partStats) {
+    private void removeStatistics(long playerId, ArrayList<DStat> partStats) {
         for (DStat stat : partStats) {
             if (stat.getPlayerId() == playerId)
-                DAOFactory.getInstance().statDAO.delete(context, stat.getId());
+                DAOFactory.getInstance().statDAO.delete(stat.getId());
         }
     }*/
 }

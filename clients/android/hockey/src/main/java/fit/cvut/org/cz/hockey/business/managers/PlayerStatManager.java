@@ -18,7 +18,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by kevin on 2.12.2016.
@@ -26,21 +25,21 @@ import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlayerStatManager {
     protected HockeyDBHelper sportDBHelper;
 
-    public PlayerStatManager(ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
-        super(corePlayerManager, sportDBHelper);
+    public PlayerStatManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
         this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    protected Dao<PlayerStat, Long> getDao(Context context) {
+    protected Dao<PlayerStat, Long> getDao() {
         return DatabaseFactory.getDBeHelper(context).getHockeyPlayerStatDAO();
     }
 
     @Override
-    public List<PlayerStat> getByPlayerId(Context context, long playerId) {
+    public List<PlayerStat> getByPlayerId(long playerId) {
         try {
-            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPLAYER_ID, playerId);
-            Map<Long, Player> playerMap = corePlayerManager.getAllPlayers(context);
+            List<PlayerStat> playerStats = getDao().queryForEq(DBConstants.cPLAYER_ID, playerId);
+            Map<Long, Player> playerMap = corePlayerManager.getAllPlayers();
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
             }
@@ -51,10 +50,10 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     }
 
     @Override
-    public List<PlayerStat> getByParticipantId(Context context, long participantId) {
+    public List<PlayerStat> getByParticipantId(long participantId) {
         try {
-            List<PlayerStat> playerStats = getDao(context).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
-            Map<Long, Player> playerMap = corePlayerManager.getAllPlayers(context);
+            List<PlayerStat> playerStats = getDao().queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            Map<Long, Player> playerMap = corePlayerManager.getAllPlayers();
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
             }
@@ -65,9 +64,9 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     }
 
     @Override
-    public void deleteByParticipantId(Context context, long participantId) {
+    public void deleteByParticipantId(long participantId) {
         try {
-            DeleteBuilder<PlayerStat, Long> deleteBuilder = getDao(context).deleteBuilder();
+            DeleteBuilder<PlayerStat, Long> deleteBuilder = getDao().deleteBuilder();
             deleteBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participantId);
             deleteBuilder.delete();
         } catch (SQLException e) {}
