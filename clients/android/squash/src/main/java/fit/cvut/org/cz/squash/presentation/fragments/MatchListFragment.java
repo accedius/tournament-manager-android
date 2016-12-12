@@ -19,7 +19,6 @@ import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Match;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -30,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Displays list matches in tournament
  * Created by Vaclav on 10. 4. 2016.
  */
-public class MatchListFragment extends AbstractListFragment<ScoredMatch> {
+public class MatchListFragment extends AbstractListFragment<Match> {
     public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
     private ScoredMatchAdapter adapter = null;

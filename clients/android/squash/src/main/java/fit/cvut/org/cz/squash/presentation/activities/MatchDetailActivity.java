@@ -82,7 +82,7 @@ public class MatchDetailActivity extends AbstractTabActivity {
                     return true;
                 }
                 for (SetRowItem set : fr.getSetsFragment().getSets()) {
-                    if (set.getWinner() == 0) {
+                    if (set.getHomeScore() == set.getAwayScore()) {
                         // TODO String - Set cannot end in a draw
                         Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
                         return true;
