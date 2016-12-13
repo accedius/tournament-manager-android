@@ -43,6 +43,8 @@ public class CompetitionType implements Parcelable {
 
     @Override
     public String toString() {
+        if (res == null)
+            return "";
         return res.getString(value);
     }
 

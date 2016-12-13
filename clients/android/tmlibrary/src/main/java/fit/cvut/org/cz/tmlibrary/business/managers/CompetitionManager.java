@@ -50,9 +50,9 @@ abstract public class CompetitionManager extends BaseManager<Competition> implem
     @Override
     public Competition getById(long id) {
         try {
-            Competition c = getDao().queryForId(id);
-            c.setType(CompetitionTypes.competitionTypes()[c.getTypeId()]);
-            return c;
+            Competition competition = getDao().queryForId(id);
+            competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+            return competition;
         } catch (SQLException e) {
             return null;
         }
