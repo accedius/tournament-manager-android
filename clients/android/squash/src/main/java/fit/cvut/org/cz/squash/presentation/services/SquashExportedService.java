@@ -22,7 +22,6 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.entities.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -60,8 +59,8 @@ public class SquashExportedService extends IntentService {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 SAggregatedStats stat = ManagerFactory.getInstance(this).statisticManager.getByPlayerId(id);
-                AggregatedStats statsForExport = new AggregatedStats();
 
+                ArrayList<PlayerAggregatedStats> statsForExport = new ArrayList<>();
                 PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.wins), Integer.toString(stat.won), true));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.loses), Integer.toString(stat.lost), true));
@@ -76,10 +75,10 @@ public class SquashExportedService extends IntentService {
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsLost), String.format("%d", stat.ballsLost), false));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsWonAvg), String.format("%.2f", stat.ballsWonAvg), false));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsLostAvg), String.format("%.2f", stat.ballsLostAvg), false));
-                statsForExport.addPlayerStats(exportStat);
+                statsForExport.add(exportStat);
 
                 Intent result = new Intent(sport_context + package_name + action);
-                result.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsForExport);
+                result.putParcelableArrayListExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsForExport);
                 result.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 sendBroadcast(result);
                 break;

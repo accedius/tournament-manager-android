@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.R;
@@ -22,7 +23,6 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.entities.AggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -54,8 +54,8 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerId(id);
-                AggregatedStats statsToSend = new AggregatedStats();
 
+                ArrayList<PlayerAggregatedStats> statsToSend = new ArrayList<>();
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.gp), Long.toString(ags.getMatches()), true));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.g), Long.toString(ags.getGoals()), true));
@@ -71,10 +71,10 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.ap), String.format("%.2f", ags.getAvgPoints()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.apmp), String.format("%.2f", ags.getAvgPlusMinus()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
-                statsToSend.addPlayerStats(as);
+                statsToSend.add(as);
 
                 Intent res = new Intent(sportContext + package_name + action);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
+                res.putParcelableArrayListExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 sendBroadcast(res);
                 break;

@@ -12,7 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.AggregatedStats;
+import java.util.ArrayList;
+
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
@@ -75,8 +76,8 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         labelParams.weight = 1;
         statsParams.weight = 1;
 
-        AggregatedStats ags = intent.getParcelableExtra(CrossPackageCommunicationConstants.EXTRA_STATS);
-        for (PlayerAggregatedStats as : ags.getRecords()) {
+        ArrayList<PlayerAggregatedStats> ags = intent.getParcelableArrayListExtra(CrossPackageCommunicationConstants.EXTRA_STATS);
+        for (PlayerAggregatedStats as : ags) {
             for (PlayerAggregatedStatsRecord asr : as.getRecords()) {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
                     TextView label = new TextView(getContext());
