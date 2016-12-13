@@ -181,6 +181,8 @@ public class Competition extends ShareBase implements Parcelable {
 
     public void setType(CompetitionType type) {
         this.type = type;
+        if (type != null)
+            this.typeId = type.id;
     }
 
     public String getEntityType() {

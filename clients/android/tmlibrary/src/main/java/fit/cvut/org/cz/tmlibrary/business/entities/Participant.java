@@ -19,11 +19,11 @@ public class Participant implements IEntity, Parcelable {
     private long id;
 
     @DatabaseField(columnName = DBConstants.cMATCH_ID)
-    private long match_id;
+    private long matchId;
 
     // Team id or Player id (based on Competition type)
     @DatabaseField(columnName = DBConstants.cPARTICIPANT_ID)
-    private long participant_id;
+    private long participantId;
 
     @DatabaseField(columnName = DBConstants.cROLE)
     private String role;
@@ -36,15 +36,15 @@ public class Participant implements IEntity, Parcelable {
     public Participant() {}
 
     public Participant(Participant p) {
-        this.match_id = p.match_id;
-        this.participant_id = p.participant_id;
+        this.matchId = p.matchId;
+        this.participantId = p.participantId;
         this.role = p.role;
         this.name = p.name;
     }
 
-    public Participant(long match_id, long participant_id, String role) {
-        this.match_id = match_id;
-        this.participant_id = participant_id;
+    public Participant(long matchId, long participantId, String role) {
+        this.matchId = matchId;
+        this.participantId = participantId;
         this.role = role;
     }
 
@@ -62,8 +62,8 @@ public class Participant implements IEntity, Parcelable {
 
     protected Participant(Parcel in) {
         id = in.readLong();
-        match_id = in.readLong();
-        participant_id = in.readLong();
+        matchId = in.readLong();
+        participantId = in.readLong();
         role = in.readString();
         name = in.readString();
     }
@@ -76,8 +76,8 @@ public class Participant implements IEntity, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeLong(match_id);
-        dest.writeLong(participant_id);
+        dest.writeLong(matchId);
+        dest.writeLong(participantId);
         dest.writeString(role);
         dest.writeString(name);
     }
@@ -93,19 +93,19 @@ public class Participant implements IEntity, Parcelable {
     }
 
     public long getMatchId() {
-        return match_id;
+        return matchId;
     }
 
     public void setMatchId(long match_id) {
-        this.match_id = match_id;
+        this.matchId = match_id;
     }
 
     public long getParticipantId() {
-        return participant_id;
+        return participantId;
     }
 
     public void setParticipantId(long participant_id) {
-        this.participant_id = participant_id;
+        this.participantId = participant_id;
     }
 
     public String getRole() {

@@ -6,11 +6,12 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.data.SDBConstants;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
@@ -24,12 +25,11 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
 
     private String homeName;
     private String awayName;
+    private List<SetRowItem> sets = new ArrayList<>();
+    private List<PlayerStat> homePlayers = new ArrayList<>();
+    private List<PlayerStat> awayPlayers = new ArrayList<>();
 
     public Match() {}
-    public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round, int setsNumber, int homeWonSets, int awayWonSets) {
-        super(id, tournamentId, type, date, played, note, period, round);
-        this.setsNumber = setsNumber;
-    }
 
     public Match(fit.cvut.org.cz.tmlibrary.business.entities.Match m) {
         super(m);
@@ -47,6 +47,9 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         dest.writeInt(setsNumber);
         dest.writeString(homeName);
         dest.writeString(awayName);
+        dest.writeTypedList(sets);
+        dest.writeTypedList(homePlayers);
+        dest.writeTypedList(awayPlayers);
     }
 
     public Match(Parcel in) {
@@ -54,6 +57,9 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         this.setsNumber = in.readInt();
         this.homeName = in.readString();
         this.awayName = in.readString();
+        in.readTypedList(sets, SetRowItem.CREATOR);
+        in.readTypedList(homePlayers, PlayerStat.CREATOR);
+        in.readTypedList(awayPlayers, PlayerStat.CREATOR);
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -125,5 +131,29 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
                 return participant.getParticipantId();
         }
         return -1;
+    }
+
+    public List<SetRowItem> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<SetRowItem> sets) {
+        this.sets = sets;
+    }
+
+    public List<PlayerStat> getHomePlayers() {
+        return homePlayers;
+    }
+
+    public void setHomePlayers(List<PlayerStat> homePlayers) {
+        this.homePlayers = homePlayers;
+    }
+
+    public List<PlayerStat> getAwayPlayers() {
+        return awayPlayers;
+    }
+
+    public void setAwayPlayers(List<PlayerStat> awayPlayers) {
+        this.awayPlayers = awayPlayers;
     }
 }

@@ -16,7 +16,9 @@ import java.util.Map;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.squash.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.squash.business.serialization.TeamSerializer;
@@ -26,8 +28,10 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
@@ -256,6 +260,8 @@ public class SquashExportedService extends IntentService {
                     ManagerFactory.getInstance(this).competitionManager.addPlayer(c, importedPlayer);
                 }
 
+                Log.d("IMPORTED PLAYERS", importedPlayers.toString());
+
                 /* TOURNAMENTS HANDLING */
                 for (ServerCommunicationItem t : tournaments) {
                     List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
@@ -326,41 +332,51 @@ public class SquashExportedService extends IntentService {
                             }
                             home = false;
                         }
-//                        importedMatch.setHomeParticipantId(homeParticipantId);
-//                        importedMatch.setAwayParticipantId(awayParticipantId);
 
                         /* START Match Manager - insert */
-                        /*long matchId = DAOFactory.getInstance().matchDAO.insert(ScoredMatch.convertToDMatch(importedMatch));
-                        DParticipant homeParticipant = null;
-                        DParticipant awayParticipant = null;
+                        ManagerFactory.getInstance(this).matchManager.insert(importedMatch);
+                        long matchId = importedMatch.getId();
+                        Participant homeParticipant, awayParticipant;
                         if (c.getType().equals(CompetitionTypes.individuals())) {
-                            homeParticipant = new DParticipant(-1, -1, matchId, "home");
-                            awayParticipant = new DParticipant(-1, -1, matchId, "away");
-                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(homeParticipant);
-                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(awayParticipant);
-                            //for individuals we have to insert match participation as well else we could not link match to player
-                            DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, t.getId(), importedMatch.getHomeParticipantId(), homeParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
-                            DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, t.getId(), importedMatch.getAwayParticipantId(), awayParticipantId, -1, -1, 1, StatsEnum.MATCH_PARTICIPATION));
+                            homeParticipant = new Participant(matchId, homeParticipantId, "home");
+                            awayParticipant = new Participant(matchId, awayParticipantId, "away");
                         } else {
-                            homeParticipant = new DParticipant(-1, importedMatch.getHomeParticipantId(), matchId, "home");
-                            awayParticipant = new DParticipant(-1, importedMatch.getAwayParticipantId(), matchId, "away");
-                            homeParticipantId = DAOFactory.getInstance().participantDAO.insert(homeParticipant);
-                            awayParticipantId = DAOFactory.getInstance().participantDAO.insert(awayParticipant);
-                        }*/
+                            homeParticipant = new Participant(matchId, homeParticipantId, "home");
+                            awayParticipant = new Participant(matchId, awayParticipantId, "away");
+                        }
+                        ManagerFactory.getInstance(this).participantManager.insert(homeParticipant);
+                        ManagerFactory.getInstance(this).participantManager.insert(awayParticipant);
                         /* END Match Manager - insert */
 
-                        // Add teams rosters to match
-                        /*if (CompetitionTypes.teams().equals(c.getType())) {
-                            ArrayList<Player> matchPlayers = getPlayers(match, "home", importedPlayers);
-                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(matchId, "home", matchPlayers);
-                            matchPlayers = getPlayers(match, "away", importedPlayers);
-                            ManagerFactory.getInstance(this).participantManager.updatePlayersForMatch(matchId, "away", matchPlayers);
-                        }*/
-
                         // Add sets
-                        /* START Stats Manager - updateStatsForMatch */
-//                        saveStatsForMatch(match, competitionId, tournamentId, homeParticipantId, awayParticipantId);
-                        /* END Stats Manager - updateStatsForMatch */
+                        int i=1;
+                        for (SetRowItem set : importedMatch.getSets()) {
+                            ParticipantStat homeStat = new ParticipantStat(homeParticipant.getId(), i, set.getHomeScore());
+                            ParticipantStat awayStat = new ParticipantStat(awayParticipant.getId(), i, set.getAwayScore());
+                            ManagerFactory.getInstance(this).participantStatManager.insert(homeStat);
+                            ManagerFactory.getInstance(this).participantStatManager.insert(awayStat);
+                            i++;
+                        }
+
+                        // Add teams rosters to match
+//                        if (CompetitionTypes.teams().equals(c.getType())) {
+                            for (PlayerStat playerStat : importedMatch.getHomePlayers()) {
+                                // TODO, getPlayerId in case of FileStrategy, getUid otherwise
+                                PlayerStat homePlayerStat = new PlayerStat(homeParticipant.getId(), importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
+                                ManagerFactory.getInstance(this).playerStatManager.insert(homePlayerStat);
+                            }
+                            for (PlayerStat playerStat : importedMatch.getAwayPlayers()) {
+                                // TODO, getPlayerId in case of FileStrategy, getUid otherwise
+                                PlayerStat awayPlayerStat = new PlayerStat(awayParticipant.getId(), importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
+                                ManagerFactory.getInstance(this).playerStatManager.insert(awayPlayerStat);
+                            }
+                        /*} else {
+                            PlayerStat homePlayerStat = new PlayerStat(homeParticipant.getId(), importedPlayers.get(playerStat.getUid()).getId());
+                            ManagerFactory.getInstance(this).playerStatManager.insert(homePlayerStat);
+
+                            PlayerStat awayPlayerStat = new PlayerStat(awayParticipant.getId(), importedPlayers.get(playerStat.getUid()).getId());
+                            ManagerFactory.getInstance(this).playerStatManager.insert(awayPlayerStat);
+                        }*/
                     }
                 }
                 break;
