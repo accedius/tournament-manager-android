@@ -7,8 +7,9 @@ import com.j256.ormlite.field.DatabaseField;
 import java.util.Date;
 import java.util.UUID;
 
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerToken;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerTokenType;
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.ISharedEntity;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerToken;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerTokenType;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**

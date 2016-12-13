@@ -12,9 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.stats.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.business.entities.AggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.R;

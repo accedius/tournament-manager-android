@@ -9,14 +9,14 @@ import fit.cvut.org.cz.squash.business.entities.Match;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 8.10.2016.
  */
-public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.TournamentSerializer {
+public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.TournamentSerializer {
     protected static TournamentSerializer instance = null;
     protected TournamentSerializer(Context context) {
         super(context);

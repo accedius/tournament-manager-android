@@ -21,9 +21,9 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 

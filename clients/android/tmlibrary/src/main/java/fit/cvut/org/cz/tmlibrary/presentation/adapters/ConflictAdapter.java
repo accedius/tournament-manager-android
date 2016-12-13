@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ConflictValue;
 
 /**
  * Created by kevin on 24.10.2016.

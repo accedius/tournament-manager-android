@@ -3,11 +3,11 @@ package fit.cvut.org.cz.hockey.business;
 import android.content.Context;
 import android.util.Log;
 
-import fit.cvut.org.cz.hockey.business.interfaces.IHockeyStatisticsManager;
-import fit.cvut.org.cz.hockey.business.interfaces.IMatchManager;
-import fit.cvut.org.cz.hockey.business.interfaces.IParticipantStatManager;
-import fit.cvut.org.cz.hockey.business.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.hockey.business.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IHockeyStatisticsManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.hockey.business.managers.CompetitionManager;
 import fit.cvut.org.cz.hockey.business.managers.MatchManager;
 import fit.cvut.org.cz.hockey.business.managers.ParticipantManager;
@@ -19,17 +19,17 @@ import fit.cvut.org.cz.hockey.business.managers.TeamManager;
 import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
 
 /**
  * Created by atgot_000 on 31. 3. 2016.
  */
-public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interfaces.ManagerFactory {
+public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ManagerFactory {
     private static ManagerFactory instance;
     private String name;
     public HockeyDBHelper sportDBHelper;

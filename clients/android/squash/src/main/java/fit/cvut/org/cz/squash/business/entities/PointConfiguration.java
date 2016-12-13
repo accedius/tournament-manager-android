@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.squash.data.SDBConstants;
-import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
 
 /**
  * Represents point configuration for tournament

@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 
 /**
  * Created by Vaclav on 5. 4. 2016.

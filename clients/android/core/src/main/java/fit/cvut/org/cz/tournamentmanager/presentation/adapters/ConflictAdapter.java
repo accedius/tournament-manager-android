@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ConflictValue;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 

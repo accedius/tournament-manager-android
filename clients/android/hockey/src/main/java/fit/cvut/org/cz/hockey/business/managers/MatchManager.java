@@ -17,15 +17,15 @@ import java.util.Map;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.Match;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
-import fit.cvut.org.cz.hockey.business.interfaces.IMatchManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.hockey.data.DatabaseFactory;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -123,7 +123,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 lastRound = match.getRound();
         }
 
-        IMatchGenerator generator = new RoundRobinMatchGenerator();
+        IMatchGenerator generator = new AllPlayAllMatchGenerator();
         List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
         for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {

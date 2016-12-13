@@ -13,14 +13,14 @@ import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 27. 4. 2016.
  */
-public class ParticipantManager extends BaseManager<Participant> implements fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager {
+public class ParticipantManager extends BaseManager<Participant> implements fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager {
     protected SquashDBHelper sportDBHelper;
 
     public ParticipantManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {

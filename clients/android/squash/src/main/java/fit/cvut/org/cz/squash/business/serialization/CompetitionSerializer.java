@@ -8,16 +8,16 @@ import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 8.10.2016.
  */
-public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.CompetitionSerializer {
+public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.CompetitionSerializer {
     protected static CompetitionSerializer instance = null;
     protected CompetitionSerializer(Context context) {
         super(context);

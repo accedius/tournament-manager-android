@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**

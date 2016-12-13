@@ -12,7 +12,7 @@ import android.view.View;
 
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
+import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHelper;
 
 /**
  * Created by kevin on 14. 4. 2016.

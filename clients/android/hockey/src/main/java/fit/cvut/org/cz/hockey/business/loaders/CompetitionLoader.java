@@ -11,15 +11,15 @@ import java.util.Map;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 13.12.2016.

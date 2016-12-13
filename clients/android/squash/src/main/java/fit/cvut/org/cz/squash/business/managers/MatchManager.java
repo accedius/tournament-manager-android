@@ -18,7 +18,7 @@ import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.Match;
 import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
-import fit.cvut.org.cz.squash.business.interfaces.IMatchManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -27,11 +27,11 @@ import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
@@ -139,7 +139,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 lastRound = match.getRound();
         }
 
-        IMatchGenerator generator = new RoundRobinMatchGenerator();
+        IMatchGenerator generator = new AllPlayAllMatchGenerator();
         List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
         for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {

@@ -10,12 +10,12 @@ import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
-import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.helpers.ConflictCreator;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 13.12.2016.

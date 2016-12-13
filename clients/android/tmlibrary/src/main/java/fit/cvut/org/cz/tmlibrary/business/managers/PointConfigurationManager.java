@@ -3,8 +3,8 @@ package fit.cvut.org.cz.tmlibrary.business.managers;
 import android.content.Context;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**

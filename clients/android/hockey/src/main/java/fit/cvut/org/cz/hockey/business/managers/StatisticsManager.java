@@ -16,13 +16,13 @@ import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
-import fit.cvut.org.cz.hockey.business.interfaces.IHockeyStatisticsManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IHockeyStatisticsManager;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**

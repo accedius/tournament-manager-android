@@ -5,10 +5,10 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 
 import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
-import fit.cvut.org.cz.squash.business.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 
 /**

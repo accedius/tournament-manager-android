@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 
 /**
  * Created by kevin on 28.10.2016.

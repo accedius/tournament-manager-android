@@ -19,9 +19,9 @@ import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.generators.BalancedTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
@@ -79,7 +79,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
             }
         }
 
-        ITeamsRostersGenerator teamsRostersGenerator = new RoundRobinTeamsRostersGenerator();
+        ITeamsRostersGenerator teamsRostersGenerator = new BalancedTeamsRostersGenerator();
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)

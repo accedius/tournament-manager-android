@@ -12,7 +12,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 

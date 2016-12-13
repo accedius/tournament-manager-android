@@ -8,6 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**

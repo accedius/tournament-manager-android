@@ -2,8 +2,8 @@ package fit.cvut.org.cz.tournamentmanager.business;
 
 import android.content.Context;
 
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ISettingManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ISettingManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 

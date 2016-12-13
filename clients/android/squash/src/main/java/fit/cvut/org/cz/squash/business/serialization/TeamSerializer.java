@@ -2,21 +2,19 @@ package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
 
-import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 8.10.2016.
  */
-public class TeamSerializer extends BaseSerializer<Team> {
+public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.TeamSerializer {
     protected static TeamSerializer instance = null;
     protected TeamSerializer(Context context) {
         this.context = context;
@@ -44,31 +42,5 @@ public class TeamSerializer extends BaseSerializer<Team> {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(player));
         }
         return item;
-    }
-
-    @Override
-    public Team deserialize(ServerCommunicationItem item) {
-        Team team = new Team(-1, "");
-        team.setEtag(item.getEtag());
-        team.setLastModified(item.getModified());
-        deserializeSyncData(item.syncData, team);
-        return team;
-    }
-
-    @Override
-    public HashMap<String, Object> serializeSyncData(Team entity) {
-        HashMap<String, Object> hm = new HashMap<>();
-        hm.put("name", entity.getName());
-        return hm;
-    }
-
-    @Override
-    public void deserializeSyncData(HashMap<String, Object> syncData, Team entity) {
-        entity.setName(String.valueOf(syncData.get("name")));
-    }
-
-    @Override
-    public String getEntityType() {
-        return "Team";
     }
 }

@@ -3,10 +3,10 @@ package fit.cvut.org.cz.squash.business;
 import android.content.Context;
 import android.util.Log;
 
-import fit.cvut.org.cz.squash.business.interfaces.IMatchManager;
-import fit.cvut.org.cz.squash.business.interfaces.IParticipantStatManager;
-import fit.cvut.org.cz.squash.business.interfaces.IPointConfigurationManager;
-import fit.cvut.org.cz.squash.business.interfaces.ISquashStatisticManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.ISquashStatisticManager;
 import fit.cvut.org.cz.squash.business.managers.CompetitionManager;
 import fit.cvut.org.cz.squash.business.managers.MatchManager;
 import fit.cvut.org.cz.squash.business.managers.ParticipantManager;
@@ -18,17 +18,17 @@ import fit.cvut.org.cz.squash.business.managers.TeamManager;
 import fit.cvut.org.cz.squash.business.managers.TournamentManager;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
 
 /**
  * Created by Vaclav on 30. 3. 2016.
  */
-public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interfaces.ManagerFactory {
+public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ManagerFactory {
     private static ManagerFactory instance;
     private String name;
     public SquashDBHelper sportDBHelper;
@@ -39,7 +39,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.interface
     public ITeamManager teamManager;
     public ISquashStatisticManager statisticManager;
     public IPointConfigurationManager pointConfigManager;
-    public fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager participantManager;
+    public fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager participantManager;
     public IParticipantStatManager participantStatManager;
     public IPlayerStatManager playerStatManager;
     public IMatchManager matchManager;

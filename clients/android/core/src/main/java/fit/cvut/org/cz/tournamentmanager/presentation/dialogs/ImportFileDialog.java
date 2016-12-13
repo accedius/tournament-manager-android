@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog;
 import java.io.File;
 
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
-import fit.cvut.org.cz.tournamentmanager.business.serialization.FilesHelper;
+import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHelper;
 
 /**
  * Created by kevin on 14. 4. 2016.

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.IManager;
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 
 /**
  * Created by kevin on 4.12.2016.

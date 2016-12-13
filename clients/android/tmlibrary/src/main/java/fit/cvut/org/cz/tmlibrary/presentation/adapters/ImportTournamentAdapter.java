@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 
 /**
  * Created by kevin on 28.10.2016.

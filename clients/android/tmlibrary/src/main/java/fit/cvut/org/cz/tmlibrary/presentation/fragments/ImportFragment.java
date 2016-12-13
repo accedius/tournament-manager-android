@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;

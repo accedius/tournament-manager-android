@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
-import fit.cvut.org.cz.tmlibrary.business.entities.IEntity;
+import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.
