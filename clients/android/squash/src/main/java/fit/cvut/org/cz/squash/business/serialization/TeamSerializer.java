@@ -40,19 +40,19 @@ public class TeamSerializer extends BaseSerializer<Team> {
 
         /* Serialize players */
         List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(entity);
-        for (Player p : teamPlayers) {
-            item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
+        for (Player player : teamPlayers) {
+            item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(player));
         }
         return item;
     }
 
     @Override
     public Team deserialize(ServerCommunicationItem item) {
-        Team t = new Team(-1, "");
-        t.setEtag(item.getEtag());
-        t.setLastModified(item.getModified());
-        deserializeSyncData(item.syncData, t);
-        return t;
+        Team team = new Team(-1, "");
+        team.setEtag(item.getEtag());
+        team.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, team);
+        return team;
     }
 
     @Override

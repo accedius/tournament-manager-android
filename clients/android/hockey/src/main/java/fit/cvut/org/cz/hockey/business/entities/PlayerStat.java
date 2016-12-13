@@ -27,6 +27,15 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
     @DatabaseField(columnName = HockeyDBConstants.cSAVES)
     private int saves;
 
+    public PlayerStat(PlayerStat p) {
+        this.participant_id = p.participant_id;
+        this.player_id = p.player_id;
+        this.goals = p.goals;
+        this.assists = p.assists;
+        this.plus_minus = p.plus_minus;
+        this.saves = p.saves;
+    }
+
     public PlayerStat() {}
 
     public PlayerStat(long participantId, long playerId) {

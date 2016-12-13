@@ -2,42 +2,33 @@ package fit.cvut.org.cz.squash.presentation.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.business.entities.Match;
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
-import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.loaders.CompetitionLoader;
+import fit.cvut.org.cz.squash.business.loaders.PlayerLoader;
+import fit.cvut.org.cz.squash.business.loaders.TournamentLoader;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
-import fit.cvut.org.cz.squash.business.serialization.MatchSerializer;
-import fit.cvut.org.cz.squash.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.squash.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.entities.ImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.ConflictCreator;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.stats.AggregatedStats;
@@ -105,82 +96,27 @@ public class SquashExportedService extends IntentService {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(compId);
-                c.setSportContext(sport_context);
-                String json = CompetitionSerializer.getInstance(this).serialize(c).toJson();
+                Competition competition = ManagerFactory.getInstance(this).competitionManager.getById(compId);
+                competition.setSportContext(sport_context);
+                String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
+
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, c.getFilename());
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, competition.getFilename());
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
-                // TODO refactor
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
-                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
 
-                ImportInfo competitionInfo = new CompetitionImportInfo(c.getName(), c.getType());
                 ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
                 ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
                 ArrayList<Conflict> playersModified = new ArrayList<>();
-
-                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
-                List<ServerCommunicationItem> players = new ArrayList<>();
-                List<ServerCommunicationItem> tournaments = new ArrayList<>();
-
-                for (ServerCommunicationItem subItem : allSubItems) {
-                    if (subItem.getType().equals("Player")) {
-                        players.add(subItem);
-                    } else if (subItem.getType().equals("Tournament")) {
-                        tournaments.add(subItem);
-                    }
-                }
-
-                /* TOURNAMENTS HANDLING */
-                for (ServerCommunicationItem t : tournaments) {
-                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
-                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
-                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
-
-                    Tournament tournament = TournamentSerializer.getInstance(this).deserialize(t);
-
-                    for (ServerCommunicationItem subItem : t.subItems) {
-                        if (subItem.getType().equals("Player")) {
-                            tournamentPlayers.add(subItem);
-                        } else if (subItem.getType().equals("Team")) {
-                            tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("Match")) {
-                            tournamentMatches.add(subItem);
-                        }
-                    }
-
-                    tournamentsInfo.add(new TournamentImportInfo(tournament.getName(), tournamentPlayers.size(), tournamentTeams.size(), tournamentMatches.size()));
-                }
-
-                /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
-                HashMap<String, Player> allPlayersMap = new HashMap<>();
-                for (Player p : allPlayers.values()) {
-                    allPlayersMap.put(p.getEmail(), p);
-                }
-
-                /* Import players */
-                for (ServerCommunicationItem p : players) {
-                    Player player = PlayerSerializer.getInstance(this).deserialize(p);
-                    if (allPlayersMap.containsKey(player.getEmail())) {
-                        Player matchedPlayer = allPlayersMap.get(player.getEmail());
-                        if (!matchedPlayer.samePlayer(player)) {
-                            playersModified.add(ConflictCreator.createConflict(matchedPlayer, player));
-                            // TODO všechny attributes přeložit
-                        }
-                    } else {
-                        playersInfo.add(new PlayerImportInfo(player.getName(), player.getEmail()));
-                    }
-                }
+                ImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, competition, tournamentsInfo, playersInfo, playersModified);
 
                 Intent res = new Intent(package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
@@ -195,230 +131,15 @@ public class SquashExportedService extends IntentService {
                 break;
             }
             case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {
-                // TODO brutal refactor NEEDED
-
                 Intent res = new Intent(package_name + action);
                 String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+                Map<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
+
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
-                Competition c = CompetitionSerializer.getInstance(this).deserialize(competition);
-                c.setName(c.getName() + " " + DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
-                ManagerFactory.getInstance(this).competitionManager.insert(c);
-                long competitionId = c.getId();
-
-                HashMap<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
-
-                List<ServerCommunicationItem> allSubItems = competition.getSubItems();
-                List<ServerCommunicationItem> players = new ArrayList<>();
-                List<ServerCommunicationItem> tournaments = new ArrayList<>();
-
-                for (ServerCommunicationItem subItem : allSubItems) {
-                    if (subItem.getType().equals("Player")) {
-                        players.add(subItem);
-                    } else if (subItem.getType().equals("Tournament")) {
-                        tournaments.add(subItem);
-                    }
-                }
-
-                /* PLAYERS HANDLING */
-                Map<Long, Player> allPlayers = ManagerFactory.getInstance(this).corePlayerManager.getAllPlayers();
-                HashMap<String, Player> allPlayersMap = new HashMap<>();
-                for (Player p : allPlayers.values()) {
-                    allPlayersMap.put(p.getEmail(), p);
-                }
-
-                /* Import players
-                    - add if not exists
-                    - add to competition
-                    - create HashMap<uid, player> */
-                HashMap<String, Player> importedPlayers = new HashMap<>();
-                for (ServerCommunicationItem p : players) {
-                    Log.d("IMPORT", "Player: " + p.syncData);
-                    Player importedPlayer = PlayerSerializer.getInstance(this).deserialize(p);
-                    long playerId;
-                    if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
-                        Player matchedPlayer = allPlayersMap.get(importedPlayer.getEmail());
-                        playerId = matchedPlayer.getId();
-                        if (!matchedPlayer.samePlayer(importedPlayer)) {
-                            if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
-                                if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
-                                    ManagerFactory.getInstance(this).corePlayerManager.updatePlayer(importedPlayer);
-                                    Log.d("IMPORT", "\tCONFLICT!");
-                                    Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
-                                }
-                            }
-                        }
-                    } else {
-                        ManagerFactory.getInstance(this).corePlayerManager.insertPlayer(importedPlayer);
-                        playerId = importedPlayer.getId();
-                        Log.d("IMPORT", "\tADDED " + playerId);
-                    }
-                    importedPlayer.setId(playerId);
-                    importedPlayers.put(importedPlayer.getUid(), importedPlayer);
-
-                    // Add player to competition.
-                    ManagerFactory.getInstance(this).competitionManager.addPlayer(c, importedPlayer);
-                }
-
-                Log.d("IMPORTED PLAYERS", importedPlayers.toString());
-
-                /* TOURNAMENTS HANDLING */
-                for (ServerCommunicationItem t : tournaments) {
-                    List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
-                    List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
-                    List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
-
-                    Log.d("IMPORT", "Tournament: " + t.syncData);
-                    Tournament imported = TournamentSerializer.getInstance(this).deserialize(t);
-                    imported.setCompetitionId(competitionId);
-                    ManagerFactory.getInstance(this).tournamentManager.insert(imported);
-                    long tournamentId = imported.getId();
-
-                    for (ServerCommunicationItem subItem : t.subItems) {
-                        if (subItem.getType().equals("Player")) {
-                            tournamentPlayers.add(subItem);
-                        } else if (subItem.getType().equals("Team")) {
-                            tournamentTeams.add(subItem);
-                        } else if (subItem.getType().equals("Match")) {
-                            tournamentMatches.add(subItem);
-                        }
-                    }
-
-                    for (ServerCommunicationItem p : tournamentPlayers) {
-                        // Add player to tournament.
-                        long playerId = importedPlayers.get(p.getUid()).getId();
-                        ManagerFactory.getInstance(this).tournamentManager.addPlayer(playerId, tournamentId);
-                    }
-
-                    HashMap<String, Team> importedTeams = new HashMap<>();
-                    for (ServerCommunicationItem team : tournamentTeams) {
-                        // Add team to tournament.
-                        Team importedTeam = TeamSerializer.getInstance(this).deserialize(team);
-                        importedTeam.setTournamentId(tournamentId);
-                        ManagerFactory.getInstance(this).teamManager.insert(importedTeam);
-                        long teamId = importedTeam.getId();
-                        importedTeam.setId(teamId);
-                        importedTeams.put(team.getUid(), importedTeam);
-
-                        // Add players to team.
-                        ArrayList<Player> teamPlayers = new ArrayList<>();
-                        for (ServerCommunicationItem teamPlayer : team.subItems) {
-                            if (teamPlayer.getType().equals("Player")) {
-                                teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
-                            }
-                        }
-                        ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(teamId, teamPlayers);
-                    }
-
-                    // Add match
-                    for (ServerCommunicationItem match : tournamentMatches) {
-                        Match importedMatch = MatchSerializer.getInstance(this).deserialize(match);
-                        importedMatch.setTournamentId(tournamentId);
-                        boolean home = true;
-                        long homeParticipantId = -1, awayParticipantId = -1;
-                        for (ServerCommunicationItem matchParticipant : match.subItems) {
-                            if (CompetitionTypes.teams().equals(c.getType())) {
-                                if (home) {
-                                    homeParticipantId = importedTeams.get(matchParticipant.getUid()).getId();
-                                } else {
-                                    awayParticipantId = importedTeams.get(matchParticipant.getUid()).getId();
-                                }
-                            } else {
-                                if (home) {
-                                    homeParticipantId = importedPlayers.get(matchParticipant.getUid()).getId();
-                                } else {
-                                    awayParticipantId = importedPlayers.get(matchParticipant.getUid()).getId();
-                                }
-                            }
-                            home = false;
-                        }
-
-                        /* START Match Manager - insert */
-                        ManagerFactory.getInstance(this).matchManager.insert(importedMatch);
-                        long matchId = importedMatch.getId();
-                        Participant homeParticipant, awayParticipant;
-                        if (c.getType().equals(CompetitionTypes.individuals())) {
-                            homeParticipant = new Participant(matchId, homeParticipantId, "home");
-                            awayParticipant = new Participant(matchId, awayParticipantId, "away");
-                        } else {
-                            homeParticipant = new Participant(matchId, homeParticipantId, "home");
-                            awayParticipant = new Participant(matchId, awayParticipantId, "away");
-                        }
-                        ManagerFactory.getInstance(this).participantManager.insert(homeParticipant);
-                        ManagerFactory.getInstance(this).participantManager.insert(awayParticipant);
-                        /* END Match Manager - insert */
-
-                        // Add sets
-                        int i=1;
-                        for (SetRowItem set : importedMatch.getSets()) {
-                            ParticipantStat homeStat = new ParticipantStat(homeParticipant.getId(), i, set.getHomeScore());
-                            ParticipantStat awayStat = new ParticipantStat(awayParticipant.getId(), i, set.getAwayScore());
-                            ManagerFactory.getInstance(this).participantStatManager.insert(homeStat);
-                            ManagerFactory.getInstance(this).participantStatManager.insert(awayStat);
-                            i++;
-                        }
-
-                        // Add teams rosters to match
-//                        if (CompetitionTypes.teams().equals(c.getType())) {
-                            for (PlayerStat playerStat : importedMatch.getHomePlayers()) {
-                                // TODO, getPlayerId in case of FileStrategy, getUid otherwise
-                                PlayerStat homePlayerStat = new PlayerStat(homeParticipant.getId(), importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
-                                ManagerFactory.getInstance(this).playerStatManager.insert(homePlayerStat);
-                            }
-                            for (PlayerStat playerStat : importedMatch.getAwayPlayers()) {
-                                // TODO, getPlayerId in case of FileStrategy, getUid otherwise
-                                PlayerStat awayPlayerStat = new PlayerStat(awayParticipant.getId(), importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
-                                ManagerFactory.getInstance(this).playerStatManager.insert(awayPlayerStat);
-                            }
-                        /*} else {
-                            PlayerStat homePlayerStat = new PlayerStat(homeParticipant.getId(), importedPlayers.get(playerStat.getUid()).getId());
-                            ManagerFactory.getInstance(this).playerStatManager.insert(homePlayerStat);
-
-                            PlayerStat awayPlayerStat = new PlayerStat(awayParticipant.getId(), importedPlayers.get(playerStat.getUid()).getId());
-                            ManagerFactory.getInstance(this).playerStatManager.insert(awayPlayerStat);
-                        }*/
-                    }
-                }
+                Competition importedCompetition = CompetitionLoader.importCompetition(this, competition, conflictSolutions);
                 break;
             }
         }
     }
-/*
-    void saveStatsForMatch(ServerCommunicationItem match, long competitionId, long tournamentId, long homeParticipantId, long awayParticipantId) {
-        int setsWon = 0;
-        int setsCnt = Integer.parseInt(match.syncData.get("sets"));
-        for (int i = 1; i <= setsCnt; i++) {
-            SetRowItem item = new SetRowItem();
-            item.setHomeScore(Integer.parseInt(match.syncData.get("set_home_"+i)));
-            item.setAwayScore(Integer.parseInt(match.syncData.get("set_away_"+i)));
-
-            if (item.getHomeScore() > item.getAwayScore())
-                item.setWinner(1);
-            else if (item.getHomeScore() < item.getAwayScore())
-                item.setWinner(-1);
-
-            DAOFactory.getInstance().statDAO.insert(new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
-                    item.getWinner(), item.getAwayScore(), item.getHomeScore(), StatsEnum.SET));
-            DAOFactory.getInstance().statDAO.insert(new fit.cvut.org.cz.squash.data.entities.DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
-                    item.getWinner() * -1, item.getHomeScore(), item.getAwayScore(), StatsEnum.SET));
-            setsWon += item.getWinner();
-        }
-        int result = 0;
-        if (setsWon > 0) result = 1;
-        if (setsWon < 0) result = -1;
-        DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, tournamentId, -1, homeParticipantId,
-                result, -1, -1, StatsEnum.MATCH));
-        DAOFactory.getInstance().statDAO.insert(new DStat(-1, competitionId, tournamentId, -1, awayParticipantId,
-                result * -1, -1, -1, StatsEnum.MATCH));
-    }
-
-    ArrayList<Player> getPlayers(ServerCommunicationItem match, String role, HashMap<String, Player> playersMap) {
-        ArrayList<Player> players = new ArrayList<>();
-        int playersCnt = Integer.parseInt(match.syncData.get("players_"+role));
-        for (int i=1; i<=playersCnt; i++) {
-            String uid = match.syncData.get("player_"+role+"_"+i);
-            players.add(playersMap.get(uid));
-        }
-        return players;
-    }*/
 }

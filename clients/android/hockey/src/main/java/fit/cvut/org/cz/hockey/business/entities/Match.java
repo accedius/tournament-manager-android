@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
 import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
@@ -27,6 +29,8 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
 
     private String homeName;
     private String awayName;
+    private List<PlayerStat> homePlayers = new ArrayList<>();
+    private List<PlayerStat> awayPlayers = new ArrayList<>();
 
     public Match() {}
     public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
@@ -51,12 +55,16 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         super.writeToParcel(dest, flags);
         dest.writeByte((byte) (shootouts ? 1 : 0));
         dest.writeByte((byte) (overtime ? 1 : 0));
+        dest.writeTypedList(homePlayers);
+        dest.writeTypedList(awayPlayers);
     }
 
     public Match(Parcel in) {
         super(in);
         shootouts = in.readByte() != 0;
         overtime = in.readByte() != 0;
+        in.readTypedList(homePlayers, PlayerStat.CREATOR);
+        in.readTypedList(awayPlayers, PlayerStat.CREATOR);
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -117,5 +125,21 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
                 return participant.getParticipantId();
         }
         return -1;
+    }
+
+    public List<PlayerStat> getHomePlayers() {
+        return homePlayers;
+    }
+
+    public void setHomePlayers(List<PlayerStat> homePlayers) {
+        this.homePlayers = homePlayers;
+    }
+
+    public List<PlayerStat> getAwayPlayers() {
+        return awayPlayers;
+    }
+
+    public void setAwayPlayers(List<PlayerStat> awayPlayers) {
+        this.awayPlayers = awayPlayers;
     }
 }
