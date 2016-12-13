@@ -3,35 +3,43 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
+@DatabaseTable(tableName = DBConstants.tTEAMS)
 public class Team extends ShareBase implements Parcelable {
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
-    private long tournamentId;
-    private String name;
-    ArrayList<Player> players = new ArrayList<>();
 
-    public Team(long tournamentId, String name) {
+    @DatabaseField(columnName = DBConstants.cTOURNAMENT_ID)
+    private long tournamentId;
+
+    @DatabaseField(columnName = DBConstants.cNAME)
+    private String name;
+
+    List<Player> players = new ArrayList<>();
+
+    public Team() {}
+
+    public Team(long id, long tournamentId, String name) {
+        this.id = id;
         this.tournamentId = tournamentId;
         this.name = name;
     }
 
-    public Team(DTeam dTeam){
-        id = dTeam.getId();
-        tournamentId = dTeam.getTournamentId();
-        name = dTeam.getName();
-        players = new ArrayList<>();
-        this.uid = dTeam.getUid();
-        this.etag = dTeam.getEtag();
-        this.lastModified = dTeam.getLastModified();
-        this.lastSynchronized = dTeam.getLastSynchronized();
+    public Team(long tournamentId, String name) {
+        this.tournamentId = tournamentId;
+        this.name = name;
     }
 
     protected Team(Parcel in) {
@@ -109,16 +117,12 @@ public class Team extends ShareBase implements Parcelable {
         this.name = name;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
-    }
-
-    public static DTeam convertToDTeam(Team t){
-        return new DTeam(t.getId(), t.getTournamentId(), t.getName(), t.getEtag(), t.getUid(), t.getLastModified(), t.getLastSynchronized());
     }
 
     public void addPlayer(Player player) {
@@ -127,5 +131,10 @@ public class Team extends ShareBase implements Parcelable {
 
     public String getEntityType() {
         return "Team";
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

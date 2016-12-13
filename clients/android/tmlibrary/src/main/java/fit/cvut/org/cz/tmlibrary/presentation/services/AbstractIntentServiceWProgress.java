@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tmlibrary.presentation.services;
 import android.app.IntentService;
 import android.content.Intent;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +35,9 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String key = intent.getStringExtra(getActionKey());
         workingKeys.add(key);
-        doWork(intent);
+        try {
+            doWork(intent);
+        } catch (SQLException e) {}
         workingKeys.remove(key);
     }
 
@@ -49,5 +52,5 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
      * intent passed to service is passed here as well.
      * @param intent that was passed to service
      */
-    protected abstract void doWork(Intent intent);
+    protected abstract void doWork(Intent intent) throws SQLException;
 }

@@ -2,7 +2,7 @@ package fit.cvut.org.cz.hockey.business.serialization;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -39,14 +39,14 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */
-        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition(context, entity.getId());
+        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(entity.getId());
         PlayerSerializer ps = PlayerSerializer.getInstance(context);
         for (Player p : players) {
             item.subItems.add(ps.serialize(p));
         }
 
         /* Serialize Tournaments */
-        ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(context, entity.getId());
+        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(entity.getId());
         TournamentSerializer ts = TournamentSerializer.getInstance(context);
         for (Tournament t : tournaments) {
             item.subItems.add(ts.serialize(t));

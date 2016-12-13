@@ -10,7 +10,8 @@ public class BaseFileValidator {
     public static boolean validJsonFile(String fileContent, String sportContext) {
         try {
             ServerCommunicationItem item = new Gson().fromJson(fileContent, ServerCommunicationItem.class);
-            return item.syncData.get("sport_context").equals(sportContext);
+            String fileSportContext = String.valueOf(item.syncData.get("sport_context"));
+            return sportContext.equals(fileSportContext);
         } catch (JsonSyntaxException e) {
             return false;
         }

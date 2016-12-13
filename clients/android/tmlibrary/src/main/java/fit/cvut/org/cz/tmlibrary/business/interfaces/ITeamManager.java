@@ -1,62 +1,55 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
-import android.content.Context;
+import java.util.List;
 
-import java.util.ArrayList;
-
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
  */
-public interface ITeamManager {
-    /**
-     * insert team
-     * @param context application context
-     * @param team team to be inserted
-     * @return id of inserted team
-     */
-    long insert(Context context, Team team);
-
-    /**
-     * update a team (including its rosters)
-     * @param context application context
-     * @param team team to be updated
-     */
-    void update(Context context, Team team);
-
-    /**
-     * delete a team
-     * @param context application context
-     * @param id id of the team to be deleted
-     * @return true if ok, false if  team is in match and cannot be deleted
-     */
-    boolean delete(Context context, long id);
-
-    /**
-     * get team by its id
-     * @param context application context
-     * @param id id of the team
-     * @return found team
-     */
-    Team getById(Context context, long id);
-
+public interface ITeamManager extends IManager<Team> {
     /**
      * get all teams in tournament
-     * @param context application context
      * @param tournamentId id of the tournament
      * @return found teams
      */
-    ArrayList<Team> getByTournamentId(Context context, long tournamentId);
+    List<Team> getByTournamentId(long tournamentId);
+
+    /**
+     * get all players in team
+     * @param team team
+     * @return found players
+     */
+    List<Player> getTeamPlayers(Team team);
 
     /**
      * generates balanced rosters for teams in given tournament
-     * @param context application context
      * @param competitionId id of the competition
      * @param tournamentId id of the tournament
      * @param generatingType type of stat for generating balanced rosters
      * @return boolean true if succeeded, false if failed
      */
-    boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType);
+    boolean generateRosters(long competitionId, long tournamentId, int generatingType);
 
+    /**
+     * Add player to team
+     * @param team team
+     * @param player player to be addeds
+     */
+    void addPlayer(Team team, Player player);
+
+    /**
+     * Update Team players
+     * @param teamId id of the team
+     * @param players list of players to be updated
+     */
+    void updatePlayersInTeam(long teamId, List<Player> players);
+
+    /**
+     * Get players which are not in any team in tournament.
+     * @param tournamentId id of the tournament
+     * @return list of free players
+     */
+    List<Player> getFreePlayers(long tournamentId);
 }

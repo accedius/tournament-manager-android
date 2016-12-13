@@ -3,39 +3,53 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DCompetition;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
+@DatabaseTable(tableName = DBConstants.tCOMPETITIONS)
 public class Competition extends ShareBase implements Parcelable {
     public final static String col_name = "name";
     public final static String col_start_date = "start_date";
     public final static String col_end_date = "end_date";
 
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
 
-    private String sport_context;
+    @DatabaseField(columnName = DBConstants.cSPORT_NAME)
+    private String sportContext;
+
+    @DatabaseField(columnName = DBConstants.cNAME)
     private String name;
+
+    @DatabaseField(columnName = DBConstants.cSTART)
     private Date startDate;
+
+    @DatabaseField(columnName = DBConstants.cEND)
     private Date endDate;
+
+    @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
+
+    @DatabaseField(columnName = DBConstants.cTYPE)
+    private int typeId;
+
     private CompetitionType type;
 
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
-    public static DCompetition convertToDCompetition(Competition c){
-        return new DCompetition(c.getId(), c.getName(), c.getStartDate(),
-                c.getEndDate(), c.getNote(), c.getType().id, c.getEtag(), c.getUid(), c.getLastModified(), c.getLastSynchronized());
-    }
+    public Competition() {}
 
     public Competition(long id, String uid, String name, Date startDate, Date endDate, String note, CompetitionType type) {
         this.id = id;
@@ -45,6 +59,7 @@ public class Competition extends ShareBase implements Parcelable {
         this.endDate = endDate;
         this.note = note;
         this.type = type;
+        this.typeId = type.id;
     }
 
     public Competition(long id, String name, Date startDate, Date endDate, String note, CompetitionType type) {
@@ -54,20 +69,7 @@ public class Competition extends ShareBase implements Parcelable {
         this.endDate = endDate;
         this.note = note;
         this.type = type;
-    }
-
-    public Competition(DCompetition c) {
-        this.id = c.getId();
-        this.name = c.getName();
-        this.startDate = c.getStartDate();
-        this.endDate = c.getEndDate();
-        this.note = c.getNote();
-        this.type = CompetitionTypes.competitionTypes()[c.getType()];
-
-        this.uid = c.getUid();
-        this.etag = c.getEtag();
-        this.lastModified = c.getLastModified();
-        this.lastSynchronized = c.getLastSynchronized();
+        this.typeId = type.id;
     }
 
     protected Competition(Parcel in) {
@@ -75,6 +77,7 @@ public class Competition extends ShareBase implements Parcelable {
         name = in.readString();
         note = in.readString();
         type = in.readParcelable(CompetitionType.class.getClassLoader());
+        typeId = type.id;
 
         try {
             String text = in.readString();
@@ -178,6 +181,8 @@ public class Competition extends ShareBase implements Parcelable {
 
     public void setType(CompetitionType type) {
         this.type = type;
+        if (type != null)
+            this.typeId = type.id;
     }
 
     public String getEntityType() {
@@ -185,11 +190,19 @@ public class Competition extends ShareBase implements Parcelable {
     }
 
     public String getSportContext() {
-        return sport_context;
+        return sportContext;
     }
 
     public void setSportContext(String sport_context) {
-        this.sport_context = sport_context;
+        this.sportContext = sport_context;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -53,7 +53,7 @@ public class SettingsFragment extends Fragment {
                 String package_name = sport.getValue().metaData.getString("package_name");
                 String sport_name = sport.getKey();
                 sportSettings.add(new Setting(package_name, sport_name));
-                Setting setting = ManagersFactory.getInstance().settingManager.getByPackageSport(getContext(), package_name, sport_name);
+                Setting setting = ManagersFactory.getInstance(getContext()).settingManager.getByPackageSport(package_name, sport_name);
                 if (setting == null) {
                     sparse.put(i, true);
                 }
@@ -91,11 +91,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish) {
-            ManagersFactory.getInstance().settingManager.deleteAll(getContext());
+            ManagersFactory.getInstance(getContext()).settingManager.deleteAll();
             ArrayList<Setting> settings = adapter.getSelectedItems();
             for (Setting s : sportSettings) {
                 if (!settings.contains(s)) {
-                    ManagersFactory.getInstance().settingManager.insert(getContext(), s);
+                    ManagersFactory.getInstance(getContext()).settingManager.insert(s);
                 }
             }
             Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_saved, Snackbar.LENGTH_LONG).show();

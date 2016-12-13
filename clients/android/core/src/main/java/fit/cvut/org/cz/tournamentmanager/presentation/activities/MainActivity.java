@@ -1,30 +1,24 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.activities;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
-import fit.cvut.org.cz.tournamentmanager.presentation.fragments.CompetitionsListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SettingsFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;

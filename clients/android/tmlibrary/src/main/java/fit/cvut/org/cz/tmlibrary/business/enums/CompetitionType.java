@@ -36,6 +36,8 @@ public class CompetitionType implements Parcelable {
     };
 
     public boolean equals(CompetitionType ct) {
+        if (ct == null)
+            return false;
         return id == ct.id;
     }
 

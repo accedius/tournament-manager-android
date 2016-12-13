@@ -2,56 +2,78 @@ package fit.cvut.org.cz.tmlibrary.business.entities;
 
 import android.os.Parcel;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.enums.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 20. 4. 2016.
  */
+@DatabaseTable(tableName = DBConstants.tMATCHES)
 public class Match extends ShareBase {
-    private long id, tournamentId;
-    private CompetitionType type;
-    private Date date;
-    private boolean played;
-    private String note;
-    private int period, round;
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
+    private long id;
 
-    public static DMatch convertToDMatch(Match m){
-        return new DMatch(m.getId(), m.getTournamentId(), m.getPeriod(), m.getRound(), m.getDate(), m.getNote(), m.isPlayed(), m.getEtag(),
-                m.getUid(), m.getLastModified(), m.getLastSynchronized());
-    }
+    @DatabaseField(columnName = DBConstants.cTOURNAMENT_ID)
+    private long tournamentId;
+
+    @DatabaseField(columnName = DBConstants.cTYPE)
+    private int typeId;
+    private CompetitionType type;
+
+    @DatabaseField(columnName = DBConstants.cDATE)
+    private Date date;
+
+    @DatabaseField(columnName = DBConstants.cPLAYED)
+    private boolean played;
+
+    @DatabaseField(columnName = DBConstants.cNOTE)
+    private String note;
+
+    @DatabaseField(columnName = DBConstants.cPERIOD)
+    private int period;
+
+    @DatabaseField(columnName = DBConstants.cROUND)
+    private int round;
+
+    protected int homeScore;
+    protected int awayScore;
+    protected List<Participant> participants = new ArrayList<>();
 
     public Match() {}
+
+    public Match(Match m) {
+        this.id = m.id;
+        this.tournamentId = m.tournamentId;
+        this.type = m.type;
+//        this.typeId = m.type.id;
+        this.date = m.date;
+        this.played = m.played;
+        this.note = m.note;
+        this.period = m.period;
+        this.round = m.round;
+        this.participants = m.participants;
+    }
 
     public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round) {
         this.id = id;
         this.tournamentId = tournamentId;
         this.type = type;
+//        this.typeId = type.id;
         this.date = date;
         this.played = played;
         this.note = note;
         this.period = period;
         this.round = round;
-    }
-
-    public Match(DMatch match){
-        this.id = match.getId();
-        this.tournamentId = match.getTournamentId();
-        this.type = null;
-        this.date = match.getDate();
-        this.played = match.isPlayed();
-        this.note = match.getNote();
-        this.period = match.getPeriod();
-        this.round = match.getRound();
-        this.etag = match.getEtag();
-        this.uid = match.getUid();
-        this.lastModified = match.getLastModified();
-        this.lastSynchronized = match.getLastSynchronized();
     }
 
     protected Match(Parcel in) {
@@ -82,6 +104,9 @@ public class Match extends ShareBase {
 
         uid = in.readString();
         etag = in.readString();
+        homeScore = in.readInt();
+        awayScore = in.readInt();
+        in.readTypedList(participants, Participant.CREATOR);
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -120,6 +145,21 @@ public class Match extends ShareBase {
         else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
+        dest.writeInt(homeScore);
+        dest.writeInt(awayScore);
+        dest.writeTypedList(participants);
+    }
+
+    public void addParticipant(Participant participant) {
+        participants.add(participant);
+    }
+
+    public void addParticipants(List<Participant> participants) {
+        this.participants.addAll(participants);
+    }
+
+    public List<Participant> getParticipants() {
+        return participants;
     }
 
     public long getId() {
@@ -188,5 +228,29 @@ public class Match extends ShareBase {
 
     public String getEntityType() {
         return "Match";
+    }
+
+    public String getHomeName() {
+        return null;
+    }
+
+    public String getAwayName() {
+        return null;
+    }
+
+    public int getHomeScore() {
+        return homeScore;
+    }
+
+    public int getAwayScore() {
+        return awayScore;
+    }
+
+    public void setHomeScore(int homeScore) {
+        this.homeScore = homeScore;
+    }
+
+    public void setAwayScore(int awayScore) {
+        this.awayScore = awayScore;
     }
 }

@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.presentation.adapters.StandingsAdapter;
@@ -46,7 +46,7 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
         String originalText = text.substring(0, text.length()-2);
         col.setText(originalText);
 
-        ArrayList<StandingItem> stats = adapter.getData();
+        List<StandingItem> stats = adapter.getData();
         if (orderColumn.equals(stat) && orderType == "DESC") {
             orderType = "ASC";
             Collections.sort(stats, new Comparator<StandingItem>() {

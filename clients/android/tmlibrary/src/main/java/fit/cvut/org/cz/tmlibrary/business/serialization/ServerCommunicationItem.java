@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +22,7 @@ public class ServerCommunicationItem {
     public Date modified;
 
     public String presenter;
-    public HashMap<String, String> syncData;
+    public HashMap<String, Object> syncData;
     public List<ServerCommunicationItem> subItems = new ArrayList<>();
 
     public transient boolean serializeToken;
@@ -115,11 +113,11 @@ public class ServerCommunicationItem {
         this.presenter = presenter;
     }
 
-    public HashMap<String, String> getSyncData() {
+    public HashMap<String, Object> getSyncData() {
         return syncData;
     }
 
-    public void setSyncData(HashMap<String, String> syncData) {
+    public void setSyncData(HashMap<String, Object> syncData) {
         this.syncData = syncData;
     }
 

@@ -2,52 +2,61 @@ package fit.cvut.org.cz.squash.business.managers;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.j256.ormlite.dao.Dao;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
-import fit.cvut.org.cz.squash.business.interfaces.IParticipantManager;
-import fit.cvut.org.cz.squash.data.DAOFactory;
-import fit.cvut.org.cz.squash.data.entities.DStat;
-import fit.cvut.org.cz.squash.data.entities.StatsEnum;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.DMatch;
-import fit.cvut.org.cz.tmlibrary.data.entities.DParticipant;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTournament;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.DatabaseFactory;
+import fit.cvut.org.cz.squash.data.SquashDBHelper;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by Vaclav on 27. 4. 2016.
  */
-public class ParticipantManager implements IParticipantManager {
-    @Override
-    public long getTeamIdForMatchParticipant(Context context, long matchId, String role) {
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-        for (DParticipant p : participants) {
-            if (p.getRole().equals(role)) return p.getTeamId();
-        }
+public class ParticipantManager extends BaseManager<Participant> implements fit.cvut.org.cz.tmlibrary.business.interfaces.IParticipantManager {
+    protected SquashDBHelper sportDBHelper;
 
-        return -1;
+    public ParticipantManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    public void updatePlayersForMatch(Context context, long matchId, String role, ArrayList<Player> players) {
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-        DParticipant participant = null;
-        for (DParticipant p : participants) {
-            if (p.getRole().equals(role)) participant = p;
-        }
-        DMatch m = DAOFactory.getInstance().matchDAO.getById(context, matchId);
-        DTournament t = DAOFactory.getInstance().tournamentDAO.getById(context, m.getTournamentId());
-        ManagersFactory.getInstance().playerManager.updatePlayersInParticipant(context, participant.getId(), t.getCompetitionId(), t.getId(), players);
+    protected Dao<Participant, Long> getDao() {
+        return DatabaseFactory.getDBeHelper(context).getParticipantDAO();
     }
 
     @Override
-    public void setParticipationValid(Context context, long matchId) {
-        ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(context, matchId);
-
-        for (DParticipant p : participants) {
-            DStat stat = DAOFactory.getInstance().statDAO.getByParticipant(context, p.getId(), StatsEnum.MATCH_PARTICIPATION).get(0);
-            stat.setStatus(1);
-            DAOFactory.getInstance().statDAO.update(context, stat);
+    public List<Participant> getByMatchId(long matchId) {
+        try {
+            List<Participant> participants = getDao().queryForEq(DBConstants.cMATCH_ID, matchId);
+            for (Participant participant : participants) {
+                List<ParticipantStat> participantStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(participant.getId());
+                participant.setParticipantStats(participantStats);
+            }
+            return new ArrayList<>(participants);
+        } catch (SQLException e) {
+            return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Participant getByRoleAndMatchId(String role, long matchId) {
+        if (role == null)
+            return null;
+        List<Participant> participants = getByMatchId(matchId);
+        for (Participant participant : participants) {
+            if (role.equals(participant.getRole())) {
+                return participant;
+            }
+        }
+        return null;
     }
 }

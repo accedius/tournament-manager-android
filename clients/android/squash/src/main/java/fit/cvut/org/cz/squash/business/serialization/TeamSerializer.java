@@ -2,10 +2,10 @@ package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import fit.cvut.org.cz.squash.business.ManagersFactory;
+import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
@@ -39,32 +39,32 @@ public class TeamSerializer extends BaseSerializer<Team> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
-        ArrayList<Player> teamPlayers = ManagersFactory.getInstance().playerManager.getPlayersByTeam(context, entity.getId());
-        for (Player p : teamPlayers) {
-            item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
+        List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(entity);
+        for (Player player : teamPlayers) {
+            item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(player));
         }
         return item;
     }
 
     @Override
     public Team deserialize(ServerCommunicationItem item) {
-        Team t = new Team(-1, "");
-        t.setEtag(item.getEtag());
-        t.setLastModified(item.getModified());
-        deserializeSyncData(item.syncData, t);
-        return t;
+        Team team = new Team(-1, "");
+        team.setEtag(item.getEtag());
+        team.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, team);
+        return team;
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(Team entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Team entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         hm.put("name", entity.getName());
         return hm;
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, Team entity) {
-        entity.setName(syncData.get("name"));
+    public void deserializeSyncData(HashMap<String, Object> syncData, Team entity) {
+        entity.setName(String.valueOf(syncData.get("name")));
     }
 
     @Override

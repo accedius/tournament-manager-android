@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -40,7 +40,7 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
         int option = getIntent().getIntExtra(ARG_OPTION, -1);
         long id = getIntent().getLongExtra(ARG_ID, -1);
         if (option == AddPlayersFragment.OPTION_PARTICIPANT) {
-            ArrayList<MatchPlayerStatistic> playerStatistics = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
+            ArrayList<PlayerStat> playerStatistics = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
             if (playerStatistics != null) return AddPlayersFragment.newInstance(option, id, playerStatistics, 1);
             return AddPlayersFragment.newInstance(option, id);
         }

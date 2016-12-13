@@ -1,6 +1,9 @@
 package fit.cvut.org.cz.tournamentmanager.business;
 
+import android.content.Context;
+
 import fit.cvut.org.cz.tmlibrary.business.interfaces.IPlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ISettingManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
 import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 
@@ -8,15 +11,17 @@ import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
  * Created by kevin on 30. 3. 2016.
  */
 public class ManagersFactory {
-    private static ManagersFactory ourInstance = new ManagersFactory();
+    private static ManagersFactory instance;
 
-    public static ManagersFactory getInstance() {
-        return ourInstance;
+    public IPlayerManager playerManager;
+    public ISettingManager settingManager;
+
+    public static ManagersFactory getInstance(Context context) {
+        if (instance == null) {
+            instance = new ManagersFactory();
+            instance.playerManager = new PlayerManager(context);
+            instance.settingManager = new SettingManager(context);
+        }
+        return instance;
     }
-
-    private ManagersFactory() {
-    }
-
-    public IPlayerManager playerManager = new PlayerManager();
-    public SettingManager settingManager= new SettingManager();
 }

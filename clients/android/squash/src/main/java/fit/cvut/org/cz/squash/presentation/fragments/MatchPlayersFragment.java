@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
@@ -24,8 +25,9 @@ import fit.cvut.org.cz.squash.presentation.adapters.SimplePlayerAdapter;
 import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
+import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -36,11 +38,19 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     private static final String ARG_ID = "arg_id";
     private static final String SAVE_HOME = "save_home";
     private static final String SAVE_AWAY = "save_away";
+    private static final String SAVE_HOME_PLAYERS = "save_home_players";
+    private static final String SAVE_AWAY_PLAYERS = "save_away_players";
     private static final String SAVE_DATA = "save_data";
+    public static final int REQUEST_HOME = 0;
+    public static final int REQUEST_AWAY = 1;
+
     public SimplePlayerAdapter homeAdapter = null, awayAdapter = null;
-    private TextView homeName = null, awayName = null;
-    private Team homeTeam = null, awayTeam = null;
+    private TextView home = null, away = null;
     private boolean askForData = true;
+
+    private String homeName = null, awayName = null;
+    private Participant homeParticipant = null, awayParticipant = null;
+    private ArrayList<PlayerStat> homePlayers = null, awayPlayers = null;
 
     public static MatchPlayersFragment newInstance(long id){
         MatchPlayersFragment f = new MatchPlayersFragment();
@@ -59,19 +69,24 @@ public class MatchPlayersFragment extends AbstractDataFragment {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return PlayerService.isWorking(PlayerService.ACTION_GET_PLAYERS_FOR_MATCH);
+        return PlayerService.isWorking(PlayerService.ACTION_GET_PLAYERS_IN_MATCH);
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
         askForData = false;
         unregisterReceivers();
-        homeTeam = intent.getParcelableExtra(PlayerService.EXTRA_HOME_PLAYERS);
-        awayTeam = intent.getParcelableExtra(PlayerService.EXTRA_AWAY_PLAYERS);
-        homeName.setText(homeTeam.getName());
-        awayName.setText(awayTeam.getName());
-        homeAdapter.swapData(homeTeam.getPlayers());
-        awayAdapter.swapData(awayTeam.getPlayers());
+        homeParticipant = intent.getParcelableExtra(PlayerService.EXTRA_HOME_PARTICIPANT);
+        awayParticipant = intent.getParcelableExtra(PlayerService.EXTRA_AWAY_PARTICIPANT);
+        homeName = intent.getStringExtra(PlayerService.EXTRA_HOME_NAME);
+        awayName = intent.getStringExtra(PlayerService.EXTRA_AWAY_NAME);
+        home.setText(homeName);
+        away.setText(awayName);
+
+        homePlayers = intent.getParcelableArrayListExtra(PlayerService.EXTRA_HOME_PLAYERS);
+        awayPlayers = intent.getParcelableArrayListExtra(PlayerService.EXTRA_AWAY_PLAYERS);
+        homeAdapter.swapData(homePlayers);
+        awayAdapter.swapData(awayPlayers);
     }
 
     @Override
@@ -116,8 +131,8 @@ public class MatchPlayersFragment extends AbstractDataFragment {
                 });
             }
         };
-        homeName = (TextView) v.findViewById(R.id.tv_home_name);
-        awayName = (TextView) v.findViewById(R.id.tv_away_name);
+        home = (TextView) v.findViewById(R.id.tv_home_name);
+        away = (TextView) v.findViewById(R.id.tv_away_name);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
             @Override
@@ -148,7 +163,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectTeamDialog d = SelectTeamDialog.newInstance(homeTeam.getId(), awayTeam.getId(), homeTeam.getName(), awayTeam.getName());
+                SelectTeamDialog d = SelectTeamDialog.newInstance(homeParticipant.getParticipantId(), awayParticipant.getParticipantId(), homeName, awayName, getArguments().getLong(ARG_ID));
                 d.setTargetFragment(MatchPlayersFragment.this, 0);
                 d.show(getFragmentManager(), "select_team_tag");
             }
@@ -175,20 +190,18 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             askForData = savedInstanceState.getBoolean(SAVE_DATA);
-            homeTeam = savedInstanceState.getParcelable(SAVE_HOME);
-            awayTeam = savedInstanceState.getParcelable(SAVE_AWAY);
+            homePlayers = savedInstanceState.getParcelableArrayList(SAVE_HOME_PLAYERS);
+            awayPlayers = savedInstanceState.getParcelableArrayList(SAVE_AWAY_PLAYERS);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (homeTeam != null)
-            homeTeam.setPlayers(homeAdapter.getData());
-        outState.putParcelable(SAVE_HOME, homeTeam);
-        if (awayTeam != null)
-            awayTeam.setPlayers(awayAdapter.getData());
-        outState.putParcelable(SAVE_AWAY, awayTeam);
+        outState.putString(SAVE_HOME, home.getText().toString());
+        outState.putString(SAVE_AWAY, away.getText().toString());
+        outState.putParcelableArrayList(SAVE_HOME_PLAYERS, new ArrayList<>(homeAdapter.getData()));
+        outState.putParcelableArrayList(SAVE_AWAY_PLAYERS, new ArrayList<>(awayAdapter.getData()));
         outState.putBoolean(SAVE_DATA, askForData);
     }
 
@@ -197,10 +210,10 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         if (askForData)
             super.customOnResume();
         else {
-            homeName.setText(homeTeam.getName());
-            awayName.setText(awayTeam.getName());
-            homeAdapter.swapData(homeTeam.getPlayers());
-            awayAdapter.swapData(awayTeam.getPlayers());
+            home.setText(homeName);
+            away.setText(awayName);
+            homeAdapter.swapData(homePlayers);
+            awayAdapter.swapData(awayPlayers);
         }
     }
 
@@ -212,20 +225,33 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != AddPlayersActivity.RESULT_OK) return;
 
-        ArrayList<Player> players = data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA);
-        switch (requestCode){
-            case 0:
-                //hometeam
-                if (homeTeam != null)
-                    homeTeam.getPlayers().addAll(players);
-                break;
-            case 1:
-                if (awayTeam != null)
-                    awayTeam.getPlayers().addAll(players);
-                break;
+        List<Player> players = data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA);
+        List<PlayerStat> playerStats = new ArrayList<>();
+
+        long participantId = requestCode == 0 ? homeParticipant.getId() : awayParticipant.getId();
+        for (Player player : players) {
+            PlayerStat playerStat = new PlayerStat(participantId, player.getId());
+            playerStat.setName(player.getName());
+            playerStats.add(playerStat);
         }
+
+        if (requestCode == 0)
+            homePlayers.addAll(playerStats);
+        else
+            awayPlayers.addAll(playerStats);
     }
 
-    public ArrayList<Player> getHomePlayers() {return homeAdapter.getData();}
-    public ArrayList<Player> getAwayPlayers() {return awayAdapter.getData();}
+    public List<PlayerStat> getHomePlayers() {return homeAdapter.getData();}
+    public List<PlayerStat> getAwayPlayers() {return awayAdapter.getData();}
+
+    public ArrayList<Player> getOmitPlayers() {
+        ArrayList<Player> res = new ArrayList<>();
+        for (PlayerStat playerStat : homeAdapter.getData())
+            res.add(new Player(playerStat.getPlayerId(), playerStat.getName(), null, null));
+
+        for (PlayerStat playerStat : awayAdapter.getData())
+            res.add(new Player(playerStat.getPlayerId(), playerStat.getName(), null, null));
+
+        return res;
+    }
 }

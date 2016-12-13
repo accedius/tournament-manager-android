@@ -1,24 +1,34 @@
 package fit.cvut.org.cz.tmlibrary.business.entities;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.DPlayer;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
+@DatabaseTable (tableName = DBConstants.tPLAYERS)
 public class Player extends ShareBase implements Parcelable {
-    private long id;
+    @DatabaseField(generatedId = true, columnName = DBConstants.cID)
+    private Long id;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cNAME)
     private String name;
+
+    @DatabaseField(canBeNull = false, columnName = DBConstants.cEMAIL)
     private String email;
+
+    @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
     public static final String col_name = "name";
@@ -29,6 +39,8 @@ public class Player extends ShareBase implements Parcelable {
     public static Creator<Player> getCREATOR() {
         return CREATOR;
     }
+
+    public Player() {}
 
     protected Player(Parcel in) {
         id = in.readLong();
@@ -74,21 +86,12 @@ public class Player extends ShareBase implements Parcelable {
         this.note = cursor.getString(cursor.getColumnIndex(DBConstants.cNOTE));
     }
 
-    public Player(DPlayer p) {
-        this.id = p.getId();
-        this.name = p.getName();
-        this.email = p.getEmail();
-        this.note = p.getNote();
-
-        this.uid = p.getUid();
-        this.etag = p.getEtag();
-        this.lastModified = p.getLastModified();
-        this.lastSynchronized = p.getLastSynchronized();
-    }
-
-    public static DPlayer convertToDPlayer(Player p){
-        return new DPlayer(p.getId(), p.getName(), p.getEmail(),p.getNote(),
-                p.getEtag(), p.getUid(), p.getLastModified(), p.getLastSynchronized());
+    public ContentValues getContentValues() {
+        ContentValues values = new ContentValues();
+        values.put("email", getEmail());
+        values.put("name", getName());
+        values.put("note", getNote());
+        return values;
     }
 
     public static final Creator<Player> CREATOR = new Creator<Player>() {
@@ -122,6 +125,10 @@ public class Player extends ShareBase implements Parcelable {
         else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -174,16 +181,7 @@ public class Player extends ShareBase implements Parcelable {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
     public String getEntityType() {
         return "Player";
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

@@ -86,7 +86,7 @@ public class CompetitionCP extends ContentProvider {
             String playerID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tPLAYERS_IN_COMPETITION + " join " + DBConstants.tCOMPETITIONS + " ON " +
-                            DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITIONID + " = " +
+                            DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITION_ID + " = " +
                             DBConstants.tCOMPETITIONS + "." + DBConstants.cID);
 
             projection = new String[]{DBConstants.tCOMPETITIONS + ".*"};
@@ -98,15 +98,15 @@ public class CompetitionCP extends ContentProvider {
                     DBConstants.tCOMPETITIONS +
                             " left join " + DBConstants.tTOURNAMENTS + " ON " +
                             DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " +
-                            DBConstants.tTOURNAMENTS + "." + DBConstants.cCOMPETITIONID +
+                            DBConstants.tTOURNAMENTS + "." + DBConstants.cCOMPETITION_ID +
                             " left join " + DBConstants.tPLAYERS_IN_COMPETITION + " ON " +
-                            DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITIONID + " = " +
+                            DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITION_ID + " = " +
                             DBConstants.tCOMPETITIONS + "." + DBConstants.cID);
 
             projection = new String[]{DBConstants.tCOMPETITIONS + ".*"};
             selection = DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " + competitionID + " and " +
-                    DBConstants.tTOURNAMENTS + "." + DBConstants.cCOMPETITIONID + " IS NULL and " +
-                    DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITIONID + " IS NULL";
+                    DBConstants.tTOURNAMENTS + "." + DBConstants.cCOMPETITION_ID + " IS NULL and " +
+                    DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cCOMPETITION_ID + " IS NULL";
         }
 
         Cursor cursor = builder.query(helper.getWritableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);

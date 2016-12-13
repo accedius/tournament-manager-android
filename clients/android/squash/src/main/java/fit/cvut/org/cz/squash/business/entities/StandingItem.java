@@ -9,14 +9,14 @@ import android.os.Parcelable;
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingItem implements Parcelable {
-    public Long id;
+    public long id;
     public String name;
-    public int wins, losses, draws, setsWon, setsLost, points;
+    public int wins, losses, draws, setsWon, setsLost, ballsWon, ballsLost, points;
 
-    public StandingItem(Long id, String name){
+    public StandingItem(long id, String name){
         this.id = id;
         this.name = name;
-        wins = losses = draws = setsWon = setsLost = points = 0;
+        wins = losses = draws = setsWon = setsLost = ballsWon = ballsLost = points = 0;
     }
 
     protected StandingItem(Parcel in) {
@@ -27,6 +27,8 @@ public class StandingItem implements Parcelable {
         draws = in.readInt();
         setsWon = in.readInt();
         setsLost = in.readInt();
+        ballsWon = in.readInt();
+        ballsLost = in.readInt();
         points = in.readInt();
     }
 
@@ -56,6 +58,8 @@ public class StandingItem implements Parcelable {
         dest.writeInt(draws);
         dest.writeInt(setsWon);
         dest.writeInt(setsLost);
+        dest.writeInt(ballsWon);
+        dest.writeInt(ballsLost);
         dest.writeInt(points);
     }
 
@@ -67,7 +71,13 @@ public class StandingItem implements Parcelable {
             case "d": return draws;
             case "sw": return setsWon;
             case "sl": return setsLost;
+            case "bw": return ballsWon;
+            case "bl": return ballsLost;
             default: return 0;
         }
+    }
+
+    public int getMatches() {
+        return wins + draws + losses;
     }
 }

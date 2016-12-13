@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.MatchEditAtOnceFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
@@ -24,8 +26,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditAtOnceActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_HOME_STATS = "home_stats";
-    public static final String EXTRA_AWAY_STATS = "away_stats";
+    public static final String EXTRA_HOME_PLAYERS_STATS = "home_players_stats";
+    public static final String EXTRA_AWAY_PLAYERS_STATS = "away_players_stats";
 
     /**
      * Creates a new intent to start this activity
@@ -34,14 +36,14 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
      * @param awayStats stats of the away team
      * @return Intent to that can be used to start this activity
      */
-    public static Intent newStartIntent(Context context, ArrayList<MatchPlayerStatistic> homeStats, ArrayList<MatchPlayerStatistic> awayStats) {
+    public static Intent newStartIntent(Context context, List<PlayerStat> homeStats, List<PlayerStat> awayStats) {
         Intent res = new Intent(context, EditAtOnceActivity.class);
 
-        ArrayList<MatchPlayerStatistic> newHomeStat = new ArrayList<>(homeStats);
-        ArrayList<MatchPlayerStatistic> newAwayStat = new ArrayList<>(awayStats);
+        ArrayList<PlayerStat> newHomeStat = new ArrayList<>(homeStats);
+        ArrayList<PlayerStat> newAwayStat = new ArrayList<>(awayStats);
 
-        res.putParcelableArrayListExtra(EXTRA_HOME_STATS, newHomeStat);
-        res.putParcelableArrayListExtra(EXTRA_AWAY_STATS, newAwayStat);
+        res.putParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS, newHomeStat);
+        res.putParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS, newAwayStat);
 
         return res;
     }
@@ -60,8 +62,8 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<MatchPlayerStatistic> homeStats = getIntent().getParcelableArrayListExtra(EXTRA_HOME_STATS);
-        ArrayList<MatchPlayerStatistic> awayStats = getIntent().getParcelableArrayListExtra(EXTRA_AWAY_STATS);
+        ArrayList<PlayerStat> homeStats = getIntent().getParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS);
+        ArrayList<PlayerStat> awayStats = getIntent().getParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, MatchEditAtOnceFragment.newInstance(homeStats, awayStats)).commit();
@@ -82,12 +84,12 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
                 return super.onOptionsItemSelected(item);
             }
 
-            ArrayList<MatchPlayerStatistic> homeStats = fragment.getHomeData();
-            ArrayList<MatchPlayerStatistic> awayStats = fragment.getAwayData();
+            ArrayList<PlayerStat> homeStats = fragment.getHomeData();
+            ArrayList<PlayerStat> awayStats = fragment.getAwayData();
 
             Intent data = new Intent();
-            data.putParcelableArrayListExtra(EXTRA_HOME_STATS, homeStats);
-            data.putParcelableArrayListExtra(EXTRA_AWAY_STATS, awayStats);
+            data.putParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS, homeStats);
+            data.putParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS, awayStats);
 
             setResult(Activity.RESULT_OK, data);
             finish();

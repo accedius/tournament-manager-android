@@ -16,9 +16,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
@@ -136,7 +136,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     public void orderData(final String type) {
         if (adapter == null) return;
 
-        ArrayList<Tournament> tournaments = adapter.getData();
+        List<Tournament> tournaments = adapter.getData();
         if (orderColumn.equals(type) && orderType.equals("ASC")) {
             orderType = "DESC";
             Collections.sort(tournaments, new Comparator<Tournament>() {

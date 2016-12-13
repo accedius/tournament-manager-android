@@ -8,12 +8,16 @@ import android.os.Parcelable;
  */
 public class Standing implements Parcelable {
     private String name;
-    private Long wins, wins_ot, wins_so, losses, losses_ot, losses_so, draws, points, goalsGiven, goalsReceived;
+    private int wins, wins_ot, wins_so, losses, losses_ot, losses_so, draws, points, goalsGiven, goalsReceived;
     private long teamId;
 
     public Standing() {}
 
-    public Standing(String name, Long wins, Long wins_ot, Long wins_so, Long losses, Long losses_ot, Long losses_so, Long draws, Long points, Long goalsGiven, Long goalsReceived, long teamId) {
+    public Standing(String name, long teamId) {
+        this(name, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, teamId);
+    }
+
+    public Standing(String name, int wins, int wins_ot, int wins_so, int losses, int losses_ot, int losses_so, int draws, int points, int goalsGiven, int goalsReceived, long teamId) {
         this.name = name;
         this.wins = wins;
         this.wins_ot = wins_ot;
@@ -39,6 +43,10 @@ public class Standing implements Parcelable {
     public void addGoalsGiven(long gg) { this.goalsGiven += gg; }
     public void addGoalsReceived(long gr) { this.goalsReceived += gr; }
 
+    public int getMatches() {
+        return getTotalWins()+getDraws()+getTotalLosses();
+    }
+
     public String getName() {
         return name;
     }
@@ -47,67 +55,67 @@ public class Standing implements Parcelable {
         this.name = name;
     }
 
-    public Long getWins() {
+    public int getWins() {
         return wins;
     }
 
-    public Long getTotalWins() { return wins+wins_ot+wins_so; }
+    public int getTotalWins() { return wins+wins_ot+wins_so; }
 
-    public Long getWinsOt() { return wins_ot; }
+    public int getWinsOt() { return wins_ot; }
 
-    public Long getWinsSo() { return wins_so; }
+    public int getWinsSo() { return wins_so; }
 
-    public void setWins(Long wins) {
+    public void setWins(int wins) {
         this.wins = wins;
     }
 
-    public Long getLosses() {
+    public int getLosses() {
         return losses;
     }
 
-    public Long getTotalLosses() { return losses+losses_ot+losses_so; }
+    public int getTotalLosses() { return losses+losses_ot+losses_so; }
 
-    public Long getLossesOt() {
+    public int getLossesOt() {
         return losses_ot;
     }
 
-    public Long getLossesSo() {
+    public int getLossesSo() {
         return losses_so;
     }
 
-    public void setLosses(Long losses) {
+    public void setLosses(int losses) {
         this.losses = losses;
     }
 
-    public Long getDraws() {
+    public int getDraws() {
         return draws;
     }
 
-    public void setDraws(Long draws) {
+    public void setDraws(int draws) {
         this.draws = draws;
     }
 
-    public Long getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(Long points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
-    public Long getGoalsGiven() {
+    public int getGoalsGiven() {
         return goalsGiven;
     }
 
-    public void setGoalsGiven(Long goalsGiven) {
+    public void setGoalsGiven(int goalsGiven) {
         this.goalsGiven = goalsGiven;
     }
 
-    public Long getGoalsReceived() {
+    public int getGoalsReceived() {
         return goalsReceived;
     }
 
-    public void setGoalsReceived(Long goalsReceived) {
+    public void setGoalsReceived(int goalsReceived) {
         this.goalsReceived = goalsReceived;
     }
 
@@ -119,22 +127,32 @@ public class Standing implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeLong(wins);
-        dest.writeLong(losses);
-        dest.writeLong(draws);
-        dest.writeLong(goalsGiven);
-        dest.writeLong(goalsReceived);
-        dest.writeLong(points);
+        dest.writeInt(wins);
+        dest.writeInt(wins_ot);
+        dest.writeInt(wins_so);
+        dest.writeInt(losses);
+        dest.writeInt(losses_ot);
+        dest.writeInt(losses_so);
+        dest.writeInt(draws);
+        dest.writeInt(goalsGiven);
+        dest.writeInt(goalsReceived);
+        dest.writeInt(points);
+        dest.writeLong(teamId);
     }
 
     public Standing(Parcel in) {
         this.name = in.readString();
-        this.wins = in.readLong();
-        this.losses = in.readLong();
-        this.draws = in.readLong();
-        this.goalsGiven = in.readLong();
-        this.goalsReceived = in.readLong();
-        this.points = in.readLong();
+        this.wins = in.readInt();
+        this.wins_ot = in.readInt();
+        this.wins_so = in.readInt();
+        this.losses = in.readInt();
+        this.losses_ot = in.readInt();
+        this.losses_so = in.readInt();
+        this.draws = in.readInt();
+        this.goalsGiven = in.readInt();
+        this.goalsReceived = in.readInt();
+        this.points = in.readInt();
+        this.teamId = in.readLong();
     }
 
     public static final Creator<Standing> CREATOR = new Creator<Standing>() {

@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
@@ -63,19 +63,20 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void doWork(Intent intent) {
+    protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(EXTRA_ACTION);
 
         switch (action){
             case ACTION_CREATE:{
                 Player c = intent.getParcelableExtra(EXTRA_PLAYER);
-                ManagersFactory.getInstance().playerManager.insert(this, c);
+                ManagersFactory.getInstance(this).playerManager.insert(c);
                 break;
             }
             case ACTION_GET_ALL:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_ALL);
-                ArrayList<Player> players = ManagersFactory.getInstance().playerManager.getAll(this);
+                ArrayList<Player> players = new ArrayList<>();
+                players.addAll(ManagersFactory.getInstance(this).playerManager.getAll());
                 result.putExtra(EXTRA_PLAYERS, players);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
@@ -83,14 +84,14 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Player p = ManagersFactory.getInstance().playerManager.getById(this, intent.getLongExtra(EXTRA_ID, -1));
+                Player p = ManagersFactory.getInstance(this).playerManager.getById(intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_PLAYER, p);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
                 Player p = intent.getParcelableExtra(EXTRA_PLAYER);
-                ManagersFactory.getInstance().playerManager.update(this, p);
+                ManagersFactory.getInstance(this).playerManager.update(p);
                 break;
             }
             case ACTION_DELETE: {
@@ -108,7 +109,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 }
 
                 if (deleted)
-                    ManagersFactory.getInstance().playerManager.delete(this, playerId);
+                    ManagersFactory.getInstance(this).playerManager.delete(playerId);
 
                 result.putExtra(EXTRA_POSITION, position);
                 result.putExtra(EXTRA_RESULT, deleted);

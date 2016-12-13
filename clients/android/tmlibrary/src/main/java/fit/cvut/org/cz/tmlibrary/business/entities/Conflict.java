@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.ConflictValue;
-
 /**
  * Created by kevin on 24.10.2016.
  */

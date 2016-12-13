@@ -7,9 +7,9 @@ import android.app.Application;
  */
 public class HockeyPackage extends Application {
 
-    private String sportContext;
+    private static String sportContext;
 
-    public String getSportContext() {
+    public static String getSportContext() {
         return sportContext;
     }
 

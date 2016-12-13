@@ -78,7 +78,6 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
 
             Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
             intent.putExtra(TournamentService.EXTRA_CONFIGURATION, pointConfig);
-            intent.putExtra(TournamentService.EXTRA_ID, getIntent().getLongExtra(EXTRA_TOUR_ID, -1));
             startService(intent);
             finish();
         }

@@ -46,7 +46,7 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected boolean isTypeChoosable() {
         String sport_context = ((SquashPackage)getActivity().getApplication()).getSportContext();
-        if (sport_context.equals("Volleyball"))
+        if (sport_context.equals("Volleyball") || sport_context.equals("Beach"))
             return false;
         return true;
     }

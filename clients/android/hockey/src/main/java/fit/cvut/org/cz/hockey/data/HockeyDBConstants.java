@@ -22,6 +22,12 @@ public class HockeyDBConstants {
     public static final String cOTL = "overtime_loss";
     public static final String cSOW = "shootout_win";
     public static final String cSOL = "shootout_loss";
+
+    public static final String cGOALS = "goals";
+    public static final String cASSISTS = "assists";
+    public static final String cPLUS_MINUS = "plus_minus";
+    public static final String cSAVES = "saves";
+
     public static final String cSCORE = "score";
     public static final String cSHOOTOUTS = "shootouts";
     public static final String cOVERTIME = "overtime";

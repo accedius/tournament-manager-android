@@ -1,7 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.interfaces;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
@@ -16,5 +16,5 @@ public interface ITeamsRostersGenerator {
      * @param players hashmap of player ids and players
      * @param stats map of players id and stat for balanced rosters
      */
-    boolean generateRosters(ArrayList<Team> teams, HashMap<Long, Player> players, HashMap<Long, Double> stats);
+    boolean generateRosters(List<Team> teams, Map<Long, Player> players, Map<Long, Double> stats);
 }

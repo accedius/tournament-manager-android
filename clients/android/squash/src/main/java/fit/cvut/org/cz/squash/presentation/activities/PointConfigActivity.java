@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.PointConfig;
+import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.presentation.fragments.PointConfigFragment;
 import fit.cvut.org.cz.squash.presentation.services.PointConfigService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
@@ -47,7 +47,7 @@ public class PointConfigActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            PointConfig pointConfig = ((PointConfigFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
+            PointConfiguration pointConfig = ((PointConfigFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
             if (pointConfig == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);

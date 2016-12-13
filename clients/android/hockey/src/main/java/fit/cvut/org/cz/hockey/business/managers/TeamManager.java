@@ -2,78 +2,64 @@ package fit.cvut.org.cz.hockey.business.managers;
 
 import android.content.Context;
 
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
-import fit.cvut.org.cz.hockey.data.DAOFactory;
+import fit.cvut.org.cz.hockey.data.DatabaseFactory;
+import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.ScoredMatch;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.business.generators.RoundRobinTeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.interfaces.ITeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.data.entities.DTeam;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
  */
-public class TeamManager implements ITeamManager {
-    @Override
-    public long insert(Context context, Team team) {
-        DTeam dt = Team.convertToDTeam(team);
-        return DAOFactory.getInstance().teamDAO.insert(context, dt);
+public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
+    protected HockeyDBHelper sportDBHelper;
+
+    public TeamManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
+        super(context, corePlayerManager, sportDBHelper);
+        this.sportDBHelper = sportDBHelper;
     }
 
     @Override
-    public void update(Context context, Team team) {
-        DTeam dt = Team.convertToDTeam(team);
-        DAOFactory.getInstance().teamDAO.update(context, dt);
+    protected Dao<Team, Long> getDao() {
+        return DatabaseFactory.getDBeHelper(context).getTeamDAO();
     }
 
-    @Override
-    public boolean delete(Context context, long id) {
-        Team t = getById(context, id);
-        ArrayList<ScoredMatch> matches = ManagerFactory.getInstance().matchManager.getByTournamentId(context, t.getTournamentId());
-        for (ScoredMatch match : matches) {
-            if (match.getHomeParticipantId() == id || match.getAwayParticipantId() == id) return false;
+    public List<Player> getTournamentPlayers(long tournamentId) {
+        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
+        List<Player> res = new ArrayList<>();
+        try {
+            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
+                res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
+            }
+            return res;
         }
-
-        DAOFactory.getInstance().packagePlayerDAO.deleteAllPlayersFromTeam(context, id);
-        DAOFactory.getInstance().teamDAO.delete(context, id);
-        return true;
-    }
-
-    @Override
-    public Team getById(Context context, long id) {
-        DTeam dt = DAOFactory.getInstance().teamDAO.getById(context, id);
-        Team t = new Team(dt);
-        t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, t.getId()));
-        return t;
-    }
-
-    @Override
-    public ArrayList<Team> getByTournamentId(Context context, long tournamentId) {
-        ArrayList<DTeam> dts = DAOFactory.getInstance().teamDAO.getByTournamentId(context, tournamentId);
-        ArrayList<Team> ts = new ArrayList<>();
-
-        for (DTeam i : dts) {
-            Team t = new Team(i);
-            t.setPlayers(ManagerFactory.getInstance().packagePlayerManager.getPlayersByTeam(context, t.getId()));
-            ts.add(t);
+        catch (SQLException e) {
+            return res;
         }
-
-        return ts;
     }
 
     @Override
-    public boolean generateRosters(Context context, long competitionId, long tournamentId, int generatingType) {
-        ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByTournament(context, tournamentId);
-        ArrayList<Team> teams = ManagerFactory.getInstance().teamManager.getByTournamentId(context, tournamentId);
-        ArrayList<AggregatedStatistics> stats = ManagerFactory.getInstance().statisticsManager.getByCompetitionID(context, competitionId);
+    public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
+        List<Player> players = getTournamentPlayers(tournamentId);
+        List<Team> teams = getByTournamentId(tournamentId);
+        List<AggregatedStatistics> stats = ManagerFactory.getInstance(context).statisticsManager.getByCompetitionId(competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
@@ -97,7 +83,7 @@ public class TeamManager implements ITeamManager {
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
-            ManagerFactory.getInstance().packagePlayerManager.updatePlayersInTeam(context, t.getId(), t.getPlayers());
+            ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(t.getId(), t.getPlayers());
 
         return res;
     }

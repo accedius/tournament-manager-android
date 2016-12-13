@@ -13,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
@@ -36,7 +36,7 @@ public class SportsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         Map<String, ApplicationInfo> contexts = PackagesInfo.getSportContexts(getContext(), getResources());
-        ArrayList<Setting> ignoredSports = ManagersFactory.getInstance().settingManager.getAll(getContext());
+        List<Setting> ignoredSports = ManagersFactory.getInstance(getContext()).settingManager.getAll();
         for (Setting s : ignoredSports) {
             if (contexts.containsKey(s.getSportName())) {
                 contexts.remove(s.getSportName());

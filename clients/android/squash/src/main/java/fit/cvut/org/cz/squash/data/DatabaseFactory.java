@@ -1,7 +1,8 @@
 package fit.cvut.org.cz.squash.data;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+
+import java.util.HashMap;
 
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 
@@ -10,17 +11,13 @@ import fit.cvut.org.cz.squash.presentation.SquashPackage;
  * Created by Vaclav on 29. 3. 2016.
  */
 public class DatabaseFactory {
-    private static DatabaseFactory ourInstance = new DatabaseFactory();
+    private static HashMap<String, SquashDBHelper> dbHelpers = new HashMap<>();
 
-    public static DatabaseFactory getInstance() {
-        return ourInstance;
-    }
-
-    private DatabaseFactory() {
-    }
-
-    public SQLiteDatabase getDatabase(Context context) {
+    public static SquashDBHelper getDBeHelper(Context context) {
         String name = ((SquashPackage) context.getApplicationContext()).getSportContext();
-        return new SquashDBHelper(context, name).getWritableDatabase();
+        if (!dbHelpers.containsKey(name)) {
+            dbHelpers.put(name, new SquashDBHelper(context, name));
+        }
+        return dbHelpers.get(name);
     }
 }

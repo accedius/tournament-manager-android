@@ -2,8 +2,6 @@ package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -20,8 +18,8 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
     }
 
     @Override
-    public HashMap<String, String> serializeSyncData(Tournament entity) {
-        HashMap<String, String> hm = new HashMap<>();
+    public HashMap<String, Object> serializeSyncData(Tournament entity) {
+        HashMap<String, Object> hm = new HashMap<>();
         hm.put("name", entity.getName());
         if (entity.getStartDate() == null) {
             hm.put("start_date", null);
@@ -38,13 +36,15 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
     }
 
     @Override
-    public void deserializeSyncData(HashMap<String, String> syncData, Tournament entity) {
+    public void deserializeSyncData(HashMap<String, Object> syncData, Tournament entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-        entity.setName(syncData.get("name"));
-        entity.setNote(syncData.get("note"));
+        entity.setName(String.valueOf(syncData.get("name")));
+        entity.setNote(String.valueOf(syncData.get("note")));
         try {
-            entity.setStartDate(dateFormat.parse(syncData.get("start_date")));
-            entity.setEndDate(dateFormat.parse(syncData.get("end_date")));
+            entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get("start_date"))));
+        } catch (ParseException e) {} catch(NullPointerException e) {}
+        try {
+            entity.setEndDate(dateFormat.parse(String.valueOf(syncData.get("end_date"))));
         } catch (ParseException e) {} catch(NullPointerException e) {}
     }
 

@@ -6,52 +6,50 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+
+import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
+import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 
 /** Dialog that specifies to which team players should be added in match rosters
  * Created by Vaclav on 11. 4. 2016.
  */
 public class SelectTeamDialog extends DialogFragment {
     public SelectTeamDialog(){}
+    public static final String ARG_MATCH_ID = "arg_match_id";
     public static final String ARG_HOME_ID = "arg_home_id";
     public static final String ARG_AWAY_ID = "arg_away_id";
     public static final String ARG_HOME_NAME = "arg_home_name";
     public static final String ARG_AWAY_NAME = "arg_away_name";
 
-    public static SelectTeamDialog newInstance(long homeId, long awayId, String homeName, String awayName) {
+    public static SelectTeamDialog newInstance(long homeId, long awayId, String homeName, String awayName, long matchId) {
         SelectTeamDialog fragment = new SelectTeamDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_AWAY_ID, awayId);
         args.putLong(ARG_HOME_ID, homeId);
+        args.putLong(ARG_AWAY_ID, awayId);
         args.putString(ARG_HOME_NAME, homeName);
         args.putString(ARG_AWAY_NAME, awayName);
+        args.putLong(ARG_MATCH_ID, matchId);
         fragment.setArguments(args);
         return fragment;
     }
 
     private void homeClick(){
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_HOME_ID));
-        Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragment) {
-            MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
-            intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.homeAdapter.getData());
-            ifr.startActivityForResult(intent, 0);
-        }
+        ArrayList<Player> omitStats = ((MatchPlayersFragment)getTargetFragment()).getOmitPlayers();
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_MATCH_ID));
+        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+        getTargetFragment().startActivityForResult(intent, MatchPlayersFragment.REQUEST_HOME);
     }
     private void awayClick(){
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_AWAY_ID));
-        Fragment fr = getTargetFragment();
-        if (fr !=null && fr instanceof MatchPlayersFragment) {
-            MatchPlayersFragment ifr = (MatchPlayersFragment) fr;
-            intent.putExtra(AddPlayersActivity.EXTRA_OMIT_DATA, ifr.awayAdapter.getData());
-            ifr.startActivityForResult(intent, 1);
-        }
+        ArrayList<Player> omitStats = ((MatchPlayersFragment)getTargetFragment()).getOmitPlayers();
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_MATCH, getArguments().getLong(ARG_MATCH_ID));
+        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+        getTargetFragment().startActivityForResult(intent, MatchPlayersFragment.REQUEST_AWAY);
     }
 
     @NonNull

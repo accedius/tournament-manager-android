@@ -7,7 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**
@@ -26,7 +26,7 @@ public class PlayerMatchStatDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         EditStatsDialog editDial = EditStatsDialog.newInstance(
-                                (MatchPlayerStatistic)getArguments().getParcelable(ARG_DATA),
+                                (PlayerStat)getArguments().getParcelable(ARG_DATA),
                                 getArguments().getInt(ARG_POSITION),
                                 getArguments().getBoolean(ARG_HOME));
                         editDial.setTargetFragment(getTargetFragment(), 1);
@@ -43,7 +43,7 @@ public class PlayerMatchStatDialog extends DialogFragment {
         };
     }
 
-    public static PlayerMatchStatDialog newInstance(MatchPlayerStatistic statistic, int pos, boolean isHome, String name) {
+    public static PlayerMatchStatDialog newInstance(PlayerStat statistic, int pos, boolean isHome, String name) {
         PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
         Bundle b = new Bundle();
         b.putParcelable(ARG_DATA, statistic);

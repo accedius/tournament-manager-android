@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
@@ -47,28 +48,28 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
     }
 
     @Override
-    protected void doWork(Intent intent) {
+    protected void doWork(Intent intent) throws SQLException {
         String action = intent.getStringExtra(EXTRA_ACTION);
         Competition c;
 
         switch (action) {
             case ACTION_CREATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance().competitionManager.insert(this, c);
+                ManagerFactory.getInstance(this).competitionManager.insert(c);
                 break;
 
             case ACTION_UPDATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance().competitionManager.update(this, c);
+                ManagerFactory.getInstance(this).competitionManager.update(c);
                 break;
 
             case ACTION_FIND_BY_ID:
                 Intent res = new Intent();
-                long compID = intent.getLongExtra(EXTRA_ID, -1);
+                long competitionId = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
-                c = ManagerFactory.getInstance().competitionManager.getById(this, compID);
-                ArrayList<Tournament> tournaments = ManagerFactory.getInstance().tournamentManager.getByCompetitionId(this, compID);
-                ArrayList<Player> players = ManagerFactory.getInstance().packagePlayerManager.getPlayersByCompetition(this, compID);
+                c = ManagerFactory.getInstance(this).competitionManager.getById(competitionId);
+                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(competitionId);
+                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(competitionId);
 
                 res.putExtra(EXTRA_COMPETITION, c);
                 res.putExtra(EXTRA_PLAYERS_COUNT, players.size());

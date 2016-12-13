@@ -16,10 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.business.entities.MatchScore;
+import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -104,18 +105,18 @@ public class ShowMatchActivity extends AbstractTabActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish) {
-            MatchScore score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
+            Match score = ((HockeyMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
-            ArrayList<MatchPlayerStatistic> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
-            ArrayList<MatchPlayerStatistic> awayStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
+            List<PlayerStat> homeStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
+            List<PlayerStat> awayStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 
             Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
             intent.putExtra(MatchService.EXTRA_MATCH_SCORE, score);
-            intent.putExtra(MatchService.EXTRA_HOME_STATS, homeStats);
-            intent.putExtra(MatchService.EXTRA_AWAY_STATS, awayStats);
+            intent.putExtra(MatchService.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
+            intent.putExtra(MatchService.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
             startService(intent);
 

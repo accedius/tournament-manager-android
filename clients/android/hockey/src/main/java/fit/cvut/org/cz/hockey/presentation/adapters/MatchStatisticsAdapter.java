@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.dialogs.PlayerMatchStatDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
  * Adapter holding match statistics for players
  * Created by atgot_000 on 23. 4. 2016.
  */
-public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStatistic, MatchStatisticsAdapter.MatchStatisticsViewHolder> {
+public class MatchStatisticsAdapter extends AbstractListAdapter<PlayerStat, MatchStatisticsAdapter.MatchStatisticsViewHolder> {
     private Fragment parentFrag;
     private boolean isHome = true;
 
@@ -35,12 +35,12 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<MatchPlayerStati
 
     @Override
     public void onBindViewHolder(MatchStatisticsViewHolder holder, int position) {
-        MatchPlayerStatistic stats = data.get(position);
+        PlayerStat stats = data.get(position);
         holder.name.setText(stats.getName());
         holder.G.setText(Long.toString(stats.getGoals()));
         holder.A.setText(Long.toString(stats.getAssists()));
         holder.I.setText(Long.toString(stats.getSaves()));
-        holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
+        holder.PMP.setText(Long.toString(stats.getPlusMinus()));
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), position, stats.getName());
     }
 

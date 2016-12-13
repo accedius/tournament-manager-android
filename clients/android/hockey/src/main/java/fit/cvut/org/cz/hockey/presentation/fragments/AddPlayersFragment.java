@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
+import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
@@ -75,7 +75,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
      * @param tmp actually useless integer argument to differentiate from other newInstance method
      * @return new instance of this fragment
      */
-    public static AddPlayersFragment newInstance(int option, long id, ArrayList<MatchPlayerStatistic> omitPlayerIds, int tmp){
+    public static AddPlayersFragment newInstance(int option, long id, ArrayList<PlayerStat> omitPlayerIds, int tmp){
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_OPTION, option);
@@ -91,25 +91,20 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
         super.onCreate(savedInstanceState);
         int option = getArguments().getInt(ARG_OPTION, -1);
 
-        switch (option)
-        {
-            case OPTION_COMPETITION :
-            {
+        switch (option) {
+            case OPTION_COMPETITION : {
                 action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_COMPETITION;
                 break;
             }
-            case OPTION_TOURNAMENT :
-            {
+            case OPTION_TOURNAMENT : {
                 action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT;
                 break;
             }
-            case OPTION_TEAM:
-            {
+            case OPTION_TEAM: {
                 action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
                 break;
             }
-            case OPTION_PARTICIPANT:
-            {
+            case OPTION_PARTICIPANT: {
                 action = PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID;
                 break;
             }
@@ -132,12 +127,12 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
             }
         }
         if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID) {
-            ArrayList<MatchPlayerStatistic> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT_ID);
+            ArrayList<PlayerStat> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT_ID);
             if (omitPlayers != null) {
                 ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
                 ArrayList<Player> playersToShow = new ArrayList<>(allPlayers);
                 for (Player p : allPlayers) {
-                    for (MatchPlayerStatistic omitP : omitPlayers)
+                    for (PlayerStat omitP : omitPlayers)
                         if (p.getId() == omitP.getPlayerId()) playersToShow.remove(p);
                 }
                 intent.putExtra(getDataKey(), playersToShow);

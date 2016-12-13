@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
@@ -68,7 +69,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        data = adapter.getData();
+        data = new ArrayList<>(adapter.getData());
         outState.putParcelableArrayList(EXTRA_DATA, data);
         outState.putBoolean(EXTRA_ASK, askForData);
     }
@@ -144,7 +145,7 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
         return fab;
     }
 
-    public ArrayList<SetRowItem> getSets() {
+    public List<SetRowItem> getSets() {
         return adapter.getData();
     }
     public boolean hasErrors() {return adapter.hasErrors();}
