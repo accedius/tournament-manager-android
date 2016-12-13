@@ -40,6 +40,8 @@ public class Tournament extends ShareBase implements Parcelable {
     @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
+    private PointConfiguration pointConfiguration;
+
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
     public Tournament() {}
@@ -90,6 +92,7 @@ public class Tournament extends ShareBase implements Parcelable {
         uid = in.readString();
         etag = in.readString();
         competitionId = in.readLong();
+        pointConfiguration = in.readParcelable(PointConfiguration.class.getClassLoader());
     }
 
     @Override
@@ -110,6 +113,7 @@ public class Tournament extends ShareBase implements Parcelable {
         dest.writeString(uid);
         dest.writeString(etag);
         dest.writeLong(competitionId);
+        dest.writeParcelable(pointConfiguration, flags);
     }
 
     public static final Creator<Tournament> CREATOR = new Creator<Tournament>() {
@@ -175,6 +179,14 @@ public class Tournament extends ShareBase implements Parcelable {
 
     public void setCompetitionId(long competitionId) {
         this.competitionId = competitionId;
+    }
+
+    public PointConfiguration getPointConfiguration() {
+        return pointConfiguration;
+    }
+
+    public void setPointConfiguration(PointConfiguration pointConfiguration) {
+        this.pointConfiguration = pointConfiguration;
     }
 
     public String getColumn(String column) {

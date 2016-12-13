@@ -2,10 +2,15 @@ package fit.cvut.org.cz.squash.business.serialization;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
@@ -59,11 +64,28 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     }
 
     @Override
+    public HashMap<String, Object> serializeSyncData(Tournament entity) {
+        HashMap<String, Object> hm = super.serializeSyncData(entity);
+
+        /* Serialize Point Configuration */
+        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(entity.getId());
+        hm.put("point_configuration", pointConfiguration);
+        return hm;
+    }
+
+    @Override
     public Tournament deserialize(ServerCommunicationItem item) {
-        Tournament t = new Tournament(item.getId(), item.getUid(), "", null, null, "");
-        t.setEtag(item.getEtag());
-        t.setLastModified(item.getModified());
-        deserializeSyncData(item.syncData, t);
-        return t;
+        Tournament tournament = new Tournament(item.getId(), item.getUid(), "", null, null, "");
+        tournament.setEtag(item.getEtag());
+        tournament.setLastModified(item.getModified());
+        deserializeSyncData(item.syncData, tournament);
+        return tournament;
+    }
+
+    @Override
+    public void deserializeSyncData(HashMap<String, Object> syncData, Tournament entity) {
+        super.deserializeSyncData(syncData, entity);
+        PointConfiguration pointConfiguration = new Gson().fromJson(String.valueOf(syncData.get("point_configuration")), new TypeToken<PointConfiguration>(){}.getType());
+        entity.setPointConfiguration(pointConfiguration);
     }
 }

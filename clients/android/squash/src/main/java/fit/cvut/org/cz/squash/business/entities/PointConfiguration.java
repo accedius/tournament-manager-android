@@ -28,7 +28,7 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entit
     public PointConfiguration() {}
 
     public PointConfiguration(Parcel in) {
-        this.tournamentId = in.readLong();
+        super(in);
         this.win = in.readInt();
         this.draw = in.readInt();
         this.loss = in.readInt();
@@ -53,7 +53,7 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entit
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(tournamentId);
+        super.writeToParcel(dest, flags);
         dest.writeInt(win);
         dest.writeInt(draw);
         dest.writeInt(loss);

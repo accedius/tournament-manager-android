@@ -138,13 +138,14 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setPeriod(Integer.valueOf(String.valueOf(syncData.get("period"))));
         entity.setRound(Integer.valueOf(String.valueOf(syncData.get("round"))));
 
-        List<SetRowItem> sets = new Gson().fromJson(String.valueOf(syncData.get("sets")), new TypeToken<List<SetRowItem>>(){}.getType());
+        Gson gson = new Gson();
+        List<SetRowItem> sets = gson.fromJson(String.valueOf(syncData.get("sets")), new TypeToken<List<SetRowItem>>(){}.getType());
         entity.setSets(sets);
 
-        List<PlayerStat> homePlayers = new Gson().fromJson(String.valueOf(syncData.get("players_home")), new TypeToken<List<PlayerStat>>(){}.getType());
+        List<PlayerStat> homePlayers = gson.fromJson(String.valueOf(syncData.get("players_home")), new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setHomePlayers(homePlayers);
 
-        List<PlayerStat> awayPlayers = new Gson().fromJson(String.valueOf(syncData.get("players_away")), new TypeToken<List<PlayerStat>>(){}.getType());
+        List<PlayerStat> awayPlayers = gson.fromJson(String.valueOf(syncData.get("players_away")), new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setAwayPlayers(awayPlayers);
     }
 

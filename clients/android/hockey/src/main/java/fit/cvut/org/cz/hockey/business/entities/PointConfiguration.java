@@ -12,7 +12,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
 /**
  * Created by atgot_000 on 11. 4. 2016.
  */
-// TODO point configuration is not exported and imported
 @DatabaseTable(tableName = HockeyDBConstants.tCONFIGURATIONS)
 public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entities.PointConfiguration implements Parcelable, IEntity {
     @DatabaseField(columnName = HockeyDBConstants.cNTW)
@@ -42,7 +41,7 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entit
     public PointConfiguration() {}
 
     public PointConfiguration(Parcel in) {
-        this.tournamentId = in.readLong();
+        super(in);
         this.ntW = in.readInt();
         this.ntD = in.readInt();
         this.ntL = in.readInt();
@@ -74,7 +73,7 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entit
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(tournamentId);
+        super.writeToParcel(dest, flags);
         dest.writeInt(ntW);
         dest.writeInt(ntD);
         dest.writeInt(ntL);
