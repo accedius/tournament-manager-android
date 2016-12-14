@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;

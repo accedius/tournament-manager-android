@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**

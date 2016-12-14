@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config;
 
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.spy;

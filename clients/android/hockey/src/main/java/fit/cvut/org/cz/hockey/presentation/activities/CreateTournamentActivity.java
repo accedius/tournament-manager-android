@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 

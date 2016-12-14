@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
-import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
+import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -64,7 +64,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
         switch (action) {
             case ACTION_CREATE: {
-                fit.cvut.org.cz.tmlibrary.business.entities.Match m = intent.getParcelableExtra(EXTRA_MATCH);
+                fit.cvut.org.cz.tmlibrary.data.entities.Match m = intent.getParcelableExtra(EXTRA_MATCH);
                 Match hockeyMatch = new Match(m);
                 ManagerFactory.getInstance(this).matchManager.insert(hockeyMatch);
                 for (Participant participant : hockeyMatch.getParticipants()) {

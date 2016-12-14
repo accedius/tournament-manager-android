@@ -2,7 +2,7 @@ package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import android.content.Context;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerManager;
 
 /**

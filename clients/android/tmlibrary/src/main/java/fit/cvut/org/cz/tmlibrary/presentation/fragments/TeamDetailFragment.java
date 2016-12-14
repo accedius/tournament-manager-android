@@ -17,8 +17,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractDeletableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DeletePlayersAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;

@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.serialization.strategies;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.ISharedEntity;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISerializingStrategy;
 
 /**

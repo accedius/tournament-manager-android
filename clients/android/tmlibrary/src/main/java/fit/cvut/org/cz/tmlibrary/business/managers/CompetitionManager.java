@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionPlayer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;

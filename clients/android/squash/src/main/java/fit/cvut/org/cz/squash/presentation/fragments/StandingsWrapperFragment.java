@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**

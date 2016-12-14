@@ -10,24 +10,24 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.business.entities.Match;
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
 import fit.cvut.org.cz.squash.business.managers.interfaces.ISquashStatisticManager;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by Vaclav on 7. 4. 2016.

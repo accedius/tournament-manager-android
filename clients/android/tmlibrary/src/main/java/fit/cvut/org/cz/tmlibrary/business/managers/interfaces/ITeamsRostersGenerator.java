@@ -3,8 +3,8 @@ package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
  * Created by kevin on 2.9.2016.

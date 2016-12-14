@@ -17,7 +17,7 @@ import fit.cvut.org.cz.hockey.presentation.activities.ShowTeamActivity;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HockeyInsertTeamDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TeamService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;

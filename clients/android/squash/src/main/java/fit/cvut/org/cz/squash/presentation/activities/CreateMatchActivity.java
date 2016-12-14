@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.presentation.fragments.CreateSquashMatchFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /** this Activity accomodates CreateSquashMatchFragment
@@ -64,7 +62,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            fit.cvut.org.cz.tmlibrary.business.entities.Match match = ((CreateSquashMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
+            fit.cvut.org.cz.tmlibrary.data.entities.Match match = ((CreateSquashMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
             if (match == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);

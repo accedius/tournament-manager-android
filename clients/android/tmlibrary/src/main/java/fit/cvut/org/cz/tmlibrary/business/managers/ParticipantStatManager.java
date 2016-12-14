@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;

@@ -8,17 +8,17 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionPlayer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.TeamPlayer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Match;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 
 /**
  * Created by kevin on 5.11.2016.

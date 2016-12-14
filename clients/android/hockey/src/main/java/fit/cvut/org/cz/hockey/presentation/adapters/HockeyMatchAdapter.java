@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class HockeyMatchAdapter extends AbstractListAdapter<Match,HockeyMatchAdapter.MatchViewHolder> {

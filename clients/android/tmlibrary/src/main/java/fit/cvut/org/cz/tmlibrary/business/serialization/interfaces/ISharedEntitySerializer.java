@@ -2,7 +2,7 @@ package fit.cvut.org.cz.tmlibrary.business.serialization.interfaces;
 
 import java.util.HashMap;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.ISharedEntity;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**

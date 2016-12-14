@@ -6,7 +6,7 @@ import com.j256.ormlite.dao.Dao;
 
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 
 /**

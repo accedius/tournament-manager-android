@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Match;
+import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 
 /**
  * Created by Vaclav on 10. 4. 2016.

@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.entities.interfaces;
+package fit.cvut.org.cz.tmlibrary.data.interfaces;
 
 import java.util.Date;
 

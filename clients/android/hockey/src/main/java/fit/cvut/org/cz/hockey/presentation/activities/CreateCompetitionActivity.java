@@ -14,7 +14,7 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyCompetitionFragment;
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;

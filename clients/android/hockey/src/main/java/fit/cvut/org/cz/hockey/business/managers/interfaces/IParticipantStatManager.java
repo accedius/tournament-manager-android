@@ -2,7 +2,7 @@ package fit.cvut.org.cz.hockey.business.managers.interfaces;
 
 import java.util.List;
 
-import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
+import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 
 /**

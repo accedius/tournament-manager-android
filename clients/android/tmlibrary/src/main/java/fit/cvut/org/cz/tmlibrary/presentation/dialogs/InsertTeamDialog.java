@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
  * Created by Vaclav on 14. 4. 2016.

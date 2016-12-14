@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 

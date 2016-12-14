@@ -2,7 +2,7 @@ package fit.cvut.org.cz.squash.business.managers.interfaces;
 
 import java.util.List;
 
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 
 /**

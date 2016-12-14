@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashTournametFragment;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 

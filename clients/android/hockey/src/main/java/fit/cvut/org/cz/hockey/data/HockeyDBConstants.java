@@ -8,12 +8,8 @@ package fit.cvut.org.cz.hockey.data;
 public class HockeyDBConstants {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
-    public static final String tPARTICIPANT_SCORE = "participants_score";
-    public static final String tMATCH_SCORE = "match_score";
 
     //c prefix stands for column
-    public static final String cID = "_id";
-    public static final String cTOURNAMENTID = "tournament_id";
     public static final String cNTW = "normal_time_win";
     public static final String cNTD = "normal_time_draw";
     public static final String cNTL = "normal_time_loss";

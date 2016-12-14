@@ -6,10 +6,10 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 
 /**

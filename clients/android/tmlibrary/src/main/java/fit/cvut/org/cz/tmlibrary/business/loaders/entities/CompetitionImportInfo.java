@@ -3,7 +3,7 @@ package fit.cvut.org.cz.tmlibrary.business.loaders.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 
 /**
  * Created by kevin on 30.10.2016.

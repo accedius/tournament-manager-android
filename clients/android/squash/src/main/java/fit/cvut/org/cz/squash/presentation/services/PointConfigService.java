@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**

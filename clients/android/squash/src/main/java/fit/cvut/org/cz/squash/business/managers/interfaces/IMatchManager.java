@@ -3,7 +3,7 @@ package fit.cvut.org.cz.squash.business.managers.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.squash.business.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 

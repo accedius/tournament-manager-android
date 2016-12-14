@@ -18,7 +18,7 @@ import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;

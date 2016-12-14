@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;

@@ -12,17 +12,17 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -91,13 +91,13 @@ public class MatchSerializer extends BaseSerializer<Match> {
         for (Participant participant : entity.getParticipants()) {
             if (ParticipantType.home.toString().equals(participant.getRole())) {
                 List<PlayerStat> homePlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
-                for (fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat stat : homePlayers) {
+                for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : homePlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }
                 hm.put("players_home", homePlayers);
             } else if (ParticipantType.away.toString().equals(participant.getRole())) {
                 List<PlayerStat> awayPlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
-                for (fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat stat : awayPlayers) {
+                for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : awayPlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }
                 hm.put("players_away", awayPlayers);

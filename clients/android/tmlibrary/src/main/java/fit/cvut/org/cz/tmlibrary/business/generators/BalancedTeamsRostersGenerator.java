@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.business.generators.helpers.MapComparator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
 

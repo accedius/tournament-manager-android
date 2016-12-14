@@ -7,7 +7,5 @@ import android.database.sqlite.SQLiteDatabase;
  * Created by kevin on 7. 4. 2016.
  */
 public class DatabaseFactory {
-    public static SQLiteDatabase getDatabase(Context context) { return new CoreDBHelper(context).getWritableDatabase();}
-
     public static CoreDBHelper getDBHelper(Context context) { return new CoreDBHelper(context);}
 }

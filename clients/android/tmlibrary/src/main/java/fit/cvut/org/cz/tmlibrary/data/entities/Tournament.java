@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.entities;
+package fit.cvut.org.cz.tmlibrary.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
@@ -17,17 +16,17 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
-@DatabaseTable(tableName = DBConstants.tCOMPETITIONS)
-public class Competition extends ShareBase implements Parcelable {
-    public final static String col_name = "name";
-    public final static String col_start_date = "start_date";
-    public final static String col_end_date = "end_date";
+@DatabaseTable(tableName = DBConstants.tTOURNAMENTS)
+public class Tournament extends ShareBase implements Parcelable {
+    public static final String col_name = "name";
+    public static final String col_start_date = "start_date";
+    public static final String col_end_date= "end_date";
 
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
 
-    @DatabaseField(columnName = DBConstants.cSPORT_NAME)
-    private String sportContext;
+    @DatabaseField(columnName = DBConstants.cCOMPETITION_ID)
+    private long competitionId;
 
     @DatabaseField(columnName = DBConstants.cNAME)
     private String name;
@@ -41,42 +40,34 @@ public class Competition extends ShareBase implements Parcelable {
     @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
-    @DatabaseField(columnName = DBConstants.cTYPE)
-    private int typeId;
-
-    private CompetitionType type;
+    private PointConfiguration pointConfiguration;
 
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
-    public Competition() {}
+    public Tournament() {}
 
-    public Competition(long id, String uid, String name, Date startDate, Date endDate, String note, CompetitionType type) {
+    public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note) {
         this.id = id;
         this.uid = uid;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
-        this.type = type;
-        this.typeId = type.id;
     }
 
-    public Competition(long id, String name, Date startDate, Date endDate, String note, CompetitionType type) {
+    public Tournament(long id, long competitionId, String name, Date startDate, Date endDate, String note) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
-        this.type = type;
-        this.typeId = type.id;
+        this.setCompetitionId(competitionId);
     }
 
-    protected Competition(Parcel in) {
+    protected Tournament(Parcel in) {
         id = in.readLong();
         name = in.readString();
         note = in.readString();
-        type = in.readParcelable(CompetitionType.class.getClassLoader());
-        typeId = type.id;
 
         try {
             String text = in.readString();
@@ -100,6 +91,8 @@ public class Competition extends ShareBase implements Parcelable {
 
         uid = in.readString();
         etag = in.readString();
+        competitionId = in.readLong();
+        pointConfiguration = in.readParcelable(PointConfiguration.class.getClassLoader());
     }
 
     @Override
@@ -107,7 +100,6 @@ public class Competition extends ShareBase implements Parcelable {
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(note);
-        dest.writeParcelable(type, flags);
         if (startDate == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(startDate));
         if (endDate == null) dest.writeString(null);
@@ -120,19 +112,26 @@ public class Competition extends ShareBase implements Parcelable {
         else dest.writeString(dateFormat.format(lastSynchronized));
         dest.writeString(uid);
         dest.writeString(etag);
+        dest.writeLong(competitionId);
+        dest.writeParcelable(pointConfiguration, flags);
     }
 
-    public static final Creator<Competition> CREATOR = new Creator<Competition>() {
+    public static final Creator<Tournament> CREATOR = new Creator<Tournament>() {
         @Override
-        public Competition createFromParcel(Parcel in) {
-            return new Competition(in);
+        public Tournament createFromParcel(Parcel in) {
+            return new Tournament(in);
         }
 
         @Override
-        public Competition[] newArray(int size) {
-            return new Competition[size];
+        public Tournament[] newArray(int size) {
+            return new Tournament[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     public long getId() {
         return id;
@@ -174,62 +173,35 @@ public class Competition extends ShareBase implements Parcelable {
         this.note = note;
     }
 
-    public CompetitionType getType() {
-        return type;
+    public long getCompetitionId() {
+        return competitionId;
     }
 
-    public void setType(CompetitionType type) {
-        this.type = type;
-        if (type != null)
-            this.typeId = type.id;
+    public void setCompetitionId(long competitionId) {
+        this.competitionId = competitionId;
     }
 
-    public String getEntityType() {
-        return "Competition";
+    public PointConfiguration getPointConfiguration() {
+        return pointConfiguration;
     }
 
-    public String getSportContext() {
-        return sportContext;
-    }
-
-    public void setSportContext(String sport_context) {
-        this.sportContext = sport_context;
-    }
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setPointConfiguration(PointConfiguration pointConfiguration) {
+        this.pointConfiguration = pointConfiguration;
     }
 
     public String getColumn(String column) {
-        if (column.equals(col_name)) {
-            return getName();
-        } else if (column.equals(col_start_date)) {
-            if (startDate == null) return "";
-
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(startDate);
-            return Integer.toString(cal.get(Calendar.YEAR)) + Integer.toString(cal.get(Calendar.MONTH)) + Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-        } else if (column.equals(col_end_date)) {
-            if (endDate == null) return "";
-
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(endDate);
-            return Integer.toString(cal.get(Calendar.YEAR)) + Integer.toString(cal.get(Calendar.MONTH)) + Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+        if (column.equals("name")) {
+            return name;
+        } else if (column.equals("start_date")) {
+            return DateFormatter.getInstance().getDBDateFormat().format(startDate);
+        } else if (column.equals("end_date")) {
+            return DateFormatter.getInstance().getDBDateFormat().format(endDate);
         } else {
             return "";
         }
     }
 
-    public String getFilename() {
-        return (name + "_" + DateFormatter.getInstance().getDBDateTimeFormat().format(new Date())).replace(" ", "_");
+    public String getEntityType() {
+        return "Tournament";
     }
 }

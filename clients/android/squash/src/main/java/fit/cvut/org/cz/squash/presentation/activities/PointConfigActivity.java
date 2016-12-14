@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.presentation.fragments.PointConfigFragment;
 import fit.cvut.org.cz.squash.presentation.services.PointConfigService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;

@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.hockey.business.managers.interfaces;
 
-import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
+import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 
 /**

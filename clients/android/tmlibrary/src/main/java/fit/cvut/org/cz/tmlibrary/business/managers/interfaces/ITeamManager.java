@@ -2,8 +2,8 @@ package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
  * Created by Vaclav on 13. 4. 2016.

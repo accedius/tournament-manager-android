@@ -2,7 +2,7 @@ package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * Created by Vaclav on 29. 3. 2016.

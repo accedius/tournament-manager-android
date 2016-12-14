@@ -15,26 +15,26 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.business.entities.Match;
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.squash.data.DatabaseFactory;
 import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -116,19 +116,19 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
         CompetitionType type = competition.getType();
 
-        ArrayList<fit.cvut.org.cz.tmlibrary.business.entities.Participant> partsForGenerator = new ArrayList<>();
+        ArrayList<Participant> partsForGenerator = new ArrayList<>();
 
         if (CompetitionTypes.individuals().equals(type)) {
             List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
             for (Player player : players) {
                 // match_id and role will be added by generator
-                partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, player.getId(), null));
+                partsForGenerator.add(new Participant(-1, player.getId(), null));
             }
         } else {
             List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(tournamentId);
             for (Team team : teams) {
                 // match_id and role will be added by generator
-                partsForGenerator.add(new fit.cvut.org.cz.tmlibrary.business.entities.Participant(-1, team.getId(), null));
+                partsForGenerator.add(new Participant(-1, team.getId(), null));
             }
         }
 
@@ -140,9 +140,9 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
 
         IMatchGenerator generator = new AllPlayAllMatchGenerator();
-        List<fit.cvut.org.cz.tmlibrary.business.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
+        List<fit.cvut.org.cz.tmlibrary.data.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
-        for (fit.cvut.org.cz.tmlibrary.business.entities.Match match : matchList) {
+        for (fit.cvut.org.cz.tmlibrary.data.entities.Match match : matchList) {
             match.setDate(new Date());
             match.setNote("");
             match.setTournamentId(tournamentId);
@@ -166,7 +166,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 participantStatBuilder.delete();
 
-                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat, Long> playerStatBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
+                DeleteBuilder<PlayerStat, Long> playerStatBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
                 playerStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 playerStatBuilder.delete();
             }
@@ -219,11 +219,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(id);
         try {
             for (Participant participant : participants) {
-                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
+                DeleteBuilder<fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat, Long> participantStatBuilder = sportDBHelper.getParticipantStatDAO().deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 participantStatBuilder.delete();
 
-                DeleteBuilder<fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat, Long> statBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
+                DeleteBuilder<PlayerStat, Long> statBuilder = sportDBHelper.getPlayerStatDAO().deleteBuilder();
                 statBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 statBuilder.delete();
             }

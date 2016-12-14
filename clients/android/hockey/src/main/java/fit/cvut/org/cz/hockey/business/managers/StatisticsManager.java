@@ -3,27 +3,24 @@ package fit.cvut.org.cz.hockey.business.managers;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
-import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.MatchPlayerStatistic;
-import fit.cvut.org.cz.hockey.business.entities.ParticipantStat;
-import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
-import fit.cvut.org.cz.hockey.business.entities.PointConfiguration;
+import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
+import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IHockeyStatisticsManager;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
@@ -158,19 +155,6 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             }
         }
         return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, saves);
-    }
-
-    @Override
-    public List<AggregatedStatistics> getAllAggregated() {
-        List<PlayerStat> allStats = null;
-        Collection<Player> players = corePlayerManager.getAllPlayers().values();
-
-        ArrayList<AggregatedStatistics> res = new ArrayList<>();
-
-        for (Player player : players) {
-            res.add(aggregateStats(player, allStats));
-        }
-        return res;
     }
 
     @Override
@@ -321,118 +305,4 @@ public class StatisticsManager implements IHockeyStatisticsManager {
             }
         });
     }
-
-    private long getParticipantIdByPlayerAndMatch(long playerId, long matchId) {
-        /*ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(matchId);
-        long partId = -1;
-        for (DParticipant dParticipant : participants) {
-            if (DAOFactory.getInstance().packagePlayerDAO.getPlayerIdsByParticipant(dParticipant.getId()).contains(playerId)) {
-                partId = dParticipant.getId();
-                break;
-            }
-        }
-        return partId;*/
-        return -1;
-    }
-
-    @Override
-    public MatchPlayerStatistic getPlayerStatsInMatch(long playerId, long matchId) {
-        return null;/*
-        MatchPlayerStatistic res = new MatchPlayerStatistic();
-
-        long partId = getParticipantIdByPlayerAndMatch(playerId, matchId);
-
-        List<Player> players = ManagerFactory.getInstance(context).packagePlayerManager.getPlayersByParticipant(partId);
-        Player curPlayer = null;
-        for (Player p : players)
-            if (p.getId() == playerId)
-                curPlayer = p;
-
-        if (curPlayer == null)
-            return null;
-
-        ArrayList<DStat> partStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(partId);
-        res.setPlayerId(playerId);
-        res.setName(curPlayer.getName());
-
-        for (DStat stat : partStats) {
-            if (stat.getPlayerId() != playerId)
-                continue;
-
-            int value = Integer.parseInt(stat.getValue());
-            switch (StatsEnum.valueOf(stat.getStatsEnumId())) {
-                case goals:
-                    res.setGoals(value);
-                    break;
-                case assists:
-                    res.setAssists(value);
-                    break;
-                case plus_minus_points:
-                    res.setPlusMinusPoints(value);
-                    break;
-                case saves:
-                    res.setSaves(value);
-                    break;
-                default:
-                    break;
-            }
-        }
-        return res;*/
-    }
-
-    @Override
-    public void updatePlayersInMatch(long matchId, ParticipantType parType, List<Long> playerIds) {
-        /*ArrayList<DParticipant> participants = DAOFactory.getInstance().participantDAO.getParticipantsByMatchId(matchId);
-        DParticipant currentPart = null;
-        for (DParticipant part : participants) {
-            if (part.getRole().equals(parType.toString())) {
-                currentPart = part;
-                break;
-            }
-        }
-        if (currentPart == null)
-            return;
-
-        Map<Long, Player> allPlayers = DAOFactory.getInstance().packagePlayerDAO.getAllPlayers();
-        ArrayList<Player> playerListToUpdate = new ArrayList<>();
-        for (Long pId : playerIds) {
-            playerListToUpdate.add(allPlayers.get(pId));
-        }
-
-        long tourId = factory.matchManager.getById(matchId).getTournamentId();
-        long compId = factory.tournamentManager.getById(tourId).getCompetitionId();
-
-        ManagerFactory.getInstance(context).packagePlayerManager.updatePlayersInParticipant(currentPart.getId(), compId, tourId, playerListToUpdate);
-*/
-    }
-
-    @Override
-    public void updatePlayerStatsInMatch(MatchPlayerStatistic statistic, long matchId) {
-        /*long partId = getParticipantIdByPlayerAndMatch(statistic.getPlayerId(), matchId);
-        ArrayList<DStat> participantStats = DAOFactory.getInstance().statDAO.getStatsByParticipantId(partId);
-
-        for (DStat stat : participantStats) {
-            if (stat.getPlayerId() != statistic.getPlayerId())
-                continue;
-
-            switch (StatsEnum.valueOf(stat.getStatsEnumId())) {
-                case goals:
-                    stat.setValue(String.valueOf(statistic.getGoals()));
-                    break;
-                case assists:
-                    stat.setValue(String.valueOf(statistic.getAssists()));
-                    break;
-                case plus_minus_points:
-                    stat.setValue(String.valueOf(statistic.getPlusMinusPoints()));
-                    break;
-                case saves:
-                    stat.setValue(String.valueOf(statistic.getSaves()));
-                    break;
-                default:
-                    break;
-            }
-            DAOFactory.getInstance().statDAO.update(stat);
-        }*/
-    }
-
 }

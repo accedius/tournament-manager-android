@@ -9,24 +9,24 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import fit.cvut.org.cz.squash.business.entities.Match;
-import fit.cvut.org.cz.squash.business.entities.ParticipantStat;
-import fit.cvut.org.cz.squash.business.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.business.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionPlayer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.entities.TeamPlayer;
-import fit.cvut.org.cz.tmlibrary.business.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.entities.TournamentPlayer;
+import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SportDBHelper {
-    private static final int DBVersion = 1;
+    private static final int DBVersion = 2;
     private Dao<PointConfiguration, Long> pointConfigurationDao;
     private Dao<Match, Long> matchDao;
     private Dao<ParticipantStat, Long> participantStatDAO;

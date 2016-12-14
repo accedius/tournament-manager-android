@@ -1,6 +1,6 @@
 package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by kevin on 4. 4. 2016.

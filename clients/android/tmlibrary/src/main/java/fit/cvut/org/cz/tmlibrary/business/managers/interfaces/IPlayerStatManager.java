@@ -2,7 +2,7 @@ package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 
 /**
  * Created by kevin on 2.12.2016.

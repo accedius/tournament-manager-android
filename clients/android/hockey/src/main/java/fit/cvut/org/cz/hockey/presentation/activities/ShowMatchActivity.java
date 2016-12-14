@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
-import fit.cvut.org.cz.hockey.business.entities.Match;
-import fit.cvut.org.cz.hockey.business.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;

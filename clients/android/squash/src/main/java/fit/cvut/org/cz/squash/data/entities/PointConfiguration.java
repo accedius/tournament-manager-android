@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.business.entities;
+package fit.cvut.org.cz.squash.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.squash.data.SDBConstants;
-import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * Represents point configuration for tournament
@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.business.entities.interfaces.IEntity;
  * Created by Vaclav on 19. 4. 2016.
  */
 @DatabaseTable(tableName = SDBConstants.tPOINT_CONFIG)
-public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.business.entities.PointConfiguration implements Parcelable, IEntity {
+public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration implements Parcelable, IEntity {
     @DatabaseField(columnName = SDBConstants.cWIN)
     private int win;
 

@@ -6,7 +6,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 

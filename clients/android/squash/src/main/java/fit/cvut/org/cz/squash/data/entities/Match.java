@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.hockey.business.entities;
+package fit.cvut.org.cz.squash.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,42 +7,34 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import fit.cvut.org.cz.hockey.data.HockeyDBConstants;
-import fit.cvut.org.cz.tmlibrary.business.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.entities.CompetitionType;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.data.SDBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
- * Created by atgot_000 on 20. 4. 2016.
+ * Created by kevin on 9.12.2016.
  */
 @DatabaseTable(tableName = DBConstants.tMATCHES)
-public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match implements Parcelable {
-    @DatabaseField(columnName = HockeyDBConstants.cSHOOTOUTS)
-    private boolean shootouts;
-
-    @DatabaseField(columnName = HockeyDBConstants.cOVERTIME)
-    private boolean overtime;
+public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
+    @DatabaseField(columnName = SDBConstants.cSETS_NUMBER)
+    private int setsNumber;
 
     private String homeName;
     private String awayName;
+    private List<SetRowItem> sets = new ArrayList<>();
     private List<PlayerStat> homePlayers = new ArrayList<>();
     private List<PlayerStat> awayPlayers = new ArrayList<>();
 
     public Match() {}
-    public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
-        super(id, tournamentId, type, date, played, note, period, round);
-        this.shootouts = shootouts;
-        this.overtime = overtime;
-    }
 
-    public Match(fit.cvut.org.cz.tmlibrary.business.entities.Match m) {
+    public Match(fit.cvut.org.cz.tmlibrary.data.entities.Match m) {
         super(m);
-        shootouts = false;
-        overtime = false;
+        setsNumber = 0;
     }
 
     @Override
@@ -53,16 +45,20 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeByte((byte) (shootouts ? 1 : 0));
-        dest.writeByte((byte) (overtime ? 1 : 0));
+        dest.writeInt(setsNumber);
+        dest.writeString(homeName);
+        dest.writeString(awayName);
+        dest.writeTypedList(sets);
         dest.writeTypedList(homePlayers);
         dest.writeTypedList(awayPlayers);
     }
 
     public Match(Parcel in) {
         super(in);
-        shootouts = in.readByte() != 0;
-        overtime = in.readByte() != 0;
+        this.setsNumber = in.readInt();
+        this.homeName = in.readString();
+        this.awayName = in.readString();
+        in.readTypedList(sets, SetRowItem.CREATOR);
         in.readTypedList(homePlayers, PlayerStat.CREATOR);
         in.readTypedList(awayPlayers, PlayerStat.CREATOR);
     }
@@ -79,29 +75,24 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
         }
     };
 
-    public boolean isShootouts() {
-        return shootouts;
+    public int getSetsNumber() {
+        return setsNumber;
     }
 
-    public void setShootouts(boolean shootouts) {
-        this.shootouts = shootouts;
+    public void setSetsNumber(int setsNumber) {
+        this.setsNumber = setsNumber;
     }
 
-    public boolean isOvertime() {
-        return overtime;
-    }
-
-    public void setOvertime(boolean overtime) {
-        this.overtime = overtime;
-    }
-
+    @Override
     public String getHomeName() {
         return homeName;
     }
 
+    @Override
     public String getAwayName() {
         return awayName;
     }
+
 
     public void setHomeName(String homeName) {
         this.homeName = homeName;
@@ -109,6 +100,22 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
 
     public void setAwayName(String awayName) {
         this.awayName = awayName;
+    }
+
+    public int getHomeWonSets() {
+        return homeScore;
+    }
+
+    public void setHomeWonSets(int homeWonSets) {
+        this.homeScore = homeWonSets;
+    }
+
+    public int getAwayWonSets() {
+        return awayScore;
+    }
+
+    public void setAwayWonSets(int awayWonSets) {
+        this.awayScore = awayWonSets;
     }
 
     public long getHomeParticipantId() {
@@ -125,6 +132,14 @@ public class Match extends fit.cvut.org.cz.tmlibrary.business.entities.Match imp
                 return participant.getParticipantId();
         }
         return -1;
+    }
+
+    public List<SetRowItem> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<SetRowItem> sets) {
+        this.sets = sets;
     }
 
     public List<PlayerStat> getHomePlayers() {

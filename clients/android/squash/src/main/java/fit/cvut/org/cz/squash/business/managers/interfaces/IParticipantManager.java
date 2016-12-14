@@ -2,7 +2,7 @@ package fit.cvut.org.cz.squash.business.managers.interfaces;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by Vaclav on 27. 4. 2016.

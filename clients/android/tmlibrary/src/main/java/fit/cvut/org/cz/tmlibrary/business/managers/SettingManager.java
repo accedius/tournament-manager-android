@@ -5,7 +5,7 @@ import android.content.Context;
 import java.sql.SQLException;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.entities.Setting;
+import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ISettingManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 

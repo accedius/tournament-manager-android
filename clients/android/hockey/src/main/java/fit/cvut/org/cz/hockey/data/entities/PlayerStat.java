@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.hockey.business.entities;
+package fit.cvut.org.cz.hockey.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  * Created by kevin on 2.12.2016.
  */
 @DatabaseTable(tableName = DBConstants.tPLAYER_STATS)
-public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat implements Parcelable {
+public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat implements Parcelable {
 
     @DatabaseField(columnName = HockeyDBConstants.cGOALS)
     private int goals;
@@ -56,7 +56,7 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.business.entities.Play
         dest.writeInt(saves);
     }
 
-    public PlayerStat(fit.cvut.org.cz.tmlibrary.business.entities.PlayerStat p) {
+    public PlayerStat(fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat p) {
         super(p.getId(), p.getPlayerId());
     }
 

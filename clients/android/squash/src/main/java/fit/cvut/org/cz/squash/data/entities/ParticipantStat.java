@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.business.entities;
+package fit.cvut.org.cz.squash.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  */
 
 @DatabaseTable(tableName = DBConstants.tPARTICIPANT_STATS)
-public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.business.entities.ParticipantStat implements Parcelable {
+public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat implements Parcelable {
 
     @DatabaseField(columnName = SDBConstants.cSET_NUMBER)
     private int setNumber;
