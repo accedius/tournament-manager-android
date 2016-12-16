@@ -37,7 +37,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
 
     @Override
     protected Dao<Team, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getTeamDAO();
+        return DatabaseFactory.getDBHelper(context).getTeamDAO();
     }
 
     public List<Player> getTournamentPlayers(long tournamentId) {

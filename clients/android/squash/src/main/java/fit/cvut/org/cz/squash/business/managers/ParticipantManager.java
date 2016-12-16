@@ -30,7 +30,7 @@ public class ParticipantManager extends BaseManager<Participant> implements fit.
 
     @Override
     protected Dao<Participant, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getParticipantDAO();
+        return DatabaseFactory.getDBHelper(context).getParticipantDAO();
     }
 
     @Override

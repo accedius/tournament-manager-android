@@ -22,6 +22,6 @@ public class CompetitionManager extends fit.cvut.org.cz.tmlibrary.business.manag
 
     @Override
     protected Dao<Competition, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getCompetitionDAO();
+        return DatabaseFactory.getDBHelper(context).getCompetitionDAO();
     }
 }

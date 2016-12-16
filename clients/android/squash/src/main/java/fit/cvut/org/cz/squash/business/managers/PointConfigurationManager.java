@@ -24,6 +24,6 @@ public class PointConfigurationManager extends BaseManager<PointConfiguration> i
 
     @Override
     protected Dao<PointConfiguration, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getSquashPointConfigurationDAO();
+        return DatabaseFactory.getDBHelper(context).getSquashPointConfigurationDAO();
     }
 }

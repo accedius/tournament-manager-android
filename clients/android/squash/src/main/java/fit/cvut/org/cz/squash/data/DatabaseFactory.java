@@ -13,7 +13,7 @@ import fit.cvut.org.cz.squash.presentation.SquashPackage;
 public class DatabaseFactory {
     private static HashMap<String, SquashDBHelper> dbHelpers = new HashMap<>();
 
-    public static SquashDBHelper getDBeHelper(Context context) {
+    public static SquashDBHelper getDBHelper(Context context) {
         String name = ((SquashPackage) context.getApplicationContext()).getSportContext();
         if (!dbHelpers.containsKey(name)) {
             dbHelpers.put(name, new SquashDBHelper(context, name));

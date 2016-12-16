@@ -25,10 +25,6 @@ public class Match extends ShareBase {
     @DatabaseField(columnName = DBConstants.cTOURNAMENT_ID)
     private long tournamentId;
 
-    @DatabaseField(columnName = DBConstants.cTYPE)
-    private int typeId;
-    private CompetitionType type;
-
     @DatabaseField(columnName = DBConstants.cDATE)
     private Date date;
 
@@ -53,8 +49,6 @@ public class Match extends ShareBase {
     public Match(Match m) {
         this.id = m.id;
         this.tournamentId = m.tournamentId;
-        this.type = m.type;
-//        this.typeId = m.type.id;
         this.date = m.date;
         this.played = m.played;
         this.note = m.note;
@@ -63,11 +57,9 @@ public class Match extends ShareBase {
         this.participants = m.participants;
     }
 
-    public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round) {
+    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round) {
         this.id = id;
         this.tournamentId = tournamentId;
-        this.type = type;
-//        this.typeId = type.id;
         this.date = date;
         this.played = played;
         this.note = note;
@@ -175,14 +167,6 @@ public class Match extends ShareBase {
 
     public void setTournamentId(long tournamentId) {
         this.tournamentId = tournamentId;
-    }
-
-    public CompetitionType getType() {
-        return type;
-    }
-
-    public void setType(CompetitionType type) {
-        this.type = type;
     }
 
     public Date getDate() {

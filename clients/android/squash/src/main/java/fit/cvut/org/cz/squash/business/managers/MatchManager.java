@@ -49,7 +49,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     protected Dao<Match, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getSquashMatchDAO();
+        return DatabaseFactory.getDBHelper(context).getSquashMatchDAO();
     }
 
     @Override
@@ -97,6 +97,9 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
     public Match getById(long id) {
         Match match = super.getById(id);
+        if (match == null)
+            return match;
+
         List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
@@ -183,16 +186,17 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         match.setLastModified(new Date());
 
         Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(match.getTournamentId());
+        if (tournament == null)
+            return; // TODO false?
         Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
-        match.setType(competition.getType());
+        if (competition == null)
+            return; // TODO false?
         super.insert(match);
 
         for (Participant participant : match.getParticipants()) {
             participant.setMatchId(match.getId());
-        }
-
-        for (Participant participant : match.getParticipants())
             ManagerFactory.getInstance(context).participantManager.insert(participant);
+        }
 
         Map<Long, Team> teamMap = new HashMap<>();
         List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(match.getTournamentId());
@@ -202,7 +206,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
         List<PlayerStat> playerStats = new ArrayList<>();
         for (Participant participant : match.getParticipants()) {
-            if (CompetitionTypes.individuals().equals(match.getType())) {
+            if (CompetitionTypes.individuals().equals(competition.getType())) {
                 playerStats.add(new PlayerStat(participant.getId(), participant.getParticipantId()));
             } else {
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())

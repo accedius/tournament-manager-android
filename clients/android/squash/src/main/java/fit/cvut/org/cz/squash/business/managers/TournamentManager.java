@@ -25,7 +25,7 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
 
     @Override
     protected Dao<Tournament, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getTournamentDAO();
+        return DatabaseFactory.getDBHelper(context).getTournamentDAO();
     }
 
     @Override

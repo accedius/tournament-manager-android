@@ -46,7 +46,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             if (!players.isEmpty())
                 return false;
 
-            getDao().delete(getDao().queryForId(id));
+            getDao().deleteById(id);
             sportDBHelper.getPointConfigurationDAO().deleteById(id);
             return true;
         } catch (SQLException e) {

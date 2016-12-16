@@ -33,7 +33,7 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
 
     @Override
     protected Dao<ParticipantStat, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getSquashParticipantStatDAO();
+        return DatabaseFactory.getDBHelper(context).getSquashParticipantStatDAO();
     }
 
     @Override
