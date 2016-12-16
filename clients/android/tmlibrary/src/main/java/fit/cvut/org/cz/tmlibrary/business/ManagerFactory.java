@@ -1,8 +1,8 @@
-package fit.cvut.org.cz.tmlibrary.tlib;
-
-import android.content.Context;
+package fit.cvut.org.cz.tmlibrary.business;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**

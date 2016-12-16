@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.tlib;
+package fit.cvut.org.cz.tmlibrary.business.managers.interfaces;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;

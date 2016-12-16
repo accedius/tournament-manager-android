@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.tlib;
+package fit.cvut.org.cz.tmlibrary.data.interfaces;
 
 import com.j256.ormlite.dao.Dao;
 

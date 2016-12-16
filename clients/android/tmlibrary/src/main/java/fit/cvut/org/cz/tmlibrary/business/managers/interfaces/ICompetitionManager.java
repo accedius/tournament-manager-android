@@ -4,6 +4,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
  * Created by kevin on 6.11.2016.
@@ -37,4 +38,11 @@ public interface ICompetitionManager extends IManager<Competition> {
      * @return true if player was removed, false otherwise
      */
     boolean removePlayerFromCompetition(long playerId, long competitionId);
+
+    /**
+     * get all tournaments in competition
+     * @param competitionId id of the competition
+     * @return found tournaments
+     */
+    List<Tournament> getByCompetitionId(long competitionId);
 }

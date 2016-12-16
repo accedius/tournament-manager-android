@@ -10,11 +10,11 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
  */
 public interface ITournamentManager extends IManager<Tournament> {
     /**
-     * get all tournaments in competition
-     * @param competitionId id of the competition
-     * @return found tournaments
+     * add player to tournament
+     * @param playerId id of player to be added
+     * @param tournamentId id of tournament
      */
-    List<Tournament> getByCompetitionId(long competitionId);
+    void addPlayer(long playerId, long tournamentId);
 
     /**
      * get all players in tournament
@@ -39,16 +39,16 @@ public interface ITournamentManager extends IManager<Tournament> {
     boolean removePlayerFromTournament(long playerId, long tournamentId);
 
     /**
-     * add player to tournament
-     * @param playerId id of player to be added
-     * @param tournamentId id of tournament
-     */
-    void addPlayer(long playerId, long tournamentId);
-
-    /**
      * get all tournaments for player
      * @param playerId id of player
      * @return found tournaments
      */
     List<Tournament> getByPlayer(long playerId);
+
+    /**
+     * get all tournaments in competition
+     * @param competitionId id of the competition
+     * @return found tournaments
+     */
+    List<Tournament> getByCompetitionId(long competitionId);
 }
