@@ -134,7 +134,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         long homeParticipantId = ((Participant) homeTeamSpinner.getSelectedItem()).getParticipantId();
         long awayParticipantId = ((Participant) awayTeamSpinner.getSelectedItem()).getParticipantId();
 
-        Match sm = new Match(id, tournamentId, null, sDate, false, note.getText().toString(), sPeriod, sRound);
+        Match sm = new Match(id, tournamentId, sDate, false, note.getText().toString(), sPeriod, sRound);
         if (id == -1) {
             sm.addParticipant(new Participant(id, homeParticipantId, ParticipantType.home.toString()));
             sm.addParticipant(new Participant(id, awayParticipantId, ParticipantType.away.toString()));

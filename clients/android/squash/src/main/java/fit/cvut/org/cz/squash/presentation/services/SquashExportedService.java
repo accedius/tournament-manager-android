@@ -14,16 +14,17 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.loaders.CompetitionLoader;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 
@@ -48,7 +49,7 @@ public class SquashExportedService extends IntentService {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
-                if (ManagerFactory.getInstance(this).competitionManager.delete(id))
+                if (ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(id))
                     result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
                     result.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
@@ -58,7 +59,7 @@ public class SquashExportedService extends IntentService {
             }
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                SAggregatedStats stat = ManagerFactory.getInstance(this).statisticManager.getByPlayerId(id);
+                SAggregatedStats stat = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class)).getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsForExport = new ArrayList<>();
                 PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
@@ -86,7 +87,7 @@ public class SquashExportedService extends IntentService {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition competition = ManagerFactory.getInstance(this).competitionManager.getById(compId);
+                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(compId);
                 competition.setSportContext(sport_context);
                 String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
 

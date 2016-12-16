@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.squash.business.managers;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,42 +7,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.data.entities.Match;
-import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
-import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
-import fit.cvut.org.cz.squash.business.managers.interfaces.ISquashStatisticManager;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
+import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
+import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by Vaclav on 7. 4. 2016.
  */
-public class StatisticManager implements ISquashStatisticManager {
+public class StatisticManager extends TManager<SAggregatedStats> implements IStatisticManager {
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;
 
-    protected Context context;
-    protected ICorePlayerManager corePlayerManager;
-    protected SquashDBHelper sportDBHelper;
-
-    public StatisticManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        this.context = context;
-        this.corePlayerManager = corePlayerManager;
-        this.sportDBHelper = sportDBHelper;
+    @Override
+    protected Class<SAggregatedStats> getMyClass() {
+        return SAggregatedStats.class;
     }
 
     private int calculatePoints(int result, PointConfiguration pointConfig) {
@@ -97,8 +94,8 @@ public class StatisticManager implements ISquashStatisticManager {
             mappedStats.put(player.getId(), new SAggregatedStats(player.getName(), player.getId()));
 
         for (Tournament tournament : tournaments) {
-            PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(tournament.getId());
-            List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournament.getId());
+            PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournament.getId());
+            List<Match> matches = ((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournament.getId());
             // Tournament does not have matches yet.
             if (matches.isEmpty())
                 continue;
@@ -116,7 +113,7 @@ public class StatisticManager implements ISquashStatisticManager {
                         awayParticipant = participant;
                 }
 
-                List<PlayerStat> homePlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(homeParticipant.getId());
+                List<PlayerStat> homePlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(homeParticipant.getId());
                 for (PlayerStat playerStat : homePlayerStats) {
                     // This player is not in requested array of players.
                     if (!mappedStats.containsKey(playerStat.getPlayerId()))
@@ -148,7 +145,7 @@ public class StatisticManager implements ISquashStatisticManager {
                     }
                 }
 
-                List<PlayerStat> awayPlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(awayParticipant.getId());
+                List<PlayerStat> awayPlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(awayParticipant.getId());
                 for (PlayerStat playerStat : awayPlayerStats) {
                     // This player is not in requested array of players.
                     if (!mappedStats.containsKey(playerStat.getPlayerId()))
@@ -200,8 +197,8 @@ public class StatisticManager implements ISquashStatisticManager {
 
     @Override
     public List<SAggregatedStats> getByCompetitionId(long competitionId) {
-        List<Player> players = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(competitionId);
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(competitionId);
+        List<Player> players = ((ICompetitionManager)managerFactory.getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
+        List<Tournament> tournaments = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
 
         List<SAggregatedStats> res = getStats(players, tournaments);
         orderPlayers(res);
@@ -210,9 +207,9 @@ public class StatisticManager implements ISquashStatisticManager {
 
     @Override
     public List<SAggregatedStats> getByTournamentId(long tournamentId) {
-        List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
+        List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
         List<Tournament> tournaments = new ArrayList<>();
-        tournaments.add(ManagerFactory.getInstance(context).tournamentManager.getById(tournamentId));
+        tournaments.add(managerFactory.getEntityManager(Tournament.class).getById(tournamentId));
         List<SAggregatedStats> res = getStats(players, tournaments);
         orderPlayers(res);
         return res;
@@ -220,7 +217,7 @@ public class StatisticManager implements ISquashStatisticManager {
 
     @Override
     public List<SetRowItem> getMatchSets(long matchId) {
-        Match match = ManagerFactory.getInstance(context).matchManager.getById(matchId);
+        Match match = managerFactory.getEntityManager(Match.class).getById(matchId);
         if (!match.isPlayed())
             return new ArrayList<>();
 
@@ -233,8 +230,8 @@ public class StatisticManager implements ISquashStatisticManager {
             }
         }
 
-        List<ParticipantStat> homeStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(homeParticipantId);
-        List<ParticipantStat> awayStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(awayParticipantId);
+        List<ParticipantStat> homeStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(homeParticipantId);
+        List<ParticipantStat> awayStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(awayParticipantId);
 
         List<SetRowItem> sets = new ArrayList<>();
         for (int i=0; i < match.getSetsNumber(); i++) {
@@ -245,10 +242,10 @@ public class StatisticManager implements ISquashStatisticManager {
 
     @Override
     public SAggregatedStats getByPlayerId(long playerId) {
-        Player player = ManagerFactory.getInstance(context).corePlayerManager.getPlayerById(playerId);
+        Player player = managerFactory.getEntityManager(Player.class).getById(playerId);
         List<Player> filtered_players = new ArrayList<>();
         filtered_players.add(player);
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByPlayer(playerId);
+        List<Tournament> tournaments = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getByPlayer(playerId);
         List<SAggregatedStats> stats = getStats( filtered_players, tournaments);
         if (stats.isEmpty())
             return null;
@@ -274,20 +271,20 @@ public class StatisticManager implements ISquashStatisticManager {
 
     @Override
     public List<StandingItem> getStandingsByTournamentId(long tournamentId) {
-        Tournament tournament = ManagerFactory.getInstance(context).tournamentManager.getById(tournamentId);
-        Competition competition = ManagerFactory.getInstance(context).competitionManager.getById(tournament.getCompetitionId());
+        Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+        Competition competition = managerFactory.getEntityManager(Competition.class).getById(tournament.getCompetitionId());
         CompetitionType type = competition.getType();
         Map<Long, StandingItem> mappedStandings = new HashMap<>();
 
-        List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournamentId);
-        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(tournamentId);
+        List<Match> matches = ((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId);
+        PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournamentId);
 
         if (CompetitionTypes.individuals().equals(type)) {
-            List<Player> players = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
+            List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
             for (Player player : players)
                 mappedStandings.put(player.getId(), new StandingItem(player.getId(), player.getName()));
         } else {
-            List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(tournamentId);
+            List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
             for (Team team : teams)
                 mappedStandings.put(team.getId(), new StandingItem(team.getId(), team.getName()));
         }
@@ -350,5 +347,4 @@ public class StatisticManager implements ISquashStatisticManager {
         orderStandings(standings);
         return standings;
     }
-
 }

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
@@ -38,18 +37,18 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
     @Override
     public boolean delete(long id) {
         try {
-            List<Team> teams = ManagerFactory.getInstance().getDaoFactory()
+            List<Team> teams = managerFactory.getDaoFactory()
                     .getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
             if (!teams.isEmpty())
                 return false;
 
-            List<TournamentPlayer> players = ManagerFactory.getInstance().getDaoFactory()
+            List<TournamentPlayer> players = managerFactory.getDaoFactory()
                     .getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
             if (!players.isEmpty())
                 return false;
 
-            ManagerFactory.getInstance().getDaoFactory().getMyDao(Tournament.class).deleteById(id);
-            ManagerFactory.getInstance().getDaoFactory().getMyDao(PointConfiguration.class).deleteById(id);
+            managerFactory.getDaoFactory().getMyDao(Tournament.class).deleteById(id);
+            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;
@@ -59,7 +58,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
     @Override
     public List<Tournament> getByCompetitionId(long competitionId) {
         try {
-            return ManagerFactory.getInstance().getDaoFactory().getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
+            return managerFactory.getDaoFactory().getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
         } catch (SQLException e) {
             return new ArrayList<>();
         }
@@ -67,10 +66,10 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
 
     @Override
     public List<Player> getTournamentPlayers(long tournamentId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         List<Player> res = new ArrayList<>();
         try {
-            List<TournamentPlayer> tournamentPlayers = ManagerFactory.getInstance().getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<TournamentPlayer> tournamentPlayers = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                 res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
             }
@@ -85,7 +84,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
     @Override
     public List<Tournament> getByPlayer(long playerId) {
         try {
-            List<TournamentPlayer> tournamentPlayers = ManagerFactory.getInstance().getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cPLAYER_ID, playerId);
+            List<TournamentPlayer> tournamentPlayers = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cPLAYER_ID, playerId);
             List<Tournament> tournaments = new ArrayList<>();
             for (TournamentPlayer player : tournamentPlayers) {
                 tournaments.add(getById(player.getTournamentId()));
@@ -101,14 +100,14 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
     public List<Player> getTournamentPlayersComplement(long tournamentId) {
         Tournament tournament = getById(tournamentId);
         try {
-            List<CompetitionPlayer> competitionPlayers = ManagerFactory.getInstance().getDaoFactory().getMyDao(CompetitionPlayer.class)
+            List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory().getMyDao(CompetitionPlayer.class)
                     .queryForEq(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId());
-            Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+            Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
             Map<Long, Player> allCompetitionPlayers = new HashMap<>();
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allCompetitionPlayers.put(competitionPlayer.getPlayerId(), allPlayers.get(competitionPlayer.getPlayerId()));
             }
-            List<TournamentPlayer> tournamentPlayers = ManagerFactory.getInstance().getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<TournamentPlayer> tournamentPlayers = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer competitionPlayer : tournamentPlayers) {
                 allCompetitionPlayers.remove(competitionPlayer.getPlayerId());
             }
@@ -123,9 +122,9 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
         try {
             List<TeamPlayer> teamPlayers;
             List<Player> players = new ArrayList<>();
-            Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+            Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
 
-            teamPlayers = ManagerFactory.getInstance().getDaoFactory().getMyDao(TeamPlayer.class).queryForEq(DBConstants.cTEAM_ID, team.getId());
+            teamPlayers = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).queryForEq(DBConstants.cTEAM_ID, team.getId());
             for (TeamPlayer teamPlayer : teamPlayers) {
                 players.add(allPlayers.get(teamPlayer.getPlayerId()));
             }
@@ -138,13 +137,13 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
     @Override
     public boolean removePlayerFromTournament(long playerId, long tournamentId) {
         try {
-            Tournament tournament = ManagerFactory.getInstance().getDaoFactory().getMyDao(Tournament.class).queryForId(tournamentId);
-            Competition competition = ManagerFactory.getInstance().getDaoFactory().getMyDao(Competition.class).queryForId(tournament.getCompetitionId());
+            Tournament tournament = managerFactory.getDaoFactory().getMyDao(Tournament.class).queryForId(tournamentId);
+            Competition competition = managerFactory.getDaoFactory().getMyDao(Competition.class).queryForId(tournament.getCompetitionId());
             competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
 
             if (CompetitionTypes.teams().equals(competition.getType())) {
                 // Check if some team contains player
-                List<Team> teams = ManagerFactory.getInstance().getDaoFactory().getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+                List<Team> teams = managerFactory.getDaoFactory().getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
                 for (Team team : teams) {
                     List<Player> teamPlayers = getTeamPlayers(team);
                     for (Player player : teamPlayers)
@@ -154,15 +153,15 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
             }
 
             // Check if player participates in match
-            List<Match> matches = ManagerFactory.getInstance().getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Match match : matches) {
-                List<Participant> matchParticipants = ManagerFactory.getInstance().getDaoFactory().getMyDao(Participant.class).queryForEq(DBConstants.cMATCH_ID, match.getId());
+                List<Participant> matchParticipants = managerFactory.getDaoFactory().getMyDao(Participant.class).queryForEq(DBConstants.cMATCH_ID, match.getId());
                 for (Participant participant : matchParticipants) {
                     // Check if some participant is player
                     if (CompetitionTypes.individuals().equals(competition.getType()) && participant.getParticipantId() == playerId)
                         return false;
 
-                    List<PlayerStat> playerStats = ManagerFactory.getInstance().getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                    List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
                     for (PlayerStat playerStat : playerStats)
                         if (playerStat.getPlayerId() == playerId)
                             return false;
@@ -170,7 +169,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
             }
 
             // Remove player
-            Dao<TournamentPlayer, Long> tournamentPlayerDao = ManagerFactory.getInstance().getDaoFactory().getMyDao(TournamentPlayer.class);
+            Dao<TournamentPlayer, Long> tournamentPlayerDao = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class);
             DeleteBuilder<TournamentPlayer, Long> tournamentPlayerBuilder = tournamentPlayerDao.deleteBuilder();
             tournamentPlayerBuilder.where()
                     .eq(DBConstants.cTOURNAMENT_ID, tournamentId).and()
@@ -184,7 +183,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
 
     @Override
     public void addPlayer(long playerId, long tournamentId) {
-        Dao<TournamentPlayer, Long> tournamentPlayerDao = ManagerFactory.getInstance().getDaoFactory().getMyDao(TournamentPlayer.class);
+        Dao<TournamentPlayer, Long> tournamentPlayerDao = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class);
         try {
             tournamentPlayerDao.create(new TournamentPlayer(tournamentId, playerId));
         } catch (SQLException e) {}

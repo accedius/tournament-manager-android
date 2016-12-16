@@ -2,7 +2,6 @@ package fit.cvut.org.cz.squash.business.managers;
 
 import java.sql.SQLException;
 
-import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
@@ -19,7 +18,7 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
                 pointConfiguration = PointConfiguration.defaultConfig();
             }
             pointConfiguration.setTournamentId(tournament.getId());
-            ManagerFactory.getInstance().getDaoFactory().getMyDao(PointConfiguration.class).create(pointConfiguration);
+            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).create(pointConfiguration);
         } catch (SQLException e) {
             e.printStackTrace();
         }

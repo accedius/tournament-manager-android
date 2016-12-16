@@ -11,28 +11,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
-import fit.cvut.org.cz.squash.business.entities.SetRowItem;
-import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
@@ -46,10 +45,11 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
     @Override
     public List<Match> getByTournamentId(long tournamentId) {
         try {
-            List<Match> matches = ManagerFactory.getInstance().getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Match match : matches) {
-                List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance().getEntityManager(Participant.class)).getByMatchId(match.getId());
+                List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
                 match.addParticipants(participants);
+
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole()))
                         match.setHomeName(getParticipantName(match, participant));
@@ -74,13 +74,13 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
     }
 
     private String getParticipantName(Match match, Participant participant) {
-        Tournament tournament = ManagerFactory.getInstance().getEntityManager(Tournament.class).getById(match.getTournamentId());
-        Competition competition = ManagerFactory.getInstance().getEntityManager(Competition.class).getById(tournament.getCompetitionId());
+        Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
+        Competition competition = managerFactory.getEntityManager(Competition.class).getById(tournament.getCompetitionId());
         if (CompetitionTypes.teams().equals(competition.getType())) {
-            Team team = ManagerFactory.getInstance().getEntityManager(Team.class).getById(participant.getParticipantId());
+            Team team = managerFactory.getEntityManager(Team.class).getById(participant.getParticipantId());
             return team.getName();
         } else {
-            Player player = ManagerFactory.getInstance().getEntityManager(Player.class).getById(participant.getParticipantId());
+            Player player = managerFactory.getEntityManager(Player.class).getById(participant.getParticipantId());
             return player.getName();
         }
     }
@@ -88,7 +88,7 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
     @Override
     public Match getById(long id) {
         Match match = super.getById(id);
-        List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance().getEntityManager(Participant.class)).getByMatchId(id);
+        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
 
@@ -103,20 +103,20 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
 
     @Override
     public void generateRound(long tournamentId) {
-        Tournament tournament = ManagerFactory.getInstance().getEntityManager(Tournament.class).getById(tournamentId);
-        Competition competition = ManagerFactory.getInstance().getEntityManager(Competition.class).getById(tournament.getCompetitionId());
+        Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+        Competition competition = managerFactory.getEntityManager(Competition.class).getById(tournament.getCompetitionId());
         CompetitionType type = competition.getType();
 
         ArrayList<Participant> partsForGenerator = new ArrayList<>();
 
         if (CompetitionTypes.individuals().equals(type)) {
-            List<Player> players = ((ITournamentManager)ManagerFactory.getInstance().getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
+            List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
             for (Player player : players) {
                 // match_id and role will be added by generator
                 partsForGenerator.add(new Participant(-1, player.getId(), null));
             }
         } else {
-            List<Team> teams = ((ITeamManager)ManagerFactory.getInstance().getEntityManager(Team.class)).getByTournamentId(tournamentId);
+            List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
             for (Team team : teams) {
                 // match_id and role will be added by generator
                 partsForGenerator.add(new Participant(-1, team.getId(), null));
@@ -148,16 +148,16 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         if (!match.isPlayed())
             return;
 
-        List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance().getEntityManager(Participant.class)).getByMatchId(matchId);
+        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(matchId);
 
         try {
             // Remove Participant Stats and Player Stats
             for (Participant participant : participants) {
-                DeleteBuilder<ParticipantStat, Long> participantStatBuilder = ManagerFactory.getInstance().getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
+                DeleteBuilder<ParticipantStat, Long> participantStatBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 participantStatBuilder.delete();
 
-                DeleteBuilder<PlayerStat, Long> playerStatBuilder = ManagerFactory.getInstance().getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
+                DeleteBuilder<PlayerStat, Long> playerStatBuilder = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
                 playerStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 playerStatBuilder.delete();
             }
@@ -173,9 +173,8 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         // TODO check if id is filled ?
         match.setLastModified(new Date());
 
-        Tournament tournament = ManagerFactory.getInstance().getEntityManager(Tournament.class).getById(match.getTournamentId());
-        Competition competition = ManagerFactory.getInstance().getEntityManager(Competition.class).getById(tournament.getCompetitionId());
-        match.setType(competition.getType());
+        Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
+        Competition competition = managerFactory.getEntityManager(Competition.class).getById(tournament.getCompetitionId());
         super.insert(match);
 
         for (Participant participant : match.getParticipants()) {
@@ -183,17 +182,17 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         }
 
         for (Participant participant : match.getParticipants())
-            ManagerFactory.getInstance().getEntityManager(Participant.class).insert(participant);
+            managerFactory.getEntityManager(Participant.class).insert(participant);
 
         Map<Long, Team> teamMap = new HashMap<>();
-        List<Team> teams = ((ITeamManager)ManagerFactory.getInstance().getEntityManager(Team.class)).getByTournamentId(match.getTournamentId());
+        List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(match.getTournamentId());
         for (Team team : teams) {
             teamMap.put(team.getId(), team);
         }
 
         List<PlayerStat> playerStats = new ArrayList<>();
         for (Participant participant : match.getParticipants()) {
-            if (CompetitionTypes.individuals().equals(match.getType())) {
+            if (CompetitionTypes.individuals().equals(competition.getType())) {
                 playerStats.add(new PlayerStat(participant.getId(), participant.getParticipantId()));
             } else {
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
@@ -202,23 +201,23 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         }
 
         for (PlayerStat playerStat : playerStats)
-            ManagerFactory.getInstance().getEntityManager(PlayerStat.class).insert(playerStat);
+            managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
     }
 
     @Override
     public boolean delete(long id) {
-        List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance().getEntityManager(Participant.class)).getByMatchId(id);
+        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
         try {
             for (Participant participant : participants) {
-                DeleteBuilder<ParticipantStat, Long> participantStatBuilder = ManagerFactory.getInstance().getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
+                DeleteBuilder<ParticipantStat, Long> participantStatBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 participantStatBuilder.delete();
 
-                DeleteBuilder<PlayerStat, Long> statBuilder = ManagerFactory.getInstance().getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
+                DeleteBuilder<PlayerStat, Long> statBuilder = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
                 statBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 statBuilder.delete();
             }
-            DeleteBuilder<Participant, Long> participantBuilder = ManagerFactory.getInstance().getDaoFactory().getMyDao(Participant.class).deleteBuilder();
+            DeleteBuilder<Participant, Long> participantBuilder = managerFactory.getDaoFactory().getMyDao(Participant.class).deleteBuilder();
             participantBuilder.where().eq(DBConstants.cMATCH_ID, id);
             participantBuilder.delete();
         } catch (SQLException e) {
@@ -234,7 +233,7 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
     public void updateMatch(long matchId, ArrayList<SetRowItem> sets) {
         Match match = getById(matchId);
         // Delete all sets in match
-        ((IParticipantStatManager)ManagerFactory.getInstance().getEntityManager(ParticipantStat.class)).deleteByMatchId(matchId);
+        ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).deleteByMatchId(matchId);
 
         if (sets.isEmpty()) {
             match.setSetsNumber(sets.size());
@@ -260,7 +259,7 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         }
 
         for (ParticipantStat stat : stats)
-            ManagerFactory.getInstance().getEntityManager(ParticipantStat.class).insert(stat);
+            managerFactory.getEntityManager(ParticipantStat.class).insert(stat);
     }
 
     private void loadMatchScore(Match match) {
@@ -276,8 +275,8 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
             }
         }
 
-        List<ParticipantStat> homeStats = ((IParticipantStatManager)ManagerFactory.getInstance().getEntityManager(ParticipantStat.class)).getByParticipantId(home.getId());
-        List<ParticipantStat> awayStats = ((IParticipantStatManager)ManagerFactory.getInstance().getEntityManager(ParticipantStat.class)).getByParticipantId(away.getId());
+        List<ParticipantStat> homeStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(home.getId());
+        List<ParticipantStat> awayStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(away.getId());
         Map<Integer, Integer> homePointsMap = new HashMap<>();
         Map<Integer, Integer> awayPointsMap = new HashMap<>();
 

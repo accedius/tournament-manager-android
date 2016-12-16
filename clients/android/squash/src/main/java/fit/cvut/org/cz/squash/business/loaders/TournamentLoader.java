@@ -11,12 +11,14 @@ import java.util.Map;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.squash.business.serialization.TournamentSerializer;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -56,7 +58,7 @@ public class TournamentLoader {
             Log.d("IMPORT", "Tournament: " + tournament.syncData);
             Tournament importedTournament = TournamentSerializer.getInstance(context).deserialize(tournament);
             importedTournament.setCompetitionId(importedCompetition.getId());
-            ManagerFactory.getInstance(context).tournamentManager.insert(importedTournament);
+            ManagerFactory.getInstance((context)).getEntityManager(Tournament.class).insert(importedTournament);
 
             for (ServerCommunicationItem subItem : tournament.subItems) {
                 if (subItem.getType().equals("Player")) {
@@ -72,7 +74,7 @@ public class TournamentLoader {
             for (ServerCommunicationItem player : tournamentPlayers) {
                 // Add player to tournament.
                 long playerId = importedPlayers.get(player.getUid()).getId();
-                ManagerFactory.getInstance(context).tournamentManager.addPlayer(playerId, importedTournament.getId());
+                ((ITournamentManager)ManagerFactory.getInstance((context)).getEntityManager(Tournament.class)).addPlayer(playerId, importedTournament.getId());
             }
 
             /* Teams loading */
@@ -81,7 +83,7 @@ public class TournamentLoader {
                 // Add team to tournament.
                 Team importedTeam = TeamSerializer.getInstance(context).deserialize(team);
                 importedTeam.setTournamentId(importedTournament.getId());
-                ManagerFactory.getInstance(context).teamManager.insert(importedTeam);
+                ManagerFactory.getInstance((context)).getEntityManager(Team.class).insert(importedTeam);
                 importedTeams.put(team.getUid(), importedTeam);
 
                 // Add players to team.
@@ -91,7 +93,7 @@ public class TournamentLoader {
                         teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                     }
                 }
-                ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(importedTeam.getId(), teamPlayers);
+                ((ITeamManager)ManagerFactory.getInstance((context)).getEntityManager(Team.class)).updatePlayersInTeam(importedTeam.getId(), teamPlayers);
             }
 
             /* Matches loading */

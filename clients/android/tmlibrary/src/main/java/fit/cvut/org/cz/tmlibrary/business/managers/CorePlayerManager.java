@@ -22,6 +22,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 /**
  * Created by kevin on 2.12.2016.
  */
+// TODO rename to packagePlayerManager
 public class CorePlayerManager implements ICorePlayerManager {
     protected Context context;
 

@@ -8,8 +8,9 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerManager;
 /**
  * Created by kevin on 30. 3. 2016.
  */
-abstract public class PlayerManager extends CoreBaseManager<Player> implements IPlayerManager {
-    public PlayerManager(Context context) {
-        super(context);
+abstract public class PlayerManager extends TManager<Player> implements IPlayerManager {
+    @Override
+    protected Class<Player> getMyClass() {
+        return Player.class;
     }
 }

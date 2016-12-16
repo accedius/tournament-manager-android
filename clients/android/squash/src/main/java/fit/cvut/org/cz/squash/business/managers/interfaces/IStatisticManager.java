@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.entities.StandingItem;
  * Created by kevin on 9.12.2016.
  */
 
-public interface ISquashStatisticManager {
+public interface IStatisticManager {
     /**
      *
      * @param playerId id of player

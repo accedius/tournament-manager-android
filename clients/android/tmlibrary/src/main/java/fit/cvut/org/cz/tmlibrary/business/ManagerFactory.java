@@ -10,16 +10,9 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
  */
 
 public abstract class ManagerFactory implements IManagerFactory {
-    protected IDAOFactory daoFactory;
-
     @Override
     abstract public <M extends IManager<T>, T extends IEntity> M getEntityManager(Class<T> entity);
 
-    public IDAOFactory getDaoFactory() {
-        return daoFactory;
-    }
-
-    public static ManagerFactory getInstance() {
-        throw new UnsupportedOperationException("Method not implmeneted");
-    }
+    @Override
+    abstract public IDAOFactory getDaoFactory();
 }

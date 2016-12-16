@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
@@ -31,17 +30,17 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
     @Override
     public boolean delete(long id) {
         try {
-            List<CompetitionPlayer> competitionPlayers = ManagerFactory.getInstance().getDaoFactory()
+            List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class).queryForEq(DBConstants.cCOMPETITION_ID, id);
             if (!competitionPlayers.isEmpty())
                 return false;
 
-            List<Tournament> tournaments = ManagerFactory.getInstance().getDaoFactory()
+            List<Tournament> tournaments = managerFactory.getDaoFactory()
                     .getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, id);
             if (!tournaments.isEmpty())
                 return false;
 
-            ManagerFactory.getInstance().getDaoFactory()
+            managerFactory.getDaoFactory()
                     .getMyDao(Competition.class).deleteById(id);
             return true;
         } catch (SQLException e) {
@@ -52,7 +51,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
     @Override
     public Competition getById(long id) {
         try {
-            Competition competition = ManagerFactory.getInstance().getDaoFactory()
+            Competition competition = managerFactory.getDaoFactory()
                     .getMyDao(Competition.class).queryForId(id);
             competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
             return competition;
@@ -63,10 +62,10 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
 
     @Override
     public List<Player> getCompetitionPlayers(long competitionId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         List<Player> res = new ArrayList<>();
         try {
-            List<CompetitionPlayer> competitionPlayers = ManagerFactory.getInstance().getDaoFactory()
+            List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 res.add(allPlayers.get(competitionPlayer.getPlayerId()));
@@ -80,9 +79,9 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
 
     @Override
     public List<Player> getCompetitionPlayersComplement(long competitionId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         try {
-            List<CompetitionPlayer> competitionPlayers = ManagerFactory.getInstance().getDaoFactory()
+            List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allPlayers.remove(competitionPlayer.getPlayerId());
@@ -100,7 +99,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
             return;
 
         try {
-            Dao<CompetitionPlayer, Long> competitionPlayerDao = ManagerFactory.getInstance().getDaoFactory()
+            Dao<CompetitionPlayer, Long> competitionPlayerDao = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class);
             competitionPlayerDao.create(new CompetitionPlayer(competition.getId(), player.getId()));
         } catch (SQLException e) {}
@@ -109,14 +108,14 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
     @Override
     public boolean removePlayerFromCompetition(long playerId, long competitionId) {
         try {
-            List<Tournament> tournaments = ManagerFactory.getInstance().getDaoFactory()
+            List<Tournament> tournaments = managerFactory.getDaoFactory()
                     .getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
             for (Tournament tournament : tournaments) {
                 List<TournamentPlayer> tournamentPlayers;
                 List<Player> players = new ArrayList<>();
-                Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance().getEntityManager(Player.class)).getMapAll();
+                Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
 
-                tournamentPlayers = ManagerFactory.getInstance().getDaoFactory()
+                tournamentPlayers = managerFactory.getDaoFactory()
                         .getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournament.getId());
                 for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                     players.add(allPlayers.get(tournamentPlayer.getPlayerId()));
@@ -127,7 +126,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
             }
 
             // Remove player
-            Dao<CompetitionPlayer, Long> competitionPlayerDao = ManagerFactory.getInstance().getDaoFactory()
+            Dao<CompetitionPlayer, Long> competitionPlayerDao = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class);
             DeleteBuilder<CompetitionPlayer, Long> deleteBuilder = competitionPlayerDao.deleteBuilder();
             deleteBuilder.where()
@@ -143,7 +142,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
     @Override
     public List<Tournament> getByCompetitionId(long competitionId) {
         try {
-            return ManagerFactory.getInstance().getDaoFactory()
+            return managerFactory.getDaoFactory()
                     .getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
         } catch (SQLException e) {
             return new ArrayList<>();

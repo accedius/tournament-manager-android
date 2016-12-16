@@ -1,45 +1,32 @@
 package fit.cvut.org.cz.squash.business.managers;
 
-import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.squash.business.ManagerFactory;
-import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
-import fit.cvut.org.cz.squash.data.DatabaseFactory;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
-import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
+import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
+import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**
  * Created by kevin on 9.12.2016.
  */
 
-public class ParticipantStatManager extends BaseManager<ParticipantStat> implements IParticipantStatManager {
-    protected SquashDBHelper sportDBHelper;
-
-    public ParticipantStatManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(context, corePlayerManager, sportDBHelper);
-        this.sportDBHelper = sportDBHelper;
-    }
-
+public class ParticipantStatManager extends TManager<ParticipantStat> implements IParticipantStatManager {
     @Override
-    protected Dao<ParticipantStat, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getSquashParticipantStatDAO();
+    protected Class<ParticipantStat> getMyClass() {
+        return ParticipantStat.class;
     }
 
     @Override
     public List<ParticipantStat> getByParticipantId(long participantId) {
         try {
-            List<ParticipantStat> stats = getDao().queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            List<ParticipantStat> stats = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
             return new ArrayList<>(stats);
         } catch (SQLException e) {
             return new ArrayList<>();
@@ -49,8 +36,8 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     @Override
     public void deleteByMatchId(long matchId) {
         try {
-            List<Participant> participants = ManagerFactory.getInstance(context).participantManager.getByMatchId(matchId);
-            DeleteBuilder<ParticipantStat, Long> deleteBuilder = getDao().deleteBuilder();
+            List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(matchId);
+            DeleteBuilder<ParticipantStat, Long> deleteBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
             for (Participant participant : participants) {
                 deleteBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 deleteBuilder.delete();
@@ -60,4 +47,3 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
         }
     }
 }
-

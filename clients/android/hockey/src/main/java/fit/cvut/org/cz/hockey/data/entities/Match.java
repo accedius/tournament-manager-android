@@ -33,8 +33,8 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     private List<PlayerStat> awayPlayers = new ArrayList<>();
 
     public Match() {}
-    public Match(long id, long tournamentId, CompetitionType type, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
-        super(id, tournamentId, type, date, played, note, period, round);
+    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
+        super(id, tournamentId, date, played, note, period, round);
         this.shootouts = shootouts;
         this.overtime = overtime;
     }

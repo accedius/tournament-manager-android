@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -19,14 +20,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SportDBHelper implements IDAOFactory {
-    private static final int DBVersion = 2;
+    private static final int DBVersion = 3;
 
     public SquashDBHelper(Context context, String name) {
         super(context, name, null, DBVersion);

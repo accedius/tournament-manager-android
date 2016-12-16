@@ -3,12 +3,14 @@ package fit.cvut.org.cz.squash.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
+
 /**
  * Class that holds aggregated statistics
  * Represents computed statistics for one pleyer across some set of data
  * Created by Vaclav on 7. 4. 2016.
  */
-public class SAggregatedStats implements Parcelable {
+public class SAggregatedStats implements Parcelable, IEntity {
     public long playerId;
     public String playerName;
 
@@ -102,5 +104,10 @@ public class SAggregatedStats implements Parcelable {
 
     public int getTotalSets() {
         return setsWon + setsLost;
+    }
+
+    @Override
+    public long getId() {
+        return playerId;
     }
 }
