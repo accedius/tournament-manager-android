@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tmlibrary.business.managers;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
@@ -140,16 +141,18 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             Competition competition = sportDBHelper.getCompetitionDAO().queryForId(tournament.getCompetitionId());
             competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
 
-            if (CompetitionTypes.teams().equals(competition.getType())) {
-                // Check if some team contains player
-                List<Team> teams = sportDBHelper.getTeamDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
-                for (Team team : teams) {
-                    List<Player> teamPlayers = getTeamPlayers(team);
-                    for (Player player : teamPlayers)
-                        if (player.getId() == playerId)
-                            return false;
-                }
-            }
+            // TODO optimization like this in other joins etc.
+            String query =  "SELECT * " +
+                            "FROM " + DBConstants.tTEAMS + " t " +
+                                "JOIN " + DBConstants.tPLAYERS_IN_TEAM + " p " +
+                                    "ON t." + DBConstants.cID + " = p." + DBConstants.cTEAM_ID +
+                            " WHERE "+
+                                    "t." + DBConstants.cTOURNAMENT_ID + " = " + tournamentId +
+                                " AND "+
+                                    "p." + DBConstants.cPLAYER_ID + " = " + playerId;
+            GenericRawResults<String[]> results = sportDBHelper.getTeamDAO().queryRaw(query);
+            if (!results.getResults().isEmpty())
+                return false;
 
             // Check if player participates in match
             List<Match> matches = sportDBHelper.getMatchDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
