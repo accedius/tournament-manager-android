@@ -9,6 +9,8 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.tlib.SquashManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -98,7 +100,8 @@ public class TournamentService extends AbstractIntentServiceWProgress{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_COMPETITION_ID);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                ArrayList<Tournament> tournaments = new ArrayList<>(ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(id));
+                ITournamentManager tournamentManager = SquashManagerFactory.getInstance(this).getEntityManager(Tournament.class);
+                ArrayList<Tournament> tournaments = new ArrayList<>(tournamentManager.getByCompetitionId(id));
                 result.putParcelableArrayListExtra(EXTRA_TOURNAMENT, tournaments);
                 Competition c = ManagerFactory.getInstance(this).competitionManager.getById(id);
                 result.putExtra(EXTRA_TYPE, c.getType().id);

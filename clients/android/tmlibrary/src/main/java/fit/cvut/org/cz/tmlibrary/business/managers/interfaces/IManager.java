@@ -9,35 +9,43 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
  */
 public interface IManager<T extends IEntity> {
     /**
-     * insert new competition
+     * insert new entity
      * @param entity entity to be inserted
-     * @return id of inserted competition
+     * @return id of inserted entity
      */
     void insert(T entity);
 
     /**
-     * update competition
+     * update entity
      * @param entity entity to be updated
      */
     void update(T entity);
 
     /**
-     * delete competition from app
-     * @param id id of competition to be deleted
-     * @return true of competition is deleted, false if competition contains something and thus cannot be deleted
+     * delete entity from app
+     * @param id id of entity to be deleted
+     * @return true of entity is deleted, false if entity contains something and thus cannot be deleted
      */
     boolean delete(long id);
 
     /**
-     * get competition by its id
-     * @param id id of the competition
-     * @return found competition
+     * get entity by its id
+     * @param id id of the entity
+     * @return found entity
      */
     T getById(long id);
 
     /**
-     * get all competitions
-     * @return all competitions
+     * get entities by some column
+     * @param column column of the entity
+     * @param value value of the column
+     * @return found entitys
+     */
+    List<T> getByColumn(String column, Object value);
+
+    /**
+     * get all entities
+     * @return all entities
      */
     List<T> getAll();
 }
