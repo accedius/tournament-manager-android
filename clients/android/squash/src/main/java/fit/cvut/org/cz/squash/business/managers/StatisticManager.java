@@ -44,47 +44,6 @@ public class StatisticManager extends TManager<SAggregatedStats> implements ISta
         return SAggregatedStats.class;
     }
 
-    private int calculatePoints(int result, PointConfiguration pointConfig) {
-        switch (result) {
-            case WIN:
-                return pointConfig.getWin();
-            case DRAW:
-                return pointConfig.getDraw();
-            case LOSS:
-                return pointConfig.getLoss();
-            default:
-                return 0;
-        }
-    }
-
-    private void addMatchResultToStanding(int result, StandingItem standing) {
-        switch (result) {
-            case WIN:
-                standing.wins++;
-                break;
-            case DRAW:
-                standing.draws++;
-                break;
-            case LOSS:
-                standing.losses++;
-                break;
-        }
-    }
-
-    private void orderPlayers(List<SAggregatedStats> stats) {
-        Collections.sort(stats, new Comparator<SAggregatedStats>() {
-            @Override
-            public int compare(SAggregatedStats ls, SAggregatedStats rs) {
-                if (rs.points != ls.points)
-                    return rs.points - ls.points;
-                if (rs.setsWon != ls.setsWon) {
-                    return rs.setsWon- ls.setsWon;
-                }
-                return ls.games_played-rs.games_played;
-            }
-        });
-    }
-
     private List<SAggregatedStats> getStats(List<Player> players, List<Tournament> tournaments) {
         if (players.isEmpty())
             return new ArrayList<>();
@@ -252,23 +211,6 @@ public class StatisticManager extends TManager<SAggregatedStats> implements ISta
         return stats.get(0);
     }
 
-    private void orderStandings(List<StandingItem> standings) {
-        Collections.sort(standings, new Comparator<StandingItem>() {
-            @Override
-            public int compare(StandingItem ls, StandingItem rs) {
-                if (rs.points != ls.points)
-                    return rs.points - ls.points;
-                if (rs.setsWon - rs.setsLost != ls.setsWon - ls.setsLost) {
-                    return (rs.setsWon - rs.setsLost) - (ls.setsWon - ls.setsLost);
-                }
-                if (rs.setsWon != ls.setsWon) {
-                    return rs.setsWon- ls.setsWon;
-                }
-                return ls.getMatches()-rs.getMatches();
-            }
-        });
-    }
-
     @Override
     public List<StandingItem> getStandingsByTournamentId(long tournamentId) {
         Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(tournamentId);
@@ -346,5 +288,63 @@ public class StatisticManager extends TManager<SAggregatedStats> implements ISta
         List<StandingItem> standings = new ArrayList<>(mappedStandings.values());
         orderStandings(standings);
         return standings;
+    }
+
+    private void orderStandings(List<StandingItem> standings) {
+        Collections.sort(standings, new Comparator<StandingItem>() {
+            @Override
+            public int compare(StandingItem ls, StandingItem rs) {
+                if (rs.points != ls.points)
+                    return rs.points - ls.points;
+                if (rs.setsWon - rs.setsLost != ls.setsWon - ls.setsLost) {
+                    return (rs.setsWon - rs.setsLost) - (ls.setsWon - ls.setsLost);
+                }
+                if (rs.setsWon != ls.setsWon) {
+                    return rs.setsWon- ls.setsWon;
+                }
+                return ls.getMatches()-rs.getMatches();
+            }
+        });
+    }
+
+    private void orderPlayers(List<SAggregatedStats> stats) {
+        Collections.sort(stats, new Comparator<SAggregatedStats>() {
+            @Override
+            public int compare(SAggregatedStats ls, SAggregatedStats rs) {
+                if (rs.points != ls.points)
+                    return rs.points - ls.points;
+                if (rs.setsWon != ls.setsWon) {
+                    return rs.setsWon- ls.setsWon;
+                }
+                return ls.games_played-rs.games_played;
+            }
+        });
+    }
+
+    private int calculatePoints(int result, PointConfiguration pointConfig) {
+        switch (result) {
+            case WIN:
+                return pointConfig.getWin();
+            case DRAW:
+                return pointConfig.getDraw();
+            case LOSS:
+                return pointConfig.getLoss();
+            default:
+                return 0;
+        }
+    }
+
+    private void addMatchResultToStanding(int result, StandingItem standing) {
+        switch (result) {
+            case WIN:
+                standing.wins++;
+                break;
+            case DRAW:
+                standing.draws++;
+                break;
+            case LOSS:
+                standing.losses++;
+                break;
+        }
     }
 }
