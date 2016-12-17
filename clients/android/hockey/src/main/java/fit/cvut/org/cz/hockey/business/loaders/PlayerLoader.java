@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.helpers.ConflictCreator;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -24,7 +26,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 public class PlayerLoader {
     public static List<PlayerImportInfo> getPlayersImportInfo(Context context, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
         ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
-        Map<Long, Player> allPlayers = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         HashMap<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);
@@ -47,7 +49,7 @@ public class PlayerLoader {
     }
 
     public static void importPlayers(Context context, List<ServerCommunicationItem> players, Competition competition, Map<String, Player> importedPlayers, Map<String, String> conflictSolutions) {
-        Map<Long, Player> allPlayers = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         Map<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);
@@ -67,14 +69,14 @@ public class PlayerLoader {
                 if (!matchedPlayer.samePlayer(importedPlayer)) {
                     if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
                         if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
-                            ManagerFactory.getInstance(context).corePlayerManager.updatePlayer(importedPlayer);
+                            ManagerFactory.getInstance(context).getEntityManager(Player.class).update(importedPlayer);
                             Log.d("IMPORT", "\tCONFLICT!");
                             Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
                         }
                     }
                 }
             } else {
-                ManagerFactory.getInstance(context).corePlayerManager.insertPlayer(importedPlayer);
+                ManagerFactory.getInstance(context).getEntityManager(Player.class).insert(importedPlayer);
                 playerId = importedPlayer.getId();
                 Log.d("IMPORT", "\tADDED " + playerId);
             }
@@ -82,7 +84,7 @@ public class PlayerLoader {
             importedPlayers.put(importedPlayer.getUid(), importedPlayer);
 
             // Add player to competition.
-            ManagerFactory.getInstance(context).competitionManager.addPlayer(competition, importedPlayer);
+            ((ICompetitionManager)ManagerFactory.getInstance((context)).getEntityManager(Competition.class)).addPlayer(competition, importedPlayer);
         }
 
         Log.d("IMPORTED PLAYERS", importedPlayers.toString());

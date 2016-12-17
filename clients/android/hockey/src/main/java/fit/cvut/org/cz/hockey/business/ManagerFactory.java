@@ -1,78 +1,117 @@
 package fit.cvut.org.cz.hockey.business;
 
 import android.content.Context;
-import android.util.Log;
 
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IHockeyStatisticsManager;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IParticipantStatManager;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IPointConfigurationManager;
-import fit.cvut.org.cz.hockey.business.managers.CompetitionManager;
+import java.util.HashMap;
+import java.util.Map;
+
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.managers.MatchManager;
 import fit.cvut.org.cz.hockey.business.managers.ParticipantManager;
 import fit.cvut.org.cz.hockey.business.managers.ParticipantStatManager;
 import fit.cvut.org.cz.hockey.business.managers.PlayerStatManager;
 import fit.cvut.org.cz.hockey.business.managers.PointConfigurationManager;
-import fit.cvut.org.cz.hockey.business.managers.StatisticsManager;
+import fit.cvut.org.cz.hockey.business.managers.StatisticManager;
 import fit.cvut.org.cz.hockey.business.managers.TeamManager;
 import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
 import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
+import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * Created by atgot_000 on 31. 3. 2016.
  */
-public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ManagerFactory {
-    private static ManagerFactory instance;
-    private String name;
-    public HockeyDBHelper sportDBHelper;
+public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFactory {
+    private static Context context;
+    private static IManagerFactory instance;
+    private static Map<String, IDAOFactory> helpersMap = new HashMap<>();
 
-    public ICorePlayerManager corePlayerManager;
-    public ICompetitionManager competitionManager;
-    public ITournamentManager tournamentManager;
-    public ITeamManager teamManager;
-    public IHockeyStatisticsManager statisticsManager;
-    public IPointConfigurationManager pointConfigManager;
-    public IParticipantManager participantManager;
-    public IParticipantStatManager participantStatManager;
-    public IPlayerStatManager playerStatManager;
-    public IMatchManager matchManager;
+    @Override
+    public <M extends IManager<E>, E extends IEntity> M getEntityManager(Class<E> entity) {
+        TManager<? extends IEntity> manager = null;
 
-    public static ManagerFactory getInstance(Context context) {
-        String requestedContext = ((HockeyPackage) context.getApplicationContext()).getSportContext();
-        if (instance == null || !instance.sportDBHelper.getDBName().equals(requestedContext)) {
-            instance = new ManagerFactory(context);
-            instance.setManagers(context);
+        // Competition
+        if (entity.getName().equals(Competition.class.getName())) {
+            manager = new fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager();
         }
-        if (!requestedContext.equals(instance.sportDBHelper.getDBName())) {
-            Log.d("ERROR", "Requested context "+requestedContext+", got "+instance.sportDBHelper.getDBName());
+        // Tournament
+        else if (entity.getName().equals(Tournament.class.getName())) {
+            manager = new TournamentManager();
         }
+        // Team
+        else if (entity.getName().equals(Team.class.getName())) {
+            manager = new TeamManager();
+        }
+        // PointConfiguration
+        else if (entity.getName().equals(PointConfiguration.class.getName())) {
+            manager = new PointConfigurationManager();
+        }
+        // Match
+        else if (entity.getName().equals(Match.class.getName())) {
+            manager = new MatchManager();
+        }
+        // Participant
+        else if (entity.getName().equals(Participant.class.getName())) {
+            manager = new ParticipantManager();
+        }
+        // ParticipantStat
+        else if (entity.getName().equals(ParticipantStat.class.getName())) {
+            manager = new ParticipantStatManager();
+        }
+        // PlayerStat
+        else if (entity.getName().equals(PlayerStat.class.getName())) {
+            manager = new PlayerStatManager();
+        }
+        // Statistic
+        else if (entity.getName().equals(AggregatedStatistics.class.getName())) {
+            manager = new StatisticManager();
+        }
+        // Core Player
+        else if (entity.getName().equals(Player.class.getName())) {
+            return (M) new CorePlayerManager(context);
+        }
+
+        if (manager == null)
+            return null;
+
+        manager.setManagerFactory(this);
+        return (M) manager;
+    }
+
+    private ManagerFactory() {}
+
+    @Override
+    public IDAOFactory getDaoFactory() {
+        String name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
+        if (!helpersMap.containsKey(name))
+            helpersMap.put(name, new HockeyDBHelper(context, name));
+        return helpersMap.get(name);
+    }
+
+    public static IManagerFactory getInstance(Context c) {
+        context = c;
+        if (instance == null)
+            instance = new ManagerFactory();
         return instance;
     }
 
-    private void setManagers(Context context) {
-        corePlayerManager = new CorePlayerManager(context);
-        competitionManager = new CompetitionManager(context, corePlayerManager, sportDBHelper);
-        tournamentManager = new TournamentManager(context, corePlayerManager, sportDBHelper);
-        teamManager = new TeamManager(context, corePlayerManager, sportDBHelper);
-        matchManager = new MatchManager(context, corePlayerManager, sportDBHelper);
-        participantManager = new ParticipantManager(context, corePlayerManager, sportDBHelper);
-        participantStatManager = new ParticipantStatManager(context, corePlayerManager, sportDBHelper);
-        statisticsManager = new StatisticsManager(context, corePlayerManager, sportDBHelper);
-        pointConfigManager = new PointConfigurationManager(context, corePlayerManager, sportDBHelper);
-        playerStatManager = new PlayerStatManager(context, corePlayerManager, sportDBHelper);
+    public static IManagerFactory getInstance() {
+        if (instance == null)
+            instance = new ManagerFactory();
+        return instance;
     }
-
-    private ManagerFactory(Context context) {
-        name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
-        sportDBHelper = new HockeyDBHelper(context, name);
-    }
-
 }

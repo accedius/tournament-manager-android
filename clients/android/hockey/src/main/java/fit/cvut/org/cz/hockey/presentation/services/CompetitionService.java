@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -55,21 +57,21 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_CREATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.insert(c);
+                ManagerFactory.getInstance((this)).getEntityManager(Competition.class).insert(c);
                 break;
 
             case ACTION_UPDATE:
                 c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.update(c);
+                ManagerFactory.getInstance((this)).getEntityManager(Competition.class).update(c);
                 break;
 
             case ACTION_FIND_BY_ID:
                 Intent res = new Intent();
                 long competitionId = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
-                c = ManagerFactory.getInstance(this).competitionManager.getById(competitionId);
-                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(competitionId);
-                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(competitionId);
+                c = ManagerFactory.getInstance((this)).getEntityManager(Competition.class).getById(competitionId);
+                List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance((this)).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
+                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance((this)).getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
 
                 res.putExtra(EXTRA_COMPETITION, c);
                 res.putExtra(EXTRA_PLAYERS_COUNT, players.size());

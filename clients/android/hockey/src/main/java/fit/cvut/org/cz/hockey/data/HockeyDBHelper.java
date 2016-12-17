@@ -3,7 +3,6 @@ package fit.cvut.org.cz.hockey.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -13,6 +12,7 @@ import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -20,64 +20,15 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
 public class HockeyDBHelper extends SportDBHelper {
-    private static final int DBVersion = 2;
-    private Dao<PointConfiguration, Long> pointConfigurationDao;
-    private Dao<Match, Long> matchDao;
-    private Dao<ParticipantStat, Long> participantStatDAO;
-    private Dao<PlayerStat, Long> playerStatDAO;
+    private static final int DBVersion = 3;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name, null, DBVersion);
-    }
-
-    public Dao<PointConfiguration, Long> getHockeyPointConfigurationDAO() {
-        if (pointConfigurationDao == null) {
-            try {
-                pointConfigurationDao = getDao(PointConfiguration.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return pointConfigurationDao;
-    }
-
-    public Dao<Match, Long> getHockeyMatchDAO() {
-        if (matchDao == null) {
-            try {
-                matchDao = getDao(Match.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return matchDao;
-    }
-
-    public Dao<ParticipantStat, Long> getHockeyParticipantStatDAO() {
-        if (participantStatDAO == null) {
-            try {
-                participantStatDAO = getDao(ParticipantStat.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return participantStatDAO;
-    }
-
-    public Dao<PlayerStat, Long> getHockeyPlayerStatDAO() {
-        if (playerStatDAO == null) {
-            try {
-                playerStatDAO = getDao(PlayerStat.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return playerStatDAO;
     }
 
     @Override
