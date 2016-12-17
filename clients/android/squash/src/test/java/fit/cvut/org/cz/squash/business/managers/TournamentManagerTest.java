@@ -3,6 +3,7 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 import android.test.AndroidTestCase;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,12 @@ import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
@@ -36,10 +42,13 @@ public class TournamentManagerTest extends AndroidTestCase {
     private static final String name = "Wimbledon";
     private static final String note = "All England Cup";
     private static long tournamentId;
-    private static final long competitionId = 1;
+    private static long competitionId = 1;
+    private static Tournament inserted;
 
+    public static ICompetitionManager competitionManager = null;
     public static ITournamentManager tournamentManager = null;
     public static IPointConfigurationManager pointConfigurationManager = null;
+    public static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {
@@ -47,31 +56,28 @@ public class TournamentManagerTest extends AndroidTestCase {
         context = testContext.getApplicationContext();
         ((SquashPackage)context.getApplicationContext()).setSportContext(sportContext);
 
-        tournamentManager = ManagerFactory.getInstance(context).tournamentManager;
-        pointConfigurationManager = ManagerFactory.getInstance(context).pointConfigManager;
+        competitionManager = ManagerFactory.getInstance(context).getEntityManager(Competition.class);
+        tournamentManager = ManagerFactory.getInstance(context).getEntityManager(Tournament.class);
+        pointConfigurationManager = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class);
+        teamManager = ManagerFactory.getInstance(context).getEntityManager(Team.class);
 
         /* Preconditions */
         assertNotNull(ManagerFactory.getInstance(context));
-        assertEquals(sportContext, ManagerFactory.getInstance(context).sportDBHelper.getDBName());
-        assertEquals(true, ManagerFactory.getInstance(context).sportDBHelper.isOpen());
         assertNotNull(tournamentManager);
         assertNotNull(pointConfigurationManager);
     }
 
-    @Test
-    public void procedure() {
-        insert();
-        getByCompetitionId();
-        delete();
+    @After
+    public void reset() {
+        ManagerFactory.reset();
     }
 
     /**
      * Verify that when tournament is created, default point configuration is created.
      */
-    private void insert() {
-        Tournament inserted = new Tournament(0, competitionId, name, new Date(), new Date(), note);
-        tournamentManager.insert(inserted);
-        tournamentId = inserted.getId();
+    @Test
+    public void insert() {
+        add();
         Tournament tournament = tournamentManager.getById(tournamentId);
         assertEquals(competitionId, tournament.getCompetitionId());
         assertEquals(name, tournament.getName());
@@ -86,9 +92,11 @@ public class TournamentManagerTest extends AndroidTestCase {
     /**
      * Verify getByCompetitionId method returns correct tournament list.
      */
-    private void getByCompetitionId() {
+    @Test
+    public void getByCompetitionId() {
+        add();
         List<Tournament> tournaments = tournamentManager.getByCompetitionId(competitionId);
-        assertEquals(1, tournaments.size());
+        assertFalse(tournaments.isEmpty());
         Tournament tournament = tournaments.get(0);
         assertEquals(competitionId, tournament.getCompetitionId());
         assertEquals(name, tournament.getName());
@@ -98,16 +106,62 @@ public class TournamentManagerTest extends AndroidTestCase {
     /**
      * Verify that when tournament is deleted, related point configuration is also deleted.
      */
-    private void delete() {
-        tournamentManager.delete(tournamentId);
+    @Test
+    public void delete() {
+        add();
+        assertTrue(tournamentManager.delete(tournamentId));
         Tournament tournament = tournamentManager.getById(tournamentId);
         assertNull(tournament);
 
         List<Tournament> tournaments = tournamentManager.getByCompetitionId(competitionId);
         assertNotNull(tournaments);
-        assertEquals(0, tournaments.size());
+        assertTrue(tournaments.isEmpty());
 
         PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
         assertNull(pointConfiguration);
+    }
+
+    /**
+     * Verify that tournament cannot be deleted when contains teams or players.
+     */
+    @Test
+    public void deleteNotEmpty() {
+        add();
+        long playerId = 1;
+        tournamentManager.addPlayer(playerId, tournamentId);
+        assertFalse(tournamentManager.delete(tournamentId));
+        assertNotNull(tournamentManager.getById(tournamentId));
+
+        tournamentManager.removePlayerFromTournament(playerId, tournamentId);
+        assertTrue(tournamentManager.delete(tournamentId));
+        assertNull(tournamentManager.getById(tournamentId));
+
+        add();
+        Team team = new Team();
+        team.setTournamentId(tournamentId);
+        teamManager.insert(team);
+        assertFalse(tournamentManager.delete(tournamentId));
+        assertNotNull(tournamentManager.getById(tournamentId));
+
+        teamManager.delete(team.getId());
+        assertTrue(tournamentManager.delete(tournamentId));
+        assertNull(tournamentManager.getById(tournamentId));
+    }
+
+    private void add() {
+        Competition competition = new Competition();
+        competition.setType(CompetitionTypes.teams());
+        competitionManager.insert(competition);
+        competitionId = competition.getId();
+
+        inserted = new Tournament();
+        inserted.setCompetitionId(competitionId);
+        inserted.setName(name);
+        inserted.setNote(note);
+        inserted.setStartDate(new Date());
+        inserted.setEndDate(new Date());
+
+        tournamentManager.insert(inserted);
+        tournamentId = inserted.getId();
     }
 }

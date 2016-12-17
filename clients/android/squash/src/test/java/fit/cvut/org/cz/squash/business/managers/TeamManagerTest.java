@@ -32,48 +32,48 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
- * Created by kevin on 16.12.2016.
+ * Created by kevin on 17.12.2016.
  */
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MatchManagerTest extends AndroidTestCase {
+public class TeamManagerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Tennis";
 
-    private static final String note = "Center Court";
-    private static long tournamentId;
-    private static Match inserted;
+    public static final String name = "H+H";
+    private static long teamId1;
+    private static long teamId2;
     private static long matchId;
-    private static final int round = 1;
-    private static final int period = 1;
-    private static final boolean played = true;
+    private static long tournamentId;
+    private static Team inserted1;
+    private static Team inserted2;
 
     public static ICompetitionManager competitionManager = null;
     public static ITournamentManager tournamentManager = null;
+    public static ITeamManager teamManager = null;
     public static IMatchManager matchManager = null;
     public static IParticipantManager participantManager = null;
-    public static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {
         ShadowApplication testContext = Shadows.shadowOf(RuntimeEnvironment.application);
         context = testContext.getApplicationContext();
-        ((SquashPackage)context.getApplicationContext()).setSportContext(sportContext);
+        ((SquashPackage) context.getApplicationContext()).setSportContext(sportContext);
 
         competitionManager = ManagerFactory.getInstance(context).getEntityManager(Competition.class);
         tournamentManager = ManagerFactory.getInstance(context).getEntityManager(Tournament.class);
+        teamManager = ManagerFactory.getInstance(context).getEntityManager(Team.class);
         matchManager = ManagerFactory.getInstance(context).getEntityManager(Match.class);
         participantManager = ManagerFactory.getInstance(context).getEntityManager(Participant.class);
-        teamManager = ManagerFactory.getInstance(context).getEntityManager(Team.class);
 
         /* Preconditions */
         assertNotNull(ManagerFactory.getInstance(context));
         assertNotNull(competitionManager);
         assertNotNull(tournamentManager);
+        assertNotNull(teamManager);
         assertNotNull(matchManager);
         assertNotNull(participantManager);
-        assertNotNull(teamManager);
     }
 
     @After
@@ -82,63 +82,70 @@ public class MatchManagerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify match insertion.
+     * Verify team insertion.
      */
     @Test
     public void insert() {
+        addCompetitionTournament();
         add();
-        Match match = matchManager.getById(matchId);
-        assertEquals(tournamentId, match.getTournamentId());
-        assertEquals(played, match.isPlayed());
-        assertEquals(note, match.getNote());
-        assertEquals(period, match.getPeriod());
-        assertEquals(round, match.getRound());
     }
 
     /**
-     * Verify match is not played after reset.
-     */
-    @Test
-    public void resetMatch() {
-        add();
-        matchManager.resetMatch(matchId);
-        Match match = matchManager.getById(matchId);
-        assertNotNull(match);
-        assertFalse(match.isPlayed());
-        assertEquals(0, match.getSetsNumber());
-    }
-
-    /**
-     * Verify getByTournamentId method returns correct matches list.
+     * Verify get teams by tournament.
      */
     @Test
     public void getByTournamentId() {
+        addCompetitionTournament();
         add();
-        List<Match> matches = matchManager.getByTournamentId(tournamentId);
-        assertFalse(matches.isEmpty());
-        Match match = matches.get(0);
-        assertEquals(tournamentId, match.getTournamentId());
-        assertEquals(played, match.isPlayed());
-        assertEquals(note, match.getNote());
-        assertEquals(period, match.getPeriod());
-        assertEquals(round, match.getRound());
+        add();
+        List<Team> teams = teamManager.getByTournamentId(tournamentId);
+        assertNotNull(teams);
+        assertEquals(2, teams.size());
+
+        teamManager.delete(teams.get(1).getId());
+        teams = teamManager.getByTournamentId(tournamentId);
+        assertNotNull(teams);
+        assertEquals(1, teams.size());
+
+        teamManager.delete(teams.get(0).getId());
+        teams = teamManager.getByTournamentId(tournamentId);
+        assertNotNull(teams);
+        assertTrue(teams.isEmpty());
     }
 
     /**
-     * Verify match deleting.
+     * Verify team can be deleted when not played any match.
      */
     @Test
     public void delete() {
-        matchManager.delete(matchId);
-        Match match = matchManager.getById(matchId);
-        assertNull(match);
+        addCompetitionTournament();
+        add();
+        assertNotNull(teamManager.getById(teamId1));
 
-        List<Match> matches = matchManager.getByTournamentId(tournamentId);
-        assertNotNull(matches);
-        assertTrue(matches.isEmpty());
+        assertTrue(teamManager.delete(teamId1));
+        assertNull(teamManager.getById(teamId1));
     }
 
-    private void add() {
+    /**
+     * Verify team cannot be deleted when played matches.
+     */
+    @Test
+    public void deleteNotEmpty() {
+        addCompetitionTournament();
+        addMatch();
+        assertNotNull(teamManager.getById(teamId1));
+        assertNotNull(teamManager.getById(teamId2));
+        assertFalse(teamManager.delete(teamId1));
+        assertFalse(teamManager.delete(teamId2));
+
+        matchManager.delete(matchId);
+        assertNotNull(teamManager.getById(teamId1));
+        assertNotNull(teamManager.getById(teamId2));
+        assertTrue(teamManager.delete(teamId1));
+        assertTrue(teamManager.delete(teamId2));
+    }
+
+    private void addCompetitionTournament() {
         Competition c = new Competition();
         c.setType(CompetitionTypes.teams());
         competitionManager.insert(c);
@@ -146,36 +153,43 @@ public class MatchManagerTest extends AndroidTestCase {
         t.setCompetitionId(c.getId());
         tournamentManager.insert(t);
         tournamentId = t.getId();
+    }
 
-        Team t1 = new Team();
-        t1.setTournamentId(tournamentId);
-        teamManager.insert(t1);
+    private void add() {
+        inserted1 = new Team();
+        inserted1.setTournamentId(tournamentId);
+        teamManager.insert(inserted1);
+        teamId1 = inserted1.getId();
+        assertTrue(inserted1.getId() > 0);
+    }
 
-        Team t2 = new Team();
-        t2.setTournamentId(tournamentId);
-        teamManager.insert(t2);
+    private void addMatch() {
+        inserted1 = new Team();
+        inserted1.setTournamentId(tournamentId);
+        teamManager.insert(inserted1);
+        teamId1 = inserted1.getId();
 
-        inserted = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
-        inserted.setTournamentId(tournamentId);
-        inserted.setPlayed(played);
-        inserted.setNote(note);
-        inserted.setPeriod(period);
-        inserted.setRound(round);
-        inserted.setSetsNumber(0);
+        inserted2 = new Team();
+        inserted2.setTournamentId(tournamentId);
+        teamManager.insert(inserted2);
+        teamId2 = inserted2.getId();
 
-        matchManager.insert(inserted);
-        matchId = inserted.getId();
-        assertTrue(matchId > 0);
+        Match match = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
+        match.setTournamentId(tournamentId);
+
+        matchManager.insert(match);
+        matchId = match.getId();
+        assertTrue(match.getId() > 0);
 
         Participant p1 = new Participant();
-        p1.setMatchId(matchId);
-        p1.setParticipantId(t1.getId());
+        p1.setMatchId(match.getId());
+        p1.setParticipantId(inserted1.getId());
         p1.setRole(ParticipantType.home.toString());
         participantManager.insert(p1);
 
         Participant p2 = new Participant();
-        p2.setMatchId(matchId);
-        p2.setParticipantId(t2.getId());
+        p2.setMatchId(match.getId());
+        p2.setParticipantId(inserted2.getId());
         p2.setRole(ParticipantType.away.toString());
         participantManager.insert(p2);
     }
