@@ -97,9 +97,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("period", String.valueOf(entity.getPeriod()));
         hm.put("round", String.valueOf(entity.getRound()));
 
-        hm.put("score_home", String.valueOf(entity.getHomeWonSets()));
-        hm.put("score_away", String.valueOf(entity.getAwayWonSets()));
-
         /* Serialize sets */
         List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance((context)).getEntityManager(SAggregatedStats.class)).getMatchSets(entity.getId());
         hm.put("sets", sets);

@@ -32,6 +32,7 @@ public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serializa
     @Override
     public ServerCommunicationItem serialize(Team entity) {
         /* Serialize Team itself */
+        // TODO entity.getUid() instead of strategy
         ServerCommunicationItem item = new ServerCommunicationItem(strategy.getUid(entity), entity.getEtag(), entity.getServerToken(), getEntityType(), getEntityType());
         item.setId(entity.getId());
         item.setModified(entity.getLastModified());
