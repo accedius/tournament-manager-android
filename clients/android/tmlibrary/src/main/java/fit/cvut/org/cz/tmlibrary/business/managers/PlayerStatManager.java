@@ -1,14 +1,61 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
+import com.j256.ormlite.stmt.DeleteBuilder;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 
 /**
  * Created by kevin on 2.12.2016.
  */
-abstract public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerStatManager {
+public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerStatManager {
     @Override
     protected Class<PlayerStat> getMyClass() {
         return PlayerStat.class;
+    }
+
+    @Override
+    public List<PlayerStat> getByPlayerId(long playerId) {
+        try {
+            List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPLAYER_ID, playerId);
+            Map<Long, Player> playerMap = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+            for (PlayerStat playerStat : playerStats) {
+                playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
+            }
+            return playerStats;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<PlayerStat> getByParticipantId(long participantId) {
+        try {
+            List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
+            Map<Long, Player> playerMap = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+            for (PlayerStat playerStat : playerStats) {
+                playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
+            }
+            return playerStats;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public void deleteByParticipantId(long participantId) {
+        try {
+            DeleteBuilder<PlayerStat, Long> deleteBuilder = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
+            deleteBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participantId);
+            deleteBuilder.delete();
+        } catch (SQLException e) {}
     }
 }

@@ -18,14 +18,12 @@ import java.util.List;
 import fit.cvut.org.cz.squash.BuildConfig;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
-import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**

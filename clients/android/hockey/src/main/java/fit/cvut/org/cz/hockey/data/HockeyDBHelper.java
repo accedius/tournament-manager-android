@@ -25,7 +25,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class HockeyDBHelper extends SportDBHelper {
-    private static final int DBVersion = 3;
+    private static final int DBVersion = 1;
 
     public HockeyDBHelper(Context context, String name) {
         super(context, name, null, DBVersion);

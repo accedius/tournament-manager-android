@@ -51,7 +51,6 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
                         match.setAwayScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
                 }
             }
-            // TODO match participant stats and match players stats
 
             Collections.sort(matches, new Comparator<Match>() {
                 @Override
@@ -70,8 +69,6 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
     @Override
     public Match getById(long id) {
         Match match = super.getById(id);
-        //return fillMatch(dm);
-        // TODO load match stats, match participant stats and match players stats
         List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
@@ -160,7 +157,6 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
 
     @Override
     public void insert(Match match) {
-        // TODO check if id is filled ?
         match.setLastModified(new Date());
         super.insert(match);
 

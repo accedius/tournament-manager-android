@@ -88,7 +88,6 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
     protected long id = -1, tournamentId = -1;
     private EditText mDate, period, round, note;
 
-    // TODO aby fungovalo i pro pole hráčů (individuals competition), bude potřeba mít Array<Participant> a v Participant nastavit jméno...
     private ArrayAdapter<Participant> homePartAdapter, awayPartAdapter;
 
     @Override

@@ -11,10 +11,10 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.data.SDBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 
 /**
  * Created by kevin on 9.12.2016.

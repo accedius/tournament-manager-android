@@ -3,9 +3,6 @@ package fit.cvut.org.cz.squash.business.managers;
 import android.content.Context;
 import android.test.AndroidTestCase;
 
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,16 +11,13 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-import org.robolectric.shadows.ShadowSQLiteConnection;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.BuildConfig;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IPointConfigurationManager;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;

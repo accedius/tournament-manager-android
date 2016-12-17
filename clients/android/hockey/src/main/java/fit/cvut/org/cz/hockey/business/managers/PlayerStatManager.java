@@ -19,11 +19,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
  */
 public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerStatManager {
     @Override
-    protected Class<PlayerStat> getMyClass() {
-        return PlayerStat.class;
-    }
-
-    @Override
     public List<PlayerStat> getByPlayerId(long playerId) {
         try {
             List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPLAYER_ID, playerId);
@@ -58,5 +53,10 @@ public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerSt
             deleteBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participantId);
             deleteBuilder.delete();
         } catch (SQLException e) {}
+    }
+
+    @Override
+    protected Class<PlayerStat> getMyClass() {
+        return PlayerStat.class;
     }
 }

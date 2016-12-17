@@ -26,7 +26,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
  * Created by Vaclav on 25. 3. 2016.
  */
 public class SquashDBHelper extends SportDBHelper implements IDAOFactory {
-    private static final int DBVersion = 3;
+    private static final int DBVersion = 1;
 
     public SquashDBHelper(Context context, String name) {
         super(context, name, null, DBVersion);

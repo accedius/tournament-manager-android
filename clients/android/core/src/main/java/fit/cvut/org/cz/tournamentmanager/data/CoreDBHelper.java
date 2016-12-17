@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
  */
 public class CoreDBHelper extends SportDBHelper {
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 3;
+    private static final int DBVersion = 1;
 
     public CoreDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
