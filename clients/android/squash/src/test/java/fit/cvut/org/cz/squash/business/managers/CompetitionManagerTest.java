@@ -28,7 +28,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by kevin on 16.12.2016.
  */
-
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class CompetitionManagerTest extends AndroidTestCase {

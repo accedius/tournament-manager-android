@@ -13,7 +13,10 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fit.cvut.org.cz.squash.BuildConfig;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
@@ -86,6 +89,7 @@ public class MatchManagerTest extends AndroidTestCase {
      */
     @Test
     public void insert() {
+        addCompetitionTournament();
         add();
         Match match = matchManager.getById(matchId);
         assertEquals(tournamentId, match.getTournamentId());
@@ -100,6 +104,7 @@ public class MatchManagerTest extends AndroidTestCase {
      */
     @Test
     public void resetMatch() {
+        addCompetitionTournament();
         add();
         matchManager.resetMatch(matchId);
         Match match = matchManager.getById(matchId);
@@ -113,6 +118,7 @@ public class MatchManagerTest extends AndroidTestCase {
      */
     @Test
     public void getByTournamentId() {
+        addCompetitionTournament();
         add();
         List<Match> matches = matchManager.getByTournamentId(tournamentId);
         assertFalse(matches.isEmpty());
@@ -122,6 +128,86 @@ public class MatchManagerTest extends AndroidTestCase {
         assertEquals(note, match.getNote());
         assertEquals(period, match.getPeriod());
         assertEquals(round, match.getRound());
+    }
+
+    /**
+     * Verify All-Play-All generating matches all play all.
+     */
+    @Test
+    public void generateRoundAllPlayAll() {
+        addCompetitionTournament();
+        addTeam();
+        addTeam();
+        addTeam();
+        addTeam();
+        assertTrue(matchManager.getByTournamentId(tournamentId).isEmpty());
+
+        matchManager.generateRound(tournamentId);
+        matchManager.generateRound(tournamentId);
+
+        List<Match> matches = matchManager.getByTournamentId(tournamentId);
+        assertNotNull(matches);
+        assertFalse(matches.isEmpty());
+        assertEquals(12, matches.size());
+
+        Map<Integer, List<Match>> periodMatches = new HashMap<>();
+        Map<Integer, List<Match>> roundMatches = new HashMap<>();
+        Map<Long, List<Match>> homeTeamMatch = new HashMap<>();
+        for (Match match : matches) {
+            if (!periodMatches.containsKey(match.getPeriod()))
+                periodMatches.put(match.getPeriod(), new ArrayList<Match>());
+            periodMatches.get(match.getPeriod()).add(match);
+
+            if (!roundMatches.containsKey(match.getRound()))
+                roundMatches.put(match.getRound(), new ArrayList<Match>());
+            roundMatches.get(match.getRound()).add(match);
+
+            if (!homeTeamMatch.containsKey(match.getHomeParticipantId()))
+                homeTeamMatch.put(match.getHomeParticipantId(), new ArrayList<Match>());
+            homeTeamMatch.get(match.getHomeParticipantId()).add(match);
+        }
+
+        /* Verify each round has same matches count. */
+        assertFalse(roundMatches.containsKey(0));
+        assertFalse(roundMatches.containsKey(3));
+        for (int i=1; i<=2; i++) {
+            assertEquals(6, roundMatches.get(i).size());
+        }
+
+        /* Verify each period has same matches count. */
+        assertFalse(periodMatches.containsKey(0));
+        assertFalse(periodMatches.containsKey(4));
+        for (int i=1; i<=2; i++) {
+            assertEquals(4, periodMatches.get(i).size());
+        }
+    }
+
+    /**
+     * Verify All-Play-All generating correct number of matches.
+     */
+    @Test
+    public void generateRoundCorrectMatchesNumber() {
+        int matchesCount = 0;
+        addCompetitionTournament();
+        addTeam();
+        assertEquals(matchesCount, matchManager.getByTournamentId(tournamentId).size());
+
+        List<Match> matches;
+        int sum = 0;
+        for (int i=1; i<=4; i++) {
+            sum += i;
+            addTeam();
+            matchesCount += sum;
+
+            matchManager.generateRound(tournamentId);
+            matches = matchManager.getByTournamentId(tournamentId);
+            assertNotNull(matches);
+            assertFalse(matches.isEmpty());
+            assertEquals(matchesCount, matches.size());
+        }
+
+        matches = matchManager.getAll();
+        assertEquals(matchesCount, matches.size());
     }
 
     /**
@@ -138,7 +224,7 @@ public class MatchManagerTest extends AndroidTestCase {
         assertTrue(matches.isEmpty());
     }
 
-    private void add() {
+    private void addCompetitionTournament() {
         Competition c = new Competition();
         c.setType(CompetitionTypes.teams());
         competitionManager.insert(c);
@@ -146,7 +232,9 @@ public class MatchManagerTest extends AndroidTestCase {
         t.setCompetitionId(c.getId());
         tournamentManager.insert(t);
         tournamentId = t.getId();
+    }
 
+    private void add() {
         Team t1 = new Team();
         t1.setTournamentId(tournamentId);
         teamManager.insert(t1);
@@ -178,5 +266,11 @@ public class MatchManagerTest extends AndroidTestCase {
         p2.setParticipantId(t2.getId());
         p2.setRole(ParticipantType.away.toString());
         participantManager.insert(p2);
+    }
+
+    private void addTeam() {
+        Team t1 = new Team();
+        t1.setTournamentId(tournamentId);
+        teamManager.insert(t1);
     }
 }
