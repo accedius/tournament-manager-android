@@ -2,8 +2,8 @@ package fit.cvut.org.cz.tmlibrary.business.serialization.interfaces;
 
 import java.util.HashMap;
 
-import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 
 /**
  * Created by kevin on 7.10.2016.

@@ -3,9 +3,9 @@ package fit.cvut.org.cz.tmlibrary.business.generators;
 import java.util.ArrayList;
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**

@@ -2,10 +2,10 @@ package fit.cvut.org.cz.tmlibrary.business.serialization.serializers;
 
 import android.content.Context;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISharedEntitySerializer;
+import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 
 /**
  * Created by kevin on 10.10.2016.

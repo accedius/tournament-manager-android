@@ -12,8 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
