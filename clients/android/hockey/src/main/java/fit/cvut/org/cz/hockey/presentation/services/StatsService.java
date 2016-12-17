@@ -9,9 +9,13 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
-import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -63,7 +67,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long compID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByCompetitionId(compID);
+                List<AggregatedStatistics> stats = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(AggregatedStatistics.class)).getByCompetitionId(compID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -75,7 +79,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_TOUR_ID);
-                List<AggregatedStatistics> stats = ManagerFactory.getInstance(this).statisticsManager.getByTournamentId(tourID);
+                List<AggregatedStatistics> stats = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(AggregatedStatistics.class)).getByTournamentId(tourID);
 
                 res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -86,7 +90,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
             {
                 Intent res = new Intent(action);
                 long tourID = intent.getLongExtra(EXTRA_ID, -1);
-                List<Standing> standings = ManagerFactory.getInstance(this).statisticsManager.getStandingsByTournamentId(tourID);
+                List<Standing> standings = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(AggregatedStatistics.class)).getStandingsByTournamentId(tourID);
 
                 res.putParcelableArrayListExtra(EXTRA_STANDINGS, new ArrayList<>(standings));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -96,18 +100,18 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_MATCH_PLAYER_STATISTICS: {
                 Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
-                Match match = ManagerFactory.getInstance(this).matchManager.getById(matchId);
-                List<Participant> participants = ManagerFactory.getInstance(this).participantManager.getByMatchId(matchId);
+                Match match = ((IMatchManager)ManagerFactory.getInstance((this)).getEntityManager(Match.class)).getById(matchId);
+                List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance((this)).getEntityManager(Participant.class)).getByMatchId(matchId);
                 List<PlayerStat> homeStats = new ArrayList<>();
                 List<PlayerStat> awayStats = new ArrayList<>();
 
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
-                        homeStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(participant.getId());
+                        homeStats = ((IPlayerStatManager)ManagerFactory.getInstance((this)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_HOME_PARTICIPANT, participant);
                     }
                     else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                        awayStats = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(participant.getId());
+                        awayStats = ((IPlayerStatManager)ManagerFactory.getInstance((this)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_AWAY_PARTICIPANT, participant);
                     }
                 }

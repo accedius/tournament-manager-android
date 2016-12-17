@@ -12,17 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -50,9 +51,9 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Teams */
-        Team home = ManagerFactory.getInstance(context).teamManager.getById(entity.getHomeParticipantId());
+        Team home = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-        Team away = ManagerFactory.getInstance(context).teamManager.getById(entity.getAwayParticipantId());
+        Team away = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         return item;
     }
@@ -62,7 +63,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
         Match sm = new Match();
         sm.setEtag(item.getEtag());
         sm.setLastModified(item.getModified());
-        sm.setType(CompetitionTypes.teams());
         deserializeSyncData(item.syncData, sm);
         return sm;
     }
@@ -87,16 +87,16 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("shootouts", entity.isShootouts());
 
         /* Serialize rosters and stats */
-        Map<Long, Player> playerMap = ManagerFactory.getInstance(context).corePlayerManager.getAllPlayers();
+        Map<Long, Player> playerMap = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         for (Participant participant : entity.getParticipants()) {
             if (ParticipantType.home.toString().equals(participant.getRole())) {
-                List<PlayerStat> homePlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
+                List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                 for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : homePlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }
                 hm.put("players_home", homePlayers);
             } else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                List<PlayerStat> awayPlayers = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
+                List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                 for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : awayPlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }

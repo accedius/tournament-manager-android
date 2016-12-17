@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.squash.business.managers.interfaces;
 
-import android.content.Context;
-
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
@@ -12,13 +10,7 @@ import fit.cvut.org.cz.squash.business.entities.StandingItem;
  * Created by kevin on 9.12.2016.
  */
 
-public interface ISquashStatisticManager {
-    /**
-     *
-     * @return aggregated statistics for all players in application throughout all competitions
-     */
-    List<SAggregatedStats> getAllAggregated(Context context);
-
+public interface IStatisticManager {
     /**
      *
      * @param playerId id of player

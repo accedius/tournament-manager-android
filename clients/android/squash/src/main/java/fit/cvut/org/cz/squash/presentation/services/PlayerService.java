@@ -9,14 +9,18 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -70,7 +74,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_PLAYERS_FOR_COMPETITION:{
                 Intent result = new Intent(action);
                 long competitionId = intent.getLongExtra(EXTRA_ID, -1);
-                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayersComplement(competitionId);
+                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayersComplement(competitionId);
                 result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(players));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
@@ -80,7 +84,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_PLAYERS_FOR_TOURNAMENT:{
                 Intent result = new Intent(action);
                 long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
-                List<Player> players = ManagerFactory.getInstance(this).tournamentManager.getTournamentPlayersComplement(tournamentId);
+                List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getTournamentPlayersComplement(tournamentId);
                 result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(players));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
@@ -92,9 +96,9 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                Competition competition = ManagerFactory.getInstance(this).competitionManager.getById(id);
+                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(id);
                 for (Player player : players)
-                    ManagerFactory.getInstance(this).competitionManager.addPlayer(competition, player);
+                    ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).addPlayer(competition, player);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
@@ -105,7 +109,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 for (Player player : players)
-                    ManagerFactory.getInstance(this).tournamentManager.addPlayer(player.getId(), id);
+                    ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).addPlayer(player.getId(), id);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
@@ -113,14 +117,14 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_UPDATE_PLAYERS_IN_TEAM:{
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(EXTRA_PLAYERS);
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                ManagerFactory.getInstance(this).teamManager.updatePlayersInTeam(id, players);
+                ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).updatePlayersInTeam(id, players);
 
                 break;
             }
             case ACTION_GET_PLAYERS_FOR_TEAM:{
                 Intent result = new Intent(action);
-                Team t = ManagerFactory.getInstance(this).teamManager.getById(intent.getLongExtra(EXTRA_ID, -1));
-                t.getPlayers().addAll(ManagerFactory.getInstance(this).teamManager.getFreePlayers(t.getTournamentId()));
+                Team t = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(intent.getLongExtra(EXTRA_ID, -1));
+                t.getPlayers().addAll(((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getFreePlayers(t.getTournamentId()));
                 result.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
                 result.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
 
@@ -132,9 +136,9 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 long id = intent.getLongExtra(EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
-                Match match = ManagerFactory.getInstance(this).matchManager.getById(id);
-                Tournament tournament = ManagerFactory.getInstance(this).tournamentManager.getById(match.getTournamentId());
-                Competition competition = ManagerFactory.getInstance(this).competitionManager.getById(tournament.getCompetitionId());
+                Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(id);
+                Tournament tournament = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(match.getTournamentId());
+                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(tournament.getCompetitionId());
 
                 Participant home = null, away = null;
                 for (Participant participant : match.getParticipants()) {
@@ -144,18 +148,18 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                         away = participant;
                 }
 
-                List<PlayerStat> homePlayers = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(home.getId());
-                List<PlayerStat> awayPlayers = ManagerFactory.getInstance(this).playerStatManager.getByParticipantId(away.getId());
+                List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(home.getId());
+                List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(away.getId());
 
                 String homeName = null, awayName = null;
                 if (CompetitionTypes.individuals().equals(competition.getType())) {
-                    Player homePlayer = ManagerFactory.getInstance(this).corePlayerManager.getPlayerById(home.getParticipantId());
-                    Player awayPlayer = ManagerFactory.getInstance(this).corePlayerManager.getPlayerById(away.getParticipantId());
+                    Player homePlayer = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(home.getParticipantId());
+                    Player awayPlayer = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(away.getParticipantId());
                     homeName = homePlayer.getName();
                     awayName = awayPlayer.getName();
                 } else {
-                    Team homeTeam = ManagerFactory.getInstance(this).teamManager.getById(home.getParticipantId());
-                    Team awayTeam = ManagerFactory.getInstance(this).teamManager.getById(away.getParticipantId());
+                    Team homeTeam = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(home.getParticipantId());
+                    Team awayTeam = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(away.getParticipantId());
                     homeName = homeTeam.getName();
                     awayName = awayTeam.getName();
                 }
@@ -171,8 +175,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_PLAYERS_FOR_MATCH:{
                 Intent res = new Intent(action);
-                Match match = ManagerFactory.getInstance(this).matchManager.getById(intent.getLongExtra(EXTRA_ID, -1));
-                List<Player> players = ManagerFactory.getInstance(this).tournamentManager.getTournamentPlayers(match.getTournamentId());
+                Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(intent.getLongExtra(EXTRA_ID, -1));
+                List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getTournamentPlayers(match.getTournamentId());
 
                 res.putParcelableArrayListExtra(EXTRA_PLAYERS, new ArrayList<>(players));
                 res.putIntegerArrayListExtra(EXTRA_SELECTED, new ArrayList<Integer>());
@@ -186,7 +190,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
                 long competitionId = intent.getLongExtra(EXTRA_ID, -1);
                 result.putExtra(EXTRA_POSITION, position);
-                result.putExtra(EXTRA_RESULT, ManagerFactory.getInstance(this).competitionManager.removePlayerFromCompetition(playerId, competitionId));
+                result.putExtra(EXTRA_RESULT, ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).removePlayerFromCompetition(playerId, competitionId));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
@@ -197,7 +201,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 long playerId = intent.getLongExtra(EXTRA_PLAYER_ID, -1);
                 long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
                 result.putExtra(EXTRA_POSITION, position);
-                result.putExtra(EXTRA_RESULT, ManagerFactory.getInstance(this).tournamentManager.removePlayerFromTournament(playerId, tournamentId));
+                result.putExtra(EXTRA_RESULT, ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).removePlayerFromTournament(playerId, tournamentId));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

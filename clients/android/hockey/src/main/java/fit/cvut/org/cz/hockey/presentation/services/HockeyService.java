@@ -14,16 +14,17 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.loaders.CompetitionLoader;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
+import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
-import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -52,7 +53,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         switch (action) {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ManagerFactory.getInstance(this).statisticsManager.getByPlayerId(id);
+                AggregatedStatistics ags = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(AggregatedStatistics.class)).getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsToSend = new ArrayList<>();
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -81,7 +82,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                if (ManagerFactory.getInstance(this).competitionManager.delete(compId))
+                if (ManagerFactory.getInstance((this)).getEntityManager(Competition.class).delete(compId))
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
@@ -91,7 +92,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition competition = ManagerFactory.getInstance(this).competitionManager.getById(compId);
+                Competition competition = ManagerFactory.getInstance((this)).getEntityManager(Competition.class).getById(compId);
                 competition.setSportContext(sportContext);
                 String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
 

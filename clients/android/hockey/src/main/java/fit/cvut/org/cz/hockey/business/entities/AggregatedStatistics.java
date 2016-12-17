@@ -3,10 +3,12 @@ package fit.cvut.org.cz.hockey.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
+
 /**
  * Created by atgot_000 on 7. 4. 2016.
  */
-public class AggregatedStatistics implements Parcelable {
+public class AggregatedStatistics implements Parcelable, IEntity {
     private long playerID;
     private String playerName;
 
@@ -206,5 +208,10 @@ public class AggregatedStatistics implements Parcelable {
             case "tpavg": return getAvgTeamPoints();
             default: return 0;
         }
+    }
+
+    @Override
+    public long getId() {
+        return playerID;
     }
 }

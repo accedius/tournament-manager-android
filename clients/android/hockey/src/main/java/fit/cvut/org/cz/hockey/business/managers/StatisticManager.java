@@ -1,43 +1,42 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
-import fit.cvut.org.cz.hockey.business.entities.Standing;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IHockeyStatisticsManager;
-import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class StatisticsManager implements IHockeyStatisticsManager {
+public class StatisticManager extends TManager<AggregatedStatistics> implements IStatisticManager {
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;
 
-    protected Context context;
-    protected ICorePlayerManager corePlayerManager;
-    protected HockeyDBHelper sportDBHelper;
-
-    public StatisticsManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
-        this.context = context;
-        this.corePlayerManager = corePlayerManager;
-        this.sportDBHelper = sportDBHelper;
+    @Override
+    protected Class<AggregatedStatistics> getMyClass() {
+        return AggregatedStatistics.class;
     }
 
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
@@ -95,9 +94,9 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
     private int getMatchResultForParticipant(Participant participant, Match match) {
         int participant_score = 0, opponent_score = 0;
-        List<Participant> matchParticipants = ManagerFactory.getInstance(context).participantManager.getByMatchId(match.getId());
+        List<Participant> matchParticipants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
         for (Participant matchParticipant : matchParticipants) {
-            List<ParticipantStat> participantStats = ManagerFactory.getInstance(context).participantStatManager.getByParticipantId(matchParticipant.getId());
+            List<ParticipantStat> participantStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(matchParticipant.getId());
             if (matchParticipant.getId() == participant.getId())
                 participant_score = participantStats.get(0).getScore();
             else
@@ -121,14 +120,14 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     }
 
     private AggregatedStatistics aggregateStats(Player player, List<PlayerStat> allStats) {
-        List<PlayerStat> playerStats = ManagerFactory.getInstance(context).playerStatManager.getByPlayerId(player.getId());
+        List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByPlayerId(player.getId());
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
         long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
         for (PlayerStat stat : playerStats) {
-            Participant participant = ManagerFactory.getInstance(context).participantManager.getById(stat.getParticipantId());
-            Match match = ManagerFactory.getInstance(context).matchManager.getById(participant.getMatchId());
+            Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
+            Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
             if (!match.isPlayed())
                 continue;
 
@@ -140,7 +139,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
             // Count team points, win, and other...
             int result = getMatchResultForParticipant(participant, match);
-            PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(match.getTournamentId());
+            PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(match.getTournamentId());
             teamPoints += calculatePoints(result, pointConfiguration, match);
             switch (result) {
                 case WIN:
@@ -160,24 +159,24 @@ public class StatisticsManager implements IHockeyStatisticsManager {
     @Override
     public AggregatedStatistics getByPlayerId(long playerId) {
         ArrayList<PlayerStat> allStats = null;
-        Player player = corePlayerManager.getPlayerById(playerId);
+        Player player = managerFactory.getEntityManager(Player.class).getById(playerId);
         AggregatedStatistics res = aggregateStats(player, allStats);
         return res;
     }
 
     private List<PlayerStat> getStatsByCompetitionId(long competitionId) {
         List<PlayerStat> playerStats = new ArrayList<>();
-        List<Tournament> tournaments = ManagerFactory.getInstance(context).tournamentManager.getByCompetitionId(competitionId);
+        List<Tournament> tournaments = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
         List<Match> matches = new ArrayList<>();
         for (Tournament tournament : tournaments)
-            matches.addAll(ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournament.getId()));
+            matches.addAll(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournament.getId()));
 
         List<Participant> participants = new ArrayList<>();
         for (Match match : matches)
-            participants.addAll(ManagerFactory.getInstance(context).participantManager.getByMatchId(match.getId()));
+            participants.addAll(((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId()));
 
         for (Participant participant : participants) {
-            List<PlayerStat> participantPlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
+            List<PlayerStat> participantPlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
             playerStats.addAll(participantPlayerStats);
         }
 
@@ -186,7 +185,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
     @Override
     public ArrayList<AggregatedStatistics> getByCompetitionId(long competitionId) {
-        List<Player> competitionPlayers = ManagerFactory.getInstance(context).competitionManager.getCompetitionPlayers(competitionId);
+        List<Player> competitionPlayers = ((ICompetitionManager)managerFactory.getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
         List<PlayerStat> competitionStats = getStatsByCompetitionId(competitionId);
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
@@ -199,14 +198,14 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
     private List<PlayerStat> getStatsByTournamentId(long tournamentId) {
         List<PlayerStat> playerStats = new ArrayList<>();
-        List<Match> matches = new ArrayList<>(ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournamentId));
+        List<Match> matches = new ArrayList<>(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId));
 
         List<Participant> participants = new ArrayList<>();
         for (Match match : matches)
-            participants.addAll(ManagerFactory.getInstance(context).participantManager.getByMatchId(match.getId()));
+            participants.addAll(((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId()));
 
         for (Participant participant : participants) {
-            List<PlayerStat> participantPlayerStats = ManagerFactory.getInstance(context).playerStatManager.getByParticipantId(participant.getId());
+            List<PlayerStat> participantPlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
             playerStats.addAll(participantPlayerStats);
         }
 
@@ -215,7 +214,7 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
     @Override
     public List<AggregatedStatistics> getByTournamentId(long tournamentId) {
-        List<Player> tournamentPlayers = ManagerFactory.getInstance(context).tournamentManager.getTournamentPlayers(tournamentId);
+        List<Player> tournamentPlayers = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
         List<PlayerStat> tournamentStats = getStatsByTournamentId(tournamentId);
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
@@ -228,14 +227,14 @@ public class StatisticsManager implements IHockeyStatisticsManager {
 
     @Override
     public List<Standing> getStandingsByTournamentId(long tournamentId) {
-        List<Team> teams = ManagerFactory.getInstance(context).teamManager.getByTournamentId(tournamentId);
+        List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
         ArrayList<Standing> standings = new ArrayList<>();
-        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).pointConfigManager.getById(tournamentId);
+        PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournamentId);
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), t.getId()));
         }
-        List<Match> matches = ManagerFactory.getInstance(context).matchManager.getByTournamentId(tournamentId);
+        List<Match> matches = ((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId);
         for (Match match : matches) {
             if (!match.isPlayed())
                 continue;

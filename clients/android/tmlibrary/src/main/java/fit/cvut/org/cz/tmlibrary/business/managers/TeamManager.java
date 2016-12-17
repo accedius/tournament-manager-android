@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
-import android.content.Context;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
@@ -11,29 +9,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 
 /**
  * Created by kevin on 9.11.2016.
  */
-abstract public class TeamManager extends BaseManager<Team> implements ITeamManager {
-    public TeamManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
-        super(context, corePlayerManager, sportDBHelper);
+abstract public class TeamManager extends TManager<Team> implements ITeamManager {
+    @Override
+    protected Class<Team> getMyClass() {
+        return Team.class;
     }
 
     @Override
     public List<Team> getByTournamentId(long tournamentId) {
         try {
-            List<Team> teams = getDao().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Team> teams = managerFactory.getDaoFactory()
+                    .getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Team team : teams) {
                 team.setPlayers(getTeamPlayers(team));
             }
@@ -49,15 +48,15 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
         Team team = getById(id);
         List<Match> matches;
         try {
-            matches = sportDBHelper.getMatchDAO().queryForEq(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
+            matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, team.getTournamentId());
             for (Match match : matches) {
-                List<Participant> participants = sportDBHelper.getParticipantDAO().queryForEq(DBConstants.cMATCH_ID, match.getId());
+                List<Participant> participants = managerFactory.getDaoFactory().getMyDao(Participant.class).queryForEq(DBConstants.cMATCH_ID, match.getId());
                 for (Participant participant : participants)
                     if (participant.getParticipantId() == id)
                         return false;
             }
             // Delete team
-            getDao().delete(getDao().queryForId(id));
+            managerFactory.getDaoFactory().getMyDao(Team.class).deleteById(id);
             return true;
         }
         catch (SQLException e) {
@@ -68,7 +67,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     @Override
     public Team getById(long id) {
         try {
-            Team team = getDao().queryForId(id);
+            Team team = managerFactory.getDaoFactory().getMyDao(Team.class).queryForId(id);
             team.setPlayers(getTeamPlayers(team));
             return team;
         } catch (SQLException e) {
@@ -79,7 +78,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     @Override
     public List<Team> getAll() {
         try {
-            List<Team> teams = getDao().queryForAll();
+            List<Team> teams = managerFactory.getDaoFactory().getMyDao(Team.class).queryForAll();
             for (Team team : teams) {
                 team.setPlayers(getTeamPlayers(team));
             }
@@ -96,10 +95,10 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
 
     @Override
     public List<Player> getTeamPlayers(Team team) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         List<Player> res = new ArrayList<>();
         try {
-            List<TeamPlayer> teamPlayers = sportDBHelper.getTeamPlayerDAO().queryForEq(DBConstants.cTEAM_ID, team.getId());
+            List<TeamPlayer> teamPlayers = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).queryForEq(DBConstants.cTEAM_ID, team.getId());
             for (TeamPlayer teamPlayer : teamPlayers) {
                 res.add(allPlayers.get(teamPlayer.getPlayerId()));
             }
@@ -114,7 +113,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     public void addPlayer(Team team, Player player) {
         if (team == null || player == null)
             return;
-        Dao<TeamPlayer, Long> teamPlayerDao = sportDBHelper.getTeamPlayerDAO();
+        Dao<TeamPlayer, Long> teamPlayerDao = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class);
 
         try {
             teamPlayerDao.create(new TeamPlayer(team.getId(), player.getId()));
@@ -125,7 +124,7 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
     public void updatePlayersInTeam(long teamId, List<Player> players) {
         Team team = getById(teamId);
         try {
-            DeleteBuilder<TeamPlayer, Long> teamBuilder = sportDBHelper.getTeamPlayerDAO().deleteBuilder();
+            DeleteBuilder<TeamPlayer, Long> teamBuilder = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).deleteBuilder();
             teamBuilder.where().eq(DBConstants.cTEAM_ID, teamId);
             teamBuilder.delete();
         } catch (SQLException e) {}
@@ -140,9 +139,9 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
         try {
             List<TournamentPlayer> tournamentPlayers;
             List<Player> players = new ArrayList<>();
-            Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
+            Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
 
-            tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            tournamentPlayers = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
                 players.add(allPlayers.get(tournamentPlayer.getPlayerId()));
             }

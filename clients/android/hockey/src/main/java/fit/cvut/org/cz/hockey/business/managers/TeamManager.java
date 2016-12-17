@@ -1,65 +1,29 @@
 package fit.cvut.org.cz.hockey.business.managers;
 
-import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
-import fit.cvut.org.cz.hockey.data.DatabaseFactory;
-import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.generators.BalancedTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.business.generators.BalancedTeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
-    protected HockeyDBHelper sportDBHelper;
-
-    public TeamManager(Context context, ICorePlayerManager corePlayerManager, HockeyDBHelper sportDBHelper) {
-        super(context, corePlayerManager, sportDBHelper);
-        this.sportDBHelper = sportDBHelper;
-    }
-
-    @Override
-    protected Dao<Team, Long> getDao() {
-        return DatabaseFactory.getDBeHelper(context).getTeamDAO();
-    }
-
-    public List<Player> getTournamentPlayers(long tournamentId) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
-        List<Player> res = new ArrayList<>();
-        try {
-            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
-            for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
-                res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
-            }
-            return res;
-        }
-        catch (SQLException e) {
-            return res;
-        }
-    }
-
     @Override
     public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
-        List<Player> players = getTournamentPlayers(tournamentId);
+        List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
         List<Team> teams = getByTournamentId(tournamentId);
-        List<AggregatedStatistics> stats = ManagerFactory.getInstance(context).statisticsManager.getByCompetitionId(competitionId);
+        List<AggregatedStatistics> stats = ((IStatisticManager)managerFactory.getEntityManager(AggregatedStatistics.class)).getByCompetitionId(competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
@@ -83,7 +47,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
-            ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(t.getId(), t.getPlayers());
+            ((ITeamManager)managerFactory.getEntityManager(Team.class)).updatePlayersInTeam(t.getId(), t.getPlayers());
 
         return res;
     }

@@ -7,6 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -51,27 +53,27 @@ public class CompetitionService extends AbstractIntentServiceWProgress{
         switch (action){
             case ACTION_CREATE:{
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.insert(c);
+                ManagerFactory.getInstance(this).getEntityManager(Competition.class).insert(c);
                 break;
             }
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(intent.getLongExtra(EXTRA_ID, -1));
+                Competition c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_COMPETITION, c);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
                 Competition c = intent.getParcelableExtra(EXTRA_COMPETITION);
-                ManagerFactory.getInstance(this).competitionManager.update(c);
+                ManagerFactory.getInstance(this).getEntityManager(Competition.class).update(c);
                 break;
             }
             case ACTION_GET_OVERVIEW:{
                 long id = intent.getLongExtra(EXTRA_ID, -1);
-                Competition c = ManagerFactory.getInstance(this).competitionManager.getById(id);
-                List<Tournament> tournaments = ManagerFactory.getInstance(this).tournamentManager.getByCompetitionId(id);
-                List<Player> players = ManagerFactory.getInstance(this).competitionManager.getCompetitionPlayers(id);
+                Competition c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(id);
+                List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(id);
+                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(id);
 
                 Intent result = new Intent(action);
                 result.putExtra(EXTRA_COMPETITION, c);

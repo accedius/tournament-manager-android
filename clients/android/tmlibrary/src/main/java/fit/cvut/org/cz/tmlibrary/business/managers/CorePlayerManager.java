@@ -8,18 +8,21 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by kevin on 2.12.2016.
  */
+// TODO rename to packagePlayerManager
 public class CorePlayerManager implements ICorePlayerManager {
     protected Context context;
 
@@ -28,7 +31,15 @@ public class CorePlayerManager implements ICorePlayerManager {
     }
 
     @Override
-    public Map<Long, Player> getAllPlayers() {
+    public List<Player> getAll() {
+        Map<Long, Player> players = getMapAll();
+        List<Player> playerList = new ArrayList<>();
+        playerList.addAll(players.values());
+        return playerList;
+    }
+
+    @Override
+    public Map<Long, Player> getMapAll() {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai = null;
         try {
@@ -55,13 +66,13 @@ public class CorePlayerManager implements ICorePlayerManager {
     }
 
     @Override
-    public Player getPlayerById(long playerId) {
-        Map<Long, Player> players = getAllPlayers();
+    public Player getById(long playerId) {
+        Map<Long, Player> players = getMapAll();
         return players.get(playerId);
     }
 
     @Override
-    public void insertPlayer(Player player) {
+    public void insert(Player player) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai;
         try {
@@ -77,7 +88,7 @@ public class CorePlayerManager implements ICorePlayerManager {
     }
 
     @Override
-    public void updatePlayer(Player player) {
+    public void update(Player player) {
         PackageManager pm = context.getPackageManager();
         ApplicationInfo ai;
         try {
@@ -91,5 +102,15 @@ public class CorePlayerManager implements ICorePlayerManager {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Player> getByColumn(String column, Object value) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(long id) {
+        return false;
     }
 }

@@ -5,11 +5,12 @@ import android.content.Context;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
-import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -37,7 +38,7 @@ public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serializa
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
-        List<Player> teamPlayers = ManagerFactory.getInstance(context).teamManager.getTeamPlayers(entity);
+        List<Player> teamPlayers = ((ITeamManager)ManagerFactory.getInstance((context)).getEntityManager(Team.class)).getTeamPlayers(entity);
         for (Player player : teamPlayers) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(player));
         }

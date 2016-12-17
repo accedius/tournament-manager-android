@@ -1,64 +1,29 @@
 package fit.cvut.org.cz.squash.business.managers;
 
-import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
-import fit.cvut.org.cz.squash.data.DatabaseFactory;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.business.generators.BalancedTeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
-import fit.cvut.org.cz.tmlibrary.business.generators.BalancedTeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamsRostersGenerator;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
  * Created by Vaclav on 13. 4. 2016.
  */
-public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
-    protected SquashDBHelper sportDBHelper;
-
-    public TeamManager(Context context, ICorePlayerManager corePlayerManager, SquashDBHelper sportDBHelper) {
-        super(context, corePlayerManager, sportDBHelper);
-        this.sportDBHelper = sportDBHelper;
-    }
-
-    @Override
-    protected Dao<Team, Long> getDao() {
-        return DatabaseFactory.getDBHelper(context).getTeamDAO();
-    }
-
-    public List<Player> getTournamentPlayers(long tournamentId) {
-        Map<Long, Player> allPlayers = corePlayerManager.getAllPlayers();
-        List<Player> res = new ArrayList<>();
-        try {
-            List<TournamentPlayer> tournamentPlayers = sportDBHelper.getTournamentPlayerDAO().queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
-            for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
-                res.add(allPlayers.get(tournamentPlayer.getPlayerId()));
-            }
-            return res;
-        }
-        catch (SQLException e) {
-            return res;
-        }
-    }
+public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager implements ITeamManager {
     @Override
     public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
-        List<Player> players = getTournamentPlayers(tournamentId);
+        List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
         List<Team> teams = getByTournamentId(tournamentId);
-        List<SAggregatedStats> stats = ManagerFactory.getInstance(context).statisticManager.getByCompetitionId(competitionId);
+        List<SAggregatedStats> stats = ((IStatisticManager)managerFactory.getEntityManager(SAggregatedStats.class)).getByCompetitionId(competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
@@ -82,7 +47,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
         for (Team t : teams)
-            ManagerFactory.getInstance(context).teamManager.updatePlayersInTeam(t.getId(), t.getPlayers());
+            ((ITeamManager)managerFactory.getEntityManager(Team.class)).updatePlayersInTeam(t.getId(), t.getPlayers());
 
         return res;
     }

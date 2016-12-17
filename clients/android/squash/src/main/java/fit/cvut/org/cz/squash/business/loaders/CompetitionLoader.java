@@ -10,15 +10,15 @@ import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -53,7 +53,7 @@ public class CompetitionLoader {
     public static Competition importCompetition(Context context, ServerCommunicationItem competition, Map<String, String> conflictSolutions) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
         importedCompetition.setName(importedCompetition.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
-        ManagerFactory.getInstance(context).competitionManager.insert(importedCompetition);
+        ManagerFactory.getInstance((context)).getEntityManager(Competition.class).insert(importedCompetition);
 
         List<ServerCommunicationItem> players = new ArrayList<>();
         List<ServerCommunicationItem> tournaments = new ArrayList<>();
