@@ -3,25 +3,21 @@ package fit.cvut.org.cz.tournamentmanager.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
+import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
+public class CoreDBHelper extends SportDBHelper {
     private static final String DBName = "TMCore";
-    private static final int DBVersion = 5;
-    private Dao<Player, Long> playerDAO;
-    private Dao<Setting, Long> settingDAO;
+    private static final int DBVersion = 3;
 
     public CoreDBHelper(Context context) {
         super(context, DBName, null, DBVersion);
@@ -32,7 +28,7 @@ public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Player.class);
             TableUtils.createTable(connectionSource, Setting.class);
-            ArrayList<Player> playerArrayList = new ArrayList<Player>() {
+/*            ArrayList<Player> playerArrayList = new ArrayList<Player>() {
                 {
                     add(new Player(1, "Martin", "martin@seznam.cz", ""));
                     add(new Player(2, "Aleš", "ales@valenta.cz", ""));
@@ -44,7 +40,7 @@ public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
                     add(new Player(8, "Radek", "Radek@frk.cz", ""));
                 }
             };
-            getPlayerDao().create(playerArrayList);
+            getPlayerDao().create(playerArrayList);*/
         } catch (SQLException e) {}
     }
 
@@ -62,27 +58,5 @@ public class CoreDBHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
-    }
-
-    public Dao<Player, Long> getPlayerDao() {
-        if (playerDAO == null) {
-            try {
-                playerDAO = getDao(Player.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return playerDAO;
-    }
-
-    public Dao<Setting, Long> getSettingDao() {
-        if (settingDAO == null) {
-            try {
-                settingDAO = getDao(Setting.class);
-            } catch (SQLException e) {
-                return null;
-            }
-        }
-        return settingDAO;
     }
 }

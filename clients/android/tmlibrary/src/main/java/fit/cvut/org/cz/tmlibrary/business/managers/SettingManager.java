@@ -10,7 +10,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 /**
  * Created by kevin on 6.11.2016.
  */
-abstract public class SettingManager extends TManager<Setting> implements ISettingManager {
+public class SettingManager extends TManager<Setting> implements ISettingManager {
     @Override
     protected Class<Setting> getMyClass() {
         return Setting.class;

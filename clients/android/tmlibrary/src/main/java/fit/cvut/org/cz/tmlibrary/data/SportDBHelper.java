@@ -37,8 +37,4 @@ abstract public class SportDBHelper extends OrmLiteSqliteOpenHelper implements I
             return null;
         }
     }
-
-    public String getDBName() {
-        return DBName;
-    }
 }

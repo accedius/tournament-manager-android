@@ -19,12 +19,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Map;
 
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ISettingManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
+import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 
 /**
@@ -53,7 +54,7 @@ public class SettingsFragment extends Fragment {
                 String package_name = sport.getValue().metaData.getString("package_name");
                 String sport_name = sport.getKey();
                 sportSettings.add(new Setting(package_name, sport_name));
-                Setting setting = ManagersFactory.getInstance(getContext()).settingManager.getByPackageSport(package_name, sport_name);
+                Setting setting = ((ISettingManager)ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class)).getByPackageSport(package_name, sport_name);
                 if (setting == null) {
                     sparse.put(i, true);
                 }
@@ -91,11 +92,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish) {
-            ManagersFactory.getInstance(getContext()).settingManager.deleteAll();
+            ((ISettingManager)ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class)).deleteAll();
             ArrayList<Setting> settings = adapter.getSelectedItems();
             for (Setting s : sportSettings) {
                 if (!settings.contains(s)) {
-                    ManagersFactory.getInstance(getContext()).settingManager.insert(s);
+                    ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class).insert(s);
                 }
             }
             Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_saved, Snackbar.LENGTH_LONG).show();

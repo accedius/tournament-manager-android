@@ -20,7 +20,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.ManagersFactory;
+import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 
 public class SportsFragment extends Fragment {
@@ -36,7 +36,7 @@ public class SportsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         Map<String, ApplicationInfo> contexts = PackagesInfo.getSportContexts(getContext(), getResources());
-        List<Setting> ignoredSports = ManagersFactory.getInstance(getContext()).settingManager.getAll();
+        List<Setting> ignoredSports = ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class).getAll();
         for (Setting s : ignoredSports) {
             if (contexts.containsKey(s.getSportName())) {
                 contexts.remove(s.getSportName());
