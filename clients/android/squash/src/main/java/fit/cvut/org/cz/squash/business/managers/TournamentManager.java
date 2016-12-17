@@ -23,4 +23,17 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean delete(long id) {
+        if (!super.delete(id))
+            return false;
+
+        try {
+            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).deleteById(id);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

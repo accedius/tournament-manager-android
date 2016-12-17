@@ -53,6 +53,9 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
         try {
             Competition competition = managerFactory.getDaoFactory()
                     .getMyDao(Competition.class).queryForId(id);
+            if (competition == null)
+                return competition;
+
             competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
             return competition;
         } catch (SQLException e) {

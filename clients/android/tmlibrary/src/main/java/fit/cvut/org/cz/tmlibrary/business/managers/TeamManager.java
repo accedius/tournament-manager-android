@@ -68,6 +68,9 @@ abstract public class TeamManager extends TManager<Team> implements ITeamManager
     public Team getById(long id) {
         try {
             Team team = managerFactory.getDaoFactory().getMyDao(Team.class).queryForId(id);
+            if (team == null)
+                return null;
+
             team.setPlayers(getTeamPlayers(team));
             return team;
         } catch (SQLException e) {

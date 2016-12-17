@@ -20,9 +20,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
-import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 
@@ -49,7 +47,6 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
                 return false;
 
             managerFactory.getDaoFactory().getMyDao(Tournament.class).deleteById(id);
-            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;
@@ -115,22 +112,6 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
             return new ArrayList<>(allCompetitionPlayers.values());
         }
         catch (SQLException e) {
-            return new ArrayList<>();
-        }
-    }
-
-    List<Player> getTeamPlayers(Team team) {
-        try {
-            List<TeamPlayer> teamPlayers;
-            List<Player> players = new ArrayList<>();
-            Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
-
-            teamPlayers = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).queryForEq(DBConstants.cTEAM_ID, team.getId());
-            for (TeamPlayer teamPlayer : teamPlayers) {
-                players.add(allPlayers.get(teamPlayer.getPlayerId()));
-            }
-            return players;
-        } catch (SQLException e) {
             return new ArrayList<>();
         }
     }
