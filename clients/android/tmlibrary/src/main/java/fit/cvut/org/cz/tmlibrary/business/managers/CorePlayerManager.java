@@ -61,8 +61,8 @@ public class CorePlayerManager implements ICorePlayerManager {
             return players;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            return new HashMap<>();
         }
-        return null;
     }
 
     @Override
