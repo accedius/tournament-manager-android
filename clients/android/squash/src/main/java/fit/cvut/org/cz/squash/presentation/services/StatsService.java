@@ -42,14 +42,14 @@ public class StatsService extends AbstractIntentServiceWProgress {
         switch (action){
             case ACTION_GET_STATS_BY_COMPETITION:{
                 Intent result = new Intent(action);
-                List<SAggregatedStats> stats = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class)).getByCompetitionId(intent.getLongExtra(EXTRA_ID, -1));
+                List<SAggregatedStats> stats = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getByCompetitionId(intent.getLongExtra(EXTRA_ID, -1));
                 result.putExtra(EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_STATS_BY_TOURNAMENT:{
                 Intent result = new Intent(action);
-                ArrayList<SAggregatedStats> stats = new ArrayList<>(((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class))
+                ArrayList<SAggregatedStats> stats = new ArrayList<>(((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class))
                         .getByTournamentId(intent.getLongExtra(EXTRA_ID, -1)));
                 result.putExtra(EXTRA_STATS, stats);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
@@ -58,7 +58,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_STANDINGS:{
                 try { Thread.sleep(200); } catch (InterruptedException e) {} // loading is faster then e.g. deleting
                 Intent result = new Intent(action);
-                ArrayList<StandingItem> standingItems = new ArrayList<>(((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class)).getStandingsByTournamentId(intent.getLongExtra(EXTRA_ID, -1)));
+                ArrayList<StandingItem> standingItems = new ArrayList<>(((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getStandingsByTournamentId(intent.getLongExtra(EXTRA_ID, -1)));
                 result.putExtra(EXTRA_STATS, standingItems);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

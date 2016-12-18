@@ -58,17 +58,17 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Participants */
-        Tournament t = ManagerFactory.getInstance((context)).getEntityManager(Tournament.class).getById(entity.getTournamentId());
-        Competition c = ManagerFactory.getInstance((context)).getEntityManager(Competition.class).getById(t.getCompetitionId());
+        Tournament t = ManagerFactory.getInstance(context).getEntityManager(Tournament.class).getById(entity.getTournamentId());
+        Competition c = ManagerFactory.getInstance(context).getEntityManager(Competition.class).getById(t.getCompetitionId());
         if (c.getType().equals(CompetitionTypes.teams())) {
-            Team home = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
+            Team home = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-            Team away = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
+            Team away = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
             item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         } else {
-            Player home = ManagerFactory.getInstance((context)).getEntityManager(Player.class).getById(entity.getHomeParticipantId());
+            Player home = ManagerFactory.getInstance(context).getEntityManager(Player.class).getById(entity.getHomeParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(home));
-            Player away = ManagerFactory.getInstance((context)).getEntityManager(Player.class).getById(entity.getAwayParticipantId());
+            Player away = ManagerFactory.getInstance(context).getEntityManager(Player.class).getById(entity.getAwayParticipantId());
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(away));
         }
 
@@ -98,7 +98,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put("round", String.valueOf(entity.getRound()));
 
         /* Serialize sets */
-        List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance((context)).getEntityManager(SAggregatedStats.class)).getMatchSets(entity.getId());
+        List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance(context).getEntityManager(SAggregatedStats.class)).getMatchSets(entity.getId());
         hm.put("sets", sets);
         hm.put("sets_number", String.valueOf(entity.getSetsNumber()));
 
@@ -111,14 +111,14 @@ public class MatchSerializer extends BaseSerializer<Match> {
                 away = participant;
         }
 
-        Map<Long, Player> playerMap = ((ICorePlayerManager)ManagerFactory.getInstance((context)).getEntityManager(Player.class)).getMapAll();
-        List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(home.getId());
+        Map<Long, Player> playerMap = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
+        List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(home.getId());
         for (PlayerStat stat : homePlayers) {
             stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
         }
         hm.put("players_home", homePlayers);
 
-        List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(away.getId());
+        List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(away.getId());
         for (PlayerStat stat : awayPlayers) {
             stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
         }

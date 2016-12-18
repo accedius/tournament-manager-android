@@ -58,7 +58,7 @@ public class TournamentLoader {
             Log.d("IMPORT", "Tournament: " + tournament.syncData);
             Tournament importedTournament = TournamentSerializer.getInstance(context).deserialize(tournament);
             importedTournament.setCompetitionId(importedCompetition.getId());
-            ManagerFactory.getInstance((context)).getEntityManager(Tournament.class).insert(importedTournament);
+            ManagerFactory.getInstance(context).getEntityManager(Tournament.class).insert(importedTournament);
 
             for (ServerCommunicationItem subItem : tournament.subItems) {
                 if (subItem.getType().equals("Player")) {
@@ -74,7 +74,7 @@ public class TournamentLoader {
             for (ServerCommunicationItem player : tournamentPlayers) {
                 // Add player to tournament.
                 long playerId = importedPlayers.get(player.getUid()).getId();
-                ((ITournamentManager)ManagerFactory.getInstance((context)).getEntityManager(Tournament.class)).addPlayer(playerId, importedTournament.getId());
+                ((ITournamentManager)ManagerFactory.getInstance(context).getEntityManager(Tournament.class)).addPlayer(playerId, importedTournament.getId());
             }
 
             /* Teams loading */
@@ -83,7 +83,7 @@ public class TournamentLoader {
                 // Add team to tournament.
                 Team importedTeam = TeamSerializer.getInstance(context).deserialize(team);
                 importedTeam.setTournamentId(importedTournament.getId());
-                ManagerFactory.getInstance((context)).getEntityManager(Team.class).insert(importedTeam);
+                ManagerFactory.getInstance(context).getEntityManager(Team.class).insert(importedTeam);
                 importedTeams.put(team.getUid(), importedTeam);
 
                 // Add players to team.
@@ -93,7 +93,7 @@ public class TournamentLoader {
                         teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                     }
                 }
-                ((ITeamManager)ManagerFactory.getInstance((context)).getEntityManager(Team.class)).updatePlayersInTeam(importedTeam.getId(), teamPlayers);
+                ((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).updatePlayersInTeam(importedTeam.getId(), teamPlayers);
             }
 
             /* Matches loading */

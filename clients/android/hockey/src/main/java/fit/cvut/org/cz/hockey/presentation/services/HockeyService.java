@@ -53,7 +53,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
         switch (action) {
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(AggregatedStatistics.class)).getByPlayerId(id);
+                AggregatedStatistics ags = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsToSend = new ArrayList<>();
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -82,7 +82,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                if (ManagerFactory.getInstance((this)).getEntityManager(Competition.class).delete(compId))
+                if (ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(compId))
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
                 else
                     res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
@@ -92,7 +92,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                Competition competition = ManagerFactory.getInstance((this)).getEntityManager(Competition.class).getById(compId);
+                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(compId);
                 competition.setSportContext(sportContext);
                 String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
 

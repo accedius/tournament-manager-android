@@ -53,7 +53,7 @@ public class CompetitionLoader {
     public static Competition importCompetition(Context context, ServerCommunicationItem competition, Map<String, String> conflictSolutions) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
         importedCompetition.setName(importedCompetition.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
-        ManagerFactory.getInstance((context)).getEntityManager(Competition.class).insert(importedCompetition);
+        ManagerFactory.getInstance(context).getEntityManager(Competition.class).insert(importedCompetition);
 
         List<ServerCommunicationItem> players = new ArrayList<>();
         List<ServerCommunicationItem> tournaments = new ArrayList<>();

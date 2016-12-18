@@ -59,7 +59,7 @@ public class SquashExportedService extends IntentService {
             }
             case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
-                SAggregatedStats stat = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class)).getByPlayerId(id);
+                SAggregatedStats stat = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsForExport = new ArrayList<>();
                 PlayerAggregatedStats exportStat = new PlayerAggregatedStats();

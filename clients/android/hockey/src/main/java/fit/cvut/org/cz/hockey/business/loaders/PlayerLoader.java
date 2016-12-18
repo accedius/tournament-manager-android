@@ -84,7 +84,7 @@ public class PlayerLoader {
             importedPlayers.put(importedPlayer.getUid(), importedPlayer);
 
             // Add player to competition.
-            ((ICompetitionManager)ManagerFactory.getInstance((context)).getEntityManager(Competition.class)).addPlayer(competition, importedPlayer);
+            ((ICompetitionManager)ManagerFactory.getInstance(context).getEntityManager(Competition.class)).addPlayer(competition, importedPlayer);
         }
 
         Log.d("IMPORTED PLAYERS", importedPlayers.toString());

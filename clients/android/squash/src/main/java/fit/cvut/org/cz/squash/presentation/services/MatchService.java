@@ -161,7 +161,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_SETS:{
                 Intent result = new Intent(action);
-                List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance((this)).getEntityManager(SAggregatedStats.class)).getMatchSets(intent.getLongExtra(EXTRA_ID, -1));
+                List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getMatchSets(intent.getLongExtra(EXTRA_ID, -1));
                 result.putParcelableArrayListExtra(EXTRA_SETS, new ArrayList<>(sets));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;

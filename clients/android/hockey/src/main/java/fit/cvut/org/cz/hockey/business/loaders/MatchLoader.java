@@ -26,7 +26,7 @@ public class MatchLoader {
         for (ServerCommunicationItem match : matches) {
             Match importedMatch = MatchSerializer.getInstance(context).deserialize(match);
             importedMatch.setTournamentId(tournament.getId());
-            ManagerFactory.getInstance((context)).getEntityManager(Match.class).insert(importedMatch);
+            ManagerFactory.getInstance(context).getEntityManager(Match.class).insert(importedMatch);
 
             String role = "home";
             long participantId;
@@ -34,7 +34,7 @@ public class MatchLoader {
             for (ServerCommunicationItem matchTeam : match.subItems) {
                 participantId = importedTeams.get(matchTeam.getUid()).getId();
                 participant = new Participant(importedMatch.getId(), participantId, role);
-                ManagerFactory.getInstance((context)).getEntityManager(Participant.class).insert(participant);
+                ManagerFactory.getInstance(context).getEntityManager(Participant.class).insert(participant);
                 if (role.equals("home")) {
                     homeParticipant = participant;
                 } else {
@@ -47,8 +47,8 @@ public class MatchLoader {
             if (importedMatch.isPlayed()) {
                 ParticipantStat homeStat = new ParticipantStat(homeParticipant.getId(), importedMatch.getHomeScore());
                 ParticipantStat awayStat = new ParticipantStat(awayParticipant.getId(), importedMatch.getAwayScore());
-                ManagerFactory.getInstance((context)).getEntityManager(ParticipantStat.class).insert(homeStat);
-                ManagerFactory.getInstance((context)).getEntityManager(ParticipantStat.class).insert(awayStat);
+                ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class).insert(homeStat);
+                ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class).insert(awayStat);
             }
 
             // Add Player stats to match
@@ -57,14 +57,14 @@ public class MatchLoader {
                 PlayerStat homePlayerStat = new PlayerStat(playerStat);
                 homePlayerStat.setParticipantId(homeParticipant.getId());
                 homePlayerStat.setPlayerId(importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
-                ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class).insert(homePlayerStat);
+                ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class).insert(homePlayerStat);
             }
             for (PlayerStat playerStat : importedMatch.getAwayPlayers()) {
                 // TODO, getPlayerId in case of FileStrategy, getUid otherwise
                 PlayerStat awayPlayerStat = new PlayerStat(playerStat);
                 awayPlayerStat.setParticipantId(awayParticipant.getId());
                 awayPlayerStat.setPlayerId(importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
-                ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class).insert(awayPlayerStat);
+                ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class).insert(awayPlayerStat);
             }
         }
     }

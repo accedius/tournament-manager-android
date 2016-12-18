@@ -47,19 +47,19 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Players */
-        List<Player> players = ((ITournamentManager)ManagerFactory.getInstance((context)).getEntityManager(Tournament.class)).getTournamentPlayers(entity.getId());
+        List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(context).getEntityManager(Tournament.class)).getTournamentPlayers(entity.getId());
         for (Player p : players) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(p));
         }
 
         /* Serialize Teams */
-        List<Team> teams = ((ITeamManager)ManagerFactory.getInstance((context)).getEntityManager(Team.class)).getByTournamentId(entity.getId());
+        List<Team> teams = ((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getByTournamentId(entity.getId());
         for (Team t : teams) {
             item.subItems.add(TeamSerializer.getInstance(context).serialize(t));
         }
 
         /* Serialize Matches */
-        List<Match> matches = ((IMatchManager)ManagerFactory.getInstance((context)).getEntityManager(Match.class)).getByTournamentId(entity.getId());
+        List<Match> matches = ((IMatchManager)ManagerFactory.getInstance(context).getEntityManager(Match.class)).getByTournamentId(entity.getId());
         for (Match sm : matches) {
             item.subItems.add(MatchSerializer.getInstance(context).serialize(sm));
         }
@@ -71,7 +71,7 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         HashMap<String, Object> hm = super.serializeSyncData(entity);
 
         /* Serialize Point Configuration */
-        PointConfiguration pointConfiguration = ManagerFactory.getInstance((context)).getEntityManager(PointConfiguration.class).getById(entity.getId());
+        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class).getById(entity.getId());
         hm.put("point_configuration", pointConfiguration);
         return hm;
     }

@@ -39,7 +39,7 @@ public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serializa
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize players */
-        List<Player> teamPlayers = ((ITeamManager)ManagerFactory.getInstance((context)).getEntityManager(Team.class)).getTeamPlayers(entity);
+        List<Player> teamPlayers = ((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getTeamPlayers(entity);
         for (Player player : teamPlayers) {
             item.subItems.add(PlayerSerializer.getInstance(context).serializeToMinimal(player));
         }

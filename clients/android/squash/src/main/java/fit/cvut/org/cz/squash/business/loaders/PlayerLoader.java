@@ -26,7 +26,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 public class PlayerLoader {
     public static List<PlayerImportInfo> getPlayersImportInfo(Context context, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
         ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance((context)).getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         HashMap<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);
@@ -49,7 +49,7 @@ public class PlayerLoader {
     }
 
     public static void importPlayers(Context context, List<ServerCommunicationItem> players, Competition competition, Map<String, Player> importedPlayers, Map<String, String> conflictSolutions) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance((context)).getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         Map<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);
@@ -69,14 +69,14 @@ public class PlayerLoader {
                 if (!matchedPlayer.samePlayer(importedPlayer)) {
                     if (conflictSolutions.containsKey(matchedPlayer.getEmail())) {
                         if (conflictSolutions.get(matchedPlayer.getEmail()).equals(Conflict.TAKE_FILE)) {
-                            ManagerFactory.getInstance((context)).getEntityManager(Player.class).update(importedPlayer);
+                            ManagerFactory.getInstance(context).getEntityManager(Player.class).update(importedPlayer);
                             Log.d("IMPORT", "\tCONFLICT!");
                             Log.d("IMPORT", "Player " + matchedPlayer.getEmail() + " will be replaced by file!");
                         }
                     }
                 }
             } else {
-                ManagerFactory.getInstance((context)).getEntityManager(Player.class).insert(importedPlayer);
+                ManagerFactory.getInstance(context).getEntityManager(Player.class).insert(importedPlayer);
                 playerId = importedPlayer.getId();
                 Log.d("IMPORT", "\tADDED " + playerId);
             }
@@ -84,7 +84,7 @@ public class PlayerLoader {
             importedPlayers.put(importedPlayer.getUid(), importedPlayer);
 
             // Add player to competition.
-            ((ICompetitionManager)ManagerFactory.getInstance((context)).getEntityManager(Competition.class)).addPlayer(competition, importedPlayer);
+            ((ICompetitionManager)ManagerFactory.getInstance(context).getEntityManager(Competition.class)).addPlayer(competition, importedPlayer);
         }
 
         Log.d("IMPORTED PLAYERS", importedPlayers.toString());

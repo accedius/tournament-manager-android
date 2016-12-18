@@ -51,9 +51,9 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Teams */
-        Team home = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
+        Team home = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-        Team away = ManagerFactory.getInstance((context)).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
+        Team away = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
         return item;
     }
@@ -90,13 +90,13 @@ public class MatchSerializer extends BaseSerializer<Match> {
         Map<Long, Player> playerMap = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         for (Participant participant : entity.getParticipants()) {
             if (ParticipantType.home.toString().equals(participant.getRole())) {
-                List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
+                List<PlayerStat> homePlayers = ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                 for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : homePlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }
                 hm.put("players_home", homePlayers);
             } else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance((context)).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
+                List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                 for (fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat stat : awayPlayers) {
                     stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
                 }
