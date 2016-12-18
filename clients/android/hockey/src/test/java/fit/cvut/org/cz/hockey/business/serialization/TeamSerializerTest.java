@@ -31,10 +31,10 @@ public class TeamSerializerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Floorball";
 
-    public static final String name = "Berdych & Štěpánek";
-    public static final long teamId = 1;
-    public static final long tournamentId = 12;
-    public static String uid;
+    private static final String name = "Berdych & Štěpánek";
+    private static final long teamId = 1;
+    private static final long tournamentId = 12;
+    private static String uid;
 
     @Before
     public void setUp() {

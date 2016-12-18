@@ -61,16 +61,16 @@ public class MatchSerializerTest extends AndroidTestCase {
     private static final int awayScore = 3;
     private static final boolean overtime = true;
     private static final boolean shootouts = true;
-    public static final Date date = new Date(1012604400000L);
-    public static String uid;
+    private static final Date date = new Date(1012604400000L);
+    private static String uid;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static ITeamManager teamManager = null;
 
-    public static MatchSerializer matchSerializer = null;
+    private static MatchSerializer matchSerializer = null;
 
     @Before
     public void setUp() {

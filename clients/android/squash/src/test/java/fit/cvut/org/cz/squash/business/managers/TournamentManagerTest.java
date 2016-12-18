@@ -45,10 +45,10 @@ public class TournamentManagerTest extends AndroidTestCase {
     private static long competitionId = 1;
     private static Tournament inserted;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IPointConfigurationManager pointConfigurationManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IPointConfigurationManager pointConfigurationManager = null;
+    private static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {

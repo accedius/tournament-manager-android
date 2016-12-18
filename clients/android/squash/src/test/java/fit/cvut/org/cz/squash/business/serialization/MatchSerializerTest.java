@@ -60,12 +60,12 @@ public class MatchSerializerTest extends AndroidTestCase {
     private static ArrayList<SetRowItem> sets;
     private static String uid;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static ITeamManager teamManager = null;
-    public static IStatisticManager statisticManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static ITeamManager teamManager = null;
+    private static IStatisticManager statisticManager = null;
 
     @Before
     public void setUp() {

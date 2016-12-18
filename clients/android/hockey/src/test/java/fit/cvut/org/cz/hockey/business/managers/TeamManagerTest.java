@@ -41,7 +41,6 @@ public class TeamManagerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Hockey";
 
-    public static final String name = "H+H";
     private static long teamId1;
     private static long teamId2;
     private static long matchId;
@@ -49,11 +48,11 @@ public class TeamManagerTest extends AndroidTestCase {
     private static Team inserted1;
     private static Team inserted2;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static ITeamManager teamManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static ITeamManager teamManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
 
     @Before
     public void setUp() {

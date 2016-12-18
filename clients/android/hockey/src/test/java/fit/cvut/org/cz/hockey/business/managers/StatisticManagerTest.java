@@ -53,13 +53,13 @@ public class StatisticManagerTest extends AndroidTestCase {
     private static final int scoreHome = 4;
     private static final int scoreAway = 3;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static IParticipantStatManager participantStatManager = null;
-    public static ITeamManager teamManager = null;
-    public static IStatisticManager statisticManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static IParticipantStatManager participantStatManager = null;
+    private static ITeamManager teamManager = null;
+    private static IStatisticManager statisticManager = null;
 
     @Before
     public void setUp() {

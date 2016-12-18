@@ -51,12 +51,12 @@ public class ParticipantStatManagerTest extends AndroidTestCase {
     private static Participant participant2;
     private static ArrayList<SetRowItem> sets;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static IParticipantStatManager participantStatManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static IParticipantStatManager participantStatManager = null;
+    private static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {

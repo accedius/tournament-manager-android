@@ -52,11 +52,11 @@ public class MatchManagerTest extends AndroidTestCase {
     private static final int period = 1;
     private static final boolean played = true;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {

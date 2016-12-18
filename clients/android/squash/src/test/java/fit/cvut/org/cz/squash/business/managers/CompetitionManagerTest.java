@@ -34,13 +34,13 @@ public class CompetitionManagerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Tennis";
 
-    public static final String name = "Fed Cup";
+    private static final String name = "Fed Cup";
     private static final String note = "By BNP Paribas";
     private static long competitionId;
     private static Competition inserted;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
 
     @Before
     public void setUp() {

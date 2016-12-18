@@ -48,18 +48,18 @@ public class TournamentSerializerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Tennis";
 
-    public static final String name = "Davis Cup 2016";
-    public static final String note = "By BNP Paribas";
-    public static final Date startDate = new Date(1012604400000L);
-    public static final Date endDate = new Date(1046646000000L);
-    public static long tournamentId;
-    public static String uid;
+    private static final String name = "Davis Cup 2016";
+    private static final String note = "By BNP Paribas";
+    private static final Date startDate = new Date(1012604400000L);
+    private static final Date endDate = new Date(1046646000000L);
+    private static long tournamentId;
+    private static String uid;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IMatchManager matchManager = null;
-    public static IParticipantManager participantManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IMatchManager matchManager = null;
+    private static IParticipantManager participantManager = null;
+    private static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {

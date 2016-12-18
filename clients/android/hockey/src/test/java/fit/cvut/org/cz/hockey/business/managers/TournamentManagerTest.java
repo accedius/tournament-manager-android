@@ -39,16 +39,16 @@ public class TournamentManagerTest extends AndroidTestCase {
     private Context context;
     private static final String sportContext = "Hockey";
 
-    private static final String name = "Wimbledon";
-    private static final String note = "All England Cup";
+    private static final String name = "Karjala Cup 2016";
+    private static final String note = "Helsinki";
     private static long tournamentId;
     private static long competitionId = 1;
     private static Tournament inserted;
 
-    public static ICompetitionManager competitionManager = null;
-    public static ITournamentManager tournamentManager = null;
-    public static IPointConfigurationManager pointConfigurationManager = null;
-    public static ITeamManager teamManager = null;
+    private static ICompetitionManager competitionManager = null;
+    private static ITournamentManager tournamentManager = null;
+    private static IPointConfigurationManager pointConfigurationManager = null;
+    private static ITeamManager teamManager = null;
 
     @Before
     public void setUp() {
