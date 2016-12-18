@@ -177,7 +177,7 @@ public class StatisticManager extends TManager<SAggregatedStats> implements ISta
     @Override
     public List<SetRowItem> getMatchSets(long matchId) {
         Match match = managerFactory.getEntityManager(Match.class).getById(matchId);
-        if (!match.isPlayed())
+        if (match == null || !match.isPlayed())
             return new ArrayList<>();
 
         long homeParticipantId = 0, awayParticipantId = 0;

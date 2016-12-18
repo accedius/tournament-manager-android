@@ -60,7 +60,7 @@ public class CorePlayerManager implements ICorePlayerManager {
 
             return players;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return new HashMap<>();
         }
     }
