@@ -3,6 +3,9 @@ package fit.cvut.org.cz.squash.business.serialization;
 import android.content.Context;
 import android.test.AndroidTestCase;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +16,16 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.BuildConfig;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
+import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
+import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
@@ -47,19 +51,21 @@ public class MatchSerializerTest extends AndroidTestCase {
 
     private static final String note = "Center Court";
     private static long tournamentId;
-    private static Match inserted;
+    private static Match match;
     private static long matchId;
     private static final int round = 1;
     private static final int period = 1;
-    private static final int setsNumber = 0;
-    public static final Date date = new Date(1012604400000L);
-    private static final boolean played = false;
+    private static final Date date = new Date(1012604400000L);
+    private static final boolean played = true;
+    private static ArrayList<SetRowItem> sets;
+    private static String uid;
 
     public static ICompetitionManager competitionManager = null;
     public static ITournamentManager tournamentManager = null;
     public static IMatchManager matchManager = null;
     public static IParticipantManager participantManager = null;
     public static ITeamManager teamManager = null;
+    public static IStatisticManager statisticManager = null;
 
     @Before
     public void setUp() {
@@ -72,6 +78,7 @@ public class MatchSerializerTest extends AndroidTestCase {
         matchManager = ManagerFactory.getInstance(context).getEntityManager(Match.class);
         participantManager = ManagerFactory.getInstance(context).getEntityManager(Participant.class);
         teamManager = ManagerFactory.getInstance(context).getEntityManager(Team.class);
+        statisticManager = ManagerFactory.getInstance(context).getEntityManager(SAggregatedStats.class);
 
         /* Preconditions */
         assertNotNull(ManagerFactory.getInstance(context));
@@ -80,6 +87,7 @@ public class MatchSerializerTest extends AndroidTestCase {
         assertNotNull(matchManager);
         assertNotNull(participantManager);
         assertNotNull(teamManager);
+        assertNotNull(statisticManager);
     }
 
     @After
@@ -88,77 +96,38 @@ public class MatchSerializerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify serializeSyncData and deserializeSyncData works correctly.
+     * Verify serialization and deserialization works correctly.
      */
     @Test
-    public void serializeSyncData() throws ParseException {
-        MatchSerializer matchSerializer = new MatchSerializer(context);
-        addCompetitionTournament();
-        addMatch();
-        Match origin = matchManager.getById(matchId);
-        HashMap<String, Object> serialized = matchSerializer.serializeSyncData(origin);
-        assertNotNull(serialized);
-        assertFalse(serialized.isEmpty());
-        assertTrue(serialized.containsKey("note")); // TODO constants
-        assertTrue(serialized.containsKey("date")); // TODO constants
-        assertTrue(serialized.containsKey("sets")); // TODO constants
-        assertTrue(serialized.containsKey("sets_number")); // TODO constants
-        assertTrue(serialized.containsKey("players_home")); // TODO constants
-        assertTrue(serialized.containsKey("players_away")); // TODO constants
-
-        Match match = new Match();
-        matchSerializer.deserializeSyncData(serialized, match);
-        assertEquals(origin.getNote(), match.getNote());
-        assertEquals(origin.getDate(), match.getDate());
-        assertEquals(origin.getSetsNumber(), match.getSetsNumber());
-        assertEquals(origin.getHomePlayers(), match.getHomePlayers());
-        assertEquals(origin.getAwayPlayers(), match.getAwayPlayers());
-    }
-
-    /**
-     * Verify serialization works correctly.
-     */
-    @Test
-    public void serialize() {
+    public void serialization() {
         MatchSerializer matchSerializer = MatchSerializer.getInstance(context);
         addCompetitionTournament();
         addMatch();
+        Match origin = matchManager.getById(matchId);
+        String json = matchSerializer.serialize(origin).toJson();
 
-        Match match = matchManager.getById(matchId);
-        assertNotNull(match);
-        ServerCommunicationItem serialized = matchSerializer.serialize(match);
-        assertNotNull(serialized);
-        assertEquals(matchId, (long) serialized.getId());
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ServerCommunicationItem deserializedItem = gson.fromJson(json, ServerCommunicationItem.class);
+        Match deserializedMatch = matchSerializer.deserialize(deserializedItem);
 
-        List<ServerCommunicationItem> teams = new ArrayList<>();
-        assertEquals(2, serialized.subItems.size());
-        for (ServerCommunicationItem item : serialized.subItems) {
-            if (item.getType().equals("Team")) {
-                teams.add(item);
-            }
+        assertNotNull(deserializedItem.subItems);
+        assertFalse(deserializedItem.subItems.isEmpty());
+        assertEquals(2, deserializedItem.subItems.size());
+
+        assertEquals(origin.getDate(), deserializedMatch.getDate());
+        assertEquals(origin.isPlayed(), deserializedMatch.isPlayed());
+        assertEquals(origin.getPeriod(), deserializedMatch.getPeriod());
+        assertEquals(origin.getRound(), deserializedMatch.getRound());
+        assertEquals(origin.getNote(), deserializedMatch.getNote());
+        assertEquals(origin.getSetsNumber(), deserializedMatch.getSetsNumber());
+
+        List<SetRowItem> deserializedSets = statisticManager.getMatchSets(matchId);
+        for (int i=0; i<3; i++) {
+            assertEquals(sets.get(i).getHomeScore(), deserializedSets.get(i).getHomeScore());
+            assertEquals(sets.get(i).getAwayScore(), deserializedSets.get(i).getAwayScore());
         }
-        assertEquals(2, teams.size());
-//        assertEquals(uid, serialized.getUid()); // FIXME: 17.12.2016
-    }
 
-    /**
-     * Verify deserialization works correctly.
-     */
-    @Test
-    public void deserialize() {
-        MatchSerializer matchSerializer = MatchSerializer.getInstance(context);
-        addCompetitionTournament();
-        addMatch();
-        Match origin = matchManager.getById(matchId);
-        ServerCommunicationItem item = matchSerializer.serialize(origin);
-        Match match = matchSerializer.deserialize(item);
-        assertNotNull(match);
-        assertEquals(note, match.getNote());
-        assertEquals(date, match.getDate());
-        assertEquals(round, match.getRound());
-        assertEquals(period, match.getPeriod());
-        assertEquals(played, match.isPlayed());
-        assertEquals(setsNumber, match.getSetsNumber());
+//        assertEquals(uid, deserializedMatch.getUid());
     }
 
     private void addCompetitionTournament() {
@@ -180,18 +149,19 @@ public class MatchSerializerTest extends AndroidTestCase {
         t2.setTournamentId(tournamentId);
         teamManager.insert(t2);
 
-        inserted = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
-        inserted.setTournamentId(tournamentId);
-        inserted.setDate(date);
-        inserted.setPlayed(played);
-        inserted.setNote(note);
-        inserted.setPeriod(period);
-        inserted.setRound(round);
-        inserted.setSetsNumber(setsNumber);
+        match = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
+        match.setTournamentId(tournamentId);
+        match.setDate(date);
+        match.setPlayed(played);
+        match.setNote(note);
+        match.setPeriod(period);
+        match.setRound(round);
+        match.setSetsNumber(0);
 
-        matchManager.insert(inserted);
-        matchId = inserted.getId();
+        matchManager.insert(match);
+        matchId = match.getId();
         assertTrue(matchId > 0);
+        uid = match.getUid();
 
         Participant p1 = new Participant();
         p1.setMatchId(matchId);
@@ -204,5 +174,12 @@ public class MatchSerializerTest extends AndroidTestCase {
         p2.setParticipantId(t2.getId());
         p2.setRole(ParticipantType.away.toString());
         participantManager.insert(p2);
+
+        sets = new ArrayList<>();
+        sets.add(new SetRowItem(10, 5));
+        sets.add(new SetRowItem(5, 15));
+        sets.add(new SetRowItem(0, 10));
+        matchManager.updateMatch(match.getId(), sets);
+        match = matchManager.getById(match.getId());
     }
 }

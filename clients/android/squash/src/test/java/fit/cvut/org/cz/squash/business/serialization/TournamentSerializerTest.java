@@ -3,6 +3,9 @@ package fit.cvut.org.cz.squash.business.serialization;
 import android.content.Context;
 import android.test.AndroidTestCase;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,11 +49,10 @@ public class TournamentSerializerTest extends AndroidTestCase {
     private static final String sportContext = "Tennis";
 
     public static final String name = "Davis Cup 2016";
-    public static final String note = "By BNP Paribasw";
+    public static final String note = "By BNP Paribas";
     public static final Date startDate = new Date(1012604400000L);
     public static final Date endDate = new Date(1046646000000L);
-    public static long tournamentId = 12;
-    public static final long competitionId = 3;
+    public static long tournamentId;
     public static String uid;
 
     public static ICompetitionManager competitionManager = null;
@@ -86,32 +88,10 @@ public class TournamentSerializerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify serialize sync data works correctly.
+     * Verify serialization and deserialization works correctly.
      */
     @Test
-    public void serializeSyncData() throws ParseException {
-        TournamentSerializer tournamentSerializer = new TournamentSerializer(context);
-        Map<String, Object> serialized = tournamentSerializer.serializeSyncData(getTournament());
-        assertNotNull(serialized);
-        assertFalse(serialized.isEmpty());
-        assertTrue(serialized.containsKey("name")); // TODO constants
-        assertTrue(serialized.containsKey("note")); // TODO constants
-        assertTrue(serialized.containsKey("start_date")); // TODO constants
-        assertTrue(serialized.containsKey("end_date")); // TODO constants
-
-        assertEquals(name, (String)serialized.get("name"));
-        assertEquals(note, (String)serialized.get("note"));
-        Date serializedStartDate = DateFormatter.getInstance().getDBDateFormat().parse((String)serialized.get("start_date"));
-        Date serializedEndDate = DateFormatter.getInstance().getDBDateFormat().parse((String)serialized.get("end_date"));
-        assertTrue(startDate.compareTo(serializedStartDate) == 0);
-        assertTrue(endDate.compareTo(serializedEndDate) == 0);
-    }
-
-    /**
-     * Verify serialize sync data works correctly.
-     */
-    @Test
-    public void serialize() {
+    public void serialization() {
         TournamentSerializer tournamentSerializer = TournamentSerializer.getInstance(context);
         addCompetitionTournament();
         addTeams();
@@ -119,38 +99,34 @@ public class TournamentSerializerTest extends AndroidTestCase {
 
         Tournament tournament = tournamentManager.getById(tournamentId);
         assertNotNull(tournament);
-        ServerCommunicationItem serialized = tournamentSerializer.serialize(tournament);
-        assertNotNull(serialized);
-        assertEquals(tournamentId, (long) serialized.getId());
+        String json = tournamentSerializer.serialize(tournament).toJson();
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ServerCommunicationItem deserializedItem = gson.fromJson(json, ServerCommunicationItem.class);
+        Tournament deserializedTournament = tournamentSerializer.deserialize(deserializedItem);
+
+        assertEquals(name, deserializedTournament.getName());
+        assertEquals(startDate, deserializedTournament.getStartDate());
+        assertEquals(endDate, deserializedTournament.getEndDate());
+        assertEquals(note, deserializedTournament.getNote());
+
+        assertNotNull(deserializedItem);
+        assertEquals(tournamentId, (long) deserializedItem.getId());
 
         List<ServerCommunicationItem> teams = new ArrayList<>();
         List<ServerCommunicationItem> matches = new ArrayList<>();
-        assertEquals(10, serialized.subItems.size());
-        for (ServerCommunicationItem item : serialized.subItems) {
+        assertEquals(10, deserializedItem.subItems.size());
+        for (ServerCommunicationItem item : deserializedItem.subItems) {
             if (item.getType().equals("Team")) {
                 teams.add(item);
             } else if (item.getType().equals("Match")) {
                 matches.add(item);
             }
         }
+
         assertEquals(4, teams.size());
         assertEquals(6, matches.size());
-//        assertEquals(uid, serialized.getUid()); // FIXME: 17.12.2016
-    }
-
-    /**
-     * Verify deserialization works correctly.
-     */
-    @Test
-    public void deserialize() {
-        TournamentSerializer tournamentSerializer = TournamentSerializer.getInstance(context);
-        ServerCommunicationItem item = tournamentSerializer.serialize(getTournament());
-        Tournament team = tournamentSerializer.deserialize(item);
-        assertNotNull(team);
-        assertEquals(team.getName(), getTournament().getName());
-        assertEquals(team.getNote(), getTournament().getNote());
-        assertEquals(team.getStartDate(), getTournament().getStartDate());
-        assertEquals(team.getEndDate(), getTournament().getEndDate());
+//        assertEquals(uid, deserializedItem.getUid()); // FIXME: 17.12.2016
     }
 
     private void addCompetitionTournament() {
@@ -158,7 +134,12 @@ public class TournamentSerializerTest extends AndroidTestCase {
         c.setType(CompetitionTypes.teams());
         competitionManager.insert(c);
         Tournament t = new Tournament();
+        t.setName(name);
+        t.setStartDate(startDate);
+        t.setEndDate(endDate);
+        t.setNote(note);
         t.setCompetitionId(c.getId());
+        uid = t.getUid();
         tournamentManager.insert(t);
         tournamentId = t.getId();
     }
@@ -187,11 +168,5 @@ public class TournamentSerializerTest extends AndroidTestCase {
 
     private void addMatches() {
         matchManager.generateRound(tournamentId);
-    }
-
-    private Tournament getTournament() {
-        Tournament tournament = new Tournament(tournamentId, competitionId, name, startDate, endDate, note);
-        uid = tournament.getUid();
-        return tournament;
     }
 }
