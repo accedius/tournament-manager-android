@@ -3,6 +3,9 @@ package fit.cvut.org.cz.hockey.business.serialization;
 import android.content.Context;
 import android.test.AndroidTestCase;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +24,9 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
@@ -48,7 +53,6 @@ public class MatchSerializerTest extends AndroidTestCase {
 
     private static final String note = "Center Court";
     private static long tournamentId;
-    private static Match inserted;
     private static long matchId;
     private static final int round = 1;
     private static final int period = 1;
@@ -58,6 +62,7 @@ public class MatchSerializerTest extends AndroidTestCase {
     private static final boolean overtime = true;
     private static final boolean shootouts = true;
     public static final Date date = new Date(1012604400000L);
+    public static String uid;
 
     public static ICompetitionManager competitionManager = null;
     public static ITournamentManager tournamentManager = null;
@@ -88,6 +93,8 @@ public class MatchSerializerTest extends AndroidTestCase {
         assertNotNull(matchManager);
         assertNotNull(participantManager);
         assertNotNull(teamManager);
+
+        assertNotNull(matchSerializer);
     }
 
     @After
@@ -96,82 +103,35 @@ public class MatchSerializerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify serializeSyncData and deserializeSyncData works correctly.
+     * Verify serialization and deserialization works correctly.
      */
     @Test
-    public void serializeSyncData() throws ParseException {
+    public void serialization() {
+        MatchSerializer matchSerializer = MatchSerializer.getInstance(context);
         addCompetitionTournament();
         addMatch();
-        Match origin = matchManager.getById(matchId);
-        HashMap<String, Object> serialized = matchSerializer.serializeSyncData(origin);
-        assertNotNull(serialized);
-        assertFalse(serialized.isEmpty());
-        assertTrue(serialized.containsKey("note")); // TODO constants
-        assertTrue(serialized.containsKey("date")); // TODO constants
-        assertTrue(serialized.containsKey("played")); // TODO constants
-        assertTrue(serialized.containsKey("overtime")); // TODO constants
-        assertTrue(serialized.containsKey("shootouts")); // TODO constants
-        assertTrue(serialized.containsKey("score_home")); // TODO constants
-        assertTrue(serialized.containsKey("score_away")); // TODO constants
-        assertTrue(serialized.containsKey("players_home")); // TODO constants
-        assertTrue(serialized.containsKey("players_away")); // TODO constants
+        Match origin = matchManager.getByTournamentId(tournamentId).get(0);
+        String json = matchSerializer.serialize(origin).toJson();
 
-        Match match = new Match();
-        matchSerializer.deserializeSyncData(serialized, match);
-        assertEquals(origin.getNote(), match.getNote());
-        assertEquals(origin.getDate(), match.getDate());
-        assertEquals(origin.isPlayed(), match.isPlayed());
-        assertEquals(origin.isOvertime(), match.isOvertime());
-        assertEquals(origin.isShootouts(), match.isShootouts());
-        assertEquals(origin.getHomePlayers(), match.getHomePlayers());
-        assertEquals(origin.getAwayPlayers(), match.getAwayPlayers());
-        assertEquals(origin.getHomeScore(), match.getHomeScore());
-        assertEquals(origin.getAwayScore(), match.getAwayScore());
-    }
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ServerCommunicationItem deserializedItem = gson.fromJson(json, ServerCommunicationItem.class);
+        Match deserializedMatch = matchSerializer.deserialize(deserializedItem);
 
-    /**
-     * Verify serialization works correctly.
-     */
-    @Test
-    public void serialize() {
-        addCompetitionTournament();
-        addMatch();
+        assertNotNull(deserializedItem.subItems);
+        assertFalse(deserializedItem.subItems.isEmpty());
+        assertEquals(2, deserializedItem.subItems.size());
 
-        Match match = matchManager.getById(matchId);
-        assertNotNull(match);
-        ServerCommunicationItem serialized = matchSerializer.serialize(match);
-        assertNotNull(serialized);
-        assertEquals(matchId, (long) serialized.getId());
+        assertEquals(origin.getDate(), deserializedMatch.getDate());
+        assertEquals(origin.isPlayed(), deserializedMatch.isPlayed());
+        assertEquals(origin.getPeriod(), deserializedMatch.getPeriod());
+        assertEquals(origin.getRound(), deserializedMatch.getRound());
+        assertEquals(origin.getNote(), deserializedMatch.getNote());
+        assertEquals(origin.isOvertime(), deserializedMatch.isOvertime());
+        assertEquals(origin.isShootouts(), deserializedMatch.isShootouts());
+        assertEquals(origin.getHomeScore(), deserializedMatch.getHomeScore());
+        assertEquals(origin.getAwayScore(), deserializedMatch.getAwayScore());
 
-        List<ServerCommunicationItem> teams = new ArrayList<>();
-        assertEquals(2, serialized.subItems.size());
-        for (ServerCommunicationItem item : serialized.subItems) {
-            if (item.getType().equals("Team")) {
-                teams.add(item);
-            }
-        }
-        assertEquals(2, teams.size());
-//        assertEquals(uid, serialized.getUid()); // FIXME: 17.12.2016
-    }
-
-    /**
-     * Verify deserialization works correctly.
-     */
-    @Test
-    public void deserialize() {
-        addCompetitionTournament();
-        addMatch();
-        Match origin = matchManager.getById(matchId);
-        ServerCommunicationItem item = matchSerializer.serialize(origin);
-        Match match = matchSerializer.deserialize(item);
-        assertNotNull(match);
-        assertEquals(note, match.getNote());
-        assertEquals(date, match.getDate());
-        assertEquals(round, match.getRound());
-        assertEquals(period, match.getPeriod());
-        assertEquals(played, match.isPlayed());
-        assertEquals(overtime, match.isOvertime());
-        assertEquals(shootouts, match.isShootouts());
+//        assertEquals(uid, deserializedMatch.getUid());
     }
 
     private void addCompetitionTournament() {
@@ -193,19 +153,20 @@ public class MatchSerializerTest extends AndroidTestCase {
         t2.setTournamentId(tournamentId);
         teamManager.insert(t2);
 
-        inserted = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
-        inserted.setTournamentId(tournamentId);
-        inserted.setDate(date);
-        inserted.setPlayed(played);
-        inserted.setNote(note);
-        inserted.setPeriod(period);
-        inserted.setRound(round);
-        inserted.setOvertime(overtime);
-        inserted.setShootouts(shootouts);
+        Match match = new Match(new fit.cvut.org.cz.tmlibrary.data.entities.Match());
+        match.setTournamentId(tournamentId);
+        match.setDate(date);
+        match.setPlayed(played);
+        match.setNote(note);
+        match.setPeriod(period);
+        match.setRound(round);
+        match.setOvertime(overtime);
+        match.setShootouts(shootouts);
 
-        matchManager.insert(inserted);
-        matchId = inserted.getId();
+        matchManager.insert(match);
+        matchId = match.getId();
         assertTrue(matchId > 0);
+        uid = match.getUid();
 
         Participant p1 = new Participant();
         p1.setMatchId(matchId);
