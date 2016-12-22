@@ -11,12 +11,15 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
 import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
@@ -36,6 +39,14 @@ public class PlayerDetailActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
         sport_contexts = PackagesInfo.getSportContexts(this, getResources());
+
+        List<Setting> ignoredSports = ManagerFactory.getInstance(this).getEntityManager(Setting.class).getAll();
+        for (Setting s : ignoredSports) {
+            if (sport_contexts.containsKey(s.getSportName())) {
+                sport_contexts.remove(s.getSportName());
+            }
+        }
+
         titles = new String[1+sport_contexts.size()];
         titles[0] = getResources().getString(R.string.player_info);
 
