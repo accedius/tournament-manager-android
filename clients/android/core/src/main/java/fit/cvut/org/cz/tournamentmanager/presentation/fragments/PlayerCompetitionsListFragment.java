@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
-import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
@@ -64,7 +63,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        EditDeleteDialog dialog = new EditDeleteDialog() {
+                        EditDialog dialog = new EditDialog() {
                             @Override
                             // TODO toto se možná posune do EditDeleteDialogu!
                             protected DialogInterface.OnClickListener supplyListener() {
@@ -80,10 +79,6 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                                                 startActivity(intent);
                                                 break;
                                             }
-                                            case 1:{
-                                                //TODO Zde bude maximálně odebrání hráče ze soutěže, pokud vůbec... Mazání soutěže je hloupost, to nikdy nepůjde
-                                                Snackbar.make(v, "delete not yet implemented", Snackbar.LENGTH_SHORT).show();
-                                            }
                                         }
                                         dialog.dismiss();
                                     }
@@ -92,7 +87,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                         };
 
                         Bundle b = new Bundle();
-                        b.putString(EditDeleteDialog.ARG_TITLE, name);
+                        b.putString(EditDialog.ARG_TITLE, name);
                         dialog.setArguments(b);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return false;
