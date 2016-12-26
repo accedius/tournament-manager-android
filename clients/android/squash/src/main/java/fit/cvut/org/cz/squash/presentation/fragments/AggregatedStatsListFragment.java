@@ -107,8 +107,10 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
         TextView col = columns.get(orderColumn);
         String text = (String) col.getText();
-        String originalText = text.substring(0, text.length()-2);
-        col.setText(originalText);
+        if (text.contains("▼") || text.contains("▲")) {
+            String originalText = text.substring(0, text.length() - 2);
+            col.setText(originalText);
+        }
 
         List<SAggregatedStats> stats = adapter.getData();
         if (orderColumn.equals(stat) && orderType == "DESC") {

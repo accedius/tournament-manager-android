@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,6 @@ public class AggregStatsTitleFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_stats_title, container, false);
         setOrderingListeners(v);
-        setDefaultOrder(v);
         return v;
     }
 
@@ -72,17 +72,40 @@ public class AggregStatsTitleFragment extends Fragment {
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
         if (fr != null && fr instanceof AbstractDataFragment) {
             ((AbstractDataFragment) fr).customOnResume();
-            // TODO ((HockeyPlayersStatsFragment) fr). ... setDefaultOrder ! (zobrazit ▼ u bodu)
+            setDefaultOrder(getView());
         }
     }
 
     private void setDefaultOrder(View v) {
+        deleteOtherOrders(v);
         TextView points = (TextView)v.findViewById(R.id.stats_points);
         points.setText(points.getText() + " ▼");
     }
 
+    private void deleteOtherOrders(View v) {
+        HashMap<String, TextView> columns = getColumns(v);
+        for (TextView textView : columns.values()) {
+            if (textView.getText().toString().contains("▼") || textView.getText().toString().contains("▲")) {
+                String text = textView.getText().toString();
+                textView.setText(text.substring(0, text.length()-2));
+            }
+        }
+    }
+
     private void setOrderingListeners(View v) {
-        final HashMap<String, TextView> columns = new HashMap<>();
+        final HashMap<String, TextView> columns = getColumns(v);
+        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
+            e.getValue().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    statsFragment.orderData(e.getKey(), columns);
+                }
+            });
+        }
+    }
+
+    private HashMap<String, TextView> getColumns(View v) {
+        HashMap<String, TextView> columns = new HashMap<>();
         columns.put("gp",(TextView)v.findViewById(R.id.stats_games_played));
         columns.put("g", (TextView)v.findViewById(R.id.stats_goals));
         columns.put("a", (TextView)v.findViewById(R.id.stats_assists));
@@ -99,13 +122,6 @@ public class AggregStatsTitleFragment extends Fragment {
             columns.put("+-avg", (TextView) v.findViewById(R.id.stats_plus_minus_avg));
             columns.put("tpavg", (TextView) v.findViewById(R.id.stats_team_points_avg));
         }
-        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
-            e.getValue().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    statsFragment.orderData(e.getKey(), columns);
-                }
-            });
-        }
+        return columns;
     }
 }

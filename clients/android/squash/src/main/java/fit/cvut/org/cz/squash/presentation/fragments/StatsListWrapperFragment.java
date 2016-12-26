@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
  * Header for aggregated stats list
@@ -53,13 +55,47 @@ public class StatsListWrapperFragment extends Fragment {
         }
     }
 
+    /**
+     * Bridge for refreshing
+     */
+    public void refresh() {
+        Fragment fr = getChildFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fr != null && fr instanceof AbstractDataFragment) {
+            ((AbstractDataFragment) fr).customOnResume();
+            setDefaultOrder(getView());
+        }
+    }
+
     private void setDefaultOrder(View v) {
+        deleteOtherOrders(v);
         TextView points = (TextView)v.findViewById(R.id.tv_points_label);
         points.setText(points.getText()+ " ▼");
     }
 
+    private void deleteOtherOrders(View v) {
+        final HashMap<String, TextView> columns = getColumns(v);
+        for (TextView textView : columns.values()) {
+            if (textView.getText().toString().contains("▼") || textView.getText().toString().contains("▲")) {
+                String text = textView.getText().toString();
+                textView.setText(text.substring(0, text.length()-2));
+            }
+        }
+    }
+
     private void setOrderingListeners(View v) {
-        final HashMap<String, TextView> columns = new HashMap<>();
+        final HashMap<String, TextView> columns = getColumns(v);
+        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
+            e.getValue().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    statsFragment.orderData(e.getKey(), columns);
+                }
+            });
+        }
+    }
+
+    private HashMap<String, TextView> getColumns(View v) {
+        HashMap<String, TextView> columns = new HashMap<>();
         columns.put("gp",(TextView)v.findViewById(R.id.tv_games_played_label));
         columns.put("p", (TextView)v.findViewById(R.id.tv_points_label));
         columns.put("w", (TextView)v.findViewById(R.id.tv_wins_label));
@@ -77,14 +113,6 @@ public class StatsListWrapperFragment extends Fragment {
             columns.put("bwavg", (TextView) v.findViewById(R.id.tv_balls_won_avg_label));
             columns.put("blavg", (TextView) v.findViewById(R.id.tv_balls_lost_avg_label));
         }
-        for (final Map.Entry<String, TextView> e : columns.entrySet()) {
-            e.getValue().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    statsFragment.orderData(e.getKey(), columns);
-                }
-            });
-        }
+        return columns;
     }
-
 }
