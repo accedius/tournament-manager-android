@@ -98,9 +98,17 @@ public class ImportFragment extends Fragment {
         conflictRecyclerView.setLayoutManager(conflictLayoutManager);
         conflictRecyclerView.setAdapter(conflictsAdapter);
 
-        if (tournaments.isEmpty()) v.findViewById(R.id.tournaments_header).setVisibility(View.GONE);
-        if (players.isEmpty()) v.findViewById(R.id.players_header).setVisibility(View.GONE);
-        if (conflicts.isEmpty()) v.findViewById(R.id.conflicts_header).setVisibility(View.GONE);
+        if (tournaments.isEmpty())
+            v.findViewById(R.id.tournaments_header).setVisibility(View.GONE);
+
+        if (players.isEmpty())
+            v.findViewById(R.id.players_header).setVisibility(View.GONE);
+
+        if (conflicts.isEmpty())
+            v.findViewById(R.id.conflicts_header).setVisibility(View.GONE);
+
+        if (!tournaments.isEmpty() || !players.isEmpty() || !conflicts.isEmpty())
+            v.findViewById(R.id.competition_empty).setVisibility(View.GONE);
 
         Button confirmButton = (Button) v.findViewById(R.id.confirm_import);
         confirmButton.setOnClickListener(new Button.OnClickListener() {

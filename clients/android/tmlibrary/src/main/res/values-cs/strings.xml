@@ -122,10 +122,11 @@
     <string name="import_confirm">Importovat</string>
     <string name="players_modified">Hráči (změnění)</string>
     <string name="players_new">Hráči (noví)</string>
-    <string name="import_keep_local">Ponechat původní</string>
+    <string name="import_keep_local">Zachovat původní</string>
     <string name="import_matches">zápasů</string>
     <string name="import_take_file">Aplikovat změny</string>
     <string name="import_players">hráčů</string>
     <string name="import_teams">týmů</string>
     <string name="import_tournaments">turnajů</string>
+    <string name="import_competition_empty">Soutěž je prázdná nebo obsahuje hráče, kteří již v aplikaci jsou.</string>
 </resources>

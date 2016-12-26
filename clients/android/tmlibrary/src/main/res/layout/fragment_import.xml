@@ -10,6 +10,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/import_competition_empty"
+            android:id="@+id/competition_empty"
+            style="@style/Base.TextAppearance.AppCompat.Menu" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/tournaments"
             android:id="@+id/tournaments_header"
             style="@style/Base.TextAppearance.AppCompat.Menu" />
