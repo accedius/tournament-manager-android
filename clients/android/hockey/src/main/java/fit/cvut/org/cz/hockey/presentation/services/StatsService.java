@@ -10,14 +10,18 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.entities.Standing;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -101,26 +105,44 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
                 long matchId = intent.getLongExtra(EXTRA_ID, -1);
                 Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId);
+                Tournament tournament = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(match.getTournamentId());
+                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(tournament.getCompetitionId());
+
                 List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchId(matchId);
                 List<PlayerStat> homeStats = new ArrayList<>();
                 List<PlayerStat> awayStats = new ArrayList<>();
 
+                long homeId = 0, awayId = 0;
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
                         homeStats = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_HOME_PARTICIPANT, participant);
+                        homeId = participant.getParticipantId();
                     }
                     else if (ParticipantType.away.toString().equals(participant.getRole())) {
                         awayStats = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
                         res.putExtra(EXTRA_AWAY_PARTICIPANT, participant);
+                        awayId = participant.getParticipantId();
                     }
+                }
+                String homeName, awayName;
+                if (CompetitionTypes.teams().equals(competition.getType())) {
+                    Team team = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(homeId);
+                    homeName = team.getName();
+                    team = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(awayId);
+                    awayName = team.getName();
+                } else {
+                    Player player = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(homeId);
+                    homeName = player.getName();
+                    player = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(awayId);
+                    awayName = player.getName();
                 }
 
                 res.putParcelableArrayListExtra(EXTRA_HOME_STATS, new ArrayList<>(homeStats));
                 res.putParcelableArrayListExtra(EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
-                res.putExtra(EXTRA_HOME_NAME, match.getHomeName());
-                res.putExtra(EXTRA_AWAY_NAME, match.getAwayName());
+                res.putExtra(EXTRA_HOME_NAME, homeName);
+                res.putExtra(EXTRA_AWAY_NAME, awayName);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
