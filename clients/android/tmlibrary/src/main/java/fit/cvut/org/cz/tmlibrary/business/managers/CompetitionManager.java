@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
@@ -16,7 +17,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 
 /**
  * Created by kevin on 30. 3. 2016.
@@ -111,21 +111,19 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
     @Override
     public boolean removePlayerFromCompetition(long playerId, long competitionId) {
         try {
-            List<Tournament> tournaments = managerFactory.getDaoFactory()
-                    .getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
-            for (Tournament tournament : tournaments) {
-                List<TournamentPlayer> tournamentPlayers;
-                List<Player> players = new ArrayList<>();
-                Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
 
-                tournamentPlayers = managerFactory.getDaoFactory()
-                        .getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournament.getId());
-                for (TournamentPlayer tournamentPlayer : tournamentPlayers) {
-                    players.add(allPlayers.get(tournamentPlayer.getPlayerId()));
-                }
-                for (Player player : players)
-                    if (player.getId() == playerId)
-                        return false;
+            // Check if some tournament in this competition contains this player
+            String query =  "SELECT * " +
+                            "FROM " + DBConstants.tTOURNAMENTS + " t " +
+                                "JOIN " + DBConstants.tPLAYERS_IN_TOURNAMENT + " p " +
+                                    "ON t." + DBConstants.cID + " = p." + DBConstants.cTOURNAMENT_ID +
+                            " WHERE "+
+                                    "t." + DBConstants.cCOMPETITION_ID + " = " + competitionId +
+                                " AND "+
+                                    "p." + DBConstants.cPLAYER_ID + " = " + playerId;
+            GenericRawResults<String[]> results = managerFactory.getDaoFactory().getMyDao(Tournament.class).queryRaw(query);
+            if (!results.getResults().isEmpty()) {
+                return false;
             }
 
             // Remove player
@@ -138,6 +136,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
             deleteBuilder.delete();
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

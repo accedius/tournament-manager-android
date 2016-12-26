@@ -17,9 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
-import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
@@ -123,7 +121,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
             Competition competition = managerFactory.getDaoFactory().getMyDao(Competition.class).queryForId(tournament.getCompetitionId());
             competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
 
-            // TODO optimization like this in other joins etc.
+            // Check if some team in this tournament contains this player
             String query =  "SELECT * " +
                             "FROM " + DBConstants.tTEAMS + " t " +
                                 "JOIN " + DBConstants.tPLAYERS_IN_TEAM + " p " +
@@ -133,23 +131,36 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
                                 " AND "+
                                     "p." + DBConstants.cPLAYER_ID + " = " + playerId;
             GenericRawResults<String[]> results = managerFactory.getDaoFactory().getMyDao(Team.class).queryRaw(query);
-            if (!results.getResults().isEmpty())
+            if (!results.getResults().isEmpty()) {
                 return false;
+            }
 
             // Check if player participates in match
-            List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
-            for (Match match : matches) {
-                List<Participant> matchParticipants = managerFactory.getDaoFactory().getMyDao(Participant.class).queryForEq(DBConstants.cMATCH_ID, match.getId());
-                for (Participant participant : matchParticipants) {
-                    // Check if some participant is player
-                    if (CompetitionTypes.individuals().equals(competition.getType()) && participant.getParticipantId() == playerId)
-                        return false;
+            if (CompetitionTypes.individuals().equals(competition.getType())) {
+                query =     "SELECT * " +
+                            "FROM " + DBConstants.tMATCHES + " m " +
+                                "JOIN " + DBConstants.tPARTICIPANTS + " p " +
+                                    "ON m." + DBConstants.cID + " = p." + DBConstants.cMATCH_ID +
+                            " WHERE "+
+                                    "m." + DBConstants.cTOURNAMENT_ID + " = " + tournamentId +
+                                " AND "+
+                                    "p." + DBConstants.cPARTICIPANT_ID + " = " + playerId;
+            } else {
+                query =     "SELECT * " +
+                            "FROM " + DBConstants.tMATCHES + " m " +
+                                "JOIN " + DBConstants.tPARTICIPANTS + " p " +
+                                    "ON m." + DBConstants.cID + " = p." + DBConstants.cMATCH_ID +
+                                " JOIN " + DBConstants.tPLAYER_STATS + " ps " +
+                                    "ON p." + DBConstants.cID + " = ps." + DBConstants.cPARTICIPANT_ID +
+                            " WHERE "+
+                                    "m." + DBConstants.cTOURNAMENT_ID + " = " + tournamentId +
+                                " AND "+
+                                    "ps." + DBConstants.cPLAYER_ID + " = " + playerId;
+            }
 
-                    List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                    for (PlayerStat playerStat : playerStats)
-                        if (playerStat.getPlayerId() == playerId)
-                            return false;
-                }
+            results = managerFactory.getDaoFactory().getMyDao(Match.class).queryRaw(query);
+            if (!results.getResults().isEmpty()) {
+                return false;
             }
 
             // Remove player
@@ -161,6 +172,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
             tournamentPlayerBuilder.delete();
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
