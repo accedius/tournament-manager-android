@@ -29,7 +29,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportTournamentAdapter;
 /**
  * Created by kevin on 28.10.2016.
  */
-// TODO pokud importuji pouze název soutěže, nezobrazí se nic než CONFIRM IMPORT !! blbost
 public class ImportFragment extends Fragment {
 
     protected ArrayList<TournamentImportInfo> tournaments;

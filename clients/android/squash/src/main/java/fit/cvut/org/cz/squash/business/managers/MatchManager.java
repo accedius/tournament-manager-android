@@ -169,15 +169,14 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
 
     @Override
     public void insert(Match match) {
-        // TODO check if id is filled ?
         match.setLastModified(new Date());
 
         Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
         if (tournament == null)
-            return; // TODO false?
+            return;
         Competition competition = managerFactory.getEntityManager(Competition.class).getById(tournament.getCompetitionId());
         if (competition == null)
-            return; // TODO false?
+            return;
         super.insert(match);
 
         for (Participant participant : match.getParticipants()) {

@@ -63,29 +63,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        EditDialog dialog = new EditDialog() {
-                            @Override
-                            // TODO toto se možná posune do EditDeleteDialogu!
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = new Intent();
-                                                intent.setClassName(package_name, activity_create_competition);
-                                                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                                                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                                                startActivity(intent);
-                                                break;
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-
+                        EditDialog dialog = EditDialog.newInstance(package_name, activity_create_competition, competitionId, sport_context);
                         Bundle b = new Bundle();
                         b.putString(EditDialog.ARG_TITLE, name);
                         dialog.setArguments(b);
