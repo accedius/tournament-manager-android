@@ -20,7 +20,7 @@ import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.business.managers.CorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
@@ -82,7 +82,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
         }
         // Core Player
         else if (entity.getName().equals(Player.class.getName())) {
-            return (M) new CorePlayerManager(context);
+            return (M) new PackagePlayerManager(context);
         }
 
         if (manager == null)

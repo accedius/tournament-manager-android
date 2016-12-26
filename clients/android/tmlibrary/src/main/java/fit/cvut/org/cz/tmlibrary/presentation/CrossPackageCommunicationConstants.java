@@ -19,6 +19,8 @@ public class CrossPackageCommunicationConstants {
     public static final String EXTRA_CONFLICTS = "extra_conflits";
 
     public static final String CORE = "fit.cvut.org.cz.tournamentmanager";
+    public static final String APP_TYPE = "application_type";
+    public static final String TM_PACKAGE = "TournamentManagerPackage";
 
     public static final String ACTIVITY_PLAYER_DETAIL = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
 

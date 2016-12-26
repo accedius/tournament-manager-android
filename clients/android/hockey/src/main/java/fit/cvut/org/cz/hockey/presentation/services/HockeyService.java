@@ -112,7 +112,7 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
                 ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
                 ArrayList<Conflict> playersModified = new ArrayList<>();
-                ImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, competition, tournamentsInfo, playersInfo, playersModified);
+                ImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, getResources(), competition, tournamentsInfo, playersInfo, playersModified);
 
                 Intent res = new Intent(package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);

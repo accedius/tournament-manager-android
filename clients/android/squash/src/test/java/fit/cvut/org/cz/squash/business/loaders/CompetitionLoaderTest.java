@@ -99,7 +99,7 @@ public class CompetitionLoaderTest extends AndroidTestCase {
         List<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
         List<PlayerImportInfo> playersInfo = new ArrayList<>();
         ArrayList<Conflict> conflicts = new ArrayList<>();
-        competitionInfo = CompetitionLoader.getImportInfo(context, competitionItem, tournamentsInfo, playersInfo, conflicts);
+        competitionInfo = CompetitionLoader.getImportInfo(context, context.getResources(), competitionItem, tournamentsInfo, playersInfo, conflicts);
 
         assertEquals(name, competitionInfo.getName());
         assertEquals(type.id, ((CompetitionImportInfo)competitionInfo).getType().id);

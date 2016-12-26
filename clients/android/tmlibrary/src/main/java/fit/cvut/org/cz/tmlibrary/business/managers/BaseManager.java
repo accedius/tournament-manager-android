@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
@@ -19,10 +19,10 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 abstract public class BaseManager<T extends IEntity> implements IManager<T> {
     protected Context context;
     protected SportDBHelper sportDBHelper;
-    protected ICorePlayerManager corePlayerManager;
+    protected IPackagePlayerManager corePlayerManager;
 
     abstract protected Dao<T, Long> getDao();
-    public BaseManager(Context context, ICorePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
+    public BaseManager(Context context, IPackagePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
         this.context = context;
         this.corePlayerManager = corePlayerManager;
         this.sportDBHelper = sportDBHelper;

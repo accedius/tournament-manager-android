@@ -20,6 +20,8 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  */
 public class CompetitionCP extends ContentProvider {
     public static final String AUTHORITY = "fit.cvut.org.cz.hockey.data";
+    public static final String HOCKEY_NAME = "Hockey";
+    public static final String FLOORBALL_NAME = "Floorball";
 
     private HockeyDBHelper helper;
 
@@ -34,20 +36,17 @@ public class CompetitionCP extends ContentProvider {
     private static final int FLOORBALL = 100;
     private static final int HOCKEY = 200;
 
-    // TODO strings set to Constants
     private static final HashMap<String, Integer> sport_contexts = new HashMap<String, Integer>(){{
-            put("Floorball", FLOORBALL);
-            put("Hockey", HOCKEY);
+            put(FLOORBALL_NAME, FLOORBALL);
+            put(HOCKEY_NAME, HOCKEY);
     }};
 
-    // TODO strings set to Constants
     private String getSport(int uriID) {
         if (uriID > HOCKEY)
-            return "Hockey";
+            return HOCKEY_NAME;
         else if (uriID > FLOORBALL)
-            return "Floorball";
-        else
-            return "";
+            return FLOORBALL_NAME;
+        return null;
     }
 
     private static final UriMatcher matcher ;

@@ -10,7 +10,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tournaments"
+            android:text="@string/tournaments"
             android:id="@+id/tournaments_header"
             style="@style/Base.TextAppearance.AppCompat.Menu" />
         <android.support.v7.widget.RecyclerView
@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Players (new)"
+            android:text="@string/players_new"
             android:id="@+id/players_header"
             android:layout_marginTop="12dp"
             style="@style/Base.TextAppearance.AppCompat.Menu" />
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Players (modified)"
+            android:text="@string/players_modified"
             android:id="@+id/conflicts_header"
             android:layout_marginTop="12dp"
             style="@style/Base.TextAppearance.AppCompat.Menu" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
-                android:text="Confirm import"
+                android:text="@string/import_confirm"
                 android:id="@+id/confirm_import"
                 android:layout_weight="0.5"
                 style="@style/Base.TextAppearance.AppCompat.Widget.Button"

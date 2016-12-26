@@ -32,7 +32,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     private String package_name;
     private String sport_context;
-    private String stats_service;
+    private String package_service;
 
     private static String ARG_ID = "player_id";
 
@@ -41,7 +41,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
         sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
-        stats_service = getArguments().getString("stats_service");
+        package_service = getArguments().getString("package_service");
 
         super.onCreate(savedInstanceState);
     }
@@ -49,7 +49,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = new Intent();
-        intent.setClassName(package_name, stats_service);
+        intent.setClassName(package_name, package_service);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_STATS);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);

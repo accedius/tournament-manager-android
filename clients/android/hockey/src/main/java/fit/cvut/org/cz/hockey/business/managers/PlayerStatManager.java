@@ -10,7 +10,7 @@ import java.util.Map;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
@@ -22,7 +22,7 @@ public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerSt
     public List<PlayerStat> getByPlayerId(long playerId) {
         try {
             List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPLAYER_ID, playerId);
-            Map<Long, Player> playerMap = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+            Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
             }
@@ -36,7 +36,7 @@ public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerSt
     public List<PlayerStat> getByParticipantId(long participantId) {
         try {
             List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
-            Map<Long, Player> playerMap = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+            Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
             for (PlayerStat playerStat : playerStats) {
                 playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
             }

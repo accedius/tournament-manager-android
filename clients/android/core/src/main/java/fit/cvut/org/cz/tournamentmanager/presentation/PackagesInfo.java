@@ -10,33 +10,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 
 /**
  * Created by kevin on 28.9.2016.
  */
 public class PackagesInfo {
-    private static ArrayList<ApplicationInfo> getPackages(Context context, Resources res) {
+    private static ArrayList<ApplicationInfo> getPackages(Context context) {
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         ArrayList<ApplicationInfo> sport_packages = new ArrayList<>();
 
-        // TODO r.string.tournament_manager_package -- define as constant somewhere
-
         for (ApplicationInfo packageInfo : packages) {
-            if (packageInfo.metaData != null) {
-                if (packageInfo.metaData.containsKey("application_type") == true
-                        && packageInfo.metaData.get("application_type").equals(res.getString(R.string.tournament_manager_package))) {
+            if (packageInfo.metaData == null)
+                continue;
+            if (!packageInfo.metaData.containsKey(CrossPackageCommunicationConstants.APP_TYPE))
+                continue;
+            if (packageInfo.metaData.get(CrossPackageCommunicationConstants.APP_TYPE)
+                    .equals(CrossPackageCommunicationConstants.TM_PACKAGE))
                     sport_packages.add(packageInfo);
-                }
-            }
         }
         return sport_packages;
     }
 
 
-    public static Map<String, ApplicationInfo> getSportContexts (Context context, Resources res) {
+    public static Map<String, ApplicationInfo> getSportContexts (Context context) {
         Map<String, ApplicationInfo> contexts = new TreeMap<>();
-        for (ApplicationInfo app : getPackages(context, res)) {
+        for (ApplicationInfo app : getPackages(context)) {
             for (String sport_context : app.metaData.getString("context_names").split(",")) {
                 contexts.put(sport_context, app);
             }

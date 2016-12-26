@@ -64,7 +64,7 @@ public class ImportFragment extends Fragment {
         jsonContent = args.getString(CrossPackageCommunicationConstants.EXTRA_JSON);
         sportContext = args.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
 
-        tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ImportActivity.COMPETITION));
+        tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ImportActivity.COMPETITION), getResources());
         playersAdapter = new ImportPlayerAdapter();
         conflictsAdapter = new ConflictAdapter(getContext());
 

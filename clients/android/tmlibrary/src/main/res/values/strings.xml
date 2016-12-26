@@ -121,4 +121,14 @@
     <string name="failDeleteTeam">Team is not empty and/or is already in some match and cannot be deleted.</string>
     <string name="cant_create_match">Cannot create match because tournament has too few participants.</string>
     <string name="sort_by_player_name">Sort by name</string>
+    <string name="import_summary">Import summary</string>
+    <string name="import_confirm">Confirm import</string>
+    <string name="players_new">Players (new)</string>
+    <string name="players_modified">Players (modified)</string>
+    <string name="import_players">players</string>
+    <string name="import_tournaments">tournaments</string>
+    <string name="import_matches">matches</string>
+    <string name="import_teams">teams</string>
+    <string name="import_keep_local">Keep local</string>
+    <string name="import_take_file">Take file</string>
 </resources>

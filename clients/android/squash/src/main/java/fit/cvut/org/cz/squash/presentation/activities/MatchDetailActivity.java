@@ -75,16 +75,14 @@ public class MatchDetailActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             SquashMatchOverviewFragment fr  = (SquashMatchOverviewFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(0));
-            if (fr !=null) {
+            if (fr != null) {
                 if (fr.getSetsFragment().hasErrors()) {
-                    // TODO String - Some set has invalid value
-                    Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_invalid_values, Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
                 for (SetRowItem set : fr.getSetsFragment().getSets()) {
                     if (set.getHomeScore() == set.getAwayScore()) {
-                        // TODO String - Set cannot end in a draw
-                        Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.sets_error, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs), R.string.tie_set, Snackbar.LENGTH_SHORT).show();
                         return true;
                     }
                 }

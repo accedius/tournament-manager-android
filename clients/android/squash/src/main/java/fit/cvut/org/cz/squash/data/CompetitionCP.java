@@ -20,6 +20,11 @@ import fit.cvut.org.cz.tmlibrary.data.DBConstants;
  */
 public class CompetitionCP extends ContentProvider {
     public static final String AUTHORITY = "fit.cvut.org.cz.squash.data";
+    private static final String BADMINTON_NAME = "Badminton";
+    private static final String BEACH_NAME = "Beach";
+    private static final String SQUASH_NAME = "Squash";
+    private static final String TENNIS_NAME = "Tennis";
+    private static final String VOLLEYBALL_NAME = "Volleyball";
 
     private SquashDBHelper helper;
 
@@ -37,27 +42,25 @@ public class CompetitionCP extends ContentProvider {
     private static final int TENNIS = 400;
     private static final int VOLLEYBALL = 500;
 
-    // TODO strings set to Constants
     private static final HashMap<String, Integer> sport_contexts = new HashMap<String, Integer>(){{
-        put("Badminton", BADMINTON);
-        put("Beach", BEACH);
-        put("Squash", SQUASH);
-        put("Tennis", TENNIS);
-        put("Volleyball", VOLLEYBALL);
+        put(BADMINTON_NAME, BADMINTON);
+        put(BEACH_NAME, BEACH);
+        put(SQUASH_NAME, SQUASH);
+        put(TENNIS_NAME, TENNIS);
+        put(VOLLEYBALL_NAME, VOLLEYBALL);
     }};
 
-    // TODO strings set to Constants
     private String getSport(int uriID) {
         if (uriID > VOLLEYBALL)
-            return "Volleyball";
+            return VOLLEYBALL_NAME;
         else if (uriID > TENNIS)
-            return "Tennis";
+            return TENNIS_NAME;
         else if (uriID > SQUASH)
-            return "Squash";
+            return SQUASH_NAME;
         else if (uriID > BEACH)
-            return "Beach";
+            return BEACH_NAME;
         else if (uriID > BADMINTON)
-            return "Badminton";
+            return BADMINTON_NAME;
         else
             return "";
     }

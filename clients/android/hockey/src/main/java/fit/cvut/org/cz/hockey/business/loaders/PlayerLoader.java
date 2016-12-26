@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.business.loaders;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.helpers.ConflictCreator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -24,9 +25,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
  */
 
 public class PlayerLoader {
-    public static List<PlayerImportInfo> getPlayersImportInfo(Context context, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
+    public static List<PlayerImportInfo> getPlayersImportInfo(Context context, Resources res, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
         ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         HashMap<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);
@@ -38,8 +39,7 @@ public class PlayerLoader {
             if (allPlayersMap.containsKey(importedPlayer.getEmail())) {
                 Player matchedPlayer = allPlayersMap.get(importedPlayer.getEmail());
                 if (!matchedPlayer.samePlayer(importedPlayer)) {
-                    playersModified.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer));
-                    // TODO všechny attributes přeložit
+                    playersModified.add(ConflictCreator.createConflict(matchedPlayer, importedPlayer, res));
                 }
             } else {
                 playersInfo.add(new PlayerImportInfo(importedPlayer.getName(), importedPlayer.getEmail()));
@@ -49,7 +49,7 @@ public class PlayerLoader {
     }
 
     public static void importPlayers(Context context, List<ServerCommunicationItem> players, Competition competition, Map<String, Player> importedPlayers, Map<String, String> conflictSolutions) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         Map<String, Player> allPlayersMap = new HashMap<>();
         for (Player player : allPlayers.values()) {
             allPlayersMap.put(player.getEmail(), player);

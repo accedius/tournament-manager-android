@@ -38,7 +38,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
-        sport_contexts = PackagesInfo.getSportContexts(this, getResources());
+        sport_contexts = PackagesInfo.getSportContexts(this);
 
         List<Setting> ignoredSports = ManagerFactory.getInstance(this).getEntityManager(Setting.class).getAll();
         for (Setting s : ignoredSports) {
@@ -66,7 +66,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
             b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
             b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
-            b.putString("stats_service", info.metaData.getString("service_stats"));
+            b.putString("package_service", info.metaData.getString("package_service"));
             psf.setArguments(b);
             fragments[i] = psf;
             titles[i] = getResources().getString(getResources().getIdentifier(sport_context.getKey(), "string", getPackageName()));

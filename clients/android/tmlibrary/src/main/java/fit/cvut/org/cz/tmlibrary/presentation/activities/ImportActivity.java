@@ -27,7 +27,7 @@ public class ImportActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         ImportInfo competition = intent.getParcelableExtra(COMPETITION);
-        setTitle("Import summary – "+competition.getName());
+        setTitle(getResources().getString(R.string.import_summary)+" – "+competition.getName());
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             fragment = getImportFragment();

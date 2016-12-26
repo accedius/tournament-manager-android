@@ -99,7 +99,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 Long playerId = intent.getLongExtra(EXTRA_ID, -1);
                 int position = intent.getIntExtra(EXTRA_POSITION, -1);
                 boolean deleted = true;
-                Map<String, ApplicationInfo> sportContexts = PackagesInfo.getSportContexts(this, getResources());
+                Map<String, ApplicationInfo> sportContexts = PackagesInfo.getSportContexts(this);
                 for (Map.Entry<String, ApplicationInfo>  sport : sportContexts.entrySet()) {
                     String package_name = sport.getValue().metaData.getString("package_name");
                     if (existsCompetitionsForPlayer(package_name, sport.getKey(), CPConstants.uCompetitionsByPlayer + playerId)) {

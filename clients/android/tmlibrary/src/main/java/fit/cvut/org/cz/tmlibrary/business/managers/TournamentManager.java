@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -64,7 +64,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
 
     @Override
     public List<Player> getTournamentPlayers(long tournamentId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         List<Player> res = new ArrayList<>();
         try {
             List<TournamentPlayer> tournamentPlayers = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
@@ -100,7 +100,7 @@ abstract public class TournamentManager extends TManager<Tournament> implements 
         try {
             List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory().getMyDao(CompetitionPlayer.class)
                     .queryForEq(DBConstants.cCOMPETITION_ID, tournament.getCompetitionId());
-            Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+            Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
             Map<Long, Player> allCompetitionPlayers = new HashMap<>();
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allCompetitionPlayers.put(competitionPlayer.getPlayerId(), allPlayers.get(competitionPlayer.getPlayerId()));

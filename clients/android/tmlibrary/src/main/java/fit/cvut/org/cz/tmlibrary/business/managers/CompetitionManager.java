@@ -10,7 +10,7 @@ import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
@@ -65,7 +65,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
 
     @Override
     public List<Player> getCompetitionPlayers(long competitionId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         List<Player> res = new ArrayList<>();
         try {
             List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
@@ -82,7 +82,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
 
     @Override
     public List<Player> getCompetitionPlayersComplement(long competitionId) {
-        Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+        Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         try {
             List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
                     .getMyDao(CompetitionPlayer.class).queryForEq(DBConstants.cCOMPETITION_ID, competitionId);
@@ -116,7 +116,7 @@ public class CompetitionManager extends TManager<Competition> implements ICompet
             for (Tournament tournament : tournaments) {
                 List<TournamentPlayer> tournamentPlayers;
                 List<Player> players = new ArrayList<>();
-                Map<Long, Player> allPlayers = ((ICorePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+                Map<Long, Player> allPlayers = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
 
                 tournamentPlayers = managerFactory.getDaoFactory()
                         .getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournament.getId());

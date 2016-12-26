@@ -40,7 +40,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String package_name;
     private String activity_create_competition;
     private String activity_detail_competition;
-    private String stats_service;
+    private String package_service;
     private String sport_context;
 
     private String orderColumn = Competition.col_end_date;
@@ -61,7 +61,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         package_name = sport_package.metaData.getString("package_name");
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
-        stats_service = sport_package.metaData.getString("service_stats");
+        package_service = sport_package.metaData.getString("package_service");
         sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -85,7 +85,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, stats_service);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, package_service);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
@@ -134,7 +134,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = AddCompetitionDialog.newInstance(view, package_name, sport_context, activity_create_competition, stats_service);
+                DialogFragment dialog = AddCompetitionDialog.newInstance(view, package_name, sport_context, activity_create_competition, package_service);
                 dialog.show(getFragmentManager(), "ADD_COMPETITION");
             }
         });
@@ -216,7 +216,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE, stats_service);
+                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE, package_service);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON));
                 res.putExtra(ImportActivity.COMPETITION, intent.getParcelableExtra(ImportActivity.COMPETITION));
                 res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, intent.getParcelableArrayListExtra(ImportActivity.TOURNAMENTS));

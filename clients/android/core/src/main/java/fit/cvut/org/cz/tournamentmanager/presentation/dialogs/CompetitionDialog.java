@@ -22,7 +22,7 @@ public class CompetitionDialog extends DialogFragment {
     private String competition_name;
     private String package_name;
     private String activity_create_competition;
-    private String stats_service;
+    private String package_service;
     private String sport_context;
 
     protected DialogInterface.OnClickListener supplyListener() {
@@ -32,7 +32,7 @@ public class CompetitionDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, stats_service);
+                        intent.setClassName(package_name, package_service);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
                         intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
@@ -62,15 +62,14 @@ public class CompetitionDialog extends DialogFragment {
         };
     }
 
-    // TODO rename stats_service to SPORT_SERVICE ... in all application
-    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String sport_context, String activity_create_competition, String stats_service) {
+    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String sport_context, String activity_create_competition, String package_service) {
         CompetitionDialog fragment = new CompetitionDialog();
         fragment.competition_id = competitionId;
         fragment.competition_name = name;
         fragment.package_name = package_name;
         fragment.sport_context = sport_context;
         fragment.activity_create_competition = activity_create_competition;
-        fragment.stats_service = stats_service;
+        fragment.package_service = package_service;
 
         Bundle args = new Bundle();
         args.putInt(ARG_POSITION, position);

@@ -20,7 +20,7 @@ import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHel
 public class AddCompetitionDialog extends DialogFragment {
     private String package_name;
     private String activity_create_competition;
-    private String stats_service;
+    private String package_service;
     private String sport_context;
     private View view;
 
@@ -47,7 +47,7 @@ public class AddCompetitionDialog extends DialogFragment {
                             Snackbar.make(view, fit.cvut.org.cz.tmlibrary.R.string.no_competition_file_error, Snackbar.LENGTH_LONG).show();
                             break;
                         }
-                        DialogFragment importFileDialog = ImportFileDialog.newInstance(package_name, sport_context, stats_service);
+                        DialogFragment importFileDialog = ImportFileDialog.newInstance(package_name, sport_context, package_service);
                         importFileDialog.show(getFragmentManager(), "IMPORT_FILE");
                         dialog.dismiss();
                         break;
@@ -57,14 +57,13 @@ public class AddCompetitionDialog extends DialogFragment {
         };
     }
 
-    // TODO rename stats_service to PACKAGE_SERVICE ... in all application
-    public static AddCompetitionDialog newInstance(View view, String package_name, String sport_context, String activity_create_competition, String stats_service) {
+    public static AddCompetitionDialog newInstance(View view, String package_name, String sport_context, String activity_create_competition, String package_service) {
         AddCompetitionDialog fragment = new AddCompetitionDialog();
         fragment.view = view;
         fragment.package_name = package_name;
         fragment.sport_context = sport_context;
         fragment.activity_create_competition = activity_create_competition;
-        fragment.stats_service = stats_service;
+        fragment.package_service = package_service;
         return fragment;
     }
 

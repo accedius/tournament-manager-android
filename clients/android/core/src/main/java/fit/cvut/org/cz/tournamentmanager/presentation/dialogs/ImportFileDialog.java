@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import java.io.File;
 
@@ -18,7 +19,7 @@ import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHel
  */
 public class ImportFileDialog extends DialogFragment {
     private String package_name;
-    private String stats_service;
+    private String package_service;
     private String sport_context;
 
     protected DialogInterface.OnClickListener supplyListener() {
@@ -30,7 +31,7 @@ public class ImportFileDialog extends DialogFragment {
                 String fileContent = FilesHelper.loadFileContent(competitionFile);
 
                 Intent intent = new Intent();
-                intent.setClassName(package_name, stats_service);
+                intent.setClassName(package_name, package_service);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
                 intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
@@ -41,12 +42,11 @@ public class ImportFileDialog extends DialogFragment {
         };
     }
 
-    // TODO rename stats_service to SPORT_SERVICE ... in all application
-    public static ImportFileDialog newInstance(String package_name, String sport_context, String stats_service) {
+    public static ImportFileDialog newInstance(String package_name, String sport_context, String package_service) {
         ImportFileDialog fragment = new ImportFileDialog();
         fragment.package_name = package_name;
         fragment.sport_context = sport_context;
-        fragment.stats_service = stats_service;
+        fragment.package_service = package_service;
         return fragment;
     }
 

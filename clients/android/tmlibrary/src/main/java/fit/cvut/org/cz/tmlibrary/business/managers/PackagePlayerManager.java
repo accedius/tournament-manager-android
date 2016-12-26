@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICorePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
@@ -22,11 +22,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 /**
  * Created by kevin on 2.12.2016.
  */
-// TODO rename to packagePlayerManager
-public class CorePlayerManager implements ICorePlayerManager {
+public class PackagePlayerManager implements IPackagePlayerManager {
     protected Context context;
 
-    public CorePlayerManager(Context context) {
+    public PackagePlayerManager(Context context) {
         this.context = context;
     }
 

@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Map<String, ApplicationInfo> sports = PackagesInfo.getSportContexts(getContext(), getResources());
+        Map<String, ApplicationInfo> sports = PackagesInfo.getSportContexts(getContext());
         sparse = new SparseBooleanArray();
         sportSettings = new ArrayList<>();
         int i = 0;

@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:width="100dp"
                     android:checked="true"
-                    android:text="Keep local"
+                    android:text="@string/import_keep_local"
                     android:layoutDirection="rtl"
                     android:textAlignment="textStart"
                     android:layout_gravity="start"/>
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:width="100dp"
-                    android:text="Take file" />
+                    android:text="@string/import_take_file" />
             </RadioGroup>
     </LinearLayout>
 </android.support.v7.widget.CardView>

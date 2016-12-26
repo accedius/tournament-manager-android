@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.business.loaders;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 public class CompetitionLoader {
     // TODO try return CompetitionImportInfo
-    public static ImportInfo getImportInfo(Context context, ServerCommunicationItem competition, List<TournamentImportInfo> tournamentsInfo,
+    public static ImportInfo getImportInfo(Context context, Resources res, ServerCommunicationItem competition, List<TournamentImportInfo> tournamentsInfo,
                                            List<PlayerImportInfo> playersInfo, List<Conflict> playersModified) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
         ImportInfo competitionInfo = new CompetitionImportInfo(importedCompetition.getName(), CompetitionTypes.teams());
@@ -49,7 +50,7 @@ public class CompetitionLoader {
         tournamentsInfo.addAll(TournamentLoader.getTournamentsImportInfo(context, tournaments));
 
         /* PLAYERS HANDLING */
-        playersInfo.addAll(PlayerLoader.getPlayersImportInfo(context, players, playersModified));
+        playersInfo.addAll(PlayerLoader.getPlayersImportInfo(context, res, players, playersModified));
         return competitionInfo;
     }
 

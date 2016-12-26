@@ -27,8 +27,8 @@
     <string name="set_divider" translatable="false">:</string>
     <string name="parse_number_error">Some value is not a number!</string>
     <string name="zero_score">Score cannot be lower than zero!</string>
-    <string name="tie_set">Set cannot end in tie!</string>
-    <string name="sets_error">Some sets have invalid values, either unfilled or tie!</string>
+    <string name="tie_set">Set cannot end in a draw!</string>
+    <string name="sets_invalid_values">Some sets have invalid values!</string>
     <string name="sets">Sets</string>
     <string name="rosters">Rosters</string>
 
