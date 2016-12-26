@@ -137,15 +137,21 @@ public class MatchManager extends TManager<Match> implements IMatchManager {
         List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(matchId);
 
         try {
-            // Remove Participant Stats and Player Stats
+            // Remove Participant Stats and reset Player Stats
             for (Participant participant : participants) {
                 DeleteBuilder<ParticipantStat, Long> participantStatBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
                 participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
                 participantStatBuilder.delete();
 
-                DeleteBuilder<PlayerStat, Long> playerStatBuilder = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
-                playerStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                playerStatBuilder.delete();
+                List<PlayerStat> stats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class)
+                        .queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
+                for (PlayerStat stat : stats) {
+                    stat.setGoals(0);
+                    stat.setAssists(0);
+                    stat.setPlusMinus(0);
+                    stat.setSaves(0);
+                    managerFactory.getDaoFactory().getMyDao(PlayerStat.class).update(stat);
+                }
             }
         } catch (SQLException e) {}
 
