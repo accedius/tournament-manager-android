@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
+import fit.cvut.org.cz.squash.business.managers.StatisticManager;
 import fit.cvut.org.cz.squash.presentation.adapters.StandingsAdapter;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
@@ -60,18 +61,8 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
                 orderColumn = stat;
             }
             orderType = "DESC";
-            // TODO better this sorting
             if (orderColumn == "p") {
-                Collections.sort(stats, new Comparator<StandingItem>() {
-                    @Override
-                    public int compare(StandingItem lhs, StandingItem rhs) {
-                        if (rhs.points != lhs.points)
-                            return rhs.points - lhs.points;
-                        if ((rhs.setsWon - rhs.setsLost) != (lhs.setsWon - lhs.setsLost))
-                            return (rhs.setsWon - rhs.setsLost - lhs.setsWon + lhs.setsLost);
-                        return rhs.setsWon - lhs.setsWon;
-                    }
-                });
+                StatisticManager.orderStandings(stats);
             } else {
                 Collections.sort(stats, new Comparator<StandingItem>() {
                     @Override

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.business.managers.StatisticManager;
 import fit.cvut.org.cz.hockey.presentation.adapters.StandingsAdapter;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -57,19 +58,8 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
                 orderColumn = stat;
             }
             orderType = "DESC";
-            // TODO better this sorting
             if (orderColumn == "p") {
-                Collections.sort(stats, new Comparator<Standing>() {
-                    @Override
-                    public int compare(Standing ls, Standing rs) {
-                        if (rs.getPoints() != ls.getPoints())
-                            return (int) (rs.getPoints() - ls.getPoints());
-                        if ((rs.getGoalsGiven() - rs.getGoalsReceived()) != (ls.getGoalsGiven() - ls.getGoalsReceived())) {
-                            return (int) ((rs.getGoalsGiven() - rs.getGoalsReceived()) - (ls.getGoalsGiven() - ls.getGoalsReceived()));
-                        }
-                        return (int) (rs.getGoalsGiven() - ls.getGoalsGiven());
-                    }
-                });
+                StatisticManager.orderStandings(stats);
             } else {
                 Collections.sort(stats, new Comparator<Standing>() {
                     @Override

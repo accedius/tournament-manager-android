@@ -290,7 +290,7 @@ public class StatisticManager extends TManager<SAggregatedStats> implements ISta
         return standings;
     }
 
-    private void orderStandings(List<StandingItem> standings) {
+    public static void orderStandings(List<StandingItem> standings) {
         Collections.sort(standings, new Comparator<StandingItem>() {
             @Override
             public int compare(StandingItem ls, StandingItem rs) {

@@ -274,7 +274,7 @@ public class StatisticManager extends TManager<AggregatedStatistics> implements 
         return standings;
     }
 
-    private void orderStandings(List<Standing> standings) {
+    public static void orderStandings(List<Standing> standings) {
         Collections.sort(standings, new Comparator<Standing>() {
             @Override
             public int compare(Standing ls, Standing rs) {
