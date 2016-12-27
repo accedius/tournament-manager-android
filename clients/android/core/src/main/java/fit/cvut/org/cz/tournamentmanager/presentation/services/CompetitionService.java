@@ -8,9 +8,9 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 

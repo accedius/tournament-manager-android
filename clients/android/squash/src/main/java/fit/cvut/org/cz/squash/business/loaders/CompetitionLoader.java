@@ -14,7 +14,6 @@ import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;

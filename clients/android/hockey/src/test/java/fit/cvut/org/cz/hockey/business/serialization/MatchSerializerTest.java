@@ -16,17 +16,11 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import fit.cvut.org.cz.hockey.BuildConfig;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
-import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
-import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;

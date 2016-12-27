@@ -16,11 +16,9 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import fit.cvut.org.cz.squash.BuildConfig;
 import fit.cvut.org.cz.squash.business.ManagerFactory;
@@ -28,7 +26,6 @@ import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;

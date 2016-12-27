@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
-import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.ImportFragment;
 
 /**

@@ -21,7 +21,6 @@ import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
-import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;

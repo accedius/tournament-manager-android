@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
