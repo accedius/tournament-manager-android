@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.ImportFragment;
 
@@ -26,7 +27,7 @@ public class ImportActivity extends AbstractToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        ImportInfo competition = intent.getParcelableExtra(COMPETITION);
+        CompetitionImportInfo competition = intent.getParcelableExtra(COMPETITION);
         setTitle(getResources().getString(R.string.import_summary)+" – "+competition.getName());
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {

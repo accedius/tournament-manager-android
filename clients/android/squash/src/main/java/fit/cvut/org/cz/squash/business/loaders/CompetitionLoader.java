@@ -26,10 +26,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
  */
 
 public class CompetitionLoader {
-    public static ImportInfo getImportInfo(Context context, Resources res, ServerCommunicationItem competition, List<TournamentImportInfo> tournamentsInfo,
+    public static CompetitionImportInfo getImportInfo(Context context, Resources res, ServerCommunicationItem competition, List<TournamentImportInfo> tournamentsInfo,
                                            List<PlayerImportInfo> playersInfo, List<Conflict> playersModified) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
-        ImportInfo competitionInfo = new CompetitionImportInfo(importedCompetition.getName(), importedCompetition.getType());
+        CompetitionImportInfo competitionInfo = new CompetitionImportInfo(importedCompetition.getName(), importedCompetition.getType());
 
         List<ServerCommunicationItem> allSubItems = competition.subItems;
         List<ServerCommunicationItem> players = new ArrayList<>();

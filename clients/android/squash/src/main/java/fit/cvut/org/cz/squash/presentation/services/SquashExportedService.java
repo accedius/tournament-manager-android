@@ -19,6 +19,7 @@ import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
+import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
@@ -107,7 +108,7 @@ public class SquashExportedService extends IntentService {
                 ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
                 ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
                 ArrayList<Conflict> playersModified = new ArrayList<>();
-                ImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, getResources(), competition, tournamentsInfo, playersInfo, playersModified);
+                CompetitionImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, getResources(), competition, tournamentsInfo, playersInfo, playersModified);
 
                 Intent res = new Intent(package_name + action);
                 res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
