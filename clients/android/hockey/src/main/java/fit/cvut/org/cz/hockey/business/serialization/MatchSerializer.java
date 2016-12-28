@@ -18,7 +18,7 @@ import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.BaseSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;

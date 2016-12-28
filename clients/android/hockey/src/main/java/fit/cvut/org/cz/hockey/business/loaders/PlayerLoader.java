@@ -16,7 +16,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.helpers.ConflictCreator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 

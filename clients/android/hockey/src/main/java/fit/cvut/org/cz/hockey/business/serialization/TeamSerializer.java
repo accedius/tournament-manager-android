@@ -7,7 +7,7 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 /**
  * Created by kevin on 8.10.2016.
  */
-public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.TeamSerializer {
+public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.TeamSerializer {
     protected static TeamSerializer instance = null;
     protected TeamSerializer(Context context) {
         this.context = context;

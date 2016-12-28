@@ -15,7 +15,7 @@ import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -24,7 +24,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by kevin on 8.10.2016.
  */
-public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.TournamentSerializer {
+public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.TournamentSerializer {
     protected static TournamentSerializer instance = null;
     protected TournamentSerializer(Context context) {
         super(context);

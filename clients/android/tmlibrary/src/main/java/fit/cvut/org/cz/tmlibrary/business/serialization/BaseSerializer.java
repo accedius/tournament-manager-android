@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.serialization.serializers;
+package fit.cvut.org.cz.tmlibrary.business.serialization;
 
 import android.content.Context;
 

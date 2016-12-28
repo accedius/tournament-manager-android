@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
-import fit.cvut.org.cz.tmlibrary.business.serialization.serializers.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -18,7 +18,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by kevin on 8.10.2016.
  */
-public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.serializers.CompetitionSerializer {
+public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.CompetitionSerializer {
     protected static CompetitionSerializer instance = null;
     protected CompetitionSerializer(Context context) {
         super(context);
