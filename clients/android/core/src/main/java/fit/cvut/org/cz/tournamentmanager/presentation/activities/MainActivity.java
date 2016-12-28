@@ -94,17 +94,17 @@ public class MainActivity extends AbstractToolbarActivity {
             case R.id.competitions:
                 setTitle(fit.cvut.org.cz.tmlibrary.R.string.competitions);
                 cf = new SportsFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, cf).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, cf).commitAllowingStateLoss();
                 break;
             case R.id.players:
                 setTitle(fit.cvut.org.cz.tmlibrary.R.string.players);
                 plf = new PlayersListFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, plf).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, plf).commitAllowingStateLoss();
                 break;
             case R.id.settings:
                 setTitle(fit.cvut.org.cz.tmlibrary.R.string.settings);
                 sf = new SettingsFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, sf).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, sf).commitAllowingStateLoss();
                 break;
         }
     }
