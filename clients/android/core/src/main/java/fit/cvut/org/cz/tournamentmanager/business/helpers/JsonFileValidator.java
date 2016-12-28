@@ -8,8 +8,8 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 /**
  * Created by kevin on 19.10.2016.
  */
-public class BaseFileValidator {
-    public static boolean validJsonFile(String fileContent, String sportContext) {
+public class JsonFileValidator {
+    public static boolean valid(String fileContent, String sportContext) {
         try {
             ServerCommunicationItem item = new Gson().fromJson(fileContent, ServerCommunicationItem.class);
             String fileSportContext = String.valueOf(item.syncData.get("sport_context"));

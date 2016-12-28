@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tournamentmanager.business.helpers.BaseFileValidator;
+import fit.cvut.org.cz.tournamentmanager.business.helpers.JsonFileValidator;
 
 /**
  * Created by kevin on 19.10.2016.
@@ -66,7 +66,7 @@ public class FilesHelper {
                 continue;
             }
 
-            if (!BaseFileValidator.validJsonFile(fileContent, sportContext)) {
+            if (!JsonFileValidator.valid(fileContent, sportContext)) {
                 Log.d("IMPORT", "Invalid json file! - "+f.getName());
                 continue;
             }
