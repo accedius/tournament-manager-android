@@ -10,7 +10,7 @@ import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManag
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**

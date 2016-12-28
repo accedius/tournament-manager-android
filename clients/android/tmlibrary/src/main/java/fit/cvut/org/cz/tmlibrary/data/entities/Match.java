@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * Created by Vaclav on 20. 4. 2016.

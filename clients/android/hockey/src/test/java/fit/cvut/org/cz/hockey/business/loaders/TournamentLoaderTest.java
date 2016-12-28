@@ -28,7 +28,7 @@ import fit.cvut.org.cz.hockey.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.hockey.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;

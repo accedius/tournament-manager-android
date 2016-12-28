@@ -16,7 +16,7 @@ import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
@@ -36,10 +36,10 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        String sport_context = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
 
-        competitionID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
+        competitionID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
@@ -82,8 +82,8 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:
                 Intent intent = new Intent(this, CreateCompetitionActivity.class);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionID);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, ((HockeyPackage) this.getApplication()).getSportContext());
+                intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionID);
+                intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, ((HockeyPackage) this.getApplication()).getSportContext());
                 startActivity(intent);
                 break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_order:

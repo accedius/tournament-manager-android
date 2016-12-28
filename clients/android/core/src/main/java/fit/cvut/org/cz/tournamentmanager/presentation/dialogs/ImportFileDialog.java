@@ -10,8 +10,8 @@ import android.support.v7.app.AlertDialog;
 
 import java.io.File;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
-import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHelper;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
  * Created by kevin on 14. 4. 2016.
@@ -31,10 +31,10 @@ public class ImportFileDialog extends DialogFragment {
 
                 Intent intent = new Intent();
                 intent.setClassName(package_name, package_service);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, fileContent);
+                intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
+                intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                intent.putExtra(CrossPackageConstants.EXTRA_JSON, fileContent);
                 getContext().startService(intent);
                 dialog.dismiss();
             }

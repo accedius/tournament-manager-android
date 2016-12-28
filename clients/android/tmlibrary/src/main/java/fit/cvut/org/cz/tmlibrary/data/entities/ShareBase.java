@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerToken;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerTokenType;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 
 /**

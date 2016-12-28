@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
 
@@ -40,7 +40,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
-        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         package_service = getArguments().getString("package_service");
 
         super.onCreate(savedInstanceState);
@@ -50,10 +50,10 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = new Intent();
         intent.setClassName(package_name, package_service);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_STATS);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerID);
+        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_STATS);
+        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+        intent.putExtra(CrossPackageConstants.EXTRA_ID, playerID);
         getContext().startService(intent);
     }
 
@@ -76,7 +76,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         labelParams.weight = 1;
         statsParams.weight = 1;
 
-        ArrayList<PlayerAggregatedStats> ags = intent.getParcelableArrayListExtra(CrossPackageCommunicationConstants.EXTRA_STATS);
+        ArrayList<PlayerAggregatedStats> ags = intent.getParcelableArrayListExtra(CrossPackageConstants.EXTRA_STATS);
         for (PlayerAggregatedStats as : ags) {
             for (PlayerAggregatedStatsRecord asr : as.getRecords()) {
                 if (orientation == landscape || (orientation == portrait && asr.getForPortrait())) {
@@ -98,7 +98,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void registerReceivers() {
-        getActivity().registerReceiver(receiver, new IntentFilter(sport_context + package_name + CrossPackageCommunicationConstants.ACTION_GET_STATS));
+        getActivity().registerReceiver(receiver, new IntentFilter(sport_context + package_name + CrossPackageConstants.ACTION_GET_STATS));
     }
 
     @Override

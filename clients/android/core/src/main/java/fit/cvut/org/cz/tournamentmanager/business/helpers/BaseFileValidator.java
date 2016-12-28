@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.business.serialization.helpers;
+package fit.cvut.org.cz.tournamentmanager.business.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

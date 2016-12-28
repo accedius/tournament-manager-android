@@ -8,24 +8,24 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
-import fit.cvut.org.cz.tmlibrary.data.CursorParser;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
 public class CompetitionService extends AbstractIntentServiceWProgress {
-    public static final String EXTRA_ACTION = CrossPackageCommunicationConstants.EXTRA_ACTION;
-    public static final String EXTRA_PACKAGE = CrossPackageCommunicationConstants.EXTRA_PACKAGE;
+    public static final String EXTRA_ACTION = CrossPackageConstants.EXTRA_ACTION;
+    public static final String EXTRA_PACKAGE = CrossPackageConstants.EXTRA_PACKAGE;
     public static final String EXTRA_COMPETITION = "extra_competition";
     public static final String EXTRA_RESULT= "extra_result";
     public static final String EXTRA_POSITION= "extra_position";
     public static final String EXTRA_CONTENT = "extra_content";
-    public static final String EXTRA_SPORT_CONTEXT = CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT;
-    public static final String EXTRA_TYPE= CrossPackageCommunicationConstants.EXTRA_TYPE;
+    public static final String EXTRA_SPORT_CONTEXT = CrossPackageConstants.EXTRA_SPORT_CONTEXT;
+    public static final String EXTRA_TYPE= CrossPackageConstants.EXTRA_TYPE;
     public static final String EXTRA_DELETE= "extra_delete";
 
     public static final String ACTION_DELETE_COMPETITION = "action_delete_competition";

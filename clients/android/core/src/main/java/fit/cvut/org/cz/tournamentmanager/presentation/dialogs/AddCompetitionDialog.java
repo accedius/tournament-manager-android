@@ -10,9 +10,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHelper;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
  * Created by kevin on 14. 4. 2016.
@@ -32,7 +32,7 @@ public class AddCompetitionDialog extends DialogFragment {
                     case 0: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                         dialog.dismiss();
                         break;

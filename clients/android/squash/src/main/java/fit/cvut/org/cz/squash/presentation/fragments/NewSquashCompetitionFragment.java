@@ -6,7 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 

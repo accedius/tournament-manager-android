@@ -19,12 +19,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.business.serialization.helpers.FilesHelper;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.AddCompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
@@ -62,7 +62,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         activity_create_competition = sport_package.metaData.getString("activity_create_competition");
         activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
         package_service = sport_package.metaData.getString("package_service");
-        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -76,8 +76,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                     }
                 });
@@ -110,8 +110,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
-        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
-        filter.addAction(package_name + CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
+        filter.addAction(package_name + CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED);
+        filter.addAction(package_name + CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
         filter.addAction(CompetitionService.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
         getActivity().registerReceiver(receiver, filter);
@@ -202,22 +202,22 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     View v = getView().findFocus();
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.competition_not_empty_error, Snackbar.LENGTH_LONG).show();
                 }
-            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_EXPORT)) {
-                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
-                String filename = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_NAME);
+            } else if (type.equals(CrossPackageConstants.EXTRA_EXPORT)) {
+                String json = intent.getStringExtra(CrossPackageConstants.EXTRA_JSON);
+                String filename = intent.getStringExtra(CrossPackageConstants.EXTRA_NAME);
                 View v = getView().findFocus();
                 if (FilesHelper.saveFile(filename, json)) {
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_created, Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_failed, Snackbar.LENGTH_LONG).show();
                 }
-            } else if (type.equals(CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO)) {
+            } else if (type.equals(CrossPackageConstants.EXTRA_IMPORT_INFO)) {
                 Intent res = new Intent(getActivity(), ImportActivity.class);
                 res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE, package_service);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON));
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_SERVICE, package_service);
+                res.putExtra(CrossPackageConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageConstants.EXTRA_JSON));
                 res.putExtra(ImportActivity.COMPETITION, intent.getParcelableExtra(ImportActivity.COMPETITION));
                 res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, intent.getParcelableArrayListExtra(ImportActivity.TOURNAMENTS));
                 res.putParcelableArrayListExtra(ImportActivity.PLAYERS, intent.getParcelableArrayListExtra(ImportActivity.PLAYERS));

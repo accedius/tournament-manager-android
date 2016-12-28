@@ -14,7 +14,7 @@ import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashCompetitionFragment;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
@@ -30,12 +30,12 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        String sport_context = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         ((SquashPackage) this.getApplication()).setSportContext(sport_context);
 
         super.onCreate(savedInstanceState);
 
-        long id = getIntent().getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+        long id = getIntent().getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashCompetitionFragment.newInstance(id, NewSquashCompetitionFragment.class)).commit();

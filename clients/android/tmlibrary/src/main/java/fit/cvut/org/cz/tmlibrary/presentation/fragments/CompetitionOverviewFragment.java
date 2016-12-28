@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 
 /**

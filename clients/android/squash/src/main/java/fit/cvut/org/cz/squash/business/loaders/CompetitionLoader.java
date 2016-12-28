@@ -11,7 +11,7 @@ import java.util.Map;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.business.serialization.CompetitionSerializer;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;

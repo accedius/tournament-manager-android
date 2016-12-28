@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
  * Created by kevin on 28.9.2016.
@@ -15,8 +15,8 @@ public class PlayerDetailOnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClassName(CrossPackageCommunicationConstants.CORE, CrossPackageCommunicationConstants.ACTIVITY_PLAYER_DETAIL);
-                intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
+                intent.setClassName(CrossPackageConstants.CORE, CrossPackageConstants.ACTIVITY_PLAYER_DETAIL);
+                intent.putExtra(CrossPackageConstants.EXTRA_ID, playerId);
                 context.startActivity(intent);
             }
         };

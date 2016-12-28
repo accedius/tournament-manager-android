@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.CPConstants;
-import fit.cvut.org.cz.tmlibrary.data.CursorParser;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CursorParser;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**

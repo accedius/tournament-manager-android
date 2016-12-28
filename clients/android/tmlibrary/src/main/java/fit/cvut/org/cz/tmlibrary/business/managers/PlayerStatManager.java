@@ -9,7 +9,7 @@ import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 

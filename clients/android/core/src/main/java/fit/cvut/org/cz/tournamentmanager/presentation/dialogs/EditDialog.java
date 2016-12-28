@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
@@ -29,8 +29,8 @@ public class EditDialog extends DialogFragment {
                     case 0:{
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                         break;
                     }

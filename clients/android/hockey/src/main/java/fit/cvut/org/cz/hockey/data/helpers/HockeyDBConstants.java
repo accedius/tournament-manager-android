@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.hockey.data;
+package fit.cvut.org.cz.hockey.data.helpers;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.

@@ -25,7 +25,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
@@ -40,19 +40,19 @@ public class HockeyService extends AbstractIntentServiceWProgress {
 
     @Override
     protected String getActionKey() {
-        return CrossPackageCommunicationConstants.EXTRA_ACTION;
+        return CrossPackageConstants.EXTRA_ACTION;
     }
 
     @Override
     protected void doWork(Intent intent) throws SQLException {
-        String action = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_ACTION);
-        String package_name = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
-        String sportContext = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        String action = intent.getStringExtra(CrossPackageConstants.EXTRA_ACTION);
+        String package_name = intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE);
+        String sportContext = intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         ((HockeyPackage) getApplicationContext()).setSportContext(sportContext);
 
         switch (action) {
-            case CrossPackageCommunicationConstants.ACTION_GET_STATS: {
-                long id = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+            case CrossPackageConstants.ACTION_GET_STATS: {
+                long id = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
                 AggregatedStatistics ags = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsToSend = new ArrayList<>();
@@ -74,38 +74,38 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 statsToSend.add(as);
 
                 Intent res = new Intent(sportContext + package_name + action);
-                res.putParcelableArrayListExtra(CrossPackageCommunicationConstants.EXTRA_STATS, statsToSend);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                res.putParcelableArrayListExtra(CrossPackageConstants.EXTRA_STATS, statsToSend);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_DELETE_COMPETITION: {
+            case CrossPackageConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(action);
-                long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+                long compId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
                 if (ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(compId))
-                    res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_OK);
+                    res.putExtra(CrossPackageConstants.EXTRA_OUTCOME, CrossPackageConstants.OUTCOME_OK);
                 else
-                    res.putExtra(CrossPackageCommunicationConstants.EXTRA_OUTCOME, CrossPackageCommunicationConstants.OUTCOME_FAILED);
+                    res.putExtra(CrossPackageConstants.EXTRA_OUTCOME, CrossPackageConstants.OUTCOME_FAILED);
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED: {
+            case CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
-                long compId = intent.getLongExtra(CrossPackageCommunicationConstants.EXTRA_ID, -1);
+                long compId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
                 Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(compId);
                 competition.setSportContext(sportContext);
                 String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
 
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_NAME, competition.getFilename());
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_EXPORT);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                res.putExtra(CrossPackageConstants.EXTRA_NAME, competition.getFilename());
+                res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.EXTRA_EXPORT);
+                res.putExtra(CrossPackageConstants.EXTRA_JSON, json);
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
-                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
+            case CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
+                String json = intent.getStringExtra(CrossPackageConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
 
@@ -115,10 +115,10 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 CompetitionImportInfo competitionInfo = CompetitionLoader.getImportInfo(this, getResources(), competition, tournamentsInfo, playersInfo, playersModified);
 
                 Intent res = new Intent(package_name + action);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_TYPE, CrossPackageCommunicationConstants.EXTRA_IMPORT_INFO);
-                res.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, json);
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.EXTRA_IMPORT_INFO);
+                res.putExtra(CrossPackageConstants.EXTRA_JSON, json);
                 res.putExtra(ImportActivity.COMPETITION, competitionInfo);
                 res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
                 res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
@@ -126,14 +126,14 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 sendBroadcast(res);
                 break;
             }
-            case CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION: {
+            case CrossPackageConstants.ACTION_IMPORT_FILE_COMPETITION: {
                 // TODO Begin transaction ?
                 /*DatabaseFactory.getInstance().getDatabase(this).beginTransaction();
                 try {
                 */
                 Intent res = new Intent(package_name + action);
-                String json = intent.getStringExtra(CrossPackageCommunicationConstants.EXTRA_JSON);
-                Map<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS);
+                String json = intent.getStringExtra(CrossPackageConstants.EXTRA_JSON);
+                Map<String, String> conflictSolutions = (HashMap<String, String>)intent.getExtras().getSerializable(CrossPackageConstants.EXTRA_CONFLICTS);
 
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);

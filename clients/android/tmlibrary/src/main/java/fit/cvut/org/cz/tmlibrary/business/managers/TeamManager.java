@@ -11,7 +11,7 @@ import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;

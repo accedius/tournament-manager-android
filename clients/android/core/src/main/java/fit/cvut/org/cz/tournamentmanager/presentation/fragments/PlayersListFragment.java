@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -138,7 +138,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_player);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, playerId);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, playerId);
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                         startActivity(intent);
                     }

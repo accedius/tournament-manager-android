@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tournamentmanager.business.serialization.helpers;
+package fit.cvut.org.cz.tournamentmanager.presentation.helpers;
 
 import android.os.Environment;
 import android.util.Log;
@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.serialization.helpers.BaseFileValidator;
+import fit.cvut.org.cz.tournamentmanager.business.helpers.BaseFileValidator;
 
 /**
  * Created by kevin on 19.10.2016.

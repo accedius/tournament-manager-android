@@ -6,7 +6,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**

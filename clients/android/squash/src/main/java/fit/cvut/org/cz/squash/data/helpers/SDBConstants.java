@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.squash.data;
+package fit.cvut.org.cz.squash.data.helpers;
 
 /**
  * This class contains table names and columns used in database specific for thi module

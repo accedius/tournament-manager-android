@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
@@ -35,7 +35,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerID = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
-        sport_context = getArguments().getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
         action += "." + package_name + sport_context;
@@ -53,8 +53,8 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_detail_competition);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         startActivity(intent);
                     }
                 });

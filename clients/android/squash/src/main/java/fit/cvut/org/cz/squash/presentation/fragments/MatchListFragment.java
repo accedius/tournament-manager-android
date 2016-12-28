@@ -18,7 +18,7 @@ import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
 import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;

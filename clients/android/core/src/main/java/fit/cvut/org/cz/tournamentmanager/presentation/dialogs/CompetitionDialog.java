@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
@@ -33,10 +33,10 @@ public class CompetitionDialog extends DialogFragment {
                     case 0: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, package_service);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_GET_COMPETITION_SERIALIZED);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_PACKAGE, package_name);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED);
+                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
                         getContext().startService(intent);
                         dialog.dismiss();
                         break;
@@ -44,8 +44,8 @@ public class CompetitionDialog extends DialogFragment {
                     case 1: {
                         Intent intent = new Intent();
                         intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ID, competition_id);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
                         startActivity(intent);
                         dialog.dismiss();
                         break;

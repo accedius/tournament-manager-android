@@ -11,8 +11,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * Created by Vaclav on 12. 3. 2016.

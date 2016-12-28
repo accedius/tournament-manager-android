@@ -16,11 +16,11 @@ import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
@@ -37,7 +37,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        playerID = getIntent().getExtras().getLong(CrossPackageCommunicationConstants.EXTRA_ID);
+        playerID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
         sport_contexts = PackagesInfo.getSportContexts(this);
 
         List<Setting> ignoredSports = ManagerFactory.getInstance(this).getEntityManager(Setting.class).getAll();
@@ -63,7 +63,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             b.putLong("player_id", playerID);
             b.putString("package_name", package_name);
             b.putString("sport_name", info.metaData.getString("sport_name"));
-            b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
+            b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
             b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
             b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
             b.putString("package_service", info.metaData.getString("package_service"));

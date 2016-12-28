@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.data;
+package fit.cvut.org.cz.tmlibrary.data.helpers;
 
 /**
  * Created by Vaclav on 25. 3. 2016.

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.business.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**

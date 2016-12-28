@@ -26,7 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
  * Fragment for settings

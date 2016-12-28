@@ -10,8 +10,8 @@ import android.support.annotation.Nullable;
 
 import java.util.HashMap;
 
-import fit.cvut.org.cz.tmlibrary.data.CPConstants;
-import fit.cvut.org.cz.tmlibrary.data.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * This provider allows core to get hold of data about competitions

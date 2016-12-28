@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.CPConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
  * Created by kevin on 4.4.2016.

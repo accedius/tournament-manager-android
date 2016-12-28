@@ -19,7 +19,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ConflictAdapter;
@@ -55,13 +55,13 @@ public class ImportFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        packageName = args.getString(CrossPackageCommunicationConstants.EXTRA_PACKAGE);
-        sportService = args.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_SERVICE);
+        packageName = args.getString(CrossPackageConstants.EXTRA_PACKAGE);
+        sportService = args.getString(CrossPackageConstants.EXTRA_SPORT_SERVICE);
         tournaments = args.getParcelableArrayList(ImportActivity.TOURNAMENTS);
         players = args.getParcelableArrayList(ImportActivity.PLAYERS);
         conflicts = args.getParcelableArrayList(ImportActivity.CONFLICTS);
-        jsonContent = args.getString(CrossPackageCommunicationConstants.EXTRA_JSON);
-        sportContext = args.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+        jsonContent = args.getString(CrossPackageConstants.EXTRA_JSON);
+        sportContext = args.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
 
         tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ImportActivity.COMPETITION), getResources());
         playersAdapter = new ImportPlayerAdapter();
@@ -126,11 +126,11 @@ public class ImportFragment extends Fragment {
 
         Intent intent = new Intent();
         intent.setClassName(packageName, sportService);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_JSON, jsonContent);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sportContext);
-        intent.putExtra(CrossPackageCommunicationConstants.EXTRA_ACTION, CrossPackageCommunicationConstants.ACTION_IMPORT_FILE_COMPETITION);
+        intent.putExtra(CrossPackageConstants.EXTRA_JSON, jsonContent);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_IMPORT_FILE_COMPETITION);
         Bundle b = new Bundle();
-        b.putSerializable(CrossPackageCommunicationConstants.EXTRA_CONFLICTS, playersModified);
+        b.putSerializable(CrossPackageConstants.EXTRA_CONFLICTS, playersModified);
         intent.putExtras(b);
         getContext().startService(intent);
         getActivity().finish();

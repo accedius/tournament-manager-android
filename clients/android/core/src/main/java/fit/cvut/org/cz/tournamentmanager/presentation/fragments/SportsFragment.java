@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.presentation.CrossPackageCommunicationConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.presentation.PackagesInfo;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 public class SportsFragment extends Fragment {
     private DefaultViewPagerAdapter adapter = null;
@@ -51,10 +51,10 @@ public class SportsFragment extends Fragment {
 
             Bundle b = new Bundle();
             b.putParcelable("sport_package", entry.getValue());
-            b.putString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT, sport_name);
+            b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_name);
 
             CompetitionsListFragment clf = new CompetitionsListFragment();
-            String sport_context = b.getString(CrossPackageCommunicationConstants.EXTRA_SPORT_CONTEXT);
+            String sport_context = b.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
             ApplicationInfo sport_package = b.getParcelable("sport_package");
             clf.setAction(sport_context + clf.getAction() + "." + sport_package.metaData.getString("package_name"));
             clf.setArguments(b);
