@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
@@ -28,20 +28,9 @@ public class CoreDAOFactory extends DAOFactory {
         try {
             TableUtils.createTable(connectionSource, Player.class);
             TableUtils.createTable(connectionSource, Setting.class);
-/*            ArrayList<Player> playerArrayList = new ArrayList<Player>() {
-                {
-                    add(new Player(1, "Martin", "martin@seznam.cz", ""));
-                    add(new Player(2, "Aleš", "ales@valenta.cz", ""));
-                    add(new Player(3, "Jarda", "jarda@frk.cz", ""));
-                    add(new Player(4, "Pavel", "pavel@frk.cz", ""));
-                    add(new Player(5, "Honza", "honza@frk.cz", ""));
-                    add(new Player(6, "Zdeněk", "zdenda@frk.cz", ""));
-                    add(new Player(7, "Tomáš", "tomnas@frk.cz", ""));
-                    add(new Player(8, "Radek", "Radek@frk.cz", ""));
-                }
-            };
-            getPlayerDao().create(playerArrayList);*/
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

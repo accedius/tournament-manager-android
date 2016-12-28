@@ -2,13 +2,13 @@ package fit.cvut.org.cz.tournamentmanager.business;
 
 import android.content.Context;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.PlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.SettingManager;
+import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
+import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tournamentmanager.data.CoreDAOFactory;
@@ -52,12 +52,6 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
     public static IManagerFactory getInstance(Context c) {
         context = c;
-        if (instance == null)
-            instance = new ManagerFactory();
-        return instance;
-    }
-
-    public static IManagerFactory getInstance() {
         if (instance == null)
             instance = new ManagerFactory();
         return instance;

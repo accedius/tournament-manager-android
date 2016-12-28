@@ -1,10 +1,11 @@
-package fit.cvut.org.cz.tmlibrary.business.managers;
+package fit.cvut.org.cz.tournamentmanager.business.managers;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
+import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**

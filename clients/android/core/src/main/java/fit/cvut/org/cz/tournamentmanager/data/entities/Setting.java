@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.data.entities;
+package fit.cvut.org.cz.tournamentmanager.data.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

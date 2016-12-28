@@ -19,8 +19,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ISettingManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
+import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;

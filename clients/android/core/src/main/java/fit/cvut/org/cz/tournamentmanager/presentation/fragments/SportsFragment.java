@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
