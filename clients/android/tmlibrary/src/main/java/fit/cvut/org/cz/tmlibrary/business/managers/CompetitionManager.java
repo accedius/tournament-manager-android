@@ -21,7 +21,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by kevin on 30. 3. 2016.
  */
-public class CompetitionManager extends TManager<Competition> implements ICompetitionManager {
+public class CompetitionManager extends BaseManager<Competition> implements ICompetitionManager {
     @Override
     protected Class<Competition> getMyClass() {
         return Competition.class;

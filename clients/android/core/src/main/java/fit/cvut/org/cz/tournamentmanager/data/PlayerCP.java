@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 public class PlayerCP extends ContentProvider {
     public static final String AUTHORITY = "fit.cvut.org.cz.tournamentmanager.data";
 
-    private CoreDBHelper helper;
+    private CoreDAOFactory helper;
 
     private static final int PLAYERS_ALL = 0;
     private static final int PLAYER_UPDATE = 1;
@@ -31,7 +31,7 @@ public class PlayerCP extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        helper = new CoreDBHelper(getContext());
+        helper = new CoreDAOFactory(getContext());
         return true;
     }
 

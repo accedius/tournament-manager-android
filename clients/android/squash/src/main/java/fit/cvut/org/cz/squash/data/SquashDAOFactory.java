@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
+import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -25,10 +25,10 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class SquashDBHelper extends SportDBHelper implements IDAOFactory {
+public class SquashDAOFactory extends DAOFactory implements IDAOFactory {
     private static final int DBVersion = 1;
 
-    public SquashDBHelper(Context context, String name) {
+    public SquashDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
     }
 

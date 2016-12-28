@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
 /**
  * Created by kevin on 30.11.2016.
  */
-abstract public class ParticipantStatManager extends TManager<ParticipantStat> implements IParticipantStatManager {
+abstract public class ParticipantStatManager extends BaseManager<ParticipantStat> implements IParticipantStatManager {
     @Override
     public List<ParticipantStat> getByParticipantId(long participantId) {
         try {

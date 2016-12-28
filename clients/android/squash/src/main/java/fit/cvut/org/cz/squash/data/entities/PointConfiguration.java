@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import fit.cvut.org.cz.squash.data.helpers.SDBConstants;
+import fit.cvut.org.cz.squash.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
@@ -14,15 +14,15 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
  * methods return how much points should be awarded
  * Created by Vaclav on 19. 4. 2016.
  */
-@DatabaseTable(tableName = SDBConstants.tPOINT_CONFIG)
+@DatabaseTable(tableName = DBConstants.tPOINT_CONFIG)
 public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration implements Parcelable, IEntity {
-    @DatabaseField(columnName = SDBConstants.cWIN)
+    @DatabaseField(columnName = DBConstants.cWIN)
     private int win;
 
-    @DatabaseField(columnName = SDBConstants.cDRAW)
+    @DatabaseField(columnName = DBConstants.cDRAW)
     private int draw;
 
-    @DatabaseField(columnName = SDBConstants.cLOSS)
+    @DatabaseField(columnName = DBConstants.cLOSS)
     private int loss;
 
     public PointConfiguration() {}

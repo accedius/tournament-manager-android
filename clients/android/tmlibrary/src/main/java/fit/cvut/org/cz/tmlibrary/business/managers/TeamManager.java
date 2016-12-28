@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 /**
  * Created by kevin on 9.11.2016.
  */
-abstract public class TeamManager extends TManager<Team> implements ITeamManager {
+abstract public class TeamManager extends BaseManager<Team> implements ITeamManager {
     @Override
     protected Class<Team> getMyClass() {
         return Team.class;

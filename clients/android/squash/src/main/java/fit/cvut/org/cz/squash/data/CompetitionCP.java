@@ -26,7 +26,7 @@ public class CompetitionCP extends ContentProvider {
     private static final String TENNIS_NAME = "Tennis";
     private static final String VOLLEYBALL_NAME = "Volleyball";
 
-    private SquashDBHelper helper;
+    private SquashDAOFactory helper;
 
     private static final int COMPETITION_ONE = 1;
     private static final int EMPTY_COMPETITION_ONE = 2;
@@ -94,10 +94,10 @@ public class CompetitionCP extends ContentProvider {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 
         if (uriType == COMPETITIONS_ALL) {
-            helper = new SquashDBHelper(getContext(), sport);
+            helper = new SquashDAOFactory(getContext(), sport);
             builder.setTables(DBConstants.tCOMPETITIONS);
         } else if (uriType == COMPETITIONS_BY_PLAYER) {
-            helper = new SquashDBHelper(getContext(), sport);
+            helper = new SquashDAOFactory(getContext(), sport);
             String playerID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tPLAYERS_IN_COMPETITION + " join " + DBConstants.tCOMPETITIONS + " ON " +
@@ -107,7 +107,7 @@ public class CompetitionCP extends ContentProvider {
             projection = new String[]{DBConstants.tCOMPETITIONS + ".*"};
             selection = DBConstants.tPLAYERS_IN_COMPETITION + "." + DBConstants.cPLAYER_ID + " = " + playerID;
         } else if (uriType == EMPTY_COMPETITION_ONE) {
-            helper = new SquashDBHelper(getContext(), sport);
+            helper = new SquashDAOFactory(getContext(), sport);
             String competitionID = uri.getPathSegments().get(SEGMENT_ID);
             builder.setTables(
                     DBConstants.tCOMPETITIONS +
@@ -147,7 +147,7 @@ public class CompetitionCP extends ContentProvider {
         String sport = getSport(uriType);
         uriType %= 100;
         if (uriType == DELETE_COMPETITION) {
-            helper = new SquashDBHelper(getContext(), sport);
+            helper = new SquashDAOFactory(getContext(), sport);
             String competitionID = uri.getPathSegments().get(SEGMENT_ID);
             String where = DBConstants.tCOMPETITIONS + "." + DBConstants.cID + " = " + competitionID;
             return helper.getWritableDatabase().delete(DBConstants.tCOMPETITIONS, where, null);

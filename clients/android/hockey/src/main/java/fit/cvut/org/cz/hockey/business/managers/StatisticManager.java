@@ -15,7 +15,7 @@ import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -29,7 +29,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
-public class StatisticManager extends TManager<AggregatedStatistics> implements IStatisticManager {
+public class StatisticManager extends BaseManager<AggregatedStatistics> implements IStatisticManager {
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;

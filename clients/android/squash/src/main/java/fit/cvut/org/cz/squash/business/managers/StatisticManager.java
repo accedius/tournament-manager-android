@@ -17,7 +17,7 @@ import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -34,7 +34,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by Vaclav on 7. 4. 2016.
  */
-public class StatisticManager extends TManager<SAggregatedStats> implements IStatisticManager {
+public class StatisticManager extends BaseManager<SAggregatedStats> implements IStatisticManager {
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;

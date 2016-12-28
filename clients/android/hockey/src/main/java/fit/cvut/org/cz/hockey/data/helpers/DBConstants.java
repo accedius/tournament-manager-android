@@ -5,7 +5,7 @@ package fit.cvut.org.cz.hockey.data.helpers;
  *
  * static class with database constants for hockey
  */
-public class HockeyDBConstants {
+public class DBConstants {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
 

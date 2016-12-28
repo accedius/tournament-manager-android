@@ -9,7 +9,7 @@ import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 /**
  * Created by kevin on 2.12.2016.
  */
-public class PlayerStatManager extends TManager<PlayerStat> implements IPlayerStatManager {
+public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlayerStatManager {
     @Override
     public List<PlayerStat> getByPlayerId(long playerId) {
         try {

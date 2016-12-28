@@ -13,7 +13,7 @@ import fit.cvut.org.cz.squash.business.managers.PointConfigurationManager;
 import fit.cvut.org.cz.squash.business.managers.StatisticManager;
 import fit.cvut.org.cz.squash.business.managers.TeamManager;
 import fit.cvut.org.cz.squash.business.managers.TournamentManager;
-import fit.cvut.org.cz.squash.data.SquashDBHelper;
+import fit.cvut.org.cz.squash.data.SquashDAOFactory;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
@@ -21,7 +21,7 @@ import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PlayerStatManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -43,7 +43,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
     @Override
     public <M extends IManager<E>, E extends IEntity> M getEntityManager(Class<E> entity) {
-        TManager<? extends IEntity> manager = null;
+        BaseManager<? extends IEntity> manager = null;
 
         // Competition
         if (entity.getName().equals(Competition.class.getName())) {
@@ -99,7 +99,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
     public IDAOFactory getDaoFactory() {
         String name = ((SquashPackage) context.getApplicationContext()).getSportContext();
         if (!helpersMap.containsKey(name))
-            helpersMap.put(name, new SquashDBHelper(context, name));
+            helpersMap.put(name, new SquashDAOFactory(context, name));
         return helpersMap.get(name);
     }
 

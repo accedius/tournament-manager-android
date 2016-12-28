@@ -6,20 +6,19 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import fit.cvut.org.cz.squash.data.helpers.SDBConstants;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.squash.data.helpers.DBConstants;
 
 /**
  * Created by kevin on 9.12.2016.
  */
 
-@DatabaseTable(tableName = DBConstants.tPARTICIPANT_STATS)
+@DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tPARTICIPANT_STATS)
 public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat implements Parcelable {
 
-    @DatabaseField(columnName = SDBConstants.cSET_NUMBER)
+    @DatabaseField(columnName = DBConstants.cSET_NUMBER)
     private int setNumber;
 
-    @DatabaseField(columnName = SDBConstants.cPOINTS)
+    @DatabaseField(columnName = DBConstants.cPOINTS)
     private int points;
 
     public ParticipantStat() {}

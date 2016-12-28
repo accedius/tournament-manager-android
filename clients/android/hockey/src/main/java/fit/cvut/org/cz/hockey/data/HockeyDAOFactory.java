@@ -12,7 +12,7 @@ import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
+import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -24,10 +24,10 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class HockeyDBHelper extends SportDBHelper {
+public class HockeyDAOFactory extends DAOFactory {
     private static final int DBVersion = 1;
 
-    public HockeyDBHelper(Context context, String name) {
+    public HockeyDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
     }
 

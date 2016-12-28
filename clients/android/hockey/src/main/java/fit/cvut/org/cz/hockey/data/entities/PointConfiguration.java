@@ -6,36 +6,36 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import fit.cvut.org.cz.hockey.data.helpers.HockeyDBConstants;
+import fit.cvut.org.cz.hockey.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * Created by atgot_000 on 11. 4. 2016.
  */
-@DatabaseTable(tableName = HockeyDBConstants.tCONFIGURATIONS)
+@DatabaseTable(tableName = DBConstants.tCONFIGURATIONS)
 public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration implements Parcelable, IEntity {
-    @DatabaseField(columnName = HockeyDBConstants.cNTW)
+    @DatabaseField(columnName = DBConstants.cNTW)
     public int ntW;
 
-    @DatabaseField(columnName = HockeyDBConstants.cNTD)
+    @DatabaseField(columnName = DBConstants.cNTD)
     public int ntD;
 
-    @DatabaseField(columnName = HockeyDBConstants.cNTL)
+    @DatabaseField(columnName = DBConstants.cNTL)
     public int ntL;
 
-    @DatabaseField(columnName = HockeyDBConstants.cOTW)
+    @DatabaseField(columnName = DBConstants.cOTW)
     public int otW;
 
-    @DatabaseField(columnName = HockeyDBConstants.cOTD)
+    @DatabaseField(columnName = DBConstants.cOTD)
     public int otD;
 
-    @DatabaseField(columnName = HockeyDBConstants.cOTL)
+    @DatabaseField(columnName = DBConstants.cOTL)
     public int otL;
 
-    @DatabaseField(columnName = HockeyDBConstants.cSOW)
+    @DatabaseField(columnName = DBConstants.cSOW)
     public int soW;
 
-    @DatabaseField(columnName = HockeyDBConstants.cSOL)
+    @DatabaseField(columnName = DBConstants.cSOL)
     public int soL;
 
     public PointConfiguration() {}

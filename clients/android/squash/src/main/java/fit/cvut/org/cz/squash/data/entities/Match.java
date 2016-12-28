@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
-import fit.cvut.org.cz.squash.data.helpers.SDBConstants;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.squash.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
@@ -19,9 +18,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 /**
  * Created by kevin on 9.12.2016.
  */
-@DatabaseTable(tableName = DBConstants.tMATCHES)
+@DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
-    @DatabaseField(columnName = SDBConstants.cSETS_NUMBER)
+    @DatabaseField(columnName = DBConstants.cSETS_NUMBER)
     private int setsNumber;
 
     private String homeName;

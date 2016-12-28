@@ -16,11 +16,11 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 /**
  * Created by kevin on 5.11.2016.
  */
-abstract public class SportDBHelper extends OrmLiteSqliteOpenHelper implements IDAOFactory {
+abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAOFactory {
     protected String DBName;
     private Map<String, Dao<?, Long>> daoMap = new HashMap<>();
 
-    public SportDBHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
+    public DAOFactory(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
         DBName = databaseName;
     }

@@ -4,14 +4,14 @@ import android.content.Context;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.PlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.SettingManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
-import fit.cvut.org.cz.tournamentmanager.data.CoreDBHelper;
+import fit.cvut.org.cz.tournamentmanager.data.CoreDAOFactory;
 
 /**
  * Created by kevin on 30. 3. 2016.
@@ -23,7 +23,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
     @Override
     public <M extends IManager<E>, E extends IEntity> M getEntityManager(Class<E> entity) {
-        TManager<? extends IEntity> manager = null;
+        BaseManager<? extends IEntity> manager = null;
 
         // Setting
         if (entity.getName().equals(Setting.class.getName())) {
@@ -46,7 +46,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
     @Override
     public IDAOFactory getDaoFactory() {
         if (helper == null)
-            helper = new CoreDBHelper(context);
+            helper = new CoreDAOFactory(context);
         return helper;
     }
 

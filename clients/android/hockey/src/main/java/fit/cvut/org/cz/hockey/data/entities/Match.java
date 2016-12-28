@@ -10,20 +10,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import fit.cvut.org.cz.hockey.data.helpers.HockeyDBConstants;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.hockey.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Created by atgot_000 on 20. 4. 2016.
  */
-@DatabaseTable(tableName = DBConstants.tMATCHES)
+@DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
-    @DatabaseField(columnName = HockeyDBConstants.cSHOOTOUTS)
+    @DatabaseField(columnName = DBConstants.cSHOOTOUTS)
     private boolean shootouts;
 
-    @DatabaseField(columnName = HockeyDBConstants.cOVERTIME)
+    @DatabaseField(columnName = DBConstants.cOVERTIME)
     private boolean overtime;
 
     private String homeName;

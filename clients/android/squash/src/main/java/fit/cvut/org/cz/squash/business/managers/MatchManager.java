@@ -18,7 +18,7 @@ import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -36,7 +36,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 /**
  * Created by Vaclav on 10. 4. 2016.
  */
-public class MatchManager extends TManager<Match> implements IMatchManager {
+public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
     protected Class<Match> getMyClass() {
         return Match.class;

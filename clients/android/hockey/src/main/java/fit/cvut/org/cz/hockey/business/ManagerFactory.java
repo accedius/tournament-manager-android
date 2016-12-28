@@ -14,14 +14,14 @@ import fit.cvut.org.cz.hockey.business.managers.PointConfigurationManager;
 import fit.cvut.org.cz.hockey.business.managers.StatisticManager;
 import fit.cvut.org.cz.hockey.business.managers.TeamManager;
 import fit.cvut.org.cz.hockey.business.managers.TournamentManager;
-import fit.cvut.org.cz.hockey.data.HockeyDBHelper;
+import fit.cvut.org.cz.hockey.data.HockeyDAOFactory;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.ParticipantStat;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.TManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -42,7 +42,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
     @Override
     public <M extends IManager<E>, E extends IEntity> M getEntityManager(Class<E> entity) {
-        TManager<? extends IEntity> manager = null;
+        BaseManager<? extends IEntity> manager = null;
 
         // Competition
         if (entity.getName().equals(Competition.class.getName())) {
@@ -98,7 +98,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
     public IDAOFactory getDaoFactory() {
         String name = ((HockeyPackage) context.getApplicationContext()).getSportContext();
         if (!helpersMap.containsKey(name))
-            helpersMap.put(name, new HockeyDBHelper(context, name));
+            helpersMap.put(name, new HockeyDAOFactory(context, name));
         return helpersMap.get(name);
     }
 

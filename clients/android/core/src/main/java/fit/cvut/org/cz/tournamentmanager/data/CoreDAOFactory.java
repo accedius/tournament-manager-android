@@ -8,18 +8,18 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
+import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Setting;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
-public class CoreDBHelper extends SportDBHelper {
+public class CoreDAOFactory extends DAOFactory {
     private static final String DBName = "TMCore";
     private static final int DBVersion = 1;
 
-    public CoreDBHelper(Context context) {
+    public CoreDAOFactory(Context context) {
         super(context, DBName, null, DBVersion);
     }
 

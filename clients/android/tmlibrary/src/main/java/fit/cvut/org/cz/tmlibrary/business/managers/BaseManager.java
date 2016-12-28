@@ -1,51 +1,39 @@
 package fit.cvut.org.cz.tmlibrary.business.managers;
 
-import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.SportDBHelper;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * Created by kevin on 30.11.2016.
+ * Created by kevin on 14.12.2016.
  */
-abstract public class BaseManager<T extends IEntity> implements IManager<T> {
-    protected Context context;
-    protected SportDBHelper sportDBHelper;
-    protected IPackagePlayerManager corePlayerManager;
 
-    abstract protected Dao<T, Long> getDao();
-    public BaseManager(Context context, IPackagePlayerManager corePlayerManager, SportDBHelper sportDBHelper) {
-        this.context = context;
-        this.corePlayerManager = corePlayerManager;
-        this.sportDBHelper = sportDBHelper;
-    }
+public abstract class BaseManager<T extends IEntity> implements IManager<T> {
+    abstract protected Class<T> getMyClass();
+    protected IManagerFactory managerFactory;
 
-    @Override
     public void insert(T entity) {
         try {
-            getDao().create(entity);
-        } catch (SQLException e) {}
+            managerFactory.getDaoFactory().getMyDao(getMyClass()).create(entity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
     public void update(T entity) {
         try {
-            getDao().update(entity);
+            managerFactory.getDaoFactory().getMyDao(getMyClass()).update(entity);
         } catch (SQLException e) {}
     }
 
     @Override
     public boolean delete(long id) {
         try {
-            getDao().deleteById(id);
+            managerFactory.getDaoFactory().getMyDao(getMyClass()).deleteById(id);
             return true;
         } catch (SQLException e) {
             return false;
@@ -53,9 +41,18 @@ abstract public class BaseManager<T extends IEntity> implements IManager<T> {
     }
 
     @Override
+    public List<T> getByColumn(String column, Object value) {
+        try {
+            return managerFactory.getDaoFactory().getMyDao(getMyClass()).queryForEq(column, value);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @Override
     public T getById(long id) {
         try {
-            return getDao().queryForId(id);
+            return managerFactory.getDaoFactory().getMyDao(getMyClass()).queryForId(id);
         } catch (SQLException e) {
             return null;
         }
@@ -64,9 +61,17 @@ abstract public class BaseManager<T extends IEntity> implements IManager<T> {
     @Override
     public List<T> getAll() {
         try {
-            return getDao().queryForAll();
+            return managerFactory.getDaoFactory().getMyDao(getMyClass()).queryForAll();
         } catch (SQLException e) {
             return new ArrayList<T>();
         }
+    }
+
+    public IManagerFactory getManagerFactory() {
+        return managerFactory;
+    }
+
+    public void setManagerFactory(IManagerFactory managerFactory) {
+        this.managerFactory = managerFactory;
     }
 }

@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 /**
  * Created by kevin on 9.11.2016.
  */
-abstract public class MatchManager extends TManager<Match> implements IMatchManager {
+abstract public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
     public List<Match> getByTournamentId(long tournamentId) {
         try {

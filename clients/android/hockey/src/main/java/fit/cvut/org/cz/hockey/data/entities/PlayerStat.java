@@ -6,25 +6,24 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import fit.cvut.org.cz.hockey.data.helpers.HockeyDBConstants;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.hockey.data.helpers.DBConstants;
 
 /**
  * Created by kevin on 2.12.2016.
  */
-@DatabaseTable(tableName = DBConstants.tPLAYER_STATS)
+@DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tPLAYER_STATS)
 public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat implements Parcelable {
 
-    @DatabaseField(columnName = HockeyDBConstants.cGOALS)
+    @DatabaseField(columnName = DBConstants.cGOALS)
     private int goals;
 
-    @DatabaseField(columnName = HockeyDBConstants.cASSISTS)
+    @DatabaseField(columnName = DBConstants.cASSISTS)
     private int assists;
 
-    @DatabaseField(columnName = HockeyDBConstants.cPLUS_MINUS)
+    @DatabaseField(columnName = DBConstants.cPLUS_MINUS)
     private int plus_minus;
 
-    @DatabaseField(columnName = HockeyDBConstants.cSAVES)
+    @DatabaseField(columnName = DBConstants.cSAVES)
     private int saves;
 
     public PlayerStat(PlayerStat p) {

@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
  * Created by kevin on 17.12.2016.
  */
 
-abstract public class ParticipantManager extends TManager<Participant> implements IParticipantManager {
+abstract public class ParticipantManager extends BaseManager<Participant> implements IParticipantManager {
     @Override
     protected Class<Participant> getMyClass() {
     return Participant.class;
