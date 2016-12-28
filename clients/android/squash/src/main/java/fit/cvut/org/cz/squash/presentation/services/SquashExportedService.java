@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
@@ -23,8 +24,11 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 
@@ -45,16 +49,61 @@ public class SquashExportedService extends IntentService {
         ((SquashPackage) getApplicationContext()).setSportContext(sport_context);
 
         switch (action){
+            case CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS: {
+                Intent res = new Intent(package_name + action);
+                List<Competition> competitions = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getAll();
+                for (Competition competition : competitions) {
+                    competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+                }
+
+                res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.TYPE_COMPETITION);
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putParcelableArrayListExtra(CrossPackageConstants.EXTRA_COMPETITION, new ArrayList<>(competitions));
+                sendBroadcast(res);
+                break;
+            }
+            case CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER: {
+                Intent res = new Intent(package_name + action);
+                long playerId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
+                ArrayList<Competition> competitions = new ArrayList<>();
+                List<Competition> allCompetitions = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getAll();
+
+                boolean containsPlayer;
+                for (Competition competition : allCompetitions) {
+                    containsPlayer = false;
+                    List<Player> players = ((ICompetitionManager) ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(competition.getId());
+                    for (Player player : players) {
+                        if (player.getId() == playerId) {
+                            containsPlayer = true;
+                            break;
+                        }
+                    }
+
+                    if (containsPlayer)
+                        competitions.add(competition);
+                }
+
+                for (Competition competition : competitions) {
+                    competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+                }
+
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                res.putParcelableArrayListExtra(CrossPackageConstants.EXTRA_COMPETITION, new ArrayList<>(competitions));
+                sendBroadcast(res);
+                break;
+            }
             case CrossPackageConstants.ACTION_DELETE_COMPETITION: {
-                long id = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
-                Intent result = new Intent(action);
+                Intent res = new Intent(package_name + action);
+                long compId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
+                res.putExtra(CrossPackageConstants.EXTRA_RESULT, ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(compId));
 
-                if (ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(id))
-                    result.putExtra(CrossPackageConstants.EXTRA_OUTCOME, CrossPackageConstants.OUTCOME_OK);
-                else
-                    result.putExtra(CrossPackageConstants.EXTRA_OUTCOME, CrossPackageConstants.OUTCOME_FAILED);
-
-                sendBroadcast(result);
+                res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.TYPE_DELETE);
+                res.putExtra(CrossPackageConstants.EXTRA_POSITION, intent.getIntExtra(CrossPackageConstants.EXTRA_POSITION, -1));
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                sendBroadcast(res);
                 break;
             }
             case CrossPackageConstants.ACTION_GET_STATS: {

@@ -54,9 +54,6 @@ public class SportsFragment extends Fragment {
             b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_name);
 
             CompetitionsListFragment clf = new CompetitionsListFragment();
-            String sport_context = b.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-            ApplicationInfo sport_package = b.getParcelable("sport_package");
-            clf.setAction(sport_context + clf.getAction() + "." + sport_package.metaData.getString("package_name"));
             clf.setArguments(b);
 
             fragments[i] = clf;

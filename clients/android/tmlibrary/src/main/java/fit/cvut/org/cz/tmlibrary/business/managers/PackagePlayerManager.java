@@ -52,7 +52,7 @@ public class PackagePlayerManager implements IPackagePlayerManager {
             Cursor c = context.getContentResolver().query(uri, projection, null, null, null);
             Map<Long, Player> players = new HashMap<>();
             while (c.moveToNext()){
-                Player player = CursorParser.getInstance().parsePlayer(c);
+                Player player = CursorParser.parsePlayer(c);
                 players.put(player.getId(), player);
             }
             c.close();

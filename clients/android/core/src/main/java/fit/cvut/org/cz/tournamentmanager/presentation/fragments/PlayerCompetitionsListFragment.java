@@ -1,9 +1,10 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,31 +15,29 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDialog;
-import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class PlayerCompetitionsListFragment extends AbstractListFragment<Competition> {
-    private long playerID;
-    private String action = "org.cz.cvut.tournamentmanager";
-    private String content = "competitions_by_player/";
+    private long playerId;
 
     private String package_name;
     private String sport_context;
     private String activity_create_competition;
     private String activity_detail_competition;
+    private String package_service;
 
     private static String ARG_ID = "player_id";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        playerID = getArguments().getLong(ARG_ID);
+        playerId = getArguments().getLong(ARG_ID);
         package_name = getArguments().getString("package_name");
         sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         activity_create_competition = getArguments().getString("activity_create_competition");
         activity_detail_competition = getArguments().getString("activity_detail_competition");
-        action += "." + package_name + sport_context;
+        package_service = getArguments().getString("package_service");
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -76,27 +75,51 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     @Override
     public void askForData() {
-        Intent intent = CompetitionService.getStartIntent(action, package_name, sport_context, content + playerID, getContext());
+        Intent intent = new Intent();
+        intent.setClassName(package_name, package_service);
+        intent.putExtra(CrossPackageConstants.EXTRA_ID, playerId);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER);
+        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
         getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        return CompetitionService.isWorking(action);
+        return false;
     }
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(action));
+        receiver = new CompetitionsListReceiver();
+        IntentFilter filter = new IntentFilter(package_name + CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER);
+        getActivity().registerReceiver(receiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override
     protected String getDataKey() {
-        return CompetitionService.EXTRA_COMPETITION;
+        return "extra_competition";
+    }
+
+    public class CompetitionsListReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!package_name.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
+                return;
+            }
+
+            if (!sport_context.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
+                return;
+            }
+
+            contentView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            PlayerCompetitionsListFragment.super.bindDataOnView(intent);
+        }
     }
 }

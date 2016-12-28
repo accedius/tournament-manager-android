@@ -75,8 +75,8 @@ public class Competition extends ShareBase implements Parcelable {
         id = in.readLong();
         name = in.readString();
         note = in.readString();
+        typeId = in.readInt();
         type = in.readParcelable(CompetitionType.class.getClassLoader());
-        typeId = type.id;
 
         try {
             String text = in.readString();
@@ -107,6 +107,7 @@ public class Competition extends ShareBase implements Parcelable {
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(note);
+        dest.writeInt(typeId);
         dest.writeParcelable(type, flags);
         if (startDate == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(startDate));

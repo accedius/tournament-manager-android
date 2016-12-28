@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".presentation.services.CompetitionService" />
         <service android:name=".presentation.services.PlayerService" />
 
         <provider

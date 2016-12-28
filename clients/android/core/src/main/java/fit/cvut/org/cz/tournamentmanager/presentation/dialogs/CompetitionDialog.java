@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.services.CompetitionService;
 
 /**
  * Created by kevin on 14. 4. 2016.
@@ -51,8 +50,13 @@ public class CompetitionDialog extends DialogFragment {
                         break;
                     }
                     case 2: {
-                        Intent intent = CompetitionService.getStartIntent(CompetitionService.ACTION_DELETE_COMPETITION, package_name, sport_context, competition_id.toString(), getContext());
-                        intent.putExtra(CompetitionService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
+                        Intent intent = new Intent();
+                        intent.setClassName(package_name, package_service);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_DELETE_COMPETITION);
+                        intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
+                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
                         getContext().startService(intent);
                         dialog.dismiss();
                         break;
