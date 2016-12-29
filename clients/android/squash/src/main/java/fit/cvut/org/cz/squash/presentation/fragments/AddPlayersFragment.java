@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
@@ -19,9 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by Vaclav on 12. 4. 2016.
  */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
-    private static final String ARG_OPTION = "arg_option";
-    private static final String ARG_ID = "arg_id";
-    private static final String ARG_OMIT = "arg_omit";
     public static final int OPTION_COMPETITION = 0;
     public static final int OPTION_TOURNAMENT = 1;
     public static final int OPTION_TEAM = 2;
@@ -33,7 +31,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        switch (getArguments().getInt(ARG_OPTION, -1)){
+        switch (getArguments().getInt(ExtraConstants.EXTRA_OPTION, -1)){
             case 0:
                 action = PlayerService.ACTION_GET_PLAYERS_FOR_COMPETITION;
                 break;
@@ -55,8 +53,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public static AddPlayersFragment newInstance(int option, long id){
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
-        b.putInt(ARG_OPTION, option);
-        b.putLong(ARG_ID, id);
+        b.putInt(ExtraConstants.EXTRA_OPTION, option);
+        b.putLong(ExtraConstants.EXTRA_ID, id);
         fragment.setArguments(b);
 
         return fragment;
@@ -64,9 +62,9 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public static AddPlayersFragment newInstance(int option, long id, ArrayList<Player> omitPlayers){
         AddPlayersFragment fragment = new AddPlayersFragment();
         Bundle b = new Bundle();
-        b.putInt(ARG_OPTION, option);
-        b.putLong(ARG_ID, id);
-        b.putParcelableArrayList(ARG_OMIT, omitPlayers);
+        b.putInt(ExtraConstants.EXTRA_OPTION, option);
+        b.putLong(ExtraConstants.EXTRA_ID, id);
+        b.putParcelableArrayList(ExtraConstants.EXTRA_OMIT, omitPlayers);
         fragment.setArguments(b);
 
         return fragment;
@@ -74,7 +72,7 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ARG_OMIT);
+        ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT);
         if (omitPlayers != null) {
             ArrayList<Player> players = intent.getParcelableArrayListExtra(getDataKey());
             players.removeAll(omitPlayers);
@@ -90,20 +88,20 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     @Override
     protected String getDataKey() {
-        return PlayerService.EXTRA_PLAYERS;
+        return ExtraConstants.EXTRA_PLAYERS;
     }
 
     @Override
     protected String getDataSelectedKey() {
-        return PlayerService.EXTRA_SELECTED;
+        return ExtraConstants.EXTRA_SELECTED;
     }
 
     @Override
     public void askForData() {
-        Long id = getArguments().getLong(ARG_ID, -1);
+        Long id = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
         if (action == null || id == -1) return;
         Intent intent = PlayerService.newStartIntent(action, getContext());
-        intent.putExtra(PlayerService.EXTRA_ID, id);
+        intent.putExtra(ExtraConstants.EXTRA_ID, id);
 
         getContext().startService(intent);
     }

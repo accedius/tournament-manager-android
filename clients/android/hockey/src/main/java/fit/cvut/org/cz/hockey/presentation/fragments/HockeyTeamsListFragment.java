@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTeamActivity;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HockeyInsertTeamDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TeamService;
@@ -28,16 +29,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
-    public static final String TOUR_ID = "tour_id";
-    public static final String COMP_ID = "comp_id";
-
     private BroadcastReceiver teamReceiver = new TeamReceiver();
 
     public static HockeyTeamsListFragment newInstance(long tournamentId, long competitionId){
         HockeyTeamsListFragment fragment = new HockeyTeamsListFragment();
         Bundle args = new Bundle();
-        args.putLong(TOUR_ID, tournamentId);
-        args.putLong(COMP_ID, competitionId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, competitionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,13 +69,13 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     protected String getDataKey() {
-        return TeamService.EXTRA_TEAM_LIST;
+        return ExtraConstants.EXTRA_TEAM_LIST;
     }
 
     @Override
     public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
-        intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(TOUR_ID, -1));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1));
         getContext().startService(intent);
     }
 
@@ -104,7 +102,7 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(TOUR_ID), true, HockeyInsertTeamDialog.class);
+                InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), true, HockeyInsertTeamDialog.class);
                 dialog.show(getFragmentManager(), "dialog");
             }
         });
@@ -124,8 +122,8 @@ public class HockeyTeamsListFragment extends AbstractListFragment<Team> {
                     break;
                 }
                 case TeamService.ACTION_DELETE: {
-                    if (intent.getIntExtra(TeamService.EXTRA_OUTCOME, -1) == TeamService.OUTCOME_OK) {
-                        int position = intent.getIntExtra(TeamService.EXTRA_POSITION, -1);
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                        int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                         adapter.delete(position);
                         break;
                     } else {

@@ -13,6 +13,7 @@ import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -28,19 +29,19 @@ public class MatchLoader {
             importedMatch.setTournamentId(tournament.getId());
             ManagerFactory.getInstance(context).getEntityManager(Match.class).insert(importedMatch);
 
-            String role = "home";
+            String role = ParticipantType.home.toString();
             long participantId;
             Participant participant, homeParticipant = null, awayParticipant = null;
             for (ServerCommunicationItem matchTeam : match.subItems) {
                 participantId = importedTeams.get(matchTeam.getUid()).getId();
                 participant = new Participant(importedMatch.getId(), participantId, role);
                 ManagerFactory.getInstance(context).getEntityManager(Participant.class).insert(participant);
-                if (role.equals("home")) {
+                if (role.equals(ParticipantType.home.toString())) {
                     homeParticipant = participant;
                 } else {
                     awayParticipant = participant;
                 }
-                role = "away";
+                role = ParticipantType.away.toString();
             }
 
             // Add Participant stats (score)

@@ -11,23 +11,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
  * Created by kevin on 4.4.2016.
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
-    public static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_PLAYER = "extra_player";
-    public static final String EXTRA_PLAYERS = "extra_players";
-    public static final String EXTRA_POSITION = "extra_position";
-    public static final String EXTRA_RESULT = "extra_result";
-
     public static final String ACTION_DELETE = "fit.cvut.org.cz.tournamentmanager.presentation.services.delete_player";
     public static final String ACTION_CREATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.new_player";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_player_by_id";
@@ -53,22 +48,22 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
-        intent.putExtra(EXTRA_ACTION, action);
+        intent.putExtra(ExtraConstants.EXTRA_ACTION, action);
         return intent;
     }
 
     @Override
     protected String getActionKey() {
-        return EXTRA_ACTION;
+        return ExtraConstants.EXTRA_ACTION;
     }
 
     @Override
     protected void doWork(Intent intent) throws SQLException {
-        String action = intent.getStringExtra(EXTRA_ACTION);
+        String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
 
         switch (action){
             case ACTION_CREATE:{
-                Player c = intent.getParcelableExtra(EXTRA_PLAYER);
+                Player c = intent.getParcelableExtra(ExtraConstants.EXTRA_PLAYER);
                 ManagerFactory.getInstance(this).getEntityManager(Player.class).insert(c);
                 break;
             }
@@ -77,31 +72,31 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 result.setAction(ACTION_GET_ALL);
                 ArrayList<Player> players = new ArrayList<>();
                 players.addAll(ManagerFactory.getInstance(this).getEntityManager(Player.class).getAll());
-                result.putExtra(EXTRA_PLAYERS, players);
+                result.putExtra(ExtraConstants.EXTRA_PLAYERS, players);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Player p = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(intent.getLongExtra(EXTRA_ID, -1));
-                result.putExtra(EXTRA_PLAYER, p);
+                Player p = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
+                result.putExtra(ExtraConstants.EXTRA_PLAYER, p);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE:{
-                Player p = intent.getParcelableExtra(EXTRA_PLAYER);
+                Player p = intent.getParcelableExtra(ExtraConstants.EXTRA_PLAYER);
                 ManagerFactory.getInstance(this).getEntityManager(Player.class).update(p);
                 break;
             }
             case ACTION_DELETE: {
                 Intent result = new Intent(action);
-                Long playerId = intent.getLongExtra(EXTRA_ID, -1);
-                int position = intent.getIntExtra(EXTRA_POSITION, -1);
+                Long playerId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
+                int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                 boolean deleted = true;
                 Map<String, ApplicationInfo> sportContexts = PackagesInfo.getSportContexts(this);
                 for (Map.Entry<String, ApplicationInfo>  sport : sportContexts.entrySet()) {
-                    String package_name = sport.getValue().metaData.getString("package_name");
+                    String package_name = sport.getValue().metaData.getString(CrossPackageConstants.PACKAGE_NAME);
                     if (existsCompetitionsForPlayer(package_name, sport.getKey(), CPConstants.uCompetitionsByPlayer + playerId)) {
                         deleted = false;
                         break;
@@ -111,8 +106,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 if (deleted)
                     ManagerFactory.getInstance(this).getEntityManager(Player.class).delete(playerId);
 
-                result.putExtra(EXTRA_POSITION, position);
-                result.putExtra(EXTRA_RESULT, deleted);
+                result.putExtra(ExtraConstants.EXTRA_POSITION, position);
+                result.putExtra(ExtraConstants.EXTRA_RESULT, deleted);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }
         }

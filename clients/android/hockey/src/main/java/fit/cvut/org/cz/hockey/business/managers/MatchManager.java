@@ -21,11 +21,11 @@ import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * Created by atgot_000 on 17. 4. 2016.

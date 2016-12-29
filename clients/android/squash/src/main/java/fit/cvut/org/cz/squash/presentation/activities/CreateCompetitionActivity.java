@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashCompetitionFragment;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
@@ -63,7 +64,7 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
             } else {
                 intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, this);
             }
-            intent.putExtra(CompetitionService.EXTRA_COMPETITION, competition);
+            intent.putExtra(ExtraConstants.EXTRA_COMPETITION, competition);
             startService(intent);
             finish();
         }

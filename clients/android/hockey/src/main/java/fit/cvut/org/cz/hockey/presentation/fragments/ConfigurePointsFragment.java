@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -20,8 +21,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class ConfigurePointsFragment extends AbstractDataFragment {
-    private static final String ARG_TOUR_ID = "tournament_id";
-
     private EditText ntW, ntD, ntL, otW, otD, otL, soW, soL;
     private FloatingActionButton fab;
 
@@ -29,7 +28,7 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
         ConfigurePointsFragment fragment = new ConfigurePointsFragment();
 
         Bundle args = new Bundle();
-        args.putLong(ARG_TOUR_ID, tourId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tourId);
 
         fragment.setArguments(args);
         return fragment;
@@ -57,7 +56,7 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_CONFIG_BY_ID, getContext());
-        intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
 
         getContext().startService(intent);
     }
@@ -69,7 +68,7 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        PointConfiguration pointConfiguration = intent.getParcelableExtra(TournamentService.EXTRA_CONFIGURATION);
+        PointConfiguration pointConfiguration = intent.getParcelableExtra(ExtraConstants.EXTRA_CONFIGURATION);
         if (pointConfiguration != null) {
             ntW.setText(Long.toString(pointConfiguration.ntW));
             ntD.setText(Long.toString(pointConfiguration.ntD));
@@ -117,7 +116,7 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
             return null;
         try {
             return new PointConfiguration(
-                    getArguments().getLong(ARG_TOUR_ID),
+                    getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID),
                     Integer.parseInt(ntW.getText().toString()),
                     Integer.parseInt(ntD.getText().toString()),
                     Integer.parseInt(ntL.getText().toString()),

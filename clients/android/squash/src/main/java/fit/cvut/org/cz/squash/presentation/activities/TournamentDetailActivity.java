@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
@@ -24,8 +25,8 @@ import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TeamsListFragment;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -36,10 +37,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
  * Created by Vaclav on 10. 4. 2016.
  */
 public class TournamentDetailActivity extends AbstractTabActivity {
-    public static final String EXTRA_TYPE = "extra_type";
-    public static final String COMP_ID = "competition_id";
-    public static final String TOUR_ID = "tournament_id";
-
     private final int GEN_ROSTER_ID = 1001;
     private final int TEAMS_LIST_POSITION = 4;
 
@@ -49,9 +46,9 @@ public class TournamentDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        competitionID = getIntent().getExtras().getLong(COMP_ID);
-        tournamentID = getIntent().getExtras().getLong(TOUR_ID);
-        CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
+        competitionID = getIntent().getExtras().getLong(ExtraConstants.EXTRA_COMP_ID);
+        tournamentID = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
+        CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
 
         if (type.equals(CompetitionTypes.teams())) {
             adapter =  new DefaultViewPagerAdapter(manager,
@@ -106,7 +103,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false) == false) {
+                if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false) == false) {
                     Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.failGenerateRosters), Snackbar.LENGTH_LONG).show();
                 } else {
                     if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
@@ -124,7 +121,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);
-        CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
+        CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
         if (type.equals(CompetitionTypes.teams())) {
             String genRosters = getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.generate_rosters);
             menu.add(0, GEN_ROSTER_ID, menu.size(), genRosters)
@@ -145,12 +142,12 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             }
             case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
                 Intent intent = new Intent(this, PointConfigActivity.class);
-                intent.putExtra(PointConfigActivity.ARG_ID, tournamentID);
+                intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
                 startActivity(intent);
                 return true;
             }
             case GEN_ROSTER_ID:{
-                CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(EXTRA_TYPE, 0)];
+                CompetitionType type = CompetitionTypes.competitionTypes(getResources())[getIntent().getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
                 if (type.equals(CompetitionTypes.individuals()))
                     break;
 

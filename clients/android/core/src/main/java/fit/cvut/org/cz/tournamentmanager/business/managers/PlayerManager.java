@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
-import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerManager;
 
 /**
  * Created by kevin on 30. 3. 2016.

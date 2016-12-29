@@ -19,13 +19,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
-import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
+import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
@@ -51,7 +52,7 @@ public class SettingsFragment extends Fragment {
         int i = 0;
         if (sports != null) {
             for (Map.Entry<String, ApplicationInfo> sport: sports.entrySet()) {
-                String package_name = sport.getValue().metaData.getString("package_name");
+                String package_name = sport.getValue().metaData.getString(CrossPackageConstants.PACKAGE_NAME);
                 String sport_name = sport.getKey();
                 sportSettings.add(new Setting(package_name, sport_name));
                 Setting setting = ((ISettingManager)ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class)).getByPackageSport(package_name, sport_name);

@@ -18,7 +18,7 @@ public class PackagesInfo {
     public static Map<String, ApplicationInfo> getSportContexts(Context context) {
         Map<String, ApplicationInfo> contexts = new TreeMap<>();
         for (ApplicationInfo app : getPackages(context)) {
-            for (String sport_context : app.metaData.getString("context_names").split(",")) {
+            for (String sport_context : app.metaData.getString(CrossPackageConstants.CONTEXT_NAMES).split(",")) {
                 contexts.put(sport_context, app);
             }
         }

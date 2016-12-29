@@ -16,13 +16,12 @@ import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -31,11 +30,16 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by kevin on 8.10.2016.
  */
 public class MatchSerializer extends BaseSerializer<Match> {
+    private static final String SETS = "sets";
+    private static final String SETS_NUMBER= "sets_number";
+
     protected static MatchSerializer instance = null;
     protected MatchSerializer(Context context) {
         this.context = context;
@@ -88,19 +92,19 @@ public class MatchSerializer extends BaseSerializer<Match> {
     public HashMap<String, Object> serializeSyncData(Match entity) {
         HashMap<String, Object> hm = new HashMap<>();
         if (entity.getDate() == null) {
-            hm.put("date", null);
+            hm.put(Constants.DATE, null);
         } else {
-            hm.put("date", DateFormatter.getInstance().getDBDateFormat().format(entity.getDate()));
+            hm.put(Constants.DATE, DateFormatter.getInstance().getDBDateFormat().format(entity.getDate()));
         }
-        hm.put("played", entity.isPlayed());
-        hm.put("note", entity.getNote());
-        hm.put("period", String.valueOf(entity.getPeriod()));
-        hm.put("round", String.valueOf(entity.getRound()));
+        hm.put(Constants.PLAYED, entity.isPlayed());
+        hm.put(Constants.NOTE, entity.getNote());
+        hm.put(Constants.PERIOD, String.valueOf(entity.getPeriod()));
+        hm.put(Constants.ROUND, String.valueOf(entity.getRound()));
 
         /* Serialize sets */
         List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance(context).getEntityManager(SAggregatedStats.class)).getMatchSets(entity.getId());
-        hm.put("sets", sets);
-        hm.put("sets_number", String.valueOf(entity.getSetsNumber()));
+        hm.put(SETS, sets);
+        hm.put(SETS_NUMBER, String.valueOf(entity.getSetsNumber()));
 
         /* Serialize players */
         Participant home = null, away = null;
@@ -116,13 +120,13 @@ public class MatchSerializer extends BaseSerializer<Match> {
         for (PlayerStat stat : homePlayers) {
             stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
         }
-        hm.put("players_home", homePlayers);
+        hm.put(Constants.PLAYERS_HOME, homePlayers);
 
         List<PlayerStat> awayPlayers = ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(away.getId());
         for (PlayerStat stat : awayPlayers) {
             stat.setUid(playerMap.get(stat.getPlayerId()).getUid());
         }
-        hm.put("players_away", awayPlayers);
+        hm.put(Constants.PLAYERS_AWAY, awayPlayers);
         return hm;
     }
 
@@ -130,28 +134,28 @@ public class MatchSerializer extends BaseSerializer<Match> {
     public void deserializeSyncData(HashMap<String, Object> syncData, Match entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         try {
-            entity.setDate(dateFormat.parse((String)syncData.get("date")));
+            entity.setDate(dateFormat.parse((String)syncData.get(Constants.DATE)));
         } catch (ParseException e) {} catch (NullPointerException e) {}
-        entity.setPlayed((boolean)syncData.get("played"));
-        entity.setSetsNumber(Integer.valueOf(String.valueOf(syncData.get("sets_number"))));
+        entity.setPlayed((boolean)syncData.get(Constants.PLAYED));
+        entity.setSetsNumber(Integer.valueOf(String.valueOf(syncData.get(SETS_NUMBER))));
 
-        entity.setNote((String)syncData.get("note"));
-        entity.setPeriod(Integer.valueOf(String.valueOf(syncData.get("period"))));
-        entity.setRound(Integer.valueOf(String.valueOf(syncData.get("round"))));
+        entity.setNote((String)syncData.get(Constants.NOTE));
+        entity.setPeriod(Integer.valueOf(String.valueOf(syncData.get(Constants.PERIOD))));
+        entity.setRound(Integer.valueOf(String.valueOf(syncData.get(Constants.ROUND))));
 
         Gson gson = new Gson();
-        List<SetRowItem> sets = gson.fromJson(String.valueOf(syncData.get("sets")), new TypeToken<List<SetRowItem>>(){}.getType());
+        List<SetRowItem> sets = gson.fromJson(String.valueOf(syncData.get(SETS)), new TypeToken<List<SetRowItem>>(){}.getType());
         entity.setSets(sets);
 
-        List<PlayerStat> homePlayers = gson.fromJson(String.valueOf(syncData.get("players_home")), new TypeToken<List<PlayerStat>>(){}.getType());
+        List<PlayerStat> homePlayers = gson.fromJson(String.valueOf(syncData.get(Constants.PLAYERS_HOME)), new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setHomePlayers(homePlayers);
 
-        List<PlayerStat> awayPlayers = gson.fromJson(String.valueOf(syncData.get("players_away")), new TypeToken<List<PlayerStat>>(){}.getType());
+        List<PlayerStat> awayPlayers = gson.fromJson(String.valueOf(syncData.get(Constants.PLAYERS_AWAY)), new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setAwayPlayers(awayPlayers);
     }
 
     @Override
     public String getEntityType() {
-        return "Match";
+        return Constants.MATCH;
     }
 }

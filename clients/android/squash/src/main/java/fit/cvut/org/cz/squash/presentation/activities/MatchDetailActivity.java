@@ -13,12 +13,13 @@ import java.util.ArrayList;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -28,15 +29,11 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchDetailActivity extends AbstractTabActivity {
-    public static final String ARG_PLAYED = "arg_played";
-    public static final String ARG_ID = "arg_id";
-    public static final String ARG_TYPE = "arg_type";
-
     public static Intent newStartIntent(Context context, long id, boolean played, CompetitionType type){
         Intent i = new Intent(context, MatchDetailActivity.class);
-        i.putExtra(ARG_ID, id);
-        i.putExtra(ARG_PLAYED, played);
-        i.putExtra(ARG_TYPE, type.id);
+        i.putExtra(ExtraConstants.EXTRA_ID, id);
+        i.putExtra(ExtraConstants.EXTRA_PLAYED, played);
+        i.putExtra(ExtraConstants.EXTRA_TYPE, type.id);
 
         return i;
     }
@@ -45,9 +42,9 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        long id = getIntent().getLongExtra(ARG_ID, -1);
-        boolean played = getIntent().getBooleanExtra(ARG_PLAYED, true);
-        CompetitionType type = CompetitionTypes.competitionTypes()[getIntent().getIntExtra(ARG_TYPE, 0)];
+        long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
+        boolean played = getIntent().getBooleanExtra(ExtraConstants.EXTRA_PLAYED, true);
+        CompetitionType type = CompetitionTypes.competitionTypes()[getIntent().getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
         if (type.equals(CompetitionTypes.individuals()))
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[]{SquashMatchOverviewFragment.newInstance(id, played)},
@@ -90,8 +87,8 @@ public class MatchDetailActivity extends AbstractTabActivity {
 
             if (fr != null && !fr.isWorking()) {
                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_MATCH_DETAIL, this);
-                intent.putExtra(MatchService.EXTRA_ID, getIntent().getLongExtra(ARG_ID, -1));
-                intent.putExtra(MatchService.EXTRA_MATCHES, new ArrayList<>(fr.getSetsFragment().getSets()));
+                intent.putExtra(ExtraConstants.EXTRA_ID, getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1));
+                intent.putExtra(ExtraConstants.EXTRA_MATCHES, new ArrayList<>(fr.getSetsFragment().getSets()));
 
                 ArrayList<PlayerStat> homePlayers = new ArrayList<>();
                 ArrayList<PlayerStat> awayPlayers = new ArrayList<>();
@@ -103,15 +100,15 @@ public class MatchDetailActivity extends AbstractTabActivity {
                         awayPlayers.addAll(mfr.getAwayPlayers());
                     }
                 }
-                intent.putParcelableArrayListExtra(MatchService.EXTRA_HOME_PLAYERS, homePlayers);
-                intent.putParcelableArrayListExtra(MatchService.EXTRA_AWAY_PLAYERS, awayPlayers);
+                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, homePlayers);
+                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, awayPlayers);
                 startService(intent);
             }
             finish();
             return true;
         } else if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_edit) {
             SquashMatchOverviewFragment fr = (SquashMatchOverviewFragment) adapter.getItem(0);
-            Intent intent = CreateMatchActivity.newStartIntent(this, getIntent().getLongExtra(ARG_ID, -1), fr.getTournamentId());
+            Intent intent = CreateMatchActivity.newStartIntent(this, getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1), fr.getTournamentId());
             startActivity(intent);
         }
 

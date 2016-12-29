@@ -14,6 +14,7 @@ import fit.cvut.org.cz.squash.business.serialization.TournamentSerializer;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -35,11 +36,11 @@ public class TournamentLoader {
             Tournament importedTournament = TournamentSerializer.getInstance(context).deserialize(tournament);
 
             for (ServerCommunicationItem subItem : tournament.subItems) {
-                if (subItem.getType().equals("Player")) {
+                if (subItem.getType().equals(Constants.PLAYER)) {
                     tournamentPlayers.add(subItem);
-                } else if (subItem.getType().equals("Team")) {
+                } else if (subItem.getType().equals(Constants.TEAM)) {
                     tournamentTeams.add(subItem);
-                } else if (subItem.getType().equals("Match")) {
+                } else if (subItem.getType().equals(Constants.MATCH)) {
                     tournamentMatches.add(subItem);
                 }
             }
@@ -61,11 +62,11 @@ public class TournamentLoader {
             ManagerFactory.getInstance(context).getEntityManager(Tournament.class).insert(importedTournament);
 
             for (ServerCommunicationItem subItem : tournament.subItems) {
-                if (subItem.getType().equals("Player")) {
+                if (subItem.getType().equals(Constants.PLAYER)) {
                     tournamentPlayers.add(subItem);
-                } else if (subItem.getType().equals("Team")) {
+                } else if (subItem.getType().equals(Constants.TEAM)) {
                     tournamentTeams.add(subItem);
-                } else if (subItem.getType().equals("Match")) {
+                } else if (subItem.getType().equals(Constants.MATCH)) {
                     tournamentMatches.add(subItem);
                 }
             }
@@ -89,7 +90,7 @@ public class TournamentLoader {
                 // Add players to team.
                 ArrayList<Player> teamPlayers = new ArrayList<>();
                 for (ServerCommunicationItem teamPlayer : team.subItems) {
-                    if (teamPlayer.getType().equals("Player")) {
+                    if (teamPlayer.getType().equals(Constants.PLAYER)) {
                         teamPlayers.add(importedPlayers.get(teamPlayer.getUid()));
                     }
                 }

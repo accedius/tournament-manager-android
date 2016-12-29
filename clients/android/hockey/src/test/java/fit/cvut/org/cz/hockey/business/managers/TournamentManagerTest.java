@@ -21,13 +21,13 @@ import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 
 /**
  * Created by kevin on 16.12.2016.

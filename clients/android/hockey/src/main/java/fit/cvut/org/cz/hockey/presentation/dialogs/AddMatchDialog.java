@@ -9,27 +9,26 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateMatchActivity;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 
 /**
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class AddMatchDialog extends DialogFragment {
-    private static final String ARG_TOUR_ID = "arg_tour_id";
-
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0: {
-                        Intent intent = CreateMatchActivity.newStartIntent(getContext(), getArguments().getLong(ARG_TOUR_ID));
+                        Intent intent = CreateMatchActivity.newStartIntent(getContext(), getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                         startActivity(intent);
                         break;
                     }
                     case 1: {
                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
-                        intent.putExtra(MatchService.EXTRA_TOUR_ID, getArguments().getLong(ARG_TOUR_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                         getContext().startService(intent);
                         break;
                     }
@@ -42,7 +41,7 @@ public class AddMatchDialog extends DialogFragment {
     public static AddMatchDialog newInstance(long tourId){
         AddMatchDialog fragment = new AddMatchDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_TOUR_ID, tourId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tourId);
         fragment.setArguments(args);
         return fragment;
     }

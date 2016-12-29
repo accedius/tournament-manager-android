@@ -7,13 +7,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 
 /**
  * Created by atgot_000 on 12. 4. 2016.
  */
 abstract public class EditDeleteDialog extends DialogFragment {
-    protected static final String ARG_TITLE = "arg_title";
-
     abstract protected DialogInterface.OnClickListener supplyListener();
 
     @Override
@@ -22,7 +21,7 @@ abstract public class EditDeleteDialog extends DialogFragment {
         String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
         builder.setItems(items, supplyListener());
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

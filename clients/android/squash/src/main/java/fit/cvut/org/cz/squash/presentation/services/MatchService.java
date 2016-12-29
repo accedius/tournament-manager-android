@@ -13,7 +13,7 @@ import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.squash.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.squash.data.entities.Match;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -26,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -36,19 +37,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public MatchService() {
         super("Squash Match Service");
     }
-
-    private static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_MATCH_ID = "extra_match_id";
-    public static final String EXTRA_MATCHES = "extra_matches";
-    public static final String EXTRA_MATCH = "extra_match";
-    public static final String EXTRA_SETS = "extra_sets";
-    public static final String EXTRA_TYPE = "extra_type";
-    public static final String EXTRA_PARTICIPANTS = "extra_participants";
-    public static final String EXTRA_RESULT = "extra_result";
-    public static final String EXTRA_POSITION = "extra_position";
-    public static final String EXTRA_HOME_PLAYERS = "extra_home_players";
-    public static final String EXTRA_AWAY_PLAYERS = "extra_away_players";
 
     public static final String ACTION_GET_MATCHES_BY_TOURNAMENT = "fit.cvut.org.cz.squash.presentation.services.get_matches_by_tournament";
     public static final String ACTION_GET_PARTICIPANTS_FOR_MATCH = "fit.cvut.org.cz.squash.presentation.services.get_participants_for_match";
@@ -65,64 +53,64 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
     @Override
     protected String getActionKey() {
-        return EXTRA_ACTION;
+        return ExtraConstants.EXTRA_ACTION;
     }
 
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(EXTRA_ACTION);
+        String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
         if (action == null) action = intent.getAction();
 
         switch (action){
             case ACTION_GET_MATCHES_BY_TOURNAMENT:{
-                Long id = intent.getLongExtra(EXTRA_ID, -1);
+                Long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
                 ArrayList<Match> matches = new ArrayList<>(((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).getByTournamentId(id));
-                result.putExtra(EXTRA_MATCHES, matches);
+                result.putExtra(ExtraConstants.EXTRA_MATCHES, matches);
                 Tournament t = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(id);
                 CompetitionType type = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(t.getCompetitionId()).getType();
-                result.putExtra(EXTRA_TYPE, type.id);
+                result.putExtra(ExtraConstants.EXTRA_TYPE, type.id);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_MATCH_BY_ID:{
-                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
-                long matchId = intent.getLongExtra(EXTRA_MATCH_ID, -1);
+                long tournamentId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
+                long matchId = intent.getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
 
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_MATCH, ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId));
-                result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
+                result.putExtra(ExtraConstants.EXTRA_MATCH, ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId));
+                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PART_LIST, getParticipantsForMatch(tournamentId));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_PARTICIPANTS_FOR_MATCH:{
-                long tournamentId = intent.getLongExtra(EXTRA_ID, -1);
+                long tournamentId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
 
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
+                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PART_LIST, getParticipantsForMatch(tournamentId));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_CREATE_MATCH:{
-                Match match = intent.getParcelableExtra(EXTRA_MATCH);
+                Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
                 ManagerFactory.getInstance(this).getEntityManager(Match.class).insert(match);
                 break;
             }
             case ACTION_UPDATE_MATCH:{
-                Match match = intent.getParcelableExtra(EXTRA_MATCH);
+                Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
                 ManagerFactory.getInstance(this).getEntityManager(Match.class).update(match);
                 break;
             }
             case ACTION_RESET_MATCH:{
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).resetMatch(id);
                 Intent result = new Intent(action);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_UPDATE_MATCH_DETAIL:{
-                long matchId = intent.getLongExtra(EXTRA_ID, -1);
-                ArrayList<SetRowItem> sets = intent.getParcelableArrayListExtra(EXTRA_MATCHES);
+                long matchId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
+                ArrayList<SetRowItem> sets = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_MATCHES);
                 Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId);
                 Tournament tournament = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(match.getTournamentId());
                 Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(tournament.getCompetitionId());
@@ -137,13 +125,13 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     }
 
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
-                        ArrayList<PlayerStat> homePlayers = intent.getParcelableArrayListExtra(EXTRA_HOME_PLAYERS);
+                        ArrayList<PlayerStat> homePlayers = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
                         for (PlayerStat player : homePlayers) {
                             player.setParticipantId(participant.getId());
                             ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(player);
                         }
                     } else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                        ArrayList<PlayerStat> awayPlayers = intent.getParcelableArrayListExtra(EXTRA_AWAY_PLAYERS);
+                        ArrayList<PlayerStat> awayPlayers = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
                         for (PlayerStat player : awayPlayers) {
                             player.setParticipantId(participant.getId());
                             ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(player);
@@ -154,31 +142,31 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_GET_MATCH_DETAIL:{
                 Intent result = new Intent(action);
-                Match sm = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(intent.getLongExtra(EXTRA_ID, -1));
-                result.putExtra(EXTRA_MATCH, sm);
+                Match sm = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
+                result.putExtra(ExtraConstants.EXTRA_MATCH, sm);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GET_MATCH_SETS:{
                 Intent result = new Intent(action);
-                List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getMatchSets(intent.getLongExtra(EXTRA_ID, -1));
-                result.putParcelableArrayListExtra(EXTRA_SETS, new ArrayList<>(sets));
+                List<SetRowItem> sets = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(SAggregatedStats.class)).getMatchSets(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
+                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_SETS, new ArrayList<>(sets));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_DELETE_MATCH:{
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 ManagerFactory.getInstance(this).getEntityManager(Match.class).delete(id);
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_POSITION, intent.getIntExtra(EXTRA_POSITION, -1));
+                result.putExtra(ExtraConstants.EXTRA_POSITION, intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
             case ACTION_GENERATE_ROUND:{
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
 
-                result.putExtra(EXTRA_RESULT, enoughParticipants(id));
+                result.putExtra(ExtraConstants.EXTRA_RESULT, enoughParticipants(id));
                 if (enoughParticipants(id))
                     ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).generateRound(id);
 
@@ -186,9 +174,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 break;
             }
             case ACTION_CAN_ADD_MATCH:{
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_RESULT, enoughParticipants(id));
+                result.putExtra(ExtraConstants.EXTRA_RESULT, enoughParticipants(id));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
@@ -197,7 +185,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, MatchService.class);
-        intent.putExtra(EXTRA_ACTION, action);
+        intent.putExtra(ExtraConstants.EXTRA_ACTION, action);
 
         return intent;
     }

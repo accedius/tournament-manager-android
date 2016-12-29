@@ -18,19 +18,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
 /**
  * Created by atgot_000 on 10. 4. 2016.
  */
 public abstract class NewMatchFragment extends AbstractDataFragment  {
-    private static final String ARG_ID = "arg_id";
-    private static final String ARG_TOUR_ID = "arg_tour_id";
-
     /**
      * Constructor for this fragment with id of competition that needs to update
      * @param id
@@ -54,8 +52,8 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putLong(ARG_TOUR_ID, tournamentId);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
 
         fragment.setArguments(args);
         return fragment;
@@ -77,7 +75,7 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_TOUR_ID, tournamentId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
 
         fragment.setArguments(args);
         return fragment;
@@ -102,8 +100,8 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
         awayTeamSpinner = (AppCompatSpinner) v.findViewById(R.id.m_away);
 
         if (getArguments() != null) {
-            id = getArguments().getLong(ARG_ID, -1);
-            tournamentId = getArguments().getLong(ARG_TOUR_ID, -1);
+            id = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
+            tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
         }
         mDate.setKeyListener(null);
 
@@ -219,9 +217,9 @@ public abstract class NewMatchFragment extends AbstractDataFragment  {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Bundle b = new Bundle();
-                    b.putInt("y", date.get(Calendar.YEAR));
-                    b.putInt("m", date.get(Calendar.MONTH));
-                    b.putInt("d", date.get(Calendar.DAY_OF_MONTH));
+                    b.putInt(ExtraConstants.EXTRA_YEAR, date.get(Calendar.YEAR));
+                    b.putInt(ExtraConstants.EXTRA_MONTH, date.get(Calendar.MONTH));
+                    b.putInt(ExtraConstants.EXTRA_DAY, date.get(Calendar.DAY_OF_MONTH));
                     DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {

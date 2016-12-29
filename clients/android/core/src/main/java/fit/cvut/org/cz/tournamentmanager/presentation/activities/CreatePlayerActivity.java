@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.NewPlayerFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
@@ -30,7 +31,7 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long id = getIntent().getLongExtra(PlayerService.EXTRA_ID, -1);
+        long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null)
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewPlayerFragment.newInstance(id, NewPlayerFragment.class)).commit();
@@ -57,7 +58,7 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
             } else {
                 intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE, this);
             }
-            intent.putExtra(PlayerService.EXTRA_PLAYER, player);
+            intent.putExtra(ExtraConstants.EXTRA_PLAYER, player);
             startService(intent);
             finish();
         }

@@ -14,16 +14,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
 /**
  * Created by Vaclav on 3. 4. 2016.
  */
 public abstract class SelectableListActivity<T extends Parcelable> extends AbstractToolbarActivity {
-    public static final String EXTRA_DATA = "extra_data";
-    public static final String EXTRA_OMIT_DATA = "extra_omit_data";
-    public static final String EXTRA_ID = "extra_id";
-
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_single_fragment, parent, false);
@@ -61,7 +58,7 @@ public abstract class SelectableListActivity<T extends Parcelable> extends Abstr
                 data = frag.getSelectedData();
             }
             Intent intent = new Intent();
-            intent.putParcelableArrayListExtra(EXTRA_DATA, data);
+            intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_DATA, data);
 
             setResult(Activity.RESULT_OK, intent);
 

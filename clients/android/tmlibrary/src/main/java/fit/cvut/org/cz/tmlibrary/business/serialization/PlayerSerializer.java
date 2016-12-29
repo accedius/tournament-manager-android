@@ -47,21 +47,21 @@ public class PlayerSerializer extends BaseSerializer<Player> {
     @Override
     public HashMap<String, Object> serializeSyncData(Player entity) {
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put("name", entity.getName());
-        hm.put("email", entity.getEmail());
-        hm.put("note", entity.getNote());
+        hm.put(Constants.NAME, entity.getName());
+        hm.put(Constants.EMAIL, entity.getEmail());
+        hm.put(Constants.NOTE, entity.getNote());
         return hm;
     }
 
     @Override
     public void deserializeSyncData(HashMap<String, Object> syncData, Player entity) {
-        entity.setName(String.valueOf(syncData.get("name")));
-        entity.setEmail(String.valueOf(syncData.get("email")));
-        entity.setNote(String.valueOf(syncData.get("note")));
+        entity.setName(String.valueOf(syncData.get(Constants.NAME)));
+        entity.setEmail(String.valueOf(syncData.get(Constants.EMAIL)));
+        entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
     }
 
     @Override
     public String getEntityType() {
-        return "Player";
+        return Constants.PLAYER;
     }
 }

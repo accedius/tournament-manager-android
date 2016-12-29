@@ -19,18 +19,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
 public abstract class NewCompetitionFragment extends AbstractDataFragment {
-    protected static final String ARG_ID = "arg_id";
-
     /**
      * Constructor for this fragment with id of competition that needs to update
      * @param id
@@ -53,7 +52,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -78,7 +77,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         type_label = (TextView) v.findViewById(R.id.tv_competition_type_label);
 
         if (getArguments() != null)
-            competitionId = getArguments().getLong(ARG_ID , -1);
+            competitionId = getArguments().getLong(ExtraConstants.EXTRA_ID , -1);
 
         //We do not want to change competition type if it is already created
         if (competitionId != -1) {
@@ -179,9 +178,9 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Bundle b = new Bundle();
-                    b.putInt("y", start.get(Calendar.YEAR));
-                    b.putInt("m", start.get(Calendar.MONTH));
-                    b.putInt("d", start.get(Calendar.DAY_OF_MONTH));
+                    b.putInt(ExtraConstants.EXTRA_YEAR, start.get(Calendar.YEAR));
+                    b.putInt(ExtraConstants.EXTRA_MONTH, start.get(Calendar.MONTH));
+                    b.putInt(ExtraConstants.EXTRA_DAY, start.get(Calendar.DAY_OF_MONTH));
                     DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
@@ -204,9 +203,9 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Bundle b = new Bundle();
-                    b.putInt("y", end.get(Calendar.YEAR));
-                    b.putInt("m", end.get(Calendar.MONTH));
-                    b.putInt("d", end.get(Calendar.DAY_OF_MONTH));
+                    b.putInt(ExtraConstants.EXTRA_YEAR, end.get(Calendar.YEAR));
+                    b.putInt(ExtraConstants.EXTRA_MONTH, end.get(Calendar.MONTH));
+                    b.putInt(ExtraConstants.EXTRA_DAY, end.get(Calendar.DAY_OF_MONTH));
                     DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
@@ -236,6 +235,6 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         if (isTypeChoosable()) {
             t = (CompetitionType) type.getSelectedItem();
         }
-        return new Competition(getArguments().getLong(ARG_ID), name.getText().toString(), sDate, eDate, note.getText().toString(), t);
+        return new Competition(getArguments().getLong(ExtraConstants.EXTRA_ID), name.getText().toString(), sDate, eDate, note.getText().toString(), t);
     }
 }

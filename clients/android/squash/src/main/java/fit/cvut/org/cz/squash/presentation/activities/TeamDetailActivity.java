@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTeamDetailFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
@@ -17,11 +18,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
  * Created by Vaclav on 15. 4. 2016.
  */
 public class TeamDetailActivity extends AbstractToolbarActivity {
-    private static final String ARG_ID = "arg_id";
-
     public static Intent newStartIntent(long teamId, Context context){
         Intent intent = new Intent(context, TeamDetailActivity.class);
-        intent.putExtra(ARG_ID, teamId);
+        intent.putExtra(ExtraConstants.EXTRA_ID, teamId);
         return intent;
     }
 
@@ -34,7 +33,7 @@ public class TeamDetailActivity extends AbstractToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long id = getIntent().getLongExtra(ARG_ID, -1);
+        long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, TeamDetailFragment.newInstance(id, SquashTeamDetailFragment.class)).commit();

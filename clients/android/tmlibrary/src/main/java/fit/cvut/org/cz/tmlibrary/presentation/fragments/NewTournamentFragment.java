@@ -17,17 +17,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
 /**
  * Created by Vaclav on 25. 3. 2016.
  */
 public abstract class NewTournamentFragment extends AbstractDataFragment {
-    private static final String ARG_TOUR_ID = "arg_tour_id";
-    private static final String ARG_COMP_ID = "arg_comp_id";
-
     /**
      *
      * @param tourId id of tournament
@@ -52,8 +50,8 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
 
         Bundle args = new Bundle();
 
-        args.putLong(ARG_TOUR_ID, tourId);
-        args.putLong(ARG_COMP_ID, compId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tourId);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, compId);
 
         fragment.setArguments(args);
         return fragment;
@@ -77,8 +75,8 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
 
         if (getArguments() != null) {
-            tournamentId = getArguments().getLong(ARG_TOUR_ID, -1);
-            competitionId = getArguments().getLong(ARG_COMP_ID, -1);
+            tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
+            competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
         }
 
         if (tournamentId == -1) {
@@ -225,6 +223,6 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         if (dEndDate != null)
             eDate = dEndDate.getTime();
 
-        return new Tournament(getArguments().getLong(ARG_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
+        return new Tournament(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
     }
 }

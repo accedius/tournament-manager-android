@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.StandingItem;
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
 import fit.cvut.org.cz.squash.business.managers.StatisticManager;
 import fit.cvut.org.cz.squash.presentation.adapters.StandingsAdapter;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -24,17 +26,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 17. 4. 2016.
  */
 public class StandingsListFragment extends AbstractListFragment<StandingItem> {
-    public static final String ARG_ID = "arg_id";
-    public static final String ARG_TYPE = "arg_type";
-
-    private String orderColumn = "p";
-    private String orderType = "DESC";
+    private String orderColumn = Constants.POINTS;
+    private String orderType = Constants.ORDER_DESC;
 
     public static StandingsListFragment newInstance(long id, CompetitionType type) {
         StandingsListFragment fragment = new StandingsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putParcelable(ARG_TYPE, type);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
+        args.putParcelable(ExtraConstants.EXTRA_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,8 +47,8 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
         col.setText(originalText);
 
         List<StandingItem> stats = adapter.getData();
-        if (orderColumn.equals(stat) && orderType == "DESC") {
-            orderType = "ASC";
+        if (orderColumn.equals(stat) && orderType.equals(Constants.ORDER_DESC)) {
+            orderType = Constants.ORDER_ASC;
             Collections.sort(stats, new Comparator<StandingItem>() {
                 @Override
                 public int compare(StandingItem ls, StandingItem rs) {
@@ -60,8 +59,8 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
             if (!orderColumn.equals(stat)) {
                 orderColumn = stat;
             }
-            orderType = "DESC";
-            if (orderColumn == "p") {
+            orderType = Constants.ORDER_DESC;
+            if (orderColumn.equals(Constants.POINTS)) {
                 StatisticManager.orderStandings(stats);
             } else {
                 Collections.sort(stats, new Comparator<StandingItem>() {
@@ -76,10 +75,10 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
         col = columns.get(stat);
         text = (String) col.getText();
         String addition = "";
-        if (orderType.equals("ASC")) {
-            addition = "▲";
-        } else if (orderType.equals("DESC")) {
-            addition = "▼";
+        if (orderType.equals(Constants.ORDER_ASC)) {
+            addition = Constants.ASC_SIGN;
+        } else if (orderType.equals(Constants.ORDER_DESC)) {
+            addition = Constants.DESC_SIGN;
         }
         col.setText(text + " " + addition);
 
@@ -89,18 +88,18 @@ public class StandingsListFragment extends AbstractListFragment<StandingItem> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new StandingsAdapter(getActivity(), (CompetitionType)getArguments().getParcelable(ARG_TYPE));
+        return new StandingsAdapter(getActivity(), (CompetitionType)getArguments().getParcelable(ExtraConstants.EXTRA_TYPE));
     }
 
     @Override
     protected String getDataKey() {
-        return StatsService.EXTRA_STATS;
+        return ExtraConstants.EXTRA_STATS;
     }
 
     @Override
     public void askForData() {
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_STANDINGS, getContext());
-        intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
         getContext().startService(intent);
     }
 

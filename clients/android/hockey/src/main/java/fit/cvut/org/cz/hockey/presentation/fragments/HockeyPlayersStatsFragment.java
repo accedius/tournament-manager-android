@@ -21,8 +21,10 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.AggregatedStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.DeleteOnlyDialog;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
@@ -38,15 +40,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListe
 public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedStatistics> {
     private long competitionID;
     private long tournamentID;
-    private static String ARG_COMP_ID = "competition_id";
-    private static String ARG_TOUR_ID = "tournament_id";
     public static final String SAVE_COMP_ID = "SAVE_COMP_ID";
     public static final String SAVE_TOUR_ID = "SAVE_TOUR_ID";
     public static final String SAVE_SEND = "SAVE_SEND";
 
     private boolean sendForData = true;
-    private String orderColumn = "p";
-    private String orderType = "DESC";
+    private String orderColumn = Constants.POINTS;
+    private String orderType = Constants.ORDER_DESC;
 
     private BroadcastReceiver statsReceiver = new StatsReceiver();
 
@@ -55,9 +55,9 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         Bundle args = new Bundle();
 
         if (forComp)
-            args.putLong(ARG_COMP_ID, id);
+            args.putLong(ExtraConstants.EXTRA_COMP_ID, id);
         else
-            args.putLong(ARG_TOUR_ID, id);
+            args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -82,8 +82,8 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         }
 
         if (getArguments() != null) {
-            competitionID = getArguments().getLong(ARG_COMP_ID, -1);
-            tournamentID = getArguments().getLong(ARG_TOUR_ID, -1);
+            competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
+            tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
         }
     }
 
@@ -92,14 +92,14 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
         TextView col = columns.get(orderColumn);
         String text = (String) col.getText();
-        if (text.contains("▼") || text.contains("▲")) {
+        if (text.contains(Constants.DESC_SIGN) || text.contains(Constants.ASC_SIGN)) {
             String originalText = text.substring(0, text.length() - 2);
             col.setText(originalText);
         }
 
         List<AggregatedStatistics> stats = adapter.getData();
-        if (orderColumn.equals(stat) && orderType == "DESC") {
-            orderType = "ASC";
+        if (orderColumn.equals(stat) && orderType.equals(Constants.ORDER_DESC)) {
+            orderType = Constants.ORDER_ASC;
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
@@ -110,7 +110,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             if (!orderColumn.equals(stat)) {
                 orderColumn = stat;
             }
-            orderType = "DESC";
+            orderType = Constants.ORDER_DESC;
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
@@ -122,10 +122,10 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         col = columns.get(stat);
         text = (String) col.getText();
         String addition = "";
-        if (orderType.equals("ASC")) {
-            addition = "▲";
-        } else if (orderType.equals("DESC")) {
-            addition = "▼";
+        if (orderType.equals(Constants.ORDER_ASC)) {
+            addition = Constants.ASC_SIGN;
+        } else if (orderType.equals(Constants.ORDER_DESC)) {
+            addition = Constants.DESC_SIGN;
         }
         col.setText(text + " " + addition);
 
@@ -154,7 +154,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
     @Override
     protected String getDataKey() {
-        return StatsService.EXTRA_STATS;
+        return ExtraConstants.EXTRA_STATS;
     }
 
     @Override
@@ -164,10 +164,10 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
         Intent intent;
         if (competitionID != -1) {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_COMP_ID, getContext());
-            intent.putExtra(StatsService.EXTRA_ID, competitionID);
+            intent.putExtra(ExtraConstants.EXTRA_ID, competitionID);
         } else {
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_TOUR_ID, getContext());
-            intent.putExtra(StatsService.EXTRA_ID, tournamentID);
+            intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
         }
 
         getActivity().startService(intent);
@@ -242,13 +242,13 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
 
         if (competitionID != -1) {
             Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
-            intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
-            intent.putExtra(PlayerService.EXTRA_ID, competitionID);
+            intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA));
+            intent.putExtra(ExtraConstants.EXTRA_ID, competitionID);
             getContext().startService(intent);
         } else {
             Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT, getContext());
-            intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
-            intent.putExtra(PlayerService.EXTRA_ID, tournamentID);
+            intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA));
+            intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
             getContext().startService(intent);
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -273,7 +273,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:
-                    if (intent.getIntExtra(PlayerService.EXTRA_OUTCOME, -1) == PlayerService.OUTCOME_OK) {
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
                         sendForData = true;
                         askForData();
                         break;
@@ -282,7 +282,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
                         if (v != null) Snackbar.make(v, R.string.player_delete_from_competition_error, Snackbar.LENGTH_LONG).show();
                     }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT: {
-                    if (intent.getIntExtra(PlayerService.EXTRA_OUTCOME, -1) == PlayerService.OUTCOME_OK) {
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
                         sendForData = true;
                         askForData();
                         break;

@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 import fit.cvut.org.cz.hockey.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -20,19 +21,19 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected String getTeamKey() {
-        return TeamService.EXTRA_TEAM;
+        return ExtraConstants.EXTRA_TEAM;
     }
 
     @Override
     protected String getExtraPlayersKey() {
-        return SelectableListActivity.EXTRA_DATA;
+        return ExtraConstants.EXTRA_DATA;
     }
 
     @Override
     protected void updatePlayers(Team t) {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE_TEAM_PLAYERS, getContext());
-        intent.putExtra(PlayerService.EXTRA_ID, t.getId());
-        intent.putExtra(PlayerService.EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
+        intent.putExtra(ExtraConstants.EXTRA_ID, t.getId());
+        intent.putExtra(ExtraConstants.EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
 
         getContext().startService(intent);
     }
@@ -40,7 +41,7 @@ public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected Intent getSelectActivityStartIntent(Team t) {
         Intent intent =  AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TEAM, t.getId());
-        intent.putParcelableArrayListExtra(SelectableListActivity.EXTRA_OMIT_DATA, new ArrayList<>(t.getPlayers()));
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, new ArrayList<>(t.getPlayers()));
         return intent;
     }
 
@@ -57,7 +58,7 @@ public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
-        intent.putExtra(TeamService.EXTRA_ID, teamId);
+        intent.putExtra(ExtraConstants.EXTRA_ID, teamId);
         getContext().startService(intent);
     }
 

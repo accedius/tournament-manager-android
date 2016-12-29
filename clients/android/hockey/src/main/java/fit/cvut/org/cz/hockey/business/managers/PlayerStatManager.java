@@ -11,8 +11,8 @@ import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * Created by kevin on 2.12.2016.

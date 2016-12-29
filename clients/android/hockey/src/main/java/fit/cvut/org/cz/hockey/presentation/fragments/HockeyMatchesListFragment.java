@@ -17,6 +17,7 @@ import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.HockeyMatchAdapter;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.hockey.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -28,16 +29,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
-    private long tournamentID;
-    private static String ARG_ID = "tournament_id";
-
+    private long tournamentId;
     private MatchReceiver matchReceiver = new MatchReceiver();
 
     public static HockeyMatchesListFragment newInstance(long id) {
         HockeyMatchesListFragment fragment = new HockeyMatchesListFragment();
         Bundle args = new Bundle();
 
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -46,7 +45,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (getArguments() != null) {
-            tournamentID = getArguments().getLong(ARG_ID, -1);
+            tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
         }
 
         super.onCreate(savedInstanceState);
@@ -70,7 +69,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
                 v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentID, title);
+                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentId, title);
                         dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
                         return true;
                     }
@@ -81,13 +80,13 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
 
     @Override
     protected String getDataKey() {
-        return MatchService.EXTRA_MATCH_LIST;
+        return ExtraConstants.EXTRA_MATCH_LIST;
     }
 
     @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_TOURNAMENT_ID, getContext());
-        intent.putExtra(MatchService.EXTRA_TOUR_ID, tournamentID);
+        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
         getContext().startService(intent);
     }
 
@@ -120,7 +119,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               final long tourId = getArguments().getLong(ARG_ID, -1);
+               final long tourId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
                if (!((ShowTournamentActivity)getActivity()).isEnoughTeams()) {
                    Snackbar.make(getActivity().findViewById(android.R.id.content), fit.cvut.org.cz.tmlibrary.R.string.not_enough_teams_error, Snackbar.LENGTH_LONG).show();

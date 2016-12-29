@@ -14,7 +14,7 @@ import fit.cvut.org.cz.hockey.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.hockey.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -22,23 +22,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class StatsService extends AbstractIntentServiceWProgress {
-    private static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_STATS = "extra_stats";
-    public static final String EXTRA_STANDINGS = "extra_standings";
-    public static final String EXTRA_HOME_STATS = "extra_home_statistics";
-    public static final String EXTRA_AWAY_STATS = "extra_away_statistics";
-    public static final String EXTRA_HOME_NAME = "extra_home_name";
-    public static final String EXTRA_AWAY_NAME = "extra_away_name";
-    public static final String EXTRA_HOME_PARTICIPANT = "extra_home_participant";
-    public static final String EXTRA_AWAY_PARTICIPANT = "extra_away_participant";
-
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";
     public static final String ACTION_GET_STANDINGS_BY_TOURNAMENT = "get__standings_by_tour_id";
@@ -50,30 +40,30 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
     @Override
     protected String getActionKey() {
-        return EXTRA_ACTION;
+        return ExtraConstants.EXTRA_ACTION;
     }
 
     public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, StatsService.class);
-        res.putExtra(EXTRA_ACTION, action);
+        res.putExtra(ExtraConstants.EXTRA_ACTION, action);
 
         return res;
     }
 
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(EXTRA_ACTION);
+        String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
 
         switch (action)
         {
             case ACTION_GET_BY_COMP_ID:
             {
                 Intent res = new Intent();
-                long compID = intent.getLongExtra(EXTRA_ID, -1);
+                long compID = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_COMP_ID);
                 List<AggregatedStatistics> stats = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getByCompetitionId(compID);
 
-                res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
@@ -81,11 +71,11 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_BY_TOUR_ID:
             {
                 Intent res = new Intent();
-                long tourID = intent.getLongExtra(EXTRA_ID, -1);
+                long tourID = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 res.setAction(ACTION_GET_BY_TOUR_ID);
                 List<AggregatedStatistics> stats = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getByTournamentId(tourID);
 
-                res.putParcelableArrayListExtra(EXTRA_STATS, new ArrayList<>(stats));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_STATS, new ArrayList<>(stats));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
@@ -93,17 +83,17 @@ public class StatsService extends AbstractIntentServiceWProgress {
             case ACTION_GET_STANDINGS_BY_TOURNAMENT:
             {
                 Intent res = new Intent(action);
-                long tourID = intent.getLongExtra(EXTRA_ID, -1);
+                long tourID = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 List<Standing> standings = ((IStatisticManager)ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getStandingsByTournamentId(tourID);
 
-                res.putParcelableArrayListExtra(EXTRA_STANDINGS, new ArrayList<>(standings));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_STANDINGS, new ArrayList<>(standings));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
             }
             case ACTION_GET_MATCH_PLAYER_STATISTICS: {
                 Intent res = new Intent(ACTION_GET_MATCH_PLAYER_STATISTICS);
-                long matchId = intent.getLongExtra(EXTRA_ID, -1);
+                long matchId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId);
                 Tournament tournament = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(match.getTournamentId());
                 Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(tournament.getCompetitionId());
@@ -116,12 +106,12 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 for (Participant participant : participants) {
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
                         homeStats = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
-                        res.putExtra(EXTRA_HOME_PARTICIPANT, participant);
+                        res.putExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT, participant);
                         homeId = participant.getParticipantId();
                     }
                     else if (ParticipantType.away.toString().equals(participant.getRole())) {
                         awayStats = ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
-                        res.putExtra(EXTRA_AWAY_PARTICIPANT, participant);
+                        res.putExtra(ExtraConstants.EXTRA_AWAY_PARTICIPANT, participant);
                         awayId = participant.getParticipantId();
                     }
                 }
@@ -138,11 +128,11 @@ public class StatsService extends AbstractIntentServiceWProgress {
                     awayName = player.getName();
                 }
 
-                res.putParcelableArrayListExtra(EXTRA_HOME_STATS, new ArrayList<>(homeStats));
-                res.putParcelableArrayListExtra(EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
-                res.putExtra(EXTRA_HOME_NAME, homeName);
-                res.putExtra(EXTRA_AWAY_NAME, awayName);
+                res.putExtra(ExtraConstants.EXTRA_HOME_NAME, homeName);
+                res.putExtra(ExtraConstants.EXTRA_AWAY_NAME, awayName);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 

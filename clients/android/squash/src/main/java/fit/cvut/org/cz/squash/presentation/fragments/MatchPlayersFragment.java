@@ -22,6 +22,7 @@ import java.util.List;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.SimplePlayerAdapter;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.SelectTeamDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
@@ -35,12 +36,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class MatchPlayersFragment extends AbstractDataFragment {
-    private static final String ARG_ID = "arg_id";
     private static final String SAVE_HOME = "save_home";
     private static final String SAVE_AWAY = "save_away";
     private static final String SAVE_HOME_PLAYERS = "save_home_players";
     private static final String SAVE_AWAY_PLAYERS = "save_away_players";
     private static final String SAVE_DATA = "save_data";
+
     public static final int REQUEST_HOME = 0;
     public static final int REQUEST_AWAY = 1;
 
@@ -55,7 +56,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     public static MatchPlayersFragment newInstance(long id){
         MatchPlayersFragment f = new MatchPlayersFragment();
         Bundle b = new Bundle();
-        b.putLong(ARG_ID, id);
+        b.putLong(ExtraConstants.EXTRA_ID, id);
         f.setArguments(b);
         return f;
     }
@@ -63,7 +64,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_PLAYERS_IN_MATCH, getContext());
-        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
         getContext().startService(intent);
     }
 
@@ -76,15 +77,15 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         askForData = false;
         unregisterReceivers();
-        homeParticipant = intent.getParcelableExtra(PlayerService.EXTRA_HOME_PARTICIPANT);
-        awayParticipant = intent.getParcelableExtra(PlayerService.EXTRA_AWAY_PARTICIPANT);
-        homeName = intent.getStringExtra(PlayerService.EXTRA_HOME_NAME);
-        awayName = intent.getStringExtra(PlayerService.EXTRA_AWAY_NAME);
+        homeParticipant = intent.getParcelableExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
+        awayParticipant = intent.getParcelableExtra(ExtraConstants.EXTRA_AWAY_PARTICIPANT);
+        homeName = intent.getStringExtra(ExtraConstants.EXTRA_HOME_NAME);
+        awayName = intent.getStringExtra(ExtraConstants.EXTRA_AWAY_NAME);
         home.setText(homeName);
         away.setText(awayName);
 
-        homePlayers = intent.getParcelableArrayListExtra(PlayerService.EXTRA_HOME_PLAYERS);
-        awayPlayers = intent.getParcelableArrayListExtra(PlayerService.EXTRA_AWAY_PLAYERS);
+        homePlayers = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+        awayPlayers = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
         homeAdapter.swapData(homePlayers);
         awayAdapter.swapData(awayPlayers);
     }
@@ -163,7 +164,12 @@ public class MatchPlayersFragment extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectTeamDialog d = SelectTeamDialog.newInstance(homeParticipant.getParticipantId(), awayParticipant.getParticipantId(), homeName, awayName, getArguments().getLong(ARG_ID));
+                SelectTeamDialog d = SelectTeamDialog.newInstance(
+                        homeParticipant.getParticipantId(),
+                        awayParticipant.getParticipantId(),
+                        homeName,
+                        awayName,
+                        getArguments().getLong(ExtraConstants.EXTRA_ID));
                 d.setTargetFragment(MatchPlayersFragment.this, 0);
                 d.show(getFragmentManager(), "select_team_tag");
             }
@@ -225,7 +231,7 @@ public class MatchPlayersFragment extends AbstractDataFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != AddPlayersActivity.RESULT_OK) return;
 
-        List<Player> players = data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA);
+        List<Player> players = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
         List<PlayerStat> playerStats = new ArrayList<>();
 
         long participantId = requestCode == 0 ? homeParticipant.getId() : awayParticipant.getId();

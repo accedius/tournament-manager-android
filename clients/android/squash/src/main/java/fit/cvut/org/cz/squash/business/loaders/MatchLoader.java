@@ -10,14 +10,15 @@ import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -30,7 +31,7 @@ public class MatchLoader {
             importedMatch.setTournamentId(tournament.getId());
             ManagerFactory.getInstance(context).getEntityManager(Match.class).insert(importedMatch);
 
-            String role = "home";
+            String role = ParticipantType.home.toString();
             long participantId;
             Participant participant, homeParticipant = null, awayParticipant = null;
             for (ServerCommunicationItem matchParticipant : match.subItems) {
@@ -41,12 +42,12 @@ public class MatchLoader {
                 }
                 participant = new Participant(importedMatch.getId(), participantId, role);
                 ManagerFactory.getInstance(context).getEntityManager(Participant.class).insert(participant);
-                if (role.equals("home")) {
+                if (role.equals(ParticipantType.home.toString())) {
                     homeParticipant = participant;
                 } else {
                     awayParticipant = participant;
                 }
-                role = "away";
+                role = ParticipantType.away.toString();
             }
 
             // Add Participant stats (sets)

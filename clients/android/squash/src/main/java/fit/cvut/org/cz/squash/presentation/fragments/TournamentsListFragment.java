@@ -21,34 +21,37 @@ import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.squash.presentation.activities.TournamentDetailActivity;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+
+import static fit.cvut.org.cz.tmlibrary.business.serialization.Constants.END;
 
 /**
  * Allows usser to display tournaments in competition
  * Created by Vaclav on 5. 4. 2016.
  */
 public class TournamentsListFragment extends AbstractListFragment<Tournament> {
-    public static final String COMP_ID = "comp_id";
     private CompetitionType type = null;
     private TournamentAdapter adapter = null;
 
-    private String orderColumn = Tournament.col_end_date;
-    private String orderType = "DESC";
+    private String orderColumn = END;
+    private String orderType = Constants.ORDER_DESC;
 
     public static TournamentsListFragment newInstance(long competitionId){
         TournamentsListFragment fragment = new TournamentsListFragment();
         Bundle args = new Bundle();
-        args.putLong(COMP_ID, competitionId);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, competitionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,10 +81,10 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(c, TournamentDetailActivity.class);
-                        intent.putExtra(TournamentDetailActivity.TOUR_ID, tournamentId);
-                        intent.putExtra(TournamentDetailActivity.COMP_ID, getArguments().getLong(COMP_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
+                        intent.putExtra(ExtraConstants.EXTRA_COMP_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                        intent.putExtra(TournamentDetailActivity.EXTRA_TYPE, type.id);
+                        intent.putExtra(ExtraConstants.EXTRA_TYPE, type.id);
 
                         startActivity(intent);
                     }
@@ -90,7 +93,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        TournamentsDialog dialog = TournamentsDialog.newInstance(getArguments().getLong(COMP_ID), tournamentId, position, name);
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_COMP_ID), tournamentId, position, name);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
 
                         return false;
@@ -104,14 +107,14 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
 
     @Override
     protected String getDataKey() {
-        return TournamentService.EXTRA_TOURNAMENT;
+        return ExtraConstants.EXTRA_TOURNAMENT;
     }
 
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_BY_COMPETITION_ID, getContext());
         if (getArguments() != null)
-            intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(COMP_ID));
+            intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
 
         getContext().startService(intent);
     }
@@ -137,8 +140,8 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
         if (adapter == null) return;
 
         List<Tournament> tournaments = adapter.getData();
-        if (orderColumn.equals(type) && orderType.equals("ASC")) {
-            orderType = "DESC";
+        if (orderColumn.equals(type) && orderType.equals(Constants.ORDER_ASC)) {
+            orderType = Constants.ORDER_DESC;
             Collections.sort(tournaments, new Comparator<Tournament>() {
                 @Override
                 public int compare(Tournament ls, Tournament rs) {
@@ -149,7 +152,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
             if (!orderColumn.equals(type)) {
                 orderColumn = type;
             }
-            orderType = "ASC";
+            orderType = Constants.ORDER_ASC;
             Collections.sort(tournaments, new Comparator<Tournament>() {
                 @Override
                 public int compare(Tournament ls, Tournament rs) {
@@ -169,7 +172,7 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long cId = getArguments().getLong(COMP_ID, -1);
+                long cId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
                 Intent intent = CreateTournamentActivity.newStartIntent(getContext(), cId, -1);
                 startActivity(intent);
             }
@@ -185,9 +188,9 @@ public class TournamentsListFragment extends AbstractListFragment<Tournament> {
             contentView.setVisibility(View.VISIBLE);
             if (intent.getAction().equals(TournamentService.ACTION_GET_BY_COMPETITION_ID)) {
                 TournamentsListFragment.super.bindDataOnView(intent);
-                type = CompetitionTypes.competitionTypes(getResources())[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
-            } else if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)) {
-                    int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
+                type = CompetitionTypes.competitionTypes(getResources())[intent.getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
+            } else if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                    int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                     adapter.delete(position);
             } else {
                 Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTournament, Snackbar.LENGTH_LONG).show();

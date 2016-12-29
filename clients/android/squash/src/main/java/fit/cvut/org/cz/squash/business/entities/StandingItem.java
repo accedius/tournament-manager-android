@@ -3,6 +3,8 @@ package fit.cvut.org.cz.squash.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
+
 /**
  * Class holds how individual participant does in tournament
  * this defines order
@@ -65,14 +67,14 @@ public class StandingItem implements Parcelable {
 
     public double getStat(String key) {
         switch (key) {
-            case "p": return points;
-            case "w": return wins;
-            case "l": return losses;
-            case "d": return draws;
-            case "sw": return setsWon;
-            case "sl": return setsLost;
-            case "bw": return ballsWon;
-            case "bl": return ballsLost;
+            case Constants.POINTS: return points;
+            case Constants.WINS: return wins;
+            case Constants.LOSSES: return losses;
+            case Constants.DRAWS: return draws;
+            case Constants.SETS_WON: return setsWon;
+            case Constants.SETS_LOST: return setsLost;
+            case Constants.BALLS_WON: return ballsWon;
+            case Constants.BALLS_LOST: return ballsLost;
             default: return 0;
         }
     }

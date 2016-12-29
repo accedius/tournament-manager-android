@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -36,13 +37,11 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     private static String SAVE_OVERTIME = "save_overtime";
     private static String SAVE_SHOOTOUTS = "save_shootouts";
 
-    private static String ARG_ID = "arg_id";
-
     public static HockeyMatchOverviewFragment newInstance(long matchId){
         HockeyMatchOverviewFragment fragment = new HockeyMatchOverviewFragment();
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, matchId);
+        args.putLong(ExtraConstants.EXTRA_ID, matchId);
 
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +50,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW, getContext());
-        intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
 
         getContext().startService(intent);
     }
@@ -87,7 +86,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        Match match = intent.getParcelableExtra(MatchService.EXTRA_MATCH);
+        Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
         tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
@@ -227,7 +226,7 @@ public class HockeyMatchOverviewFragment extends AbstractDataFragment {
 
     public Match getScore() {
         Match res = new Match();
-        res.setId(getArguments().getLong(ARG_ID));
+        res.setId(getArguments().getLong(ExtraConstants.EXTRA_ID));
         res.setOvertime(ot != 0);
         res.setShootouts(so != 0);
         res.setPlayed(true);

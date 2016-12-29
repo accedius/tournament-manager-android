@@ -10,12 +10,12 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 
 /**
  * Created by kevin on 14. 4. 2016.
  */
 public class EditDialog extends DialogFragment {
-    public static final String ARG_TITLE = "arg_title";
     private String activity_create_competition;
     private String package_name;
     private String sport_context;
@@ -57,7 +57,7 @@ public class EditDialog extends DialogFragment {
                 new String[]{getResources().getString(R.string.edit)},
                 supplyListener());
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

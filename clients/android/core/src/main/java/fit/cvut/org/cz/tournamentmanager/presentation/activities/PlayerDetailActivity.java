@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerDetailFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragment;
-import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
  * Created by atgot_000 on 29. 3. 2016.
@@ -58,15 +58,15 @@ public class PlayerDetailActivity extends AbstractTabActivity {
         for (Map.Entry<String, ApplicationInfo> sport_context : sport_contexts.entrySet()) {
             ApplicationInfo info = sport_context.getValue();
             PlayerSportFragment psf = new PlayerSportFragment();
-            String package_name = info.metaData.getString("package_name");
             Bundle b = new Bundle();
-            b.putLong("player_id", playerID);
-            b.putString("package_name", package_name);
-            b.putString("sport_name", info.metaData.getString("sport_name"));
+            b.putLong(ExtraConstants.EXTRA_ID, playerID);
+            b.putString(CrossPackageConstants.PACKAGE_NAME, info.metaData.getString(CrossPackageConstants.PACKAGE_NAME));
+            // TODO zjistit, jestli sport_name nekdo pouziva
+            b.putString(CrossPackageConstants.SPORT_NAME, info.metaData.getString(CrossPackageConstants.SPORT_NAME));
             b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
-            b.putString("activity_create_competition", info.metaData.getString("activity_create_competition"));
-            b.putString("activity_detail_competition", info.metaData.getString("activity_detail_competition"));
-            b.putString("package_service", info.metaData.getString("package_service"));
+            b.putString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION, info.metaData.getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION));
+            b.putString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION, info.metaData.getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION));
+            b.putString(CrossPackageConstants.PACKAGE_SERVICE, info.metaData.getString(CrossPackageConstants.PACKAGE_SERVICE));
             psf.setArguments(b);
             fragments[i] = psf;
             titles[i] = getResources().getString(getResources().getIdentifier(sport_context.getKey(), "string", getPackageName()));
@@ -96,7 +96,7 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             case R.id.action_edit:{
                 if (playerID == -1) break;
                 Intent intent = new Intent(this, CreatePlayerActivity.class);
-                intent.putExtra(PlayerService.EXTRA_ID, playerID);
+                intent.putExtra(ExtraConstants.EXTRA_ID, playerID);
                 startActivity(intent);
                 break;
             }

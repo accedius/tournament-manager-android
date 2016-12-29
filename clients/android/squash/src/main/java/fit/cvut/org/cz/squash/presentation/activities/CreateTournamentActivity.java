@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.NewSquashTournametFragment;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -24,13 +25,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
  * Created by Vaclav on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_COMPETITION_ID = "competition_id";
-    public static final String EXTRA_TOURNAMENT_ID = "tournament_id";
-
     public static Intent newStartIntent(Context context, long compId, long tourId) {
         Intent intent = new Intent(context, CreateTournamentActivity.class);
-        intent.putExtra(EXTRA_COMPETITION_ID, compId);
-        intent.putExtra(EXTRA_TOURNAMENT_ID, tourId);
+        intent.putExtra(ExtraConstants.EXTRA_COMP_ID, compId);
+        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
 
         return intent;
     }
@@ -51,8 +49,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
 
         long tourID, compID;
 
-        tourID = getIntent().getLongExtra(EXTRA_TOURNAMENT_ID, -1);
-        compID = getIntent().getLongExtra(EXTRA_COMPETITION_ID, -1);
+        tourID = getIntent().getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
+        compID = getIntent().getLongExtra(ExtraConstants.EXTRA_COMP_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewSquashTournametFragment.newInstance(tourID, compID, NewSquashTournametFragment.class)).commit();
@@ -80,7 +78,7 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
             } else {
                 intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
             }
-            intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournament);
+            intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, tournament);
             startService(intent);
             finish();
         }

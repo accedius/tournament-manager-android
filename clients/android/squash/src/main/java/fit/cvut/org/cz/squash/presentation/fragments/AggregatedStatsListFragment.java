@@ -21,8 +21,10 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.business.entities.SAggregatedStats;
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
 import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.adapters.AggregatedStatsAdapter;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.AggregatedStatsDialog;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.squash.presentation.services.StatsService;
@@ -36,12 +38,11 @@ import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListe
  * Created by Vaclav on 5. 4. 2016.
  */
 public class AggregatedStatsListFragment extends AbstractListFragment<SAggregatedStats> {
-    public static final String ARG_ID = "ARG_ID";
-    public static final String ARG_ACTION = "ARG_ACTION";
     public static final String SAVE_MAIN = "SAVE_MAIN";
     public static final String SAVE_ADD = "SAVE_ADD";
     public static final String SAVE_SEND = "SAVE_SEND";
     public static final String SAVE_DELETE = "SAVE_DELETE";
+
     public static final int REQUEST_PLAYERS_FOR_COMPETITION = 1;
     public static final int REQUEST_PLAYERS_FOR_TOURNAMENT = 2;
 
@@ -51,16 +52,16 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
     private int requestCode = 0;
     private boolean sendForData = true;
     private AggregatedStatsAdapter adapter = null;
-    private String orderColumn = "p";
-    private String orderType = "DESC";
+    private String orderColumn = Constants.POINTS;
+    private String orderType = Constants.ORDER_DESC;
 
     private BroadcastReceiver refreshReceiver = new RefreshReceiver();
 
     public static AggregatedStatsListFragment newInstance(long id, String action){
         AggregatedStatsListFragment fragment = new AggregatedStatsListFragment();
         Bundle b = new Bundle();
-        b.putLong(ARG_ID, id);
-        b.putString(ARG_ACTION, action);
+        b.putLong(ExtraConstants.EXTRA_ID, id);
+        b.putString(ExtraConstants.EXTRA_ACTION, action);
         fragment.setArguments(b);
         return fragment;
     }
@@ -78,7 +79,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mainAction = getArguments().getString(ARG_ACTION, null);
+        mainAction = getArguments().getString(ExtraConstants.EXTRA_ACTION, null);
 
         if (savedInstanceState != null) {
             mainAction = savedInstanceState.getString(SAVE_MAIN);
@@ -107,14 +108,14 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
         TextView col = columns.get(orderColumn);
         String text = (String) col.getText();
-        if (text.contains("▼") || text.contains("▲")) {
+        if (text.contains(Constants.DESC_SIGN) || text.contains(Constants.ASC_SIGN)) {
             String originalText = text.substring(0, text.length() - 2);
             col.setText(originalText);
         }
 
         List<SAggregatedStats> stats = adapter.getData();
-        if (orderColumn.equals(stat) && orderType == "DESC") {
-            orderType = "ASC";
+        if (orderColumn.equals(stat) && orderType.equals(Constants.ORDER_DESC)) {
+            orderType = Constants.ORDER_ASC;
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
@@ -125,7 +126,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
             if (!orderColumn.equals(stat)) {
                 orderColumn = stat;
             }
-            orderType = "DESC";
+            orderType = Constants.ORDER_DESC;
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
@@ -137,10 +138,10 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         col = columns.get(stat);
         text = (String) col.getText();
         String addition = "";
-        if (orderType.equals("ASC")) {
-            addition = "▲";
-        } else if (orderType.equals("DESC")) {
-            addition = "▼";
+        if (orderType.equals(Constants.ORDER_ASC)) {
+            addition = Constants.DESC_SIGN;
+        } else if (orderType.equals(Constants.ORDER_DESC)) {
+            addition = Constants.ASC_SIGN;
         }
         col.setText(text + " " + addition);
 
@@ -159,10 +160,10 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 sendForData = false;
                 switch (requestCode){
                     case REQUEST_PLAYERS_FOR_COMPETITION:
-                        intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_COMPETITION, getArguments().getLong(ARG_ID));
+                        intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_COMPETITION, getArguments().getLong(ExtraConstants.EXTRA_ID));
                         break;
                     case REQUEST_PLAYERS_FOR_TOURNAMENT:
-                        intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TOURNAMENT, getArguments().getLong(ARG_ID));
+                        intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_TOURNAMENT, getArguments().getLong(ExtraConstants.EXTRA_ID));
                         break;
                     default:break;
                 }
@@ -183,7 +184,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        final long id = getArguments().getLong(ARG_ID);
+                        final long id = getArguments().getLong(ExtraConstants.EXTRA_ID);
                         AggregatedStatsDialog dialog = AggregatedStatsDialog.newInstance(id, item.playerId, position, deleteAction, name);
                         dialog.show(getFragmentManager(), "DELETE_DD");
                         return false;
@@ -196,14 +197,14 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
 
     @Override
     protected String getDataKey() {
-        return StatsService.EXTRA_STATS;
+        return ExtraConstants.EXTRA_STATS;
     }
 
     @Override
     public void askForData() {
         if (mainAction != null && sendForData) {
             Intent intent = StatsService.newStartIntent(mainAction, getContext());
-            intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_ID));
+            intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
             getContext().startService(intent);
         }
     }
@@ -243,8 +244,8 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
         }
 
         Intent intent = PlayerService.newStartIntent(addAction, getContext());
-        intent.putParcelableArrayListExtra(PlayerService.EXTRA_PLAYERS, data.getParcelableArrayListExtra(AddPlayersActivity.EXTRA_DATA));
-        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
         getContext().startService(intent);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -268,16 +269,16 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
                     AggregatedStatsListFragment.super.bindDataOnView(intent);
                     break;
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION:{
-                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)) {
-                        int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                        int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     }
                     else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeletePlayerFromCompetition, Snackbar.LENGTH_LONG).show();
                     break;
                 }
                 case PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT:{
-                    if (intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false)) {
-                        int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                        int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     }
                     else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeletePlayerFromTournament, Snackbar.LENGTH_LONG).show();

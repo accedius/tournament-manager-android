@@ -17,6 +17,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.MatchEditAtOnceFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
@@ -25,9 +26,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 1. 5. 2016.
  */
 public class EditAtOnceActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_HOME_PLAYERS_STATS = "home_players_stats";
-    public static final String EXTRA_AWAY_PLAYERS_STATS = "away_players_stats";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -41,8 +39,8 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
         ArrayList<PlayerStat> newHomeStat = new ArrayList<>(homeStats);
         ArrayList<PlayerStat> newAwayStat = new ArrayList<>(awayStats);
 
-        res.putParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS, newHomeStat);
-        res.putParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS, newAwayStat);
+        res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, newHomeStat);
+        res.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, newAwayStat);
 
         return res;
     }
@@ -61,8 +59,8 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<PlayerStat> homeStats = getIntent().getParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS);
-        ArrayList<PlayerStat> awayStats = getIntent().getParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS);
+        ArrayList<PlayerStat> homeStats = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+        ArrayList<PlayerStat> awayStats = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, MatchEditAtOnceFragment.newInstance(homeStats, awayStats)).commit();
@@ -87,8 +85,8 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
             ArrayList<PlayerStat> awayStats = fragment.getAwayData();
 
             Intent data = new Intent();
-            data.putParcelableArrayListExtra(EXTRA_HOME_PLAYERS_STATS, homeStats);
-            data.putParcelableArrayListExtra(EXTRA_AWAY_PLAYERS_STATS, awayStats);
+            data.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, homeStats);
+            data.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, awayStats);
 
             setResult(Activity.RESULT_OK, data);
             finish();

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
@@ -19,18 +20,14 @@ import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
  * Created by atgot_000 on 29. 4. 2016.
  */
 public class HomeAwayDialog extends DialogFragment {
-    private static final String ARG_HOME_NAME = "arg_home";
-    private static final String ARG_AWAY_NAME = "arg_away";
-    private static final String ARG_MATCH_ID = "arg_match_id";
-
     private String dialHomeName, dialAwayName;
 
     public static HomeAwayDialog newInstance(String homeName, String awayName, long matchId) {
         HomeAwayDialog fragment = new HomeAwayDialog();
         Bundle b = new Bundle();
-        b.putString(ARG_HOME_NAME, homeName);
-        b.putString(ARG_AWAY_NAME, awayName);
-        b.putLong(ARG_MATCH_ID, matchId);
+        b.putString(ExtraConstants.EXTRA_HOME_NAME, homeName);
+        b.putString(ExtraConstants.EXTRA_AWAY_NAME, awayName);
+        b.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
         fragment.setArguments(b);
         return fragment;
     }
@@ -40,8 +37,8 @@ public class HomeAwayDialog extends DialogFragment {
      */
     protected void homeClicked() {
         ArrayList<PlayerStat> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID));
-        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID));
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitStats);
         getTargetFragment().startActivityForResult(intent, HockeyMatchStatsFragment.REQUEST_HOME);
     };
 
@@ -50,8 +47,8 @@ public class HomeAwayDialog extends DialogFragment {
      */
     protected void awayClicked() {
         ArrayList<PlayerStat> omitStats = ((HockeyMatchStatsFragment)getTargetFragment()).getOmitPlayers();
-        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ARG_MATCH_ID));
-        intent.putParcelableArrayListExtra(AddPlayersActivity.EXTRA_OMIT_DATA, omitStats);
+        Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID));
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitStats);
         getTargetFragment().startActivityForResult(intent, HockeyMatchStatsFragment.REQUEST_AWAY);
     };
 
@@ -59,8 +56,8 @@ public class HomeAwayDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        dialHomeName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_HOME_NAME);
-        dialAwayName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ARG_AWAY_NAME);
+        dialHomeName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ExtraConstants.EXTRA_HOME_NAME);
+        dialAwayName = getActivity().getString(R.string.add_player_to) + " " + getArguments().getString(ExtraConstants.EXTRA_AWAY_NAME);
 
         String[] items = new String[]{ dialHomeName, dialAwayName };
         builder.setItems(items, supplyListener());

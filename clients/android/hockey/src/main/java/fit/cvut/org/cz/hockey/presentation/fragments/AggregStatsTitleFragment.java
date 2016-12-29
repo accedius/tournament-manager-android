@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -19,17 +21,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class AggregStatsTitleFragment extends Fragment {
-    private static String ARG_COMP_ID = "competition_id";
-    private static String ARG_TOUR_ID = "tournament_id";
-
     private HockeyPlayersStatsFragment statsFragment;
 
     public static AggregStatsTitleFragment newInstance(long id, boolean forComp) {
         AggregStatsTitleFragment fragment = new AggregStatsTitleFragment();
         Bundle args = new Bundle();
 
-        if (forComp) args.putLong(ARG_COMP_ID, id);
-        else args.putLong(ARG_TOUR_ID, id);
+        if (forComp)
+            args.putLong(ExtraConstants.EXTRA_COMP_ID, id);
+        else
+            args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -47,8 +48,8 @@ public class AggregStatsTitleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Long competitionID = getArguments().getLong(ARG_COMP_ID, -1);
-        Long tournamentID = getArguments().getLong(ARG_TOUR_ID, -1);
+        Long competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
+        Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         if (competitionID != -1) {
             statsFragment = HockeyPlayersStatsFragment.newInstance(competitionID, true);
@@ -78,13 +79,13 @@ public class AggregStatsTitleFragment extends Fragment {
     private void setDefaultOrder(View v) {
         deleteOtherOrders(v);
         TextView points = (TextView)v.findViewById(R.id.stats_points);
-        points.setText(points.getText() + " ▼");
+        points.setText(points.getText() + " "+Constants.DESC_SIGN);
     }
 
     private void deleteOtherOrders(View v) {
         HashMap<String, TextView> columns = getColumns(v);
         for (TextView textView : columns.values()) {
-            if (textView.getText().toString().contains("▼") || textView.getText().toString().contains("▲")) {
+            if (textView.getText().toString().contains(Constants.DESC_SIGN) || textView.getText().toString().contains(Constants.ASC_SIGN)) {
                 String text = textView.getText().toString();
                 textView.setText(text.substring(0, text.length()-2));
             }
@@ -105,21 +106,21 @@ public class AggregStatsTitleFragment extends Fragment {
 
     private HashMap<String, TextView> getColumns(View v) {
         HashMap<String, TextView> columns = new HashMap<>();
-        columns.put("gp",(TextView)v.findViewById(R.id.stats_games_played));
-        columns.put("g", (TextView)v.findViewById(R.id.stats_goals));
-        columns.put("a", (TextView)v.findViewById(R.id.stats_assists));
-        columns.put("p", (TextView)v.findViewById(R.id.stats_points));
-        columns.put("+-", (TextView)v.findViewById(R.id.stats_plus_minus));
-        columns.put("s", (TextView)v.findViewById(R.id.stats_saves));
+        columns.put(Constants.MATCHES,(TextView)v.findViewById(R.id.stats_games_played));
+        columns.put(Constants.GOALS, (TextView)v.findViewById(R.id.stats_goals));
+        columns.put(Constants.ASSISTS, (TextView)v.findViewById(R.id.stats_assists));
+        columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.stats_points));
+        columns.put(Constants.PLUS_MINUS, (TextView)v.findViewById(R.id.stats_plus_minus));
+        columns.put(Constants.SAVES, (TextView)v.findViewById(R.id.stats_saves));
         if (v.findViewById(R.id.stats_wins) != null) {
-            columns.put("w", (TextView) v.findViewById(R.id.stats_wins));
-            columns.put("d", (TextView) v.findViewById(R.id.stats_draws));
-            columns.put("l", (TextView) v.findViewById(R.id.stats_losses));
-            columns.put("tp", (TextView) v.findViewById(R.id.stats_team_points));
-            columns.put("gavg", (TextView) v.findViewById(R.id.stats_goals_avg));
-            columns.put("pavg", (TextView) v.findViewById(R.id.stats_points_avg));
-            columns.put("+-avg", (TextView) v.findViewById(R.id.stats_plus_minus_avg));
-            columns.put("tpavg", (TextView) v.findViewById(R.id.stats_team_points_avg));
+            columns.put(Constants.WINS, (TextView) v.findViewById(R.id.stats_wins));
+            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.stats_draws));
+            columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.stats_losses));
+            columns.put(Constants.TEAM_POINTS, (TextView) v.findViewById(R.id.stats_team_points));
+            columns.put(Constants.GOALS_AVG, (TextView) v.findViewById(R.id.stats_goals_avg));
+            columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
+            columns.put(Constants.PLUS_MINUS_AVG, (TextView) v.findViewById(R.id.stats_plus_minus_avg));
+            columns.put(Constants.TEAM_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
         }
         return columns;
     }

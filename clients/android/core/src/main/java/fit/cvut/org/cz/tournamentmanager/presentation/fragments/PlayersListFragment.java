@@ -21,13 +21,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.PlayerAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
@@ -39,8 +41,8 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
     private String activity_detail_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
 
-    private String orderColumn = Player.col_name;
-    private String orderType = "ASC";
+    private String orderColumn = fit.cvut.org.cz.tmlibrary.business.serialization.Constants.NAME;
+    private String orderType = Constants.ORDER_ASC;
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
@@ -103,8 +105,8 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
         if (adapter == null) return;
 
         List<Player> players = adapter.getData();
-        if (orderColumn.equals(type) && orderType.equals("ASC")) {
-            orderType = "DESC";
+        if (orderColumn.equals(type) && orderType.equals(Constants.ORDER_ASC)) {
+            orderType = Constants.ORDER_DESC;
             Collections.sort(players, new Comparator<Player>() {
                 @Override
                 public int compare(Player ls, Player rs) {
@@ -115,7 +117,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
             if (!orderColumn.equals(type)) {
                 orderColumn = type;
             }
-            orderType = "ASC";
+            orderType = Constants.ORDER_ASC;
             Collections.sort(players, new Comparator<Player>() {
                 @Override
                 public int compare(Player ls, Player rs) {
@@ -157,14 +159,14 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                             case 0:{
                                                 Intent intent = new Intent();
                                                 intent.setClassName(package_name, activity_create_player);
-                                                intent.putExtra(PlayerService.EXTRA_ID, playerId);
+                                                intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
                                                 startActivity(intent);
                                                 break;
                                             }
                                             case 1:{
                                                 Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE, getContext());
-                                                intent.putExtra(PlayerService.EXTRA_ID, playerId);
-                                                intent.putExtra(PlayerService.EXTRA_POSITION, position);
+                                                intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
+                                                intent.putExtra(ExtraConstants.EXTRA_POSITION, position);
                                                 getContext().startService(intent);
                                             }
                                         }
@@ -175,7 +177,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                         };
 
                         Bundle b = new Bundle();
-                        b.putString(EditDeleteDialog.ARG_TITLE, name);
+                        b.putString(ExtraConstants.EXTRA_TITLE, name);
                         dialog.setArguments(b);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return false;
@@ -187,7 +189,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
 
     @Override
     protected String getDataKey() {
-        return PlayerService.EXTRA_PLAYERS;
+        return ExtraConstants.EXTRA_PLAYERS;
     }
 
     public class PlayersListReceiver extends BroadcastReceiver {
@@ -201,9 +203,9 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                     PlayersListFragment.super.bindDataOnView(intent);
                     break;
                 case PlayerService.ACTION_DELETE:
-                    boolean result = intent.getBooleanExtra(PlayerService.EXTRA_RESULT, false);
+                    boolean result = intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false);
                     if (result) {
-                        int position = intent.getIntExtra(PlayerService.EXTRA_POSITION, -1);
+                        int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     } else {
                         View v = getView().findFocus();

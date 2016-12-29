@@ -11,18 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
 @DatabaseTable(tableName = DBConstants.tCOMPETITIONS)
 public class Competition extends ShareBase implements Parcelable {
-    public final static String col_name = "name";
-    public final static String col_start_date = "start_date";
-    public final static String col_end_date = "end_date";
-
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
 
@@ -186,7 +183,7 @@ public class Competition extends ShareBase implements Parcelable {
     }
 
     public String getEntityType() {
-        return "Competition";
+        return Constants.COMPETITION;
     }
 
     public String getSportContext() {
@@ -211,15 +208,15 @@ public class Competition extends ShareBase implements Parcelable {
     }
 
     public String getColumn(String column) {
-        if (column.equals(col_name)) {
+        if (column.equals(DBConstants.cNAME)) {
             return getName();
-        } else if (column.equals(col_start_date)) {
+        } else if (column.equals(DBConstants.cSTART)) {
             if (startDate == null) return "";
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(startDate);
             return Integer.toString(cal.get(Calendar.YEAR)) + Integer.toString(cal.get(Calendar.MONTH)) + Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-        } else if (column.equals(col_end_date)) {
+        } else if (column.equals(DBConstants.cEND)) {
             if (endDate == null) return "";
 
             Calendar cal = Calendar.getInstance();

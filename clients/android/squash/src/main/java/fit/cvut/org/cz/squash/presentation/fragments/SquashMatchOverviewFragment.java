@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.data.entities.Match;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -18,21 +19,16 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  */
 public class SquashMatchOverviewFragment extends AbstractDataFragment {
     private View v;
-
     private SetsFragment sf;
 
-    private static final String ARG_ID = "arg_id";
-    private static final String ARG_PLAYED = "arg_played";
-
     private Match match = null;
-
     private Long tournament_id;
 
     public static SquashMatchOverviewFragment newInstance(long id, boolean played) {
         SquashMatchOverviewFragment fragment = new SquashMatchOverviewFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putBoolean(ARG_PLAYED, played);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
+        args.putBoolean(ExtraConstants.EXTRA_PLAYED, played);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +36,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_DETAIL, getContext());
-        intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
         getContext().startService(intent);
     }
 
@@ -51,7 +47,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        match = intent.getParcelableExtra(MatchService.EXTRA_MATCH);
+        match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
         tournament_id = match.getTournamentId();
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
@@ -81,7 +77,7 @@ public class SquashMatchOverviewFragment extends AbstractDataFragment {
         super.onStart();
 
         if (getChildFragmentManager().findFragmentById(R.id.sets) == null) {
-            sf = SetsFragment.newInstance(getArguments().getLong(ARG_ID), getArguments().getBoolean(ARG_PLAYED));
+            sf = SetsFragment.newInstance(getArguments().getLong(ExtraConstants.EXTRA_ID), getArguments().getBoolean(ExtraConstants.EXTRA_PLAYED));
             getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.sets, sf)

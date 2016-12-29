@@ -21,13 +21,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by Vaclav on 14. 4. 2016.
  */
 public abstract class InsertTeamDialog extends DialogFragment{
-    public static final String ARG_ID = "arg_id";
-    public static final String ARG_TOURNAMENT_ID = "arg_tournament_id";
     private ProgressBar progressBar;
     private TextView name;
     private Team team;
@@ -48,8 +47,10 @@ public abstract class InsertTeamDialog extends DialogFragment{
             e.printStackTrace();
         }
         Bundle args = new Bundle();
-        if (forTournament) args.putLong(ARG_TOURNAMENT_ID, id);
-        else args.putLong(ARG_ID, id);
+        if (forTournament)
+            args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
+        else
+            args.putLong(ExtraConstants.EXTRA_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,8 +95,8 @@ public abstract class InsertTeamDialog extends DialogFragment{
         builder.setView(v);
         name = (TextView) v.findViewById(R.id.tv_name);
         progressBar = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        teamId = getArguments().getLong(ARG_ID, -1);
-        tournamentId = getArguments().getLong(ARG_TOURNAMENT_ID, -1);
+        teamId = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
+        tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         if (teamId != -1) {
             registerReceiver();

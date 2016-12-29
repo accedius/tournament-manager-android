@@ -18,15 +18,22 @@ public class CrossPackageConstants {
     public static final String EXTRA_JSON = "extra_json";
     public static final String EXTRA_EXPORT = "extra_export";
     public static final String EXTRA_IMPORT_INFO = "extra_import_info";
-    public static final String EXTRA_CONFLICTS = "extra_conflits";
+    public static final String EXTRA_CONFLICTS = "extra_conflicts";
 
     public static final String TYPE_DELETE = "type_delete";
     public static final String TYPE_COMPETITION = "type_competition";
 
-    public static final String CORE = "fit.cvut.org.cz.tournamentmanager";
     public static final String APP_TYPE = "application_type";
-    public static final String TM_PACKAGE = "TournamentManagerPackage";
+    public static final String SPORT_PACKAGE = "sport_package";
+    public static final String PACKAGE_NAME = "package_name";
+    public static final String SPORT_NAME = "sport_name";
+    public static final String PACKAGE_SERVICE = "package_service";
+    public static final String ACTIVITY_CREATE_COMPETITION = "activity_create_competition";
+    public static final String ACTIVITY_DETAIL_COMPETITION = "activity_detail_competition";
+    public static final String CONTEXT_NAMES = "context_names";
 
+    public static final String CORE = "fit.cvut.org.cz.tournamentmanager";
+    public static final String TM_PACKAGE = "TournamentManagerPackage";
     public static final String ACTIVITY_PLAYER_DETAIL = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
 
     public static final String ACTION_GET_STATS = "fit.cvut.org.cz.tournamentmanager.action_get_stats";

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.ShowTeamFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
@@ -19,8 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class ShowTeamActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_TEAM_ID = "team_id";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -30,7 +29,7 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
     public static Intent newStartIntent(Context context, long id) {
         Intent res = new Intent(context, ShowTeamActivity.class);
 
-        res.putExtra(EXTRA_TEAM_ID, id);
+        res.putExtra(ExtraConstants.EXTRA_TEAM_ID, id);
 
         return res;
     }
@@ -50,7 +49,7 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long teamID;
-        teamID = getIntent().getLongExtra(EXTRA_TEAM_ID, -1);
+        teamID = getIntent().getLongExtra(ExtraConstants.EXTRA_TEAM_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, TeamDetailFragment.newInstance(teamID, ShowTeamFragment.class)).commit();

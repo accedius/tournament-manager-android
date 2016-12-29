@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
@@ -13,12 +14,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 public class CreateSquashMatchFragment extends NewMatchFragment {
     @Override
     protected String getMatchKey() {
-        return MatchService.EXTRA_MATCH;
+        return ExtraConstants.EXTRA_MATCH;
     }
 
     @Override
     protected String getTournamentParticipantsKey() {
-        return MatchService.EXTRA_PARTICIPANTS;
+        return ExtraConstants.EXTRA_PART_LIST;
     }
 
     @Override
@@ -29,9 +30,9 @@ public class CreateSquashMatchFragment extends NewMatchFragment {
                 intent = MatchService.newStartIntent(MatchService.ACTION_GET_PARTICIPANTS_FOR_MATCH, getContext());
             else {
                 intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_BY_ID, getContext());
-                intent.putExtra(MatchService.EXTRA_MATCH_ID, id);
+                intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, id);
             }
-            intent.putExtra(MatchService.EXTRA_ID, tournamentId);
+            intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
             getContext().startService(intent);
         }
     }

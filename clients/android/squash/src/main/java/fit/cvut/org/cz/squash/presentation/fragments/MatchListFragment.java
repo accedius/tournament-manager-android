@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.squash.presentation.activities.MatchDetailActivity;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.MatchesDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.MatchAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -30,14 +31,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class MatchListFragment extends AbstractListFragment<Match> {
-    public static final String ARG_ID = "arg_id";
     private CompetitionType type = null;
     private MatchAdapter adapter = null;
 
     public static MatchListFragment newInstance(long tournamentId){
         MatchListFragment fragment = new MatchListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, tournamentId);
+        args.putLong(ExtraConstants.EXTRA_ID, tournamentId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,13 +71,13 @@ public class MatchListFragment extends AbstractListFragment<Match> {
 
     @Override
     protected String getDataKey() {
-        return MatchService.EXTRA_MATCHES;
+        return ExtraConstants.EXTRA_MATCHES;
     }
 
     @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCHES_BY_TOURNAMENT, getContext());
-        intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID, -1));
 
         getContext().startService(intent);
     }
@@ -105,7 +105,7 @@ public class MatchListFragment extends AbstractListFragment<Match> {
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
         FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.fab_add, parent, false);
-        final long id = getArguments().getLong(ARG_ID);
+        final long id = getArguments().getLong(ExtraConstants.EXTRA_ID);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,8 +123,8 @@ public class MatchListFragment extends AbstractListFragment<Match> {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()){
                 case MatchService.ACTION_CAN_ADD_MATCH:{
-                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)) {
-                        Intent start = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ARG_ID));
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                        Intent start = CreateMatchActivity.newStartIntent(getContext(), -1, getArguments().getLong(ExtraConstants.EXTRA_ID));
                         startActivity(start);
                     }
                     else {
@@ -135,7 +135,7 @@ public class MatchListFragment extends AbstractListFragment<Match> {
                     break;
                 }
                 case MatchService.ACTION_GENERATE_ROUND:{
-                    if (intent.getBooleanExtra(MatchService.EXTRA_RESULT, false)) {
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
                         askForData();
                     }
                     else {
@@ -148,7 +148,7 @@ public class MatchListFragment extends AbstractListFragment<Match> {
                 case MatchService.ACTION_DELETE_MATCH:{
                     progressBar.setVisibility(View.GONE);
                     contentView.setVisibility(View.VISIBLE);
-                    adapter.delete(intent.getIntExtra(MatchService.EXTRA_POSITION, -1));
+                    adapter.delete(intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1));
                     break;
                 }
                 case MatchService.ACTION_RESET_MATCH:{
@@ -159,7 +159,7 @@ public class MatchListFragment extends AbstractListFragment<Match> {
                     progressBar.setVisibility(View.GONE);
                     contentView.setVisibility(View.VISIBLE);
                     MatchListFragment.super.bindDataOnView(intent);
-                    type = CompetitionTypes.competitionTypes()[intent.getIntExtra(MatchService.EXTRA_TYPE, 0)];
+                    type = CompetitionTypes.competitionTypes()[intent.getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
                 }
             }
         }

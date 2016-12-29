@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by Vaclav on 3. 4. 2016.
  */
 public abstract class AbstractSelectableListFragment<T extends Parcelable> extends AbstractDataFragment {
-    private static final String ARG_ID = "arg_id";
-
     public static AbstractSelectableListFragment newInstance(long id, Class<? extends AbstractSelectableListFragment> clazz){
         AbstractSelectableListFragment fragment = null;
         try {
@@ -40,7 +39,7 @@ public abstract class AbstractSelectableListFragment<T extends Parcelable> exten
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
 
         fragment.setArguments(args);
         return fragment;

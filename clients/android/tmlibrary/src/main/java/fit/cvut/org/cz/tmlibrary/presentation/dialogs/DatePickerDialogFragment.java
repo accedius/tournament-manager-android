@@ -7,6 +7,8 @@ import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
 
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
+
 /**
  * Created by Vaclav on 27. 3. 2016.
  */
@@ -20,9 +22,9 @@ public class DatePickerDialogFragment extends DialogFragment {
 
     @Override
     public void setArguments(Bundle b) {
-        year = b.getInt("y");
-        month = b.getInt("m");
-        day = b.getInt("d");
+        year = b.getInt(ExtraConstants.EXTRA_YEAR);
+        month = b.getInt(ExtraConstants.EXTRA_MONTH);
+        day = b.getInt(ExtraConstants.EXTRA_DAY);
         dateSet = true;
     }
 

@@ -11,8 +11,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -31,11 +32,7 @@ public class Player extends ShareBase implements Parcelable {
     @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
-    public static final String col_name = "name";
-    public static final String col_email = "email";
-
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
-
     public static Creator<Player> getCREATOR() {
         return CREATOR;
     }
@@ -88,9 +85,9 @@ public class Player extends ShareBase implements Parcelable {
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
-        values.put("email", getEmail());
-        values.put("name", getName());
-        values.put("note", getNote());
+        values.put(Constants.EMAIL, getEmail());
+        values.put(Constants.NAME, getName());
+        values.put(Constants.NOTE, getNote());
         return values;
     }
 
@@ -172,9 +169,9 @@ public class Player extends ShareBase implements Parcelable {
     }
 
     public String getColumn(String column) {
-        if (column.equals(col_name)) {
+        if (column.equals(Constants.NAME)) {
             return getName();
-        } else if (column.equals(col_email)) {
+        } else if (column.equals(Constants.EMAIL)) {
             return getEmail();
         } else {
             return "";
@@ -182,6 +179,6 @@ public class Player extends ShareBase implements Parcelable {
     }
 
     public String getEntityType() {
-        return "Player";
+        return Constants.PLAYER;
     }
 }

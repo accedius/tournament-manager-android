@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -16,16 +17,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Created by atgot_000 on 17. 4. 2016.
  */
 public class TeamService extends AbstractIntentServiceWProgress {
-    private static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_TEAM = "extra_team";
-    public static final String EXTRA_POSITION = "extra_position";
-    public static final String EXTRA_TEAM_LIST = "extra_team_list";
-    public static final String EXTRA_OUTCOME = "extra_team_outcome";
-
-    public static final int OUTCOME_OK = 1;
-    public static final int OUTCOME_NOT_OK = 0;
-
     public static final String ACTION_GET_BY_ID = "action_get_team_by_id";
     public static final String ACTION_INSERT = "action_insert_team";
     public static final String ACTION_EDIT = "action_edit_team";
@@ -34,7 +25,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
     public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, TeamService.class);
-        res.putExtra(EXTRA_ACTION, action);
+        res.putExtra(ExtraConstants.EXTRA_ACTION, action);
         return res;
     }
 
@@ -44,7 +35,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
 
     @Override
     protected String getActionKey() {
-        return EXTRA_ACTION;
+        return ExtraConstants.EXTRA_ACTION;
     }
 
     /**
@@ -54,55 +45,51 @@ public class TeamService extends AbstractIntentServiceWProgress {
     private void sendTeams(long id) {
         Intent res = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
         List<Team> teams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(id);
-        res.putParcelableArrayListExtra(EXTRA_TEAM_LIST, new ArrayList<>(teams));
+        res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TEAM_LIST, new ArrayList<>(teams));
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(res);
     }
 
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(EXTRA_ACTION);
+        String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
 
         switch (action) {
             case ACTION_GET_BY_ID: {
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 Team t = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(id);
                 t.setPlayers(((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getTeamPlayers(t));
                 Intent res = new Intent(ACTION_GET_BY_ID);
-                res.putExtra(EXTRA_TEAM, t);
+                res.putExtra(ExtraConstants.EXTRA_TEAM, t);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
             case ACTION_INSERT: {
-                Team t = intent.getParcelableExtra(EXTRA_TEAM);
+                Team t = intent.getParcelableExtra(ExtraConstants.EXTRA_TEAM);
                 ManagerFactory.getInstance(this).getEntityManager(Team.class).insert(t);
                 sendTeams(t.getTournamentId());
                 break;
             }
             case ACTION_EDIT: {
-                Team t = intent.getParcelableExtra(EXTRA_TEAM);
+                Team t = intent.getParcelableExtra(ExtraConstants.EXTRA_TEAM);
                 ManagerFactory.getInstance(this).getEntityManager(Team.class).update(t);
                 sendTeams(t.getTournamentId());
                 break;
             }
             case ACTION_GET_TEAMS_BY_TOURNAMENT: {
-                long id = intent.getLongExtra(EXTRA_ID, -1);
+                long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 sendTeams(id);
                 break;
             }
             case ACTION_DELETE: {
                 Intent res = new Intent(ACTION_DELETE);
-                long teamId = intent.getLongExtra(EXTRA_ID, -1);
+                long teamId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 if (teamId == -1)
                     break;
-                if (ManagerFactory.getInstance(this).getEntityManager(Team.class).delete(teamId)) {
-                    res.putExtra(EXTRA_OUTCOME, OUTCOME_OK);
-                    int position = intent.getIntExtra(EXTRA_POSITION, -1);
-                    res.putExtra(EXTRA_POSITION, position);
-                } else {
-                    res.putExtra(EXTRA_OUTCOME, OUTCOME_NOT_OK);
-                }
+                boolean result = ManagerFactory.getInstance(this).getEntityManager(Team.class).delete(teamId);
+                res.putExtra(ExtraConstants.EXTRA_RESULT, result);
+                res.putExtra(ExtraConstants.EXTRA_POSITION, intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }

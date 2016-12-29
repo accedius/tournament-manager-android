@@ -21,6 +21,7 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.Match;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
@@ -32,8 +33,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Created by atgot_000 on 22. 4. 2016.
  */
 public class ShowMatchActivity extends AbstractTabActivity {
-    private static final String MATCH_ID = "match_id";
-
     private long matchId;
     private View v;
 
@@ -58,13 +57,13 @@ public class ShowMatchActivity extends AbstractTabActivity {
      */
     public static Intent newStartIntent(Context context, long matchId) {
         Intent intent = new Intent(context, ShowMatchActivity.class);
-        intent.putExtra(MATCH_ID, matchId);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
         return intent;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        matchId = getIntent().getExtras().getLong(MATCH_ID);
+        matchId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_MATCH_ID);
 
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
@@ -114,9 +113,9 @@ public class ShowMatchActivity extends AbstractTabActivity {
             List<PlayerStat> awayStats = ((HockeyMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 
             Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
-            intent.putExtra(MatchService.EXTRA_MATCH_SCORE, score);
-            intent.putExtra(MatchService.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
-            intent.putExtra(MatchService.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
+            intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
+            intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
+            intent.putExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
             startService(intent);
 

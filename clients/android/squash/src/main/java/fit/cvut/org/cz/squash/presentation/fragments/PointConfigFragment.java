@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.PointConfigService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -20,14 +21,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 19. 4. 2016.
  */
 public class PointConfigFragment extends AbstractDataFragment {
-    private static final String ARG_ID = "arg_id";
     private PointConfiguration cfg = null;
     private TextView w, l, d;
 
     public static PointConfigFragment newInstance(long id){
         PointConfigFragment f = new PointConfigFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
         f.setArguments(args);
         return f;
     }
@@ -35,7 +35,7 @@ public class PointConfigFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = PointConfigService.newStartIntent(PointConfigService.ACTION_GET_BY_ID, getContext());
-        intent.putExtra(PointConfigService.EXTRA_ID, getArguments().getLong(ARG_ID, -1));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID, -1));
         getContext().startService(intent);
     }
 
@@ -46,7 +46,7 @@ public class PointConfigFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        cfg = intent.getParcelableExtra(PointConfigService.EXTRA_CFG);
+        cfg = intent.getParcelableExtra(ExtraConstants.EXTRA_CONFIGURATION);
         w.setText(Integer.toString(cfg.getWin()));
         l.setText(Integer.toString(cfg.getLoss()));
         d.setText(Integer.toString(cfg.getDraw()));
@@ -91,7 +91,7 @@ public class PointConfigFragment extends AbstractDataFragment {
 
         try {
             return new PointConfiguration(
-                    getArguments().getLong(ARG_ID),
+                    getArguments().getLong(ExtraConstants.EXTRA_ID),
                     Integer.parseInt(w.getText().toString()),
                     Integer.parseInt(d.getText().toString()),
                     Integer.parseInt(l.getText().toString()));

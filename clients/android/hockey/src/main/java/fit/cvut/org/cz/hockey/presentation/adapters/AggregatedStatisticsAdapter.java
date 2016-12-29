@@ -40,7 +40,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
             holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));
             holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
-        setOnClickListeners(holder.wholeView, stats.getPlayerID(), stats.getPlayerName());
+        setOnClickListeners(holder.wholeView, stats.getPlayerId(), stats.getPlayerName());
     }
 
     /**

@@ -8,31 +8,27 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.PlayerService;
 
 /**
  * Created by atgot_000 on 29. 4. 2016.
  */
 public class DeleteOnlyDialog extends DialogFragment {
-    private static final String ARG_PLAYER_ID = "arg_player_id";
-    private static final String ARG_COMP_ID = "arg_comp_id";
-    private static final String ARG_TOUR_ID = "arg_tour_id";
-    private static final String ARG_TITLE = "arg_title";
-
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    if (getArguments().getLong(ARG_COMP_ID) != -1) {
+                    if (getArguments().getLong(ExtraConstants.EXTRA_COMP_ID) != -1) {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION, getContext());
-                        intent.putExtra(PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID));
-                        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_PLAYER_ID, getArguments().getLong(ExtraConstants.EXTRA_PLAYER_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
                         getContext().startService(intent);
                     } else {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
-                        intent.putExtra(PlayerService.EXTRA_PLAYER_ID, getArguments().getLong(ARG_PLAYER_ID));
-                        intent.putExtra(PlayerService.EXTRA_ID, getArguments().getLong(ARG_TOUR_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_PLAYER_ID, getArguments().getLong(ExtraConstants.EXTRA_PLAYER_ID));
+                        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                         getContext().startService(intent);
                     }
                 }
@@ -44,10 +40,10 @@ public class DeleteOnlyDialog extends DialogFragment {
     public static DeleteOnlyDialog newInstance(long playerId, long compId, long tourId, String name){
         DeleteOnlyDialog fragment = new DeleteOnlyDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_PLAYER_ID, playerId);
-        args.putLong(ARG_COMP_ID, compId);
-        args.putLong(ARG_TOUR_ID, tourId);
-        args.putString(ARG_TITLE, name);
+        args.putLong(ExtraConstants.EXTRA_PLAYER_ID, playerId);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, compId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tourId);
+        args.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +54,7 @@ public class DeleteOnlyDialog extends DialogFragment {
         String[] items = new String[]{ getActivity().getString(R.string.delete) };
         builder.setItems(items, supplyListener());
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

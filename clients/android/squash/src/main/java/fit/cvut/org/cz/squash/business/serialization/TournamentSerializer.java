@@ -14,8 +14,9 @@ import fit.cvut.org.cz.squash.data.entities.Match;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -72,7 +73,7 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
 
         /* Serialize Point Configuration */
         PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class).getById(entity.getId());
-        hm.put("point_configuration", pointConfiguration);
+        hm.put(Constants.POINT_CONFIGURATION, pointConfiguration);
         return hm;
     }
 
@@ -88,7 +89,7 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     @Override
     public void deserializeSyncData(HashMap<String, Object> syncData, Tournament entity) {
         super.deserializeSyncData(syncData, entity);
-        PointConfiguration pointConfiguration = new Gson().fromJson(String.valueOf(syncData.get("point_configuration")), new TypeToken<PointConfiguration>(){}.getType());
+        PointConfiguration pointConfiguration = new Gson().fromJson(String.valueOf(syncData.get(Constants.POINT_CONFIGURATION)), new TypeToken<PointConfiguration>(){}.getType());
         entity.setPointConfiguration(pointConfiguration);
     }
 }

@@ -11,15 +11,16 @@ import java.util.Map;
 
 import fit.cvut.org.cz.hockey.business.ManagerFactory;
 import fit.cvut.org.cz.hockey.business.serialization.CompetitionSerializer;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -36,9 +37,9 @@ public class CompetitionLoader {
         List<ServerCommunicationItem> tournaments = new ArrayList<>();
 
         for (ServerCommunicationItem subItem : allSubItems) {
-            if (subItem.getType().equals("Player")) {
+            if (subItem.getType().equals(Constants.PLAYER)) {
                 players.add(subItem);
-            } else if (subItem.getType().equals("Tournament")) {
+            } else if (subItem.getType().equals(Constants.TOURNAMENT)) {
                 tournaments.add(subItem);
             }
         }
@@ -59,9 +60,9 @@ public class CompetitionLoader {
         List<ServerCommunicationItem> players = new ArrayList<>();
         List<ServerCommunicationItem> tournaments = new ArrayList<>();
         for (ServerCommunicationItem subItem : competition.subItems) {
-            if (subItem.getType().equals("Player")) {
+            if (subItem.getType().equals(Constants.PLAYER)) {
                 players.add(subItem);
-            } else if (subItem.getType().equals("Tournament")) {
+            } else if (subItem.getType().equals(Constants.TOURNAMENT)) {
                 tournaments.add(subItem);
             }
         }

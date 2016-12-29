@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.squash.data.CompetitionCP;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
@@ -17,13 +19,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected String getCompetitionKey() {
-        return CompetitionService.EXTRA_COMPETITION;
+        return ExtraConstants.EXTRA_COMPETITION;
     }
 
     @Override
     public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_GET_BY_ID, getContext());
-        intent.putExtra(CompetitionService.EXTRA_ID, competitionId);
+        intent.putExtra(ExtraConstants.EXTRA_ID, competitionId);
 
         getContext().startService(intent);
     }
@@ -46,7 +48,7 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected boolean isTypeChoosable() {
         String sport_context = ((SquashPackage)getActivity().getApplication()).getSportContext();
-        if (sport_context.equals("Volleyball") || sport_context.equals("Beach"))
+        if (sport_context.equals(CompetitionCP.VOLLEYBALL_NAME) || sport_context.equals(CompetitionCP.BEACH_NAME))
             return false;
         return true;
     }

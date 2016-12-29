@@ -16,11 +16,11 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 public class SportsFragment extends Fragment {
@@ -50,7 +50,7 @@ public class SportsFragment extends Fragment {
             String sport_name = entry.getKey();
 
             Bundle b = new Bundle();
-            b.putParcelable("sport_package", entry.getValue());
+            b.putParcelable(CrossPackageConstants.SPORT_PACKAGE, entry.getValue());
             b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_name);
 
             CompetitionsListFragment clf = new CompetitionsListFragment();

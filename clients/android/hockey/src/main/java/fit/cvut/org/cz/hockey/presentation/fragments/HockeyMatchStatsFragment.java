@@ -25,11 +25,11 @@ import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.EditAtOnceActivity;
 import fit.cvut.org.cz.hockey.presentation.adapters.MatchStatisticsAdapter;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -51,7 +51,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     public static final int REQUEST_AWAY = 2;
     public static final int REQUEST_EDIT = 3;
 
-    private static final String ARG_MATCH_ID = "arg_match_id";
     private static final String SAVE_HOME_LIST = "save_home_list";
     private static final String SAVE_AWAY_LIST = "save_away_list";
     private static final String SAVE_HOME = "save_home";
@@ -61,7 +60,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     public static HockeyMatchStatsFragment newInstance(long matchId) {
         HockeyMatchStatsFragment fragment = new HockeyMatchStatsFragment();
         Bundle b = new Bundle();
-        b.putLong(ARG_MATCH_ID, matchId);
+        b.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
         fragment.setArguments(b);
         return fragment;
     }
@@ -70,7 +69,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        matchId = getArguments().getLong(ARG_MATCH_ID, -1);
+        matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
 
         if (savedInstanceState != null) {
             tmpHomeStats = savedInstanceState.getParcelableArrayList(SAVE_HOME_LIST);
@@ -113,7 +112,7 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_MATCH_PLAYER_STATISTICS, getContext());
-        intent.putExtra(StatsService.EXTRA_ID, getArguments().getLong(ARG_MATCH_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID));
         getContext().startService(intent);
     }
 
@@ -125,13 +124,13 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         if (tmpHomeStats == null && tmpAwayStats == null) {
-            tmpHomeStats = intent.getParcelableArrayListExtra(StatsService.EXTRA_HOME_STATS);
-            tmpAwayStats = intent.getParcelableArrayListExtra(StatsService.EXTRA_AWAY_STATS);
+            tmpHomeStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+            tmpAwayStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
         }
-        homeName = intent.getStringExtra(StatsService.EXTRA_HOME_NAME);
-        awayName = intent.getStringExtra(StatsService.EXTRA_AWAY_NAME);
-        home = intent.getParcelableExtra(StatsService.EXTRA_HOME_PARTICIPANT);
-        away = intent.getParcelableExtra(StatsService.EXTRA_AWAY_PARTICIPANT);
+        homeName = intent.getStringExtra(ExtraConstants.EXTRA_HOME_NAME);
+        awayName = intent.getStringExtra(ExtraConstants.EXTRA_AWAY_NAME);
+        home = intent.getParcelableExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
+        away = intent.getParcelableExtra(ExtraConstants.EXTRA_AWAY_PARTICIPANT);
         homeAdapter.swapData(tmpHomeStats);
         awayAdapter.swapData(tmpAwayStats);
         tvHome.setText(homeName);
@@ -211,17 +210,17 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
             return;
 
         if (requestCode == REQUEST_EDIT) {
-            ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_HOME_PLAYERS_STATS);
+            ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
             homeAdapter.swapData(homeStats);
             tmpHomeStats = homeStats;
-            ArrayList<PlayerStat> awayStats = data.getParcelableArrayListExtra(EditAtOnceActivity.EXTRA_AWAY_PLAYERS_STATS);
+            ArrayList<PlayerStat> awayStats = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
             awayAdapter.swapData(awayStats);
             tmpAwayStats = awayStats;
             return;
         }
 
         Participant participant;
-        ArrayList<Player> players = data.getParcelableArrayListExtra(SelectableListActivity.EXTRA_DATA);
+        ArrayList<Player> players = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
         List<PlayerStat> playerStatistics;
         if (requestCode == REQUEST_HOME) {
             playerStatistics = homeAdapter.getData();
