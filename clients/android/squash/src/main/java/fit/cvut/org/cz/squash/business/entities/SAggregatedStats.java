@@ -3,6 +3,7 @@ package fit.cvut.org.cz.squash.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
@@ -83,21 +84,21 @@ public class SAggregatedStats implements Parcelable, IEntity {
 
     public double getStat(String key) {
         switch (key) {
-            case "gp": return games_played;
-            case "p": return points;
-            case "w": return won;
-            case "l": return lost;
-            case "d": return draws;
-            case "w%": return matchWinRate;
-            case "sw": return setsWon;
-            case "sl": return setsLost;
-            case "swavg": return setsWonAvg;
-            case "slavg": return setsLostAvg;
-            case "s%": return setsWinRate;
-            case "bw": return ballsWon;
-            case "bl": return ballsLost;
-            case "bwavg": return ballsWonAvg;
-            case "blavg": return ballsLostAvg;
+            case Constants.MATCHES: return games_played;
+            case Constants.POINTS: return points;
+            case Constants.WINS: return won;
+            case Constants.LOSSES: return lost;
+            case Constants.DRAWS: return draws;
+            case Constants.MATCH_WIN_RATE: return matchWinRate;
+            case Constants.SETS_WON: return setsWon;
+            case Constants.SETS_LOST: return setsLost;
+            case Constants.SETS_WON_AVG: return setsWonAvg;
+            case Constants.SETS_LOST_AVG: return setsLostAvg;
+            case Constants.SETS_WIN_RATE: return setsWinRate;
+            case Constants.BALLS_WON: return ballsWon;
+            case Constants.BALLS_LOST: return ballsLost;
+            case Constants.BALLS_WON_AVG: return ballsWonAvg;
+            case Constants.BALLS_LOST_AVG: return ballsLostAvg;
             default: return 0;
         }
     }

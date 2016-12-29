@@ -11,13 +11,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by Vaclav on 10. 4. 2016.
  */
 public abstract class MatchesListWrapperFragment extends Fragment {
-    public static final String ARG_ID = "arg_id";
-
     public static MatchesListWrapperFragment newInstance(long id, Class<? extends MatchesListWrapperFragment> clazz){
         MatchesListWrapperFragment fragment = null;
         try {
@@ -35,7 +34,7 @@ public abstract class MatchesListWrapperFragment extends Fragment {
 
         Bundle args = new Bundle();
 
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +50,7 @@ public abstract class MatchesListWrapperFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            getChildFragmentManager().beginTransaction().add(R.id.fragment_container, supplyFragment(getArguments().getLong(ARG_ID))).commit();
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_container, supplyFragment(getArguments().getLong(ExtraConstants.EXTRA_ID))).commit();
         }
     }
 

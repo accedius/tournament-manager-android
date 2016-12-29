@@ -19,12 +19,12 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ConflictAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportPlayerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportTournamentAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
  * Created by kevin on 28.10.2016.

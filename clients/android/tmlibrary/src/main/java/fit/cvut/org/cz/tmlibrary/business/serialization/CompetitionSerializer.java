@@ -6,9 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 
 /**
  * Created by kevin on 8.10.2016.
@@ -21,20 +21,20 @@ abstract public class CompetitionSerializer extends BaseSerializer<Competition> 
     @Override
     public HashMap<String, Object> serializeSyncData(Competition entity) {
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put("sport_context", entity.getSportContext());
-        hm.put("name", entity.getName());
+        hm.put(Constants.SPORT, entity.getSportContext());
+        hm.put(Constants.NAME, entity.getName());
         if (entity.getStartDate() == null) {
-            hm.put("start_date", null);
+            hm.put(Constants.START, null);
         } else {
-            hm.put("start_date", DateFormatter.getInstance().getDBDateFormat().format(entity.getStartDate()));
+            hm.put(Constants.START, DateFormatter.getInstance().getDBDateFormat().format(entity.getStartDate()));
         }
         if (entity.getEndDate() == null) {
-            hm.put("end_date", null);
+            hm.put(Constants.END, null);
         } else {
-            hm.put("end_date", DateFormatter.getInstance().getDBDateFormat().format(entity.getEndDate()));
+            hm.put(Constants.END, DateFormatter.getInstance().getDBDateFormat().format(entity.getEndDate()));
         }
-        hm.put("note", entity.getNote());
-        hm.put("type", Integer.toString(entity.getType().id));
+        hm.put(Constants.NOTE, entity.getNote());
+        hm.put(Constants.TYPE, Integer.toString(entity.getType().id));
         return hm;
     }
 
@@ -42,20 +42,20 @@ abstract public class CompetitionSerializer extends BaseSerializer<Competition> 
     public void deserializeSyncData(HashMap<String, Object> syncData, Competition entity) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
 
-        entity.setName(String.valueOf(syncData.get("name")));
-        entity.setNote(String.valueOf(syncData.get("note")));
-        entity.setType(CompetitionTypes.competitionTypes()[Integer.parseInt(String.valueOf(syncData.get("type")))]);
+        entity.setName(String.valueOf(syncData.get(Constants.NAME)));
+        entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
+        entity.setType(CompetitionTypes.competitionTypes()[Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE)))]);
         try {
-            entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get("start_date"))));
+            entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get(Constants.START))));
         } catch (ParseException e) {} catch (NullPointerException e) {}
 
         try {
-            entity.setEndDate(dateFormat.parse(String.valueOf(syncData.get("end_date"))));
+            entity.setEndDate(dateFormat.parse(String.valueOf(syncData.get(Constants.END))));
         } catch (ParseException e) {} catch (NullPointerException e) {}
     }
 
     @Override
     public String getEntityType() {
-        return "competition";
+        return Constants.COMPETITION;
     }
 }

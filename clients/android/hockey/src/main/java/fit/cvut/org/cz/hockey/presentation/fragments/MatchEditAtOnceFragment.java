@@ -15,6 +15,7 @@ import java.util.List;
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
 import fit.cvut.org.cz.hockey.presentation.adapters.EditableStatsAdapter;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 
 /**
  * Fragment for editing all stats in match at once
@@ -25,15 +26,12 @@ public class MatchEditAtOnceFragment extends Fragment {
     private RecyclerView homeRecyclerView, awayRecyclerView;
     private List<PlayerStat> tmpHomeStat, tmpAwayStat;
 
-    private static final String ARG_HOME = "arg_home";
-    private static final String ARG_AWAY = "arg_away";
-
     public static MatchEditAtOnceFragment newInstance(ArrayList<PlayerStat> homeStats, ArrayList<PlayerStat> awayStats) {
         MatchEditAtOnceFragment fragment = new MatchEditAtOnceFragment();
 
         Bundle b = new Bundle();
-        b.putParcelableArrayList(ARG_HOME, homeStats);
-        b.putParcelableArrayList(ARG_AWAY, awayStats);
+        b.putParcelableArrayList(ExtraConstants.EXTRA_HOME_STATS, homeStats);
+        b.putParcelableArrayList(ExtraConstants.EXTRA_AWAY_STATS, awayStats);
 
         fragment.setArguments(b);
         return fragment;
@@ -75,11 +73,11 @@ public class MatchEditAtOnceFragment extends Fragment {
         ArrayList<PlayerStat> homeData, awayData;
 
         if (savedInstanceState != null) {
-            homeData = savedInstanceState.getParcelableArrayList(ARG_HOME);
-            awayData = savedInstanceState.getParcelableArrayList(ARG_AWAY);
+            homeData = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_HOME_STATS);
+            awayData = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_AWAY_STATS);
         } else {
-            homeData = getArguments().getParcelableArrayList(ARG_HOME);
-            awayData = getArguments().getParcelableArrayList(ARG_AWAY);
+            homeData = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_HOME_STATS);
+            awayData = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_AWAY_STATS);
         }
         tmpHomeStat = homeData;
         tmpAwayStat = awayData;
@@ -93,8 +91,8 @@ public class MatchEditAtOnceFragment extends Fragment {
         homeAdpArrayList.addAll(homeAdp.getData());
         ArrayList<PlayerStat> awayAdpArrayList = new ArrayList<>();
         awayAdpArrayList.addAll(awayAdp.getData());
-        outState.putParcelableArrayList(ARG_HOME, homeAdpArrayList);
-        outState.putParcelableArrayList(ARG_AWAY, awayAdpArrayList);
+        outState.putParcelableArrayList(ExtraConstants.EXTRA_HOME_STATS, homeAdpArrayList);
+        outState.putParcelableArrayList(ExtraConstants.EXTRA_AWAY_STATS, awayAdpArrayList);
     }
 
     /**

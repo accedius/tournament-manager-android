@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDialog;
 
 /**
@@ -28,16 +29,14 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     private String activity_detail_competition;
     private String package_service;
 
-    private static String ARG_ID = "player_id";
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        playerId = getArguments().getLong(ARG_ID);
-        package_name = getArguments().getString("package_name");
+        playerId = getArguments().getLong(ExtraConstants.EXTRA_ID);
+        package_name = getArguments().getString(CrossPackageConstants.PACKAGE_NAME);
         sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        activity_create_competition = getArguments().getString("activity_create_competition");
-        activity_detail_competition = getArguments().getString("activity_detail_competition");
-        package_service = getArguments().getString("package_service");
+        activity_create_competition = getArguments().getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
+        activity_detail_competition = getArguments().getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
+        package_service = getArguments().getString(CrossPackageConstants.PACKAGE_SERVICE);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -63,7 +62,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                     public boolean onLongClick(final View v) {
                         EditDialog dialog = EditDialog.newInstance(package_name, activity_create_competition, competitionId, sport_context);
                         Bundle b = new Bundle();
-                        b.putString(EditDialog.ARG_TITLE, name);
+                        b.putString(ExtraConstants.EXTRA_TITLE, name);
                         dialog.setArguments(b);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return false;
@@ -103,7 +102,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
 
     @Override
     protected String getDataKey() {
-        return "extra_competition";
+        return CrossPackageConstants.EXTRA_COMPETITION;
     }
 
     public class CompetitionsListReceiver extends BroadcastReceiver {

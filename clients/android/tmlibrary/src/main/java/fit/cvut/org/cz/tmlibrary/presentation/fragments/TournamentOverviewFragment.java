@@ -12,8 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by atgot_000 on 8. 4. 2016.
@@ -21,8 +22,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
     private TextView start, end, matchSum, playerSum, note;
     protected TextView teamSum, teamsLabel;
-    protected static final String TOUR_KEY = "tournament_id_key";
-    protected long tournamentID;
+    protected long tournamentId;
 
     /**
      *
@@ -64,7 +64,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(TOUR_KEY, id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -83,7 +83,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
         note = (TextView) v.findViewById(R.id.tour_note);
 
         if (getArguments() != null)
-            tournamentID = getArguments().getLong(TOUR_KEY);
+            tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID);
 
         return v;
     }

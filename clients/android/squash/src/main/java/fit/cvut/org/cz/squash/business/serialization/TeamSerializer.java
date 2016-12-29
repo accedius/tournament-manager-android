@@ -6,8 +6,8 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
-import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;

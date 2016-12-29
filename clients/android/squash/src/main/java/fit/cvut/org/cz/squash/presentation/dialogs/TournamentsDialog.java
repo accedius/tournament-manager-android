@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
 /** Dialog that allows to edit or delete tournament
@@ -18,18 +19,13 @@ import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 public class TournamentsDialog extends DialogFragment {
     public TournamentsDialog(){}
 
-    public static final String COMP_ID = "comp_id";
-    public static final String TOUR_ID = "tour_id";
-    public static final String ARG_POSITION = "arg_pos";
-    public static final String ARG_TITLE = "arg_title";
-
     public static TournamentsDialog newInstance(long compId, long tourId, int position, String name) {
         TournamentsDialog fragment = new TournamentsDialog();
         Bundle args = new Bundle();
-        args.putLong(COMP_ID, compId);
-        args.putLong(TOUR_ID, tourId);
-        args.putInt(ARG_POSITION, position);
-        args.putString(ARG_TITLE, name);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, compId);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tourId);
+        args.putInt(ExtraConstants.EXTRA_POSITION, position);
+        args.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,14 +41,17 @@ public class TournamentsDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case 0:{
-                                Intent intent = CreateTournamentActivity.newStartIntent(getContext(), getArguments().getLong(COMP_ID), getArguments().getLong(TOUR_ID));
+                                Intent intent = CreateTournamentActivity.newStartIntent(
+                                        getContext(),
+                                        getArguments().getLong(ExtraConstants.EXTRA_COMP_ID),
+                                        getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                                 startActivity(intent);
                                 break;
                             }
                             case 1:{
                                 Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, getContext());
-                                intent.putExtra(TournamentService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
-                                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(TOUR_ID));
+                                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                                intent.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                                 getContext().startService(intent);
                                 break;
                             }
@@ -62,7 +61,7 @@ public class TournamentsDialog extends DialogFragment {
                     }
                 });
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

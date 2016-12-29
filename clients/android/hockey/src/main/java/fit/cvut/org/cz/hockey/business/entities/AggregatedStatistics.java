@@ -3,13 +3,14 @@ package fit.cvut.org.cz.hockey.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * Created by atgot_000 on 7. 4. 2016.
  */
 public class AggregatedStatistics implements Parcelable, IEntity {
-    private long playerID;
+    private long playerId;
     private String playerName;
 
     private long goals, assists, points, plusMinusPoints, teamPoints, matches, wins, losses, draws, saves;
@@ -31,7 +32,7 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     }
 
     public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long saves) {
-        this.playerID = pID;
+        this.playerId = pID;
         this.playerName = pName;
         this.matches = matches;
         this.wins = wins;
@@ -64,7 +65,7 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(playerID);
+        dest.writeLong(playerId);
         dest.writeString(playerName);
         dest.writeLong(goals);
         dest.writeLong(assists);
@@ -83,7 +84,7 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     }
 
     public AggregatedStatistics(Parcel in) {
-        playerID = in.readLong();
+        playerId = in.readLong();
         playerName = in.readString();
 
         goals = in.readLong();
@@ -104,9 +105,9 @@ public class AggregatedStatistics implements Parcelable, IEntity {
         saves = in.readLong();
     }
 
-    public long getPlayerID() { return playerID; }
+    public long getPlayerId() { return playerId; }
 
-    public void setPlayerID(long playerID) { this.playerID = playerID; }
+    public void setPlayerId(long playerId) { this.playerId = playerId; }
 
     public String getPlayerName() { return playerName; }
 
@@ -192,26 +193,26 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     public double getStat(String key) {
         switch (key) {
-            case "gp": return getMatches();
-            case "g": return getGoals();
-            case "a": return getAssists();
-            case "p": return getPoints();
-            case "+-": return getPlusMinusPoints();
-            case "s": return getSaves();
-            case "w": return getWins();
-            case "d": return getDraws();
-            case "l": return getLosses();
-            case "tp": return getTeamPoints();
-            case "gavg": return getAvgGoals();
-            case "pavg": return getAvgPoints();
-            case "+-avg": return getAvgPlusMinus();
-            case "tpavg": return getAvgTeamPoints();
+            case Constants.MATCHES: return getMatches();
+            case Constants.GOALS: return getGoals();
+            case Constants.ASSISTS: return getAssists();
+            case Constants.POINTS: return getPoints();
+            case Constants.PLUS_MINUS: return getPlusMinusPoints();
+            case Constants.SAVES: return getSaves();
+            case Constants.WINS: return getWins();
+            case Constants.DRAWS: return getDraws();
+            case Constants.LOSSES: return getLosses();
+            case Constants.TEAM_POINTS: return getTeamPoints();
+            case Constants.GOALS_AVG: return getAvgGoals();
+            case Constants.POINTS_AVG: return getAvgPoints();
+            case Constants.PLUS_MINUS_AVG: return getAvgPlusMinus();
+            case Constants.TEAM_POINTS_AVG: return getAvgTeamPoints();
             default: return 0;
         }
     }
 
     @Override
     public long getId() {
-        return playerID;
+        return playerId;
     }
 }

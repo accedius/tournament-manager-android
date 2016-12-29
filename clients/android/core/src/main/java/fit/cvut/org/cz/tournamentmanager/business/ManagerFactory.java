@@ -2,16 +2,16 @@ package fit.cvut.org.cz.tournamentmanager.business;
 
 import android.content.Context;
 
-import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
-import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
+import fit.cvut.org.cz.tournamentmanager.business.managers.PlayerManager;
+import fit.cvut.org.cz.tournamentmanager.business.managers.SettingManager;
 import fit.cvut.org.cz.tournamentmanager.data.CoreDAOFactory;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
  * Created by kevin on 30. 3. 2016.

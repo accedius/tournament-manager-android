@@ -10,13 +10,12 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 
 /**
  * Created by kevin on 14. 4. 2016.
  */
 public class CompetitionDialog extends DialogFragment {
-    public static final String ARG_POSITION = "arg_position";
-
     private Long competition_id;
     private String competition_name;
     private String package_name;
@@ -54,7 +53,7 @@ public class CompetitionDialog extends DialogFragment {
                         intent.setClassName(package_name, package_service);
                         intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_DELETE_COMPETITION);
-                        intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
+                        intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
                         intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
                         getContext().startService(intent);
@@ -76,7 +75,7 @@ public class CompetitionDialog extends DialogFragment {
         fragment.package_service = package_service;
 
         Bundle args = new Bundle();
-        args.putInt(ARG_POSITION, position);
+        args.putInt(ExtraConstants.EXTRA_POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }

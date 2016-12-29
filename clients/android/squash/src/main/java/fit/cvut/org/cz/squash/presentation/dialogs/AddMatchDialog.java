@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 
 /**Dialog, that allows user to specify if he wants to add match manually or to add round of matches
@@ -17,12 +18,10 @@ import fit.cvut.org.cz.squash.presentation.services.MatchService;
 public class AddMatchDialog extends DialogFragment {
     public AddMatchDialog(){}
 
-    public static final String ARG_ID = "arg_id";
-
     public static AddMatchDialog newInstance(long id){
         AddMatchDialog fragment = new AddMatchDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,13 +38,13 @@ public class AddMatchDialog extends DialogFragment {
                         switch (which){
                             case 0:{
                                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_CAN_ADD_MATCH, getContext());
-                                intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
                                 getContext().startService(intent);
                                 break;
                             }
                             case 1:{
                                 Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
-                                intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
+                                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
                                 getContext().startService(intent);
                                 break;
                             }

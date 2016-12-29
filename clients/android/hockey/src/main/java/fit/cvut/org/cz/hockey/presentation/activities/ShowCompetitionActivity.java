@@ -15,10 +15,10 @@ import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
-import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
@@ -101,15 +101,15 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
                                     case 0:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_name);
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.NAME);
                                         break;
                                     }
                                     case 1:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_start_date);
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.START);
                                         break;
                                     }
                                     case 2:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Tournament.col_end_date);
+                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.END);
                                         break;
                                     }
                                 }

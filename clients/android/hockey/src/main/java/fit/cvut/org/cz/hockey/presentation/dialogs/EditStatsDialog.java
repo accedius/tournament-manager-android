@@ -11,25 +11,22 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**
  * Created by atgot_000 on 24. 4. 2016.
  */
 public class EditStatsDialog extends DialogFragment {
-    public static final String ARG_DATA = "arg_data";
-    public static final String ARG_POSITION = "arg_position";
-    public static final String ARG_HOME = "arg_home";
-
     private TextView goals, assists, plusMinusPoints, saves;
     private PlayerStat stat;
 
     public static EditStatsDialog newInstance(PlayerStat statistic, int pos, boolean isHome) {
         EditStatsDialog fragment = new EditStatsDialog();
         Bundle b = new Bundle();
-        b.putParcelable(ARG_DATA, statistic);
-        b.putBoolean(ARG_HOME, isHome);
-        b.putInt(ARG_POSITION, pos);
+        b.putParcelable(ExtraConstants.EXTRA_DATA, statistic);
+        b.putBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME, isHome);
+        b.putInt(ExtraConstants.EXTRA_POSITION, pos);
         fragment.setArguments(b);
         return fragment;
     }
@@ -38,12 +35,12 @@ public class EditStatsDialog extends DialogFragment {
      * Override this function to save the stats when dialog is closed
      */
     protected void saveStats() {
-        ((HockeyMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ARG_HOME), getArguments().getInt(ARG_POSITION), stat);
+        ((HockeyMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
     };
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        stat = getArguments().getParcelable(ARG_DATA);
+        stat = getArguments().getParcelable(ExtraConstants.EXTRA_DATA);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {

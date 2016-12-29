@@ -6,6 +6,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
@@ -17,9 +18,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
  * Created by atgot_000 on 15. 4. 2016.
  */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
-    private static final String ARG_OPTION = "option_arg";
-    private static final String ARG_ID = "id_arg";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -29,22 +27,22 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
      */
     public static Intent newStartIntent(Context context,  int option, long id) {
         Intent intent = new Intent(context, AddPlayersActivity.class);
-        intent.putExtra(ARG_OPTION, option);
-        intent.putExtra(ARG_ID, id);
+        intent.putExtra(ExtraConstants.EXTRA_OPTION, option);
+        intent.putExtra(ExtraConstants.EXTRA_ID, id);
 
         return intent;
     }
 
     @Override
     protected AbstractSelectableListFragment<Player> getListFragment() {
-        int option = getIntent().getIntExtra(ARG_OPTION, -1);
-        long id = getIntent().getLongExtra(ARG_ID, -1);
+        int option = getIntent().getIntExtra(ExtraConstants.EXTRA_OPTION, -1);
+        long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
         if (option == AddPlayersFragment.OPTION_PARTICIPANT) {
-            ArrayList<PlayerStat> playerStatistics = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
+            ArrayList<PlayerStat> playerStatistics = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT);
             if (playerStatistics != null) return AddPlayersFragment.newInstance(option, id, playerStatistics, 1);
             return AddPlayersFragment.newInstance(option, id);
         }
-        ArrayList<Player> players = getIntent().getParcelableArrayListExtra(EXTRA_OMIT_DATA);
+        ArrayList<Player> players = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT);
         if (players != null) return AddPlayersFragment.newInstance(option, id, players);
 
         return AddPlayersFragment.newInstance(option, id);

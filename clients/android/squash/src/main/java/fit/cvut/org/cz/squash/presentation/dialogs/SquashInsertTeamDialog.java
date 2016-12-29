@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
@@ -15,7 +16,7 @@ public class SquashInsertTeamDialog extends InsertTeamDialog {
     @Override
     protected void askForData() {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
-        i.putExtra(TeamService.EXTRA_ID, teamId);
+        i.putExtra(ExtraConstants.EXTRA_ID, teamId);
         getContext().startService(i);
     }
 
@@ -32,20 +33,20 @@ public class SquashInsertTeamDialog extends InsertTeamDialog {
     @Override
     protected void insertTeam(Team t) {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_ADD_TEAM, getContext());
-        i.putExtra(TeamService.EXTRA_TEAM, t);
+        i.putExtra(ExtraConstants.EXTRA_TEAM, t);
         getContext().startService(i);
     }
 
     @Override
     protected void editTeam(Team t) {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_EDIT_TEAM, getContext());
-        i.putExtra(TeamService.EXTRA_TEAM, t);
+        i.putExtra(ExtraConstants.EXTRA_TEAM, t);
         getContext().startService(i);
     }
 
     @Override
     protected String getTeamKey() {
-        return TeamService.EXTRA_TEAM;
+        return ExtraConstants.EXTRA_TEAM;
     }
 
     @Override

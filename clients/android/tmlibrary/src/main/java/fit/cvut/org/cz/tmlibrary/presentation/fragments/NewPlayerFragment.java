@@ -12,13 +12,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by kevin on 4. 4. 2016.
  */
 public abstract class NewPlayerFragment extends AbstractDataFragment {
-    protected static final String ARG_ID = "arg_id";
-
     /**
      * Constructor for this fragment with id of player that needs to update
      * @param id
@@ -41,7 +40,7 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -62,7 +61,7 @@ public abstract class NewPlayerFragment extends AbstractDataFragment {
         email = (EditText) v.findViewById(R.id.et_email);
 
         if (getArguments() != null)
-            playerId = getArguments().getLong(ARG_ID , -1);
+            playerId = getArguments().getLong(ExtraConstants.EXTRA_ID , -1);
 
         return v;
     }

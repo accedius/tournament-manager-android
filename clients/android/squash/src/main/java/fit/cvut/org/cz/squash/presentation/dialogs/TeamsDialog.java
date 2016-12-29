@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
@@ -18,16 +19,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 public class TeamsDialog extends DialogFragment {
     public TeamsDialog(){}
 
-    public static final String ARG_ID = "arg_id";
-    public static final String ARG_POSITION = "arg_pos";
-    public static final String ARG_TITLE = "arg_title";
-
     public static TeamsDialog newInstance(long teamId, int position, String name) {
         TeamsDialog fragment = new TeamsDialog();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, teamId);
-        args.putInt(ARG_POSITION, position);
-        args.putString(ARG_TITLE, name);
+        args.putLong(ExtraConstants.EXTRA_ID, teamId);
+        args.putInt(ExtraConstants.EXTRA_POSITION, position);
+        args.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +40,7 @@ public class TeamsDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case 0:
-                                InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), false, SquashInsertTeamDialog.class);
+                                InsertTeamDialog insertTeamDialog = InsertTeamDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_ID), false, SquashInsertTeamDialog.class);
                                 if (getTargetFragment() != null)
                                     insertTeamDialog.setTargetFragment(getTargetFragment(), 0);
                                 insertTeamDialog.show(getFragmentManager(), "edit_team_dialog");
@@ -51,8 +48,8 @@ public class TeamsDialog extends DialogFragment {
                                 break;
                             case 1:
                                 Intent intent = TeamService.newStartIntent(TeamService.ACTION_DELETE, getContext());
-                                intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(ARG_ID));
-                                intent.putExtra(TeamService.EXTRA_POSITION, getArguments().getInt(ARG_POSITION));
+                                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
+                                intent.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                                 getContext().startService(intent);
                                 if (getTargetFragment() != null)
                                     getTargetFragment().onActivityResult(0, 0, null);
@@ -62,7 +59,7 @@ public class TeamsDialog extends DialogFragment {
                     }
                 });
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

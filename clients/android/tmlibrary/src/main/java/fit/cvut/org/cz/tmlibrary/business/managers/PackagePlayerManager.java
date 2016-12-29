@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
  * Created by kevin on 2.12.2016.

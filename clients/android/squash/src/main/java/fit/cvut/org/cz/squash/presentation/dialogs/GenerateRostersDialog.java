@@ -8,23 +8,21 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 
 /**
  * Created by kevin on 2.9.2016.
  */
 public class GenerateRostersDialog extends DialogFragment {
-    private static final String ARG_COMP_ID = "competition_id";
-    private static final String ARG_TOUR_ID = "tournament_id";
-
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
-                intent.putExtra(TournamentService.EXTRA_ID, getArguments().getLong(ARG_COMP_ID));
-                intent.putExtra(TournamentService.EXTRA_TOURNAMENT, getArguments().getLong(ARG_TOUR_ID));
-                intent.putExtra(TournamentService.EXTRA_GENERATING_TYPE, which);
+                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
+                intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                intent.putExtra(ExtraConstants.EXTRA_GENERATING_TYPE, which);
                 getContext().startService(intent);
                 dialog.dismiss();
             }
@@ -34,8 +32,8 @@ public class GenerateRostersDialog extends DialogFragment {
     public static GenerateRostersDialog newInstance(long competitionId, long tournamentId) {
         GenerateRostersDialog fragment = new GenerateRostersDialog();
         Bundle b = new Bundle();
-        b.putLong(ARG_COMP_ID, competitionId);
-        b.putLong(ARG_TOUR_ID, tournamentId);
+        b.putLong(ExtraConstants.EXTRA_COMP_ID, competitionId);
+        b.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
         fragment.setArguments(b);
         return fragment;
     }

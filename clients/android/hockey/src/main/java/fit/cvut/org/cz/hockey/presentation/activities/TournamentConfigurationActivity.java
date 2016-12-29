@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PointConfiguration;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.ConfigurePointsFragment;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
@@ -23,8 +24,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 11. 4. 2016.
  */
 public class TournamentConfigurationActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_TOUR_ID = "tour_id";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -34,7 +33,7 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
     public static Intent newStartIntent(Context context, long id) {
         Intent res = new Intent(context, TournamentConfigurationActivity.class);
 
-        res.putExtra(EXTRA_TOUR_ID, id);
+        res.putExtra(ExtraConstants.EXTRA_TOUR_ID, id);
 
         return res;
     }
@@ -54,7 +53,7 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long tourID;
-        tourID = getIntent().getLongExtra(EXTRA_TOUR_ID, -1);
+        tourID = getIntent().getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, ConfigurePointsFragment.newInstance(tourID)).commit();
@@ -77,7 +76,7 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
             }
 
             Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
-            intent.putExtra(TournamentService.EXTRA_CONFIGURATION, pointConfig);
+            intent.putExtra(ExtraConstants.EXTRA_CONFIGURATION, pointConfig);
             startService(intent);
             finish();
         }

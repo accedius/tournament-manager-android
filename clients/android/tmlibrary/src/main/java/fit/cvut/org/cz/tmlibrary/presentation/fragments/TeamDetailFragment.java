@@ -22,12 +22,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractDeletableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DeletePlayersAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by Vaclav on 15. 4. 2016.
  */
 public abstract class TeamDetailFragment extends AbstractDataFragment {
-    public static final String ARG_ID = "arg_id";
     public static final String SAVE_TEAM = "save_team";
     public static final String SAVE_SEND = "save_send";
     protected boolean sendForData = true;
@@ -46,7 +46,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
             e.printStackTrace();
         }
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -98,7 +98,7 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_team_detail, container, false);
-        teamId = getArguments().getLong(ARG_ID, -1);
+        teamId = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         adapter = new DeletePlayersAdapter();
         recyclerView.setAdapter(adapter);

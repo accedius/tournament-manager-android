@@ -6,6 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import fit.cvut.org.cz.squash.business.ManagerFactory;
 import fit.cvut.org.cz.squash.data.entities.PointConfiguration;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -17,32 +18,28 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
         super("Squash Point CFG Service");
     }
 
-    private static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_CFG = "extra_teams";
-
     public static final String ACTION_EDIT_CFG = "fit.cvut.org.cz.squash.presentation.services.edit_cfg";
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.squash.presentation.services.get_cfg_by_id";
 
     @Override
     protected String getActionKey() {
-        return EXTRA_ACTION;
+        return ExtraConstants.EXTRA_ACTION;
     }
 
     @Override
     protected void doWork(Intent intent) {
-        String action = intent.getStringExtra(EXTRA_ACTION);
+        String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
 
         switch (action) {
             case ACTION_EDIT_CFG:{
-                PointConfiguration cfg = intent.getParcelableExtra(EXTRA_CFG);
+                PointConfiguration cfg = intent.getParcelableExtra(ExtraConstants.EXTRA_CONFIGURATION);
                 ManagerFactory.getInstance(this).getEntityManager(PointConfiguration.class).update(cfg);
                 break;
             }
             case ACTION_GET_BY_ID:{
-                PointConfiguration cfg = ManagerFactory.getInstance(this).getEntityManager(PointConfiguration.class).getById(intent.getLongExtra(EXTRA_ID, -1));
+                PointConfiguration cfg = ManagerFactory.getInstance(this).getEntityManager(PointConfiguration.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
                 Intent result = new Intent(action);
-                result.putExtra(EXTRA_CFG, cfg);
+                result.putExtra(ExtraConstants.EXTRA_CONFIGURATION, cfg);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
             }
@@ -51,7 +48,7 @@ public class PointConfigService extends AbstractIntentServiceWProgress {
 
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PointConfigService.class);
-        intent.putExtra(EXTRA_ACTION, action);
+        intent.putExtra(ExtraConstants.EXTRA_ACTION, action);
 
         return intent;
     }

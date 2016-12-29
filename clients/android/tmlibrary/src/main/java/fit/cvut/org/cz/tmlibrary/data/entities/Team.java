@@ -10,8 +10,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -130,7 +131,7 @@ public class Team extends ShareBase implements Parcelable {
     }
 
     public String getEntityType() {
-        return "Team";
+        return Constants.TEAM;
     }
 
     @Override

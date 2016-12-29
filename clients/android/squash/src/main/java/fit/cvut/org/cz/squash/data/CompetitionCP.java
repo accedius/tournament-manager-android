@@ -20,11 +20,11 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
  */
 public class CompetitionCP extends ContentProvider {
     public static final String AUTHORITY = "fit.cvut.org.cz.squash.data";
-    private static final String BADMINTON_NAME = "Badminton";
-    private static final String BEACH_NAME = "Beach";
-    private static final String SQUASH_NAME = "Squash";
-    private static final String TENNIS_NAME = "Tennis";
-    private static final String VOLLEYBALL_NAME = "Volleyball";
+    public static final String BADMINTON_NAME = "Badminton";
+    public static final String BEACH_NAME = "Beach";
+    public static final String SQUASH_NAME = "Squash";
+    public static final String TENNIS_NAME = "Tennis";
+    public static final String VOLLEYBALL_NAME = "Volleyball";
 
     private SquashDAOFactory helper;
 

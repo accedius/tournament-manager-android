@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
@@ -16,42 +17,40 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  * Created by Vaclav on 13. 4. 2016.
  */
 public class SquashTournamentOverviewFragment extends TournamentOverviewFragment {
-    private static final String ARG_TYPE = "arg_type";
-
     public static TournamentOverviewFragment newInstance(long tournamentId, CompetitionType type){
         TournamentOverviewFragment fragment = new SquashTournamentOverviewFragment();
         Bundle args = new Bundle();
-        args.putLong(TOUR_KEY, tournamentId);
-        args.putInt(ARG_TYPE, type.id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
+        args.putInt(ExtraConstants.EXTRA_TYPE, type.id);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected String getTournamentKey() {
-        return TournamentService.EXTRA_TOURNAMENT;
+        return ExtraConstants.EXTRA_TOURNAMENT;
     }
 
     @Override
     protected String getMatchesSumKey() {
-        return TournamentService.EXTRA_MATCH_COUNT;
+        return ExtraConstants.EXTRA_MATCHES_COUNT;
     }
 
     @Override
     protected String getPlayersSumKey() {
-        return TournamentService.EXTRA_PLAYER_COUNT;
+        return ExtraConstants.EXTRA_PLAYERS_COUNT;
     }
 
     @Override
     protected String getTeamsSumKey() {
-        return TournamentService.EXTRA_TEAM_COUNT;
+        return ExtraConstants.EXTRA_TEAMS_COUNT;
     }
 
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_OVERVIEW, getContext());
-        intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
-        intent.putExtra(TournamentService.EXTRA_TYPE, getArguments().getInt(ARG_TYPE));
+        intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
+        intent.putExtra(ExtraConstants.EXTRA_TYPE, getArguments().getInt(ExtraConstants.EXTRA_TYPE));
         getContext().startService(intent);
     }
 
@@ -72,7 +71,7 @@ public class SquashTournamentOverviewFragment extends TournamentOverviewFragment
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        CompetitionType type = CompetitionTypes.competitionTypes()[intent.getIntExtra(TournamentService.EXTRA_TYPE, 0)];
+        CompetitionType type = CompetitionTypes.competitionTypes()[intent.getIntExtra(ExtraConstants.EXTRA_TYPE, 0)];
         super.bindDataOnView(intent);
         if (type.equals(CompetitionTypes.individuals())) {
             teamSum.setVisibility(View.GONE);

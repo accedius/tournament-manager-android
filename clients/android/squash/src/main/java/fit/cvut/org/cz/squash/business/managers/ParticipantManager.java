@@ -6,8 +6,8 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.squash.data.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
  * Created by kevin on 17.12.2016.

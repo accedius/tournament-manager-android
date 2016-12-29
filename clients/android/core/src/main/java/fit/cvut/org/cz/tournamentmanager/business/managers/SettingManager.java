@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
-import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**

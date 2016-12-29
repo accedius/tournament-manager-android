@@ -29,8 +29,8 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
  * Allows Core to delete Competition and get stats for player

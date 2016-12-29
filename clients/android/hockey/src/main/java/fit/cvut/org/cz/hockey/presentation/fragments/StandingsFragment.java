@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.business.entities.Standing;
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
 import fit.cvut.org.cz.hockey.business.managers.StatisticManager;
 import fit.cvut.org.cz.hockey.presentation.adapters.StandingsAdapter;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -23,15 +25,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsFragment extends AbstractListFragment<Standing> {
-    private static String ARG_ID = "tournament_id";
-
-    private String orderColumn = "p";
-    private String orderType = "DESC";
+    private String orderColumn = Constants.POINTS;
+    private String orderType = Constants.ORDER_DESC;
 
     public static StandingsFragment newInstance(long id) {
         StandingsFragment fragment = new StandingsFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,8 +45,8 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         col.setText(originalText);
 
         List<Standing> stats = adapter.getData();
-        if (orderColumn.equals(stat) && orderType == "DESC") {
-            orderType = "ASC";
+        if (orderColumn.equals(stat) && orderType.equals(Constants.ORDER_DESC)) {
+            orderType = Constants.ORDER_ASC;
             Collections.sort(stats, new Comparator<Standing>() {
                 @Override
                 public int compare(Standing ls, Standing rs) {
@@ -57,8 +57,8 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
             if (!orderColumn.equals(stat)) {
                 orderColumn = stat;
             }
-            orderType = "DESC";
-            if (orderColumn == "p") {
+            orderType = Constants.ORDER_DESC;
+            if (orderColumn.equals(Constants.POINTS)) {
                 StatisticManager.orderStandings(stats);
             } else {
                 Collections.sort(stats, new Comparator<Standing>() {
@@ -73,10 +73,10 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         col = columns.get(stat);
         text = (String) col.getText();
         String addition = "";
-        if (orderType.equals("ASC")) {
-            addition = "▲";
-        } else if (orderType.equals("DESC")) {
-            addition = "▼";
+        if (orderType.equals(Constants.ORDER_ASC)) {
+            addition = Constants.ASC_SIGN;
+        } else if (orderType.equals(Constants.ORDER_DESC)) {
+            addition = Constants.DESC_SIGN;
         }
         col.setText(text + " " + addition);
 
@@ -91,14 +91,14 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
 
     @Override
     protected String getDataKey() {
-        return StatsService.EXTRA_STANDINGS;
+        return ExtraConstants.EXTRA_STANDINGS;
     }
 
     @Override
     public void askForData() {
-        Long tournamentID = getArguments().getLong(ARG_ID, -1);
+        Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext());
-        intent.putExtra(StatsService.EXTRA_ID, tournamentID);
+        intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
 
         getContext().startService(intent);
     }

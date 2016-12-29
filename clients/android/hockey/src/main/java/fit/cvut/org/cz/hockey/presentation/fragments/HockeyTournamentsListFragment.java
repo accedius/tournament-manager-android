@@ -21,8 +21,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
 import fit.cvut.org.cz.hockey.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.hockey.presentation.activities.ShowTournamentActivity;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -31,23 +33,23 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
+import static fit.cvut.org.cz.tmlibrary.business.serialization.Constants.END;
+
 /**
  * Fragment for list of tournaments in competition
  * Created by atgot_000 on 29. 3. 2016.
  */
 public class HockeyTournamentsListFragment extends AbstractListFragment<Tournament> {
     private long competitionId;
-    private static String ARG_ID = "competition_id";
-
-    private String orderColumn = Tournament.col_end_date;
-    private String orderType = "DESC";
+    private String orderColumn = END;
+    private String orderType = Constants.ORDER_DESC;
 
     private TournamentsListReceiver myReceiver = new TournamentsListReceiver();
 
     public static HockeyTournamentsListFragment newInstance(long id) {
         HockeyTournamentsListFragment fragment = new HockeyTournamentsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +69,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getArguments() != null)
-            competitionId = getArguments().getLong(ARG_ID);
+            competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -84,8 +86,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                          @Override
                          public void onClick(View v) {
                              Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
-                             intent.putExtra(ShowTournamentActivity.COMP_ID, compId);
-                             intent.putExtra(ShowTournamentActivity.TOUR_ID, tourId);
+                             intent.putExtra(ExtraConstants.EXTRA_COMP_ID, compId);
+                             intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
                              intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                              startActivity(intent);
                          }
@@ -106,13 +108,13 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected String getDataKey() {
-        return TournamentService.EXTRA_LIST;
+        return ExtraConstants.EXTRA_LIST;
     }
 
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_ALL, getContext());
-        intent.putExtra(TournamentService.EXTRA_COMP_ID, competitionId);
+        intent.putExtra(ExtraConstants.EXTRA_COMP_ID, competitionId);
         getActivity().startService(intent);
     }
 
@@ -137,8 +139,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         if (adapter == null) return;
 
         List<Tournament> tournaments = adapter.getData();
-        if (orderColumn.equals(type) && orderType.equals("ASC")) {
-            orderType = "DESC";
+        if (orderColumn.equals(type) && orderType.equals(Constants.ORDER_ASC)) {
+            orderType = Constants.ORDER_DESC;
             Collections.sort(tournaments, new Comparator<Tournament>() {
                 @Override
                 public int compare(Tournament ls, Tournament rs) {
@@ -149,7 +151,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
             if (!orderColumn.equals(type)) {
                 orderColumn = type;
             }
-            orderType = "ASC";
+            orderType = Constants.ORDER_ASC;
             Collections.sort(tournaments, new Comparator<Tournament>() {
                 @Override
                 public int compare(Tournament ls, Tournament rs) {
@@ -169,7 +171,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
         fab.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   long compId = getArguments().getLong(ARG_ID, -1);
+                   long compId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
                    Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
                    startActivity(intent);
                }
@@ -191,9 +193,8 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
                     break;
                 }
                 case TournamentService.ACTION_DELETE: {
-                    int result = intent.getIntExtra(TournamentService.EXTRA_RESULT, -1);
-                    if (result == 0) {
-                        int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
+                    if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                        int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                         adapter.delete(position);
                     } else {
                         View v = getView();

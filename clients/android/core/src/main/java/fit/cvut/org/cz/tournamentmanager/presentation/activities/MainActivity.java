@@ -13,8 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
@@ -156,11 +155,11 @@ public class MainActivity extends AbstractToolbarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case 0:{
-                        plf.orderData(Player.col_name);
+                        plf.orderData(Constants.NAME);
                         break;
                     }
                     case 1:{
-                        plf.orderData(Player.col_email);
+                        plf.orderData(Constants.EMAIL);
                         break;
                     }
                 }
@@ -175,15 +174,15 @@ public class MainActivity extends AbstractToolbarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case 0:{
-                        cf.orderData(Competition.col_name);
+                        cf.orderData(Constants.NAME);
                         break;
                     }
                     case 1:{
-                        cf.orderData(Competition.col_start_date);
+                        cf.orderData(Constants.START);
                         break;
                     }
                     case 2:{
-                        cf.orderData(Competition.col_end_date);
+                        cf.orderData(Constants.END);
                         break;
                     }
                 }

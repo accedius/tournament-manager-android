@@ -17,6 +17,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.squash.business.entities.SetRowItem;
 import fit.cvut.org.cz.squash.presentation.adapters.SetsAdapter;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.AdapterDialog;
 import fit.cvut.org.cz.squash.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -27,17 +28,13 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  * Created by Vaclav on 24. 4. 2016.
  */
 public class SetsFragment extends AbstractListFragment<SetRowItem> {
-    private static final String ARG_ID = "arg_id";
-    private static final String ARG_PLAYED = "arg_played";
-    private static final String EXTRA_ASK = "extra_ask";
-    private static final String EXTRA_DATA = "extra_data";
     private Fragment thisFragment;
 
     public static SetsFragment newInstance(long id, boolean played){
         SetsFragment fragment = new SetsFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putBoolean(ARG_PLAYED, played);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
+        args.putBoolean(ExtraConstants.EXTRA_PLAYED, played);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,10 +47,10 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            data = savedInstanceState.getParcelableArrayList(EXTRA_DATA);
-            askForData = savedInstanceState.getBoolean(EXTRA_ASK);
+            data = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_DATA);
+            askForData = savedInstanceState.getBoolean(ExtraConstants.EXTRA_ASK);
         } else {
-            askForData = getArguments().getBoolean(ARG_PLAYED);
+            askForData = getArguments().getBoolean(ExtraConstants.EXTRA_PLAYED);
             receiverRegistered = askForData;
         }
         thisFragment = this;
@@ -70,8 +67,8 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         data = new ArrayList<>(adapter.getData());
-        outState.putParcelableArrayList(EXTRA_DATA, data);
-        outState.putBoolean(EXTRA_ASK, askForData);
+        outState.putParcelableArrayList(ExtraConstants.EXTRA_DATA, data);
+        outState.putBoolean(ExtraConstants.EXTRA_ASK, askForData);
     }
 
     @Override
@@ -95,13 +92,13 @@ public class SetsFragment extends AbstractListFragment<SetRowItem> {
 
     @Override
     protected String getDataKey() {
-        return MatchService.EXTRA_SETS;
+        return ExtraConstants.EXTRA_SETS;
     }
 
     @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GET_MATCH_SETS, getContext());
-        intent.putExtra(MatchService.EXTRA_ID, getArguments().getLong(ARG_ID));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
         getContext().startService(intent);
     }
 

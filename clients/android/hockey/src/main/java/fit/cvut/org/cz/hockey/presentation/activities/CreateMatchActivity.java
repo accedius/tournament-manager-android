@@ -14,6 +14,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.Match;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyMatchFragment;
 import fit.cvut.org.cz.hockey.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -24,9 +25,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class CreateMatchActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_MATCH_ID = "match_id";
-    public static final String EXTRA_TOUR_ID = "tour_id";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -35,7 +33,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
      */
     public static Intent newStartIntent(Context context, long tourId) {
         Intent res = new Intent(context, CreateMatchActivity.class);
-        res.putExtra(EXTRA_TOUR_ID, tourId);
+        res.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
 
         return res;
     }
@@ -49,8 +47,8 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
      */
     public static Intent newStartIntent(Context context, long id, long tourId) {
         Intent res = new Intent(context, CreateMatchActivity.class);
-        res.putExtra(EXTRA_TOUR_ID, tourId);
-        res.putExtra(EXTRA_MATCH_ID, id);
+        res.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
+        res.putExtra(ExtraConstants.EXTRA_MATCH_ID, id);
 
         return res;
     }
@@ -65,8 +63,8 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long matchId, tourId;
-        tourId = getIntent().getLongExtra(EXTRA_TOUR_ID, -1);
-        matchId = getIntent().getLongExtra(EXTRA_MATCH_ID, -1);
+        tourId = getIntent().getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
+        matchId = getIntent().getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             if (matchId == -1)
@@ -107,7 +105,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE, this);
                 intent.setAction(MatchService.ACTION_UPDATE);
             }
-            intent.putExtra(MatchService.EXTRA_MATCH, hockeyMatch);
+            intent.putExtra(ExtraConstants.EXTRA_MATCH, hockeyMatch);
 
             startService(intent);
             finish();

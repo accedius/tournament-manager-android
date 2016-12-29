@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.activities.TeamDetailActivity;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.SquashInsertTeamDialog;
 import fit.cvut.org.cz.squash.presentation.dialogs.TeamsDialog;
 import fit.cvut.org.cz.squash.presentation.services.TeamService;
-import fit.cvut.org.cz.squash.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
@@ -30,14 +30,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
  */
 public class TeamsListFragment extends AbstractListFragment<Team> {
     private TeamAdapter adapter = null;
-
-    public static final String ARG_ID = "arg_id";
     private BroadcastReceiver tReceiver = new TeamsReceiver();
 
     public static TeamsListFragment newInstance(long tournamentId){
         TeamsListFragment fragment = new TeamsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, tournamentId);
+        args.putLong(ExtraConstants.EXTRA_ID, tournamentId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,13 +67,13 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
 
     @Override
     protected String getDataKey() {
-        return TeamService.EXTRA_TEAMS;
+        return ExtraConstants.EXTRA_TEAMS;
     }
 
     @Override
     public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
-        intent.putExtra(TeamService.EXTRA_ID, getArguments().getLong(ARG_ID,-1));
+        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID, -1));
         getContext().startService(intent);
     }
 
@@ -102,7 +100,7 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertTeamDialog dialog = SquashInsertTeamDialog.newInstance(getArguments().getLong(ARG_ID), true, SquashInsertTeamDialog.class);
+                InsertTeamDialog dialog = SquashInsertTeamDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_ID), true, SquashInsertTeamDialog.class);
                 dialog.show(getFragmentManager(), "dialog");
             }
         });
@@ -118,8 +116,8 @@ public class TeamsListFragment extends AbstractListFragment<Team> {
             if (intent.getAction().equals(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT)) {
                 TeamsListFragment.super.bindDataOnView(intent);
             } else {
-                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false)) {
-                    int position = intent.getIntExtra(TournamentService.EXTRA_POSITION, -1);
+                if (intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
+                    int position = intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                     adapter.delete(position);
                 }
                 else Snackbar.make(contentView, fit.cvut.org.cz.tmlibrary.R.string.failDeleteTeam, Snackbar.LENGTH_LONG).show();

@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFragment;
@@ -34,14 +35,11 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
  * Created by atgot_000 on 8. 4. 2016.
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
-    public static final String COMP_ID = "competition_id";
-    public static final String TOUR_ID = "tournament_id";
-
     private final int GEN_ROSTER_ID = 1001;
     private final int TEAMS_LIST_POSITION = 4;
 
-    private long competitionID;
-    private long tournamentID;
+    private long competitionId;
+    private long tournamentId;
 
     private Fragment[] fragments;
     private String[] titles;
@@ -50,8 +48,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        competitionID = getIntent().getExtras().getLong(COMP_ID);
-        tournamentID = getIntent().getExtras().getLong(TOUR_ID);
+        competitionId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_COMP_ID);
+        tournamentId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
 
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
@@ -59,11 +57,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
-        Fragment f1 = TournamentOverviewFragment.newInstance(tournamentID, HockeyTournamentOverviewFragment.class);
-        Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentID);
-        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentID, false);
-        Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentID, HockeyMatchesListWrapperFragment.class);
-        Fragment f5 = HockeyTeamsListFragment.newInstance(tournamentID, competitionID);
+        Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, HockeyTournamentOverviewFragment.class);
+        Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
+        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);
+        Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, HockeyMatchesListWrapperFragment.class);
+        Fragment f5 = HockeyTeamsListFragment.newInstance(tournamentId, competitionId);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
@@ -94,7 +92,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getBooleanExtra(TournamentService.EXTRA_RESULT, false) == false) {
+                if (!intent.getBooleanExtra(ExtraConstants.EXTRA_RESULT, false)) {
                     Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.failGenerateRosters), Snackbar.LENGTH_LONG).show();
                 } else {
                     if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
@@ -130,18 +128,18 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case fit.cvut.org.cz.tmlibrary.R.id.action_edit:{
-                if (tournamentID == -1) break;
-                Intent intent = CreateTournamentActivity.newStartIntent(this, tournamentID, competitionID);
+                if (tournamentId == -1) break;
+                Intent intent = CreateTournamentActivity.newStartIntent(this, tournamentId, competitionId);
                 startActivity(intent);
                 break;
             }
             case fit.cvut.org.cz.tmlibrary.R.id.action_point_config:{
-                Intent intent = TournamentConfigurationActivity.newStartIntent(this, tournamentID);
+                Intent intent = TournamentConfigurationActivity.newStartIntent(this, tournamentId);
                 startActivity(intent);
                 break;
             }
             case GEN_ROSTER_ID:{
-                GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionID, tournamentID);
+                GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionId, tournamentId);
                 dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
             }

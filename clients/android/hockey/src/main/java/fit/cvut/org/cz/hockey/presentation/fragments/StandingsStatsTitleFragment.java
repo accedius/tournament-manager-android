@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -19,13 +21,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 19. 4. 2016.
  */
 public class StandingsStatsTitleFragment extends Fragment {
-    private static String ARG_TOUR_ID = "tournament_id";
     private StandingsFragment sf;
 
     public static StandingsStatsTitleFragment newInstance(long id) {
         StandingsStatsTitleFragment fragment = new StandingsStatsTitleFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_TOUR_ID, id);
+        args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +44,7 @@ public class StandingsStatsTitleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Long tournamentID = getArguments().getLong(ARG_TOUR_ID, -1);
+        Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         sf = StandingsFragment.newInstance(tournamentID);
         if (getChildFragmentManager().findFragmentById(R.id.stats_list) == null) {
@@ -66,24 +67,24 @@ public class StandingsStatsTitleFragment extends Fragment {
 
     private void setDefaultOrder(View v) {
         TextView points = (TextView)v.findViewById(R.id.standings_points);
-        points.setText(points.getText() + " ▼");
+        points.setText(points.getText() + " "+Constants.DESC_SIGN);
     }
 
     private void setOrderingListeners(View v) {
         final HashMap<String, TextView> columns = new HashMap<>();
-        columns.put("p", (TextView)v.findViewById(R.id.standings_points));
+        columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.standings_points));
         if (v.findViewById(R.id.standings_total_wins) != null) {
-            columns.put("tw", (TextView) v.findViewById(R.id.standings_total_wins));
-            columns.put("d", (TextView) v.findViewById(R.id.standings_draws));
-            columns.put("tl", (TextView) v.findViewById(R.id.standings_total_losses));
+            columns.put(Constants.WINS_TOTAL, (TextView) v.findViewById(R.id.standings_total_wins));
+            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.standings_draws));
+            columns.put(Constants.LOSSES_TOTAL, (TextView) v.findViewById(R.id.standings_total_losses));
         } else {
-            columns.put("w", (TextView) v.findViewById(R.id.standings_wins));
-            columns.put("d", (TextView) v.findViewById(R.id.standings_draws));
-            columns.put("l", (TextView) v.findViewById(R.id.standings_losses));
-            columns.put("wot", (TextView) v.findViewById(R.id.standings_wins_ot));
-            columns.put("lot", (TextView) v.findViewById(R.id.standings_losses_ot));
-            columns.put("wso", (TextView) v.findViewById(R.id.standings_wins_so));
-            columns.put("lso", (TextView) v.findViewById(R.id.standings_losses_so));
+            columns.put(Constants.WINS, (TextView) v.findViewById(R.id.standings_wins));
+            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.standings_draws));
+            columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.standings_losses));
+            columns.put(Constants.WINS_OT, (TextView) v.findViewById(R.id.standings_wins_ot));
+            columns.put(Constants.LOSSES_OT, (TextView) v.findViewById(R.id.standings_losses_ot));
+            columns.put(Constants.WINS_SO, (TextView) v.findViewById(R.id.standings_wins_so));
+            columns.put(Constants.LOSSES_SO, (TextView) v.findViewById(R.id.standings_losses_so));
         }
         for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {

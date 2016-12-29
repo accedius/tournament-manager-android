@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyTournamentFragment;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -24,9 +25,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
  * Created by atgot_000 on 5. 4. 2016.
  */
 public class CreateTournamentActivity extends AbstractToolbarActivity {
-    public static final String EXTRA_COMP_ID = "comp_id";
-    public static final String EXTRA_TOUR_ID = "tour_id";
-
     /**
      * Creates a new intent to start this activity
      * @param context
@@ -36,8 +34,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
      */
     public static Intent newStartIntent(Context context, long tourId, long compId) {
         Intent res = new Intent(context, CreateTournamentActivity.class);
-        res.putExtra(EXTRA_TOUR_ID, tourId);
-        res.putExtra(EXTRA_COMP_ID, compId);
+        res.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
+        res.putExtra(ExtraConstants.EXTRA_COMP_ID, compId);
         return res;
     }
 
@@ -56,8 +54,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long tourID, compID;
-        tourID = getIntent().getLongExtra(EXTRA_TOUR_ID, -1);
-        compID = getIntent().getLongExtra(EXTRA_COMP_ID, -1);
+        tourID = getIntent().getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
+        compID = getIntent().getLongExtra(ExtraConstants.EXTRA_COMP_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
                 getSupportFragmentManager().beginTransaction().add(R.id.container, NewHockeyTournamentFragment.newInstance(tourID, compID, NewHockeyTournamentFragment.class)).commit();
@@ -85,7 +83,7 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
             } else {
                 intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
             }
-            intent.putExtra(TournamentService.EXTRA_TOURNAMENT, tournament);
+            intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, tournament);
             startService(intent);
             finish();
         }

@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.business.entities.communication.Constants;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -19,17 +21,14 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class StatsListWrapperFragment extends Fragment {
-    public static final String ARG_ID = "arg_id";
-    public static final String ARG_ACTION = "arg_action";
-
     private AggregatedStatsListFragment statsFragment;
 
     public static StatsListWrapperFragment newInstance(long id, String action){
         StatsListWrapperFragment fragment = new StatsListWrapperFragment();
 
         Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
-        args.putString(ARG_ACTION, action);
+        args.putLong(ExtraConstants.EXTRA_ID, id);
+        args.putString(ExtraConstants.EXTRA_ACTION, action);
 
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +48,7 @@ public class StatsListWrapperFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            statsFragment = AggregatedStatsListFragment.newInstance(getArguments().getLong(ARG_ID), getArguments().getString(ARG_ACTION));
+            statsFragment = AggregatedStatsListFragment.newInstance(getArguments().getLong(ExtraConstants.EXTRA_ID), getArguments().getString(ExtraConstants.EXTRA_ACTION));
             getChildFragmentManager().beginTransaction().add(R.id.fragment_container, statsFragment).commit();
         }
     }
@@ -68,13 +67,13 @@ public class StatsListWrapperFragment extends Fragment {
     private void setDefaultOrder(View v) {
         deleteOtherOrders(v);
         TextView points = (TextView)v.findViewById(R.id.tv_points_label);
-        points.setText(points.getText()+ " ▼");
+        points.setText(points.getText()+ " " + Constants.DESC_SIGN);
     }
 
     private void deleteOtherOrders(View v) {
         final HashMap<String, TextView> columns = getColumns(v);
         for (TextView textView : columns.values()) {
-            if (textView.getText().toString().contains("▼") || textView.getText().toString().contains("▲")) {
+            if (textView.getText().toString().contains(Constants.DESC_SIGN) || textView.getText().toString().contains(Constants.ASC_SIGN)) {
                 String text = textView.getText().toString();
                 textView.setText(text.substring(0, text.length()-2));
             }
@@ -95,22 +94,22 @@ public class StatsListWrapperFragment extends Fragment {
 
     private HashMap<String, TextView> getColumns(View v) {
         HashMap<String, TextView> columns = new HashMap<>();
-        columns.put("gp",(TextView)v.findViewById(R.id.tv_games_played_label));
-        columns.put("p", (TextView)v.findViewById(R.id.tv_points_label));
-        columns.put("w", (TextView)v.findViewById(R.id.tv_wins_label));
-        columns.put("l", (TextView)v.findViewById(R.id.tv_losses_label));
-        columns.put("d", (TextView)v.findViewById(R.id.tv_draws_label));
+        columns.put(Constants.MATCHES,(TextView)v.findViewById(R.id.tv_games_played_label));
+        columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.tv_points_label));
+        columns.put(Constants.WINS, (TextView)v.findViewById(R.id.tv_wins_label));
+        columns.put(Constants.LOSSES, (TextView)v.findViewById(R.id.tv_losses_label));
+        columns.put(Constants.DRAWS, (TextView)v.findViewById(R.id.tv_draws_label));
         if (v.findViewById(R.id.tv_won_per_label) != null) {
-            columns.put("w%", (TextView)v.findViewById(R.id.tv_won_per_label));
-            columns.put("sw", (TextView) v.findViewById(R.id.tv_sets_won_label));
-            columns.put("sl", (TextView) v.findViewById(R.id.tv_sets_lost_label));
-            columns.put("swavg", (TextView) v.findViewById(R.id.tv_sets_won_avg_label));
-            columns.put("slavg", (TextView) v.findViewById(R.id.tv_sets_lost_avg_label));
-            columns.put("s%", (TextView) v.findViewById(R.id.tv_sets_per_label));
-            columns.put("bw", (TextView) v.findViewById(R.id.tv_balls_won_label));
-            columns.put("bl", (TextView) v.findViewById(R.id.tv_balls_lost_label));
-            columns.put("bwavg", (TextView) v.findViewById(R.id.tv_balls_won_avg_label));
-            columns.put("blavg", (TextView) v.findViewById(R.id.tv_balls_lost_avg_label));
+            columns.put(Constants.MATCH_WIN_RATE, (TextView)v.findViewById(R.id.tv_won_per_label));
+            columns.put(Constants.SETS_WON, (TextView) v.findViewById(R.id.tv_sets_won_label));
+            columns.put(Constants.SETS_LOST, (TextView) v.findViewById(R.id.tv_sets_lost_label));
+            columns.put(Constants.SETS_WON_AVG, (TextView) v.findViewById(R.id.tv_sets_won_avg_label));
+            columns.put(Constants.SETS_LOST_AVG, (TextView) v.findViewById(R.id.tv_sets_lost_avg_label));
+            columns.put(Constants.SETS_WIN_RATE, (TextView) v.findViewById(R.id.tv_sets_per_label));
+            columns.put(Constants.BALLS_WON, (TextView) v.findViewById(R.id.tv_balls_won_label));
+            columns.put(Constants.BALLS_LOST, (TextView) v.findViewById(R.id.tv_balls_lost_label));
+            columns.put(Constants.BALLS_WON_AVG, (TextView) v.findViewById(R.id.tv_balls_won_avg_label));
+            columns.put(Constants.BALLS_LOST_AVG, (TextView) v.findViewById(R.id.tv_balls_lost_avg_label));
         }
         return columns;
     }

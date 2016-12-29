@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.NewHockeyCompetitionFragment;
 import fit.cvut.org.cz.hockey.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 public class CreateCompetitionActivity extends AbstractToolbarActivity {
@@ -64,7 +65,7 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
             } else {
                 intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, this);
             }
-            intent.putExtra(CompetitionService.EXTRA_COMPETITION, competition);
+            intent.putExtra(ExtraConstants.EXTRA_COMPETITION, competition);
             startService(intent);
             finish();
         }

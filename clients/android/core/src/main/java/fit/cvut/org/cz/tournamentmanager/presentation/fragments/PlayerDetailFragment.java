@@ -15,15 +15,17 @@ import java.lang.reflect.InvocationTargetException;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
+import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
+
+import static fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants.EXTRA_PLAYER;
 
 /**
  * Created by atgot_000 on 1. 4. 2016.
  */
 public class PlayerDetailFragment extends AbstractDataFragment {
     private TextView email, note;
-    private static final String PLAYER_KEY = "extra_player";
-    protected long playerID;
+    protected long playerId;
 
     public static PlayerDetailFragment newInstance(long id, Class<? extends PlayerDetailFragment> clazz){
         PlayerDetailFragment fragment = null;
@@ -41,7 +43,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(PLAYER_KEY, id);
+        args.putLong(EXTRA_PLAYER, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +51,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        Player player = intent.getParcelableExtra(PLAYER_KEY);
+        Player player = intent.getParcelableExtra(EXTRA_PLAYER);
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.player)+" – "+player.getName());
         email.setText(player.getEmail());
         note.setText(player.getNote());
@@ -58,7 +60,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_BY_ID, getContext());
-        intent.putExtra(PlayerService.EXTRA_ID, playerID);
+        intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
         getContext().startService(intent);
     }
 
@@ -85,7 +87,7 @@ public class PlayerDetailFragment extends AbstractDataFragment {
         note = (TextView) v.findViewById(R.id.player_note);
 
         if (getArguments() != null)
-            playerID = getArguments().getLong(PLAYER_KEY);
+            playerId = getArguments().getLong(EXTRA_PLAYER);
 
         return v;
     }

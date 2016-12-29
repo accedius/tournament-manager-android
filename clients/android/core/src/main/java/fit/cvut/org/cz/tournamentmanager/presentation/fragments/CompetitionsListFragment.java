@@ -18,16 +18,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
-import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.AddCompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -41,18 +43,18 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     private String package_service;
     private String sport_context;
 
-    private String orderColumn = Competition.col_end_date;
-    private String orderType = "DESC";
+    private String orderColumn = DBConstants.cEND;
+    private String orderType = Constants.ORDER_DESC;
 
     private BroadcastReceiver receiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ApplicationInfo sport_package = getArguments().getParcelable("sport_package");
-        package_name = sport_package.metaData.getString("package_name");
-        activity_create_competition = sport_package.metaData.getString("activity_create_competition");
-        activity_detail_competition = sport_package.metaData.getString("activity_detail_competition");
-        package_service = sport_package.metaData.getString("package_service");
+        ApplicationInfo sport_package = getArguments().getParcelable(CrossPackageConstants.SPORT_PACKAGE);
+        package_name = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_NAME);
+        activity_create_competition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
+        activity_detail_competition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
+        package_service = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_SERVICE);
         sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
         action = sport_context+action+"."+package_name;
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -147,8 +149,8 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         if (adapter == null) return;
 
         List<Competition> competitions = adapter.getData();
-        if (orderColumn.equals(type) && orderType.equals("ASC")) {
-            orderType = "DESC";
+        if (orderColumn.equals(type) && orderType.equals(Constants.ORDER_ASC)) {
+            orderType = Constants.ORDER_DESC;
             Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {
@@ -159,7 +161,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             if (!orderColumn.equals(type)) {
                 orderColumn = type;
             }
-            orderType = "ASC";
+            orderType = Constants.ORDER_ASC;
             Collections.sort(competitions, new Comparator<Competition>() {
                 @Override
                 public int compare(Competition ls, Competition rs) {

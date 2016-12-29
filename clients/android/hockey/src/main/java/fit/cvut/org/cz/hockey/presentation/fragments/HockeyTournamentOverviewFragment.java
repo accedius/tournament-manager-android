@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
@@ -14,28 +15,28 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
 public class HockeyTournamentOverviewFragment extends TournamentOverviewFragment {
     @Override
     protected String getTournamentKey() {
-        return TournamentService.EXTRA_TOURNAMENT;
+        return ExtraConstants.EXTRA_TOURNAMENT;
     }
 
     @Override
     protected String getMatchesSumKey() {
-        return TournamentService.EXTRA_MATCHES_SUM;
+        return ExtraConstants.EXTRA_MATCHES_COUNT;
     }
 
     @Override
     protected String getPlayersSumKey() {
-        return TournamentService.EXTRA_PLAYER_SUM;
+        return ExtraConstants.EXTRA_PLAYERS_COUNT;
     }
 
     @Override
     protected String getTeamsSumKey() {
-        return TournamentService.EXTRA_TEAMS_SUM;
+        return ExtraConstants.EXTRA_TEAMS_COUNT;
     }
 
     @Override
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, getContext());
-        intent.putExtra(TournamentService.EXTRA_ID, tournamentID);
+        intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
 
         getContext().startService(intent);
     }

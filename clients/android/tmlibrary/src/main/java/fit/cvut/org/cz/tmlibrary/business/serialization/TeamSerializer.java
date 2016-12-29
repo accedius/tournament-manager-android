@@ -22,17 +22,17 @@ abstract public class TeamSerializer extends BaseSerializer<Team> {
     @Override
     public HashMap<String, Object> serializeSyncData(Team entity) {
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put("name", entity.getName());
+        hm.put(Constants.NAME, entity.getName());
         return hm;
     }
 
     @Override
     public void deserializeSyncData(HashMap<String, Object> syncData, Team entity) {
-        entity.setName(String.valueOf(syncData.get("name")));
+        entity.setName(String.valueOf(syncData.get(Constants.NAME)));
     }
 
     @Override
     public String getEntityType() {
-        return "Team";
+        return Constants.TEAM;
     }
 }

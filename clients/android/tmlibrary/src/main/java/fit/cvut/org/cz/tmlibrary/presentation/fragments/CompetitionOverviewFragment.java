@@ -12,16 +12,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by atgot_000 on 1. 4. 2016.
  */
 public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     private TextView start, end, tourSum, playerSum, note;
-    private static final String COMP_KEY = "competition_id_key";
-    protected long competitionID;
+    protected long competitionId;
     protected Competition competition = null;
 
     /**
@@ -58,7 +58,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         }
 
         Bundle args = new Bundle();
-        args.putLong(COMP_KEY, id);
+        args.putLong(ExtraConstants.EXTRA_COMP_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -75,7 +75,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         note = (TextView) v.findViewById(R.id.comp_note);
 
         if (getArguments() != null)
-            competitionID = getArguments().getLong(COMP_KEY);
+            competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID);
 
         return v;
     }

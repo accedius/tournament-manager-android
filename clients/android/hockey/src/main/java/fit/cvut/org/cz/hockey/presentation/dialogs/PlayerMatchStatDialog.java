@@ -8,17 +8,13 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.data.entities.PlayerStat;
+import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchStatsFragment;
 
 /**
  * Created by atgot_000 on 24. 4. 2016.
  */
 public class PlayerMatchStatDialog extends DialogFragment {
-    public static final String ARG_DATA = "data";
-    public static final String ARG_POSITION = "position";
-    public static final String ARG_HOME = "home";
-    public static final String ARG_TITLE = "arg_title";
-
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){
             @Override
@@ -26,15 +22,15 @@ public class PlayerMatchStatDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         EditStatsDialog editDial = EditStatsDialog.newInstance(
-                                (PlayerStat)getArguments().getParcelable(ARG_DATA),
-                                getArguments().getInt(ARG_POSITION),
-                                getArguments().getBoolean(ARG_HOME));
+                                (PlayerStat)getArguments().getParcelable(ExtraConstants.EXTRA_DATA),
+                                getArguments().getInt(ExtraConstants.EXTRA_POSITION),
+                                getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME));
                         editDial.setTargetFragment(getTargetFragment(), 1);
                         editDial.show(getTargetFragment().getFragmentManager(), "EDIT_STATS_DIAL");
                         break;
                     }
                     case 1: {
-                        ((HockeyMatchStatsFragment)getTargetFragment()).removePlayer(getArguments().getBoolean(ARG_HOME), getArguments().getInt(ARG_POSITION));
+                        ((HockeyMatchStatsFragment)getTargetFragment()).removePlayer(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         break;
                     }
                 }
@@ -46,10 +42,10 @@ public class PlayerMatchStatDialog extends DialogFragment {
     public static PlayerMatchStatDialog newInstance(PlayerStat statistic, int pos, boolean isHome, String name) {
         PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
         Bundle b = new Bundle();
-        b.putParcelable(ARG_DATA, statistic);
-        b.putBoolean(ARG_HOME, isHome);
-        b.putInt(ARG_POSITION, pos);
-        b.putString(ARG_TITLE, name);
+        b.putParcelable(ExtraConstants.EXTRA_DATA, statistic);
+        b.putBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME, isHome);
+        b.putInt(ExtraConstants.EXTRA_POSITION, pos);
+        b.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(b);
         return fragment;
     }
@@ -60,7 +56,7 @@ public class PlayerMatchStatDialog extends DialogFragment {
         String[] items = new String[]{ getActivity().getString(R.string.edit_stats), getActivity().getString(R.string.delete) };
         builder.setItems(items, supplyListener());
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }

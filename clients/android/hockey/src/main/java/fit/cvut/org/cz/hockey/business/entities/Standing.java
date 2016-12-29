@@ -3,6 +3,8 @@ package fit.cvut.org.cz.hockey.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import fit.cvut.org.cz.hockey.business.entities.communication.Constants;
+
 /**
  * Created by atgot_000 on 19. 4. 2016.
  */
@@ -177,16 +179,16 @@ public class Standing implements Parcelable {
 
     public double getStat(String key) {
         switch (key) {
-            case "p": return getPoints();
-            case "tw": return getTotalWins();
-            case "tl": return getTotalLosses();
-            case "w": return getWins();
-            case "d": return getDraws();
-            case "l": return getLosses();
-            case "wot": return getWinsOt();
-            case "lot": return getLossesOt();
-            case "wso": return getWinsSo();
-            case "lso": return getLossesSo();
+            case Constants.POINTS: return getPoints();
+            case Constants.WINS_TOTAL: return getTotalWins();
+            case Constants.LOSSES_TOTAL: return getTotalLosses();
+            case Constants.WINS: return getWins();
+            case Constants.DRAWS: return getDraws();
+            case Constants.LOSSES: return getLosses();
+            case Constants.WINS_OT: return getWinsOt();
+            case Constants.LOSSES_OT: return getLossesOt();
+            case Constants.WINS_SO: return getWinsSo();
+            case Constants.LOSSES_SO: return getLossesSo();
             default: return 0;
         }
     }

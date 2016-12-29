@@ -10,17 +10,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
  */
 @DatabaseTable(tableName = DBConstants.tTOURNAMENTS)
 public class Tournament extends ShareBase implements Parcelable {
-    public static final String col_name = "name";
-    public static final String col_start_date = "start_date";
-    public static final String col_end_date= "end_date";
 
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
     private long id;
@@ -190,11 +188,11 @@ public class Tournament extends ShareBase implements Parcelable {
     }
 
     public String getColumn(String column) {
-        if (column.equals("name")) {
+        if (column.equals(Constants.NAME)) {
             return name;
-        } else if (column.equals("start_date")) {
+        } else if (column.equals(Constants.START)) {
             return DateFormatter.getInstance().getDBDateFormat().format(startDate);
-        } else if (column.equals("end_date")) {
+        } else if (column.equals(Constants.END)) {
             return DateFormatter.getInstance().getDBDateFormat().format(endDate);
         } else {
             return "";
@@ -202,6 +200,6 @@ public class Tournament extends ShareBase implements Parcelable {
     }
 
     public String getEntityType() {
-        return "Tournament";
+        return Constants.TOURNAMENT;
     }
 }

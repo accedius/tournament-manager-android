@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 
@@ -20,16 +21,12 @@ import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
 public class AdapterDialog extends DialogFragment {
     public AdapterDialog(){}
 
-    public static final String ARG_POSITION = "arg_pos";
-    public static final String ARG_OPTION = "arg_option";
-    public static final String ARG_TITLE = "arg_title";
-
     public static AdapterDialog newInstance(int position, int option, String name){
         AdapterDialog fragment = new AdapterDialog();
         Bundle args = new Bundle();
-        args.putInt(ARG_POSITION, position);
-        args.putInt(ARG_OPTION, option);
-        args.putString(ARG_TITLE, name);
+        args.putInt(ExtraConstants.EXTRA_POSITION, position);
+        args.putInt(ExtraConstants.EXTRA_OPTION, option);
+        args.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,20 +43,20 @@ public class AdapterDialog extends DialogFragment {
                     Fragment fr = getTargetFragment();
                     if (fr != null) {
                         if (fr instanceof SetsFragment) {
-                            ((SetsFragment)fr).adapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                            ((SetsFragment)fr).adapter.deleteItem(getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         }
                         if (fr instanceof MatchPlayersFragment) {
-                            if (getArguments().getInt(ARG_OPTION) == 0)
-                                ((MatchPlayersFragment)fr).homeAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                            if (getArguments().getInt(ExtraConstants.EXTRA_OPTION) == 0)
+                                ((MatchPlayersFragment)fr).homeAdapter.deleteItem(getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                             else
-                                ((MatchPlayersFragment)fr).awayAdapter.deleteItem(getArguments().getInt(ARG_POSITION));
+                                ((MatchPlayersFragment)fr).awayAdapter.deleteItem(getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         }
                     }
                 }
             }
         });
 
-        builder.setTitle(getArguments().getString(ARG_TITLE));
+        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
         return builder.create();
     }
 }
