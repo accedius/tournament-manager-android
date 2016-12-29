@@ -35,6 +35,7 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
     private DefaultViewPagerAdapter adapter = null;
     private Fragment[] fragments;
     private String[] titles;
+    private String sportContext;
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
@@ -53,8 +54,8 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        ((SquashPackage) getApplicationContext()).setSportContext(sport_context);
+        sportContext = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        ((SquashPackage) getApplicationContext()).setSportContext(sportContext);
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -71,6 +72,12 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+    }
+
+    @Override
+    protected void onResume() {
+        ((SquashPackage)getApplication()).setSportContext(sportContext);
+        super.onResume();
     }
 
     @Override

@@ -33,11 +33,12 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
     private Fragment[] fragments;
     private String[] titles;
+    private String sportContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        String sport_context = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        ((HockeyPackage) this.getApplication()).setSportContext(sport_context);
+        sportContext = getIntent().getExtras().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        ((HockeyPackage) this.getApplication()).setSportContext(sportContext);
 
         competitionID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
         titles = new String[]{
@@ -63,6 +64,12 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+    }
+
+    @Override
+    protected void onResume() {
+        ((HockeyPackage)getApplication()).setSportContext(sportContext);
+        super.onResume();
     }
 
     @Override
