@@ -100,7 +100,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.setAction(ACTION_GET_ALL);
                 long competitionId = intent.getLongExtra(ExtraConstants.EXTRA_COMP_ID, -1);
                 List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
-                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_LIST, new ArrayList<>(tournaments));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, new ArrayList<>(tournaments));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }

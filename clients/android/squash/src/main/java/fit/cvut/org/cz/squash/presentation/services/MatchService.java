@@ -79,7 +79,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 Intent result = new Intent(action);
                 result.putExtra(ExtraConstants.EXTRA_MATCH, ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId));
-                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PART_LIST, getParticipantsForMatch(tournamentId));
+                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
@@ -87,7 +87,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 long tournamentId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
 
                 Intent result = new Intent(action);
-                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PART_LIST, getParticipantsForMatch(tournamentId));
+                result.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, getParticipantsForMatch(tournamentId));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }

@@ -80,7 +80,7 @@ public class HockeyMatchesListFragment extends AbstractListFragment<Match> {
 
     @Override
     protected String getDataKey() {
-        return ExtraConstants.EXTRA_MATCH_LIST;
+        return ExtraConstants.EXTRA_MATCHES;
     }
 
     @Override

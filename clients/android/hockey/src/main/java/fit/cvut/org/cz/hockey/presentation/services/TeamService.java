@@ -45,7 +45,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     private void sendTeams(long id) {
         Intent res = new Intent(ACTION_GET_TEAMS_BY_TOURNAMENT);
         List<Team> teams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(id);
-        res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TEAM_LIST, new ArrayList<>(teams));
+        res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TEAMS, new ArrayList<>(teams));
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(res);
     }

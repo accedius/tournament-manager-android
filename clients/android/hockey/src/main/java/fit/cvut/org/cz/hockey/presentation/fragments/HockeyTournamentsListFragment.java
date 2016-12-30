@@ -108,7 +108,7 @@ public class HockeyTournamentsListFragment extends AbstractListFragment<Tourname
 
     @Override
     protected String getDataKey() {
-        return ExtraConstants.EXTRA_LIST;
+        return ExtraConstants.EXTRA_TOURNAMENTS;
     }
 
     @Override

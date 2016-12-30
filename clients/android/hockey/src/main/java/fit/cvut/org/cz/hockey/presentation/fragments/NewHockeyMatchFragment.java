@@ -20,7 +20,7 @@ public class NewHockeyMatchFragment extends NewMatchFragment {
 
     @Override
     protected String getTournamentParticipantsKey() {
-        return ExtraConstants.EXTRA_PART_LIST;
+        return ExtraConstants.EXTRA_PARTICIPANTS;
     }
 
     @Override

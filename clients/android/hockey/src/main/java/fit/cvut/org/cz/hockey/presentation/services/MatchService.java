@@ -132,7 +132,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     participants.add(participant);
                 }
 
-                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PART_LIST, participants);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, participants);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
@@ -158,7 +158,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                         }
                     }
                 }
-                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_MATCH_LIST, matches);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_MATCHES, matches);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
