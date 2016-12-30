@@ -107,7 +107,9 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
             for (TournamentPlayer competitionPlayer : tournamentPlayers) {
                 allCompetitionPlayers.remove(competitionPlayer.getPlayerId());
             }
-            return new ArrayList<>(allCompetitionPlayers.values());
+            ArrayList<Player> players = new ArrayList<>(allPlayers.values());
+            PackagePlayerManager.orderPlayers(players);
+            return players;
         }
         catch (SQLException e) {
             return new ArrayList<>();

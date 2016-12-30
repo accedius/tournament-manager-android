@@ -89,7 +89,9 @@ public class CompetitionManager extends BaseManager<Competition> implements ICom
             for (CompetitionPlayer competitionPlayer : competitionPlayers) {
                 allPlayers.remove(competitionPlayer.getPlayerId());
             }
-            return new ArrayList<>(allPlayers.values());
+            ArrayList<Player> players = new ArrayList<>(allPlayers.values());
+            PackagePlayerManager.orderPlayers(players);
+            return players;
         }
         catch (SQLException e) {
             return new ArrayList<>();

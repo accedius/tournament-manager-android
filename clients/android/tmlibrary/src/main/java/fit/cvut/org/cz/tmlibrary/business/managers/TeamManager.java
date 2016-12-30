@@ -159,7 +159,9 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
                     tournamentPlayersMap.remove(player.getId());
                 }
             }
-            return new ArrayList<>(tournamentPlayersMap.values());
+            ArrayList<Player> freePlayers = new ArrayList<>(tournamentPlayersMap.values());
+            PackagePlayerManager.orderPlayers(freePlayers);
+            return freePlayers;
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();

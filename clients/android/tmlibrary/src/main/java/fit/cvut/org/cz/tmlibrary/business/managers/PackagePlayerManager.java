@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,5 +113,16 @@ public class PackagePlayerManager implements IPackagePlayerManager {
     @Override
     public boolean delete(long id) {
         return false;
+    }
+
+    public static void orderPlayers(List<Player> players) {
+        Collections.sort(players, new Comparator<Player>() {
+            @Override
+            public int compare(Player lp, Player rp) {
+                if (!rp.getName().equals(lp.getName()))
+                    return lp.getName().compareTo(rp.getName());
+                return lp.getEmail().compareTo(rp.getEmail());
+            }
+        });
     }
 }
