@@ -21,9 +21,10 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
+import fit.cvut.org.cz.tournamentmanager.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
@@ -217,10 +218,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_SERVICE, package_service);
                 res.putExtra(CrossPackageConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageConstants.EXTRA_JSON));
-                res.putExtra(ImportActivity.COMPETITION, intent.getParcelableExtra(ImportActivity.COMPETITION));
-                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, intent.getParcelableArrayListExtra(ImportActivity.TOURNAMENTS));
-                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, intent.getParcelableArrayListExtra(ImportActivity.PLAYERS));
-                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, intent.getParcelableArrayListExtra(ImportActivity.CONFLICTS));
+                res.putExtra(ExtraConstants.EXTRA_COMPETITION, intent.getParcelableExtra(ExtraConstants.EXTRA_COMPETITION));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS));
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_CONFLICTS, intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_CONFLICTS));
                 startActivity(res);
             }
         }

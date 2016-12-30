@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.presentation.adapters;
+package fit.cvut.org.cz.tournamentmanager.presentation.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ConflictValue;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Created by kevin on 24.10.2016.

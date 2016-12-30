@@ -6,7 +6,6 @@ package fit.cvut.org.cz.tmlibrary.presentation.communication;
 
 public class ExtraConstants {
     public static final String EXTRA_ACTION = "extra_action";
-    public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_DATA = "extra_data";
 
@@ -17,16 +16,15 @@ public class ExtraConstants {
 
     public static final String EXTRA_COMPETITION = "extra_competition";
     public static final String EXTRA_TOURNAMENT = "extra_tournament";
+    public static final String EXTRA_TOURNAMENTS = "extra_tournaments";
     public static final String EXTRA_MATCH = "extra_match";
+    public static final String EXTRA_PLAYERS = "extra_players";
 
-    public static final String EXTRA_PLAYERS_COUNT = "extra_players_count";
-
-    public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_HOME_STATS = "extra_home_statistics";
     public static final String EXTRA_AWAY_STATS = "extra_away_statistics";
 
-    public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_RESULT = "extra_result";
+    public static final String EXTRA_CONFLICTS = "extra_conflicts";
 
     public static final String EXTRA_OMIT = "extra_omit";
 

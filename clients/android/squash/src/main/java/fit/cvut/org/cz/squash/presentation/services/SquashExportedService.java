@@ -29,8 +29,8 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Allows Core to delete Competition and get stats for player
@@ -163,10 +163,10 @@ public class SquashExportedService extends IntentService {
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
                 res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.EXTRA_IMPORT_INFO);
                 res.putExtra(CrossPackageConstants.EXTRA_JSON, json);
-                res.putExtra(ImportActivity.COMPETITION, competitionInfo);
-                res.putParcelableArrayListExtra(ImportActivity.TOURNAMENTS, tournamentsInfo);
-                res.putParcelableArrayListExtra(ImportActivity.PLAYERS, playersInfo);
-                res.putParcelableArrayListExtra(ImportActivity.CONFLICTS, playersModified);
+                res.putExtra(ExtraConstants.EXTRA_COMPETITION, competitionInfo);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, tournamentsInfo);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, playersInfo);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_CONFLICTS, playersModified);
                 sendBroadcast(res);
                 break;
             }

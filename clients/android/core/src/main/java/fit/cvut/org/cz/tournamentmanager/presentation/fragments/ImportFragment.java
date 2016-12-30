@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.presentation.fragments;
+package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,12 +19,12 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
-import fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.ConflictAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportPlayerAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.ImportTournamentAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ConflictAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ImportPlayerAdapter;
+import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ImportTournamentAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Created by kevin on 28.10.2016.
@@ -57,13 +57,13 @@ public class ImportFragment extends Fragment {
         Bundle args = getArguments();
         packageName = args.getString(CrossPackageConstants.EXTRA_PACKAGE);
         sportService = args.getString(CrossPackageConstants.EXTRA_SPORT_SERVICE);
-        tournaments = args.getParcelableArrayList(ImportActivity.TOURNAMENTS);
-        players = args.getParcelableArrayList(ImportActivity.PLAYERS);
-        conflicts = args.getParcelableArrayList(ImportActivity.CONFLICTS);
+        tournaments = args.getParcelableArrayList(ExtraConstants.EXTRA_TOURNAMENTS);
+        players = args.getParcelableArrayList(ExtraConstants.EXTRA_PLAYERS);
+        conflicts = args.getParcelableArrayList(ExtraConstants.EXTRA_CONFLICTS);
         jsonContent = args.getString(CrossPackageConstants.EXTRA_JSON);
         sportContext = args.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
 
-        tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ImportActivity.COMPETITION), getResources());
+        tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ExtraConstants.EXTRA_COMPETITION), getResources());
         playersAdapter = new ImportPlayerAdapter();
         conflictsAdapter = new ConflictAdapter(getContext());
 

@@ -36,7 +36,7 @@
             android:exported="true"/>
 
         <activity
-            android:name="fit.cvut.org.cz.tmlibrary.presentation.activities.ImportActivity"/>
+            android:name=".presentation.activities.ImportActivity"/>
 
         <meta-data
             android:name="player_cp_authority"

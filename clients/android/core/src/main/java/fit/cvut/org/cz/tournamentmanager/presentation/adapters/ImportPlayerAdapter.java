@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.presentation.adapters;
+package fit.cvut.org.cz.tournamentmanager.presentation.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Created by kevin on 28.10.2016.

@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.tmlibrary.presentation.adapters;
+package fit.cvut.org.cz.tournamentmanager.presentation.adapters;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.CompetitionImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
  * Created by kevin on 28.10.2016.
