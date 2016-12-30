@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.R;
+import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
@@ -43,6 +44,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     private long competitionID;
     private long tournamentID;
     private DefaultViewPagerAdapter adapter = null;
+    private String sportContext;
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
@@ -79,6 +81,7 @@ public class TournamentDetailActivity extends AbstractTabActivity {
     }
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        sportContext = ((SquashPackage) this.getApplication()).getSportContext();
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -116,6 +119,12 @@ public class TournamentDetailActivity extends AbstractTabActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onResume() {
+        ((SquashPackage)getApplication()).setSportContext(sportContext);
+        super.onResume();
     }
 
     @Override

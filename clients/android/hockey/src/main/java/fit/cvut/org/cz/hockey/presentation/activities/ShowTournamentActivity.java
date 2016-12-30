@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.R;
+import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
@@ -45,9 +46,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     private String[] titles;
 
     private DefaultViewPagerAdapter adapter;
+    private String sportContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        sportContext = ((HockeyPackage) this.getApplication()).getSportContext();
         competitionId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_COMP_ID);
         tournamentId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
 
@@ -105,6 +108,12 @@ public class ShowTournamentActivity extends AbstractTabActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onResume() {
+        ((HockeyPackage)getApplication()).setSportContext(sportContext);
+        super.onResume();
     }
 
     @Override
