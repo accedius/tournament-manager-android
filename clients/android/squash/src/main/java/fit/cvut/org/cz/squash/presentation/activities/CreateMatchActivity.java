@@ -62,7 +62,7 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
             fit.cvut.org.cz.tmlibrary.data.entities.Match match = ((CreateSquashMatchFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getMatch();
             if (match == null) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.period_round_empty_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
             Match squashMatch = new Match(match);
