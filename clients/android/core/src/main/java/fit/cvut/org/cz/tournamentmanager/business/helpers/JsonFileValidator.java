@@ -17,6 +17,8 @@ public class JsonFileValidator {
             return sportContext.equals(fileSportContext);
         } catch (JsonSyntaxException e) {
             return false;
+        } catch (NullPointerException e) {
+            return false;
         }
     }
 }

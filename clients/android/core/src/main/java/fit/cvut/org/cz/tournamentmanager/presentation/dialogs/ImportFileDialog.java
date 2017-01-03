@@ -17,23 +17,23 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
  * Created by kevin on 14. 4. 2016.
  */
 public class ImportFileDialog extends DialogFragment {
-    private String package_name;
-    private String package_service;
-    private String sport_context;
+    private String packageName;
+    private String packageService;
+    private String sportContext;
 
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 /* Send request for deserialize specified file */
-                File competitionFile = FilesHelper.getFiles(sport_context).get(which);
+                File competitionFile = FilesHelper.getFiles(sportContext).get(which);
                 String fileContent = FilesHelper.loadFileContent(competitionFile);
 
                 Intent intent = new Intent();
-                intent.setClassName(package_name, package_service);
+                intent.setClassName(packageName, packageService);
                 intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
-                intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
-                intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+                intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                 intent.putExtra(CrossPackageConstants.EXTRA_JSON, fileContent);
                 getContext().startService(intent);
                 dialog.dismiss();
@@ -41,11 +41,11 @@ public class ImportFileDialog extends DialogFragment {
         };
     }
 
-    public static ImportFileDialog newInstance(String package_name, String sport_context, String package_service) {
+    public static ImportFileDialog newInstance(String packageName, String sportContext, String packageService) {
         ImportFileDialog fragment = new ImportFileDialog();
-        fragment.package_name = package_name;
-        fragment.sport_context = sport_context;
-        fragment.package_service = package_service;
+        fragment.packageName = packageName;
+        fragment.sportContext = sportContext;
+        fragment.packageService = packageService;
         return fragment;
     }
 
@@ -53,7 +53,7 @@ public class ImportFileDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setItems(FilesHelper.getFileNames(sport_context), supplyListener());
+        builder.setItems(FilesHelper.getFileNames(sportContext), supplyListener());
         builder.setTitle(fit.cvut.org.cz.tmlibrary.R.string.choose_file);
         return builder.create();
     }

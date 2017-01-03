@@ -16,9 +16,9 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
  * Created by kevin on 14. 4. 2016.
  */
 public class EditDialog extends DialogFragment {
-    private String activity_create_competition;
-    private String package_name;
-    private String sport_context;
+    private String activityCreateCompetition;
+    private String packageName;
+    private String sportContext;
     private long competitionId;
 
     protected DialogInterface.OnClickListener supplyListener() {
@@ -28,9 +28,9 @@ public class EditDialog extends DialogFragment {
                 switch (which){
                     case 0:{
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_create_competition);
+                        intent.setClassName(packageName, activityCreateCompetition);
                         intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         startActivity(intent);
                         break;
                     }
@@ -40,12 +40,12 @@ public class EditDialog extends DialogFragment {
         };
     }
 
-    public static EditDialog newInstance(String package_name, String activity_create_competition, long competitionId, String sport_context) {
+    public static EditDialog newInstance(String packageName, String activityCreateCompetition, long competitionId, String sportContext) {
         EditDialog dialog = new EditDialog();
-        dialog.package_name = package_name;
-        dialog.activity_create_competition = activity_create_competition;
+        dialog.packageName = packageName;
+        dialog.activityCreateCompetition = activityCreateCompetition;
         dialog.competitionId = competitionId;
-        dialog.sport_context = sport_context;
+        dialog.sportContext = sportContext;
         return dialog;
     }
 

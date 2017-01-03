@@ -33,36 +33,34 @@ public class PlayerDetailActivity extends AbstractTabActivity {
 
     private Fragment[] fragments;
     private String[] titles;
-    private Map<String, ApplicationInfo> sport_contexts;
+    private Map<String, ApplicationInfo> sportContexts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
-        sport_contexts = PackagesInfo.getSportContexts(this);
+        sportContexts = PackagesInfo.getSportContexts(this);
 
         List<Setting> ignoredSports = ManagerFactory.getInstance(this).getEntityManager(Setting.class).getAll();
         for (Setting s : ignoredSports) {
-            if (sport_contexts.containsKey(s.getSportName())) {
-                sport_contexts.remove(s.getSportName());
+            if (sportContexts.containsKey(s.getSportName())) {
+                sportContexts.remove(s.getSportName());
             }
         }
 
-        titles = new String[1+sport_contexts.size()];
+        titles = new String[1+ sportContexts.size()];
         titles[0] = getResources().getString(R.string.player_info);
 
         Fragment f1 = PlayerDetailFragment.newInstance(playerID, PlayerDetailFragment.class);
-        fragments = new Fragment[1+sport_contexts.size()];
+        fragments = new Fragment[1+ sportContexts.size()];
         fragments[0] = f1;
 
         int i=1;
-        for (Map.Entry<String, ApplicationInfo> sport_context : sport_contexts.entrySet()) {
+        for (Map.Entry<String, ApplicationInfo> sport_context : sportContexts.entrySet()) {
             ApplicationInfo info = sport_context.getValue();
             PlayerSportFragment psf = new PlayerSportFragment();
             Bundle b = new Bundle();
             b.putLong(ExtraConstants.EXTRA_ID, playerID);
             b.putString(CrossPackageConstants.PACKAGE_NAME, info.metaData.getString(CrossPackageConstants.PACKAGE_NAME));
-            // TODO zjistit, jestli sport_name nekdo pouziva
-            b.putString(CrossPackageConstants.SPORT_NAME, info.metaData.getString(CrossPackageConstants.SPORT_NAME));
             b.putString(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context.getKey());
             b.putString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION, info.metaData.getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION));
             b.putString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION, info.metaData.getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION));

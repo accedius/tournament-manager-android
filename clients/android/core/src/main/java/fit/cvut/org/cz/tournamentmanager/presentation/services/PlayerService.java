@@ -34,7 +34,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
     }
 
     private boolean existsCompetitionsForPlayer(String packageName, String sportName, String content) {
-        String uri = "content://"+packageName+".data/"+sportName+content;
+        String uri = "content://" + packageName + ".data/" + sportName + content;
         Uri myUri = Uri.parse(uri);
         Cursor cur = getContentResolver().query(myUri, null, null, null, null);
         if (cur == null)
@@ -63,8 +63,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
         switch (action){
             case ACTION_CREATE:{
-                Player c = intent.getParcelableExtra(ExtraConstants.EXTRA_PLAYER);
-                ManagerFactory.getInstance(this).getEntityManager(Player.class).insert(c);
+                Player player = intent.getParcelableExtra(ExtraConstants.EXTRA_PLAYER);
+                ManagerFactory.getInstance(this).getEntityManager(Player.class).insert(player);
                 break;
             }
             case ACTION_GET_ALL:{
@@ -79,8 +79,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
             case ACTION_GET_BY_ID:{
                 Intent result = new Intent();
                 result.setAction(ACTION_GET_BY_ID);
-                Player p = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
-                result.putExtra(ExtraConstants.EXTRA_PLAYER, p);
+                Player player = ManagerFactory.getInstance(this).getEntityManager(Player.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
+                result.putExtra(ExtraConstants.EXTRA_PLAYER, player);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }

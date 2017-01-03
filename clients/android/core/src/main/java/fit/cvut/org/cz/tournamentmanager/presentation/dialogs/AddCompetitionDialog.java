@@ -18,10 +18,10 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
  * Created by kevin on 14. 4. 2016.
  */
 public class AddCompetitionDialog extends DialogFragment {
-    private String package_name;
-    private String activity_create_competition;
-    private String package_service;
-    private String sport_context;
+    private String packageName;
+    private String activityCreateCompetition;
+    private String packageService;
+    private String sportContext;
     private View view;
 
     protected DialogInterface.OnClickListener supplyListener() {
@@ -31,8 +31,8 @@ public class AddCompetitionDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.setClassName(packageName, activityCreateCompetition);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         startActivity(intent);
                         dialog.dismiss();
                         break;
@@ -42,12 +42,12 @@ public class AddCompetitionDialog extends DialogFragment {
                         break;
                     }
                     case 2: {
-                        if (FilesHelper.getFileNames(sport_context).length == 0) {
+                        if (FilesHelper.getFileNames(sportContext).length == 0) {
                             dialog.dismiss();
                             Snackbar.make(view, fit.cvut.org.cz.tmlibrary.R.string.no_competition_file_error, Snackbar.LENGTH_LONG).show();
                             break;
                         }
-                        DialogFragment importFileDialog = ImportFileDialog.newInstance(package_name, sport_context, package_service);
+                        DialogFragment importFileDialog = ImportFileDialog.newInstance(packageName, sportContext, packageService);
                         importFileDialog.show(getFragmentManager(), "IMPORT_FILE");
                         dialog.dismiss();
                         break;
@@ -57,13 +57,13 @@ public class AddCompetitionDialog extends DialogFragment {
         };
     }
 
-    public static AddCompetitionDialog newInstance(View view, String package_name, String sport_context, String activity_create_competition, String package_service) {
+    public static AddCompetitionDialog newInstance(View view, String packageName, String sportContext, String activityCreateCompetition, String packageService) {
         AddCompetitionDialog fragment = new AddCompetitionDialog();
         fragment.view = view;
-        fragment.package_name = package_name;
-        fragment.sport_context = sport_context;
-        fragment.activity_create_competition = activity_create_competition;
-        fragment.package_service = package_service;
+        fragment.packageName = packageName;
+        fragment.sportContext = sportContext;
+        fragment.activityCreateCompetition = activityCreateCompetition;
+        fragment.packageService = packageService;
         return fragment;
     }
 
@@ -77,7 +77,7 @@ public class AddCompetitionDialog extends DialogFragment {
                         getResources().getString(R.string.competition_import_file)},
                 supplyListener());
 
-        int sportContextIdentifier = getResources().getIdentifier(sport_context, "string", getContext().getPackageName());
+        int sportContextIdentifier = getResources().getIdentifier(sportContext, "string", getContext().getPackageName());
         builder.setTitle(getResources().getString(sportContextIdentifier));
         return builder.create();
     }

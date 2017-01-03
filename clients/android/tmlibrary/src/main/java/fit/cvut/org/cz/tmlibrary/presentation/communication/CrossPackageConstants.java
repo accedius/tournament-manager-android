@@ -26,7 +26,6 @@ public class CrossPackageConstants {
     public static final String APP_TYPE = "application_type";
     public static final String SPORT_PACKAGE = "sport_package";
     public static final String PACKAGE_NAME = "package_name";
-    public static final String SPORT_NAME = "sport_name";
     public static final String PACKAGE_SERVICE = "package_service";
     public static final String ACTIVITY_CREATE_COMPETITION = "activity_create_competition";
     public static final String ACTIVITY_DETAIL_COMPETITION = "activity_detail_competition";

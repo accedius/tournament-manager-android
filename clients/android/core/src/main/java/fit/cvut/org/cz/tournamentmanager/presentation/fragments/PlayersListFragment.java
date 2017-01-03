@@ -37,9 +37,9 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class PlayersListFragment extends AbstractListFragment<Player> {
-    private String package_name = "fit.cvut.org.cz.tournamentmanager";
-    private String activity_create_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
-    private String activity_detail_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
+    private String packageName = CrossPackageConstants.CORE;
+    private String activityCreatePlayer = ExtraConstants.ACTIVITY_CREATE_PLAYER;
+    private String activityDetailPlayer = CrossPackageConstants.ACTIVITY_PLAYER_DETAIL;
 
     private String orderColumn = fit.cvut.org.cz.tmlibrary.business.serialization.Constants.NAME;
     private String orderType = Constants.ORDER_ASC;
@@ -52,7 +52,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClassName(package_name, activity_create_player);
+                intent.setClassName(packageName, activityCreatePlayer);
                 startActivity(intent);
             }
         });
@@ -139,7 +139,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_detail_player);
+                        intent.setClassName(packageName, activityDetailPlayer);
                         intent.putExtra(CrossPackageConstants.EXTRA_ID, playerId);
                         intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
                         startActivity(intent);
@@ -158,7 +158,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                                         switch (which){
                                             case 0:{
                                                 Intent intent = new Intent();
-                                                intent.setClassName(package_name, activity_create_player);
+                                                intent.setClassName(packageName, activityCreatePlayer);
                                                 intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
                                                 startActivity(intent);
                                                 break;

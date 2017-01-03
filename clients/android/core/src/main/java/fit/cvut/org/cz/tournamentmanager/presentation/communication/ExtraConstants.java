@@ -12,4 +12,6 @@ public class ExtraConstants {
     public static final String EXTRA_PLAYERS = "extra_players";
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_RESULT = "extra_result";
+
+    public static final String ACTIVITY_CREATE_PLAYER = "fit.cvut.org.cz.tournamentmanager.presentation.activities.CreatePlayerActivity";
 }

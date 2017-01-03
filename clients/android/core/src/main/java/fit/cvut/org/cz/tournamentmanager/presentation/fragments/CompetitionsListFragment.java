@@ -38,11 +38,11 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 public class CompetitionsListFragment extends AbstractListFragment<Competition> {
     private String action = "org.cz.cvut.tournamentmanager";
 
-    private String package_name;
-    private String activity_create_competition;
-    private String activity_detail_competition;
-    private String package_service;
-    private String sport_context;
+    private String packageName;
+    private String activityCreateCompetition;
+    private String activityDetailCompetition;
+    private String packageService;
+    private String sportContext;
 
     private String orderColumn = DBConstants.cEND;
     private String orderType = Constants.ORDER_DESC;
@@ -52,12 +52,12 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ApplicationInfo sport_package = getArguments().getParcelable(CrossPackageConstants.SPORT_PACKAGE);
-        package_name = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_NAME);
-        activity_create_competition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
-        activity_detail_competition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
-        package_service = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_SERVICE);
-        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        action = sport_context+action+"."+package_name;
+        packageName = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_NAME);
+        activityCreateCompetition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
+        activityDetailCompetition = sport_package.metaData.getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
+        packageService = sport_package.metaData.getString(CrossPackageConstants.PACKAGE_SERVICE);
+        sportContext = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        action = sportContext + action + "." + packageName;
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -70,9 +70,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_detail_competition);
+                        intent.setClassName(packageName, activityDetailCompetition);
                         intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         startActivity(intent);
                     }
                 });
@@ -80,7 +80,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, package_name, sport_context, activity_create_competition, package_service);
+                        CompetitionDialog dialog = CompetitionDialog.newInstance(competitionId, position, name, packageName, sportContext, activityCreateCompetition, packageService);
                         dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
@@ -93,10 +93,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     @Override
     public void askForData() {
         Intent intent = new Intent();
-        intent.setClassName(package_name, package_service);
-        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+        intent.setClassName(packageName, packageService);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS);
-        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
         getContext().startService(intent);
     }
 
@@ -109,10 +109,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
         IntentFilter filter = new IntentFilter(action);
-        filter.addAction(package_name + CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED);
-        filter.addAction(package_name + CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
-        filter.addAction(package_name + CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS);
-        filter.addAction(package_name + CrossPackageConstants.ACTION_DELETE_COMPETITION);
+        filter.addAction(packageName + CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED);
+        filter.addAction(packageName + CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO);
+        filter.addAction(packageName + CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS);
+        filter.addAction(packageName + CrossPackageConstants.ACTION_DELETE_COMPETITION);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
         getActivity().registerReceiver(receiver, filter);
     }
@@ -134,7 +134,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = AddCompetitionDialog.newInstance(view, package_name, sport_context, activity_create_competition, package_service);
+                DialogFragment dialog = AddCompetitionDialog.newInstance(view, packageName, sportContext, activityCreateCompetition, packageService);
                 dialog.show(getFragmentManager(), "ADD_COMPETITION");
             }
         });
@@ -178,11 +178,11 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     public class CompetitionsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!package_name.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
+            if (!packageName.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
                 return;
             }
 
-            if (!sport_context.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
+            if (!sportContext.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
                 return;
             }
 
@@ -214,9 +214,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             } else if (type.equals(CrossPackageConstants.EXTRA_IMPORT_INFO)) {
                 Intent res = new Intent(getActivity(), ImportActivity.class);
                 res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
-                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                res.putExtra(CrossPackageConstants.EXTRA_SPORT_SERVICE, package_service);
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                res.putExtra(CrossPackageConstants.EXTRA_SPORT_SERVICE, packageService);
                 res.putExtra(CrossPackageConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageConstants.EXTRA_JSON));
                 res.putExtra(ExtraConstants.EXTRA_COMPETITION, intent.getParcelableExtra(ExtraConstants.EXTRA_COMPETITION));
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS));

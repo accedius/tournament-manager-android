@@ -23,20 +23,20 @@ import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDialog;
 public class PlayerCompetitionsListFragment extends AbstractListFragment<Competition> {
     private long playerId;
 
-    private String package_name;
-    private String sport_context;
-    private String activity_create_competition;
-    private String activity_detail_competition;
-    private String package_service;
+    private String packageName;
+    private String sportContext;
+    private String activityCreateCompetition;
+    private String activityDetailCompetition;
+    private String packageService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         playerId = getArguments().getLong(ExtraConstants.EXTRA_ID);
-        package_name = getArguments().getString(CrossPackageConstants.PACKAGE_NAME);
-        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        activity_create_competition = getArguments().getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
-        activity_detail_competition = getArguments().getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
-        package_service = getArguments().getString(CrossPackageConstants.PACKAGE_SERVICE);
+        packageName = getArguments().getString(CrossPackageConstants.PACKAGE_NAME);
+        sportContext = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        activityCreateCompetition = getArguments().getString(CrossPackageConstants.ACTIVITY_CREATE_COMPETITION);
+        activityDetailCompetition = getArguments().getString(CrossPackageConstants.ACTIVITY_DETAIL_COMPETITION);
+        packageService = getArguments().getString(CrossPackageConstants.PACKAGE_SERVICE);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -50,9 +50,9 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_detail_competition);
+                        intent.setClassName(packageName, activityDetailCompetition);
                         intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         startActivity(intent);
                     }
                 });
@@ -60,7 +60,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(final View v) {
-                        EditDialog dialog = EditDialog.newInstance(package_name, activity_create_competition, competitionId, sport_context);
+                        EditDialog dialog = EditDialog.newInstance(packageName, activityCreateCompetition, competitionId, sportContext);
                         Bundle b = new Bundle();
                         b.putString(ExtraConstants.EXTRA_TITLE, name);
                         dialog.setArguments(b);
@@ -75,11 +75,11 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     @Override
     public void askForData() {
         Intent intent = new Intent();
-        intent.setClassName(package_name, package_service);
+        intent.setClassName(packageName, packageService);
         intent.putExtra(CrossPackageConstants.EXTRA_ID, playerId);
-        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER);
-        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
+        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
         getContext().startService(intent);
     }
 
@@ -91,7 +91,7 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     @Override
     protected void registerReceivers() {
         receiver = new CompetitionsListReceiver();
-        IntentFilter filter = new IntentFilter(package_name + CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER);
+        IntentFilter filter = new IntentFilter(packageName + CrossPackageConstants.ACTION_GET_COMPETITIONS_BY_PLAYER);
         getActivity().registerReceiver(receiver, filter);
     }
 
@@ -108,11 +108,11 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
     public class CompetitionsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!package_name.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
+            if (!packageName.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
                 return;
             }
 
-            if (!sport_context.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
+            if (!sportContext.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
                 return;
             }
 

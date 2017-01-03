@@ -25,22 +25,22 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
  * Created by kevin on 2. 5. 2016.
  */
 public class PlayerStatsFragment extends AbstractDataFragment {
-    private LinearLayout label_row;
-    private LinearLayout stats_row;
+    private LinearLayout labelRow;
+    private LinearLayout statsRow;
     private View v;
 
     private long playerID;
 
-    private String package_name;
-    private String sport_context;
-    private String package_service;
+    private String packageName;
+    private String sportContext;
+    private String packageService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         playerID = getArguments().getLong(ExtraConstants.EXTRA_ID);
-        package_name = getArguments().getString(CrossPackageConstants.PACKAGE_NAME);
-        sport_context = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        package_service = getArguments().getString(CrossPackageConstants.PACKAGE_SERVICE);
+        packageName = getArguments().getString(CrossPackageConstants.PACKAGE_NAME);
+        sportContext = getArguments().getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        packageService = getArguments().getString(CrossPackageConstants.PACKAGE_SERVICE);
 
         super.onCreate(savedInstanceState);
     }
@@ -48,10 +48,10 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     @Override
     public void askForData() {
         Intent intent = new Intent();
-        intent.setClassName(package_name, package_service);
+        intent.setClassName(packageName, packageService);
         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_STATS);
-        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
-        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageConstants.EXTRA_ID, playerID);
         getContext().startService(intent);
     }
@@ -67,8 +67,8 @@ public class PlayerStatsFragment extends AbstractDataFragment {
         int landscape = getResources().getConfiguration().ORIENTATION_LANDSCAPE;
         int portrait = getResources().getConfiguration().ORIENTATION_PORTRAIT;
 
-        label_row.removeAllViews();
-        stats_row.removeAllViews();
+        labelRow.removeAllViews();
+        statsRow.removeAllViews();
 
         LayoutParams labelParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         LayoutParams statsParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -83,13 +83,13 @@ public class PlayerStatsFragment extends AbstractDataFragment {
                     label.setLayoutParams(labelParams);
                     label.setGravity(Gravity.CENTER);
                     label.setText(asr.getKey());
-                    label_row.addView(label);
+                    labelRow.addView(label);
 
                     TextView stat = new TextView(getContext());
                     stat.setLayoutParams(statsParams);
                     stat.setGravity(Gravity.CENTER);
                     stat.setText(asr.getVal());
-                    stats_row.addView(stat);
+                    statsRow.addView(stat);
                 }
             }
         }
@@ -97,7 +97,7 @@ public class PlayerStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void registerReceivers() {
-        getActivity().registerReceiver(receiver, new IntentFilter(sport_context + package_name + CrossPackageConstants.ACTION_GET_STATS));
+        getActivity().registerReceiver(receiver, new IntentFilter(sportContext + packageName + CrossPackageConstants.ACTION_GET_STATS));
     }
 
     @Override
@@ -108,8 +108,8 @@ public class PlayerStatsFragment extends AbstractDataFragment {
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         v = inflater.inflate(R.layout.fragment_player_stats, container, false);
-        label_row = (LinearLayout) v.findViewById(R.id.player_stats_label_row);
-        stats_row = (LinearLayout) v.findViewById(R.id.player_stats_row);
+        labelRow = (LinearLayout) v.findViewById(R.id.player_stats_label_row);
+        statsRow = (LinearLayout) v.findViewById(R.id.player_stats_row);
         return v;
     }
 }

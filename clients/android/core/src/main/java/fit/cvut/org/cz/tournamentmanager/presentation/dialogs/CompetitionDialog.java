@@ -16,12 +16,12 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
  * Created by kevin on 14. 4. 2016.
  */
 public class CompetitionDialog extends DialogFragment {
-    private Long competition_id;
-    private String competition_name;
-    private String package_name;
-    private String activity_create_competition;
-    private String package_service;
-    private String sport_context;
+    private Long competitionId;
+    private String competitionName;
+    private String packageName;
+    private String activityCreateCompetition;
+    private String packageService;
+    private String sportContext;
 
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
@@ -30,32 +30,32 @@ public class CompetitionDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, package_service);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.setClassName(packageName, packageService);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED);
-                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
-                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
+                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
                         getContext().startService(intent);
                         dialog.dismiss();
                         break;
                     }
                     case 1: {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, activity_create_competition);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
-                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
+                        intent.setClassName(packageName, activityCreateCompetition);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
                         startActivity(intent);
                         dialog.dismiss();
                         break;
                     }
                     case 2: {
                         Intent intent = new Intent();
-                        intent.setClassName(package_name, package_service);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);
+                        intent.setClassName(packageName, packageService);
+                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
                         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_DELETE_COMPETITION);
                         intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
-                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
-                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competition_id);
+                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
                         getContext().startService(intent);
                         dialog.dismiss();
                         break;
@@ -67,12 +67,12 @@ public class CompetitionDialog extends DialogFragment {
 
     public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String sport_context, String activity_create_competition, String package_service) {
         CompetitionDialog fragment = new CompetitionDialog();
-        fragment.competition_id = competitionId;
-        fragment.competition_name = name;
-        fragment.package_name = package_name;
-        fragment.sport_context = sport_context;
-        fragment.activity_create_competition = activity_create_competition;
-        fragment.package_service = package_service;
+        fragment.competitionId = competitionId;
+        fragment.competitionName = name;
+        fragment.packageName = package_name;
+        fragment.sportContext = sport_context;
+        fragment.activityCreateCompetition = activity_create_competition;
+        fragment.packageService = package_service;
 
         Bundle args = new Bundle();
         args.putInt(ExtraConstants.EXTRA_POSITION, position);
@@ -90,7 +90,7 @@ public class CompetitionDialog extends DialogFragment {
                         getResources().getString(R.string.delete)},
                 supplyListener());
 
-        builder.setTitle(competition_name);
+        builder.setTitle(competitionName);
         return builder.create();
     }
 }

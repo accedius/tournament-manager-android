@@ -14,9 +14,6 @@ import fit.cvut.org.cz.tournamentmanager.R;
  * Created by Vaclav on 12. 3. 2016.
  */
 public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.PlayerViewHolder> {
-    private String package_name = "fit.cvut.org.cz.tournamentmanager";
-    private String activity_detail_player = "fit.cvut.org.cz.tournamentmanager.presentation.activities.PlayerDetailActivity";
-
     @Override
     public PlayerAdapter.PlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player, parent, false);
