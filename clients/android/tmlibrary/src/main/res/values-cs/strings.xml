@@ -130,4 +130,5 @@
     <string name="import_tournaments">turnajů</string>
     <string name="import_competition_empty">Soutěž je prázdná nebo obsahuje hráče, kteří již v aplikaci jsou.</string>
     <string name="period_round_empty_error">Perioda a kolo musí být vyplněny!</string>
+    <string name="email_exists_error">Tuto e-mailovou adresu již někdo používá!</string>
 </resources>

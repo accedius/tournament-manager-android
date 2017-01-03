@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tournamentmanager.R;
@@ -17,6 +19,8 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.NewPlayerFragmen
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 public class CreatePlayerActivity extends AbstractToolbarActivity {
+    ArrayList<String> emails = new ArrayList<>();
+
     @Override
     protected View injectView(ViewGroup parent) {
         return getLayoutInflater().inflate(R.layout.activity_create_player, parent, false);
@@ -32,6 +36,11 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
         super.onCreate(savedInstanceState);
 
         long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
+        ArrayList<Player> players = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS);
+        for (Player player : players) {
+            if (id == -1 || player.getId() != id)
+                emails.add(player.getEmail());
+        }
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null)
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewPlayerFragment.newInstance(id, NewPlayerFragment.class)).commit();
@@ -49,6 +58,11 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
             Player player = ((NewPlayerFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPlayer();
             if (player.getName().isEmpty() || player.getEmail().isEmpty()) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.name_email_empty_error), Snackbar.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+            }
+
+            if (emails.contains(player.getEmail())) {
+                Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.email_exists_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             }
 

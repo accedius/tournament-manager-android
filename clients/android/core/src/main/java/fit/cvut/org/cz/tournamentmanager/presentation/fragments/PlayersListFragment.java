@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClassName(packageName, activityCreatePlayer);
+                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, new ArrayList<>(adapter.getData()));
                 startActivity(intent);
             }
         });
@@ -149,33 +151,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = new EditDeleteDialog() {
-                            @Override
-                            protected DialogInterface.OnClickListener supplyListener() {
-                                return  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:{
-                                                Intent intent = new Intent();
-                                                intent.setClassName(packageName, activityCreatePlayer);
-                                                intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
-                                                startActivity(intent);
-                                                break;
-                                            }
-                                            case 1:{
-                                                Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE, getContext());
-                                                intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
-                                                intent.putExtra(ExtraConstants.EXTRA_POSITION, position);
-                                                getContext().startService(intent);
-                                            }
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                };
-                            }
-                        };
-
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(packageName, activityCreatePlayer, playerId, position, adapter.getData());
                         Bundle b = new Bundle();
                         b.putString(ExtraConstants.EXTRA_TITLE, name);
                         dialog.setArguments(b);

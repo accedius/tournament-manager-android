@@ -133,4 +133,5 @@
     <string name="import_take_file">Take file</string>
     <string name="import_competition_empty">Competition is empty or contains players which already are in application.</string>
     <string name="period_round_empty_error">Period and round are required!</string>
+    <string name="email_exists_error">This email already exists!</string>
 </resources>
