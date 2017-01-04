@@ -56,4 +56,9 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
             instance = new ManagerFactory();
         return instance;
     }
+
+    public static void reset() {
+        instance = null;
+        helper = null;
+    }
 }
