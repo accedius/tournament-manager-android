@@ -26,7 +26,7 @@ public class Player extends ShareBase implements Parcelable {
     @DatabaseField(canBeNull = false, columnName = DBConstants.cNAME)
     private String name;
 
-    @DatabaseField(canBeNull = false, columnName = DBConstants.cEMAIL)
+    @DatabaseField(unique = true, canBeNull = false, columnName = DBConstants.cEMAIL)
     private String email;
 
     @DatabaseField(columnName = DBConstants.cNOTE)

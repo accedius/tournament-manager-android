@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import fit.cvut.org.cz.squash.data.CompetitionCP;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.CompetitionService;
@@ -48,7 +47,7 @@ public class NewSquashCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected boolean isTypeChoosable() {
         String sport_context = ((SquashPackage)getActivity().getApplication()).getSportContext();
-        if (sport_context.equals(CompetitionCP.VOLLEYBALL_NAME) || sport_context.equals(CompetitionCP.BEACH_NAME))
+        if (sport_context.equals(SquashPackage.VOLLEYBALL_NAME) || sport_context.equals(SquashPackage.BEACH_NAME))
             return false;
         return true;
     }
