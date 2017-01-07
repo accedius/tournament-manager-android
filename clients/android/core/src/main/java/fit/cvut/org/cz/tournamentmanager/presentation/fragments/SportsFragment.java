@@ -28,8 +28,9 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
  */
 public class SportsFragment extends Fragment {
     private DefaultViewPagerAdapter adapter = null;
-    private CompetitionsListFragment[] fragments;
+    private Fragment[] fragments;
     private String[] titles;
+    private int sportsCount = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +62,13 @@ public class SportsFragment extends Fragment {
             titles[i] = getResources().getString(getResources().getIdentifier(sport_name, "string", getContext().getPackageName()));
             i++;
         }
+        sportsCount = i;
+        if (sportsCount == 0) {
+            titles = new String[1];
+            fragments = new NoModulesFragment[1];
+            fragments[0] = NoModulesFragment.newInstance();
+            titles[0] = getResources().getString(R.string.no_sport_found);
+        }
     }
 
     @Override
@@ -86,6 +94,8 @@ public class SportsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (sportsCount == 0)
+            return;
         inflater.inflate(R.menu.menu_sport_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -95,7 +105,7 @@ public class SportsFragment extends Fragment {
      * @param type column for order
      */
     public void orderData(final String type) {
-        for (CompetitionsListFragment f : fragments) {
+        for (CompetitionsListFragment f : (CompetitionsListFragment[]) fragments) {
             f.orderData(type);
         }
     }

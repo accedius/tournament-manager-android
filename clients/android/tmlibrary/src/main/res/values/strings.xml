@@ -134,4 +134,6 @@
     <string name="import_competition_empty">Competition is empty or contains players which already are in application.</string>
     <string name="period_round_empty_error">Period and round are required!</string>
     <string name="email_exists_error">This email already exists!</string>
+    <string name="no_sport_found">No sport found</string>
+    <string name="no_sport_description">No sports found in the application. Install some module to start using Tournament Manager.</string>
 </resources>

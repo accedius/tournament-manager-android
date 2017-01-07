@@ -35,6 +35,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 public class SettingsFragment extends Fragment {
     private CoordinatorLayout v;
 
+    private int sportsCount = 0;
     private SparseBooleanArray sparse;
     private ArrayList<Setting> sportSettings;
     private AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> adapter;
@@ -59,11 +60,16 @@ public class SettingsFragment extends Fragment {
                 i++;
             }
         }
+        sportsCount = i;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (sportsCount == 0) {
+            View v = inflater.inflate(R.layout.fragment_no_modules, container, false);
+            return v;
+        }
         v = (CoordinatorLayout) inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_data, container, false);
         View fragmentView = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_list, container, false);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
@@ -88,6 +94,8 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (sportsCount == 0)
+            return;
         inflater.inflate(R.menu.menu_finish, menu);
     }
 

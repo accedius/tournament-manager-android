@@ -41,11 +41,11 @@ public class AddCompetitionDialog extends DialogFragment {
                         dialog.dismiss();
                         break;
                     }
-                    case 1: {
+                    case 1: {/*
                         dialog.dismiss();
                         break;
                     }
-                    case 2: {
+                    case 2: {*/
                         if (FilesHelper.getFileNames(sportContext).length == 0) {
                             dialog.dismiss();
                             Snackbar.make(view, fit.cvut.org.cz.tmlibrary.R.string.no_competition_file_error, Snackbar.LENGTH_LONG).show();
@@ -86,7 +86,7 @@ public class AddCompetitionDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(
                 new String[]{getResources().getString(R.string.competition_create_manually),
-                        getResources().getString(R.string.competition_import_server),
+                        //getResources().getString(R.string.competition_import_server),
                         getResources().getString(R.string.competition_import_file)},
                 supplyListener());
 
