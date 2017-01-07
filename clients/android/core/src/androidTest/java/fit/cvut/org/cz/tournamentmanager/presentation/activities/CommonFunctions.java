@@ -43,6 +43,9 @@ import static org.hamcrest.Matchers.is;
 public class CommonFunctions {
     private static Resources resources = InstrumentationRegistry.getTargetContext().getResources();
 
+    /**
+     *  Up navigation. Can be used only from screen with Up navigation button.
+     */
     public static void navigateUp() {
         ViewInteraction imageButton4 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -51,13 +54,70 @@ public class CommonFunctions {
         imageButton4.perform(click());
     }
 
-    public static void navigateToPlayersSort() {
+    /**
+     * Opens menu. Can be used only from Competitions / Players / Settings screen.
+     */
+    public static void openMenu() {
+        ViewInteraction imageButton = onView(
+                allOf(withContentDescription(R.string.openDrawer),
+                        withParent(withId(R.id.my_toolbar)),
+                        isDisplayed()));
+        imageButton.perform(click());
+    }
+
+    /**
+     * Opens dialog for players order. Can be used only from Player screen.
+     */
+    public static void openDialogPlayerOrder() {
         ViewInteraction imageButton4 = onView(
                 allOf(withId(R.id.action_players_order),
                         isDisplayed()));
         imageButton4.perform(click());
     }
 
+    /**
+     * Navigation to Settings. Can be used only from Competitions / Players / Settings screen.
+     */
+    public static void navigateToSettings() {
+        openMenu();
+        ViewInteraction appCompatCheckedTextView = onView(
+                allOf(withId(R.id.design_menu_item_text), withText(R.string.settings), isDisplayed()));
+        appCompatCheckedTextView.perform(click());
+    }
+
+    /**
+     * Navigation to Players. Can be used only from Competitions / Players / Settings screen.
+     */
+    public static void navigateToPlayers() {
+        openMenu();
+        ViewInteraction appCompatCheckedTextView = onView(
+                allOf(withId(R.id.design_menu_item_text), withText(R.string.players), isDisplayed()));
+        appCompatCheckedTextView.perform(click());
+    }
+
+    /**
+     * Navigation to Create Player. Can be used only from Competitions / Players / Settings screen.
+     */
+    public static void navigateToPlayerCreate() {
+        navigateToPlayers();
+        ViewInteraction floatingActionButton = onView(
+                allOf(withClassName(is("android.support.design.widget.FloatingActionButton")), isDisplayed()));
+        floatingActionButton.perform(click());
+    }
+
+    /**
+     * Navigation to Player detail. Can be used only from Players.
+     * @param position
+     */
+    public static void navigateToPlayerDetailAtPosition(int position) {
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.recycler_view), isDisplayed()));
+        recyclerView.perform(actionOnItemAtPosition(position, click()));
+    }
+
+    /**
+     * Sorting players by name. Can be used only when Player Order Dialog is opened.
+     */
     public static void sortPlayersByName() {
         ViewInteraction appCompatTextView = onView(
                 allOf(withText(R.string.sort_by_name),
@@ -67,6 +127,9 @@ public class CommonFunctions {
         SystemClock.sleep(2000);
     }
 
+    /**
+     * Sorting players by name. Can be used only when Player Order Dialog is opened.
+     */
     public static void sortPlayersByEmail() {
         ViewInteraction appCompatTextView = onView(
                 allOf(withText(R.string.sort_by_email),
@@ -76,36 +139,28 @@ public class CommonFunctions {
         SystemClock.sleep(2000);
     }
 
-    public static void navigateToSettings() {
-        ViewInteraction imageButton = onView(
-                allOf(withContentDescription(R.string.openDrawer),
-                        withParent(withId(R.id.my_toolbar)),
-                        isDisplayed()));
-        imageButton.perform(click());
-
-        ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText(R.string.settings), isDisplayed()));
-        appCompatCheckedTextView.perform(click());
+    /**
+     * Saving player. Can be used only on Create / edit player.
+     */
+    public static void savePlayer() {
+        ViewInteraction actionMenuItemView = onView(
+                allOf(withId(R.id.action_finish), withContentDescription(resources.getString(R.string.finish)), isDisplayed()));
+        actionMenuItemView.perform(click());
     }
 
-    public static void navigateToPlayers() {
-        ViewInteraction imageButton = onView(
-                allOf(withContentDescription(R.string.openDrawer),
-                        withParent(withId(R.id.my_toolbar)),
-                        isDisplayed()));
-        imageButton.perform(click());
-
-        ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText(R.string.players), isDisplayed()));
-        appCompatCheckedTextView.perform(click());
+    /**
+     * Saving settings. Can be used only on Settings screen.
+     */
+    public static void saveSetting() {
+        ViewInteraction actionMenuItemView = onView(
+                allOf(withId(R.id.action_finish), withContentDescription(resources.getString(R.string.finish)), isDisplayed()));
+        actionMenuItemView.perform(click());
     }
 
-    public static void navigateToPlayerDetailAtPosition(int position) {
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.recycler_view), isDisplayed()));
-        recyclerView.perform(actionOnItemAtPosition(position, click()));
-    }
-
+    /**
+     * Deletion Player on specified position. Can be used only from Players.
+     * @param position
+     */
     public static void deletePlayerAtPosition(int position) {
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.recycler_view), isDisplayed()));
@@ -122,33 +177,23 @@ public class CommonFunctions {
         SystemClock.sleep(2000);
     }
 
-    public static void navigateToPlayerCreate() {
-        navigateToPlayers();
-        ViewInteraction floatingActionButton = onView(
-                allOf(withClassName(is("android.support.design.widget.FloatingActionButton")), isDisplayed()));
-        floatingActionButton.perform(click());
-    }
-
+    /**
+     * All players deletion. Can be used only from Players.
+     */
     public static void deleteAllPlayers() {
         navigateToPlayers();
-        int playersCount = getRecyclerViewItemsCount();
+        int playersCount = getRecyclerViewSize();
         for (int i=0; i<playersCount; i++) {
             deletePlayerAtPosition(0);
         }
     }
 
-    public static void savePlayer() {
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_finish), withContentDescription(resources.getString(R.string.finish)), isDisplayed()));
-        actionMenuItemView.perform(click());
-    }
-
-    public static void saveSetting() {
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_finish), withContentDescription(resources.getString(R.string.finish)), isDisplayed()));
-        actionMenuItemView.perform(click());
-    }
-
+    /**
+     * Filling player information. Can be used only on Create / edit player.
+     * @param name players name
+     * @param email players email
+     * @param note players note
+     */
     public static void fillPlayerInfo(String name, String email, String note) {
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.et_name),
@@ -166,6 +211,12 @@ public class CommonFunctions {
         textInputEditText3.perform(scrollTo(), replaceText(note), closeSoftKeyboard());
     }
 
+    /**
+     * Verify player in players list on given position. Can be used only from Players.
+     * @param position position of verified player
+     * @param name players name
+     * @param email players email
+     */
     public static void verifyPlayerItemAtPosition(int position, String name, String email) {
         ViewInteraction textView = onView(
                 childAtPosition(
@@ -188,6 +239,11 @@ public class CommonFunctions {
         textView.check(matches(withText(email)));
     }
 
+    /**
+     * Verify player information in Player detail. Can be used only from Player detail.
+     * @param name players name
+     * @param email players email
+     */
     public static void verifyPlayerDetail(String name, String email, String note) {
         ViewInteraction textView = onView(
                 allOf(withText(resources.getString(R.string.player)+" – "+name),
@@ -221,6 +277,12 @@ public class CommonFunctions {
         textView3.check(matches(withText(note)));
     }
 
+    /**
+     * Helper matcher function for getting child at specified position.
+     * @param parentMatcher
+     * @param position
+     * @return
+     */
     public static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
@@ -240,6 +302,11 @@ public class CommonFunctions {
         };
     }
 
+    /**
+     * Helper matcher function for list size verification.
+     * @param size
+     * @return
+     */
     public static Matcher<View> withRecyclerViewSize(final int size) {
         return new TypeSafeMatcher<View>() {
 
@@ -255,7 +322,11 @@ public class CommonFunctions {
         };
     }
 
-    public static int getRecyclerViewItemsCount() {
+    /**
+     * Helper method for getting list size.
+     * @return
+     */
+    public static int getRecyclerViewSize() {
         final int[] origin_size = {0};
         onView(withId(R.id.recycler_view)).perform(new ViewAction() {
             @Override

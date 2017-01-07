@@ -15,9 +15,9 @@ import org.robolectric.shadows.ShadowApplication;
 
 import java.util.List;
 
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tournamentmanager.BuildConfig;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerManager;
 
 /**
@@ -27,20 +27,17 @@ import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerMan
 @Config(constants = BuildConfig.class)
 public class PlayerManagerTest extends AndroidTestCase {
     private Context context;
+    private static IPlayerManager playerManager = null;
 
     private static final String name = "Martin";
     private static final String email = "martin@email.cz";
     private static final String note = "606 111 222";
-
     private static long playerId;
-
-    private static IPlayerManager playerManager = null;
 
     @Before
     public void setUp() {
         ShadowApplication testContext = Shadows.shadowOf(RuntimeEnvironment.application);
         context = testContext.getApplicationContext();
-
         playerManager = ManagerFactory.getInstance(context).getEntityManager(Player.class);
 
         /* Preconditions */
@@ -54,7 +51,7 @@ public class PlayerManagerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify match insertion.
+     * Verify player insertion
      */
     @Test
     public void insert() {
@@ -62,7 +59,7 @@ public class PlayerManagerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify get Player.
+     * Verify get Player by id
      */
     @Test
     public void getById() {
@@ -76,7 +73,7 @@ public class PlayerManagerTest extends AndroidTestCase {
     }
 
     /**
-     * Verify player can be deleted.
+     * Verify delete Player
      */
     @Test
     public void delete() {
