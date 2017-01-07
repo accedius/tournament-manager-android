@@ -28,6 +28,31 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
     private String action = null;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        int option = getArguments().getInt(ExtraConstants.EXTRA_OPTION, -1);
+
+        switch (option) {
+            case OPTION_COMPETITION : {
+                action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_COMPETITION;
+                break;
+            }
+            case OPTION_TOURNAMENT : {
+                action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT;
+                break;
+            }
+            case OPTION_TEAM: {
+                action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
+                break;
+            }
+            case OPTION_PARTICIPANT: {
+                action = PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID;
+                break;
+            }
+        }
+    }
+
     public AddPlayersFragment() {}
 
     /**
@@ -81,31 +106,6 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
         fragment.setArguments(b);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int option = getArguments().getInt(ExtraConstants.EXTRA_OPTION, -1);
-
-        switch (option) {
-            case OPTION_COMPETITION : {
-                action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_COMPETITION;
-                break;
-            }
-            case OPTION_TOURNAMENT : {
-                action = PlayerService.ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT;
-                break;
-            }
-            case OPTION_TEAM: {
-                action = PlayerService.ACTION_GET_PLAYERS_FOR_TEAM;
-                break;
-            }
-            case OPTION_PARTICIPANT: {
-                action = PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID;
-                break;
-            }
-        }
     }
 
     @Override

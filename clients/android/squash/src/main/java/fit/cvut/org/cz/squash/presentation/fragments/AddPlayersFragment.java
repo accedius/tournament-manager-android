@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.services.PlayerService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.SelectPlayersAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
@@ -69,14 +70,38 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
 
         return fragment;
     }
+    public static AddPlayersFragment newInstance(int option, long id, ArrayList<PlayerStat> omitPlayerIds, int tmp){
+        AddPlayersFragment fragment = new AddPlayersFragment();
+        Bundle b = new Bundle();
+        b.putInt(ExtraConstants.EXTRA_OPTION, option);
+        b.putLong(ExtraConstants.EXTRA_ID, id);
+        b.putParcelableArrayList(ExtraConstants.EXTRA_OMIT_IDS, omitPlayerIds);
+        fragment.setArguments(b);
+
+        return fragment;
+    }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT);
-        if (omitPlayers != null) {
-            ArrayList<Player> players = intent.getParcelableArrayListExtra(getDataKey());
-            players.removeAll(omitPlayers);
-            intent.putExtra(getDataKey(), players);
+        if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_TEAM) {
+            ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT);
+            if (omitPlayers != null) {
+                ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
+                allPlayers.removeAll(omitPlayers);
+                intent.putExtra(getDataKey(), allPlayers);
+            }
+        }
+        if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_MATCH) {
+            ArrayList<PlayerStat> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT_IDS);
+            if (omitPlayers != null) {
+                ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
+                ArrayList<Player> playersToShow = new ArrayList<>(allPlayers);
+                for (Player p : allPlayers) {
+                    for (PlayerStat omitP : omitPlayers)
+                        if (p.getId() == omitP.getPlayerId()) playersToShow.remove(p);
+                }
+                intent.putExtra(getDataKey(), playersToShow);
+            }
         }
         super.bindDataOnView(intent);
     }

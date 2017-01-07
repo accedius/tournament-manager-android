@@ -37,6 +37,15 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Created by atgot_000 on 23. 4. 2016.
  */
 public class HockeyMatchStatsFragment extends AbstractDataFragment {
+    private static final String SAVE_HOME_LIST = "save_home_list";
+    private static final String SAVE_AWAY_LIST = "save_away_list";
+    private static final String SAVE_HOME = "save_home";
+    private static final String SAVE_AWAY = "save_away";
+
+    public static final int REQUEST_HOME = 1;
+    public static final int REQUEST_AWAY = 2;
+    public static final int REQUEST_EDIT = 3;
+
     private MatchStatisticsAdapter homeAdapter, awayAdapter;
     private String homeName, awayName;
     private Participant home = null, away = null;
@@ -46,15 +55,6 @@ public class HockeyMatchStatsFragment extends AbstractDataFragment {
     private ScrollView scrv;
     private long matchId;
     List<PlayerStat> tmpHomeStats, tmpAwayStats;
-
-    public static final int REQUEST_HOME = 1;
-    public static final int REQUEST_AWAY = 2;
-    public static final int REQUEST_EDIT = 3;
-
-    private static final String SAVE_HOME_LIST = "save_home_list";
-    private static final String SAVE_AWAY_LIST = "save_away_list";
-    private static final String SAVE_HOME = "save_home";
-    private static final String SAVE_AWAY = "save_away";
     private Fragment thisFragment;
 
     public static HockeyMatchStatsFragment newInstance(long matchId) {

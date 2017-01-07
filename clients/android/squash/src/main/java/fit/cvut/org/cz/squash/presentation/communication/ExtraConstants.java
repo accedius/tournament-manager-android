@@ -13,4 +13,5 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
 
     public static final String EXTRA_HOME_ID = "extra_home_id";
     public static final String EXTRA_AWAY_ID = "extra_away_id";
+    public static final String EXTRA_OMIT_IDS = "extra_omit_ids";
 }

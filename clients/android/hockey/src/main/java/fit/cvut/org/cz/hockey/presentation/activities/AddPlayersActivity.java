@@ -35,8 +35,8 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
 
     @Override
     protected AbstractSelectableListFragment<Player> getListFragment() {
-        int option = getIntent().getIntExtra(ExtraConstants.EXTRA_OPTION, -1);
         long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
+        int option = getIntent().getIntExtra(ExtraConstants.EXTRA_OPTION, -1);
         if (option == AddPlayersFragment.OPTION_PARTICIPANT) {
             ArrayList<PlayerStat> playerStatistics = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT);
             if (playerStatistics != null) return AddPlayersFragment.newInstance(option, id, playerStatistics, 1);

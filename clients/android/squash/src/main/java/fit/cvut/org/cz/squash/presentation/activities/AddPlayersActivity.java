@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
@@ -20,7 +21,7 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
     /**
      *
      * @param c
-     * @param option is passed to accomodated fragment and should specify which players should fragment display
+     * @param option is passed to accommodated fragment and should specify which players should fragment display
      * @param id
      * @return intent for this activity
      */
@@ -36,6 +37,11 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
     protected AbstractSelectableListFragment<Player> getListFragment() {
         long id = getIntent().getLongExtra(ExtraConstants.EXTRA_ID, -1);
         int option = getIntent().getIntExtra(ExtraConstants.EXTRA_OPTION, -1);
+        if (option == AddPlayersFragment.OPTION_MATCH) {
+            ArrayList<PlayerStat> playerStatistics = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT);
+            if (playerStatistics != null) return AddPlayersFragment.newInstance(option, id, playerStatistics, 1);
+            return AddPlayersFragment.newInstance(option, id);
+        }
         ArrayList<Player> players = getIntent().getParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT);
         if (players != null) return AddPlayersFragment.newInstance(option, id, players);
 
