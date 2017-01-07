@@ -17,8 +17,8 @@ import java.util.List;
 
 import fit.cvut.org.cz.tournamentmanager.BuildConfig;
 import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
-import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingManager;
+import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
  * Created by kevin on 16.12.2016.

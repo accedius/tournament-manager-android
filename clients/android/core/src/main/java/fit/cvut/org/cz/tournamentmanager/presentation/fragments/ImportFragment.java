@@ -20,11 +20,11 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ConflictAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ImportPlayerAdapter;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.ImportTournamentAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
-import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Fragment for display info about imported Competition.

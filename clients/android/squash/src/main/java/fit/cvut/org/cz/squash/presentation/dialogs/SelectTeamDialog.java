@@ -15,7 +15,6 @@ import fit.cvut.org.cz.squash.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.MatchPlayersFragment;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 
 /** Dialog that specifies to which team players should be added in match rosters
