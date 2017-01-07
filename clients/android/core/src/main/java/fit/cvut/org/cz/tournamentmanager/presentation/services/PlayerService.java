@@ -120,8 +120,8 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 boolean deleted = true;
                 Map<String, ApplicationInfo> sportContexts = PackagesInfo.getSportContexts(this);
                 for (Map.Entry<String, ApplicationInfo>  sport : sportContexts.entrySet()) {
-                    String package_name = sport.getValue().metaData.getString(CrossPackageConstants.PACKAGE_NAME);
-                    if (existsCompetitionsForPlayer(package_name, sport.getKey(), CPConstants.uCompetitionsByPlayer + playerId)) {
+                    String packageName = sport.getValue().metaData.getString(CrossPackageConstants.PACKAGE_NAME);
+                    if (existsCompetitionsForPlayer(packageName, sport.getKey(), CPConstants.uCompetitionsByPlayer + playerId)) {
                         deleted = false;
                         break;
                     }

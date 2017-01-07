@@ -50,6 +50,13 @@
         <service android:name="fit.cvut.org.cz.squash.presentation.services.SquashExportedService"
             android:exported="true"/>
 
+        <provider
+            android:name="fit.cvut.org.cz.squash.data.CompetitionCP"
+            android:authorities="fit.cvut.org.cz.squash.data"
+            android:exported="true"
+            android:enabled="true"
+            android:multiprocess="true"/>
+
         <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
         <meta-data android:name="context_names" android:value="@string/context_names"/>
         <meta-data android:name="package_name" android:value="@string/package_name"/>
