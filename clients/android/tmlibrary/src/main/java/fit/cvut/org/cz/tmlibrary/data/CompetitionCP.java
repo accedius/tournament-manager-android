@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 
 
 /**
- * Created by kevin on 7.1.2017.
+ * Abstract Content Provider.
  */
 abstract public class CompetitionCP extends ContentProvider {
     protected static final int COMPETITIONS_BY_PLAYER = 1;

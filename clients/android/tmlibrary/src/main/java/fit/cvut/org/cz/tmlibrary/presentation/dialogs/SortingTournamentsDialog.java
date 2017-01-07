@@ -10,20 +10,32 @@ import android.support.v7.app.AlertDialog;
 import fit.cvut.org.cz.tmlibrary.R;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for sort Tournaments.
  */
 public class SortingTournamentsDialog extends DialogFragment {
     private DialogInterface.OnClickListener listener = null;
 
+    /**
+     * Listener supplier.
+     * @return DialogInterface.OnClickListener instance
+     */
     protected DialogInterface.OnClickListener supplyListener() { return listener;}
 
+    /**
+     * SortingTournamentsDialog creator.
+     * @return SortingTournamentsDialog instance
+     */
     public static SortingTournamentsDialog newInstance() {
         SortingTournamentsDialog fragment = new SortingTournamentsDialog();
         return fragment;
     }
 
-    public void setListener(DialogInterface.OnClickListener l) {
-        listener = l;
+    /**
+     * Listener setter.
+     * @param onClickListener listener to be set
+     */
+    public void setListener(DialogInterface.OnClickListener onClickListener) {
+        listener = onClickListener;
     }
 
     @NonNull

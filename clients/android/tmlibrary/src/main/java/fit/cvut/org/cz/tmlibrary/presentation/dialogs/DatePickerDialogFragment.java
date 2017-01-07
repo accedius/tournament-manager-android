@@ -10,7 +10,7 @@ import java.util.Calendar;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by Vaclav on 27. 3. 2016.
+ * Datepicker dialog.
  */
 public class DatePickerDialogFragment extends DialogFragment {
     public DatePickerDialog.OnDateSetListener listener = null;

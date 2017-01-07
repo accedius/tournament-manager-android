@@ -1,7 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.communication;
 
 /**
- * Created by kevin on 29.12.2016.
+ * Constants used for communication on presentation layer.
  */
 
 public class ExtraConstants {

@@ -9,11 +9,16 @@ import java.util.Date;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
- * Created by atgot_000 on 4. 4. 2016.
+ * Cursor parser for parsing Player from DB.
  */
 public class CursorParser {
     private static SimpleDateFormat dateTimeFormat = DateFormatter.getInstance().getDBDateTimeFormat();
 
+    /**
+     * Parse Player from Cursor.
+     * @param cursor cursor to be parsed
+     * @return Player instance
+     */
     public static Player parsePlayer(Cursor cursor) {
         long id;
         String uid, name, email, note, etag;

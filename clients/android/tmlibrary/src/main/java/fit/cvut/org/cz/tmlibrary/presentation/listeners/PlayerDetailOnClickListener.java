@@ -7,9 +7,15 @@ import android.view.View;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
- * Created by kevin on 28.9.2016.
+ * Class for Player Detail on click listener.
  */
 public class PlayerDetailOnClickListener {
+    /**
+     * Get on click listener by given player.
+     * @param context application context
+     * @param playerId id of player
+     * @return View.OnClickListener instance
+     */
     public static View.OnClickListener getListener(final Context context, final Long playerId) {
         return new View.OnClickListener() {
             @Override

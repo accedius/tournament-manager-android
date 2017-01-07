@@ -20,7 +20,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by Vaclav on 3. 4. 2016.
+ * Fragment for displaying selectable list of any parcelable entity.
  */
 public abstract class AbstractSelectableListFragment<T extends Parcelable> extends AbstractDataFragment {
     public static AbstractSelectableListFragment newInstance(long id, Class<? extends AbstractSelectableListFragment> clazz){

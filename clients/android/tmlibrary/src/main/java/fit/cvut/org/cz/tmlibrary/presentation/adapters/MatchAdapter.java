@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 
 /**
- * Created by Vaclav on 10. 4. 2016.
+ * Adapter for displaying list of Matches.
  */
 public class MatchAdapter extends AbstractListAdapter<Match,MatchAdapter.MatchViewHolder> {
     private Resources res;

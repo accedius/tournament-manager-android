@@ -8,7 +8,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
 
 /**
- * Created by Vaclav on 19. 3. 2016.
+ * Adapter for displaying list of deletable Players.
  */
 public class DeletePlayersAdapter extends AbstractDeletableListAdapter<Player, SimpleOneActionViewHolder> {
     @Override

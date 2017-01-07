@@ -6,13 +6,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 /**
- * Created by Vaclav on 20. 3. 2016.
+ * Adapter for displaying list of fragments as tabs.
  */
 public class DefaultViewPagerAdapter extends FragmentPagerAdapter {
     private Fragment[] fragments;
     private String[] titles;
     private String[] tags;
 
+    /**
+     * Constructor.
+     * @param fm fragment manager
+     * @param fragments array of fragments to be displayed
+     * @param titles array of fragment titles
+     */
     public DefaultViewPagerAdapter(FragmentManager fm, Fragment[] fragments , String[] titles) {
         super(fm);
         this.fragments = fragments;

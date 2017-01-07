@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
- * Created by atgot_000 on 4. 4. 2016.
+ * Adapter for displaying list of Tournaments.
  */
 public class TournamentAdapter extends AbstractListAdapter<Tournament, TournamentAdapter.TournamentViewHolder> {
     @Override

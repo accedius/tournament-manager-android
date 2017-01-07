@@ -10,7 +10,7 @@ import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
- * Created by Vaclav on 13. 4. 2016.
+ * Adapter for displaying list of Teams.
  */
 public class TeamAdapter extends AbstractListAdapter<Team, TeamAdapter.TeamViewHolder> {
     @Override

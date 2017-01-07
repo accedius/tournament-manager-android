@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by Vaclav on 10. 4. 2016.
+ * Fragment for displaying list of Matches.
  */
 public abstract class MatchesListWrapperFragment extends Fragment {
     public static MatchesListWrapperFragment newInstance(long id, Class<? extends MatchesListWrapperFragment> clazz){

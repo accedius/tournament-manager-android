@@ -25,7 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by Vaclav on 15. 4. 2016.
+ * Fragment for displaying Team Detail.
  */
 public abstract class TeamDetailFragment extends AbstractDataFragment {
     public static final String SAVE_TEAM = "save_team";

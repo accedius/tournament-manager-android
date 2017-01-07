@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by kevin on 4. 4. 2016.
+ * Fragment for create or edit Player.
  */
 public abstract class NewPlayerFragment extends AbstractDataFragment {
     /**

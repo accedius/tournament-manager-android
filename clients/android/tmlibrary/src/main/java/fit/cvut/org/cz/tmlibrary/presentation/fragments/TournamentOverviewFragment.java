@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by atgot_000 on 8. 4. 2016.
+ * Fragment for displaying Tournament Overview.
  */
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
     private TextView start, end, matchSum, playerSum, note;

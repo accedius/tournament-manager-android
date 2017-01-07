@@ -24,7 +24,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by Vaclav on 14. 4. 2016.
+ * Dialog for Team insertion.
  */
 public abstract class InsertTeamDialog extends DialogFragment{
     private ProgressBar progressBar;

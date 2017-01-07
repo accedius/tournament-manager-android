@@ -1,7 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.data.helpers;
 
 /**
- * Created by Vaclav on 25. 3. 2016.
+ * Constants for Content Provider.
  */
 public class CPConstants {
     public static final String uCompetitionsByPlayer = "competitions_by_player/";

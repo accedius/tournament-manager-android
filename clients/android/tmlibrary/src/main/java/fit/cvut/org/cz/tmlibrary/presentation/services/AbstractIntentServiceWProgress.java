@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Vaclav on 19. 3. 2016.
  * Simple Intent service with added methods to check if service is currently handling requests.
  */
 public abstract class AbstractIntentServiceWProgress extends IntentService {

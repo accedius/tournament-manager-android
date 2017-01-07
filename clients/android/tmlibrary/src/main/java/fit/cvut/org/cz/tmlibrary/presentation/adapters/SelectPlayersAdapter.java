@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.SimpleOneActionViewHolder;
 
 /**
- * Created by Vaclav on 15. 3. 2016.
+ * Adapter for displaying selectable list of Players.
  */
 public class SelectPlayersAdapter extends AbstractSelectableListAdapter<Player, SimpleOneActionViewHolder> {
     @Override

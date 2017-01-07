@@ -23,7 +23,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
 /**
- * Created by Vaclav on 25. 3. 2016.
+ * Fragment for create or edit Tournament.
  */
 public abstract class NewTournamentFragment extends AbstractDataFragment {
     /**

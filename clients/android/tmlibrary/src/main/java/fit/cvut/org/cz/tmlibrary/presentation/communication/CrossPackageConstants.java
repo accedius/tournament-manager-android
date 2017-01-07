@@ -1,7 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.communication;
 
 /**
- * Created by Vaclav on 10. 4. 2016.
+ * Cross-package communication constants.
  */
 public class CrossPackageConstants {
     public static final String EXTRA_PACKAGE_SERVICE = "extra_package_service";

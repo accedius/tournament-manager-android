@@ -26,7 +26,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
 /**
- * Created by atgot_000 on 10. 4. 2016.
+ * Fragment for create or edit Match.
  */
 public abstract class NewMatchFragment extends AbstractDataFragment  {
     /**
