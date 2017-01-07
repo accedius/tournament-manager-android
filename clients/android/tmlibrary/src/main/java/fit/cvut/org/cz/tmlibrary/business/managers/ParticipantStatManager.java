@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 30.11.2016.
+ * Participant Stat Manager.
  */
 abstract public class ParticipantStatManager extends BaseManager<ParticipantStat> implements IParticipantStatManager {
     @Override

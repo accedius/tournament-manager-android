@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
- * Created by kevin on 28.10.2016.
+ * Adapter for displaying list of New imported tournaments.
  */
 public class ImportTournamentAdapter extends AbstractListAdapter<TournamentImportInfo, ImportTournamentAdapter.ImportTournamentViewHolder> {
     private CompetitionImportInfo competitionInfo;
@@ -46,6 +46,9 @@ public class ImportTournamentAdapter extends AbstractListAdapter<TournamentImpor
         holder.info.setText(info);
     }
 
+    /**
+     * View holder for Tournament import info.
+     */
     public class ImportTournamentViewHolder extends RecyclerView.ViewHolder {
         public TextView name, info;
         public View wholeView;

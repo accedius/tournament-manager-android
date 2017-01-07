@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tournamentmanager.data.CoreDAOFactory;
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
- * Created by kevin on 30. 3. 2016.
+ * Manager factory. Class for getting all possible Managers.
  */
 public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFactory {
     private static Context context;

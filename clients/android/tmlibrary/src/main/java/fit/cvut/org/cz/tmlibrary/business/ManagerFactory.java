@@ -6,9 +6,8 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * Created by kevin on 14.12.2016.
+ * Manager Factory.
  */
-
 public abstract class ManagerFactory implements IManagerFactory {
     @Override
     abstract public <M extends IManager<T>, T extends IEntity> M getEntityManager(Class<T> entity);

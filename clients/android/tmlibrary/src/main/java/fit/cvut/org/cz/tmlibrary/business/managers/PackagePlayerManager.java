@@ -22,11 +22,18 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CursorParser;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 2.12.2016.
+ * Package Player Manager.
  */
 public class PackagePlayerManager implements IPackagePlayerManager {
+    /**
+     * Application context.
+     */
     protected Context context;
 
+    /**
+     * PackagePlayerManager constructor.
+     * @param context application context
+     */
     public PackagePlayerManager(Context context) {
         this.context = context;
     }
@@ -115,6 +122,10 @@ public class PackagePlayerManager implements IPackagePlayerManager {
         return false;
     }
 
+    /**
+     * Function for default players sorting.
+     * @param players players to be sorted
+     */
     public static void orderPlayers(List<Player> players) {
         Collections.sort(players, new Comparator<Player>() {
             @Override

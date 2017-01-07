@@ -5,7 +5,7 @@ import java.util.Map;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
- * Created by kevin on 4.12.2016.
+ * Interface for Package Player Manager.
  */
 public interface IPackagePlayerManager extends IManager<Player> {
     /**

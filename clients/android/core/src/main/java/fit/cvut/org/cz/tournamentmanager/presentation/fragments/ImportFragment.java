@@ -27,23 +27,57 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstant
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
- * Created by kevin on 28.10.2016.
+ * Fragment for display info about imported Competition.
  */
 public class ImportFragment extends Fragment {
 
+    /**
+     * Info about imported Tournaments.
+     */
     protected ArrayList<TournamentImportInfo> tournaments;
+    /**
+     * Info about imported Players.
+     */
     protected ArrayList<PlayerImportInfo> players;
+    /**
+     * Info about imported Conflicts.
+     */
     protected ArrayList<Conflict> conflicts;
 
+    /**
+     * Adapter for Tournaments.
+     */
     protected AbstractListAdapter tournamentsAdapter;
+    /**
+     * Adapter for Players.
+     */
     protected AbstractListAdapter playersAdapter;
+    /**
+     * Adapter for Conflicts.
+     */
     protected AbstractListAdapter conflictsAdapter;
 
+    /**
+     * Name of package.
+     */
     protected String packageName;
-    protected String sportService;
-    protected String jsonContent;
+    /**
+     * Name of sport
+     */
     protected String sportContext;
+    /**
+     * Path to exported service.
+     */
+    protected String packageService;
+    /**
+     * File content.
+     */
+    protected String jsonContent;
 
+    /**
+     * ImportFragment creator.
+     * @return ImportFragment instance
+     */
     public static ImportFragment newInstance() {
         Bundle args = new Bundle();
         ImportFragment fragment = new ImportFragment();
@@ -56,12 +90,12 @@ public class ImportFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         packageName = args.getString(CrossPackageConstants.EXTRA_PACKAGE);
-        sportService = args.getString(CrossPackageConstants.EXTRA_SPORT_SERVICE);
+        sportContext = args.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
+        packageService = args.getString(CrossPackageConstants.EXTRA_PACKAGE_SERVICE);
         tournaments = args.getParcelableArrayList(ExtraConstants.EXTRA_TOURNAMENTS);
         players = args.getParcelableArrayList(ExtraConstants.EXTRA_PLAYERS);
         conflicts = args.getParcelableArrayList(ExtraConstants.EXTRA_CONFLICTS);
         jsonContent = args.getString(CrossPackageConstants.EXTRA_JSON);
-        sportContext = args.getString(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
 
         tournamentsAdapter = new ImportTournamentAdapter((CompetitionImportInfo)args.get(ExtraConstants.EXTRA_COMPETITION), getResources());
         playersAdapter = new ImportPlayerAdapter();
@@ -118,6 +152,9 @@ public class ImportFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Listener for confirm button.
+     */
     public void onConfirmClick() {
         HashMap<String, String> playersModified = new HashMap<>();
         for (Conflict c : (ArrayList<Conflict>)conflictsAdapter.getData()) {
@@ -125,7 +162,7 @@ public class ImportFragment extends Fragment {
         }
 
         Intent intent = new Intent();
-        intent.setClassName(packageName, sportService);
+        intent.setClassName(packageName, packageService);
         intent.putExtra(CrossPackageConstants.EXTRA_JSON, jsonContent);
         intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_IMPORT_FILE_COMPETITION);

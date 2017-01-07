@@ -7,9 +7,15 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 
 /**
- * Created by kevin on 19.10.2016.
+ * Validator used for check if given JSON string is valid ServerCommunicationItem or not.
  */
 public class JsonFileValidator {
+    /**
+     * Method to check if JSON content for given sport is valid ServerCommunicationItem.
+     * @param fileContent content of file
+     * @param sportContext given sport
+     * @return True if content is valid, false otherwise.
+     */
     public static boolean valid(String fileContent, String sportContext) {
         try {
             ServerCommunicationItem item = new Gson().fromJson(fileContent, ServerCommunicationItem.class);

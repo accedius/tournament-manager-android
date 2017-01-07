@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for edit / export / delete competition.
  */
 public class CompetitionDialog extends DialogFragment {
     private Long competitionId;
@@ -23,6 +23,10 @@ public class CompetitionDialog extends DialogFragment {
     private String packageService;
     private String sportContext;
 
+    /**
+     * DialogInterface.OnClickListener getter.
+     * @return on click listener
+     */
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -65,14 +69,25 @@ public class CompetitionDialog extends DialogFragment {
         };
     }
 
-    public static CompetitionDialog newInstance(long competitionId, int position, String name, String package_name, String sport_context, String activity_create_competition, String package_service) {
+    /**
+     * CompetitionDialog creator.
+     * @param competitionId id of competition
+     * @param position position in list
+     * @param name Competition name
+     * @param packageName name of package
+     * @param sportContext name of sport
+     * @param activityCreateCompetition path to activity for create and edit competition
+     * @param packageService path to package exported service
+     * @return CompetitionDialog
+     */
+    public static CompetitionDialog newInstance(long competitionId, int position, String name, String packageName, String sportContext, String activityCreateCompetition, String packageService) {
         CompetitionDialog fragment = new CompetitionDialog();
         fragment.competitionId = competitionId;
         fragment.competitionName = name;
-        fragment.packageName = package_name;
-        fragment.sportContext = sport_context;
-        fragment.activityCreateCompetition = activity_create_competition;
-        fragment.packageService = package_service;
+        fragment.packageName = packageName;
+        fragment.sportContext = sportContext;
+        fragment.activityCreateCompetition = activityCreateCompetition;
+        fragment.packageService = packageService;
 
         Bundle args = new Bundle();
         args.putInt(ExtraConstants.EXTRA_POSITION, position);

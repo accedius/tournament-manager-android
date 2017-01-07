@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
- * Created by kevin on 6.5.2016.
+ * Fragment to display Sport for Player.
  */
 public class PlayerSportFragment extends Fragment {
     @Override

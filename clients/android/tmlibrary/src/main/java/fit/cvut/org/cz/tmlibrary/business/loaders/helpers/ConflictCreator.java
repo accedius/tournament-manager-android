@@ -10,20 +10,27 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ConflictValue;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
- * Created by kevin on 26.10.2016.
+ * Class for Conflict creating.
  */
 public class ConflictCreator {
+    /**
+     * Create conflict from given Players.
+     * @param p1 first Player
+     * @param p2 second Player
+     * @param res resources for attribute translation
+     * @return created conflict
+     */
     public static Conflict createConflict(Player p1, Player p2, Resources res) {
-        Conflict c = new Conflict();
+        Conflict conflict = new Conflict();
         ArrayList<ConflictValue> values = new ArrayList<>();
-        c.setTitle(p1.getEmail());
+        conflict.setTitle(p1.getEmail());
         if (!p1.getName().equals(p2.getName())) {
             values.add(new ConflictValue(res.getString(R.string.name), p1.getName(), p2.getName()));
         }
         if (!p1.getNote().equals(p2.getNote())) {
             values.add(new ConflictValue(res.getString(R.string.note), p1.getNote(), p2.getNote()));
         }
-        c.setValues(values);
-        return c;
+        conflict.setValues(values);
+        return conflict;
     }
 }

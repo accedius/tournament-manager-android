@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.ISettingMa
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
- * Created by kevin on 6.11.2016.
+ * Player Manager - class for managing Setting entity.
  */
 public class SettingManager extends BaseManager<Setting> implements ISettingManager {
     @Override

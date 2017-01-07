@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for edit and delete.
  */
 public class EditDeleteDialog extends DialogFragment {
     private String activityCreatePlayer;
@@ -26,6 +26,10 @@ public class EditDeleteDialog extends DialogFragment {
     private List<Player> players;
     private String packageName;
 
+    /**
+     * DialogInterface.OnClickListener getter.
+     * @return on click listener
+     */
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -33,7 +37,7 @@ public class EditDeleteDialog extends DialogFragment {
                 switch (which) {
                     case 0: {
                         Intent intent = new Intent();
-                        intent.setClassName(packageName, activityCreatePlayer);
+                        intent.setClassName(packageName, ExtraConstants.ACTIVITY_CREATE_PLAYER);
                         intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
                         intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, new ArrayList<>(players));
                         startActivity(intent);
@@ -65,10 +69,17 @@ public class EditDeleteDialog extends DialogFragment {
         return builder.create();
     }
 
-    public static EditDeleteDialog newInstance(String packageName, String activityCreatePlayer, long playerId, int position, List<Player> players) {
+    /**
+     * EditDeleteDialog creator.
+     * @param packageName name of package
+     * @param playerId id of Player
+     * @param position position in list
+     * @param players list of all Players
+     * @return EditDeleteDialog
+     */
+    public static EditDeleteDialog newInstance(String packageName, long playerId, int position, List<Player> players) {
         EditDeleteDialog dialog = new EditDeleteDialog();
         dialog.packageName = packageName;
-        dialog.activityCreatePlayer = activityCreatePlayer;
         dialog.playerId = playerId;
         dialog.position = position;
         dialog.players = players;

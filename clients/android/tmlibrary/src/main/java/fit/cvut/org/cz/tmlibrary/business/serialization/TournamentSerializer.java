@@ -10,9 +10,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
- * Created by kevin on 8.10.2016.
+ * Tournament serializer.
  */
 abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
+    /**
+     * TournamentSerializer constructor.
+     * @param context application context
+     */
     protected TournamentSerializer(Context context) {
         this.context = context;
     }

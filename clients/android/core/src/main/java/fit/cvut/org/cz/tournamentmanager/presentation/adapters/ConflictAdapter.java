@@ -17,7 +17,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.ConflictValue;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
- * Created by kevin on 24.10.2016.
+ * Adapter for displaying list of Conflicts.
  */
 public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapter.ConflictViewHolder> {
     private Context context;
@@ -25,6 +25,10 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
     private RecyclerView recyclerView;
     private AbstractListAdapter adapter;
 
+    /**
+     * Constructor for ConflictAdapter.
+     * @param context application context
+     */
     public ConflictAdapter(Context context) {
         this.context = context;
     }
@@ -44,7 +48,7 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
         holder.title.setText(conflict.getTitle());
 
         recyclerView = (RecyclerView) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view_conflict);
-        adapter = getAdapter();
+        adapter = new ConflictValueAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -54,10 +58,9 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
         adapter.swapData(conflictValues);
     }
 
-    private AbstractListAdapter getAdapter() {
-        return new ConflictValueAdapter();
-    }
-
+    /**
+     * View holder for Conflict.
+     */
     public class ConflictViewHolder extends RecyclerView.ViewHolder{
         public TextView title;
         public View wholeView;
@@ -73,8 +76,10 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
         }
     }
 
+    /**
+     * Adapter for displaying list of ConflictValue.
+     */
     public class ConflictValueAdapter extends AbstractListAdapter<ConflictValue, ConflictValueAdapter.ConflictValueViewHolder> {
-
         @Override
         public ConflictValueAdapter.ConflictValueViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_conflict_value, parent, false);
@@ -90,6 +95,9 @@ public class ConflictAdapter extends AbstractListAdapter<Conflict, ConflictAdapt
             holder.rightValue.setText(value.getRightValue());
         }
 
+        /**
+         * View holder for Conflict Value.
+         */
         public class ConflictValueViewHolder extends RecyclerView.ViewHolder{
             public TextView attribute;
             public TextView leftValue;

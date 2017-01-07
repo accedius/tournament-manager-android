@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tournamentmanager.business.managers.interfaces.IPlayerManager;
 
 /**
- * Created by kevin on 30. 3. 2016.
+ * Player Manager - class for managing Player entity.
  */
 public class PlayerManager extends BaseManager<Player> implements IPlayerManager {
     @Override

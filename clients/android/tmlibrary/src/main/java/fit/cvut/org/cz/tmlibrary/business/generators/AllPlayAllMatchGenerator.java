@@ -9,9 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
- * Created by kevin on 13.4.2016.
- *
- * Class serves to generate all-play-all matches
+ * Class serves to generate all-play-all matches.
  */
 public class AllPlayAllMatchGenerator implements IMatchGenerator {
     @Override

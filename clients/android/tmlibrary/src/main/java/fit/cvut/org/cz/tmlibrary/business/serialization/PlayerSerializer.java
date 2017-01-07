@@ -5,18 +5,32 @@ import android.content.Context;
 import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
+import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerToken;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
 /**
- * Created by kevin on 8.10.2016.
+ * Player Serializer.
  */
 public class PlayerSerializer extends BaseSerializer<Player> {
+    /**
+     * Singleton instance.
+     */
     protected static PlayerSerializer instance = null;
+
+    /**
+     * Player Serializer constructor.
+     * @param context application context
+     */
     protected PlayerSerializer(Context context) {
         this.context = context;
     }
 
+    /**
+     * PlayerSerializer instance creator.
+     * @param context application context
+     * @return PlayerSerializer instance
+     */
     public static PlayerSerializer getInstance(Context context) {
         strategy = new FileSerializingStrategy();
         if (instance == null) {
@@ -40,6 +54,8 @@ public class PlayerSerializer extends BaseSerializer<Player> {
         p.setUid(item.getUid());
         p.setEtag(item.getEtag());
         p.setLastModified(item.getModified());
+        p.setTokenType(item.getToken().getType());
+        p.setTokenValue(item.getToken().getValue());
         deserializeSyncData(item.syncData, p);
         return p;
     }

@@ -26,7 +26,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayerSportFragm
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
- * Created by atgot_000 on 29. 3. 2016.
+ * Activity for displaying detail of Player.
  */
 public class PlayerDetailActivity extends AbstractTabActivity {
     private long playerID;

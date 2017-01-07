@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 
 /**
- * Created by Vaclav on 2. 4. 2016.
+ * Base for all shared entities.
  */
 public abstract class ShareBase implements ISharedEntity, Parcelable {
     protected ShareBase() {

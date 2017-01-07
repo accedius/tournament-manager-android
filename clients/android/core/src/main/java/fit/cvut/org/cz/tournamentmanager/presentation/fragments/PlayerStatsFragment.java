@@ -22,7 +22,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 
 /**
- * Created by kevin on 2. 5. 2016.
+ * Fragment for display Player statistics.
  */
 public class PlayerStatsFragment extends AbstractDataFragment {
     private LinearLayout labelRow;

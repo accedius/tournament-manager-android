@@ -18,8 +18,11 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.NewPlayerFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
+/**
+ * Activity for Create and edit Player.
+ */
 public class CreatePlayerActivity extends AbstractToolbarActivity {
-    ArrayList<String> emails = new ArrayList<>();
+    private ArrayList<String> emails = new ArrayList<>();
 
     @Override
     protected View injectView(ViewGroup parent) {

@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 9.11.2016.
+ * Match Manager.
  */
 abstract public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override

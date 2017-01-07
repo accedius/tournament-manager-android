@@ -7,14 +7,15 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
- * Created by kevin on 2.9.2016.
+ * Interface for team rosters generating.
  */
 public interface ITeamsRostersGenerator {
     /**
      * generates maximally balanced rosters according to given stat
      * @param teams list of teams
-     * @param players hashmap of player ids and players
+     * @param players map of player ids and players
      * @param stats map of players id and stat for balanced rosters
+     * @return true if rosters were generated, false otherwise
      */
     boolean generateRosters(List<Team> teams, Map<Long, Player> players, Map<Long, Double> stats);
 }

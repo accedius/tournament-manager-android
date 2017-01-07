@@ -11,4 +11,12 @@ public class ServerToken {
         this.type = type;
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public ServerTokenType getType() {
+        return type;
+    }
 }

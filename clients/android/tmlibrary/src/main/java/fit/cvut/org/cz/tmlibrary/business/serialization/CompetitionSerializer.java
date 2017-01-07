@@ -11,9 +11,13 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
 /**
- * Created by kevin on 8.10.2016.
+ * Competition serializer.
  */
 abstract public class CompetitionSerializer extends BaseSerializer<Competition> {
+    /**
+     * CompetitionSerializer constructor.
+     * @param context application context
+     */
     protected CompetitionSerializer(Context context) {
         this.context = context;
     }

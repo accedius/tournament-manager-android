@@ -7,12 +7,12 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * Created by kevin on 31.10.2016.
+ * Setting entity.
  */
 @DatabaseTable(tableName = DBConstants.tSETTINGS)
 public class Setting implements IEntity {
     @DatabaseField(generatedId = true, columnName = DBConstants.cID)
-    private Long id;
+    private long id;
 
     @DatabaseField(canBeNull = false, columnName = DBConstants.cPACKAGE_NAME)
     private String packageName;
@@ -20,22 +20,35 @@ public class Setting implements IEntity {
     @DatabaseField(canBeNull = false, columnName = DBConstants.cSPORT_NAME)
     private String sportName;
 
-    // Necessary for ORMLite
     public Setting() {}
 
+    /**
+     * Setting constructor.
+     * @param packageName name of package
+     * @param sportName name of sport
+     */
     public Setting(String packageName, String sportName) {
         this.packageName = packageName;
         this.sportName = sportName;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    /**
+     * Package Name getter.
+     * @return packageName
+     */
     public String getPackageName() {
         return packageName;
     }
 
+    /**
+     * Sport Name getter.
+     * @return sportName
+     */
     public String getSportName() {
         return sportName;
     }

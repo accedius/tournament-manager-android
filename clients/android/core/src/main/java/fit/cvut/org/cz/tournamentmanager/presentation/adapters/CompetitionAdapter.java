@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
- * Created by Vaclav on 12. 3. 2016.
+ * Adapter for displaying list of Competitions.
  */
 public class CompetitionAdapter extends AbstractListAdapter<Competition, CompetitionAdapter.CompetitionViewHolder> {
     @Override
@@ -24,6 +24,13 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         return holder;
     }
 
+    /**
+     * On click listener setter to be overridden, when necessary.
+     * @param v View
+     * @param competitionId id of Competition
+     * @param position position in list
+     * @param name Competition name
+     */
     protected void setOnClickListeners(View v, long competitionId, int position, String name){}
 
     @Override
@@ -55,6 +62,9 @@ public class CompetitionAdapter extends AbstractListAdapter<Competition, Competi
         return data.size();
     }
 
+    /**
+     * View holder for Competition.
+     */
     public class CompetitionViewHolder extends RecyclerView.ViewHolder{
         public TextView name, startDate, endDate;
         public View wholeView;

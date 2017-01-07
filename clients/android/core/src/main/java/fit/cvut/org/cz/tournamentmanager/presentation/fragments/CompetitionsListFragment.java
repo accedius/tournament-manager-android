@@ -33,7 +33,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.CompetitionDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
- * Created by Vaclav on 12. 3. 2016.
+ * Fragment to display list of Competitions.
  */
 public class CompetitionsListFragment extends AbstractListFragment<Competition> {
     private String action = "org.cz.cvut.tournamentmanager";
@@ -146,6 +146,10 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         orderData(orderType);
     }
 
+    /**
+     * Method to order Competitions.
+     * @param type column for order
+     */
     public void orderData(final String type) {
         if (adapter == null) return;
 
@@ -175,6 +179,9 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Receiver for Competitions.
+     */
     public class CompetitionsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -216,7 +223,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
                 res.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
-                res.putExtra(CrossPackageConstants.EXTRA_SPORT_SERVICE, packageService);
+                res.putExtra(CrossPackageConstants.EXTRA_PACKAGE_SERVICE, packageService);
                 res.putExtra(CrossPackageConstants.EXTRA_JSON, intent.getStringExtra(CrossPackageConstants.EXTRA_JSON));
                 res.putExtra(ExtraConstants.EXTRA_COMPETITION, intent.getParcelableExtra(ExtraConstants.EXTRA_COMPETITION));
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS));

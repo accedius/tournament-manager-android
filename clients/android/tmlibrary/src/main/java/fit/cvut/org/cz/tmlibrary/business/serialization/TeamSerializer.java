@@ -6,7 +6,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
- * Created by kevin on 13.12.2016.
+ * Team serializer.
  */
 
 abstract public class TeamSerializer extends BaseSerializer<Team> {

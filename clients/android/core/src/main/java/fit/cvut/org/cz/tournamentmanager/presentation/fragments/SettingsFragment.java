@@ -31,7 +31,6 @@ import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
  * Fragment for settings
- * Created by kevin on 23. 10. 2016.
  */
 public class SettingsFragment extends Fragment {
     private CoordinatorLayout v;
@@ -39,8 +38,6 @@ public class SettingsFragment extends Fragment {
     private SparseBooleanArray sparse;
     private ArrayList<Setting> sportSettings;
     private AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> adapter;
-
-    public SettingsFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +78,10 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
+    /**
+     * AbstractSelectableListAdapter getter.
+     * @return AbstractSelectableListAdapter instance.
+     */
     protected AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> getAdapter() {
         return new SelectSportsAdapter();
     }
@@ -105,6 +106,9 @@ public class SettingsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Adapter for display list of Sports.
+     */
     class SelectSportsAdapter extends AbstractSelectableListAdapter<Setting, SimpleOneActionViewHolder> {
         @Override
         protected void bindView(SimpleOneActionViewHolder holder, int position) {

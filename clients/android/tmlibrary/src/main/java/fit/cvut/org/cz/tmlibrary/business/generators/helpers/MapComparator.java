@@ -8,9 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by kevin on 2.9.2016.
+ * Class for Map sorting.
  */
 public class MapComparator {
+    /**
+     * Generic method for sorting map by value
+     * @param map map to be sorted.
+     * @param <K> class of key
+     * @param <V> class of value
+     * @return sorted map
+     */
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list =
                 new LinkedList<>(map.entrySet());

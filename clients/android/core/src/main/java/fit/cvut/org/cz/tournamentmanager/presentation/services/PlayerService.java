@@ -20,15 +20,33 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
 /**
- * Created by kevin on 4.4.2016.
+ * Service for Player.
  */
 public class PlayerService extends AbstractIntentServiceWProgress {
+    /**
+     * Action for Player deletion.
+     */
     public static final String ACTION_DELETE = "fit.cvut.org.cz.tournamentmanager.presentation.services.delete_player";
+    /**
+     * Action for Player create.
+     */
     public static final String ACTION_CREATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.new_player";
+    /**
+     * Action for getting Player by id.
+     */
     public static final String ACTION_GET_BY_ID = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_player_by_id";
+    /**
+     * Action for getting all Players.
+     */
     public static final String ACTION_GET_ALL = "fit.cvut.org.cz.tournamentmanager.presentation.services.get_all_players";
+    /**
+     * Action for Player update.
+     */
     public static final String ACTION_UPDATE = "fit.cvut.org.cz.tournamentmanager.presentation.services.update_player";
 
+    /**
+     * Player Service constructor.
+     */
     public PlayerService() {
         super("Player Service");
     }
@@ -46,6 +64,12 @@ public class PlayerService extends AbstractIntentServiceWProgress {
         return false;
     }
 
+    /**
+     * Create intent for Player Service.
+     * @param action action to be executed
+     * @param context application context
+     * @return intent instance
+     */
     public static Intent newStartIntent(String action, Context context){
         Intent intent = new Intent(context, PlayerService.class);
         intent.putExtra(ExtraConstants.EXTRA_ACTION, action);

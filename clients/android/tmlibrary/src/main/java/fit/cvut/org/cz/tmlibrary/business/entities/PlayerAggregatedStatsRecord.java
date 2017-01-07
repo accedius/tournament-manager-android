@@ -4,25 +4,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by kevin on 1.5.2016.
+ * Player Stat Record entity.
  */
 public class PlayerAggregatedStatsRecord implements Parcelable {
     private String key;
     private String val;
     private int forPortrait;
 
-    public PlayerAggregatedStatsRecord(String k, String v, boolean forPortrait) {
-        this.key = k;
-        this.val = v;
+    /**
+     * Stat Record constructor
+     * @param key stat record type
+     * @param value stat record value
+     * @param forPortrait true if value should be displayed in portrait
+     */
+    public PlayerAggregatedStatsRecord(String key, String value, boolean forPortrait) {
+        this.key = key;
+        this.val = value;
         this.forPortrait = forPortrait ? 1 : 0;
     }
 
+    /**
+     * Constructor from Parcel.
+     * @param in parcel
+     */
     protected PlayerAggregatedStatsRecord(Parcel in) {
         key = in.readString();
         val = in.readString();
         forPortrait = in.readInt();
     }
 
+    /**
+     * Parcelable creator.
+     */
     public static final Parcelable.Creator<PlayerAggregatedStatsRecord> CREATOR = new Parcelable.Creator<PlayerAggregatedStatsRecord>() {
         @Override
         public PlayerAggregatedStatsRecord createFromParcel(Parcel in) {
@@ -47,12 +60,26 @@ public class PlayerAggregatedStatsRecord implements Parcelable {
         dest.writeInt(forPortrait);
     }
 
+    /**
+     * Key getter.
+     * @return key
+     */
     public String getKey() {
         return key;
     }
+
+    /**
+     * Value getter.
+     * @return value
+     */
     public String getVal() {
         return val;
     }
+
+    /**
+     * For portrait getter.
+     * @return forPortrait
+     */
     public boolean getForPortrait() {
         return forPortrait == 1 ? true : false;
     }

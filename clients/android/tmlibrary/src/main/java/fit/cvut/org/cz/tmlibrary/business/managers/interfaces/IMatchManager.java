@@ -5,7 +5,7 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 
 /**
- * Created by kevin on 9.11.2016.
+ * Interface for Match Manager.
  */
 public interface IMatchManager extends IManager<Match> {
     /**

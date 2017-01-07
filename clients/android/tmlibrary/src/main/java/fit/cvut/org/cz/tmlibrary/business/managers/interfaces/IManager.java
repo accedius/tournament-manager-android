@@ -5,7 +5,7 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * Created by Vaclav on 29. 3. 2016.
+ * Interface for Manager.
  */
 public interface IManager<T extends IEntity> {
     /**
@@ -24,7 +24,7 @@ public interface IManager<T extends IEntity> {
     /**
      * delete entity from app
      * @param id id of entity to be deleted
-     * @return true of entity is deleted, false if entity contains something and thus cannot be deleted
+     * @return true of entity is deleted, false otherwise
      */
     boolean delete(long id);
 
@@ -39,7 +39,7 @@ public interface IManager<T extends IEntity> {
      * get entities by some column
      * @param column column of the entity
      * @param value value of the column
-     * @return found entitys
+     * @return found entity
      */
     List<T> getByColumn(String column, Object value);
 

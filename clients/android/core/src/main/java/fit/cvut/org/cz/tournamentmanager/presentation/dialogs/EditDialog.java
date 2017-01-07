@@ -13,7 +13,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for edit only.
  */
 public class EditDialog extends DialogFragment {
     private String activityCreateCompetition;

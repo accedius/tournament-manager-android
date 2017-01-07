@@ -5,7 +5,7 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 
 /**
- * Created by kevin on 2.12.2016.
+ * Interface for Player Stat Manager.
  */
 public interface IPlayerStatManager extends IManager<PlayerStat> {
     /**

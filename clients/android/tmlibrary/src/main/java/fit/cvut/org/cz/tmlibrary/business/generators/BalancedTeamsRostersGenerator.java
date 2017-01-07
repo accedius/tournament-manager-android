@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
- * Created by kevin on 2.9.2016.
+ * Class serves to generate team rosters.
  */
 public class BalancedTeamsRostersGenerator implements ITeamsRostersGenerator {
     @Override

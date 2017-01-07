@@ -4,7 +4,7 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
- * Created by kevin on 4.12.2016.
+ * Interface for Setting Manager.
  */
 public interface ISettingManager extends IManager<Setting> {
     /**
@@ -14,9 +14,9 @@ public interface ISettingManager extends IManager<Setting> {
 
     /**
      * Get Setting by package and sport.
-     * @param packageName package name.
-     * @param sportName sport name.
-     * @return found setting.
+     * @param packageName package name
+     * @param sportName sport name
+     * @return found setting
      */
     Setting getByPackageSport(String packageName, String sportName);
 }

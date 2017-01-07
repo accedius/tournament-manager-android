@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by kevin on 7.10.2016.
+ * Server Communication Item.
  */
 public class ServerCommunicationItem {
     public Long id;
@@ -22,25 +22,47 @@ public class ServerCommunicationItem {
     public Date modified;
 
     public String presenter;
-    public HashMap<String, Object> syncData;
+    public HashMap<String, Object> syncData = new HashMap<>();
     public List<ServerCommunicationItem> subItems = new ArrayList<>();
 
     public transient boolean serializeToken;
+
+    /**
+     * Method for item serialization.
+     * @return serialized item
+     */
     public String toJson() {
         Gson gson = new GsonBuilder().serializeNulls().create();
         return gson.toJson(this);
     }
 
+    /**
+     * ServerCommunicationItem constructor.
+     */
     public ServerCommunicationItem() {
         id = 0L;
     }
 
+    /**
+     * ServerCommunicationItem constructor.
+     * @param uid item uid
+     * @param etag item etag
+     * @param token item token
+     */
     public ServerCommunicationItem(String uid, String etag, ServerToken token) {
         this.uid = uid;
         this.etag = etag;
         this.token = token;
     }
 
+    /**
+     * ServerCommunicationItem constructor.
+     * @param uid item uid
+     * @param etag item etag
+     * @param token item token
+     * @param type item type
+     * @param presenter item presenter
+     */
     public ServerCommunicationItem(String uid, String etag, ServerToken token, String type, String presenter ) {
         this.uid = uid;
         this.etag = etag;

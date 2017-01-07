@@ -13,9 +13,12 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
- * Created by kevin on 4.4.2016.
+ * Player Content provider.
  */
 public class PlayerCP extends ContentProvider {
+    /**
+     * Content Provider authority.
+     */
     public static final String AUTHORITY = CrossPackageConstants.CORE + ".data";
 
     private CoreDAOFactory helper;
@@ -23,7 +26,7 @@ public class PlayerCP extends ContentProvider {
     private static final int PLAYERS_ALL = 0;
     private static final int PLAYER_UPDATE = 1;
 
-    private static final UriMatcher matcher ;
+    private static final UriMatcher matcher;
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, CPConstants.uPlayers, PLAYERS_ALL);

@@ -17,12 +17,17 @@ import java.util.List;
 import fit.cvut.org.cz.tournamentmanager.business.helpers.JsonFileValidator;
 
 /**
- * Created by kevin on 19.10.2016.
+ * Class for working with files.
  */
 public class FilesHelper {
     private static final String EXTENSION = ".json";
 
-    /* Save file to Download folder */
+    /**
+     * Saves file to Download folder.
+     * @param filename name of file to be created
+     * @param json file content
+     * @return True if file was created, false otherwise.
+     */
     public static boolean saveFile(String filename, String json) {
         if (isExternalStorageWritable()) {
             File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + filename + EXTENSION);
@@ -39,7 +44,11 @@ public class FilesHelper {
         return false;
     }
 
-    /* Load files in Download folder */
+    /**
+     * Load file names in Download folder by given sport.
+     * @param sportContext name of sport
+     * @return file names
+     */
     public static String [] getFileNames(String sportContext) {
         List<File> files = getFiles(sportContext);
         List<String> fileNames = new ArrayList<>();
@@ -50,7 +59,11 @@ public class FilesHelper {
         return ret;
     }
 
-    /* Load files in Download folder */
+    /**
+     * Load files in Download folder by given sport.
+     * @param sportContext
+     * @return files
+     */
     public static List<File> getFiles(String sportContext) {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         File directory = new File(path);
@@ -76,10 +89,14 @@ public class FilesHelper {
         return files;
     }
 
-    /* Loads file content */
-    public static String loadFileContent(File f) {
+    /**
+     * Load content by given file
+     * @param file given file to be loaded
+     * @return file content
+     */
+    public static String loadFileContent(File file) {
         try {
-            FileInputStream fis = new FileInputStream(f);
+            FileInputStream fis = new FileInputStream(file);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();

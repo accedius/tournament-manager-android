@@ -5,7 +5,7 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
 
 /**
- * Created by kevin on 4.12.2016.
+ * Interface for Participant Stat Manager.
  */
 public interface IParticipantStatManager extends IManager<ParticipantStat> {
     /**

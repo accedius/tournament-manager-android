@@ -23,7 +23,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SettingsFragment
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
 
 /**
- * Created by kevin on 4.4.2016.
+ * Main activity started when application is started.
  */
 public class MainActivity extends AbstractToolbarActivity {
     private DrawerLayout mDrawerLayout;
@@ -115,7 +115,7 @@ public class MainActivity extends AbstractToolbarActivity {
 
     @Override
     protected void onUpButtonClicked() {
-        //we want this method to be empty by default
+        // We want this method to be empty by default
     }
 
     @Override

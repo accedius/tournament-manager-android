@@ -23,12 +23,13 @@ import fit.cvut.org.cz.tournamentmanager.business.ManagerFactory;
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.PackagesInfo;
 
+/**
+ * Fragment to display list of Sports.
+ */
 public class SportsFragment extends Fragment {
     private DefaultViewPagerAdapter adapter = null;
     private CompetitionsListFragment[] fragments;
     private String[] titles;
-
-    public SportsFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +90,10 @@ public class SportsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * Method to order Competitions.
+     * @param type column for order
+     */
     public void orderData(final String type) {
         for (CompetitionsListFragment f : fragments) {
             f.orderData(type);

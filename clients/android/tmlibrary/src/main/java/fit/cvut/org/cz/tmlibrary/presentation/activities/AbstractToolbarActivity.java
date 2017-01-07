@@ -34,13 +34,13 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
     /**
      * If you want to have FAB in this Activity return it here. Do not forget to give it id.
      * return null if you don't want one.
-     * @return
+     * @return intent for this activity
      */
     protected FloatingActionButton getFloatingActionButton(ViewGroup root) {return null;}
 
     /**
      * If true activity displays Up button for navigation
-     * @return
+     * @return true if button should be displayed, false otherwise
      */
     protected boolean displayUpButton() {return true;}
 
@@ -59,7 +59,14 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
         else return false;
     }
 
+    /**
+     * Action toolbar.
+     */
     protected Toolbar toolbar;
+
+    /**
+     * Progress bar displayed when waiting for response.
+     */
     protected ProgressBar progressBar;
 
     @Override

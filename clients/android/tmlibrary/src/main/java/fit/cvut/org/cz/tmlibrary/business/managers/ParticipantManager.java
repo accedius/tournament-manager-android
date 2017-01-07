@@ -6,9 +6,8 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManage
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**
- * Created by kevin on 17.12.2016.
+ * Participant Manager.
  */
-
 abstract public class ParticipantManager extends BaseManager<Participant> implements IParticipantManager {
     @Override
     protected Class<Participant> getMyClass() {

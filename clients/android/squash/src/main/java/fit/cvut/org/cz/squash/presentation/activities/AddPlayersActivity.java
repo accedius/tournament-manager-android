@@ -22,7 +22,7 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
      * @param c
      * @param option is passed to accomodated fragment and should specify which players should fragment display
      * @param id
-     * @return
+     * @return intent for this activity
      */
     public static Intent newStartIntent(Context c, int option, long id){
         Intent intent = new Intent(c, AddPlayersActivity.class);

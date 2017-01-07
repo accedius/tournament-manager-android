@@ -8,10 +8,16 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISharedEntity
 import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 
 /**
- * Created by kevin on 10.10.2016.
+ * Generic Base Serializer.
  */
 abstract public class BaseSerializer<T extends ShareBase> implements ISharedEntitySerializer<T> {
+    /**
+     * Application context.
+     */
     protected static Context context = null;
+    /**
+     * Serializing strategy.
+     */
     protected static ISerializingStrategy strategy = null;
 
     @Override

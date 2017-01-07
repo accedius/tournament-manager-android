@@ -18,7 +18,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDialog;
 
 /**
- * Created by atgot_000 on 29. 3. 2016.
+ * Fragment to display list of Competitions for player.
  */
 public class PlayerCompetitionsListFragment extends AbstractListFragment<Competition> {
     private long playerId;
@@ -105,16 +105,17 @@ public class PlayerCompetitionsListFragment extends AbstractListFragment<Competi
         return CrossPackageConstants.EXTRA_COMPETITION;
     }
 
+    /**
+     * Receiver for Competitions.
+     */
     public class CompetitionsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!packageName.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE))) {
+            if (!packageName.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE)))
                 return;
-            }
 
-            if (!sportContext.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT))) {
+            if (!sportContext.equals(intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT)))
                 return;
-            }
 
             contentView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);

@@ -3,8 +3,13 @@ package fit.cvut.org.cz.tmlibrary.business.serialization.interfaces;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 
 /**
- * Created by kevin on 21.10.2016.
+ * Interface for Serializing strategy.
  */
 public interface ISerializingStrategy {
+    /**
+     * Get entity uid.
+     * @param entity entity which id we want to get
+     * @return uid
+     */
     String getUid(ISharedEntity entity);
 }

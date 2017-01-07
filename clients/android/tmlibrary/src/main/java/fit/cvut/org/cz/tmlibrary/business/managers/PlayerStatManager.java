@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 2.12.2016.
+ * Player Stat Manager.
  */
 public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlayerStatManager {
     @Override

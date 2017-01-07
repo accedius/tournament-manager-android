@@ -20,7 +20,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 9.11.2016.
+ * Team Manager.
  */
 abstract public class TeamManager extends BaseManager<Team> implements ITeamManager {
     @Override

@@ -7,20 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by kevin on 28.4.2016.
+ * Player Aggregated Stats entity.
  */
-
 public class PlayerAggregatedStats implements Parcelable {
+    /**
+     * List of Player Stat records.
+     */
     protected List<PlayerAggregatedStatsRecord> records = new ArrayList<>();
 
+    /**
+     * Empty constructor.
+     */
+    public PlayerAggregatedStats() {}
+
+    /**
+     * Constructor from Parcel.
+     * @param in parcel
+     */
     protected PlayerAggregatedStats(Parcel in) {
         in.readTypedList(records, PlayerAggregatedStatsRecord.CREATOR);
     }
 
-    public PlayerAggregatedStats() {
-        records = new ArrayList<>();
-    }
-
+    /**
+     * Method for adding stat record to records.
+     * @param record record to be added
+     */
     public void addRecord(PlayerAggregatedStatsRecord record) {
         if (record == null)
             return;
@@ -28,6 +39,9 @@ public class PlayerAggregatedStats implements Parcelable {
         records.add(record);
     }
 
+    /**
+     * Parcelable creator.
+     */
     public static final Parcelable.Creator<PlayerAggregatedStats> CREATOR = new Parcelable.Creator<PlayerAggregatedStats>() {
         @Override
         public PlayerAggregatedStats createFromParcel(Parcel in) {
@@ -50,6 +64,10 @@ public class PlayerAggregatedStats implements Parcelable {
         dest.writeTypedList(records);
     }
 
+    /**
+     * Stat records getter.
+     * @return list of records.
+     */
     public List<PlayerAggregatedStatsRecord> getRecords() {
         return records;
     }

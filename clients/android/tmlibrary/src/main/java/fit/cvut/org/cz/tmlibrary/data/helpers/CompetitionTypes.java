@@ -6,7 +6,7 @@ import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 
 /**
- * Created by kevin on 1.9.2016.
+ * Class for types of Competition.
  */
 public class CompetitionTypes {
     public static CompetitionType[] competitionTypes(Resources r) {

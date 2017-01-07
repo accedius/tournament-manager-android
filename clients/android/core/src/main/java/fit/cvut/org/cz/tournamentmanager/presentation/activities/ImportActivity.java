@@ -14,7 +14,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.ImportFragment;
 
 /**
- * Created by kevin on 28.10.2016.
+ * Activity for display info about imported competition.
  */
 public class ImportActivity extends AbstractToolbarActivity {
     private Fragment fragment = null;
@@ -27,14 +27,10 @@ public class ImportActivity extends AbstractToolbarActivity {
         setTitle(getResources().getString(R.string.import_summary)+" – "+competition.getName());
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
-            fragment = getImportFragment();
+            fragment = ImportFragment.newInstance();
             fragment.setArguments(intent.getExtras());
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
-    }
-
-    public Fragment getImportFragment() {
-        return ImportFragment.newInstance();
     }
 
     @Override

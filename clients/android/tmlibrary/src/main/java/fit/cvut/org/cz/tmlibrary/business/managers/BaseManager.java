@@ -9,13 +9,21 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * Created by kevin on 14.12.2016.
+ * Generic Base Manager for any IEntity class.
  */
-
 public abstract class BaseManager<T extends IEntity> implements IManager<T> {
+    /**
+     * Getter for Manager type.
+     * @return class of Manager
+     */
     abstract protected Class<T> getMyClass();
+
+    /**
+     * IManagerFactory instance.
+     */
     protected IManagerFactory managerFactory;
 
+    @Override
     public void insert(T entity) {
         try {
             managerFactory.getDaoFactory().getMyDao(getMyClass()).create(entity);
@@ -24,6 +32,7 @@ public abstract class BaseManager<T extends IEntity> implements IManager<T> {
         }
     }
 
+    @Override
     public void update(T entity) {
         try {
             managerFactory.getDaoFactory().getMyDao(getMyClass()).update(entity);
@@ -67,10 +76,18 @@ public abstract class BaseManager<T extends IEntity> implements IManager<T> {
         }
     }
 
+    /**
+     * IManagerFactory getter.
+     * @return IManagerFactory instance
+     */
     public IManagerFactory getManagerFactory() {
         return managerFactory;
     }
 
+    /**
+     * IManagerFactory setter.
+     * @param managerFactory IManagerFactory to be set
+     */
     public void setManagerFactory(IManagerFactory managerFactory) {
         this.managerFactory = managerFactory;
     }

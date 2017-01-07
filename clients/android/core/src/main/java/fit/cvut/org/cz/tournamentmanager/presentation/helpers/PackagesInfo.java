@@ -12,9 +12,14 @@ import java.util.TreeMap;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 
 /**
- * Created by kevin on 28.9.2016.
+ * Class for getting info about installed modules.
  */
 public class PackagesInfo {
+    /**
+     * Find all available sports in all installed TM modules.
+     * @param context application context
+     * @return map of sport name as a key and module info as a value
+     */
     public static Map<String, ApplicationInfo> getSportContexts(Context context) {
         Map<String, ApplicationInfo> contexts = new TreeMap<>();
         for (ApplicationInfo app : getPackages(context)) {

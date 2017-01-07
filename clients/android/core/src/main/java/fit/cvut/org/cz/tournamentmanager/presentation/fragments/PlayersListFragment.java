@@ -35,7 +35,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
- * Created by Vaclav on 12. 3. 2016.
+ * Fragment to display list of Players.
  */
 public class PlayersListFragment extends AbstractListFragment<Player> {
     private String packageName = CrossPackageConstants.CORE;
@@ -103,6 +103,10 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
+    /**
+     * Method to order Players.
+     * @param type column for order
+     */
     public void orderData(final String type) {
         if (adapter == null) return;
 
@@ -151,7 +155,7 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(packageName, activityCreatePlayer, playerId, position, adapter.getData());
+                        EditDeleteDialog dialog = EditDeleteDialog.newInstance(packageName, playerId, position, adapter.getData());
                         Bundle b = new Bundle();
                         b.putString(ExtraConstants.EXTRA_TITLE, name);
                         dialog.setArguments(b);
@@ -168,6 +172,9 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
         return ExtraConstants.EXTRA_PLAYERS;
     }
 
+    /**
+     * Receiver for Players.
+     */
     public class PlayersListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

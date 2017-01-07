@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 /**
- * Created by kevin on 28.10.2016.
+ * Adapter for displaying list of New imported players.
  */
 public class ImportPlayerAdapter extends AbstractListAdapter<PlayerImportInfo, ImportPlayerAdapter.ImportPlayerViewHolder> {
     @Override
@@ -29,6 +29,9 @@ public class ImportPlayerAdapter extends AbstractListAdapter<PlayerImportInfo, I
         holder.email.setText(player.getEmail());
     }
 
+    /**
+     * View holder for Player import info.
+     */
     public class ImportPlayerViewHolder extends RecyclerView.ViewHolder {
         public TextView name, email;
         public View wholeView;

@@ -19,7 +19,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 30. 3. 2016.
+ * Competition Manager.
  */
 public class CompetitionManager extends BaseManager<Competition> implements ICompetitionManager {
     @Override

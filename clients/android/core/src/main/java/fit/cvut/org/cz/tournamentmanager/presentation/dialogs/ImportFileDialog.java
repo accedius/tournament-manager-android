@@ -14,13 +14,17 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstant
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for display files possible for import.
  */
 public class ImportFileDialog extends DialogFragment {
     private String packageName;
     private String packageService;
     private String sportContext;
 
+    /**
+     * DialogInterface.OnClickListener getter.
+     * @return on click listener
+     */
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -41,6 +45,13 @@ public class ImportFileDialog extends DialogFragment {
         };
     }
 
+    /**
+     * ImportFileDialog creator.
+     * @param packageName name of package
+     * @param sportContext name of sport
+     * @param packageService path to exported service
+     * @return ImportFileDialog instance
+     */
     public static ImportFileDialog newInstance(String packageName, String sportContext, String packageService) {
         ImportFileDialog fragment = new ImportFileDialog();
         fragment.packageName = packageName;

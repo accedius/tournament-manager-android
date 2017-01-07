@@ -4,19 +4,33 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by kevin on 28.10.2016.
+ * Entity for Import info.
  */
 public class ImportInfo implements Parcelable {
+    /**
+     * Info name.
+     */
     protected String name;
 
+    /**
+     * ImportInfo constructor.
+     * @param name info name
+     */
     public ImportInfo(String name) {
         this.name = name;
     }
 
+    /**
+     * Constructor from Parcel.
+     * @param in parcel
+     */
     protected ImportInfo(Parcel in) {
         name = in.readString();
     }
 
+    /**
+     * Parcelable creator.
+     */
     public static final Creator<ImportInfo> CREATOR = new Creator<ImportInfo>() {
         @Override
         public ImportInfo createFromParcel(Parcel in) {
@@ -29,10 +43,18 @@ public class ImportInfo implements Parcelable {
         }
     };
 
+    /**
+     * Name getter.
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Name setter.
+     * @param name name to be set
+     */
     public void setName(String name) {
         this.name = name;
     }

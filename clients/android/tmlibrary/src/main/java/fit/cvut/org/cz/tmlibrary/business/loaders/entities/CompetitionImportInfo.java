@@ -6,17 +6,26 @@ import android.os.Parcelable;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 
 /**
- * Created by kevin on 30.10.2016.
+ * Entity for Import info about Competition.
  */
 public class CompetitionImportInfo extends ImportInfo implements Parcelable {
 
     private CompetitionType type;
 
+    /**
+     * CompetitionImportInfo constructor.
+     * @param name competition name
+     * @param type competition type
+     */
     public CompetitionImportInfo(String name, CompetitionType type) {
         super(name);
         this.type = type;
     }
 
+    /**
+     * Constructor from Parcel.
+     * @param in parcel
+     */
     protected CompetitionImportInfo(Parcel in) {
         super(in);
         type = in.readParcelable(CompetitionType.class.getClassLoader());
@@ -33,6 +42,9 @@ public class CompetitionImportInfo extends ImportInfo implements Parcelable {
         return 0;
     }
 
+    /**
+     * Parcelable creator.
+     */
     public static final Creator<CompetitionImportInfo> CREATOR = new Creator<CompetitionImportInfo>() {
         @Override
         public CompetitionImportInfo createFromParcel(Parcel in) {
@@ -45,10 +57,18 @@ public class CompetitionImportInfo extends ImportInfo implements Parcelable {
         }
     };
 
+    /**
+     * Type getter.
+     * @return type
+     */
     public CompetitionType getType() {
         return type;
     }
 
+    /**
+     * Type setter.
+     * @param type type to be set
+     */
     public void setType(CompetitionType type) {
         this.type = type;
     }

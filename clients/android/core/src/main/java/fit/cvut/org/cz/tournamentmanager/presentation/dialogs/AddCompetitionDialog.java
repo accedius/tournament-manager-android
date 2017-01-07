@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.helpers.FilesHelper;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for adding new competition.
  */
 public class AddCompetitionDialog extends DialogFragment {
     private String packageName;
@@ -24,6 +24,10 @@ public class AddCompetitionDialog extends DialogFragment {
     private String sportContext;
     private View view;
 
+    /**
+     * DialogInterface.OnClickListener getter.
+     * @return on click listener
+     */
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -57,6 +61,15 @@ public class AddCompetitionDialog extends DialogFragment {
         };
     }
 
+    /**
+     * Dialog creator.
+     * @param view View
+     * @param packageName name of package
+     * @param sportContext name of sport
+     * @param activityCreateCompetition path to activity for create and edit competition
+     * @param packageService path to package exported service
+     * @return AddCompetitionDialog
+     */
     public static AddCompetitionDialog newInstance(View view, String packageName, String sportContext, String activityCreateCompetition, String packageService) {
         AddCompetitionDialog fragment = new AddCompetitionDialog();
         fragment.view = view;

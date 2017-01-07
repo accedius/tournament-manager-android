@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
- * Created by Vaclav on 12. 3. 2016.
+ * Adapter for displaying list of Player.
  */
 public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.PlayerViewHolder> {
     @Override
@@ -21,8 +21,13 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
         return holder;
     }
 
-    public PlayerAdapter() {};
-
+    /**
+     * On click listener setter to be overridden, when necessary.
+     * @param v View
+     * @param playerId id of Player
+     * @param position position in list
+     * @param name Player name
+     */
     protected void setOnClickListeners(View v, long playerId, int position, String name){}
 
     @Override
@@ -39,6 +44,9 @@ public class PlayerAdapter extends AbstractListAdapter<Player, PlayerAdapter.Pla
         return data.size();
     }
 
+    /**
+     * View holder for Player.
+     */
     public class PlayerViewHolder extends RecyclerView.ViewHolder{
         public TextView name, email;
         public View wholeView;

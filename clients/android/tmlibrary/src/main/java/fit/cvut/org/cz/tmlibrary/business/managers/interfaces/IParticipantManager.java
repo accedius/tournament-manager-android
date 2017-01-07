@@ -5,7 +5,7 @@ import java.util.List;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**
- * Created by kevin on 30.11.2016.
+ * Interface for Participant Manager.
  */
 public interface IParticipantManager extends IManager<Participant> {
     /**

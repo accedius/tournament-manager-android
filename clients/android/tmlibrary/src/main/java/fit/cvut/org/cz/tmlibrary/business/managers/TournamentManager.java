@@ -23,7 +23,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 30. 3. 2016.
+ * Tournament Manager.
  */
 abstract public class TournamentManager extends BaseManager<Tournament> implements ITournamentManager {
     @Override

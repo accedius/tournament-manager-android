@@ -13,12 +13,16 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tournamentmanager.data.entities.Setting;
 
 /**
- * Created by Vaclav on 25. 3. 2016.
+ * DAOFactory for Core module.
  */
 public class CoreDAOFactory extends DAOFactory {
     private static final String DBName = "TMCore";
     private static final int DBVersion = 1;
 
+    /**
+     * CoreDAOFactory constructor.
+     * @param context application context
+     */
     public CoreDAOFactory(Context context) {
         super(context, DBName, null, DBVersion);
     }

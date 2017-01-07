@@ -4,7 +4,7 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISerializingS
 import fit.cvut.org.cz.tmlibrary.data.interfaces.ISharedEntity;
 
 /**
- * Created by kevin on 21.10.2016.
+ * Serializing strategy used for export.
  */
 public class FileSerializingStrategy implements ISerializingStrategy {
     @Override

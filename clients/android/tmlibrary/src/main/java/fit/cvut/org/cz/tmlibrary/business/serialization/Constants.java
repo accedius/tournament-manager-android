@@ -3,9 +3,8 @@ package fit.cvut.org.cz.tmlibrary.business.serialization;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
 /**
- * Created by kevin on 29.12.2016.
+ * Constants for business layer.
  */
-
 public class Constants {
     public static final String SPORT = "Sport";
     public static final String COMPETITION = "Competition";

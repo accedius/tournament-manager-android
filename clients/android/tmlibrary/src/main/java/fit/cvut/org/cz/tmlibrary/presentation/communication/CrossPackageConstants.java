@@ -4,7 +4,7 @@ package fit.cvut.org.cz.tmlibrary.presentation.communication;
  * Created by Vaclav on 10. 4. 2016.
  */
 public class CrossPackageConstants {
-    public static final String EXTRA_SPORT_SERVICE = "extra_sport_service";
+    public static final String EXTRA_PACKAGE_SERVICE = "extra_package_service";
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_STATS = "extra_stats";
     public static final String EXTRA_COMPETITION = "extra_competition";

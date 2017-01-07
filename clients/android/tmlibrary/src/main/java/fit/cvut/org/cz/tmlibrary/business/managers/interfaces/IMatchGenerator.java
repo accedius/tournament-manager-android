@@ -6,7 +6,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 
 /**
- * Created by Vaclav on 29. 3. 2016.
+ * Interface for Matches generating.
  */
 public interface IMatchGenerator {
     /**

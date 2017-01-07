@@ -10,20 +10,32 @@ import android.support.v7.app.AlertDialog;
 import fit.cvut.org.cz.tournamentmanager.R;
 
 /**
- * Created by kevin on 14. 4. 2016.
+ * Dialog for choose column for order of Players.
  */
 public class SortingPlayersDialog extends DialogFragment {
     private DialogInterface.OnClickListener listener = null;
 
+    /**
+     * DialogInterface.OnClickListener getter.
+     * @return on click listener
+     */
     protected DialogInterface.OnClickListener supplyListener() { return listener;}
 
+    /**
+     * SortingPlayersDialog creator
+     * @return SortingPlayersDialog instance
+     */
     public static SortingPlayersDialog newInstance() {
         SortingPlayersDialog fragment = new SortingPlayersDialog();
         return fragment;
     }
 
-    public void setListener(DialogInterface.OnClickListener l) {
-        listener = l;
+    /**
+     * OnClickListener setter
+     * @param onClickListener listener
+     */
+    public void setListener(DialogInterface.OnClickListener onClickListener) {
+        listener = onClickListener;
     }
 
     @NonNull

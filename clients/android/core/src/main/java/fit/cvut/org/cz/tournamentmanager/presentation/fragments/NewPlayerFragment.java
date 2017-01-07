@@ -9,7 +9,7 @@ import fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstan
 import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 
 /**
- * Created by kevin on 7. 4. 2016.
+ * Fragment for create or edit Player.
  */
 public class NewPlayerFragment extends fit.cvut.org.cz.tmlibrary.presentation.fragments.NewPlayerFragment {
     @Override

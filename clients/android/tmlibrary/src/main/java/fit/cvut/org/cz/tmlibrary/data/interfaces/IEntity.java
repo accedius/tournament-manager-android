@@ -1,8 +1,12 @@
 package fit.cvut.org.cz.tmlibrary.data.interfaces;
 
 /**
- * Created by kevin on 7.10.2016.
+ * IEntity interface.
  */
 public interface IEntity {
+    /**
+     * Get entity id.
+     * @return id of entity
+     */
     long getId();
 }

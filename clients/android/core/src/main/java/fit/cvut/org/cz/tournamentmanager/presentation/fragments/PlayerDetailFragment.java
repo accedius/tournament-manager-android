@@ -21,12 +21,21 @@ import fit.cvut.org.cz.tournamentmanager.presentation.services.PlayerService;
 import static fit.cvut.org.cz.tournamentmanager.presentation.communication.ExtraConstants.EXTRA_PLAYER;
 
 /**
- * Created by atgot_000 on 1. 4. 2016.
+ * Fragment for display Player detail.
  */
 public class PlayerDetailFragment extends AbstractDataFragment {
     private TextView email, note;
+    /**
+     * Id of Player.
+     */
     protected long playerId;
 
+    /**
+     * PlayerDetailFragment creator.
+     * @param id id of Player
+     * @param clazz class of fragment
+     * @return PlayerDetailFragment instance
+     */
     public static PlayerDetailFragment newInstance(long id, Class<? extends PlayerDetailFragment> clazz){
         PlayerDetailFragment fragment = null;
         try {

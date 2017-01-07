@@ -6,7 +6,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 /**
- * Created by Vaclav on 13. 4. 2016.
+ * Interface for Team Manager.
  */
 public interface ITeamManager extends IManager<Team> {
     /**

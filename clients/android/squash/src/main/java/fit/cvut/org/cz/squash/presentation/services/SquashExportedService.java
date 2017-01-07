@@ -50,12 +50,12 @@ public class SquashExportedService extends IntentService {
 
         switch (action){
             case CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS: {
-                Intent res = new Intent(package_name + action);
                 List<Competition> competitions = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getAll();
                 for (Competition competition : competitions) {
                     competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
                 }
 
+                Intent res = new Intent(package_name + action);
                 res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.TYPE_COMPETITION);
                 res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sport_context);

@@ -7,7 +7,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 /**
- * Created by kevin on 6.11.2016.
+ * Interface for Competition Manager.
  */
 public interface ICompetitionManager extends IManager<Competition> {
     /**
