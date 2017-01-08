@@ -50,7 +50,7 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
             Collections.sort(stats, new Comparator<Standing>() {
                 @Override
                 public int compare(Standing ls, Standing rs) {
-                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                    return (int) (100D*ls.getStat(stat) - 100D*rs.getStat(stat));
                 }
             });
         } else {
@@ -64,7 +64,7 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
                 Collections.sort(stats, new Comparator<Standing>() {
                     @Override
                     public int compare(Standing ls, Standing rs) {
-                        return (int) (rs.getStat(stat) - ls.getStat(stat));
+                        return (int) (100D*rs.getStat(stat) - 100D*ls.getStat(stat));
                     }
                 });
             }

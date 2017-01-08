@@ -35,9 +35,9 @@
     <string name="legend_L">P: Prohry</string>
     <string name="legend_D">R: Remízy</string>
     <string name="legend_WAVG">V%: Vítězství v procentech</string>
-    <string name="legend_S">Sety: Skóre setů (vyhrané : prohrané)</string>
+    <string name="legend_S">Sety: Celkové skóre setů (vyhrané : prohrané)</string>
     <string name="legend_SAVG">S%: Vyhrané sety v procentech</string>
-    <string name="legend_B">Míčky: Skóre míčků (vyhrané : prohrané)</string>
+    <string name="legend_B">Míčky: Celkové skóre míčků (vyhrané : prohrané)</string>
     <string name="legend_BAVG">M%: Vyhrané míčky v procentech</string>
     <string name="legend_note">Pro zobrazení více statistik otočte na šířku</string>
     <string name="close_help">Zavřít nápovědu</string>

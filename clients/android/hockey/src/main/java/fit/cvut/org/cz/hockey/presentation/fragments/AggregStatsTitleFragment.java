@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,12 +44,15 @@ public class AggregStatsTitleFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_stats_title, container, false);
         setOrderingListeners(v);
+        setDefaultOrder(v);
         return v;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         Long competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
         Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
@@ -63,6 +68,12 @@ public class AggregStatsTitleFragment extends Fragment {
                     .add(R.id.stats_list, statsFragment)
                     .commit();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_help, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
@@ -119,7 +130,6 @@ public class AggregStatsTitleFragment extends Fragment {
             columns.put(Constants.TEAM_POINTS, (TextView) v.findViewById(R.id.stats_team_points));
             columns.put(Constants.GOALS_AVG, (TextView) v.findViewById(R.id.stats_goals_avg));
             columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
-            columns.put(Constants.PLUS_MINUS_AVG, (TextView) v.findViewById(R.id.stats_plus_minus_avg));
             columns.put(Constants.TEAM_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
         }
         return columns;

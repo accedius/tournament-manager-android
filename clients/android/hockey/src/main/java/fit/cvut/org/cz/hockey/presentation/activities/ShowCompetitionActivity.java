@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
+import fit.cvut.org.cz.hockey.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyCompetitionOverviewFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTournamentsListFragment;
@@ -117,6 +118,10 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                             }
                         });
                 dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
+                break;
+            case fit.cvut.org.cz.tmlibrary.R.id.action_help:
+                StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
+                statsHelpDialog.show(getSupportFragmentManager(), "HELP");
                 break;
         }
 

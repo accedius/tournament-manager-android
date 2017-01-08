@@ -179,6 +179,7 @@ public class Standing implements Parcelable {
 
     public double getStat(String key) {
         switch (key) {
+            case Constants.MATCHES: return getMatches();
             case Constants.POINTS: return getPoints();
             case Constants.WINS_TOTAL: return getTotalWins();
             case Constants.LOSSES_TOTAL: return getTotalLosses();
@@ -189,6 +190,7 @@ public class Standing implements Parcelable {
             case Constants.LOSSES_OT: return getLossesOt();
             case Constants.WINS_SO: return getWinsSo();
             case Constants.LOSSES_SO: return getLossesSo();
+            case Constants.SCORE: return getGoalsGiven()-getGoalsReceived();
             default: return 0;
         }
     }

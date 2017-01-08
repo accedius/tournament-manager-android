@@ -25,31 +25,33 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         Standing stats = data.get(position);
         holder.name.setText(stats.getName());
         if (holder.Wot == null) {
-            holder.W.setText(Long.toString(stats.getTotalWins()));
-            holder.L.setText(Long.toString(stats.getTotalLosses()));
+            holder.W.setText(Integer.toString(stats.getTotalWins()));
+            holder.L.setText(Integer.toString(stats.getTotalLosses()));
         }
-        holder.D.setText(Long.toString(stats.getDraws()));
-        holder.SCORE.setText(Long.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
-        holder.P.setText(Long.toString(stats.getPoints()));
+        holder.D.setText(Integer.toString(stats.getDraws()));
+        holder.SCORE.setText(Integer.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
+        holder.GP.setText(Integer.toString(stats.getMatches()));
+        holder.P.setText(Integer.toString(stats.getPoints()));
 
         if (holder.Wot != null) {
-            holder.W.setText(Long.toString(stats.getWins()));
-            holder.Wot.setText(Long.toString(stats.getWinsOt()));
-            holder.Wso.setText(Long.toString(stats.getWinsSo()));
-            holder.L.setText(Long.toString(stats.getLosses()));
-            holder.Lot.setText(Long.toString(stats.getLossesOt()));
-            holder.Lso.setText(Long.toString(stats.getLossesSo()));
+            holder.W.setText(Integer.toString(stats.getWins()));
+            holder.Wot.setText(Integer.toString(stats.getWinsOt()));
+            holder.Wso.setText(Integer.toString(stats.getWinsSo()));
+            holder.L.setText(Integer.toString(stats.getLosses()));
+            holder.Lot.setText(Integer.toString(stats.getLossesOt()));
+            holder.Lso.setText(Integer.toString(stats.getLossesSo()));
         }
     }
 
     public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, W, Wot, Wso, L, Lot, Lso, D, SCORE, P;
+        TextView name, GP, W, Wot, Wso, L, Lot, Lso, D, SCORE, P;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
+            GP = (TextView) itemView.findViewById(R.id.as_games_played);
             W = (TextView) itemView.findViewById(R.id.as_wins);
             Wot = (TextView) itemView.findViewById(R.id.as_wins_ot);
             Wso = (TextView) itemView.findViewById(R.id.as_wins_so);

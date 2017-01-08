@@ -24,11 +24,10 @@
     <string name="p">P</string>
     <string name="pmp">+/-</string>
     <string name="tp">TP</string>
-    <string name="ag">AvgG</string>
-    <string name="ap">AvgP</string>
+    <string name="ag">Avg. G</string>
+    <string name="ap">Avg. P</string>
     <string name="score">Score</string>
-    <string name="apmp">Avg+/-</string>
-    <string name="atp">AvgTP</string>
+    <string name="atp">Avg. TP</string>
     <string name="so">so</string>
     <string name="ot">ot</string>
 
@@ -46,4 +45,27 @@
     <string name="lso">L so</string>
     <string name="wot">W ot</string>
     <string name="wso">W so</string>
+
+    <string name="legend">Stats legend:</string>
+    <string name="legend_GP">GP: Games played</string>
+    <string name="legend_P">P: Points</string>
+    <string name="legend_SP">P: Points</string>
+    <string name="legend_TW">W: Wins</string>
+    <string name="legend_W">W: Wins in normal time</string>
+    <string name="legend_Wot">W: Wins in overtime</string>
+    <string name="legend_Wso">W: Wins in shootouts</string>
+    <string name="legend_TL">L: Losses</string>
+    <string name="legend_L">L: Losses in normal time</string>
+    <string name="legend_Lot">L: Losses in overtime</string>
+    <string name="legend_Lso">L: Losses in shootouts</string>
+    <string name="legend_D">D: Draws</string>
+    <string name="legend_G">G: Goals scored</string>
+    <string name="legend_A">A: Assists</string>
+    <string name="legend_S">S: Saves</string>
+    <string name="legend_TP">TP: Team points</string>
+    <string name="legend_PM">+/-: Plus minus points</string>
+    <string name="legend_GAVG">Avg G: Average goals per match</string>
+    <string name="legend_PAVG">Avg P: Average points per match</string>
+    <string name="legend_TPAVG">Avg TP: Average team points per match</string>
+    <string name="legend_note">Get more statistics by change orientation to landscape</string>
 </resources>

@@ -19,6 +19,8 @@ import fit.cvut.org.cz.hockey.R;
 import fit.cvut.org.cz.hockey.presentation.HockeyPackage;
 import fit.cvut.org.cz.hockey.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.hockey.presentation.dialogs.GenerateRostersDialog;
+import fit.cvut.org.cz.hockey.presentation.dialogs.StandingsHelpDialog;
+import fit.cvut.org.cz.hockey.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.hockey.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyMatchesListWrapperFragment;
 import fit.cvut.org.cz.hockey.presentation.fragments.HockeyTeamsListFragment;
@@ -47,6 +49,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     private DefaultViewPagerAdapter adapter;
     private String sportContext;
+    private int selectedPage = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
             @Override
             public void onPageSelected(int position) {
+                selectedPage = position;
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
                 if (fr != null) {
                     if (fr instanceof AbstractDataFragment)
@@ -152,6 +156,15 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
             }
+            case fit.cvut.org.cz.tmlibrary.R.id.action_help:
+                if (selectedPage == 1) {
+                    StandingsHelpDialog standingsHelpDialog = StandingsHelpDialog.newInstance();
+                    standingsHelpDialog.show(getSupportFragmentManager(), "HELP");
+                } else if (selectedPage == 2) {
+                    StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
+                    statsHelpDialog.show(getSupportFragmentManager(), "HELP");
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);

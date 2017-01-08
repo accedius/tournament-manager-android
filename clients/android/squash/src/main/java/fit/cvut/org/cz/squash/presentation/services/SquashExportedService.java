@@ -112,19 +112,15 @@ public class SquashExportedService extends IntentService {
 
                 ArrayList<PlayerAggregatedStats> statsForExport = new ArrayList<>();
                 PlayerAggregatedStats exportStat = new PlayerAggregatedStats();
+                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.games_played), Integer.toString(stat.games_played), true));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.wins), Integer.toString(stat.won), true));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.loses), Integer.toString(stat.lost), true));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.draws), Integer.toString(stat.draws), true));
                 exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.winsPer), String.format("%.2f", stat.matchWinRate), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsWon), Integer.toString(stat.setsWon), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsLost), Integer.toString(stat.setsLost), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsWonAvg), String.format("%.2f", stat.setsWonAvg), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsLostAvg), String.format("%.2f", stat.setsLostAvg), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsPer), String.format("%.2f", stat.setsWinRate), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsWon), String.format("%d", stat.ballsWon), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsLost), String.format("%d", stat.ballsLost), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsWonAvg), String.format("%.2f", stat.ballsWonAvg), false));
-                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsLostAvg), String.format("%.2f", stat.ballsLostAvg), false));
+                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsScore), Integer.toString(stat.setsWon)+":"+Integer.toString(stat.setsLost), false));
+                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.setsPer), String.format("%.2f", stat.getSetsPer()), false));
+                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsScore), Integer.toString(stat.ballsWon)+":"+Integer.toString(stat.ballsLost), false));
+                exportStat.addRecord(new PlayerAggregatedStatsRecord(getResources().getString(R.string.ballsPer), String.format("%.2f", stat.getBallsPer()), false));
                 statsForExport.add(exportStat);
 
                 Intent result = new Intent(sport_context + package_name + action);

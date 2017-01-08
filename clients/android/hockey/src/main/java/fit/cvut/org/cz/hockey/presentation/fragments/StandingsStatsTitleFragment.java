@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class StandingsStatsTitleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         sf = StandingsFragment.newInstance(tournamentID);
@@ -53,6 +56,12 @@ public class StandingsStatsTitleFragment extends Fragment {
                     .add(R.id.stats_list, sf)
                     .commit();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_help, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
@@ -72,7 +81,9 @@ public class StandingsStatsTitleFragment extends Fragment {
 
     private void setOrderingListeners(View v) {
         final HashMap<String, TextView> columns = new HashMap<>();
+        columns.put(Constants.MATCHES, (TextView)v.findViewById(R.id.standings_games_played));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.standings_points));
+        columns.put(Constants.SCORE, (TextView)v.findViewById(R.id.standings_score));
         if (v.findViewById(R.id.standings_total_wins) != null) {
             columns.put(Constants.WINS_TOTAL, (TextView) v.findViewById(R.id.standings_total_wins));
             columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.standings_draws));

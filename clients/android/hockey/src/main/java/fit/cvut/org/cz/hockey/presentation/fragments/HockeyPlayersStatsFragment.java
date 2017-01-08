@@ -103,7 +103,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
-                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                    return (int) (100D*ls.getStat(stat) - 100D*rs.getStat(stat));
                 }
             });
         } else {
@@ -114,7 +114,7 @@ public class HockeyPlayersStatsFragment extends AbstractListFragment<AggregatedS
             Collections.sort(stats, new Comparator<AggregatedStatistics>() {
                 @Override
                 public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
-                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                    return (int) (100D*rs.getStat(stat) - 100D*ls.getStat(stat));
                 }
             });
         }

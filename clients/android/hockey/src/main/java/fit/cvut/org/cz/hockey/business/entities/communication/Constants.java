@@ -16,9 +16,9 @@ public class Constants {
     public static final String PLUS_MINUS = "+-";
     public static final String SAVES = "s";
     public static final String TEAM_POINTS = "tp";
+    public static final String SCORE= "score";
     public static final String GOALS_AVG = "gavg";
     public static final String POINTS_AVG= "pavg";
-    public static final String PLUS_MINUS_AVG = "+-avg";
     public static final String TEAM_POINTS_AVG = "tpavg";
 
     public static final String WINS_TOTAL = "tw";

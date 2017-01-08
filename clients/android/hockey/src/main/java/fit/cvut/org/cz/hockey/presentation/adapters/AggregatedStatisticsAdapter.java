@@ -37,7 +37,6 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
             holder.AG.setText(String.format("%.2f", stats.getAvgGoals()));
             holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
-            holder.APMP.setText(String.format("%.2f", stats.getAvgPlusMinus()));
             holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), stats.getPlayerName());
@@ -52,7 +51,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, G, A, P, PMP, S, W, D, L, TP, AG, AP, APMP, ATP;
+        TextView name, GP, G, A, P, PMP, S, W, D, L, TP, AG, AP, ATP;
         public View wholeView;
 
         public AggregatedStatisticsViewHolder(View itemView) {
@@ -72,7 +71,6 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
             TP = (TextView) itemView.findViewById(R.id.as_team_points);
             AG = (TextView) itemView.findViewById(R.id.as_avg_g);
             AP = (TextView) itemView.findViewById(R.id.as_avg_p);
-            APMP = (TextView) itemView.findViewById(R.id.as_avg_pmp);
             ATP = (TextView) itemView.findViewById(R.id.as_avg_tp);
             wholeView = itemView;
         }
