@@ -133,4 +133,5 @@
     <string name="email_exists_error">Tuto e-mailovou adresu již někdo používá!</string>
     <string name="no_sport_found">Sport nenalezen</string>
     <string name="no_sport_description">Nebyly nalezeny žádné sporty. Začněte používat Tournament Manager instalací modulu.</string>
+    <string name="help">Nápověda</string>
 </resources>

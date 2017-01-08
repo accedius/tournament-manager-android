@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.squash.presentation.activities;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
+import fit.cvut.org.cz.squash.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashCompetitionOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StatsListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.TournamentsListFragment;
@@ -119,6 +121,10 @@ public class CompetitionDetailActivity extends AbstractTabActivity {
                             }
                         });
                 dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
+                break;
+            case fit.cvut.org.cz.tmlibrary.R.id.action_help:
+                StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
+                statsHelpDialog.show(getSupportFragmentManager(), "HELP");
                 break;
         }
 

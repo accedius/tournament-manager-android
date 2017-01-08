@@ -10,6 +10,9 @@
     <string name="loses">L</string>
     <string name="draws">D</string>
     <string name="winsPer">W%</string>
+    <string name="ballsPer">B%</string>
+    <string name="setsScore">Sets</string>
+    <string name="ballsScore">Balls</string>
     <string name="setsWon">SW</string>
     <string name="setsLost">SL</string>
     <string name="setsWonAvg">SW AVG</string>
@@ -40,4 +43,17 @@
     <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
     <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>
+    <string name="legend">Stats legend:</string>
+    <string name="legend_GP">GP: Games played</string>
+    <string name="legend_P">P: Points</string>
+    <string name="legend_W">W: Wins</string>
+    <string name="legend_L">L: Losses</string>
+    <string name="legend_D">D: Draws</string>
+    <string name="legend_WAVG">W%: Games won percentage</string>
+    <string name="legend_S">SW: Sets score (won : lost)</string>
+    <string name="legend_SAVG">S%: Sets won percentage</string>
+    <string name="legend_B">BL: Balls score (won : lost)</string>
+    <string name="legend_BAVG">B%: Balls won percentage</string>
+    <string name="legend_note">Get more statistics by change orientation to landscape</string>
+    <string name="close_help">Close help</string>
 </resources>

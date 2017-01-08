@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -119,7 +121,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
-                    return (int) (ls.getStat(stat) - rs.getStat(stat));
+                    return (int) (100D*ls.getStat(stat) - 100D*rs.getStat(stat));
                 }
             });
         } else {
@@ -130,7 +132,7 @@ public class AggregatedStatsListFragment extends AbstractListFragment<SAggregate
             Collections.sort(stats, new Comparator<SAggregatedStats>() {
                 @Override
                 public int compare(SAggregatedStats ls, SAggregatedStats rs) {
-                    return (int) (rs.getStat(stat) - ls.getStat(stat));
+                    return (int) (100D*rs.getStat(stat) - 100D*ls.getStat(stat));
                 }
             });
         }

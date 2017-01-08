@@ -19,8 +19,6 @@ import fit.cvut.org.cz.squash.presentation.fragments.SetsFragment;
  * Created by Vaclav on 11. 4. 2016.
  */
 public class AdapterDialog extends DialogFragment {
-    public AdapterDialog(){}
-
     public static AdapterDialog newInstance(int position, int option, String name){
         AdapterDialog fragment = new AdapterDialog();
         Bundle args = new Bundle();

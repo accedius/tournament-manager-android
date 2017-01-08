@@ -13,46 +13,46 @@
             android:orientation="horizontal">
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text="@string/name"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="left"
                 android:id="@+id/tv_name_label"
-                android:layout_weight="3"/>
+                android:text="@string/name"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:id="@+id/tv_games_played_label"
                 android:text="@string/games_played"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:id="@+id/tv_points_label"
                 android:text="@string/points"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:text="@string/wins"
                 android:id="@+id/tv_wins_label"
-                android:layout_weight="2" />
+                android:text="@string/wins"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:text="@string/loses"
                 android:id="@+id/tv_losses_label"
-                android:layout_weight="2" />
+                android:text="@string/loses"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:text="@string/draws"
                 android:id="@+id/tv_draws_label"
-                android:layout_weight="2" />
+                android:text="@string/draws"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -102,7 +102,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container"
+        android:id="@+id/fragment_container2"
         android:layout_below="@id/boundary"/>
 
 </RelativeLayout>

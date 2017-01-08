@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -47,10 +49,17 @@ public class StatsListWrapperFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getChildFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             statsFragment = AggregatedStatsListFragment.newInstance(getArguments().getLong(ExtraConstants.EXTRA_ID), getArguments().getString(ExtraConstants.EXTRA_ACTION));
             getChildFragmentManager().beginTransaction().add(R.id.fragment_container, statsFragment).commit();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_help, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
@@ -101,15 +110,10 @@ public class StatsListWrapperFragment extends Fragment {
         columns.put(Constants.DRAWS, (TextView)v.findViewById(R.id.tv_draws_label));
         if (v.findViewById(R.id.tv_won_per_label) != null) {
             columns.put(Constants.MATCH_WIN_RATE, (TextView)v.findViewById(R.id.tv_won_per_label));
-            columns.put(Constants.SETS_WON, (TextView) v.findViewById(R.id.tv_sets_won_label));
-            columns.put(Constants.SETS_LOST, (TextView) v.findViewById(R.id.tv_sets_lost_label));
-            columns.put(Constants.SETS_WON_AVG, (TextView) v.findViewById(R.id.tv_sets_won_avg_label));
-            columns.put(Constants.SETS_LOST_AVG, (TextView) v.findViewById(R.id.tv_sets_lost_avg_label));
-            columns.put(Constants.SETS_WIN_RATE, (TextView) v.findViewById(R.id.tv_sets_per_label));
-            columns.put(Constants.BALLS_WON, (TextView) v.findViewById(R.id.tv_balls_won_label));
-            columns.put(Constants.BALLS_LOST, (TextView) v.findViewById(R.id.tv_balls_lost_label));
-            columns.put(Constants.BALLS_WON_AVG, (TextView) v.findViewById(R.id.tv_balls_won_avg_label));
-            columns.put(Constants.BALLS_LOST_AVG, (TextView) v.findViewById(R.id.tv_balls_lost_avg_label));
+            columns.put(Constants.SETS, (TextView) v.findViewById(R.id.tv_sets_score_label));
+            columns.put(Constants.SETS_PER, (TextView) v.findViewById(R.id.tv_sets_per_label));
+            columns.put(Constants.BALLS, (TextView) v.findViewById(R.id.tv_balls_score_label));
+            columns.put(Constants.BALLS_PER, (TextView) v.findViewById(R.id.tv_balls_per_label));
         }
         return columns;
     }

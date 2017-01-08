@@ -19,6 +19,7 @@ import fit.cvut.org.cz.squash.R;
 import fit.cvut.org.cz.squash.presentation.SquashPackage;
 import fit.cvut.org.cz.squash.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.squash.presentation.dialogs.GenerateRostersDialog;
+import fit.cvut.org.cz.squash.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashMatchesListWrapperFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.SquashTournamentOverviewFragment;
 import fit.cvut.org.cz.squash.presentation.fragments.StandingsWrapperFragment;
@@ -164,6 +165,10 @@ public class TournamentDetailActivity extends AbstractTabActivity {
                 dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 return true;
             }
+            case fit.cvut.org.cz.tmlibrary.R.id.action_help:
+                StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
+                statsHelpDialog.show(getSupportFragmentManager(), "HELP");
+                break;
         }
 
         return super.onOptionsItemSelected(item);

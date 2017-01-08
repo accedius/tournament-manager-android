@@ -12,15 +12,10 @@ public class Constants {
 
     public static final String MATCHES = "gp";
     public static final String MATCH_WIN_RATE = "w%";
-    public static final String SETS_WON = "sw";
-    public static final String SETS_LOST = "sl";
-    public static final String SETS_WON_AVG = "swavg";
-    public static final String SETS_LOST_AVG = "slavg";
-    public static final String SETS_WIN_RATE = "s%";
-    public static final String BALLS_WON = "bw";
-    public static final String BALLS_LOST = "bl";
-    public static final String BALLS_WON_AVG = "bwavg";
-    public static final String BALLS_LOST_AVG = "blavg";
+    public static final String BALLS_PER = "b%";
+    public static final String SETS_PER = "s%";
+    public static final String BALLS = "balls";
+    public static final String SETS = "sets";
 
     public static final String ORDER_DESC = "DESC";
     public static final String ORDER_ASC = "ASC";

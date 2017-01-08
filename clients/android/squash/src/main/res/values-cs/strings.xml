@@ -28,4 +28,20 @@
     <string name="generate_by_sets">Generovat podle setů</string>
     <string name="match_same_participants_error">Domácí a hostující účastník nesmí být stejní!</string>
     <string name="sets_invalid_values">Některé sety mají nevyplněné hodnoty</string>
+    <string name="legend">Legenda statistik:</string>
+    <string name="legend_GP">Z: Zápasy</string>
+    <string name="legend_P">B: Body</string>
+    <string name="legend_W">V: Výhry</string>
+    <string name="legend_L">P: Prohry</string>
+    <string name="legend_D">R: Remízy</string>
+    <string name="legend_WAVG">V%: Vítězství v procentech</string>
+    <string name="legend_S">Sety: Skóre setů (vyhrané : prohrané)</string>
+    <string name="legend_SAVG">S%: Vyhrané sety v procentech</string>
+    <string name="legend_B">Míčky: Skóre míčků (vyhrané : prohrané)</string>
+    <string name="legend_BAVG">M%: Vyhrané míčky v procentech</string>
+    <string name="legend_note">Pro zobrazení více statistik otočte na šířku</string>
+    <string name="close_help">Zavřít nápovědu</string>
+    <string name="ballsPer">M%</string>
+    <string name="ballsScore">Míčky</string>
+    <string name="setsScore">Sety</string>
 </resources>

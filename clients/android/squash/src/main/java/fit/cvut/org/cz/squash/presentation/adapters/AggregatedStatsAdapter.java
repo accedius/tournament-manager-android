@@ -30,17 +30,12 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
         holder.W.setText(Integer.toString(stats.won));
         holder.L.setText(Integer.toString(stats.lost));
         holder.D.setText(Integer.toString(stats.draws));
-        if (holder.SW != null) {
-            holder.SW.setText(Integer.toString(stats.setsWon));
-            holder.SL.setText(Integer.toString(stats.setsLost));
-            holder.BW.setText(Integer.toString(stats.ballsWon));
-            holder.BL.setText(Integer.toString(stats.ballsLost));
-            holder.SWAVG.setText(String.format("%.2f", stats.setsWonAvg));
-            holder.SLAVG.setText(String.format("%.2f", stats.setsLostAvg));
-            holder.BWAVG.setText(String.format("%.2f", stats.ballsWonAvg));
-            holder.BLAVG.setText(String.format("%.2f", stats.ballsLostAvg));
+        if (holder.WPER != null) {
             holder.WPER.setText(String.format("%.2f", stats.matchWinRate));
-            holder.SWPER.setText(String.format("%.2f", stats.setsWinRate));
+            holder.S.setText(Integer.toString(stats.setsWon)+":"+Integer.toString(stats.setsLost));
+            holder.SPER.setText(String.format("%.2f", stats.getSetsPer()));
+            holder.B.setText(Integer.toString(stats.ballsWon)+":"+Integer.toString(stats.ballsLost));
+            holder.BPER.setText(String.format("%.2f", stats.getBallsPer()));
         }
         setOnClickListeners(holder.wholeView, stats, position, stats.playerName);
     }
@@ -48,7 +43,7 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
     public class AggregatedStatsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         public View wholeView;
-        TextView name, GP, P, W, L, D, SW, SL, SWAVG, SLAVG, BW, BL, BWAVG, BLAVG, WPER, SWPER;
+        TextView name, GP, P, W, L, D, WPER, S, SPER, B, BPER;
 
         public AggregatedStatsViewHolder(View itemView) {
             super(itemView);
@@ -60,16 +55,11 @@ public class AggregatedStatsAdapter extends AbstractListAdapter<SAggregatedStats
             W = (TextView) itemView.findViewById(R.id.tv_won);
             L = (TextView) itemView.findViewById(R.id.tv_lost);
             D = (TextView) itemView.findViewById(R.id.tv_draws);
-            SW = (TextView) itemView.findViewById(R.id.tv_sets_won);
-            SL = (TextView) itemView.findViewById(R.id.tv_sets_lost);
-            SWAVG = (TextView) itemView.findViewById(R.id.tv_sets_won_avg);
-            SLAVG = (TextView) itemView.findViewById(R.id.tv_sets_lost_avg);
-            BW = (TextView) itemView.findViewById(R.id.tv_balls_won);
-            BL = (TextView) itemView.findViewById(R.id.tv_balls_lost);
-            BLAVG = (TextView) itemView.findViewById(R.id.tv_balls_lost_avg);
-            BWAVG = (TextView) itemView.findViewById(R.id.tv_balls_won_avg);
             WPER = (TextView) itemView.findViewById(R.id.tv_won_per);
-            SWPER = (TextView) itemView.findViewById(R.id.tv_sets_per);
+            S = (TextView) itemView.findViewById(R.id.tv_sets_score);
+            SPER = (TextView) itemView.findViewById(R.id.tv_sets_per);
+            B = (TextView) itemView.findViewById(R.id.tv_balls_score);
+            BPER = (TextView) itemView.findViewById(R.id.tv_balls_per);
         }
     }
 }

@@ -90,17 +90,24 @@ public class SAggregatedStats implements Parcelable, IEntity {
             case Constants.LOSSES: return lost;
             case Constants.DRAWS: return draws;
             case Constants.MATCH_WIN_RATE: return matchWinRate;
-            case Constants.SETS_WON: return setsWon;
-            case Constants.SETS_LOST: return setsLost;
-            case Constants.SETS_WON_AVG: return setsWonAvg;
-            case Constants.SETS_LOST_AVG: return setsLostAvg;
-            case Constants.SETS_WIN_RATE: return setsWinRate;
-            case Constants.BALLS_WON: return ballsWon;
-            case Constants.BALLS_LOST: return ballsLost;
-            case Constants.BALLS_WON_AVG: return ballsWonAvg;
-            case Constants.BALLS_LOST_AVG: return ballsLostAvg;
+            case Constants.SETS_PER: return getSetsPer();
+            case Constants.BALLS_PER: return getBallsPer();
+            case Constants.BALLS: return ballsWon-ballsLost;
+            case Constants.SETS: return setsWon-setsLost;
             default: return 0;
         }
+    }
+
+    public double getBallsPer() {
+        if (ballsWon + ballsLost == 0)
+            return 0;
+        return (double)ballsWon/(ballsWon+ballsLost);
+    }
+
+    public double getSetsPer() {
+        if (setsWon + setsLost == 0)
+            return 0;
+        return (double)setsWon/(setsWon+setsLost);
     }
 
     public int getTotalSets() {

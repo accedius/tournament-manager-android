@@ -71,12 +71,32 @@ public class StandingItem implements Parcelable {
             case Constants.WINS: return wins;
             case Constants.LOSSES: return losses;
             case Constants.DRAWS: return draws;
-            case Constants.SETS_WON: return setsWon;
-            case Constants.SETS_LOST: return setsLost;
-            case Constants.BALLS_WON: return ballsWon;
-            case Constants.BALLS_LOST: return ballsLost;
+            case Constants.SETS: return setsWon-setsLost;
+            case Constants.MATCHES: return wins+losses+draws;
+            case Constants.MATCH_WIN_RATE: return getMatchPer();
+            case Constants.SETS_PER: return getSetsPer();
+            case Constants.BALLS_PER: return getBallsPer();
+            case Constants.BALLS: return ballsWon-ballsLost;
             default: return 0;
         }
+    }
+
+    public double getMatchPer() {
+        if (wins + losses == 0)
+            return 0;
+        return (double)wins/(wins+losses);
+    }
+
+    public double getBallsPer() {
+        if (ballsWon + ballsLost == 0)
+            return 0;
+        return (double)ballsWon/(ballsWon+ballsLost);
+    }
+
+    public double getSetsPer() {
+        if (setsWon + setsLost == 0)
+            return 0;
+        return (double)setsWon/(setsWon+setsLost);
     }
 
     public int getMatches() {
