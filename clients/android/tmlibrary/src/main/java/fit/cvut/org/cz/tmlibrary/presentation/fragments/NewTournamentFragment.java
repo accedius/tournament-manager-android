@@ -170,9 +170,9 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Bundle b = new Bundle();
-                    b.putInt("y", start.get(Calendar.YEAR));
-                    b.putInt("m", start.get(Calendar.MONTH));
-                    b.putInt("d", start.get(Calendar.DAY_OF_MONTH));
+                    b.putInt(ExtraConstants.EXTRA_YEAR, start.get(Calendar.YEAR));
+                    b.putInt(ExtraConstants.EXTRA_MONTH, start.get(Calendar.MONTH));
+                    b.putInt(ExtraConstants.EXTRA_DAY, start.get(Calendar.DAY_OF_MONTH));
                     DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
@@ -195,9 +195,9 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Bundle b = new Bundle();
-                    b.putInt("y", end.get(Calendar.YEAR));
-                    b.putInt("m", end.get(Calendar.MONTH));
-                    b.putInt("d", end.get(Calendar.DAY_OF_MONTH));
+                    b.putInt(ExtraConstants.EXTRA_YEAR, end.get(Calendar.YEAR));
+                    b.putInt(ExtraConstants.EXTRA_MONTH, end.get(Calendar.MONTH));
+                    b.putInt(ExtraConstants.EXTRA_DAY, end.get(Calendar.DAY_OF_MONTH));
                     DatePickerDialogFragment fragment = new DatePickerDialogFragment();
                     fragment.setArguments(b);
                     fragment.listener = new DatePickerDialog.OnDateSetListener() {
