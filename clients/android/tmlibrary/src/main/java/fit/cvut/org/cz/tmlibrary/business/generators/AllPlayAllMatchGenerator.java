@@ -17,8 +17,8 @@ public class AllPlayAllMatchGenerator implements IMatchGenerator {
         ArrayList<Match> matches = new ArrayList<>();
         int periods_number = participants.size() - (participants.size() + 1) % 2;
         int participants_even_number = participants.size() + participants.size() % 2;
-        boolean oddness = participants.size() % 2 == 1 ? true : false;
-        boolean round_oddness = round % 2 == 1 ? true : false;
+        boolean oddness = participants.size() % 2 == 1;
+        boolean round_oddness = round % 2 == 1;
 
         if (participants.size() <= 1)
             return matches;
@@ -31,9 +31,10 @@ public class AllPlayAllMatchGenerator implements IMatchGenerator {
         // each iteration generates one period
         int home_idx, away_idx;
         for (int period = 1; period <= periods_number; period++) {
+            boolean period_oddness = period % 2 == 1;
             // each iteration generates one match
             for (int j = 0; j < participants_even_number / 2; j++) {
-                if (round_oddness) {
+                if (round_oddness == period_oddness) {
                     home_idx = arr.get(j);
                     away_idx = arr.get(participants_even_number - 1 - j);
                 }
