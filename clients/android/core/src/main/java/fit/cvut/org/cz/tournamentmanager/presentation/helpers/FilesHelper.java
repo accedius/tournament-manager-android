@@ -30,6 +30,9 @@ public class FilesHelper {
      */
     public static boolean saveFile(String filename, String json) {
         if (isExternalStorageWritable()) {
+            File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            if (!folder.exists() && !folder.mkdirs())
+                return false;
             File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + filename + EXTENSION);
             try {
                 file.createNewFile();
@@ -67,8 +70,11 @@ public class FilesHelper {
     public static List<File> getFiles(String sportContext) {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         File directory = new File(path);
-        File [] allFiles = directory.listFiles();
         List<File> files = new ArrayList<>();
+        if (!directory.exists())
+            return files;
+
+        File [] allFiles = directory.listFiles();
         for (File f : allFiles) {
             if (!f.getName().endsWith(EXTENSION))
                 continue;
@@ -104,7 +110,10 @@ public class FilesHelper {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-            return sb.toString();
+            bufferedReader.close();
+            isr.close();
+            fis.close();
+            return sb.toString().replaceAll("\\s+","");
         } catch (FileNotFoundException e) {
             return null;
         } catch (IOException e) {
