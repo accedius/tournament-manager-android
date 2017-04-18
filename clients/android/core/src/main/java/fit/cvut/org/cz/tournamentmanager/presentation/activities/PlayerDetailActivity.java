@@ -11,10 +11,13 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
@@ -94,6 +97,8 @@ public class PlayerDetailActivity extends AbstractTabActivity {
             case R.id.action_edit:{
                 if (playerID == -1) break;
                 Intent intent = new Intent(this, CreatePlayerActivity.class);
+                ArrayList<Player> players = new ArrayList<>(new PackagePlayerManager(this).getAll());
+                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, players);
                 intent.putExtra(ExtraConstants.EXTRA_ID, playerID);
                 startActivity(intent);
                 break;
