@@ -30,15 +30,19 @@ public class CompetitionManager extends BaseManager<Competition> implements ICom
     @Override
     public boolean delete(long id) {
         try {
-            List<CompetitionPlayer> competitionPlayers = managerFactory.getDaoFactory()
-                    .getMyDao(CompetitionPlayer.class).queryForEq(DBConstants.cCOMPETITION_ID, id);
-            if (!competitionPlayers.isEmpty())
-                return false;
-
+            // delete tournaments
             List<Tournament> tournaments = managerFactory.getDaoFactory()
                     .getMyDao(Tournament.class).queryForEq(DBConstants.cCOMPETITION_ID, id);
-            if (!tournaments.isEmpty())
-                return false;
+            for (Tournament tournament : tournaments) {
+                managerFactory.getEntityManager(Tournament.class).delete(tournament.getId());
+            }
+
+            // delete competition players
+            Dao<CompetitionPlayer, Long> competitionPlayerDao = managerFactory.getDaoFactory().getMyDao(CompetitionPlayer.class);
+            List<CompetitionPlayer> competitionPlayers = competitionPlayerDao.queryForEq(DBConstants.cCOMPETITION_ID, id);
+            for (CompetitionPlayer competitionPlayer : competitionPlayers) {
+                competitionPlayerDao.deleteById(competitionPlayer.getId());
+            }
 
             managerFactory.getDaoFactory()
                     .getMyDao(Competition.class).deleteById(id);

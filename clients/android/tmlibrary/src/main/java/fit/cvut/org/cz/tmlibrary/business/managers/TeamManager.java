@@ -57,6 +57,12 @@ abstract public class TeamManager extends BaseManager<Team> implements ITeamMana
             }
             // Delete team
             managerFactory.getDaoFactory().getMyDao(Team.class).deleteById(id);
+
+            // Delete team players
+            List<TeamPlayer> teamPlayers = managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).queryForEq(DBConstants.cTEAM_ID, id);
+            for (TeamPlayer teamPlayer : teamPlayers) {
+                managerFactory.getDaoFactory().getMyDao(TeamPlayer.class).deleteById(teamPlayer.getId());
+            }
             return true;
         }
         catch (SQLException e) {

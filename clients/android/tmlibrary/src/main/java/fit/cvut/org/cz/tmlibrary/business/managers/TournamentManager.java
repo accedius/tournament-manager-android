@@ -34,16 +34,6 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
     @Override
     public boolean delete(long id) {
         try {
-            List<Team> teams = managerFactory.getDaoFactory()
-                    .getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
-            if (!teams.isEmpty())
-                return false;
-
-            List<TournamentPlayer> players = managerFactory.getDaoFactory()
-                    .getMyDao(TournamentPlayer.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
-            if (!players.isEmpty())
-                return false;
-
             managerFactory.getDaoFactory().getMyDao(Tournament.class).deleteById(id);
             return true;
         } catch (SQLException e) {

@@ -53,15 +53,36 @@ public class CompetitionDialog extends DialogFragment {
                         break;
                     }
                     case 2: {
-                        Intent intent = new Intent();
-                        intent.setClassName(packageName, packageService);
-                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
-                        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_DELETE_COMPETITION);
-                        intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
-                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
-                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
-                        getContext().startService(intent);
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        //Yes button clicked
+                                        Intent intent = new Intent();
+                                        intent.setClassName(packageName, packageService);
+                                        intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
+                                        intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_DELETE_COMPETITION);
+                                        intent.putExtra(CrossPackageConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
+                                        intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
+                                        intent.putExtra(CrossPackageConstants.EXTRA_ID, competitionId);
+                                        Dialog dialog  = (Dialog) dialogInterface;
+                                        dialog.getContext().startService(intent);
+                                        break;
+
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                                dialogInterface.dismiss();
+                            }
+                        };
                         dialog.dismiss();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage(getResources().getString(R.string.competition_delete))
+                                .setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
+                                .setNegativeButton(getResources().getString(R.string.no), dialogClickListener)
+                                .show();
                         break;
                     }
                 }

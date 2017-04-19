@@ -39,7 +39,11 @@
     <string name="period">Perioda</string>
     <string name="type">Typ</string>
     <string name="vs">vs.</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
 
+    <string name="competition_delete">Opravdu chcete odstranit danou soutěž včetně všech turnajů?</string>
+    <string name="tournament_delete">Opravdu chcete odstranit daný turnaj včetně všech týmů a zápasů?</string>
     <string name="competition_created">Soutěž vytvořena.</string>
     <string name="tournament_created">Turnaj vytvořen.</string>
     <string name="player_created">Hráč vytvořen.</string>
@@ -77,14 +81,14 @@
     <string name="overview">Přehled</string>
     <string name="tournaments">Turnaje</string>
     <string name="tournament_settings">Nastavení turnaje</string>
-    <string name="tournament_not_empty_error">Turnaj nelze smazat! Obsahuje zápasy, týmy nebo hráče.</string>
+    <string name="tournament_not_empty_error">Turnaj se nepodařilo odstranit! Zkuste to prosím později.</string>
     <string name="team_not_empty_error">Tým nelze smazat! Účastní se nějakého zápasu.</string>
     <string name="edit_stats">Upravit statistiky</string>
     <string name="player_not_empty_error">Hráče nelze smazat! Účastní se nějaké soutěže.</string>
     <string name="player_delete_from_tournament_error">Hráče nelze smazat! Účastní se nějakého zápasu nebo týmu.</string>
     <string name="player_delete_from_competition_error">Hráče nelze smazat! Účastní se nějakého turnaje, zápasu nebo týmu.</string>
     <string name="team_settings">Nastavení týmu</string>
-    <string name="competition_not_empty_error">Soutěž nelze smazat! Obsahuje nějaké turnaje nebo hráče.</string>
+    <string name="competition_not_empty_error">Soutěž se nepodařilo odstranit! Zkuste to prosím později.</string>
     <string name="failGenerateRosters">Soupisky nelze vygenerovat! Není dostatek týmů nebo již některé týmy mají hráče.</string>
     <string name="not_enough_teams_error">Není dostatek týmů!</string>
     <string name="add_player">Přidat hráče</string>
