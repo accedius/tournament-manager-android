@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -144,13 +146,24 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setRound(Integer.valueOf(String.valueOf(syncData.get(Constants.ROUND))));
 
         Gson gson = new Gson();
-        List<SetRowItem> sets = gson.fromJson(String.valueOf(syncData.get(SETS)), new TypeToken<List<SetRowItem>>(){}.getType());
+        String setsString = String.valueOf(syncData.get(SETS));
+        JsonReader setsJsonReader = new JsonReader(new StringReader(setsString.trim()));
+        setsJsonReader.setLenient(true);
+        List<SetRowItem> sets = gson.fromJson(setsJsonReader, new TypeToken<List<SetRowItem>>(){}.getType());
         entity.setSets(sets);
 
-        List<PlayerStat> homePlayers = gson.fromJson(String.valueOf(syncData.get(Constants.PLAYERS_HOME)), new TypeToken<List<PlayerStat>>(){}.getType());
+        // 2017-04-21 #116 Temporary fix of compatibility
+        String homePlayersString = String.valueOf(syncData.get(Constants.PLAYERS_HOME)).replaceFirst("name=.*, saves=", "saves=");
+        JsonReader homePlayersJsonReader = new JsonReader(new StringReader(homePlayersString.trim()));
+        homePlayersJsonReader.setLenient(true);
+        List<PlayerStat> homePlayers = gson.fromJson(homePlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setHomePlayers(homePlayers);
 
-        List<PlayerStat> awayPlayers = gson.fromJson(String.valueOf(syncData.get(Constants.PLAYERS_AWAY)), new TypeToken<List<PlayerStat>>(){}.getType());
+        // 2017-04-21 #116 Temporary fix of compatibility
+        String awayPlayersString = String.valueOf(syncData.get(Constants.PLAYERS_AWAY)).replaceFirst("name=.*, saves=", "saves=");
+        JsonReader awayPlayersJsonReader = new JsonReader(new StringReader(awayPlayersString.trim()));
+        awayPlayersJsonReader.setLenient(true);
+        List<PlayerStat> awayPlayers = gson.fromJson(awayPlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
         entity.setAwayPlayers(awayPlayers);
     }
 

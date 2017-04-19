@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.hockey.business.loaders;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 public class MatchLoader {
     public static void importMatches(Context context, List<ServerCommunicationItem> matches, Tournament tournament, Competition competition, Map<String, Team> importedTeams, Map<String, Player> importedPlayers) {
         for (ServerCommunicationItem match : matches) {
+            Log.d("IMPORT", "Match: " + match.syncData);
             Match importedMatch = MatchSerializer.getInstance(context).deserialize(match);
             importedMatch.setTournamentId(tournament.getId());
             ManagerFactory.getInstance(context).getEntityManager(Match.class).insert(importedMatch);

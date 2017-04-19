@@ -4,7 +4,9 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 
+import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -157,7 +159,9 @@ public class HockeyService extends AbstractIntentServiceWProgress {
             case CrossPackageConstants.ACTION_GET_COMPETITION_IMPORT_INFO: {
                 String json = intent.getStringExtra(CrossPackageConstants.EXTRA_JSON);
                 Gson gson = new GsonBuilder().serializeNulls().create();
-                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                JsonReader jr = new JsonReader(new StringReader(json.trim()));
+                jr.setLenient(true);
+                ServerCommunicationItem competition = gson.fromJson(jr, ServerCommunicationItem.class);
 
                 ArrayList<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
                 ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
@@ -186,7 +190,9 @@ public class HockeyService extends AbstractIntentServiceWProgress {
                 Map<String, String> conflictSolutions = (HashMap<String, String>) intent.getExtras().getSerializable(CrossPackageConstants.EXTRA_CONFLICTS);
 
                 Gson gson = new GsonBuilder().serializeNulls().create();
-                ServerCommunicationItem competition = gson.fromJson(json, ServerCommunicationItem.class);
+                JsonReader jr = new JsonReader(new StringReader(json.trim()));
+                jr.setLenient(true);
+                ServerCommunicationItem competition = gson.fromJson(jr, ServerCommunicationItem.class);
                 Competition importedCompetition = CompetitionLoader.importCompetition(this, competition, conflictSolutions);
                 /*
                 } catch(Exception e) {} finally {

@@ -26,7 +26,7 @@ public class PlayerStat implements IEntity, Parcelable {
     @DatabaseField(columnName = DBConstants.cPLAYER_ID)
     protected long player_id;
 
-    private String name;
+    transient private String name;
 
     public PlayerStat() {}
 

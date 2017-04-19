@@ -113,7 +113,7 @@ public class FilesHelper {
             bufferedReader.close();
             isr.close();
             fis.close();
-            return sb.toString().replaceAll("\\s+","");
+            return sb.toString().replaceAll("[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F]","");
         } catch (FileNotFoundException e) {
             return null;
         } catch (IOException e) {

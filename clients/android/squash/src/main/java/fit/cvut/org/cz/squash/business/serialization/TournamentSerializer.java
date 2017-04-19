@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,7 +91,10 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     @Override
     public void deserializeSyncData(HashMap<String, Object> syncData, Tournament entity) {
         super.deserializeSyncData(syncData, entity);
-        PointConfiguration pointConfiguration = new Gson().fromJson(String.valueOf(syncData.get(Constants.POINT_CONFIGURATION)), new TypeToken<PointConfiguration>(){}.getType());
+        String pointConfigurationString = String.valueOf(syncData.get(Constants.POINT_CONFIGURATION));
+        JsonReader pointConfigurationJsonReader = new JsonReader(new StringReader(pointConfigurationString.trim()));
+        pointConfigurationJsonReader.setLenient(true);
+        PointConfiguration pointConfiguration = new Gson().fromJson(pointConfigurationJsonReader, new TypeToken<PointConfiguration>(){}.getType());
         entity.setPointConfiguration(pointConfiguration);
     }
 }
