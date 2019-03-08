@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name" translatable="false">Tournament Manager</string>
+    <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
+
+    <string name="player_cp_authority" translatable="false">fit.cvut.org.cz.tournamentmanager.data</string>
+
+    <string name="openDrawer" translatable="false">drawer_open_action</string>
+    <string name="closeDrawer" translatable="false">drawer_close_action</string>
+
+    <string name="exit_title">Exit the application</string>
+    <string name="exit_text">Do you really want to exit?</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="w">V</string>
+    <string name="wot">Vp</string>
+    <string name="wso">Vsn</string>
+    <string name="d">R</string>
+    <string name="l">P</string>
+    <string name="lot">Pp</string>
+    <string name="lso">Psn</string>
+    <string name="score">Skóre</string>
+    <string name="g">G</string>
+    <string name="goals">Góly</string>
+    <string name="a">A</string>
+    <string name="assists">Asistence</string>
+    <string name="gp">Z</string>
+    <string name="saves">Zákroky</string>
+    <string name="s">Zák.</string>
+    <string name="p">B</string>
+    <string name="tp">TB</string>
+    <string name="pmp">+/-</string>
+    <string name="plus_minus_points">+/- body</string>
+
+    <string name="ag">Prům. G</string>
+    <string name="ap">Prům. B</string>
+    <string name="atp">Prům. TB</string>
+
+    <string name="normal_time">Standardní čas</string>
+    <string name="overtime">Prodloužení</string>
+    <string name="shootouts">Nájezdy</string>
+    <string name="ot">pp</string>
+    <string name="so">sn</string>
+
+    <string name="set_all">Vše musí být nastaveno!</string>
+    <string name="shootouts_error">Jsou zvoleny nájezdy, zápas nemůže skončit remízou!</string>
+    <string name="sport_name">Hokej</string>
+    <string name="match_same_participants_error">Domácí a hostující týmy se musí lišit!</string>
+    <string name="generate_by_goals">Generovat podle gólů</string>
+    <string name="generate_by_wins">Generovat podle vítězství</string>
+
+    <string name="legend">Legenda statistik:</string>
+    <string name="legend_GP">Z: Zápasy</string>
+    <string name="legend_SP">B: Body</string>
+    <string name="legend_P">B: Kanadské bodování</string>
+    <string name="legend_TW">V: Vítězství</string>
+    <string name="legend_W">V: Vítězství v základní hrací době</string>
+    <string name="legend_Wot">Vpp: Vítězství po prodloužení</string>
+    <string name="legend_Wso">Vsn: Vítězství v samostatných nájezdech</string>
+    <string name="legend_TL">P: Prohry</string>
+    <string name="legend_L">P: Prohry v základní hrací době</string>
+    <string name="legend_Lot">Ppp: Prohry po prodloužení</string>
+    <string name="legend_Lso">Psn: Prohry v samostatných nájezdech</string>
+    <string name="legend_D">R: Remízy</string>
+    <string name="legend_G">G: Vstřelené branky</string>
+    <string name="legend_A">A: Asistence</string>
+    <string name="legend_S">Zák: Zákroky</string>
+    <string name="legend_TP">TB: Týmové body</string>
+    <string name="legend_PM">+/-: Plus mínus bodování</string>
+    <string name="legend_GAVG">Prům. G: Průměrný počet vstřelených branek na zápas</string>
+    <string name="legend_PAVG">Prům. P: Průměrný počet bodů na zápas</string>
+    <string name="legend_TPAVG">Prům. TB: Průměrný počet týmových bodů na zápas</string>
+    <string name="legend_note">Pro zobrazení více statistik otočte na šířku</string>
+</resources>

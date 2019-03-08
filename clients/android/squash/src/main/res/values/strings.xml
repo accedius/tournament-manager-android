@@ -1,0 +1,59 @@
+<resources>
+    <string name="sport_name">Squash</string>
+    <string name="context_names" translatable="false">Badminton,Beach,Squash,Volleyball,Tennis</string>
+    <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
+    <string name="title_activity_main" translatable="false">Squash Main Activity</string>
+    <string name="squashpcg" translatable="false">Squash PCG</string>
+    <string name="dateFirmat" translatable="false">yyyy-MM-dd</string>
+    <string name="games_played">GP</string>
+    <string name="wins">W</string>
+    <string name="loses">L</string>
+    <string name="draws">D</string>
+    <string name="winsPer">W%</string>
+    <string name="ballsPer">B%</string>
+    <string name="setsScore">Sets</string>
+    <string name="ballsScore">Balls</string>
+    <string name="setsWon">SW</string>
+    <string name="setsLost">SL</string>
+    <string name="setsWonAvg">SW AVG</string>
+    <string name="setsLostAvg">SL AVG</string>
+    <string name="setsPer" translatable="false">S%</string>
+    <string name="ballsWon">BW</string>
+    <string name="ballsLost">BL</string>
+    <string name="ballsWonAvg">BW AVG</string>
+    <string name="ballsLostAvg">BL AVG</string>
+    <string name="score">Score</string>
+    <string name="points">P</string>
+    <string name="win">Win</string>
+    <string name="draw">Draw</string>
+    <string name="loss">Loss</string>
+    <string name="set_divider" translatable="false">:</string>
+    <string name="parse_number_error">Some value is not a number!</string>
+    <string name="zero_score">Score cannot be lower than zero!</string>
+    <string name="tie_set">Set cannot end in a draw!</string>
+    <string name="sets_invalid_values">Some sets have invalid values!</string>
+    <string name="sets">Sets</string>
+    <string name="rosters">Rosters</string>
+
+    <string name="generate_by_balls">Generate by balls</string>
+    <string name="generate_by_sets">Generate by sets</string>
+
+    <string name="match_same_participants_error">Home and away participants cannot be same!</string>
+
+    <string name="package_name" translatable="false">fit.cvut.org.cz.squash</string>
+    <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CreateCompetitionActivity</string>
+    <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.squash.presentation.activities.CompetitionDetailActivity</string>
+    <string name="legend">Stats legend:</string>
+    <string name="legend_GP">GP: Games played</string>
+    <string name="legend_P">P: Points</string>
+    <string name="legend_W">W: Wins</string>
+    <string name="legend_L">L: Losses</string>
+    <string name="legend_D">D: Draws</string>
+    <string name="legend_WAVG">W%: Games won percentage</string>
+    <string name="legend_S">SW: Sets score (won : lost)</string>
+    <string name="legend_SAVG">S%: Sets won percentage</string>
+    <string name="legend_B">BL: Balls score (won : lost)</string>
+    <string name="legend_BAVG">B%: Balls won percentage</string>
+    <string name="legend_note">Get more statistics by change orientation to landscape</string>
+    <string name="close_help">Close help</string>
+</resources>

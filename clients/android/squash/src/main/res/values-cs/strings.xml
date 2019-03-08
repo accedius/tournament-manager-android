@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ballsLost">PM</string>
+    <string name="ballsLostAvg">Prům. PM</string>
+    <string name="ballsWon">VM</string>
+    <string name="ballsWonAvg">Prům. VM</string>
+    <string name="draw">Remíza</string>
+    <string name="draws">R</string>
+    <string name="loses">P</string>
+    <string name="loss">Prohra</string>
+    <string name="parse_number_error">Všechny hodnoty musí být číselné!</string>
+    <string name="points">B</string>
+    <string name="rosters">Soupisky</string>
+    <string name="score">Skóre</string>
+    <string name="sets">Sety</string>
+    <string name="setsLost">PS</string>
+    <string name="setsLostAvg">Prům. PS</string>
+    <string name="setsWon">VS</string>
+    <string name="setsWonAvg">Prům. VS</string>
+    <string name="tie_set">Set nemůže skončit remízou</string>
+    <string name="win">Výhra</string>
+    <string name="wins">V</string>
+    <string name="winsPer">V%</string>
+    <string name="zero_score">Skóre nemůže být záporné</string>
+    <string name="sport_name">Squash</string>
+    <string name="games_played">Z</string>
+    <string name="generate_by_balls">Generovat podle míčků</string>
+    <string name="generate_by_sets">Generovat podle setů</string>
+    <string name="match_same_participants_error">Domácí a hostující účastník nesmí být stejní!</string>
+    <string name="sets_invalid_values">Některé sety mají nevyplněné hodnoty</string>
+    <string name="legend">Legenda statistik:</string>
+    <string name="legend_GP">Z: Zápasy</string>
+    <string name="legend_P">B: Body</string>
+    <string name="legend_W">V: Výhry</string>
+    <string name="legend_L">P: Prohry</string>
+    <string name="legend_D">R: Remízy</string>
+    <string name="legend_WAVG">V%: Vítězství v procentech</string>
+    <string name="legend_S">Sety: Celkové skóre setů (vyhrané : prohrané)</string>
+    <string name="legend_SAVG">S%: Vyhrané sety v procentech</string>
+    <string name="legend_B">Míčky: Celkové skóre míčků (vyhrané : prohrané)</string>
+    <string name="legend_BAVG">M%: Vyhrané míčky v procentech</string>
+    <string name="legend_note">Pro zobrazení více statistik otočte na šířku</string>
+    <string name="close_help">Zavřít nápovědu</string>
+    <string name="ballsPer">M%</string>
+    <string name="ballsScore">Míčky</string>
+    <string name="setsScore">Sety</string>
+</resources>

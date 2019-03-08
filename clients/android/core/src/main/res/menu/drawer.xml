@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/competitions"
+            android:checked="true"
+            android:icon="@drawable/cup_24dp"
+            android:title="@string/competitions" />
+        <item
+            android:id="@+id/players"
+            android:checked="false"
+            android:icon="@drawable/ic_people_white_24dp"
+            android:title="@string/players" />
+        <item
+            android:id="@+id/settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="@string/settings" />
+    </group>
+</menu>
