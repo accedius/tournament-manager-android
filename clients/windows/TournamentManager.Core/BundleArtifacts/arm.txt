@@ -1,2 +1,0 @@
-MainPackage=D:\School\Diplomka\gitlab\TournamentManager\TournamentManager.Core\bin\ARM\Release\TournamentManager.Core_1.0.0.0_ARM.appx
-SymbolPackage=D:\School\Diplomka\gitlab\TournamentManager\TournamentManager.Core\AppPackages\TournamentManager.Core_1.0.0.0_Test\TournamentManager.Core_1.0.0.0_ARM.appxsym
