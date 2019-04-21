@@ -72,7 +72,7 @@ public class MainActivity extends AbstractToolbarActivity {
         actionBarDrawerToggle.syncState();
         mDrawerList.getMenu().getItem(0).setChecked(true);
 
-        //selectItem(R.id.competitions);
+        selectItem(R.id.competitions);
     }
 
     @Override
