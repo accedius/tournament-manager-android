@@ -39,9 +39,13 @@ public class PackagesInfo {
                 continue;
             if (!packageInfo.metaData.containsKey(CrossPackageConstants.APP_TYPE))
                 continue;
-            if (packageInfo.metaData.get(CrossPackageConstants.APP_TYPE)
+            if (!packageInfo.metaData.get(CrossPackageConstants.APP_TYPE)
                     .equals(CrossPackageConstants.TM_PACKAGE))
-                    sport_packages.add(packageInfo);
+                continue;
+            if (packageInfo.metaData.get(CrossPackageConstants.CONTEXT_NAMES)
+                    .toString().isEmpty())
+                continue;
+            sport_packages.add(packageInfo);
         }
         return sport_packages;
     }
