@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+import fit.cvut.org.cz.bowling.data.BowlingDAOFactory;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
@@ -79,11 +80,10 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
     @Override
     public IDAOFactory getDaoFactory() {
-        /*String name = ((BowlingPackage) context.getApplicationContext()).getSportContext();
+        String name = ((BowlingPackage) context.getApplicationContext()).getSportContext();
         if (!helpersMap.containsKey(name))
             helpersMap.put(name, new BowlingDAOFactory(context, name));
-        return helpersMap.get(name);*/
-        return null;
+        return helpersMap.get(name);
     }
 
     public static IManagerFactory getInstance(Context c) {
