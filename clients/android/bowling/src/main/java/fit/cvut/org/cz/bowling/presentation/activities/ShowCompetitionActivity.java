@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.dialogs.StatsHelpDialog;
+import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingCompetitionOverviewFragment;
 import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -36,14 +37,17 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         ((BowlingPackage) this.getApplication()).setSportContext(sportContext);
 
         competitionID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
-        titles = new String[]{
+        /*titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };*/
+        titles = new String[]{
+                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance(competitionID, BowlingCompetitionOverviewFragment.class);
-        //Fragment f2 = null;//BowlingTournamentsListFragment.newInstance(competitionID);
-        //Fragment f3 = null;//AggregStatsTitleFragment.newInstance(competitionID, true);
-        fragments = new Fragment[]{ f1};//, f2, f3 };
+        //Fragment f2 = BowlingTournamentsListFragment.newInstance(competitionID);
+        Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
+        fragments = new Fragment[]{ f1, f3};//, f2, f3 };
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -55,6 +59,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                 if (fr != null && fr instanceof AbstractDataFragment)
                     ((AbstractDataFragment) fr).customOnResume();
             }
+
 
             @Override
             public void onPageScrollStateChanged(int state) {}
