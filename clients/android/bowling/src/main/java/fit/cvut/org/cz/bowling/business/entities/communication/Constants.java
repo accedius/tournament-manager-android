@@ -8,12 +8,16 @@ public class Constants {
 
     public static final String MATCHES = "gp";
     public static final String GOALS = "g";
+    public static final String STRIKES = "st";
     public static final String ASSISTS = "a";
+    public static final String SPARES = "sp";
     public static final String PLUS_MINUS = "+-";
     public static final String SAVES = "s";
     public static final String TEAM_POINTS = "tp";
     public static final String SCORE= "score";
     public static final String GOALS_AVG = "gavg";
+    public static final String STRIKES_AVG = "stavg";
+    public static final String SPARES_AVG = "spavg";
     public static final String POINTS_AVG= "pavg";
     public static final String TEAM_POINTS_AVG = "tpavg";
 

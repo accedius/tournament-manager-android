@@ -50,12 +50,12 @@ public class AggregStatsTitleFragment extends Fragment {
         setHasOptionsMenu(true);
 
         Long competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
-        Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
+        //Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         if (competitionID != -1) {
             statsFragment = BowlingPlayersStatsFragment.newInstance(competitionID, true);
         } else {
-            statsFragment = BowlingPlayersStatsFragment.newInstance(tournamentID, false);
+            //statsFragment = BowlingPlayersStatsFragment.newInstance(tournamentID, false);
         }
 
         if (getChildFragmentManager().findFragmentById(R.id.stats_list) == null) {
@@ -114,17 +114,15 @@ public class AggregStatsTitleFragment extends Fragment {
     private HashMap<String, TextView> getColumns(View v) {
         HashMap<String, TextView> columns = new HashMap<>();
         columns.put(Constants.MATCHES,(TextView)v.findViewById(R.id.stats_games_played));
-        columns.put(Constants.GOALS, (TextView)v.findViewById(R.id.stats_goals));
-        columns.put(Constants.ASSISTS, (TextView)v.findViewById(R.id.stats_assists));
+        columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.stats_strikes));
+        columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.stats_spares));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.stats_points));
-        columns.put(Constants.PLUS_MINUS, (TextView)v.findViewById(R.id.stats_plus_minus));
-        columns.put(Constants.SAVES, (TextView)v.findViewById(R.id.stats_saves));
         if (v.findViewById(R.id.stats_wins) != null) {
             columns.put(Constants.WINS, (TextView) v.findViewById(R.id.stats_wins));
             columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.stats_draws));
             columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.stats_losses));
             columns.put(Constants.TEAM_POINTS, (TextView) v.findViewById(R.id.stats_team_points));
-            columns.put(Constants.GOALS_AVG, (TextView) v.findViewById(R.id.stats_goals_avg));
+            columns.put(Constants.STRIKES_AVG, (TextView) v.findViewById(R.id.stats_strikes_avg));
             columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
             columns.put(Constants.TEAM_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
         }

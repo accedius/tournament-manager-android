@@ -18,13 +18,28 @@
     <string name="w">W</string>
     <string name="l">L</string>
     <string name="d">D</string>
+
     <string name="g">G</string>
+    <string name="st">St</string>
+    <string name="legend_ST">St: Strikes</string>
+
     <string name="a">A</string>
+    <string name="sp">Sp</string>
+    <string name="legend_SPA">Sp: Spares</string>
+
     <string name="p">P</string>
     <string name="pmp">+/-</string>
     <string name="tp">TP</string>
+
     <string name="ag">Avg. G</string>
+    <string name="ast">Avg. St</string>
+    <string name="legend_AvgST">Avg. St: Average strikes per match</string>
+
     <string name="ap">Avg. P</string>
+    <string name="asp">Avg. Sp</string>
+    <string name="legend_AvgSP">Avg. Sp: Average spares per match</string>
+
+
     <string name="score">Score</string>
     <string name="atp">Avg. TP</string>
     <string name="so">so</string>

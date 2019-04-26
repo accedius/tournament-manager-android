@@ -23,31 +23,19 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
-            android:id="@+id/as_goals"/>
+            android:id="@+id/as_strikes"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
-            android:id="@+id/as_assists"/>
+            android:id="@+id/as_spares"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
             android:id="@+id/as_points"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:id="@+id/as_plus_minus_points"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:id="@+id/as_saves"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -78,14 +66,14 @@
             android:gravity="center"
             android:layout_weight="2"
             android:textSize="11sp"
-            android:id="@+id/as_avg_g"/>
+            android:id="@+id/as_avg_st"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
             android:textSize="11sp"
-            android:id="@+id/as_avg_p"/>
+            android:id="@+id/as_avg_sp"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"

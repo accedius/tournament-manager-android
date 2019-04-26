@@ -21,18 +21,16 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         AggregatedStatistics stats = data.get(position);
         holder.name.setText(stats.getPlayerName());
         holder.GP.setText(Long.toString(stats.getMatches()));
-        holder.G.setText(Long.toString(stats.getGoals()));
-        holder.A.setText(Long.toString(stats.getAssists()));
+        holder.ST.setText(Long.toString(stats.getGoals()));
+        holder.SP.setText(Long.toString(stats.getAssists()));
         holder.P.setText(Long.toString(stats.getPoints()));
-        holder.PMP.setText(Long.toString(stats.getPlusMinusPoints()));
-        holder.S.setText(Long.toString(stats.getSaves()));
         if (holder.W != null) {
             holder.W.setText(Long.toString(stats.getWins()));
             holder.L.setText(Long.toString(stats.getLosses()));
             holder.D.setText(Long.toString(stats.getDraws()));
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
-            holder.AG.setText(String.format("%.2f", stats.getAvgGoals()));
-            holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
+            holder.AST.setText(String.format("%.2f", stats.getAvgGoals()));
+            holder.ASP.setText(String.format("%.2f", stats.getAvgPoints()));
             holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), stats.getPlayerName());
@@ -47,7 +45,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, G, A, P, PMP, S, W, D, L, TP, AG, AP, ATP;
+        TextView name, GP, ST, SP, P, W, D, L, TP, AST, ASP, ATP;
         public View wholeView;
 
         public AggregatedStatisticsViewHolder(View itemView) {
@@ -55,18 +53,16 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
             name = (TextView) itemView.findViewById(R.id.as_name);
             GP = (TextView) itemView.findViewById(R.id.as_games_played);
-            G = (TextView) itemView.findViewById(R.id.as_goals);
-            A = (TextView) itemView.findViewById(R.id.as_assists);
+            ST = (TextView) itemView.findViewById(R.id.as_strikes);
+            SP = (TextView) itemView.findViewById(R.id.as_spares);
             P = (TextView) itemView.findViewById(R.id.as_points);
-            PMP = (TextView) itemView.findViewById(R.id.as_plus_minus_points);
-            S = (TextView) itemView.findViewById(R.id.as_saves);
 
             W = (TextView) itemView.findViewById(R.id.as_wins);
             D = (TextView) itemView.findViewById(R.id.as_draws);
             L = (TextView) itemView.findViewById(R.id.as_losses);
             TP = (TextView) itemView.findViewById(R.id.as_team_points);
-            AG = (TextView) itemView.findViewById(R.id.as_avg_g);
-            AP = (TextView) itemView.findViewById(R.id.as_avg_p);
+            AST = (TextView) itemView.findViewById(R.id.as_avg_st);
+            ASP = (TextView) itemView.findViewById(R.id.as_avg_sp);
             ATP = (TextView) itemView.findViewById(R.id.as_avg_tp);
             wholeView = itemView;
         }

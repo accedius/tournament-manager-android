@@ -27,19 +27,19 @@
                 android:layout_weight="2"
                 android:text="@string/gp"/>
             <TextView
-                android:id="@+id/stats_goals"
+                android:id="@+id/stats_strikes"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/g"/>
+                android:text="@string/st"/>
             <TextView
-                android:id="@+id/stats_assists"
+                android:id="@+id/stats_spares"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/a"/>
+                android:text="@string/sp"/>
             <TextView
                 android:id="@+id/stats_points"
                 android:layout_width="0dp"
@@ -47,20 +47,6 @@
                 android:gravity="center"
                 android:layout_weight="2"
                 android:text="@string/p"/>
-            <TextView
-                android:id="@+id/stats_plus_minus"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:text="@string/pmp"/>
-            <TextView
-                android:id="@+id/stats_saves"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:text="@string/s"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
     <View
