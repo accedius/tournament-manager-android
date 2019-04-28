@@ -75,13 +75,13 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(id);
                 //List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(id);
-                //List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(id);
+                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(id);
 
                 Intent result = new Intent(action);
                 result.putExtra(ExtraConstants.EXTRA_COMPETITION, c);
                 result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, 0);
                 result.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, 0);
-                //result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
+                result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
                 //result.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, tournaments.size());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
