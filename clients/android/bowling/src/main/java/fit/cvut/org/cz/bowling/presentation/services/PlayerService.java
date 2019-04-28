@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -68,7 +69,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 break;
             }
-            /*case ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT:
+            case ACTION_GET_PLAYERS_NOT_IN_TOURNAMENT:
             {
                 Long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getTournamentPlayersComplement(id);
@@ -80,7 +81,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
-            }*/
+            }
             case ACTION_ADD_PLAYERS_TO_COMPETITION: {
                 Intent result = new Intent(action);
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS);
@@ -125,7 +126,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 break;
             }
-            /*case ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID: {
+            case ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID: {
                 Intent res = new Intent(action);
                 Match match = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1));
                 List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getTournamentPlayers(match.getTournamentId());
@@ -135,7 +136,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
-            }*/
+            }
             case ACTION_DELETE_PLAYER_FROM_COMPETITION:
             {
                 Intent res = new Intent(action);

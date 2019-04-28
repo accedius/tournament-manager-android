@@ -62,16 +62,16 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 long competitionId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
                 c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(competitionId);
-                //List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
+                List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
                 List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
 
                 res.putExtra(ExtraConstants.EXTRA_COMPETITION, c);
                 res.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
-                //res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, tournaments.size());
-                res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, 0);
+                res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, tournaments.size());
+                //res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, 0);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
-            case ACTION_GET_OVERVIEW:{
+            /*case ACTION_GET_OVERVIEW:{
                 long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(id);
                 //List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(id);
@@ -79,14 +79,14 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
 
                 Intent result = new Intent(action);
                 result.putExtra(ExtraConstants.EXTRA_COMPETITION, c);
-                result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, 0);
+                //result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, 0);
                 result.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, 0);
                 result.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
                 //result.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, tournaments.size());
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
-            }
+            }*/
         }
     }
 }

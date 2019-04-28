@@ -5,7 +5,20 @@ import android.content.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.bowling.business.managers.MatchManager;
+import fit.cvut.org.cz.bowling.business.managers.ParticipantManager;
+import fit.cvut.org.cz.bowling.business.managers.ParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.PlayerStatManager;
+import fit.cvut.org.cz.bowling.business.managers.PointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.StatisticManager;
+import fit.cvut.org.cz.bowling.business.managers.TeamManager;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.data.BowlingDAOFactory;
+import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
+import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
+import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
@@ -33,7 +46,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
             manager = new fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager();
         }
         // Tournament
-        /*else if (entity.getName().equals(Tournament.class.getName())) {
+        else if (entity.getName().equals(Tournament.class.getName())) {
             manager = new TournamentManager();
         }
         // Team
@@ -63,7 +76,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
         // Statistic
         else if (entity.getName().equals(AggregatedStatistics.class.getName())) {
             manager = new StatisticManager();
-        }*/
+        }
         // Core Player
         else if (entity.getName().equals(Player.class.getName())) {
             return (M) new PackagePlayerManager(context);

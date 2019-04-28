@@ -9,7 +9,11 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.bowling.business.entities.Standing;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IStatisticManager;
+import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -61,7 +65,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
                 break;
             }
-            /*case ACTION_GET_BY_TOUR_ID:
+            case ACTION_GET_BY_TOUR_ID:
             {
                 Intent res = new Intent();
                 long tourID = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
@@ -130,7 +134,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 
                 break;
-            }*/
+            }
         }
     }
 }

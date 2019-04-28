@@ -45,11 +45,11 @@ public class CompetitionSerializer extends fit.cvut.org.cz.tmlibrary.business.se
         }
 
         /* Serialize Tournaments */
-        /*List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(context).getEntityManager(Tournament.class)).getByCompetitionId(entity.getId());
+        List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(context).getEntityManager(Tournament.class)).getByCompetitionId(entity.getId());
         TournamentSerializer ts = TournamentSerializer.getInstance(context);
         for (Tournament t : tournaments) {
             item.subItems.add(ts.serialize(t));
-        }*/
+        }
         return item;
     }
 

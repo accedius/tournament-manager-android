@@ -50,12 +50,12 @@ public class AggregStatsTitleFragment extends Fragment {
         setHasOptionsMenu(true);
 
         Long competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
-        //Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
+        Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         if (competitionID != -1) {
             statsFragment = BowlingPlayersStatsFragment.newInstance(competitionID, true);
         } else {
-            //statsFragment = BowlingPlayersStatsFragment.newInstance(tournamentID, false);
+            statsFragment = BowlingPlayersStatsFragment.newInstance(tournamentID, false);
         }
 
         if (getChildFragmentManager().findFragmentById(R.id.stats_list) == null) {
@@ -72,7 +72,7 @@ public class AggregStatsTitleFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    /*
+
     public void refresh(){
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
         if (fr != null && fr instanceof AbstractDataFragment) {
@@ -80,7 +80,7 @@ public class AggregStatsTitleFragment extends Fragment {
             setDefaultOrder(getView());
         }
     }
-    */
+
 
     private void setDefaultOrder(View v) {
         deleteOtherOrders(v);

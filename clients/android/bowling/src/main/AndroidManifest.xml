@@ -18,9 +18,15 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/competition"
             android:exported="true"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/add_players"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>
+        <service android:name=".presentation.services.TournamentService"/>
+        <service android:name=".presentation.services.StatsService"/>
+        <service android:name=".presentation.services.PlayerService"/>
         <service android:name="fit.cvut.org.cz.bowling.presentation.services.BowlingService"
             android:exported="true"/>
 

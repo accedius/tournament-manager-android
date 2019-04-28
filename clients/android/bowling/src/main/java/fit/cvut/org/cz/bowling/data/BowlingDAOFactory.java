@@ -9,6 +9,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 
+import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
@@ -34,12 +35,12 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         try {
             TableUtils.createTable(connectionSource, Competition.class);
             TableUtils.createTable(connectionSource, CompetitionPlayer.class);
-            //TableUtils.createTable(connectionSource, Tournament.class);
-            //TableUtils.createTable(connectionSource, TournamentPlayer.class);
+            TableUtils.createTable(connectionSource, Tournament.class);
+            TableUtils.createTable(connectionSource, TournamentPlayer.class);
             TableUtils.createTable(connectionSource, PointConfiguration.class);
-            //TableUtils.createTable(connectionSource, Team.class);
-            //TableUtils.createTable(connectionSource, TeamPlayer.class);
-            //TableUtils.createTable(connectionSource, Match.class);
+            TableUtils.createTable(connectionSource, Team.class);
+            TableUtils.createTable(connectionSource, TeamPlayer.class);
+            TableUtils.createTable(connectionSource, Match.class);
             TableUtils.createTable(connectionSource, Participant.class);
             TableUtils.createTable(connectionSource, ParticipantStat.class);
             TableUtils.createTable(connectionSource, PlayerStat.class);
@@ -51,12 +52,12 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         try {
             TableUtils.dropTable(connectionSource, Competition.class, true);
             TableUtils.dropTable(connectionSource, CompetitionPlayer.class, true);
-            //TableUtils.dropTable(connectionSource, Tournament.class, true);
-            //TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Tournament.class, true);
+            TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
             TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
-            //TableUtils.dropTable(connectionSource, Team.class, true);
-            //TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
-            //TableUtils.dropTable(connectionSource, Match.class, true);
+            TableUtils.dropTable(connectionSource, Team.class, true);
+            TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Match.class, true);
             TableUtils.dropTable(connectionSource, Participant.class, true);
             TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
             TableUtils.dropTable(connectionSource, PlayerStat.class, true);

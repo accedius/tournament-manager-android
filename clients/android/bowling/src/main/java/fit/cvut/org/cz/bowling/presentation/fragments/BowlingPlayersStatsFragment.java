@@ -172,7 +172,8 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
     @Override
     protected boolean isDataSourceWorking() {
         if (competitionID != -1) {
-            return StatsService.isWorking(StatsService.ACTION_GET_BY_COMP_ID);
+            boolean answer = StatsService.isWorking(StatsService.ACTION_GET_BY_COMP_ID);
+            return answer;
         } else {
             return StatsService.isWorking(StatsService.ACTION_GET_BY_TOUR_ID);
         }

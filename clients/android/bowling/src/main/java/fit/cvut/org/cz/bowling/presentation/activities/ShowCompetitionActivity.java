@@ -15,6 +15,7 @@ import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingCompetitionOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentsListFragment;
 import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -48,7 +49,8 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         Fragment f1 = CompetitionOverviewFragment.newInstance(competitionID, BowlingCompetitionOverviewFragment.class);
         //Fragment f2 = BowlingTournamentsListFragment.newInstance(competitionID);
         Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
-        fragments = new Fragment[]{ f1, f3};//, f2, f3 };
+        fragments = new Fragment[]{ f1, f3};
+        //fragments = new Fragment[] {f1, f2, f3};
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -94,7 +96,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                 intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, ((BowlingPackage) this.getApplication()).getSportContext());
                 startActivity(intent);
                 break;
-            /*case fit.cvut.org.cz.tmlibrary.R.id.action_order:
+            case fit.cvut.org.cz.tmlibrary.R.id.action_order:
                 SortingTournamentsDialog dialog = SortingTournamentsDialog.newInstance();
                 dialog.setListener(
                         new DialogInterface.OnClickListener() {
@@ -102,15 +104,15 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
                                     case 0:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.NAME);
+                                        ((BowlingTournamentsListFragment)fragments[1]).orderData(Constants.NAME);
                                         break;
                                     }
                                     case 1:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.START);
+                                        ((BowlingTournamentsListFragment)fragments[1]).orderData(Constants.START);
                                         break;
                                     }
                                     case 2:{
-                                        ((HockeyTournamentsListFragment)fragments[1]).orderData(Constants.END);
+                                        ((BowlingTournamentsListFragment)fragments[1]).orderData(Constants.END);
                                         break;
                                     }
                                 }
@@ -118,7 +120,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
                             }
                         });
                 dialog.show(getSupportFragmentManager(), "SORT_PLAYERS");
-                break;*/
+                break;
             case fit.cvut.org.cz.tmlibrary.R.id.action_help:
                 StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
                 statsHelpDialog.show(getSupportFragmentManager(), "HELP");

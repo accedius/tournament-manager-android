@@ -7,19 +7,25 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.bowling.business.entities.Standing;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IStatisticManager;
+import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
+import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
+import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+
 
 public class StatisticManager extends BaseManager<AggregatedStatistics> implements IStatisticManager {
     private static final int WIN = 1;
@@ -31,7 +37,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         return AggregatedStatistics.class;
     }
 
-    /*private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
+    private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
         switch (result) {
             case WIN:
                 if (match.isShootouts())
@@ -52,9 +58,9 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             default:
                 return 0;
         }
-    }*/
+    }
 
-    /*private void addMatchResultToStanding(int result, Standing standing, Match match) {
+    private void addMatchResultToStanding(int result, Standing standing, Match match) {
         switch (result) {
             case WIN:
                 if (match.isShootouts()) {
@@ -82,9 +88,9 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                 standing.addLoss();
                 break;
         }
-    }*/
+    }
 
-    /*private int getMatchResultForParticipant(Participant participant, Match match) {
+    private int getMatchResultForParticipant(Participant participant, Match match) {
         int participant_score = 0, opponent_score = 0;
         List<Participant> matchParticipants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
         for (Participant matchParticipant : matchParticipants) {
@@ -100,7 +106,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             return LOSS;
         else
             return DRAW;
-    }*/
+    }
 
     private List<PlayerStat> intersection(List<PlayerStat> stats1, List<PlayerStat> stats2) {
         List<PlayerStat> intersection = new ArrayList<>();
@@ -113,7 +119,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     private AggregatedStatistics aggregateStats(Player player, List<PlayerStat> allStats) {
         List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByPlayerId(player.getId());
-        /*if (allStats != null) {
+        if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
         long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
@@ -144,8 +150,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                     losses++;
                     break;
             }
-        }*/
-        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
+        }
+        //long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
         return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, saves);
     }
 
@@ -159,7 +165,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     private List<PlayerStat> getStatsByCompetitionId(long competitionId) {
         List<PlayerStat> playerStats = new ArrayList<>();
-        /*List<Tournament> tournaments = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
+        List<Tournament> tournaments = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
         List<Match> matches = new ArrayList<>();
         for (Tournament tournament : tournaments)
             matches.addAll(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournament.getId()));
@@ -171,7 +177,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for (Participant participant : participants) {
             List<PlayerStat> participantPlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
             playerStats.addAll(participantPlayerStats);
-        }*/
+        }
 
         return playerStats;
     }
@@ -191,7 +197,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     private List<PlayerStat> getStatsByTournamentId(long tournamentId) {
         List<PlayerStat> playerStats = new ArrayList<>();
-        /*List<Match> matches = new ArrayList<>(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId));
+        List<Match> matches = new ArrayList<>(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId));
 
         List<Participant> participants = new ArrayList<>();
         for (Match match : matches)
@@ -200,7 +206,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for (Participant participant : participants) {
             List<PlayerStat> participantPlayerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
             playerStats.addAll(participantPlayerStats);
-        }*/
+        }
 
         return playerStats;
     }
@@ -220,9 +226,9 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     @Override
     public List<Standing> getStandingsByTournamentId(long tournamentId) {
-        //List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
+        List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
         ArrayList<Standing> standings = new ArrayList<>();
-        /*PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournamentId);
+        PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournamentId);
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), t.getId()));
@@ -263,7 +269,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                 addMatchResultToStanding(result, actualStanding, match);
             }
         }
-        orderStandings(standings);*/
+        orderStandings(standings);
         return standings;
     }
 
