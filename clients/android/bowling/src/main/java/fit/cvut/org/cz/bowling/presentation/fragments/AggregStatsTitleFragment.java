@@ -72,9 +72,7 @@ public class AggregStatsTitleFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    /**
-     * Bridge for refreshing
-     */
+    /*
     public void refresh(){
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
         if (fr != null && fr instanceof AbstractDataFragment) {
@@ -82,6 +80,7 @@ public class AggregStatsTitleFragment extends Fragment {
             setDefaultOrder(getView());
         }
     }
+    */
 
     private void setDefaultOrder(View v) {
         deleteOtherOrders(v);

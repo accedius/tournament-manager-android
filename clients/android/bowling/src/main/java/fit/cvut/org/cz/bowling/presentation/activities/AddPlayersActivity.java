@@ -41,5 +41,7 @@ public class AddPlayersActivity extends SelectableListActivity<Player> {
         if (players != null) return AddPlayersFragment.newInstance(option, id, players);
 
         return AddPlayersFragment.newInstance(option, id);
+
+
     }
 }
