@@ -37,6 +37,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         ((BowlingPackage) this.getApplication()).setSportContext(sportContext);
 
         competitionID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
+
         /*titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
