@@ -1,0 +1,85 @@
+<resources>
+    <string name="sport_name">Bowling</string>
+    <string name="context_names" translatable="false">Bowling</string>
+    <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
+    <string name="title_activity_main" translatable="false">Bowling Main Activity</string>
+
+    <string name="package_name" translatable="false">fit.cvut.org.cz.bowling</string>
+    <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.bowling.presentation.activities.CreateCompetitionActivity</string>
+    <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.bowling.presentation.activities.ShowCompetitionActivity</string>
+
+    <string name="match_same_participants_error">Home and away teams cannot be same!</string>
+
+    <string name="generate_by_goals">Generate by goals</string>
+    <string name="generate_by_wins">Generate by wins</string>
+
+
+    <string name="gp">GP</string>
+    <string name="w">W</string>
+    <string name="l">L</string>
+    <string name="d">D</string>
+
+    <string name="g">G</string>
+    <string name="st">St</string>
+    <string name="legend_ST">St: Strikes</string>
+
+    <string name="a">A</string>
+    <string name="sp">Sp</string>
+    <string name="legend_SPA">Sp: Spares</string>
+
+    <string name="p">P</string>
+    <string name="pmp">+/-</string>
+    <string name="tp">TP</string>
+
+    <string name="ag">Avg. G</string>
+    <string name="ast">Avg. St</string>
+    <string name="legend_AvgST">Avg. St: Average strikes per match</string>
+
+    <string name="ap">Avg. P</string>
+    <string name="asp">Avg. Sp</string>
+    <string name="legend_AvgSP">Avg. Sp: Average spares per match</string>
+
+
+    <string name="score">Score</string>
+    <string name="atp">Avg. TP</string>
+    <string name="so">so</string>
+    <string name="ot">ot</string>
+
+    <string name="normal_time">Normal time</string>
+    <string name="overtime">Overtime</string>
+    <string name="shootouts">Shootouts</string>
+    <string name="set_all">All fields need to be set!</string>
+    <string name="s">S</string>
+    <string name="goals">Goals</string>
+    <string name="assists">Assists</string>
+    <string name="plus_minus_points">+/- points</string>
+    <string name="saves">Saves</string>
+    <string name="shootouts_error">Shootouts are checked, match must not be draw!</string>
+    <string name="lot">L ot</string>
+    <string name="lso">L so</string>
+    <string name="wot">W ot</string>
+    <string name="wso">W so</string>
+
+    <string name="legend">Stats legend:</string>
+    <string name="legend_GP">GP: Games played</string>
+    <string name="legend_P">P: Points</string>
+    <string name="legend_SP">P: Points</string>
+    <string name="legend_TW">W: Wins</string>
+    <string name="legend_W">W: Wins in normal time</string>
+    <string name="legend_Wot">W: Wins in overtime</string>
+    <string name="legend_Wso">W: Wins in shootouts</string>
+    <string name="legend_TL">L: Losses</string>
+    <string name="legend_L">L: Losses in normal time</string>
+    <string name="legend_Lot">L: Losses in overtime</string>
+    <string name="legend_Lso">L: Losses in shootouts</string>
+    <string name="legend_D">D: Draws</string>
+    <string name="legend_G">G: Goals scored</string>
+    <string name="legend_A">A: Assists</string>
+    <string name="legend_S">S: Saves</string>
+    <string name="legend_TP">TP: Team points</string>
+    <string name="legend_PM">+/-: Plus minus points</string>
+    <string name="legend_GAVG">Avg G: Average goals per match</string>
+    <string name="legend_PAVG">Avg P: Average points per match</string>
+    <string name="legend_TPAVG">Avg TP: Average team points per match</string>
+    <string name="legend_note">Get more statistics by change orientation to landscape</string>
+</resources>

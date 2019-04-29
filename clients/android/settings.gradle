@@ -1,1 +1,1 @@
-include ':core', ':squash', ':hockey', ':tmlibrary'
+include ':core', ':squash', ':hockey', ':tmlibrary', ':bowling'

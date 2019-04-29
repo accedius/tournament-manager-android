@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sv">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="@string/legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_margin="8dp"
+            style="@style/Base.TextAppearance.AppCompat.Button" />
+
+        <TextView
+            android:text="@string/legend_GP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_ST"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_SPA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_P"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:text="@string/legend_TW"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_D"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_TL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_TP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_AvgSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_PAVG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+        <TextView
+            android:text="@string/legend_TPAVG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+</ScrollView>

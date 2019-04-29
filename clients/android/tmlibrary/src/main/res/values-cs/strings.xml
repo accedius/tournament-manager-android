@@ -113,6 +113,9 @@
     <string name="Squash">Squash</string>
     <string name="Tennis">Tenis</string>
     <string name="Volleyball">Volejbal</string>
+
+    <string name="Bowling">Bowling</string>
+
     <string name="competition_create_manually">Vytvořit soutěž</string>
     <string name="competition_import_file">Importovat ze souboru</string>
     <string name="competition_import_server">Importovat ze serveru</string>

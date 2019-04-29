@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fit.cvut.org.cz.bowling">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Bowling"
+        android:supportsRtl="true"
+        android:name="fit.cvut.org.cz.bowling.presentation.BowlingPackage"
+        android:theme="@style/AppTheme" >
+
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateCompetitionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/competition_settings"
+            android:exported="true"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowCompetitionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/competition"
+            android:exported="true"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/add_players"/>
+
+
+        <service android:name=".presentation.services.CompetitionService"/>
+        <service android:name=".presentation.services.TournamentService"/>
+        <service android:name=".presentation.services.StatsService"/>
+        <service android:name=".presentation.services.PlayerService"/>
+        <service android:name="fit.cvut.org.cz.bowling.presentation.services.BowlingService"
+            android:exported="true"/>
+
+        <provider
+            android:name="fit.cvut.org.cz.bowling.data.CompetitionCP"
+            android:authorities="fit.cvut.org.cz.bowling.data"
+            android:exported="true"
+            android:enabled="true"
+            android:multiprocess="true"/>
+
+
+        <meta-data android:name="application_type" android:value="@string/tournament_manager_package"/>
+        <meta-data android:name="context_names" android:value="@string/context_names"/>
+        <meta-data android:name="package_name" android:value="@string/package_name"/>
+        <meta-data android:name="activity_create_competition" android:value="@string/activity_create_competition"/>
+        <meta-data android:name="activity_detail_competition" android:value="@string/activity_detail_competition"/>
+        <meta-data android:name="package_service" android:value="fit.cvut.org.cz.bowling.presentation.services.BowlingService"/>
+    </application>
+</manifest>
