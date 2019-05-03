@@ -11,4 +11,7 @@
 /clients/android/*install*.bat
 /clients/android/copy_databases.bat
 
+/clients/android/gradle/wrapper/gradle-wrapper.properties
+/clients/android/build.graddle
+
 .idea/
