@@ -35,22 +35,23 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
 
         try {
             // delete matches
-            List<Match> matches = managerFactory.getDaoFactory()
-                    .getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            //List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            List<Match> matches = managerFactory.getDaoFactory().getListDataById(Match.class, DBConstants.cTOURNAMENT_ID, id);
             for (Match match : matches) {
                 managerFactory.getEntityManager(Match.class).delete(match.getId());
             }
 
             // delete teams
-            List<Team> teams = managerFactory.getDaoFactory()
-                    .getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            //List<Team> teams = managerFactory.getDaoFactory().getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            List<Team> teams = managerFactory.getDaoFactory().getListDataById(Team.class, DBConstants.cTOURNAMENT_ID, id);
             for (Team team : teams) {
                 managerFactory.getEntityManager(Team.class).delete(team.getId());
             }
 
             // delete tournament players
             Dao<TournamentPlayer, Long> tournamentPlayerDao = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class);
-            List<TournamentPlayer> players = tournamentPlayerDao.queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            //List<TournamentPlayer> players = tournamentPlayerDao.queryForEq(DBConstants.cTOURNAMENT_ID, id);
+            List<TournamentPlayer> players = managerFactory.getDaoFactory().getListDataById(TournamentPlayer.class, DBConstants.cTOURNAMENT_ID, id);
             for (TournamentPlayer player : players) {
                 tournamentPlayerDao.deleteById(player.getId());
             }
