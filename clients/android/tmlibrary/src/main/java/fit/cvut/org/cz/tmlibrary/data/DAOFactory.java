@@ -44,6 +44,7 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
             return (D) daoMap.get(clazz.getName());
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error("Sql Exception: on getMyDao", e);
             return null;
         }
     }
@@ -68,6 +69,7 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
             return MyDao.queryForEq(DBConstant, id);
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error("Sql Exception: on getListDataById", e);
             return new ArrayList<>();
         }
     }
@@ -80,6 +82,7 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
             return builder.delete();
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error("Sql Exception: on deleteElement", e);
             throw e;
         }
     }
@@ -89,6 +92,7 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
             return getMyDao(clazz).update(objectToUpdate);
         } catch(SQLException e) {
             e.printStackTrace();
+            logger.error("Sql Exception: on update", e);
             return -1;
         }
     }
