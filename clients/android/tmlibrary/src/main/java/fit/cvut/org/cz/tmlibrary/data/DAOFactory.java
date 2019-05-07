@@ -4,24 +4,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.CloseableIterable;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import fit.cvut.org.cz.tmlibrary.data.entities.Match;
-import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat;
-import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 /**
  * Created by kevin on 5.11.2016.
@@ -35,7 +27,7 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
         DBName = databaseName;
     }
 
-    @Override
+    /*@Override
     public <D extends Dao<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz) {
         try {
             if (!daoMap.containsKey(clazz.getName())) {
@@ -49,51 +41,27 @@ abstract public class DAOFactory extends OrmLiteSqliteOpenHelper implements IDAO
         }
     }
 
-    private <E extends IEntity> String getDBConstant (Class<E> clazz) {
-        String DBConstant="";
-        if(clazz.isInstance(Match.class))
-            DBConstant = DBConstants.cTOURNAMENT_ID;
-        if(clazz.isInstance(Tournament.class))
-            DBConstant = DBConstants.cCOMPETITION_ID;
-        if(clazz.isInstance(ParticipantStat.class) || clazz.isInstance(PlayerStat.class) )
-            DBConstant = DBConstants.cPARTICIPANT_ID;
-        if(clazz.isInstance(Participant.class) )
-            DBConstant = DBConstants.cMATCH_ID;
-        return DBConstant;
-    }
+    public <D extends IEntityDAO<E, Long>, E extends IEntity> D getEntityDAO(Class<E> clazz) {
+        IEntityDAO<E, Long> itemInterface = new EntityDAO<E, Long>(getMyDao(clazz));
+        return (D) itemInterface;
+    }*/
 
-    public <E extends IEntity> List<E> getListDataById (Class<E> clazz, String DBConstant, Object id) {
+    private <D extends Dao<E, Long>, E extends IEntity> D getAppDao(Class<E> clazz) {
         try {
-            Dao<E, Long> MyDao = getMyDao(clazz);
-            //String DBConstant = getDBConstant(clazz);
-            return MyDao.queryForEq(DBConstant, id);
+            if (!daoMap.containsKey(clazz.getName())) {
+                daoMap.put(clazz.getName(), (Dao<?, Long>)getDao(clazz));
+            }
+            return (D) daoMap.get(clazz.getName());
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.error("Sql Exception: on getListDataById", e);
-            return new ArrayList<>();
+            logger.error("Sql Exception: on getAppDao", e);
+            return null;
         }
     }
 
-    public <E extends IEntity> int deleteElement (Class<E> clazz, Object id) throws SQLException {
-        try {
-            DeleteBuilder<E, Long> builder = getMyDao(clazz).deleteBuilder();
-            String DBConstant = getDBConstant(clazz);
-            builder.where().eq(DBConstant, id);
-            return builder.delete();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            logger.error("Sql Exception: on deleteElement", e);
-            throw e;
-        }
-    }
-
-    public <E extends IEntity> int update (Class<E> clazz, E objectToUpdate) {
-        try {
-            return getMyDao(clazz).update(objectToUpdate);
-        } catch(SQLException e) {
-            e.printStackTrace();
-            logger.error("Sql Exception: on update", e);
-            return -1;
-        }
+    @Override
+    public <D extends IEntityDAO<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz) {
+        IEntityDAO<E, Long> itemInterface = new EntityDAO<E, Long>(getAppDao(clazz));
+        return (D) itemInterface;
     }
 }
