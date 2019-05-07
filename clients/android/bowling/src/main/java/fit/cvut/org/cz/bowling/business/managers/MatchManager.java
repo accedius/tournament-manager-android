@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
-import com.j256.ormlite.stmt.DeleteBuilder;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +33,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public List<Match> getByTournamentId(long tournamentId) {
-        //try {
-            //List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
-            List<Match> matches = managerFactory.getDaoFactory().getListDataById(Match.class, DBConstants.cTOURNAMENT_ID, tournamentId);
+            List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).getListItemById(DBConstants.cTOURNAMENT_ID, tournamentId);
             for (Match match : matches) {
                 List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
                 match.addParticipants(participants);
@@ -58,10 +54,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 }
             });
             return matches;
-        /*} catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }*/
     }
 
     @Override
@@ -137,20 +129,14 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         try {
             // Remove Participant Stats and reset Player Stats
             for (Participant participant : participants) {
-                /*DeleteBuilder<ParticipantStat, Long> participantStatBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
-                participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                participantStatBuilder.delete();*/
-                managerFactory.getDaoFactory().deleteElement(ParticipantStat.class, participant.getId());
-
-                //List<PlayerStat> stats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                List<PlayerStat> stats = managerFactory.getDaoFactory().getListDataById(PlayerStat.class, DBConstants.cPARTICIPANT_ID, participant.getId());
+                managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                List<PlayerStat> stats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
                     stat.setGoals(0);
                     stat.setAssists(0);
                     stat.setPlusMinus(0);
                     stat.setSaves(0);
-                    //managerFactory.getDaoFactory().getMyDao(PlayerStat.class).update(stat);
-                    managerFactory.getDaoFactory().update(PlayerStat.class, stat);
+                    managerFactory.getDaoFactory().getMyDao(PlayerStat.class).updateItem(stat);
                 }
             }
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
@@ -179,20 +165,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
         try {
             for (Participant participant : participants) {
-                /*DeleteBuilder<ParticipantStat, Long> participantStatBuilder = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteBuilder();
-                participantStatBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                participantStatBuilder.delete();*/
-                managerFactory.getDaoFactory().deleteElement(ParticipantStat.class, participant.getId());
+                managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
 
-                /*DeleteBuilder<PlayerStat, Long> statBuilder = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteBuilder();
-                statBuilder.where().eq(DBConstants.cPARTICIPANT_ID, participant.getId());
-                statBuilder.delete();*/
-                managerFactory.getDaoFactory().deleteElement(PlayerStat.class, participant.getId());
+                managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
             }
-            /*DeleteBuilder<Participant, Long> participantBuilder = managerFactory.getDaoFactory().getMyDao(Participant.class).deleteBuilder();
-            participantBuilder.where().eq(DBConstants.cMATCH_ID, id);
-            participantBuilder.delete();*/
-            managerFactory.getDaoFactory().deleteElement(Participant.class, id);
+            managerFactory.getDaoFactory().getMyDao(Participant.class).deleteItemById(DBConstants.cMATCH_ID, id);
         } catch (SQLException e) {
             return false;
         }

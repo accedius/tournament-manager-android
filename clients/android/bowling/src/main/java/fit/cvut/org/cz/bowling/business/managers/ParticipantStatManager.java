@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,26 +16,16 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
 
     @Override
     public List<ParticipantStat> getByParticipantId(long participantId) {
-        //try {
-            //List<ParticipantStat> stats = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
-            List<ParticipantStat> stats = managerFactory.getDaoFactory().getListDataById(ParticipantStat.class, DBConstants.cPARTICIPANT_ID, participantId);
-            return new ArrayList<>(stats);
-        /*} catch (SQLException e) {
-            return new ArrayList<>();
-        }*/
+        List<ParticipantStat> stats = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
+        return new ArrayList<>(stats);
     }
 
     @Override
     public int getScoreByParticipantId(long participantId) {
-        //try {
-            //List<ParticipantStat> stats = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).queryForEq(DBConstants.cPARTICIPANT_ID, participantId);
-            List<ParticipantStat> stats = managerFactory.getDaoFactory().getListDataById(ParticipantStat.class, DBConstants.cPARTICIPANT_ID, participantId);
-            if (stats.isEmpty())
-                return 0;
-            return stats.get(0).getScore();
-        /*} catch (SQLException e) {
+        List<ParticipantStat> stats = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
+        if (stats.isEmpty())
             return 0;
-        }*/
+        return stats.get(0).getScore();
     }
 
 }
