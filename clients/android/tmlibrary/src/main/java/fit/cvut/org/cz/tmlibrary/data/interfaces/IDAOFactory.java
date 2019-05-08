@@ -1,5 +1,9 @@
 package fit.cvut.org.cz.tmlibrary.data.interfaces;
 
+import com.j256.ormlite.dao.Dao;
+
+import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
+
 /**
  * Interface for DAO Factory.
  */
@@ -12,6 +16,10 @@ public interface IDAOFactory {
      * @return class' DAO interface
      */
     <D extends IEntityDAO<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz);
+
+    /*<D extends EntityDAO<E, Long>, E extends IEntity> D getEntityDao(Class<E> clazz);
+
+    <D extends Dao<E, Long>, E extends IEntity> D getAppDao(Class<E> clazz);*/
 
     /*<D extends Dao<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz);
 
