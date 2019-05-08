@@ -19,11 +19,13 @@ import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
@@ -33,27 +35,27 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public List<Match> getByTournamentId(long tournamentId) {
-            List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).getListItemById(DBConstants.cTOURNAMENT_ID, tournamentId);
-            for (Match match : matches) {
-                List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
-                match.addParticipants(participants);
-
-                for (Participant participant : participants) {
-                    if (ParticipantType.home.toString().equals(participant.getRole()))
-                        match.setHomeScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
-                    else if (ParticipantType.away.toString().equals(participant.getRole()))
-                        match.setAwayScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
-                }
+        IEntityDAO<Match, Long> matchDAO = managerFactory.getDaoFactory().getMyDao(Match.class);
+        List<Match> matches = matchDAO.getListItemById(DBConstants.cTOURNAMENT_ID, tournamentId);
+        for (Match match : matches) {
+            List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
+            match.addParticipants(participants);
+            for (Participant participant : participants) {
+                if (ParticipantType.home.toString().equals(participant.getRole()))
+                    match.setHomeScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
+                else if (ParticipantType.away.toString().equals(participant.getRole()))
+                    match.setAwayScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
             }
+        }
 
-            Collections.sort(matches, new Comparator<Match>() {
+        Collections.sort(matches, new Comparator<Match>() {
                 @Override
                 public int compare(Match lhs, Match rhs) {
                     if (lhs.getRound() != rhs.getRound()) return lhs.getRound() - rhs.getRound();
                     return lhs.getPeriod() - rhs.getPeriod();
                 }
             });
-            return matches;
+        return matches;
     }
 
     @Override
@@ -128,15 +130,17 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
         try {
             // Remove Participant Stats and reset Player Stats
+            IEntityDAO<ParticipantStat, Long> participantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
+            IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);;
             for (Participant participant : participants) {
-                managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
-                List<PlayerStat> stats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
                     stat.setGoals(0);
                     stat.setAssists(0);
                     stat.setPlusMinus(0);
                     stat.setSaves(0);
-                    managerFactory.getDaoFactory().getMyDao(PlayerStat.class).updateItem(stat);
+                    playerStatDAO.updateItem(stat);
                 }
             }
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
@@ -164,12 +168,15 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     public boolean delete(long id) {
         List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
         try {
+            IEntityDAO<ParticipantStat, Long> ParticipantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
+            IEntityDAO<PlayerStat, Long> PlayerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
             for (Participant participant : participants) {
-                managerFactory.getDaoFactory().getMyDao(ParticipantStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                ParticipantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
 
-                managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                PlayerStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
             }
-            managerFactory.getDaoFactory().getMyDao(Participant.class).deleteItemById(DBConstants.cMATCH_ID, id);
+            IEntityDAO<Participant, Long> participantDAO = managerFactory.getDaoFactory().getMyDao(Participant.class);
+            participantDAO.deleteItemById(DBConstants.cMATCH_ID, id);
         } catch (SQLException e) {
             return false;
         }

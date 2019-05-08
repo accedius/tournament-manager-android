@@ -8,13 +8,16 @@ import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlayerStatManager {
     @Override
     public List<PlayerStat> getByPlayerId(long playerId) {
-        List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).getListItemById(DBConstants.cPLAYER_ID, playerId);
+        IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+        List<PlayerStat> playerStats = playerStatDAO.getListItemById(DBConstants.cPLAYER_ID, playerId);
         Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         for (PlayerStat playerStat : playerStats) {
             playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
@@ -24,7 +27,8 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
 
     @Override
     public List<PlayerStat> getByParticipantId(long participantId) {
-        List<PlayerStat> playerStats = managerFactory.getDaoFactory().getMyDao(PlayerStat.class).getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
+        IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+        List<PlayerStat> playerStats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
         Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
         for (PlayerStat playerStat : playerStats) {
             playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
@@ -35,7 +39,8 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     @Override
     public void deleteByParticipantId(long participantId) {
         try {
-            managerFactory.getDaoFactory().getMyDao(PlayerStat.class).deleteItemById(DBConstants.cPARTICIPANT_ID, participantId);
+            IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+            playerStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participantId);
         } catch (SQLException e) {}
     }
 
