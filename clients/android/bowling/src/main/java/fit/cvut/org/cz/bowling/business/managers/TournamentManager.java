@@ -7,10 +7,12 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.managers.TournamentManager {
     @Override
@@ -22,8 +24,9 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
                 pointConfiguration = PointConfiguration.defaultConfig();
             }
             pointConfiguration.setTournamentId(tournament.getId());
-            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).create(pointConfiguration);
-        } catch (SQLException e) {
+            EntityDAO<PointConfiguration, Long> pointConfigurationDAO = managerFactory.getDaoFactory().getMyDao(PointConfiguration.class);
+            pointConfigurationDAO.create(pointConfiguration);
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
@@ -35,30 +38,30 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
 
         try {
             // delete matches
-            //List<Match> matches = managerFactory.getDaoFactory().getMyDao(Match.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
-            List<Match> matches = managerFactory.getDaoFactory().getListDataById(Match.class, DBConstants.cTOURNAMENT_ID, id);
+            EntityDAO<Match, Long> matchDAO = managerFactory.getDaoFactory().getMyDao(Match.class);
+            List<Match> matches = matchDAO.getListItemById(DBConstants.cTOURNAMENT_ID, id);
             for (Match match : matches) {
                 managerFactory.getEntityManager(Match.class).delete(match.getId());
             }
 
             // delete teams
-            //List<Team> teams = managerFactory.getDaoFactory().getMyDao(Team.class).queryForEq(DBConstants.cTOURNAMENT_ID, id);
-            List<Team> teams = managerFactory.getDaoFactory().getListDataById(Team.class, DBConstants.cTOURNAMENT_ID, id);
+            EntityDAO<Team, Long> teamDAO = managerFactory.getDaoFactory().getMyDao(Team.class);
+            List<Team> teams = teamDAO.getListItemById(DBConstants.cTOURNAMENT_ID, id);
             for (Team team : teams) {
                 managerFactory.getEntityManager(Team.class).delete(team.getId());
             }
 
             // delete tournament players
-            Dao<TournamentPlayer, Long> tournamentPlayerDao = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class);
-            //List<TournamentPlayer> players = tournamentPlayerDao.queryForEq(DBConstants.cTOURNAMENT_ID, id);
-            List<TournamentPlayer> players = managerFactory.getDaoFactory().getListDataById(TournamentPlayer.class, DBConstants.cTOURNAMENT_ID, id);
+            EntityDAO<TournamentPlayer, Long> tournamentPlayerDAO = managerFactory.getDaoFactory().getMyDao(TournamentPlayer.class);
+            List<TournamentPlayer> players = tournamentPlayerDAO.getListItemById(DBConstants.cTOURNAMENT_ID, id);
             for (TournamentPlayer player : players) {
-                tournamentPlayerDao.deleteById(player.getId());
+                tournamentPlayerDAO.deleteById(player.getId());
             }
 
-            managerFactory.getDaoFactory().getMyDao(PointConfiguration.class).deleteById(id);
+            EntityDAO<PointConfiguration, Long> pointConfigurationDAO = managerFactory.getDaoFactory().getMyDao(PointConfiguration.class);
+            pointConfigurationDAO.deleteById(id);
             return true;
-        } catch (SQLException e) {
+        } catch (RuntimeException e) {
             return false;
         }
     }
