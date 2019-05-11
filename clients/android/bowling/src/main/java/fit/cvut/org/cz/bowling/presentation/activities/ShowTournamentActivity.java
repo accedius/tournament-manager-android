@@ -95,7 +95,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                     Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.failGenerateRosters), Snackbar.LENGTH_LONG).show();
                 } else {
                     if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
-                        BowlingTeamsListFragment fr = (BowlingTeamsListFragment) adapter.getItem(pager.getCurrentItem());
+                        int itemTeamListFragment = pager.getCurrentItem();
+                        BowlingTeamsListFragment fr = (BowlingTeamsListFragment) adapter.getItem(itemTeamListFragment);
                         fr.customOnResume();
                     } else {
                         pager.setCurrentItem(TEAMS_LIST_POSITION);

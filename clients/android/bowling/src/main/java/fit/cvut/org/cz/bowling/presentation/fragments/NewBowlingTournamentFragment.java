@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
@@ -46,7 +47,10 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_FIND_BY_ID));
+        Context context = getContext();
+        IntentFilter intentFilter = new IntentFilter(TournamentService.ACTION_FIND_BY_ID);
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.registerReceiver(receiver, intentFilter);
     }
 
     @Override

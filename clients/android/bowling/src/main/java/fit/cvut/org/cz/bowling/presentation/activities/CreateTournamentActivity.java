@@ -54,7 +54,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
         compID = getIntent().getLongExtra(ExtraConstants.EXTRA_COMP_ID, -1);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, NewBowlingTournamentFragment.newInstance(tourID, compID, NewBowlingTournamentFragment.class)).commit();
+            NewTournamentFragment bowlingTournamentFragment = NewBowlingTournamentFragment.newInstance(tourID, compID, NewBowlingTournamentFragment.class);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, bowlingTournamentFragment).commit();
         }
     }
 
@@ -67,7 +68,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            Tournament tournament = ((NewTournamentFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getTournament();
+            NewTournamentFragment tournamentFragment = (NewTournamentFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+            Tournament tournament = tournamentFragment.getTournament();
             if (tournament.getName().isEmpty()) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.name_empty_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);

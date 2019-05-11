@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
@@ -31,7 +32,8 @@ public class BowlingTournamentOverviewFragment extends TournamentOverviewFragmen
 
     @Override
     public void askForData() {
-        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, getContext());
+        Context context = getContext();
+        Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, context);
         intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
 
         getContext().startService(intent);
@@ -44,12 +46,17 @@ public class BowlingTournamentOverviewFragment extends TournamentOverviewFragmen
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(TournamentService.ACTION_FIND_BY_ID));
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        IntentFilter intentFilter = new IntentFilter(TournamentService.ACTION_FIND_BY_ID);
+        localBroadcastManager.registerReceiver(receiver, intentFilter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.unregisterReceiver(receiver);
     }
 }
 
