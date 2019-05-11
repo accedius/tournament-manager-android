@@ -18,9 +18,11 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.TeamManager {
     @Override
     public boolean generateRosters(long competitionId, long tournamentId, int generatingType) {
-        List<Player> players = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
+        ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
+        List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         List<Team> teams = getByTournamentId(tournamentId);
-        List<AggregatedStatistics> stats = ((IStatisticManager)managerFactory.getEntityManager(AggregatedStatistics.class)).getByCompetitionId(competitionId);
+        IStatisticManager iStatisticManager = managerFactory.getEntityManager(AggregatedStatistics.class);
+        List<AggregatedStatistics> stats = iStatisticManager.getByCompetitionId(competitionId);
         Random r = new Random(System.currentTimeMillis());
 
         HashMap<Long, Player> playersHashMap = new HashMap<>();
@@ -43,8 +45,9 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
         ITeamsRostersGenerator teamsRostersGenerator = new BalancedTeamsRostersGenerator();
         boolean res = teamsRostersGenerator.generateRosters(teams, playersHashMap, statsHashMap);
 
+        ITeamManager iTeamManager = managerFactory.getEntityManager(Team.class);
         for (Team t : teams)
-            ((ITeamManager)managerFactory.getEntityManager(Team.class)).updatePlayersInTeam(t.getId(), t.getPlayers());
+            iTeamManager.updatePlayersInTeam(t.getId(), t.getPlayers());
 
         return res;
     }
