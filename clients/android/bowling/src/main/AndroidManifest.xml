@@ -18,6 +18,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/competition"
             android:exported="true"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateTournamentActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/tournament_settings"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/tournament"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/add_players"/>

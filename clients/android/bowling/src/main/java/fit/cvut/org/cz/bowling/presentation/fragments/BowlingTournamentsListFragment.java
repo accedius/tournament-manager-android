@@ -22,7 +22,10 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
+import fit.cvut.org.cz.bowling.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -80,19 +83,19 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
                 v.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             /*Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
+                                             Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
                                              intent.putExtra(ExtraConstants.EXTRA_COMP_ID, compId);
                                              intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
                                              intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                                             startActivity(intent);*/
+                                             startActivity(intent);
                                          }
                                      }
                 );
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        /*TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
-                        dialog.show(getFragmentManager(), "EDIT_DELETE");*/
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
+                        dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
                 } );
@@ -173,8 +176,8 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
                                    @Override
                                    public void onClick(View v) {
                                        long compId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
-                                       /*Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
-                                       startActivity(intent);*/
+                                       Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
+                                       startActivity(intent);
                                    }
                                }
         );
