@@ -61,8 +61,10 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getArguments() != null)
-            competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID);
+        if (getArguments() != null){
+            Bundle bundle = getArguments();
+            competitionId = bundle.getLong(ExtraConstants.EXTRA_COMP_ID);
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -120,12 +122,16 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
     protected void registerReceivers() {
         IntentFilter filter = new IntentFilter(TournamentService.ACTION_GET_ALL);
         filter.addAction(TournamentService.ACTION_DELETE);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(myReceiver, filter);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.registerReceiver(myReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myReceiver);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.unregisterReceiver(myReceiver);
     }
 
     public void orderData(final String type) {
@@ -159,7 +165,9 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
+        Context context = getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        FloatingActionButton fab = (FloatingActionButton) layoutInflater.inflate(R.layout.floatingbutton_add, parent, false);
 
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
