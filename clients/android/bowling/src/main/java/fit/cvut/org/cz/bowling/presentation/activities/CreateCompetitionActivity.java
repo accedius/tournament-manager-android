@@ -53,7 +53,8 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            Competition competition = ((NewCompetitionFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getCompetition();
+            final NewBowlingCompetitionFragment newBowlingCompetitionFragment = (NewBowlingCompetitionFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+            Competition competition = newBowlingCompetitionFragment.getCompetition();
             if (competition.getName().isEmpty()) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.name_empty_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);

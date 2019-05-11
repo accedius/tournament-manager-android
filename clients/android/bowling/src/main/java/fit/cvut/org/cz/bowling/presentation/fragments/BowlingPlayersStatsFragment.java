@@ -193,7 +193,8 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
             filter.addAction(PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT);
         }
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(statsReceiver, filter);
+        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(statsReceiver, filter);
     }
 
     @Override
@@ -203,7 +204,8 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
+        final LayoutInflater layourInflater = LayoutInflater.from(getContext());
+        FloatingActionButton fab = (FloatingActionButton) layourInflater.inflate(R.layout.floatingbutton_add, parent, false);
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
