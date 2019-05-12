@@ -19,6 +19,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
@@ -50,17 +51,17 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players),
+                //getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
+                //getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
         Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
         /*Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
-        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);
+        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);*/
         Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
-        Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
+        /*Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};*/
-        fragments = new Fragment[]{ f1};
+        fragments = new Fragment[]{ f1, f4};
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -164,12 +165,24 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     }
 
     /**
+     * @return instance of bowlingTeamsListFragment if any is found
+     */
+    private BowlingTeamsListFragment getBowlingTeamsListFragment() {
+        for(Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if(fragment instanceof BowlingTeamsListFragment) {
+                return (BowlingTeamsListFragment) fragment;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks if there is enough teams to create a match
      * @return true of there is enough teams
      */
-    public boolean isEnoughTeams(){
-        int count = ((BowlingTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(4)))).teamCount();
-        return count > 1;
+    public boolean isEnoughTeams() {
+        BowlingTeamsListFragment teamsListFragment = getBowlingTeamsListFragment();
+        return (teamsListFragment != null) && (teamsListFragment.teamCount() > 1);
     }
 }
 
