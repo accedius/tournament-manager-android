@@ -53,17 +53,16 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                //getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
         Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
-        //Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
+        Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
         Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);
         Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
         Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
-        //fragments = new Fragment[]{ f1, f2, f3, f4, f5};
-        fragments = new Fragment[]{ f1, f3, f4, f5};
+        fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -79,8 +78,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                         ((AbstractDataFragment) fr).customOnResume();
                     if (fr instanceof MatchesListWrapperFragment)
                         ((MatchesListWrapperFragment) fr).refresh();
-                    /*if (fr instanceof StandingsStatsTitleFragment)
-                        ((StandingsStatsTitleFragment) fr).refresh();*/
+                    if (fr instanceof StandingsStatsTitleFragment)
+                        ((StandingsStatsTitleFragment) fr).refresh();
                     if (fr instanceof AggregStatsTitleFragment)
                         ((AggregStatsTitleFragment) fr).refresh();
                 }
