@@ -18,10 +18,6 @@ import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
-/**
- * Fragment holding the header for standings
- * Created by atgot_000 on 19. 4. 2016.
- */
 public class StandingsStatsTitleFragment extends Fragment {
     private StandingsFragment sf;
 

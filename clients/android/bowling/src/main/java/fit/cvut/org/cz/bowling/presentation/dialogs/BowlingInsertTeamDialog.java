@@ -9,9 +9,6 @@ import fit.cvut.org.cz.bowling.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
-/**
- * Created by atgot_000 on 17. 4. 2016.
- */
 public class BowlingInsertTeamDialog extends InsertTeamDialog {
     @Override
     protected void askForData() {

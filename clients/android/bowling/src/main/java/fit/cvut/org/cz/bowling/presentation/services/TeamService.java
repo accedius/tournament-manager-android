@@ -13,9 +13,6 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
-/**
- * Created by atgot_000 on 17. 4. 2016.
- */
 public class TeamService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_ID = "action_get_team_by_id";
     public static final String ACTION_INSERT = "action_insert_team";

@@ -8,9 +8,6 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
-/**
- * Created by atgot_000 on 12. 4. 2016.
- */
 public class TeamsDialog extends EditDeleteDialog {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {

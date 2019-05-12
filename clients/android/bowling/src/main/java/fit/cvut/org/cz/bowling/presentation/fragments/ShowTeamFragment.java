@@ -14,10 +14,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
-/**
- * Fragment showing team detail
- * Created by atgot_000 on 17. 4. 2016.
- */
 public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected String getTeamKey() {
