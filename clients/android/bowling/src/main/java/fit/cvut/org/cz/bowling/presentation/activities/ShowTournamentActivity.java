@@ -165,12 +165,24 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     }
 
     /**
+     * @return instance of bowlingTeamsListFragment if any is found
+     */
+    private BowlingTeamsListFragment getBowlingTeamsListFragment() {
+        for(Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if(fragment instanceof BowlingTeamsListFragment) {
+                return (BowlingTeamsListFragment) fragment;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks if there is enough teams to create a match
      * @return true of there is enough teams
      */
-    public boolean isEnoughTeams(){
-        int count = ((BowlingTeamsListFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(4)))).teamCount();
-        return count > 1;
+    public boolean isEnoughTeams() {
+        BowlingTeamsListFragment teamsListFragment = getBowlingTeamsListFragment();
+        return (teamsListFragment != null) && (teamsListFragment.teamCount() > 1);
     }
 }
 
