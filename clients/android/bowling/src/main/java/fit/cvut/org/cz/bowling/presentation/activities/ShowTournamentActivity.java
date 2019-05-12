@@ -23,6 +23,7 @@ import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
