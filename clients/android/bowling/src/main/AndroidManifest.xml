@@ -30,6 +30,9 @@
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/match_settings"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/team"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>
@@ -37,6 +40,7 @@
         <service android:name=".presentation.services.StatsService"/>
         <service android:name=".presentation.services.MatchService"/>
         <service android:name=".presentation.services.PlayerService"/>
+        <service android:name=".presentation.services.TeamService"/>
         <service android:name="fit.cvut.org.cz.bowling.presentation.services.BowlingService"
             android:exported="true"/>
 
