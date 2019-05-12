@@ -13,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.BowlingInsertTeamDialog;
+import fit.cvut.org.cz.bowling.presentation.dialogs.TeamsDialog;
+import fit.cvut.org.cz.bowling.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
@@ -42,16 +46,16 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
                 v.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        /*Intent i = ShowTeamActivity.newStartIntent(getContext(), teamId);
-                        startActivity(i);*/
+                        Intent i = ShowTeamActivity.newStartIntent(getContext(), teamId);
+                        startActivity(i);
                     }
                 });
 
                 v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-                        /*TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
-                        dialog.show(getFragmentManager(), "tag3");*/
+                        TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
+                        dialog.show(getFragmentManager(), "tag3");
                         return true;
                     }
                 });
@@ -65,23 +69,23 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
     }
 
     @Override
-    public void askForData() {/*
+    public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1));
-        getContext().startService(intent);*/
+        getContext().startService(intent);
     }
 
     @Override
     protected boolean isDataSourceWorking() {
-        //return TeamService.isWorking(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
-        return false;
+        return TeamService.isWorking(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
+        //return false;
     }
 
     @Override
     protected void registerReceivers() {
-        /*IntentFilter filter = new IntentFilter(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
+        IntentFilter filter = new IntentFilter(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT);
         filter.addAction(TeamService.ACTION_DELETE);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(teamReceiver, filter);*/
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(teamReceiver, filter);
     }
 
     @Override
@@ -95,8 +99,8 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), true, BowlingInsertTeamDialog.class);
-                dialog.show(getFragmentManager(), "dialog");*/
+                InsertTeamDialog dialog = InsertTeamDialog.newInstance(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), true, BowlingInsertTeamDialog.class);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
 
@@ -106,7 +110,7 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
     public class TeamReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            /*String action = intent.getAction();
+            String action = intent.getAction();
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
             switch (action) {
@@ -124,7 +128,7 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
                         if (v != null) Snackbar.make(v, R.string.team_not_empty_error, Snackbar.LENGTH_LONG).show();
                     }
                 }
-            }*/
+            }
         }
     }
 

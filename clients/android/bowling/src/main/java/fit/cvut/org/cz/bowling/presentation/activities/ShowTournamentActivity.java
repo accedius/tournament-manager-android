@@ -59,9 +59,9 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         /*Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
         Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);*/
         Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
-        /*Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
-        fragments = new Fragment[]{ f1, f2, f3, f4, f5};*/
-        fragments = new Fragment[]{ f1, f4};
+        Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
+        /*fragments = new Fragment[]{ f1, f2, f3, f4, f5};*/
+        fragments = new Fragment[]{ f1, f4, f5};
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
