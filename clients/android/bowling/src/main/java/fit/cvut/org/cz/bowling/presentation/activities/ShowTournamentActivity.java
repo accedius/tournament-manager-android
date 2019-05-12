@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
@@ -52,16 +53,16 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 //getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
-                //getString(fit.cvut.org.cz.tmlibrary.R.string.players),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
         Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
-        /*Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
-        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);*/
+        //Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
+        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);
         Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
         /*Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};*/
-        fragments = new Fragment[]{ f1, f4};
+        fragments = new Fragment[]{ f1, f3, f4};
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -150,6 +151,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
             }
+
             case fit.cvut.org.cz.tmlibrary.R.id.action_help:
                 if (selectedPage == 1) {
                     StandingsHelpDialog standingsHelpDialog = StandingsHelpDialog.newInstance();
@@ -158,7 +160,9 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                     StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
                     statsHelpDialog.show(getSupportFragmentManager(), "HELP");
                 }
-                break;*/
+                break;
+                */
+
         }
 
         return super.onOptionsItemSelected(item);

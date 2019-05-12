@@ -102,7 +102,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
                 break;
             }
-            /*case ACTION_ADD_PLAYERS_TO_TOURNAMENT:
+            case ACTION_ADD_PLAYERS_TO_TOURNAMENT:
             {
                 Intent result = new Intent(action);
                 ArrayList<Player> players = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS);
@@ -114,7 +114,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(result);
 
                 break;
-            }*/
+            }
             case ACTION_GET_PLAYERS_FOR_TEAM: {
                 Intent result = new Intent(action);
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
