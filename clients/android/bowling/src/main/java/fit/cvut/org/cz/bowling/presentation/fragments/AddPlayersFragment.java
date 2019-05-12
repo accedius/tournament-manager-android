@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -27,7 +28,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int option = getArguments().getInt(ExtraConstants.EXTRA_OPTION, -1);
+        Bundle bundle = getArguments();
+        int option = bundle.getInt(ExtraConstants.EXTRA_OPTION, -1);
 
         switch (option) {
             case OPTION_COMPETITION : {
@@ -112,7 +114,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     @Override
     protected void bindDataOnView(Intent intent) {
         if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_FOR_TEAM) {
-            ArrayList<Player> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT);
+            Bundle bundle = getArguments();
+            ArrayList<Player> omitPlayers = bundle.getParcelableArrayList(ExtraConstants.EXTRA_OMIT);
             if (omitPlayers != null) {
                 ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
                 allPlayers.removeAll(omitPlayers);
@@ -120,13 +123,15 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
             }
         }
         if (intent.getAction() == PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID) {
-            ArrayList<PlayerStat> omitPlayers = getArguments().getParcelableArrayList(ExtraConstants.EXTRA_OMIT_IDS);
+            Bundle bundle = getArguments();
+            ArrayList<PlayerStat> omitPlayers = bundle.getParcelableArrayList(ExtraConstants.EXTRA_OMIT_IDS);
             if (omitPlayers != null) {
                 ArrayList<Player> allPlayers = intent.getParcelableArrayListExtra(getDataKey());
                 ArrayList<Player> playersToShow = new ArrayList<>(allPlayers);
                 for (Player p : allPlayers) {
                     for (PlayerStat omitP : omitPlayers)
-                        if (p.getId() == omitP.getPlayerId()) playersToShow.remove(p);
+                        if (p.getId() == omitP.getPlayerId())
+                            playersToShow.remove(p);
                 }
                 intent.putExtra(getDataKey(), playersToShow);
             }
@@ -147,7 +152,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     @Override
     public void askForData() {
         Intent intent = PlayerService.newStartIntent(action, getContext());
-        intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
+        Bundle bundle = getArguments();
+        intent.putExtra(ExtraConstants.EXTRA_ID, bundle.getLong(ExtraConstants.EXTRA_ID));
 
         getContext().startService(intent);
     }
@@ -161,11 +167,15 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     @Override
     protected void registerReceivers() {
         if (action == null) return;
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(action));
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.registerReceiver(receiver, new IntentFilter(action));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.unregisterReceiver(receiver);
     }
 }

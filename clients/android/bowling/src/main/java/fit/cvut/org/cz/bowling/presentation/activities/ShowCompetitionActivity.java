@@ -39,18 +39,14 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
 
         competitionID = getIntent().getExtras().getLong(CrossPackageConstants.EXTRA_ID);
 
-        /*titles = new String[]{
-                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };*/
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.tournaments),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = CompetitionOverviewFragment.newInstance(competitionID, BowlingCompetitionOverviewFragment.class);
-        //Fragment f2 = BowlingTournamentsListFragment.newInstance(competitionID);
+        Fragment f2 = BowlingTournamentsListFragment.newInstance(competitionID);
         Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
-        fragments = new Fragment[]{ f1, f3};
-        //fragments = new Fragment[] {f1, f2, f3};
+        fragments = new Fragment[] {f1, f2, f3};
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

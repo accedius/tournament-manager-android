@@ -11,6 +11,7 @@ import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IStatisticManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -94,7 +95,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         int participant_score = 0, opponent_score = 0;
         List<Participant> matchParticipants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
         for (Participant matchParticipant : matchParticipants) {
-            List<ParticipantStat> participantStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(matchParticipant.getId());
+            final IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+            List<ParticipantStat> participantStats = participantStatManager.getByParticipantId(matchParticipant.getId());
             if (matchParticipant.getId() == participant.getId())
                 participant_score = participantStats.get(0).getScore();
             else
@@ -118,7 +120,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     }
 
     private AggregatedStatistics aggregateStats(Player player, List<PlayerStat> allStats) {
-        List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByPlayerId(player.getId());
+        final IPlayerStatManager playerStatManager = managerFactory.getEntityManager(PlayerStat.class);
+        List<PlayerStat> playerStats = playerStatManager.getByPlayerId(player.getId());
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
@@ -137,7 +140,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
             // Count team points, win, and other...
             int result = getMatchResultForParticipant(participant, match);
-            PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(match.getTournamentId());
+            final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+            PointConfiguration pointConfiguration = pointConfigurationManager.getById(match.getTournamentId());
             teamPoints += calculatePoints(result, pointConfiguration, match);
             switch (result) {
                 case WIN:
@@ -184,7 +188,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     @Override
     public ArrayList<AggregatedStatistics> getByCompetitionId(long competitionId) {
-        List<Player> competitionPlayers = ((ICompetitionManager)managerFactory.getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
+        final ICompetitionManager competitionManager = managerFactory.getEntityManager(Competition.class);
+        List<Player> competitionPlayers = competitionManager.getCompetitionPlayers(competitionId);
         List<PlayerStat> competitionStats = getStatsByCompetitionId(competitionId);
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
@@ -196,8 +201,9 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     }
 
     private List<PlayerStat> getStatsByTournamentId(long tournamentId) {
+        final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
         List<PlayerStat> playerStats = new ArrayList<>();
-        List<Match> matches = new ArrayList<>(((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId));
+        List<Match> matches = new ArrayList<>(matchManager.getByTournamentId(tournamentId));
 
         List<Participant> participants = new ArrayList<>();
         for (Match match : matches)
@@ -213,7 +219,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     @Override
     public List<AggregatedStatistics> getByTournamentId(long tournamentId) {
-        List<Player> tournamentPlayers = ((ITournamentManager)managerFactory.getEntityManager(Tournament.class)).getTournamentPlayers(tournamentId);
+        final ITournamentManager tournamentManager = managerFactory.getEntityManager(Tournament.class);
+        List<Player> tournamentPlayers = tournamentManager.getTournamentPlayers(tournamentId);
         List<PlayerStat> tournamentStats = getStatsByTournamentId(tournamentId);
         ArrayList<AggregatedStatistics> res = new ArrayList<>();
 
@@ -226,14 +233,17 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
     @Override
     public List<Standing> getStandingsByTournamentId(long tournamentId) {
-        List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
+        final ITeamManager teamManager = managerFactory.getEntityManager(Team.class);
+        final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+        List<Team> teams = teamManager.getByTournamentId(tournamentId);
         ArrayList<Standing> standings = new ArrayList<>();
-        PointConfiguration pointConfiguration = managerFactory.getEntityManager(PointConfiguration.class).getById(tournamentId);
+        PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), t.getId()));
         }
-        List<Match> matches = ((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournamentId);
+        final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
+        List<Match> matches = matchManager.getByTournamentId(tournamentId);
         for (Match match : matches) {
             if (!match.isPlayed())
                 continue;

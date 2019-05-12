@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.services;
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import fit.cvut.org.cz.tmlibrary.business.loaders.entities.Conflict;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.PlayerImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -50,12 +52,15 @@ public class BowlingService extends AbstractIntentServiceWProgress {
         String action = intent.getStringExtra(CrossPackageConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE);
         String sportContext = intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT);
-        ((BowlingPackage) getApplicationContext()).setSportContext(sportContext);
+        Context context = getApplicationContext();
+        ((BowlingPackage) context).setSportContext(sportContext);
 
         switch (action) {
             case CrossPackageConstants.ACTION_GET_STATS: {
                 long id = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
-                AggregatedStatistics ags = ((IStatisticManager) ManagerFactory.getInstance(this).getEntityManager(AggregatedStatistics.class)).getByPlayerId(id);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                IStatisticManager iStatisticManager = iManagerFactory.getEntityManager(AggregatedStatistics.class);
+                AggregatedStatistics ags = iStatisticManager.getByPlayerId(id);
 
                 ArrayList<PlayerAggregatedStats> statsToSend = new ArrayList<>();
                 PlayerAggregatedStats as = new PlayerAggregatedStats();
@@ -82,7 +87,9 @@ public class BowlingService extends AbstractIntentServiceWProgress {
             }
             case CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS: {
                 Intent res = new Intent(package_name + action);
-                List<Competition> competitions = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getAll();
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ICompetitionManager iCompetitionManager = iManagerFactory.getEntityManager(Competition.class);
+                List<Competition> competitions = iCompetitionManager.getAll();
                 for (Competition competition : competitions) {
                     competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
                 }
@@ -98,12 +105,15 @@ public class BowlingService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(package_name + action);
                 long playerId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
                 ArrayList<Competition> competitions = new ArrayList<>();
-                List<Competition> allCompetitions = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getAll();
-
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ICompetitionManager iCompetitionManager = iManagerFactory.getEntityManager(Competition.class);
+                List<Competition> allCompetitions = iCompetitionManager.getAll();
                 boolean containsPlayer;
                 for (Competition competition : allCompetitions) {
                     containsPlayer = false;
-                    List<Player> players = ((ICompetitionManager) ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(competition.getId());
+                    IManagerFactory iManagerFactory1 = ManagerFactory.getInstance(this);
+                    ICompetitionManager iCompetitionManager1 = iManagerFactory1.getEntityManager(Competition.class);
+                    List<Player> players = iCompetitionManager1.getCompetitionPlayers(competition.getId());
                     for (Player player : players) {
                         if (player.getId() == playerId) {
                             containsPlayer = true;
@@ -128,7 +138,9 @@ public class BowlingService extends AbstractIntentServiceWProgress {
             case CrossPackageConstants.ACTION_DELETE_COMPETITION: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
-                res.putExtra(CrossPackageConstants.EXTRA_RESULT, ManagerFactory.getInstance(this).getEntityManager(Competition.class).delete(compId));
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ICompetitionManager iCompetitionManager = iManagerFactory.getEntityManager(Competition.class);
+                res.putExtra(CrossPackageConstants.EXTRA_RESULT, iCompetitionManager.delete(compId));
 
                 res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.TYPE_DELETE);
                 res.putExtra(CrossPackageConstants.EXTRA_POSITION, intent.getIntExtra(CrossPackageConstants.EXTRA_POSITION, -1));
@@ -140,9 +152,13 @@ public class BowlingService extends AbstractIntentServiceWProgress {
             case CrossPackageConstants.ACTION_GET_COMPETITION_SERIALIZED: {
                 Intent res = new Intent(package_name + action);
                 long compId = intent.getLongExtra(CrossPackageConstants.EXTRA_ID, -1);
-                Competition competition = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(compId);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ICompetitionManager iCompetitionManager = iManagerFactory.getEntityManager(Competition.class);
+                Competition competition = iCompetitionManager.getById(compId);
                 competition.setSportContext(sportContext);
-                String json = CompetitionSerializer.getInstance(this).serialize(competition).toJson();
+                CompetitionSerializer competitionSerializer = CompetitionSerializer.getInstance(this);
+                ServerCommunicationItem serverCommunicationItem = competitionSerializer.serialize(competition);
+                String json = serverCommunicationItem.toJson();
 
                 res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
                 res.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);

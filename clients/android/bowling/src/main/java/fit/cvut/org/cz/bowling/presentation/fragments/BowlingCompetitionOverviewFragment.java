@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,8 +14,8 @@ public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragm
     public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, competitionId);
-
-        getContext().startService(intent);
+        Context context = getContext();
+        context.startService(intent);
     }
 
     @Override
@@ -24,12 +25,16 @@ public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragm
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.registerReceiver(receiver, new IntentFilter(CompetitionService.ACTION_FIND_BY_ID));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.unregisterReceiver(receiver);
     }
 
     @Override

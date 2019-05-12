@@ -38,13 +38,20 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         IEntityDAO<Match, Long> matchDAO = managerFactory.getDaoFactory().getMyDao(Match.class);
         List<Match> matches = matchDAO.getListItemById(DBConstants.cTOURNAMENT_ID, tournamentId);
         for (Match match : matches) {
-            List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(match.getId());
+            IParticipantManager participantManager = (managerFactory.getEntityManager(Participant.class));
+            List<Participant> participants = participantManager.getByMatchId(match.getId());
             match.addParticipants(participants);
             for (Participant participant : participants) {
-                if (ParticipantType.home.toString().equals(participant.getRole()))
-                    match.setHomeScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
-                else if (ParticipantType.away.toString().equals(participant.getRole()))
-                    match.setAwayScore(((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId()));
+                if (ParticipantType.home.toString().equals(participant.getRole())){
+                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
+                    match.setHomeScore(participantId);
+                }
+                else if (ParticipantType.away.toString().equals(participant.getRole())){
+                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
+                    match.setAwayScore(participantId);
+                }
             }
         }
 
@@ -61,7 +68,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
     public Match getById(long id) {
         Match match = super.getById(id);
-        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
+        IParticipantManager participantManager = (managerFactory.getEntityManager(Participant.class));
+        List<Participant> participants = participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
             if (ParticipantType.home.toString().equals(participant.getRole()))
@@ -84,7 +92,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public void generateRound(long tournamentId) {
-        List<Team> teams = ((ITeamManager)managerFactory.getEntityManager(Team.class)).getByTournamentId(tournamentId);
+        ITeamManager iTeamManager = managerFactory.getEntityManager(Team.class);
+        List<Team> teams = iTeamManager.getByTournamentId(tournamentId);
         Map<Long, Team> teamMap = new HashMap<>();
         ArrayList<Participant> partsForGenerator = new ArrayList<>();
 
@@ -125,8 +134,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         Match match = getById(matchId);
         if (!match.isPlayed())
             return;
-
-        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(matchId);
+        IParticipantManager iParticipantManager = managerFactory.getEntityManager(Participant.class);
+        List<Participant> participants = iParticipantManager.getByMatchId(matchId);
 
         try {
             // Remove Participant Stats and reset Player Stats
@@ -166,7 +175,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
     @Override
     public boolean delete(long id) {
-        List<Participant> participants = ((IParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(id);
+        IParticipantManager iParticipantManager = managerFactory.getEntityManager(Participant.class);
+        List<Participant> participants = iParticipantManager.getByMatchId(id);
         try {
             IEntityDAO<ParticipantStat, Long> ParticipantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
             IEntityDAO<PlayerStat, Long> PlayerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);

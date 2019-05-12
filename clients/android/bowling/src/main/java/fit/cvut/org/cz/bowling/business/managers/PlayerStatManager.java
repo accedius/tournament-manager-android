@@ -18,7 +18,8 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     public List<PlayerStat> getByPlayerId(long playerId) {
         IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
         List<PlayerStat> playerStats = playerStatDAO.getListItemById(DBConstants.cPLAYER_ID, playerId);
-        Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+        final IPackagePlayerManager packagePlayerManager = managerFactory.getEntityManager(Player.class);
+        Map<Long, Player> playerMap = packagePlayerManager.getMapAll();
         for (PlayerStat playerStat : playerStats) {
             playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
         }
@@ -29,7 +30,8 @@ public class PlayerStatManager extends BaseManager<PlayerStat> implements IPlaye
     public List<PlayerStat> getByParticipantId(long participantId) {
         IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
         List<PlayerStat> playerStats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
-        Map<Long, Player> playerMap = ((IPackagePlayerManager)managerFactory.getEntityManager(Player.class)).getMapAll();
+        final IPackagePlayerManager packagePlayerManager = managerFactory.getEntityManager(Player.class);
+        Map<Long, Player> playerMap = packagePlayerManager.getMapAll();
         for (PlayerStat playerStat : playerStats) {
             playerStat.setName(playerMap.get(playerStat.getPlayerId()).getName());
         }

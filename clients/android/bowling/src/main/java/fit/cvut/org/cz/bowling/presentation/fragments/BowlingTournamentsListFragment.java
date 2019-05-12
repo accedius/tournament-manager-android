@@ -22,7 +22,10 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
+import fit.cvut.org.cz.bowling.presentation.activities.CreateTournamentActivity;
+import fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.TournamentsDialog;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -61,8 +64,10 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getArguments() != null)
-            competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID);
+        if (getArguments() != null){
+            Bundle bundle = getArguments();
+            competitionId = bundle.getLong(ExtraConstants.EXTRA_COMP_ID);
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -78,19 +83,19 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
                 v.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             /*Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
+                                             Intent intent = new Intent(getContext(), ShowTournamentActivity.class);
                                              intent.putExtra(ExtraConstants.EXTRA_COMP_ID, compId);
                                              intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tourId);
                                              intent.putExtra(AbstractTabActivity.ARG_TABMODE, TabLayout.MODE_SCROLLABLE);
-                                             startActivity(intent);*/
+                                             startActivity(intent);
                                          }
                                      }
                 );
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        /*TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
-                        dialog.show(getFragmentManager(), "EDIT_DELETE");*/
+                        TournamentsDialog dialog = TournamentsDialog.newInstance(tourId, compId, position, name);
+                        dialog.show(getFragmentManager(), "EDIT_DELETE");
                         return true;
                     }
                 } );
@@ -120,12 +125,16 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
     protected void registerReceivers() {
         IntentFilter filter = new IntentFilter(TournamentService.ACTION_GET_ALL);
         filter.addAction(TournamentService.ACTION_DELETE);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(myReceiver, filter);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.registerReceiver(myReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(myReceiver);
+        Context context = getContext();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.unregisterReceiver(myReceiver);
     }
 
     public void orderData(final String type) {
@@ -159,14 +168,16 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        FloatingActionButton fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, parent, false);
+        Context context = getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        FloatingActionButton fab = (FloatingActionButton) layoutInflater.inflate(R.layout.floatingbutton_add, parent, false);
 
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
                                        long compId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
-                                       /*Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
-                                       startActivity(intent);*/
+                                       Intent intent = CreateTournamentActivity.newStartIntent(getContext(), -1, compId);
+                                       startActivity(intent);
                                    }
                                }
         );

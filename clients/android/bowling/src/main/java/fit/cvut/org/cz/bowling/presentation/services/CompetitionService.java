@@ -62,8 +62,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 long competitionId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 res.setAction(ACTION_FIND_BY_ID);
                 c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(competitionId);
-                List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
-                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(competitionId);
+                final ITournamentManager tournamentManager = ManagerFactory.getInstance(this).getEntityManager(Tournament.class);
+                List<Tournament> tournaments = tournamentManager.getByCompetitionId(competitionId);
+                final ICompetitionManager competitionManager = ManagerFactory.getInstance(this).getEntityManager(Competition.class);
+                List<Player> players = competitionManager.getCompetitionPlayers(competitionId);
 
                 res.putExtra(ExtraConstants.EXTRA_COMPETITION, c);
                 res.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
@@ -74,8 +76,10 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
             /*case ACTION_GET_OVERVIEW:{
                 long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 c = ManagerFactory.getInstance(this).getEntityManager(Competition.class).getById(id);
-                //List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(id);
-                List<Player> players = ((ICompetitionManager)ManagerFactory.getInstance(this).getEntityManager(Competition.class)).getCompetitionPlayers(id);
+                //final ITournamentManager tournamentManager = ManagerFactory.getInstance(this).getEntityManager(Tournament.class);
+                //List<Tournament> tournaments = tournamentManager.getByCompetitionId(competitionId);
+                final ICompetitionManager competitionManager = ManagerFactory.getInstance(this).getEntityManager(Competition.class);
+                List<Player> players = competitionManager.getCompetitionPlayers(competitionId);
 
                 Intent result = new Intent(action);
                 result.putExtra(ExtraConstants.EXTRA_COMPETITION, c);

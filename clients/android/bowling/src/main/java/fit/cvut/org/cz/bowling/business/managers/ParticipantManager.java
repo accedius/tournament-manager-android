@@ -17,7 +17,8 @@ public class ParticipantManager extends fit.cvut.org.cz.tmlibrary.business.manag
         IEntityDAO<Participant, Long> tmpDAO = managerFactory.getDaoFactory().getMyDao(Participant.class);
         List<Participant> participants = tmpDAO.getListItemById(DBConstants.cMATCH_ID, matchId);
         for (Participant participant : participants) {
-            List<ParticipantStat> participantStats = ((IParticipantStatManager)managerFactory.getEntityManager(ParticipantStat.class)).getByParticipantId(participant.getId());
+            IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+            List<ParticipantStat> participantStats = participantStatManager.getByParticipantId(participant.getId());
             participant.setParticipantStats(participantStats);
         }
         return new ArrayList<>(participants);

@@ -9,9 +9,11 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -57,18 +59,24 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         switch (action) {
             case ACTION_CREATE: {
                 Tournament t = intent.getParcelableExtra(ExtraConstants.EXTRA_TOURNAMENT);
-                ManagerFactory.getInstance(this).getEntityManager(Tournament.class).insert(t);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                iTournamentManager.insert(t);
                 break;
             }
             case ACTION_UPDATE: {
                 Tournament c = intent.getParcelableExtra(ExtraConstants.EXTRA_TOURNAMENT);
-                ManagerFactory.getInstance(this).getEntityManager(Tournament.class).update(c);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                iTournamentManager.update(c);
                 break;
             }
             case ACTION_DELETE: {
                 Intent res = new Intent(ACTION_DELETE);
                 long tourId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
-                boolean result = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).delete(tourId);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                boolean result = iTournamentManager.delete(tourId);
                 res.putExtra(ExtraConstants.EXTRA_RESULT, result);
                 res.putExtra(ExtraConstants.EXTRA_POSITION, intent.getIntExtra(ExtraConstants.EXTRA_POSITION, -1));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -79,12 +87,20 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 res.setAction(ACTION_FIND_BY_ID);
                 long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
 
-                Tournament tournament = ManagerFactory.getInstance(this).getEntityManager(Tournament.class).getById(id);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                Tournament tournament = iTournamentManager.getById(id);
                 res.putExtra(ExtraConstants.EXTRA_TOURNAMENT, tournament);
 
-                List<Team> teams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(id);
-                List<Player> players = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getTournamentPlayers(id);
-                List<Match> matches = ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).getByTournamentId(id);
+                iManagerFactory = ManagerFactory.getInstance(this);
+                ITeamManager iTeamManager = iManagerFactory.getEntityManager(Team.class);
+                List<Team> teams = iTeamManager.getByTournamentId(id);
+                iManagerFactory = ManagerFactory.getInstance(this);
+                iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                List<Player> players = iTournamentManager.getTournamentPlayers(id);
+                iManagerFactory = ManagerFactory.getInstance(this);
+                IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
+                List<Match> matches = iMatchManager.getByTournamentId(id);
 
                 res.putExtra(ExtraConstants.EXTRA_MATCHES_COUNT, matches.size());
                 res.putExtra(ExtraConstants.EXTRA_TEAMS_COUNT, teams.size());
@@ -96,7 +112,9 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent();
                 res.setAction(ACTION_GET_ALL);
                 long competitionId = intent.getLongExtra(ExtraConstants.EXTRA_COMP_ID, -1);
-                List<Tournament> tournaments = ((ITournamentManager)ManagerFactory.getInstance(this).getEntityManager(Tournament.class)).getByCompetitionId(competitionId);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+                List<Tournament> tournaments = iTournamentManager.getByCompetitionId(competitionId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TOURNAMENTS, new ArrayList<>(tournaments));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
@@ -104,18 +122,24 @@ public class TournamentService extends AbstractIntentServiceWProgress {
             case ACTION_GET_CONFIG_BY_ID: {
                 Intent res = new Intent();
                 res.setAction(ACTION_GET_CONFIG_BY_ID);
-                res.putExtra(ExtraConstants.EXTRA_CONFIGURATION, ManagerFactory.getInstance(this).getEntityManager(PointConfiguration.class).getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1)));
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                IPointConfigurationManager iPointConfigurationManager = iManagerFactory.getEntityManager(PointConfiguration.class);
+                res.putExtra(ExtraConstants.EXTRA_CONFIGURATION, iPointConfigurationManager.getById(intent.getLongExtra(ExtraConstants.EXTRA_ID, -1)));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
             case ACTION_SET_CONFIG: {
                 PointConfiguration pc = intent.getParcelableExtra(ExtraConstants.EXTRA_CONFIGURATION);
-                ManagerFactory.getInstance(this).getEntityManager(PointConfiguration.class).update(pc);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                IPointConfigurationManager iPointConfigurationManager = iManagerFactory.getEntityManager(PointConfiguration.class);
+                iPointConfigurationManager.update(pc);
                 break;
             }
             case ACTION_GENERATE_ROSTERS: {
                 Intent result = new Intent(action);
-                boolean res = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).generateRosters(
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                ITeamManager iTeamManager = iManagerFactory.getEntityManager(Team.class);
+                boolean res = iTeamManager.generateRosters(
                         intent.getLongExtra(ExtraConstants.EXTRA_ID, -1),
                         intent.getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1),
                         intent.getIntExtra(ExtraConstants.EXTRA_GENERATING_TYPE, -1));
