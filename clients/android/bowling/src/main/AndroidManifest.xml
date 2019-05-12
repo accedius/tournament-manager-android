@@ -27,6 +27,9 @@
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/add_players"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/match_settings"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>
