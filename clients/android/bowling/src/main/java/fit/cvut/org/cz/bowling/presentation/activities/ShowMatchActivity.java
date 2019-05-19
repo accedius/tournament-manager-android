@@ -24,10 +24,7 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
-import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 

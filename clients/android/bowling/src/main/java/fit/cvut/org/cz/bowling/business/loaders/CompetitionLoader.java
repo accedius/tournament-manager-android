@@ -41,7 +41,7 @@ public class CompetitionLoader {
         }
 
         /* TOURNAMENTS HANDLING */
-        //tournamentsInfo.addAll(TournamentLoader.getTournamentsImportInfo(context, tournaments));
+        tournamentsInfo.addAll(TournamentLoader.getTournamentsImportInfo(context, tournaments));
 
         /* PLAYERS HANDLING */
         playersInfo.addAll(PlayerLoader.getPlayersImportInfo(context, res, players, playersModified));
@@ -71,7 +71,7 @@ public class CompetitionLoader {
         PlayerLoader.importPlayers(context, players, importedCompetition, importedPlayers, conflictSolutions);
 
         /* Tournaments loading */
-        //TournamentLoader.importTournaments(context, tournaments, importedCompetition, importedPlayers);
+        TournamentLoader.importTournaments(context, tournaments, importedCompetition, importedPlayers);
         return importedCompetition;
     }
 }
