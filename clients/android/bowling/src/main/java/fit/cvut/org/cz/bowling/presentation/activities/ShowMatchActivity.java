@@ -19,7 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
+import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
+import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -56,15 +64,15 @@ public class ShowMatchActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         matchId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_MATCH_ID);
 
-        /*titles = new String[]{
+        titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
         Fragment f2 = BowlingMatchStatsFragment.newInstance(matchId);
         fragments = new Fragment[]{ f1, f2 };
-        */
+
         super.onCreate(savedInstanceState);
-        /*
+
         adapter = (DefaultViewPagerAdapter)getAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
         pager.setAdapter(adapter);
@@ -72,7 +80,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
-        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));*/
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
@@ -94,7 +102,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*if (item.getItemId() == R.id.action_finish) {
+        if (item.getItemId() == R.id.action_finish) {
             Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
@@ -117,7 +125,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) fragments[0];
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
             startActivity(intent);
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
