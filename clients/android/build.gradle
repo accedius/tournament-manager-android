@@ -1,7 +1,7 @@
 ext {
-    defaultpass = 'android'
-    defaultalias = 'tournamentmanager'
-    keystore = 'C:\\Users\\User\\Documents\\FIT_CVUT\\BI-SP1\\EASVNProject\\releases\\keystore'
+    fitkeystore = 'C:\\Users\\User\\Documents\\FIT_CVUT\\BI-SP1\\EASVNProject\\releases\\AndroidFITKeystore'
+    fitpass = 
+    fitalias = 'android fit'
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {

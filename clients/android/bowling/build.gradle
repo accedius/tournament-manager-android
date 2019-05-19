@@ -3,16 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         release {
-            storeFile file(keystore)
-            storePassword defaultpass
-            keyAlias = defaultalias
-            keyPassword defaultpass
-        }
-        debug {
-            storeFile file('C:\\Users\\User\\Documents\\FIT_CVUT\\BI-SP1\\EASVNProject\\releases\\keystore')
-            storePassword 'android-fit-cvut-cz'
-            keyPassword 'android-fit-cvut-cz'
-            keyAlias = 'android fit'
+            storeFile file(fitkeystore)
+            storePassword fitpass
+            keyAlias = fitalias
+            keyPassword fitpass
         }
     }
     compileSdkVersion 28
@@ -24,7 +18,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
 
     }
     buildTypes {

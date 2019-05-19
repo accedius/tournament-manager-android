@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         release {
-            storeFile file(keystore)
-            storePassword defaultpass
-            keyAlias = defaultalias
-            keyPassword defaultpass
+            storeFile file(fitkeystore)
+            storePassword fitpass
+            keyAlias = fitalias
+            keyPassword fitpass
         }
     }
     lintOptions {
@@ -22,7 +22,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
