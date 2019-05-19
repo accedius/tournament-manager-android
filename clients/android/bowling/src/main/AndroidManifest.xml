@@ -33,6 +33,9 @@
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/team"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/match"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>
