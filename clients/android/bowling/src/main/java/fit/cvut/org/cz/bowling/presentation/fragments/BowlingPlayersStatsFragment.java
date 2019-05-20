@@ -165,8 +165,8 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
             intent = StatsService.newStartIntent(StatsService.ACTION_GET_BY_TOUR_ID, getContext());
             intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
         }
-
-        getActivity().startService(intent);
+        StatsService.enqueueWork(getActivity(), intent, StatsService.class);
+        //getActivity().startService(intent);
     }
 
     @Override
@@ -239,17 +239,19 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
             return;
         }
 
+        Intent intent;
         if (competitionID != -1) {
-            Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
+            intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_COMPETITION, getContext());
             intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA));
             intent.putExtra(ExtraConstants.EXTRA_ID, competitionID);
-            getContext().startService(intent);
+            //getContext().startService(intent);
         } else {
-            Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT, getContext());
+            intent = PlayerService.newStartIntent(PlayerService.ACTION_ADD_PLAYERS_TO_TOURNAMENT, getContext());
             intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYERS, data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA));
             intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
-            getContext().startService(intent);
+            //getContext().startService(intent);
         }
+        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
         progressBar.setVisibility(View.VISIBLE);
     }
 

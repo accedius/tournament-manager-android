@@ -47,7 +47,8 @@ public class EditDeleteDialog extends DialogFragment {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
                         intent.putExtra(ExtraConstants.EXTRA_POSITION, position);
-                        getContext().startService(intent);
+                        PlayerService.enqueueWork(getContext(),intent, PlayerService.class);
+                        //getContext().startService(intent);
                     }
                 }
                 dialog.dismiss();

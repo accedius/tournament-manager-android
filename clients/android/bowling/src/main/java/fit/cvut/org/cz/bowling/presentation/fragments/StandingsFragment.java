@@ -95,8 +95,8 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_STANDINGS_BY_TOURNAMENT, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, tournamentID);
-
-        getContext().startService(intent);
+        StatsService.enqueueWork(getContext(), intent, StatsService.class);
+        //getContext().startService(intent);
     }
 
     @Override

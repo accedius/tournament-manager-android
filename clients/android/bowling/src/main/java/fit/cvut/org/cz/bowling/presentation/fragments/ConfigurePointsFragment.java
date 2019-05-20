@@ -53,8 +53,8 @@ public class ConfigurePointsFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_CONFIG_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-
-        getContext().startService(intent);
+        TournamentService.enqueueWork(getContext(), intent, TournamentService.class);
+        //getContext().startService(intent);
     }
 
     @Override

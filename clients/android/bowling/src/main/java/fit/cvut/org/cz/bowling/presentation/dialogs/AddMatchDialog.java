@@ -26,7 +26,8 @@ public class AddMatchDialog extends DialogFragment {
                     case 1: {
                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-                        getContext().startService(intent);
+                        MatchService.enqueueWork(getContext(), intent, MatchService.class);
+                        //getContext().startService(intent);
                         break;
                     }
                 }

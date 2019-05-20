@@ -48,8 +48,8 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID_FOR_OVERVIEW, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
-
-        getContext().startService(intent);
+        MatchService.enqueueWork(getContext(), intent, MatchService.class);
+        //getContext().startService(intent);
     }
 
     @Override

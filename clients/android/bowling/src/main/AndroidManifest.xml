@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fit.cvut.org.cz.bowling">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/bowling_icon"
@@ -38,13 +40,20 @@
             android:label="@string/match"/>
 
 
-        <service android:name=".presentation.services.CompetitionService"/>
-        <service android:name=".presentation.services.TournamentService"/>
-        <service android:name=".presentation.services.StatsService"/>
-        <service android:name=".presentation.services.MatchService"/>
-        <service android:name=".presentation.services.PlayerService"/>
-        <service android:name=".presentation.services.TeamService"/>
+        <service android:name=".presentation.services.CompetitionService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".presentation.services.TournamentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".presentation.services.StatsService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".presentation.services.MatchService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".presentation.services.PlayerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".presentation.services.TeamService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name="fit.cvut.org.cz.bowling.presentation.services.BowlingService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"/>
 
         <provider

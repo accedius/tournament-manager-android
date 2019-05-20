@@ -20,8 +20,8 @@ public class NewBowlingCompetitionFragment extends NewCompetitionFragment {
     public void askForData() {
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, competitionId);
-
-        getContext().startService(intent);
+        CompetitionService.enqueueWork(getContext(), intent, CompetitionService.class);
+        //getContext().startService(intent);
     }
 
     @Override

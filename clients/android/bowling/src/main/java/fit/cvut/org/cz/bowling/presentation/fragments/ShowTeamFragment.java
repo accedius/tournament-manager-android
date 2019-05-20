@@ -30,8 +30,8 @@ public class ShowTeamFragment extends TeamDetailFragment {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE_TEAM_PLAYERS, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, t.getId());
         intent.putExtra(ExtraConstants.EXTRA_PLAYERS, new ArrayList<>(t.getPlayers()));
-
-        getContext().startService(intent);
+        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
+        //getContext().startService(intent);
     }
 
     @Override
@@ -55,7 +55,8 @@ public class ShowTeamFragment extends TeamDetailFragment {
     public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, teamId);
-        getContext().startService(intent);
+        TeamService.enqueueWork(getContext(), intent, TeamService.class);
+        //getContext().startService(intent);
     }
 
     @Override

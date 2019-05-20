@@ -24,8 +24,8 @@ public class NewBowlingMatchFragment extends NewMatchFragment {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, id);
         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
-
-        getContext().startService(intent);
+        MatchService.enqueueWork(getContext(), intent, MatchService.class);
+        //getContext().startService(intent);
     }
 
     @Override

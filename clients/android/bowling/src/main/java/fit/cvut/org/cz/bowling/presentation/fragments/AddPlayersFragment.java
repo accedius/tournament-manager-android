@@ -154,8 +154,8 @@ public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
         Intent intent = PlayerService.newStartIntent(action, getContext());
         Bundle bundle = getArguments();
         intent.putExtra(ExtraConstants.EXTRA_ID, bundle.getLong(ExtraConstants.EXTRA_ID));
-
-        getContext().startService(intent);
+        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
+        //getContext().startService(intent);
     }
 
     @Override

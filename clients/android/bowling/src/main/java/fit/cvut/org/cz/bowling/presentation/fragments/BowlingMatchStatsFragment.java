@@ -109,7 +109,8 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = StatsService.newStartIntent(StatsService.ACTION_GET_MATCH_PLAYER_STATISTICS, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID));
-        getContext().startService(intent);
+        StatsService.enqueueWork(getContext(), intent, StatsService.class);
+        //getContext().startService(intent);
     }
 
     @Override

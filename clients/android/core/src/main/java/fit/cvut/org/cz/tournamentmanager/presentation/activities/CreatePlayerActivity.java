@@ -76,7 +76,8 @@ public class CreatePlayerActivity extends AbstractToolbarActivity {
                 intent = PlayerService.newStartIntent(PlayerService.ACTION_UPDATE, this);
             }
             intent.putExtra(ExtraConstants.EXTRA_PLAYER, player);
-            startService(intent);
+            PlayerService.enqueueWork(this, intent, PlayerService.class);
+            //startService(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

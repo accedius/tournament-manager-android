@@ -15,16 +15,16 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
     protected void saveTournament(Tournament t) {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_CREATE, getContext());
         intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, t);
-
-        getContext().startService(intent);
+        TournamentService.enqueueWork(getContext(), intent, TournamentService.class);
+        //getContext().startService(intent);
     }
 
     @Override
     protected void updateTournament(Tournament t) {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, getContext());
         intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, t);
-
-        getContext().startService(intent);
+        TournamentService.enqueueWork(getContext(), intent, TournamentService.class);
+        //getContext().startService(intent);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
-
-        getContext().startService(intent);
+        TournamentService.enqueueWork(getContext(), intent, TournamentService.class);
+        //getContext().startService(intent);
     }
 
     @Override

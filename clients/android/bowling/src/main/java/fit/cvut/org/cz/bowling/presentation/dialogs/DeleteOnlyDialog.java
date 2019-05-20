@@ -21,12 +21,14 @@ public class DeleteOnlyDialog extends DialogFragment {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_COMPETITION, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_PLAYER_ID, getArguments().getLong(ExtraConstants.EXTRA_PLAYER_ID));
                         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
-                        getContext().startService(intent);
+                        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
+                        //getContext().startService(intent);
                     } else {
                         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_DELETE_PLAYER_FROM_TOURNAMENT, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_PLAYER_ID, getArguments().getLong(ExtraConstants.EXTRA_PLAYER_ID));
                         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-                        getContext().startService(intent);
+                        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
+                        //getContext().startService(intent);
                     }
                 }
                 dismiss();

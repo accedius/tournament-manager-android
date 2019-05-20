@@ -33,18 +33,24 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
  * Allows Core to delete Competition and get stats for player
  * Created by Vaclav on 6. 5. 2016.
  */
-public class SquashExportedService extends IntentService {
+public class SquashExportedService extends AbstractIntentServiceWProgress {
     public SquashExportedService() {
         super("Squash exported service");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected String getActionKey() {
+        return CrossPackageConstants.EXTRA_ACTION;
+    }
+
+    @Override
+    protected void doWork(Intent intent) {
         String action = intent.getStringExtra(CrossPackageConstants.EXTRA_ACTION);
         String package_name = intent.getStringExtra(CrossPackageConstants.EXTRA_PACKAGE);
         String sport_context = intent.getStringExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT);

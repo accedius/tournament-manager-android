@@ -35,7 +35,8 @@ public class TournamentsDialog extends EditDeleteDialog {
                                         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_DELETE, context);
                                         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                                         intent.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
-                                        context.startService(intent);
+                                        TournamentService.enqueueWork(context, intent, TournamentService.class);
+                                        //context.startService(intent);
                                         break;
 
                                     case DialogInterface.BUTTON_NEGATIVE:

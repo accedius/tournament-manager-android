@@ -102,8 +102,8 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 intent.setAction(MatchService.ACTION_UPDATE);
             }
             intent.putExtra(ExtraConstants.EXTRA_MATCH, BowlingMatch);
-
-            startService(intent);
+            MatchService.enqueueWork(this, intent, MatchService.class);
+            //startService(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

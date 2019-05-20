@@ -24,7 +24,8 @@ public class TeamsDialog extends EditDeleteDialog {
                         Intent intent = TeamService.newStartIntent(TeamService.ACTION_DELETE, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
                         intent.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
-                        getContext().startService(intent);
+                        TeamService.enqueueWork(getContext(), intent, TeamService.class);
+                        //getContext().startService(intent);
                         dialog.dismiss();
                         break;
                 }

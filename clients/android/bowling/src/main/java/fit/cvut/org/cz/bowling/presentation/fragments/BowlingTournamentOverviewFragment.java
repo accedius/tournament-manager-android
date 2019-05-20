@@ -35,8 +35,8 @@ public class BowlingTournamentOverviewFragment extends TournamentOverviewFragmen
         Context context = getContext();
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_FIND_BY_ID, context);
         intent.putExtra(ExtraConstants.EXTRA_ID, tournamentId);
-
-        getContext().startService(intent);
+        TournamentService.enqueueWork(getContext(), intent, TournamentService.class);
+        //getContext().startService(intent);
     }
 
     @Override

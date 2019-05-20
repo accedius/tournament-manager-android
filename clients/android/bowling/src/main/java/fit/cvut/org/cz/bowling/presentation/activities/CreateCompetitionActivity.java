@@ -67,7 +67,8 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
                 intent = CompetitionService.newStartIntent(CompetitionService.ACTION_UPDATE, this);
             }
             intent.putExtra(ExtraConstants.EXTRA_COMPETITION, competition);
-            startService(intent);
+            CompetitionService.enqueueWork(this, intent, CompetitionService.class);
+            //startService(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

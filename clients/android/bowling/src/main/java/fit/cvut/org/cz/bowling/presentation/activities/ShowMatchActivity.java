@@ -113,7 +113,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
             intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
             intent.putExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
-            startService(intent);
+            MatchService.enqueueWork(this, intent, MatchService.class);
+            //startService(intent);
 
             finish();
         } else if (item.getItemId() == R.id.action_edit_stats) {

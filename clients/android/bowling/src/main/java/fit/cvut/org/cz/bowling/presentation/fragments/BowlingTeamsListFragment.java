@@ -72,7 +72,8 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
     public void askForData() {
         Intent intent = TeamService.newStartIntent(TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1));
-        getContext().startService(intent);
+        TeamService.enqueueWork(getContext(), intent, TeamService.class);
+        //getContext().startService(intent);
     }
 
     @Override

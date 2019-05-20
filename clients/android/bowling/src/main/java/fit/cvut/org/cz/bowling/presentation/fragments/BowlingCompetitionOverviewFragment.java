@@ -15,7 +15,8 @@ public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragm
         Intent intent = CompetitionService.newStartIntent(CompetitionService.ACTION_FIND_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, competitionId);
         Context context = getContext();
-        context.startService(intent);
+        CompetitionService.enqueueWork(context, intent, CompetitionService.class);
+        //context.startService(intent);
     }
 
     @Override

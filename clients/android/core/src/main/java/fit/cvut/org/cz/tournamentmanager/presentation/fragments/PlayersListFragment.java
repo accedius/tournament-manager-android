@@ -81,7 +81,8 @@ public class PlayersListFragment extends AbstractListFragment<Player> {
     @Override
     public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_ALL, getContext());
-        getContext().startService(intent);
+        PlayerService.enqueueWork(getContext(), intent, PlayerService.class);
+        //getContext().startService(intent);
     }
 
     @Override

@@ -14,7 +14,8 @@ public class BowlingInsertTeamDialog extends InsertTeamDialog {
     protected void askForData() {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_GET_BY_ID, getContext());
         i.putExtra(ExtraConstants.EXTRA_ID, teamId);
-        getContext().startService(i);
+        TeamService.enqueueWork(getContext(), i, TeamService.class);
+        //getContext().startService(i);
     }
 
     @Override
@@ -31,14 +32,16 @@ public class BowlingInsertTeamDialog extends InsertTeamDialog {
     protected void insertTeam(Team t) {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_INSERT, getContext());
         i.putExtra(ExtraConstants.EXTRA_TEAM, t);
-        getContext().startService(i);
+        TeamService.enqueueWork(getContext(), i, TeamService.class);
+        //getContext().startService(i);
     }
 
     @Override
     protected void editTeam(Team t) {
         Intent i = TeamService.newStartIntent(TeamService.ACTION_EDIT, getContext());
         i.putExtra(ExtraConstants.EXTRA_TEAM, t);
-        getContext().startService(i);
+        TeamService.enqueueWork(getContext(), i, TeamService.class);
+        //getContext().startService(i);
     }
 
     @Override

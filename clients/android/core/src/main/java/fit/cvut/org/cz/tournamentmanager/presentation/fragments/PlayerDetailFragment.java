@@ -70,7 +70,8 @@ public class PlayerDetailFragment extends AbstractDataFragment {
     public void askForData() {
         Intent intent = PlayerService.newStartIntent(PlayerService.ACTION_GET_BY_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_ID, playerId);
-        getContext().startService(intent);
+        PlayerService.enqueueWork(getContext(),intent, PlayerService.class);
+        //getContext().startService(intent);
     }
 
     @Override

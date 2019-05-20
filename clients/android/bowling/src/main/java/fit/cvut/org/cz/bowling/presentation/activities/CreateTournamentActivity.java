@@ -82,7 +82,8 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
                 intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
             }
             intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, tournament);
-            startService(intent);
+            TournamentService.enqueueWork(this, intent, TournamentService.class);
+            //startService(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

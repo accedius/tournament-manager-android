@@ -113,7 +113,8 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
     public void askForData() {
         Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GET_ALL, getContext());
         intent.putExtra(ExtraConstants.EXTRA_COMP_ID, competitionId);
-        getActivity().startService(intent);
+        TournamentService.enqueueWork(getActivity(), intent, TournamentService.class);
+        //getActivity().startService(intent);
     }
 
     @Override

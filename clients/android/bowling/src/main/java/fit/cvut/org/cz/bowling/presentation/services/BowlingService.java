@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.services;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 
@@ -40,7 +41,14 @@ import fit.cvut.org.cz.bowling.R;
 public class BowlingService extends AbstractIntentServiceWProgress {
     public BowlingService() {
         super("Bowling Service");
+        //startForeground(1, new Notification());
     }
+
+    /*@Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(1,new Notification());
+    }*/
 
     @Override
     protected String getActionKey() {

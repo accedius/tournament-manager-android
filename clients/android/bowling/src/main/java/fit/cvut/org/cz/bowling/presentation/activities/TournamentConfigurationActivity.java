@@ -73,7 +73,9 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
 
             Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
             intent.putExtra(ExtraConstants.EXTRA_CONFIGURATION, pointConfig);
-            startService(intent);
+
+            TournamentService.enqueueWork(this, intent, TournamentService.class);
+            //startService(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

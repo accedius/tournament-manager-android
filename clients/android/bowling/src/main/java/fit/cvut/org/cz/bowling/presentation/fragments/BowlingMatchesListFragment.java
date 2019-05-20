@@ -82,7 +82,8 @@ public class BowlingMatchesListFragment extends AbstractListFragment<Match> {
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_TOURNAMENT_ID, getContext());
         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
-        getContext().startService(intent);
+        MatchService.enqueueWork(getContext(), intent, MatchService.class);
+        //getContext().startService(intent);
     }
 
     @Override

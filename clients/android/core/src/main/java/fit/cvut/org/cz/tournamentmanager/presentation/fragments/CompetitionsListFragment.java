@@ -1,14 +1,18 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.fragments;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
+import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.activities.ImportActivity;
 import fit.cvut.org.cz.tournamentmanager.presentation.adapters.CompetitionAdapter;
@@ -93,11 +98,29 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
     @Override
     public void askForData() {
         Intent intent = new Intent();
+        String ps = packageService;
         intent.setClassName(packageName, packageService);
         intent.putExtra(CrossPackageConstants.EXTRA_SPORT_CONTEXT, sportContext);
         intent.putExtra(CrossPackageConstants.EXTRA_ACTION, CrossPackageConstants.ACTION_GET_ALL_COMPETITIONS);
         intent.putExtra(CrossPackageConstants.EXTRA_PACKAGE, packageName);
-        getContext().startService(intent);
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            getContext().startService(intent);
+        } else {
+            getContext().startForegroundService(intent);
+        }
+        /*List<ResolveInfo> res = getContext().getPackageManager().queryIntentServices(intent, 0);
+        if(res.size() > 0) {
+            ResolveInfo info = res.get(0);
+            ps = info.serviceInfo.name;
+        }
+        Class<?> distantServiceClass;
+        try {
+            distantServiceClass = Class.forName(ps);
+            JobIntentService.enqueueWork(getContext(), distantServiceClass, 1074, intent);
+        } catch (ClassNotFoundException e) {
+            distantServiceClass = AbstractIntentServiceWProgress.class;
+        }
+        JobIntentService.enqueueWork(getContext(), distantServiceClass, 1074, intent);*/
     }
 
     @Override
