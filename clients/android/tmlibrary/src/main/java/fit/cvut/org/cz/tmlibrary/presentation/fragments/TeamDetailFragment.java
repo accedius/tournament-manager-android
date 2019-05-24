@@ -180,6 +180,10 @@ public abstract class TeamDetailFragment extends AbstractDataFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void onSkipCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish) {

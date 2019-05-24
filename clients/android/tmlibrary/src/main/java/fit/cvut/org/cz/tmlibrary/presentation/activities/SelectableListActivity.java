@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.view.menu.ActionMenuItem;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,28 +46,42 @@ public abstract class SelectableListActivity<T extends Parcelable> extends Abstr
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_finish, menu);
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return true;
+    }
+
+    private void sendToSaveItems () {
+        AbstractSelectableListFragment<T> frag = (AbstractSelectableListFragment<T>) (getSupportFragmentManager().findFragmentById(R.id.fragment_container));
+        ArrayList<T> data = null;
+
+        if (frag != null) {
+            data = frag.getSelectedData();
+        }
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_DATA, data);
+
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_finish) {
-            AbstractSelectableListFragment<T> frag = (AbstractSelectableListFragment<T>) (getSupportFragmentManager().findFragmentById(R.id.fragment_container));
-            ArrayList<T> data = null;
-
-            if (frag != null) {
-                data = frag.getSelectedData();
-            }
-            Intent intent = new Intent();
-            intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_DATA, data);
-
-            setResult(Activity.RESULT_OK, intent);
-
-            finish();
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_finish || itemId == android.R.id.home) {
+            sendToSaveItems();
+            return true;
+        }
+        else if (itemId == R.id.action_cancel) {
+            super.onBackPressed();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendToSaveItems();
     }
 }
