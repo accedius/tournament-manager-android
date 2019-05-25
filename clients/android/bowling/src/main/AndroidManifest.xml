@@ -24,18 +24,24 @@
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/tournament"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.TournamentConfigurationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/point_configuration"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/add_players"/>
-        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/match_settings"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/team"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/match_settings"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowMatchActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/match"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.EditAtOnceActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/edit_stats"/>
 
 
         <service android:name=".presentation.services.CompetitionService"/>

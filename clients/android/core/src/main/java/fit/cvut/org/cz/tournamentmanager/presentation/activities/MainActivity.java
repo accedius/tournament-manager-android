@@ -18,6 +18,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tournamentmanager.R;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingCompetitionsDialog;
 import fit.cvut.org.cz.tournamentmanager.presentation.dialogs.SortingPlayersDialog;
+import fit.cvut.org.cz.tournamentmanager.presentation.fragments.AboutFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.PlayersListFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SettingsFragment;
 import fit.cvut.org.cz.tournamentmanager.presentation.fragments.SportsFragment;
@@ -32,6 +33,7 @@ public class MainActivity extends AbstractToolbarActivity {
     private SportsFragment cf = null;
     private PlayersListFragment plf = null;
     private SettingsFragment sf = null;
+    private AboutFragment af = null;
     private int selectedItem;
 
     @Override
@@ -105,6 +107,10 @@ public class MainActivity extends AbstractToolbarActivity {
                 sf = new SettingsFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, sf).commitAllowingStateLoss();
                 break;
+            case R.id.about:
+                setTitle(fit.cvut.org.cz.tmlibrary.R.string.about);
+                af = new AboutFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commitAllowingStateLoss();
         }
     }
 

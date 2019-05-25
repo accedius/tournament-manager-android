@@ -167,7 +167,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
-            /*case ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
+            case ACTION_DELETE_PLAYER_FROM_TOURNAMENT:
             {
                 Intent res = new Intent(action);
                 long playerId = intent.getLongExtra(ExtraConstants.EXTRA_PLAYER_ID, -1);
@@ -177,7 +177,7 @@ public class PlayerService extends AbstractIntentServiceWProgress {
                 res.putExtra(ExtraConstants.EXTRA_RESULT, result);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
-            }*/
+            }
         }
     }
 }

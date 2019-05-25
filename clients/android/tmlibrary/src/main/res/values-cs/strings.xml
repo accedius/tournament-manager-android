@@ -125,6 +125,8 @@
     <string name="export_file_failed">Soubor se nepodařilo uložit. Zkuste to prosím později.</string>
     <string name="settings">Nastavení</string>
     <string name="settings_saved">Nastavení bylo uloženo.</string>
+    <string name="settings_restored">Nastavení bylo obnoveno.</string>
+    <string name="about">O aplikaci</string>
     <string name="import_summary">Shrnutí importu</string>
     <string name="import_confirm">Importovat</string>
     <string name="players_modified">Hráči (změnění)</string>
@@ -141,4 +143,5 @@
     <string name="no_sport_found">Sport nenalezen</string>
     <string name="no_sport_description">Nebyly nalezeny žádné sporty. Začněte používat Tournament Manager instalací modulu.</string>
     <string name="help">Nápověda</string>
+    <string name="about_text">O nás</string>
 </resources>
