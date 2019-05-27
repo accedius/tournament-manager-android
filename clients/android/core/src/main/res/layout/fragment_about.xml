@@ -13,5 +13,8 @@
     <ListView
         android:id="@+id/version_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:paddingStart="6dp"
+        android:divider="@null"></ListView>
 </LinearLayout>

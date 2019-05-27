@@ -145,13 +145,4 @@
     <string name="email_exists_error">This email already exists!</string>
     <string name="no_sport_found">No sport found</string>
     <string name="no_sport_description">No sports found in the application. Install some module to start using Tournament Manager.</string>
-    <string name="about_text">\tTournament Manager is a mobile app for Android that allows you to collect statistics from amateur sports events (regular football play with colleagues, etc.) and generate balanced teams based on statistics.\n\tCurrently, the application supports sports like football / hockey and tennis / squash / badminton / bowling.
-        \n\n\tOur development team:
-        \nTomáš Prachenský - prachtom@fit.cvut.cz
-        \nMartin Souček - soucem10@fit.cvut.cz
-        \nPetr Hron - hronpet1@fit.cvut.cz
-        \nAleksei Baklanov - baklaal1@fit.cvut.cz
-        \nRichard Michálek - micharic@fit.cvut.cz
-        \nJan Mikolášek - mikolja8@fit.cvut.cz
-    \n\n\n\tInstalled applications and modules:</string>
 </resources>

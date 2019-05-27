@@ -5,38 +5,37 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Vaclav on 2. 4. 2016.
- * Class for handling competition type
+ * Class for handling tournament type
  */
-public class CompetitionType implements Parcelable {
+public class TournamentType implements Parcelable {
     public int id;
     public int value;
     private Resources res = null;
 
-    public CompetitionType(Resources r, int id, int value) {
+    public TournamentType(Resources r, int id, int value) {
         this.res = r;
         this.id = id;
         this.value = value;
     }
 
-    protected CompetitionType(Parcel in) {
+    protected TournamentType(Parcel in) {
         id = in.readInt();
         value = in.readInt();
     }
 
-    public static final Creator<CompetitionType> CREATOR = new Creator<CompetitionType>() {
+    public static final Creator<TournamentType> CREATOR = new Creator<TournamentType>() {
         @Override
-        public CompetitionType createFromParcel(Parcel in) {
-            return new CompetitionType(in);
+        public TournamentType createFromParcel(Parcel in) {
+            return new TournamentType(in);
         }
 
         @Override
-        public CompetitionType[] newArray(int size) {
-            return new CompetitionType[size];
+        public TournamentType[] newArray(int size) {
+            return new TournamentType[size];
         }
     };
 
-    public boolean equals(CompetitionType ct) {
+    public boolean equals(TournamentType ct) {
         if (ct == null)
             return false;
         return id == ct.id;

@@ -70,7 +70,6 @@ public class CompetitionService extends AbstractIntentServiceWProgress {
                 res.putExtra(ExtraConstants.EXTRA_COMPETITION, c);
                 res.putExtra(ExtraConstants.EXTRA_PLAYERS_COUNT, players.size());
                 res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, tournaments.size());
-                //res.putExtra(ExtraConstants.EXTRA_TOURNAMENTS_COUNT, 0);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             /*case ACTION_GET_OVERVIEW:{

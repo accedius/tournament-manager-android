@@ -166,8 +166,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             argEnd = dEndDate;
         }
         note.setText(c.getNote());
-
         setDatepicker(argStart, argEnd);
+
         int index = c.getType().id;
         type.setSelection(index);
     }
