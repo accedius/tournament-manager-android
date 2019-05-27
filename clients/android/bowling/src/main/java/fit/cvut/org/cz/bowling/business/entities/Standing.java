@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 
+/**
+ * Class for handling standings
+ */
 public class Standing implements Parcelable {
     private String name;
     private int wins, wins_ot, wins_so, losses, losses_ot, losses_so, draws, points, goalsGiven, goalsReceived;

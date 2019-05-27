@@ -2,6 +2,9 @@ package fit.cvut.org.cz.bowling.presentation;
 
 import android.app.Application;
 
+/**
+ * Class for maintaining global application state
+ */
 public class BowlingPackage extends Application {
     public static final String BOWLING_NAME= "Bowling";
 

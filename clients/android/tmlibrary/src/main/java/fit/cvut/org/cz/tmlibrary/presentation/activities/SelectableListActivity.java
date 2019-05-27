@@ -33,6 +33,10 @@ public abstract class SelectableListActivity<T extends Parcelable> extends Abstr
         return null;
     }
 
+    /**
+     * Get a fragment with selectable list of package specific items to work with GUI
+     * @return preferred fragment
+     */
     protected abstract AbstractSelectableListFragment<T> getListFragment();
 
     @Override
