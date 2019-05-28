@@ -9,15 +9,20 @@ android {
             keyPassword fitpass
         }
     }
+    lintOptions {
+        abortOnError false
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "fit.cvut.org.cz.bowling"
         minSdkVersion 14
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 15
+        versionName "1.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
 
     }
     buildTypes {

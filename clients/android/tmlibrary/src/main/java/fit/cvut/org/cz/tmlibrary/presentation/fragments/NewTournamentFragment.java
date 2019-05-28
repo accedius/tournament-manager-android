@@ -4,11 +4,14 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -17,8 +20,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 
@@ -57,8 +64,11 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         return fragment;
     }
 
+    private TextView type_label;
     private EditText note, name, startDate, endDate;
+    private AppCompatSpinner type;
     private Calendar dStartDate = null, dEndDate = null;
+    private ArrayAdapter<TournamentType> adapter;
     protected long tournamentId = -1;
     protected long competitionId = -1;
 
@@ -73,15 +83,30 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         startDate = (EditText) v.findViewById(R.id.et_startDate);
         endDate = (EditText) v.findViewById(R.id.et_endDate);
         //tilNote = (TextInputLayout) v.findViewById(R.id.til_note);
+        type_label = (TextView) v.findViewById(R.id.tv_tournament_type_label);
+        type = (AppCompatSpinner) v.findViewById(R.id.sp_type);
 
         if (getArguments() != null) {
             tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
             competitionId = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
         }
 
+        if(isTypeChoosable()) {
+            type_label.setVisibility(View.VISIBLE);
+            type.setVisibility(View.VISIBLE);
+        }
+
         if (tournamentId == -1) {
             setDatepicker(Calendar.getInstance(), Calendar.getInstance());
+        } else {
+            type.setEnabled(false);
         }
+
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.addAll(TournamentTypes.tournamentTypes(getResources()));
+
+        type.setAdapter(adapter);
 
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);
@@ -89,6 +114,12 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
 
         return v;
     }
+
+    /**
+     *
+     * @return true, if you want to permit choosing between team and individuals, by default false
+     */
+    protected boolean isTypeChoosable() { return false; }
 
     private boolean validate(View v){
         if (name.getText().toString().isEmpty()) {
@@ -135,6 +166,14 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
      */
     protected abstract String getTournamentKey();
 
+    /**
+     *
+     * @return default competition type if type is not chooseable
+     */
+    protected TournamentType defaultTournamentType() {
+        return TournamentTypes.teams();
+    }
+
     @Override
     protected void bindDataOnView(Intent intent) {
         tournament = intent.getParcelableExtra(getTournamentKey());
@@ -161,6 +200,9 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         }
         note.setText(t.getNote());
         setDatepicker(argStart, argEnd);
+
+        int index = t.getTypeId();
+        type.setSelection(index);
     }
 
     // Set Datepicker dates to Tournament start and end
@@ -223,6 +265,10 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         if (dEndDate != null)
             eDate = dEndDate.getTime();
 
-        return new Tournament(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString());
+        TournamentType t = defaultTournamentType();
+        if(isTypeChoosable()) {
+            t = (TournamentType) type.getSelectedItem();
+        }
+        return new Tournament(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), competitionId, name.getText().toString(), sDate, eDate, note.getText().toString(), t);
     }
 }

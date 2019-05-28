@@ -1,5 +1,8 @@
 package fit.cvut.org.cz.bowling.business.entities.communication;
 
+/**
+ * Resource strings for statistics and standings
+ */
 public class Constants {
     public static final String POINTS = "p";
     public static final String WINS = "w";

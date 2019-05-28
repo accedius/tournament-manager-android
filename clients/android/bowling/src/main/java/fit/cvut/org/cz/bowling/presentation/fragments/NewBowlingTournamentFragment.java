@@ -57,5 +57,10 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
+
+    @Override
+    protected boolean isTypeChoosable() {
+        return true;
+    }
 }
 

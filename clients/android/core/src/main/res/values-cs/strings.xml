@@ -2,4 +2,15 @@
 <resources>
     <string name="exit_title">Opustit aplikaci</string>
     <string name="exit_text">Opravdu chcete odejít?</string>
+    <string name="about_text">\tTournament Manager is a mobile app for Android that allows you to collect statistics from amateur sports events (regular football play with colleagues, etc.) and generate balanced teams based on statistics.\n\tCurrently, the application supports sports like football / hockey and tennis / squash / badminton / bowling.
+        \n\n\tOur development team:
+        \nIng. Zdeněk Rybola, Ph.D. - Project Leader - zdenek.rybola@fit.cvut.cz
+        \nTomáš Prachenský - Team Leader - prachtom@fit.cvut.cz
+        \nMartin Souček - soucem10@fit.cvut.cz
+        \nPetr Hron - hronpet1@fit.cvut.cz
+        \nAleksei Baklanov - baklaal1@fit.cvut.cz
+        \nRichard Michálek - micharic@fit.cvut.cz
+        \nJan Mikolášek - mikolja8@fit.cvut.cz
+        \n\tContact us via e-mail:\ntournament_manager_bowling@googlegroups.com
+    \n\n\n\tInstalled applications and modules:</string>
 </resources>

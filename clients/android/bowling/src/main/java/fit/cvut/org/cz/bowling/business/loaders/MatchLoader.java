@@ -19,8 +19,19 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
-
+/**
+ * Support class for loading matches of a competition from import file
+ */
 public class MatchLoader {
+    /**
+     * Method to import class to local database
+     * @param context context of execution
+     * @param matches item to import
+     * @param tournament related class
+     * @param competition related class
+     * @param importedTeams related class
+     * @param importedPlayers related class
+     */
     public static void importMatches(Context context, List<ServerCommunicationItem> matches, Tournament tournament, Competition competition, Map<String, Team> importedTeams, Map<String, Player> importedPlayers) {
         for (ServerCommunicationItem match : matches) {
             Log.d("IMPORT", "Match: " + match.syncData);

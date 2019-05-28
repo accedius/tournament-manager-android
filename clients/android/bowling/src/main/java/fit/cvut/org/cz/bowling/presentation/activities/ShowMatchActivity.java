@@ -92,6 +92,25 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return true;
     }
 
+    private void sendToSaveMatch() {
+        Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
+        if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
+            Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        List<PlayerStat> homeStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
+        List<PlayerStat> awayStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
+
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
+        intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
+        intent.putExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
+
+        startService(intent);
+
+        finish();
+    }
+
     /**
      * Handles clicking on menu. If the save button is clicked, this activity gets data from both its fragments and sends them to service
      * @param item menuItem
@@ -99,7 +118,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_finish) {
+        if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {
             Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
             if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
@@ -122,9 +141,17 @@ public class ShowMatchActivity extends AbstractTabActivity {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) fragments[0];
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
             startActivity(intent);
+        } else if (item.getItemId() == R.id.action_cancel) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendToSaveMatch();
     }
 
 }

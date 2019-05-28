@@ -22,7 +22,20 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 
+/**
+ * Class for loading competitions from import file
+ */
 public class CompetitionLoader {
+    /**
+     * Method for getting info about class for further import of that class
+     * @param context context of execution
+     * @param res context resources
+     * @param competition item to get info about
+     * @param tournamentsInfo sub-item to get info about
+     * @param playersInfo sub-item to get info about
+     * @param playersModified sub-item to get info about
+     * @return info class
+     */
     public static CompetitionImportInfo getImportInfo(Context context, Resources res, ServerCommunicationItem competition, List<TournamentImportInfo> tournamentsInfo,
                                                       List<PlayerImportInfo> playersInfo, List<Conflict> playersModified) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
@@ -48,6 +61,13 @@ public class CompetitionLoader {
         return competitionInfo;
     }
 
+    /**
+     * Method to import class to local database
+     * @param context context of action
+     * @param competition item to import
+     * @param conflictSolutions
+     * @return instance of imported item
+     */
     public static Competition importCompetition(Context context, ServerCommunicationItem competition, Map<String, String> conflictSolutions) {
         Competition importedCompetition = CompetitionSerializer.getInstance(context).deserialize(competition);
         importedCompetition.setName(importedCompetition.getName()+" "+ DateFormatter.getInstance().getDBDateTimeFormat().format(new Date()));
