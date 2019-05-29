@@ -9,6 +9,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
  * Class for processing tournament types
  */
 public class TournamentTypes {
+    public final static int type_teams = 0;
+    public final static int type_individuals = 1;
+
     /**
      * Get all Tournament types.
      * @param resources resources for translation
@@ -46,6 +49,22 @@ public class TournamentTypes {
      */
     public static TournamentType teams() {
         return new TournamentType(null, 0, R.string.type_teams);
+    }
+
+    /**
+     * Get Tournament's type from typeId
+     * @param typeId typeId of Tournament
+     * @return corresponding Tournament type
+     */
+    public static TournamentType getMyTournamentType(int typeId) {
+        switch (typeId) {
+            case type_teams:
+                return teams();
+            case type_individuals:
+                return individuals();
+            default:
+                return teams();
+        }
     }
 }
 
