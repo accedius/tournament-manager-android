@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.tmlibrary.presentation.fragments;
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,16 @@ import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
 /**
  * Fragment for displaying Tournament Overview.
  */
 public abstract class TournamentOverviewFragment extends AbstractDataFragment {
-    private TextView start, end, matchSum, playerSum, note;
+    private TextView type, start, end, matchSum, playerSum, note;
     protected TextView teamSum, teamsLabel;
     protected long tournamentId;
 
@@ -74,6 +77,7 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_tournament_overview, container, false);
 
+        type = (TextView) v.findViewById(R.id.tour_type);
         start = (TextView) v.findViewById(R.id.tour_start);
         end = (TextView) v.findViewById(R.id.tour_end);
         matchSum = (TextView) v.findViewById(R.id.match_sum);
@@ -101,6 +105,14 @@ public abstract class TournamentOverviewFragment extends AbstractDataFragment {
 
         DateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
+        TournamentType tournamentType;
+        try {
+            int typeId = tournament.getTypeId();
+            tournamentType = TournamentTypes.getMyTournamentType(typeId);
+        } catch (Exception e) {
+            tournamentType = TournamentTypes.teams();
+        }
+        type.setText(tournamentType.value);
         if (tournament.getStartDate() != null)
             start.setText(dateFormat.format(tournament.getStartDate()));
         if (tournament.getEndDate() != null)
