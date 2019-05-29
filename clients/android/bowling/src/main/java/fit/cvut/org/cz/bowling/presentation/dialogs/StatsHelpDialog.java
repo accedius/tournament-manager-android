@@ -8,7 +8,7 @@ import android.support.v7.app.AlertDialog;
 import fit.cvut.org.cz.bowling.R;
 
 /**
- * Help dialog that is showed, when the ? button is pressed in players fragment of tournament's menu, describes the player's statistics abbreviations used
+ * Help dialog that is showed, when the help button (in a shape of question mark) is pressed in players fragment of tournament's menu, describes the player's statistics abbreviations used
  */
 public class StatsHelpDialog extends DialogFragment {
 
