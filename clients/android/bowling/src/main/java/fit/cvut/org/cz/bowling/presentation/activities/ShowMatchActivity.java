@@ -28,6 +28,9 @@ import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
+/**
+ * Activity to handle showing bowling match inner fragments (Overview and Players)
+ */
 public class ShowMatchActivity extends AbstractTabActivity {
     private long matchId;
     private View v;
@@ -86,6 +89,11 @@ public class ShowMatchActivity extends AbstractTabActivity {
         return res;
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_match, menu);
@@ -111,11 +119,6 @@ public class ShowMatchActivity extends AbstractTabActivity {
         finish();
     }
 
-    /**
-     * Handles clicking on menu. If the save button is clicked, this activity gets data from both its fragments and sends them to service
-     * @param item menuItem
-     * @return
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {

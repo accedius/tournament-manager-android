@@ -20,6 +20,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
+/**
+ * Activity to create a bowling tournament
+ */
 public class CreateTournamentActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
@@ -59,6 +62,11 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
         }
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_finish, menu);

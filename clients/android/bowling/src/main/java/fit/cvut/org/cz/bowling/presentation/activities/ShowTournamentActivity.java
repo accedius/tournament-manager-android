@@ -32,6 +32,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
+/**
+ * Activity to show bowling tournament inner fragments (Overview, Standings, Matches etc.)
+ */
 public class ShowTournamentActivity extends AbstractTabActivity {
     private final int GEN_ROSTER_ID = 1001;
     private final int TEAMS_LIST_POSITION = 4;
@@ -123,6 +126,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         return res;
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);

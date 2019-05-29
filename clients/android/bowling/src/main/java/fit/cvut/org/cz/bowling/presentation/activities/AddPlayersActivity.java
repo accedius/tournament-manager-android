@@ -12,6 +12,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
+/**
+ * Activity to add players to a team
+ */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
     /**
      * Creates a new intent to start this activity

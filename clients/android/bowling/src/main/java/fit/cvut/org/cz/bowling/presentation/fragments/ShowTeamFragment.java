@@ -17,6 +17,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
+/**
+ * Fragment is used in ShowTeamActivity to show a team details (team's players)
+ */
 public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected String getTeamKey() {

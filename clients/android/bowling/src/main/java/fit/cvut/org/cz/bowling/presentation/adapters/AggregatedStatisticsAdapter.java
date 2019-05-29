@@ -16,6 +16,11 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         return new AggregatedStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_aggreg_stats, parent, false));
     }
 
+    /**
+     * Method to bind data to View Holder
+     * @param holder View Holder
+     * @param position position of aggregated stats in data array
+     */
     @Override
     public void onBindViewHolder(AggregatedStatisticsViewHolder holder, int position) {
         AggregatedStatistics stats = data.get(position);
@@ -43,6 +48,10 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
      */
     protected void setOnClickListeners(View v, long playerId, String name) {};
 
+
+    /**
+     * Aggregated Statistics specific View Holder
+     */
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         TextView name, GP, ST, SP, P, W, D, L, TP, AST, ASP, ATP;

@@ -38,7 +38,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
      * @param tourId id of tournament
      * @param compId id of competition
      * @param clazz class of child fragment
-     * @return
+     * @return instance of fragment
      */
     public static NewTournamentFragment newInstance(long tourId, long compId, Class<? extends NewTournamentFragment> clazz){
         NewTournamentFragment fragment = null;

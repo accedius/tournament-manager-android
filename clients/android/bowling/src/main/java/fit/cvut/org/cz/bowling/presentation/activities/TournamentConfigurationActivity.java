@@ -19,6 +19,9 @@ import fit.cvut.org.cz.bowling.presentation.fragments.ConfigurePointsFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
+/**
+ * Activity to view and edit Tournament's Point Configuration for wins, loses etc.
+ */
 public class TournamentConfigurationActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
@@ -56,6 +59,11 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
         }
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_finish, menu);

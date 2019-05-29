@@ -32,6 +32,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
+/**
+ * Fragment is used in
+ */
 public class BowlingMatchStatsFragment extends AbstractDataFragment {
     private static final String SAVE_HOME_LIST = "save_home_list";
     private static final String SAVE_AWAY_LIST = "save_away_list";

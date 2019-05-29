@@ -21,6 +21,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.MatchEditAtOnceFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
+/**
+ * Activity to edit match players' stats
+ */
 public class EditAtOnceActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
@@ -63,6 +66,11 @@ public class EditAtOnceActivity extends AbstractToolbarActivity {
         }
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_finish, menu);

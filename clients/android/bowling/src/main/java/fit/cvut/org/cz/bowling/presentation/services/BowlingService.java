@@ -37,6 +37,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 import fit.cvut.org.cz.bowling.R;
 
+/**
+ * Exported service (is visible to all applications and can be called from them) to handle the request about bowling competitions (used in core to show list of competitions - set list fragment contents, to handle clicks on competitions etc.)
+ */
 public class BowlingService extends AbstractIntentServiceWProgress {
     public BowlingService() {
         super("Bowling Service");

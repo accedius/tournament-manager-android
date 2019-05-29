@@ -65,7 +65,6 @@ public class CompetitionLoader {
      * Method to import class to local database
      * @param context context of action
      * @param competition item to import
-     * @param conflictSolutions
      * @return instance of imported item
      */
     public static Competition importCompetition(Context context, ServerCommunicationItem competition, Map<String, String> conflictSolutions) {

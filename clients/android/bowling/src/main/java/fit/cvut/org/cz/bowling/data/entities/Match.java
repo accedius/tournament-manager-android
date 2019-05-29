@@ -14,6 +14,9 @@ import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
+/**
+ * Match entity and its representation in database
+ */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
     @DatabaseField(columnName = DBConstants.cSHOOTOUTS)

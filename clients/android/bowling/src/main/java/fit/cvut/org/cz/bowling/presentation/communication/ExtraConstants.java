@@ -1,5 +1,8 @@
 package fit.cvut.org.cz.bowling.presentation.communication;
 
+/**
+ * Some extra resource strings for intent/service/activity work
+ */
 public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants {
     public static final String EXTRA_MATCH_SCORE = "extra_match_score";
 

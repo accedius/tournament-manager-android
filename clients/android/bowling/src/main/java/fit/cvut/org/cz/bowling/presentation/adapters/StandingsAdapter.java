@@ -16,6 +16,11 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         return new StandingsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_standings, parent, false));
     }
 
+    /**
+     * Method to bind data to View Holder
+     * @param holder View Holder
+     * @param position position of stats in data array
+     */
     @Override
     public void onBindViewHolder(StandingsViewHolder holder, int position) {
         Standing stats = data.get(position);
@@ -39,6 +44,9 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         }
     }
 
+    /**
+     * Standings specific View Holder
+     */
     public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         TextView name, GP, W, Wot, Wso, L, Lot, Lso, D, SCORE, P;

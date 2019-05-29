@@ -16,6 +16,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling competition service to handle intent/service/activity work in competition's scope
+ */
 public class CompetitionService extends AbstractIntentServiceWProgress {
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.

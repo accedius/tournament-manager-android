@@ -26,11 +26,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 public class PlayerLoader {
     /**
      * Method to get info about players to import
-     * @param context
-     * @param res
-     * @param players
-     * @param playersModified
-     * @return
      */
     public static List<PlayerImportInfo> getPlayersImportInfo(Context context, Resources res, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
         ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
@@ -57,11 +52,6 @@ public class PlayerLoader {
 
     /**
      * Method to import players to local database
-     * @param context
-     * @param players
-     * @param competition
-     * @param importedPlayers
-     * @param conflictSolutions
      */
     public static void importPlayers(Context context, List<ServerCommunicationItem> players, Competition competition, Map<String, Player> importedPlayers, Map<String, String> conflictSolutions) {
         Map<Long, Player> allPlayers = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();

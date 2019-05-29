@@ -11,6 +11,9 @@ import fit.cvut.org.cz.bowling.presentation.activities.CreateTournamentActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 
+/**
+ * Dialog, that occurs, when the tournament is selected to edit (then you hold tournament's field in tournaments fragment of competition)
+ */
 public class TournamentsDialog extends EditDeleteDialog {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {

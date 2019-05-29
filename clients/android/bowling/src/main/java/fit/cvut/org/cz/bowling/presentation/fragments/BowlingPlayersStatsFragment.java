@@ -33,6 +33,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.listeners.PlayerDetailOnClickListener;
 
+/**
+ * Fragment is used in
+ */
 public class BowlingPlayersStatsFragment extends AbstractListFragment<AggregatedStatistics> {
     private long competitionID;
     private long tournamentID;

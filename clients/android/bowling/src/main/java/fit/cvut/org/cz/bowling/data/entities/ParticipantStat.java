@@ -8,6 +8,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 
+/**
+ * ParticipantStat entity (stats of a match/tournament participant, could be a team or individual player - based on competition or tournament type, so basically it is a unit/atom that match operates with) and its representation in database
+ */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tPARTICIPANT_STATS)
 public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat implements Parcelable {
 

@@ -20,9 +20,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 public abstract class NewPlayerFragment extends AbstractDataFragment {
     /**
      * Constructor for this fragment with id of player that needs to update
-     * @param id
-     * @param clazz
-     * @return
      */
     public static NewPlayerFragment newInstance(long id, Class<? extends NewPlayerFragment> clazz){
         NewPlayerFragment fragment = null;

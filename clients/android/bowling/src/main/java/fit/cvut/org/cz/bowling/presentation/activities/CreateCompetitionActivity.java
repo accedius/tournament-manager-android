@@ -20,6 +20,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
+/**
+ * Activity to create a bowling competition
+ */
 public class CreateCompetitionActivity extends AbstractToolbarActivity {
     @Override
     protected View injectView(ViewGroup parent) {
@@ -44,6 +47,11 @@ public class CreateCompetitionActivity extends AbstractToolbarActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.container, NewBowlingCompetitionFragment.newInstance(id, NewBowlingCompetitionFragment.class)).commit();
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_finish, menu);
