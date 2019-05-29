@@ -9,6 +9,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
+/**
+ * PointConfiguration entity (describes how many points costs different standings in a tournament: how much for win/lose/draw etc.) and its representation in database
+ */
 @DatabaseTable(tableName = DBConstants.tCONFIGURATIONS)
 public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration implements Parcelable, IEntity {
     @DatabaseField(columnName = DBConstants.cNTW)

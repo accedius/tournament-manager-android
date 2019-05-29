@@ -31,10 +31,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 public abstract class NewMatchFragment extends AbstractDataFragment  {
     /**
      * Constructor for this fragment with id of competition that needs to update
-     * @param id
      * @param tournamentId id of tournament
-     * @param clazz
-     * @return
+     * @return fragment instance
      */
     public static NewMatchFragment newInstance(long id, long tournamentId, Class<? extends NewMatchFragment> clazz){
         NewMatchFragment fragment = null;

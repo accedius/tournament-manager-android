@@ -23,6 +23,9 @@ import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
+/**
+ * Fragment is used in
+ */
 public class BowlingMatchesListFragment extends AbstractListFragment<Match> {
     private long tournamentId;
     private MatchReceiver matchReceiver = new MatchReceiver();

@@ -28,6 +28,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling stats service to handle intent/service/activity work in statistics scope
+ */
 public class StatsService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_COMP_ID = "get_by_comp_id";
     public static final String ACTION_GET_BY_TOUR_ID = "get_by_tour_id";

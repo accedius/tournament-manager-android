@@ -8,6 +8,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
+/**
+ * Dialog, that occurs, when the team is selected (hold) in team's fragment of tournament
+ */
 public class TeamsDialog extends EditDeleteDialog {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {

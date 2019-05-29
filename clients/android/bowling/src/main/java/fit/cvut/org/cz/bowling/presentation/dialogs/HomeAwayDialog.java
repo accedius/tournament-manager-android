@@ -16,6 +16,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.AddPlayersFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 
+/**
+ * Dialog, that occurs, when the + button in match players fragment is clicked (to edit players stats in match), which basically asks, which team's players stats will be edited
+ */
 public class HomeAwayDialog extends DialogFragment {
     private String dialHomeName, dialAwayName;
 

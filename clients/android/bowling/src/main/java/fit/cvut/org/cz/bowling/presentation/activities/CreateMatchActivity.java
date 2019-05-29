@@ -20,6 +20,9 @@ import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
+/**
+ * Activity to create a bowling match
+ */
 public class CreateMatchActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
@@ -70,6 +73,11 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
         }
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_finish, menu);

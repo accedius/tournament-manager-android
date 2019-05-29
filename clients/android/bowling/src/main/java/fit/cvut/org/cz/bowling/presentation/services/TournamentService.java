@@ -21,6 +21,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling tournament service to handle intent/service/activity work in tournament's scope
+ */
 public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
     public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";

@@ -26,6 +26,11 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
         return new MatchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match, parent, false));
     }
 
+    /**
+     * Method to bind data to View Holder
+     * @param holder View Holder
+     * @param position position of match in data array
+     */
     @Override
     public void onBindViewHolder(MatchViewHolder holder, int position) {
         Match m = data.get(position);
@@ -61,6 +66,9 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
         setOnClickListeners(holder.card, m, position, title);
     }
 
+    /**
+     * Match specific View Holder
+     */
     public class MatchViewHolder extends RecyclerView.ViewHolder {
         public TextView home, away, score;
         View periodSeparator, roundSeparator1, roundSeparator2, card;

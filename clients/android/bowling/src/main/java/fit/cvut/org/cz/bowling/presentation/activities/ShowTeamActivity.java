@@ -21,6 +21,9 @@ import fit.cvut.org.cz.bowling.presentation.fragments.ShowTeamFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
+/**
+ * Activity to show team players fragment with a possibility to add players
+ */
 public class ShowTeamActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
@@ -68,6 +71,9 @@ public class ShowTeamActivity extends AbstractToolbarActivity {
         else return false;
     }
 
+    /**
+     * Only imitates application back button pressed
+     */
     @Override
     public void onBackPressed() {
         MenuItem item = new MenuItem() {

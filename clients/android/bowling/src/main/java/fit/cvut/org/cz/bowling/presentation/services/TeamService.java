@@ -13,6 +13,9 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling team service to handle intent/service/activity work in team's scope
+ */
 public class TeamService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_ID = "action_get_team_by_id";
     public static final String ACTION_INSERT = "action_insert_team";

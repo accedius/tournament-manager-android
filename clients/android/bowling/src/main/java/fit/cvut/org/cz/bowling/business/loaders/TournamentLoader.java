@@ -27,9 +27,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 public class TournamentLoader {
     /**
      * Method to get import info about tournaments to import
-     * @param context
-     * @param tournaments
-     * @return
      */
     public static List<TournamentImportInfo> getTournamentsImportInfo(Context context, List<ServerCommunicationItem> tournaments) {
         List<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
@@ -57,8 +54,8 @@ public class TournamentLoader {
 
     /**
      * Method to import tournaments to local database
-     * @param context
-     * @param tournaments
+     * @param context context of action
+     * @param tournaments related tournaments
      * @param importedCompetition related class
      * @param importedPlayers related class
      */

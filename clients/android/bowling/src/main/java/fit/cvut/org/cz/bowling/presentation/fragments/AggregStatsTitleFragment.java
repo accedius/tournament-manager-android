@@ -18,6 +18,9 @@ import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
+/**
+ * Fragment is used in
+ */
 public class AggregStatsTitleFragment extends Fragment {
     private BowlingPlayersStatsFragment statsFragment;
 

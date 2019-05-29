@@ -26,9 +26,8 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
     }
 
     /**
-     * If when you do not call super when overiding it wont work
+     * If you do not call super when overriding it wont work
      * @param intent start intent
-     *
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -47,7 +46,8 @@ public abstract class AbstractIntentServiceWProgress extends IntentService {
     protected abstract String getActionKey();
 
     /**
-     * Do not handle your work in onHandleIntent do it in this method instead. This method is calledInOnHandleIntent and
+     * Method to do corresponding to intent work
+     * Do not handle your work in onHandleIntent do it in this method instead. This method is called in OnHandleIntent and
      * intent passed to service is passed here as well.
      * @param intent that was passed to service
      */

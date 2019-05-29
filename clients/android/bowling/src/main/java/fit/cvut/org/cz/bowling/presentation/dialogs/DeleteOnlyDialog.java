@@ -11,6 +11,9 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.PlayerService;
 
+/**
+ * Dialog, that occurs, when the player is selected to delete (when you hold player's field in players fragment)
+ */
 public class DeleteOnlyDialog extends DialogFragment {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {

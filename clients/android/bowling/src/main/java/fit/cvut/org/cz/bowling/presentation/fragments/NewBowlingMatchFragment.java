@@ -8,6 +8,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
+/**
+ * Fragment is used in CreateMatchActivity to show match creation panel
+ */
 public class NewBowlingMatchFragment extends NewMatchFragment {
     @Override
     protected String getMatchKey() {

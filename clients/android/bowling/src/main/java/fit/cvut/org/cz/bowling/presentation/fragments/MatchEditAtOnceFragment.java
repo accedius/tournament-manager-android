@@ -17,6 +17,9 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.adapters.EditableStatsAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 
+/**
+ * Fragment is used in EditAtOnceActivity to edit match
+ */
 public class MatchEditAtOnceFragment extends Fragment {
     private EditableStatsAdapter homeAdp, awayAdp;
     private RecyclerView homeRecyclerView, awayRecyclerView;

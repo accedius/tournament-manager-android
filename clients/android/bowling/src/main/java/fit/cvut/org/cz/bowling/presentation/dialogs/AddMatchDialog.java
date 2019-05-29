@@ -12,6 +12,9 @@ import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 
+/**
+ * Dialog, that occurs, when the + button in matches fragment is clicked
+ */
 public class AddMatchDialog extends DialogFragment {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){

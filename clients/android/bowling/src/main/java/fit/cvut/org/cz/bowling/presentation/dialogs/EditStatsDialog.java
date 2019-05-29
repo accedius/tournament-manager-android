@@ -14,6 +14,9 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 
+/**
+ * Dialog, that occurs, when you hold player's field in match players fragment to edit his stats
+ */
 public class EditStatsDialog extends DialogFragment {
     private TextView goals, assists, plusMinusPoints, saves;
     private PlayerStat stat;

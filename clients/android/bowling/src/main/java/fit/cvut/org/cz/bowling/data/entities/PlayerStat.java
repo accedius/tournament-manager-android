@@ -8,6 +8,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 
+/**
+ * PlayerStat entity (global individual player stats) and its representation in database
+ */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tPLAYER_STATS)
 public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat implements Parcelable {
 

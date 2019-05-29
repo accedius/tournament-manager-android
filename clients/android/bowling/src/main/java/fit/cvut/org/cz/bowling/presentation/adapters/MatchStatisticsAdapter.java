@@ -29,6 +29,11 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<PlayerStat, Matc
         return new MatchStatisticsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_match_stats, parent, false));
     }
 
+    /**
+     * Method to bind data to View Holder
+     * @param holder View Holder
+     * @param position position of stats in data array
+     */
     @Override
     public void onBindViewHolder(MatchStatisticsViewHolder holder, int position) {
         PlayerStat stats = data.get(position);
@@ -61,6 +66,9 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<PlayerStat, Matc
         notifyDataSetChanged();
     }
 
+    /**
+     * Match Statistics specific View Holder
+     */
     public class MatchStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         public View wholeView;

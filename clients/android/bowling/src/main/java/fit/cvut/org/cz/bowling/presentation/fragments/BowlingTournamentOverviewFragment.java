@@ -17,6 +17,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
+/**
+ * Fragment is used in ShowTournamentActivity to show overview panel
+ */
 public class BowlingTournamentOverviewFragment extends TournamentOverviewFragment {
     @Override
     protected String getTournamentKey() {

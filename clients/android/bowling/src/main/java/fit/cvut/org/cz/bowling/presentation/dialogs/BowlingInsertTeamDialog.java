@@ -9,6 +9,9 @@ import fit.cvut.org.cz.bowling.presentation.services.TeamService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 
+/**
+ * Dialog, that occurs, when the + button in team fragment is clicked (set team name)
+ */
 public class BowlingInsertTeamDialog extends InsertTeamDialog {
     @Override
     protected void askForData() {
