@@ -24,6 +24,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.TeamAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
+/**
+ * Fragment is used in
+ */
 public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
     private BroadcastReceiver teamReceiver = new TeamReceiver();
 

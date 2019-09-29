@@ -16,6 +16,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
+/**
+ * Fragment is used in TournamentConfigurationActivity to configure points settings for all the standings
+ */
 public class ConfigurePointsFragment extends AbstractDataFragment {
     private EditText ntW, ntD, ntL, otW, otD, otL, soW, soL;
     private FloatingActionButton fab;

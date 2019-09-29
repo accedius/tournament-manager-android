@@ -10,6 +10,9 @@ import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
+/**
+ * Fragment is used in CreateTournamentActivity to show tournament creation panel
+ */
 public class NewBowlingTournamentFragment extends NewTournamentFragment {
     @Override
     protected void saveTournament(Tournament t) {
@@ -56,6 +59,11 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected boolean isTypeChoosable() {
+        return true;
     }
 }
 

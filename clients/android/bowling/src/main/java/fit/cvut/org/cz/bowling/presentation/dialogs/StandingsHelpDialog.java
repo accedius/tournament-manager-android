@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 
 import fit.cvut.org.cz.bowling.R;
 
+/**
+ * Help dialog that is showed, when the help button (in a shape of question mark) is pressed in standings fragment of tournament's menu, describes the standings abbreviations used
+ */
 public class StandingsHelpDialog extends DialogFragment {
 
     public static StandingsHelpDialog newInstance() {

@@ -17,6 +17,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.SelectPlayersAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
+/**
+ * Fragment is used in AddPlayersActivity and HomeAwayDialog
+ */
 public class AddPlayersFragment extends AbstractSelectableListFragment<Player> {
     public static final int OPTION_COMPETITION = 1;
     public static final int OPTION_TOURNAMENT = 2;

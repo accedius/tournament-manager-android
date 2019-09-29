@@ -4,11 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
+/**
+ * Fragment is used in ShowTournamentActivity to show overview panel
+ */
 public class BowlingTournamentOverviewFragment extends TournamentOverviewFragment {
     @Override
     protected String getTournamentKey() {
@@ -57,6 +68,14 @@ public class BowlingTournamentOverviewFragment extends TournamentOverviewFragmen
         Context context = getContext();
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
         localBroadcastManager.unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        View v = super.injectView(inflater, container);
+        v.findViewById(R.id.tour_type_label).setVisibility(View.VISIBLE);
+        v.findViewById(R.id.tour_type).setVisibility(View.VISIBLE);
+        return v;
     }
 }
 

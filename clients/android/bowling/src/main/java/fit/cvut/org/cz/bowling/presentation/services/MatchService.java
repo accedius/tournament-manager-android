@@ -23,6 +23,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling match service to handle intent/service/activity work in matches' scope
+ */
 public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_FIND_BY_ID = "action_find_match_by_id";
     public static final String ACTION_FIND_BY_TOURNAMENT_ID = "action_find_match_by_tournament_id";

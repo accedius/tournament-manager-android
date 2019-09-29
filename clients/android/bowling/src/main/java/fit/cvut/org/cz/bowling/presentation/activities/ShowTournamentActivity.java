@@ -32,6 +32,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
+/**
+ * Activity to show bowling tournament inner fragments (Overview, Standings, Matches etc.)
+ */
 public class ShowTournamentActivity extends AbstractTabActivity {
     private final int GEN_ROSTER_ID = 1001;
     private final int TEAMS_LIST_POSITION = 4;
@@ -55,14 +58,14 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.teams) };
+                getString(fit.cvut.org.cz.tmlibrary.R.string.teams),
+                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
         Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
-        Fragment f3 = AggregStatsTitleFragment.newInstance(tournamentId, false);
-        Fragment f4 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
-        Fragment f5 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
+        Fragment f5 = AggregStatsTitleFragment.newInstance(tournamentId, false);
+        Fragment f3 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
+        Fragment f4 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
@@ -123,6 +126,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         return res;
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_tournament_detail, menu);

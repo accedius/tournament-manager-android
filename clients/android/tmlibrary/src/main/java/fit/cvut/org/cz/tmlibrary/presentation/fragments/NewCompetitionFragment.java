@@ -32,9 +32,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 public abstract class NewCompetitionFragment extends AbstractDataFragment {
     /**
      * Constructor for this fragment with id of competition that needs to update
-     * @param id
-     * @param clazz
-     * @return
      */
     public static NewCompetitionFragment newInstance(long id, Class<? extends NewCompetitionFragment> clazz){
         NewCompetitionFragment fragment = null;
@@ -166,8 +163,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             argEnd = dEndDate;
         }
         note.setText(c.getNote());
-
         setDatepicker(argStart, argEnd);
+
         int index = c.getType().id;
         type.setSelection(index);
     }

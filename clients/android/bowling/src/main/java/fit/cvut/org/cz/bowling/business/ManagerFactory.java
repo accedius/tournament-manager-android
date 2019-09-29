@@ -32,6 +32,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
+/**
+ * Manager factory for all the classes in the package
+ */
 public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFactory {
     private static Context context;
     private static IManagerFactory instance;

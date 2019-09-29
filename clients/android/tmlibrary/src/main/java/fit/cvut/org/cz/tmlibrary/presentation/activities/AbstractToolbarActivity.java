@@ -50,6 +50,11 @@ public abstract class AbstractToolbarActivity extends AppCompatActivity {
     protected void onUpButtonClicked() {onBackPressed();}
 
 
+    /**
+     * Do work corresponding to menu item, that is selected - handles clicking on menu. If the save button is clicked, this activity gets data from both its fragments and sends them to service
+     * @param item selected item
+     * @return true if button click is handled, false if item is not known / no work to do
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){

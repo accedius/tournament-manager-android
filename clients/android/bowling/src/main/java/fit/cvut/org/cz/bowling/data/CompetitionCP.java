@@ -14,6 +14,9 @@ import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CPConstants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 
+/**
+ * Competition content provider for bowling package
+ */
 public class CompetitionCP extends fit.cvut.org.cz.tmlibrary.data.CompetitionCP {
     public static final String AUTHORITY = "fit.cvut.org.cz.bowling.data";
 

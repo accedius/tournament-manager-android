@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 /**
  * Tournament serializer.
@@ -36,6 +37,7 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
             hm.put(Constants.END, DateFormatter.getInstance().getDBDateFormat().format(entity.getEndDate()));
         }
         hm.put(Constants.NOTE, entity.getNote());
+        hm.put(Constants.TYPE, Integer.toString(entity.getType().id));
         return hm;
     }
 
@@ -44,6 +46,7 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         entity.setName(String.valueOf(syncData.get(Constants.NAME)));
         entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
+        entity.setType(TournamentTypes.tournamentTypes()[Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE)))]);
         try {
             entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get(Constants.START))));
         } catch (ParseException e) {} catch(NullPointerException e) {}

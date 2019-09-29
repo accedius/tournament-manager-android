@@ -20,7 +20,13 @@ import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunica
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 
+/**
+ * Support class for loading players of a competition from import file
+ */
 public class PlayerLoader {
+    /**
+     * Method to get info about players to import
+     */
     public static List<PlayerImportInfo> getPlayersImportInfo(Context context, Resources res, List<ServerCommunicationItem> players, List<Conflict> playersModified) {
         ArrayList<PlayerImportInfo> playersInfo = new ArrayList<>();
         Map<Long, Player> allPlayers = ((IPackagePlayerManager) ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
@@ -44,6 +50,9 @@ public class PlayerLoader {
         return playersInfo;
     }
 
+    /**
+     * Method to import players to local database
+     */
     public static void importPlayers(Context context, List<ServerCommunicationItem> players, Competition competition, Map<String, Player> importedPlayers, Map<String, String> conflictSolutions) {
         Map<Long, Player> allPlayers = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
         Map<String, Player> allPlayersMap = new HashMap<>();

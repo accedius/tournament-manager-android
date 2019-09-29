@@ -25,6 +25,7 @@
     <string name="players">Players</string>
     <string name="player_settings">Player settings</string>
     <string name="settings">Settings</string>
+    <string name="about">About</string>
     <string name="standings">Standings</string>
     <string name="overview">Overview</string>
     <string name="point_configuration">Point configuration</string>
@@ -100,6 +101,7 @@
     <string name="player_created">Player created.</string>
     <string name="competitionNotFound">Competition not found.</string>
     <string name="settings_saved">Settings have been saved.</string>
+    <string name="settings_restored">Settings have been restored.</string>
     <string name="tournamentNotFound">Tournament not found.</string>
 
     <string name="name_empty_error">Name is empty!</string>

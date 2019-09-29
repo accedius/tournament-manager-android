@@ -10,6 +10,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
+/**
+ * Fragment is used in CreateCompetitionActivity to show creation panel view
+ */
 public class NewBowlingCompetitionFragment extends NewCompetitionFragment {
     @Override
     protected String getCompetitionKey() {

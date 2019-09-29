@@ -11,6 +11,9 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 
+/**
+ * Dialog, that occurs, when the player is selected to change his stats
+ */
 public class PlayerMatchStatDialog extends DialogFragment {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener(){

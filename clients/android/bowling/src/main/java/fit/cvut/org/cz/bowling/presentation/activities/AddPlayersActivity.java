@@ -12,10 +12,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFragment;
 
+/**
+ * Activity to add players to a team
+ */
 public class AddPlayersActivity extends SelectableListActivity<Player> {
     /**
      * Creates a new intent to start this activity
-     * @param context
+     * @param context context of intent
      * @param option option where are we adding players - it is passed into the fragment
      * @param id id of where are we adding players, also passed into fragment
      * @return Intent to that can be used to start this activity

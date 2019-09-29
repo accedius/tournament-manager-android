@@ -21,8 +21,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
-
+/**
+ * Support class for loading tournaments of a competition from import file
+ */
 public class TournamentLoader {
+    /**
+     * Method to get import info about tournaments to import
+     */
     public static List<TournamentImportInfo> getTournamentsImportInfo(Context context, List<ServerCommunicationItem> tournaments) {
         List<TournamentImportInfo> tournamentsInfo = new ArrayList<>();
         for (ServerCommunicationItem tournament : tournaments) {
@@ -47,6 +52,13 @@ public class TournamentLoader {
         return tournamentsInfo;
     }
 
+    /**
+     * Method to import tournaments to local database
+     * @param context context of action
+     * @param tournaments related tournaments
+     * @param importedCompetition related class
+     * @param importedPlayers related class
+     */
     public static void importTournaments(Context context, List<ServerCommunicationItem> tournaments, Competition importedCompetition, Map<String, Player> importedPlayers) {
         for (ServerCommunicationItem tournament : tournaments) {
             List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();

@@ -20,6 +20,9 @@ import fit.cvut.org.cz.bowling.presentation.services.StatsService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
+/**
+ * Fragment is used in StandingsStatsTitleFragment to show standings grid contents and sort it
+ */
 public class StandingsFragment extends AbstractListFragment<Standing> {
     private String orderColumn = Constants.POINTS;
     private String orderType = Constants.ORDER_DESC;

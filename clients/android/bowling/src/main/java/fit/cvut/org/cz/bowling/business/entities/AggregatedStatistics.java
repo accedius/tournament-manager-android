@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
+/**
+ * Class for handling statistics
+ */
 public class AggregatedStatistics implements Parcelable, IEntity {
     private long playerId;
     private String playerName;

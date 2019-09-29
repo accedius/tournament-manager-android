@@ -1,5 +1,8 @@
 package fit.cvut.org.cz.bowling.data.helpers;
 
+/**
+ * Resource strings for database communication
+ */
 public class DBConstants  {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";

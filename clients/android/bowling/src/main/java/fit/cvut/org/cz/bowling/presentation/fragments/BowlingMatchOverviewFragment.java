@@ -21,6 +21,9 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 
+/**
+ * Fragment is used in
+ */
 public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     private TextView homeScore, awayScore, round, period, date, note;
     private ImageButton homePlus, homeMinus, awayPlus, awayMinus;

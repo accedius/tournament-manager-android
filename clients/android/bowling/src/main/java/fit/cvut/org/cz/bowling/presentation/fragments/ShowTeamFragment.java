@@ -3,6 +3,9 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -14,6 +17,9 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.SelectableListActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.TeamDetailFragment;
 
+/**
+ * Fragment is used in ShowTeamActivity to show a team details (team's players)
+ */
 public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected String getTeamKey() {
@@ -71,5 +77,25 @@ public class ShowTeamFragment extends TeamDetailFragment {
     @Override
     protected void unregisterReceivers() {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_cancel, menu);
+        super.onSkipCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == fit.cvut.org.cz.tmlibrary.R.id.action_finish || itemId == android.R.id.home) {
+            t.setPlayers(adapter.getData());
+            updatePlayers(t);
+            getActivity().finish();
+            return true;
+        } else if (itemId == fit.cvut.org.cz.tmlibrary.R.id.action_cancel) {
+            getActivity().finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -24,6 +24,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.SortingTournamentsDialog;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
+/**
+ * Activity to handle showing bowling competition inner fragments (Overview, Tournaments etc.)
+ */
 public class ShowCompetitionActivity extends AbstractTabActivity {
     private long competitionID = -1;
     private DefaultViewPagerAdapter adapter = null;
@@ -77,6 +80,11 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         return adapter;
     }
 
+    /**
+     * Method to set a menu UI
+     * @param menu menu to inflate a UI to
+     * @return true if menu is inflated, false otherwise
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(fit.cvut.org.cz.tmlibrary.R.menu.menu_competition_detail, menu);

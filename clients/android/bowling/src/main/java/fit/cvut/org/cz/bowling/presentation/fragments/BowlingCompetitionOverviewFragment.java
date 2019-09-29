@@ -9,6 +9,9 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
+/**
+ * Fragment is used in
+ */
 public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragment {
     @Override
     public void askForData() {

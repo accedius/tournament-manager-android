@@ -19,6 +19,11 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
         return new EditableStatsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_editable_stats, parent, false));
     }
 
+    /**
+     * Method to bind data to View Holder
+     * @param holder View Holder
+     * @param position position of stats in data array
+     */
     @Override
     public void onBindViewHolder(EditableStatsViewHolder holder, int position) {
         PlayerStat rowItem = data.get(position);
@@ -36,6 +41,9 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
         holder.name.setText(rowItem.getName());
     }
 
+    /**
+     * Editable Stats specific View Holder
+     */
     public class EditableStatsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         TextView name;
