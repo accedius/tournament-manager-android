@@ -57,10 +57,11 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize Teams */
-        Team home = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
+        /*Team home = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
         item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
         Team away = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
-        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));
+        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));*/
+
         return item;
     }
 
@@ -88,9 +89,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
 
         hm.put(SCORE_HOME, String.valueOf(entity.getHomeScore()));
         hm.put(SCORE_AWAY, String.valueOf(entity.getAwayScore()));
-
-        hm.put(OVERTIME, entity.isOvertime());
-        hm.put(SHOOTOUTS, entity.isShootouts());
 
         /* Serialize rosters and stats */
         Map<Long, Player> playerMap = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
@@ -125,9 +123,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
 
         entity.setHomeScore(Integer.valueOf(String.valueOf(syncData.get(SCORE_HOME))));
         entity.setAwayScore(Integer.valueOf(String.valueOf(syncData.get(SCORE_AWAY))));
-
-        entity.setOvertime((boolean)syncData.get(OVERTIME));
-        entity.setShootouts((boolean)syncData.get(SHOOTOUTS));
 
         //TODO review
         //entity.addParticipants((List<Participant>)(syncData.get()));

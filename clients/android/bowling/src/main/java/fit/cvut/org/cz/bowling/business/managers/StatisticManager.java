@@ -41,20 +41,10 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
         switch (result) {
             case WIN:
-                if (match.isShootouts())
-                    return pointConfig.soW;
-                if (match.isOvertime())
-                    return pointConfig.otW;
                 return pointConfig.ntW;
             case DRAW:
-                if (match.isOvertime())
-                    return pointConfig.otD;
                 return pointConfig.ntD;
             case LOSS:
-                if (match.isShootouts())
-                    return pointConfig.soL;
-                if (match.isOvertime())
-                    return pointConfig.otL;
                 return pointConfig.ntL;
             default:
                 return 0;
@@ -64,28 +54,12 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     private void addMatchResultToStanding(int result, Standing standing, Match match) {
         switch (result) {
             case WIN:
-                if (match.isShootouts()) {
-                    standing.addWinSo();
-                    break;
-                }
-                if (match.isOvertime()) {
-                    standing.addWinOt();
-                    break;
-                }
                 standing.addWin();
                 break;
             case DRAW:
                 standing.addDraw();
                 break;
             case LOSS:
-                if (match.isShootouts()) {
-                    standing.addLossSo();
-                    break;
-                }
-                if (match.isOvertime()) {
-                    standing.addLossOt();
-                    break;
-                }
                 standing.addLoss();
                 break;
         }

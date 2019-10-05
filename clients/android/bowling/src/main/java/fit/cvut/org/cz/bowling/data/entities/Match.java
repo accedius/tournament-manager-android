@@ -20,23 +20,14 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
  */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
-    @DatabaseField(columnName = DBConstants.cSHOOTOUTS)
-    private boolean shootouts;
-
-    @DatabaseField(columnName = DBConstants.cOVERTIME)
-    private boolean overtime;
 
     public Match() {}
     public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
         super(id, tournamentId, date, played, note, period, round);
-        this.shootouts = shootouts;
-        this.overtime = overtime;
     }
 
     public Match(fit.cvut.org.cz.tmlibrary.data.entities.Match m) {
         super(m);
-        shootouts = false;
-        overtime = false;
     }
 
     @Override
@@ -47,14 +38,10 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeByte((byte) (shootouts ? 1 : 0));
-        dest.writeByte((byte) (overtime ? 1 : 0));
     }
 
     public Match(Parcel in) {
         super(in);
-        shootouts = in.readByte() != 0;
-        overtime = in.readByte() != 0;
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -68,22 +55,6 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
             return new Match[size];
         }
     };
-
-    public boolean isShootouts() {
-        return shootouts;
-    }
-
-    public void setShootouts(boolean shootouts) {
-        this.shootouts = shootouts;
-    }
-
-    public boolean isOvertime() {
-        return overtime;
-    }
-
-    public void setOvertime(boolean overtime) {
-        this.overtime = overtime;
-    }
 
     public String getHomeName() {
         return "";

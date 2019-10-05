@@ -27,9 +27,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     private TextView homeScore, awayScore, round, period, date, note;
     private ImageButton homePlus, homeMinus, awayPlus, awayMinus;
-    private CheckBox overtime, shootouts;
     private int intHomeScore = -1, intAwayScore = -1;
-    private int ot, so;
     private Long tournament_id;
 
     private static String SAVE_HOME_SCORE = "save_home_score";
@@ -63,13 +61,9 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
         if (savedInstanceState != null) {
             intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
             intAwayScore = savedInstanceState.getInt(SAVE_AWAY_SCORE);
-            ot = savedInstanceState.getInt(SAVE_OVERTIME);
-            so = savedInstanceState.getInt(SAVE_SHOOTOUTS);
         } else {
             intHomeScore = -1;
             intAwayScore = -1;
-            ot = -1;
-            so = -1;
         }
     }
 
@@ -106,19 +100,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
         else date.setText("--");
         note.setText(match.getNote());
 
-        if (ot == -1 && so == -1) {
-            if (match.isOvertime()) {
-                overtime.setChecked(true);
-                ot = 1;
-            } else ot = 0;
-            if (match.isShootouts()) {
-                shootouts.setChecked(true);
-                so = 1;
-            } else so = 0;
-        } else {
-            overtime.setChecked(ot != 0);
-            shootouts.setChecked(so != 0);
-        }
     }
 
     @Override
@@ -147,9 +128,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
         homeMinus = (ImageButton) v.findViewById(R.id.bt_ht_minus);
         awayMinus = (ImageButton) v.findViewById(R.id.bt_at_minus);
 
-        overtime = (CheckBox) v.findViewById(R.id.cb_overtime);
-        shootouts = (CheckBox) v.findViewById(R.id.cb_shootouts);
-
         setOnClickListeners();
 
         return v;
@@ -159,8 +137,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(SAVE_OVERTIME, ot);
-        outState.putInt(SAVE_SHOOTOUTS, so);
         outState.putInt(SAVE_HOME_SCORE, intHomeScore);
         outState.putInt(SAVE_AWAY_SCORE, intAwayScore);
     }
@@ -199,36 +175,11 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
                 awayScore.setText(String.valueOf(intAwayScore));
             }
         });
-        overtime.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (!overtime.isChecked()) {
-                    shootouts.setChecked(false);
-                    ot = 0;
-                    so = 0;
-                }
-                if (overtime.isChecked()) ot = 1;
-                else ot = 0;
-            }
-        });
-        shootouts.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (shootouts.isChecked()) {
-                    so = 1;
-                    overtime.setChecked(true);
-                    ot = 1;
-                }
-                else so = 0;
-            }
-        });
     }
 
     public Match getScore() {
         Match res = new Match();
         res.setId(getArguments().getLong(ExtraConstants.EXTRA_ID));
-        res.setOvertime(ot != 0);
-        res.setShootouts(so != 0);
         res.setPlayed(true);
         res.setHomeScore(intHomeScore);
         res.setAwayScore(intAwayScore);

@@ -77,19 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/cb_overtime"
-                    android:text="@string/overtime"
-                    android:layout_marginTop="16dp"/>
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/cb_shootouts"
-                    android:text="@string/shootouts"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

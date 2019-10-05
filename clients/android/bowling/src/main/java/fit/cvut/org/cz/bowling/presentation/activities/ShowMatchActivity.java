@@ -102,10 +102,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     private void sendToSaveMatch() {
         Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-        if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
-            Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
-            return;
-        }
+
         List<PlayerStat> homeStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
         List<PlayerStat> awayStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 
@@ -123,10 +120,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {
             Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-            if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-            }
+
             List<PlayerStat> homeStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
             List<PlayerStat> awayStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
 

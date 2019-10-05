@@ -151,8 +151,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
 
         match.setPlayed(false);
-        match.setOvertime(false);
-        match.setShootouts(false);
         update(match);
     }
 

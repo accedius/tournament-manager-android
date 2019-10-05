@@ -38,14 +38,8 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
         holder.away.setText(m.getAwayName());
 
         if (m.isPlayed()) {
-            //TODO reconsider these
-            if (m.isShootouts()) {
-                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.so)));
-            } else if (m.isOvertime()) {
-                holder.score.setText(String.format("%d:%d %s", m.getHomeScore(), m.getAwayScore(), res.getString(R.string.ot)));
-            } else {
-                holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
-            }
+            //TODO consider using date/name?
+            holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
         } else {
             holder.score.setText(R.string.vs);
         }

@@ -46,9 +46,9 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
     public static final int REQUEST_EDIT = 3;
 
     private MatchStatisticsAdapter homeAdapter, awayAdapter;
-    private String homeName, awayName;
+
     private Participant home = null, away = null;
-    private RecyclerView homeRecyclerView, awayRecyclerView;
+    private RecyclerView recyclerView;
     private TextView tvHome, tvAway;
     private FloatingActionButton fab;
     private ScrollView scrv;
@@ -126,14 +126,10 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
             tmpHomeStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
             tmpAwayStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
         }
-        homeName = intent.getStringExtra(ExtraConstants.EXTRA_HOME_NAME);
-        awayName = intent.getStringExtra(ExtraConstants.EXTRA_AWAY_NAME);
         home = intent.getParcelableExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
         away = intent.getParcelableExtra(ExtraConstants.EXTRA_AWAY_PARTICIPANT);
         homeAdapter.swapData(tmpHomeStats);
         awayAdapter.swapData(tmpAwayStats);
-        tvHome.setText(homeName);
-        tvAway.setText(awayName);
     }
 
     @Override
@@ -150,8 +146,12 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View fragmentView = inflater.inflate(R.layout.fragment_match_stats_wrapper, container, false);
 
-        homeRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_home);
-        awayRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_away);
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_home);
+        RecyclerView awayRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_away);
+        awayRecyclerView.setVisibility(View.INVISIBLE);
+        fragmentView.findViewById(R.id.ll_header2).setVisibility(View.INVISIBLE);
+        fragmentView.findViewById(R.id.tv_away).setVisibility(View.INVISIBLE);
+
         tvHome = (TextView) fragmentView.findViewById(R.id.tv_home);
         tvAway = (TextView) fragmentView.findViewById(R.id.tv_away);
         scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
@@ -160,13 +160,13 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
         homeAdapter.setIsHome(true);
         awayAdapter = new MatchStatisticsAdapter(this);
         awayAdapter.setIsHome(false);
-        homeRecyclerView.setAdapter(homeAdapter);
+        recyclerView.setAdapter(homeAdapter);
         awayRecyclerView.setAdapter(awayAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        homeRecyclerView.setLayoutManager(linearLayoutManager);
-        homeRecyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
         linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
@@ -196,7 +196,7 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeAwayDialog dialog = HomeAwayDialog.newInstance(homeName, awayName, matchId);
+                HomeAwayDialog dialog = HomeAwayDialog.newInstance("Homename", "Awayname", matchId);
                 dialog.setTargetFragment(thisFragment, 0);
                 dialog.show(getFragmentManager(), "tag211");
             }
