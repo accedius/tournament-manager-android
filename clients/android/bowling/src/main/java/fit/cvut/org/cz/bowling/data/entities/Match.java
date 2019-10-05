@@ -8,6 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
@@ -24,11 +25,6 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
 
     @DatabaseField(columnName = DBConstants.cOVERTIME)
     private boolean overtime;
-
-    private String homeName;
-    private String awayName;
-    private List<PlayerStat> homePlayers = new ArrayList<>();
-    private List<PlayerStat> awayPlayers = new ArrayList<>();
 
     public Match() {}
     public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
@@ -53,16 +49,12 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
         super.writeToParcel(dest, flags);
         dest.writeByte((byte) (shootouts ? 1 : 0));
         dest.writeByte((byte) (overtime ? 1 : 0));
-        dest.writeTypedList(homePlayers);
-        dest.writeTypedList(awayPlayers);
     }
 
     public Match(Parcel in) {
         super(in);
         shootouts = in.readByte() != 0;
         overtime = in.readByte() != 0;
-        in.readTypedList(homePlayers, PlayerStat.CREATOR);
-        in.readTypedList(awayPlayers, PlayerStat.CREATOR);
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -94,19 +86,11 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     }
 
     public String getHomeName() {
-        return homeName;
+        return "";
     }
 
     public String getAwayName() {
-        return awayName;
-    }
-
-    public void setHomeName(String homeName) {
-        this.homeName = homeName;
-    }
-
-    public void setAwayName(String awayName) {
-        this.awayName = awayName;
+        return "";
     }
 
     public long getHomeParticipantId() {
@@ -126,18 +110,10 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     }
 
     public List<PlayerStat> getHomePlayers() {
-        return homePlayers;
-    }
-
-    public void setHomePlayers(List<PlayerStat> homePlayers) {
-        this.homePlayers = homePlayers;
+        return new LinkedList<>();
     }
 
     public List<PlayerStat> getAwayPlayers() {
-        return awayPlayers;
-    }
-
-    public void setAwayPlayers(List<PlayerStat> awayPlayers) {
-        this.awayPlayers = awayPlayers;
+        return new LinkedList<>();
     }
 }

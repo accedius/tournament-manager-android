@@ -129,8 +129,12 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setOvertime((boolean)syncData.get(OVERTIME));
         entity.setShootouts((boolean)syncData.get(SHOOTOUTS));
 
+        //TODO review
+        //entity.addParticipants((List<Participant>)(syncData.get()));
+
+        //TODO discover the reason for this code
         // 2017-04-21 #116 Temporary fix of compatibility
-        String homePlayersString = String.valueOf(syncData.get(Constants.PLAYERS_HOME)).replaceFirst("name=.*, saves=", "saves=");
+        /*String homePlayersString = String.valueOf(syncData.get(Constants.PLAYERS_HOME)).replaceFirst("name=.*, saves=", "saves=");
         JsonReader homePlayersJsonReader = new JsonReader(new StringReader(homePlayersString.trim()));
         homePlayersJsonReader.setLenient(true);
         List<PlayerStat> homePlayers = new Gson().fromJson(homePlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
@@ -141,7 +145,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
         JsonReader awayPlayersJsonReader = new JsonReader(new StringReader(awayPlayersString.trim()));
         awayPlayersJsonReader.setLenient(true);
         List<PlayerStat> awayPlayers = new Gson().fromJson(awayPlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
-        entity.setAwayPlayers(awayPlayers);
+        entity.setAwayPlayers(awayPlayers);*/
     }
 
     @Override

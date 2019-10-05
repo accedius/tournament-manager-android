@@ -72,10 +72,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
-            if (ParticipantType.home.toString().equals(participant.getRole()))
-                match.setHomeName(participant.getName());
-            else if (ParticipantType.away.toString().equals(participant.getRole()))
-                match.setAwayName(participant.getName());
         }
         return match;
     }

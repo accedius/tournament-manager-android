@@ -150,11 +150,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
                         int score = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getScoreByParticipantId(p.getId());
                         Team t = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(p.getParticipantId());
                         if (ParticipantType.home.toString().equals(p.getRole())) {
-                            m.setHomeName(t.getName());
                             m.setHomeScore(score);
                         }
                         else if (ParticipantType.away.toString().equals(p.getRole())) {
-                            m.setAwayName(t.getName());
                             m.setAwayScore(score);
                         }
                     }
@@ -185,11 +183,9 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     int score = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId());
                     Team team = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(participant.getParticipantId());
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
-                        match.setHomeName(team.getName());
                         match.setHomeScore(score);
                     }
                     else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                        match.setAwayName(team.getName());
                         match.setAwayScore(score);
                     }
                 }
