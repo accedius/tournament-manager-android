@@ -3,7 +3,7 @@ package fit.cvut.org.cz.bowling.data.helpers;
 /**
  * Resource strings for database communication
  */
-public class DBConstants  {
+public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
 
