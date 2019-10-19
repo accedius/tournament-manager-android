@@ -141,10 +141,9 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
-                    stat.setGoals(0);
-                    stat.setAssists(0);
-                    stat.setPlusMinus(0);
-                    stat.setSaves(0);
+                    stat.setStrikes(0);
+                    stat.setSpares(0);
+                    stat.setPoints(0);
                     playerStatDAO.updateItem(stat);
                 }
             }

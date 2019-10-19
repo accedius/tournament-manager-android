@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.data.helpers;
 
+import com.j256.ormlite.field.DatabaseField;
+
 /**
  * Resource strings for database communication
  */
@@ -17,10 +19,9 @@ public class DBConstants  {
     public static final String cSOW = "shootout_win";
     public static final String cSOL = "shootout_loss";
 
-    public static final String cGOALS = "goals";
-    public static final String cASSISTS = "assists";
-    public static final String cPLUS_MINUS = "plus_minus";
-    public static final String cSAVES = "saves";
+    public static final String cSTRIKES = "strikes";
+    public static final String cSPARES = "spares";
+    public static final String cPOINTS = "points";
 
     public static final String cSCORE = "score";
     public static final String cSHOOTOUTS = "shootouts";

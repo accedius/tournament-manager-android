@@ -13,34 +13,33 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     private long playerId;
     private String playerName;
 
-    private long goals, assists, points, plusMinusPoints, teamPoints, matches, wins, losses, draws, saves;
-    private double avgGoals, avgPoints, avgTeamPoints;
+    private long strikes, spares, points, teamPoints, matches, wins, losses, draws;
+    private double avgStrikes, avgPoints, avgTeamPoints;
 
     private void calcAvg() {
-        this.points = this.goals + this.assists;
+        //this.points = this.strikes + this.spares;
         if (this.matches > 0) {
-            this.avgGoals = (double)this.goals/(double)this.matches;
+            this.avgStrikes = (double)this.strikes/(double)this.matches;
             this.avgPoints = (double)this.points/(double)this.matches;
             this.avgTeamPoints = (double)this.teamPoints/(double)this.matches;
         } else {
-            this.avgGoals = 0;
+            this.avgStrikes = 0;
             this.avgPoints = 0;
             this.avgTeamPoints = 0;
         }
     }
 
-    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long goals, long assists, long plusMinusPoints, long teamPoints, long saves) {
+    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long strikes, long spares, long points, long teamPoints) {
         this.playerId = pID;
         this.playerName = pName;
         this.matches = matches;
         this.wins = wins;
         this.draws = draws;
         this.losses = losses;
-        this.goals = goals;
-        this.assists = assists;
-        this.plusMinusPoints = plusMinusPoints;
+        this.strikes = strikes;
+        this.spares = spares;
+        this.points = points;
         this.teamPoints = teamPoints;
-        this.saves = saves;
         calcAvg();
     }
 
@@ -65,40 +64,36 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(playerId);
         dest.writeString(playerName);
-        dest.writeLong(goals);
-        dest.writeLong(assists);
+        dest.writeLong(strikes);
+        dest.writeLong(spares);
         dest.writeLong(points);
-        dest.writeLong(plusMinusPoints);
         dest.writeLong(teamPoints);
         dest.writeLong(matches);
         dest.writeLong(wins);
         dest.writeLong(losses);
         dest.writeLong(draws);
-        dest.writeDouble(avgGoals);
+        dest.writeDouble(avgStrikes);
         dest.writeDouble(avgPoints);
         dest.writeDouble(avgTeamPoints);
-        dest.writeLong(saves);
     }
 
     public AggregatedStatistics(Parcel in) {
         playerId = in.readLong();
         playerName = in.readString();
 
-        goals = in.readLong();
-        assists = in.readLong();
+        strikes = in.readLong();
+        spares = in.readLong();
         points = in.readLong();
-        plusMinusPoints = in.readLong();
         teamPoints = in.readLong();
         matches = in.readLong();
         wins = in.readLong();
         losses = in.readLong();
         draws = in.readLong();
 
-        avgGoals = in.readDouble();
+        avgStrikes = in.readDouble();
         avgPoints = in.readDouble();
         avgTeamPoints = in.readDouble();
 
-        saves = in.readLong();
     }
 
     public long getPlayerId() { return playerId; }
@@ -109,21 +104,17 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     public void setPlayerName(String playerName) { this.playerName = playerName; }
 
-    public long getGoals() { return goals; }
+    public long getStrikes() { return strikes; }
 
-    public void setGoals(long goals) { this.goals = goals; }
+    public void setStrikes(long value) { this.strikes = value; }
 
-    public long getAssists() { return assists; }
+    public long getSpares() { return spares; }
 
-    public void setAssists(long assists) { this.assists = assists; }
+    public void setSpares(long value) { this.spares = value; }
 
     public long getPoints() { return points; }
 
     public void setPoints(long points) { this.points = points; }
-
-    public long getPlusMinusPoints() { return plusMinusPoints; }
-
-    public void setPlusMinusPoints(long plusMinusPoints) { this.plusMinusPoints = plusMinusPoints; }
 
     public long getTeamPoints() { return teamPoints; }
 
@@ -145,9 +136,9 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     public void setDraws(long draws) { this.draws = draws; }
 
-    public double getAvgGoals() { return avgGoals; }
+    public double getAvgStrikes() { return avgStrikes; }
 
-    public void setAvgGoals(long avgGoals) { this.avgGoals = avgGoals; }
+    public void setAvgStrikes(long avgStrikes) { this.avgStrikes = avgStrikes; }
 
     public double getAvgPoints() { return avgPoints; }
 
@@ -156,14 +147,6 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     public double getAvgTeamPoints() { return avgTeamPoints; }
 
     public void setAvgTeamPoints(long avgTeamPoints) { this.avgTeamPoints = avgTeamPoints; }
-
-    public long getSaves() {
-        return saves;
-    }
-
-    public void setSaves(long saves) {
-        this.saves = saves;
-    }
 
     public double getAvgWins() {
         if (matches == 0)
@@ -174,16 +157,14 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     public double getStat(String key) {
         switch (key) {
             case Constants.MATCHES: return getMatches();
-            case Constants.GOALS: return getGoals();
-            case Constants.ASSISTS: return getAssists();
+            case Constants.STRIKES: return getStrikes();
+            case Constants.SPARES: return getSpares();
             case Constants.POINTS: return getPoints();
-            case Constants.PLUS_MINUS: return getPlusMinusPoints();
-            case Constants.SAVES: return getSaves();
             case Constants.WINS: return getWins();
             case Constants.DRAWS: return getDraws();
             case Constants.LOSSES: return getLosses();
             case Constants.TEAM_POINTS: return getTeamPoints();
-            case Constants.GOALS_AVG: return getAvgGoals();
+            case Constants.STRIKES_AVG: return getAvgStrikes();
             case Constants.POINTS_AVG: return getAvgPoints();
             case Constants.TEAM_POINTS_AVG: return getAvgTeamPoints();
             default: return 0;

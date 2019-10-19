@@ -26,15 +26,15 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         AggregatedStatistics stats = data.get(position);
         holder.name.setText(stats.getPlayerName());
         holder.GP.setText(Long.toString(stats.getMatches()));
-        holder.ST.setText(Long.toString(stats.getGoals()));
-        holder.SP.setText(Long.toString(stats.getAssists()));
+        holder.ST.setText(Long.toString(stats.getStrikes()));
+        holder.SP.setText(Long.toString(stats.getSpares()));
         holder.P.setText(Long.toString(stats.getPoints()));
         if (holder.W != null) {
             holder.W.setText(Long.toString(stats.getWins()));
             holder.L.setText(Long.toString(stats.getLosses()));
             holder.D.setText(Long.toString(stats.getDraws()));
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
-            holder.AST.setText(String.format("%.2f", stats.getAvgGoals()));
+            holder.AST.setText(String.format("%.2f", stats.getAvgStrikes()));
             holder.ASP.setText(String.format("%.2f", stats.getAvgPoints()));
             holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
         }
