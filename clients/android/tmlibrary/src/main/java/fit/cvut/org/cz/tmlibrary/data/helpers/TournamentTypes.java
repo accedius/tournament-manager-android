@@ -3,6 +3,7 @@ package fit.cvut.org.cz.tmlibrary.data.helpers;
 import android.content.res.Resources;
 
 import fit.cvut.org.cz.tmlibrary.R;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 
 /**
@@ -61,6 +62,22 @@ public class TournamentTypes {
             case type_teams:
                 return teams();
             case type_individuals:
+                return individuals();
+            default:
+                return teams();
+        }
+    }
+
+    /**
+     * Get Tournament's type from type of Competition to which this Tournament belongs.
+     * @param type type Competition
+     * @return corresponding Tournament type
+     */
+    public static TournamentType getCorrespondingType(CompetitionType type) {
+        switch (type.id) {
+            case CompetitionTypes.type_teams:
+                return teams();
+            case CompetitionTypes.type_individuals:
                 return individuals();
             default:
                 return teams();

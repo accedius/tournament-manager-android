@@ -20,6 +20,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 /**
  * Created by kevin on 13.12.2016.
@@ -58,6 +59,8 @@ public class TournamentLoader {
 
             Log.d("IMPORT", "Tournament: " + tournament.syncData);
             Tournament importedTournament = TournamentSerializer.getInstance(context).deserialize(tournament);
+            if(importedTournament.getType() == null)
+                importedTournament.setType(TournamentTypes.getCorrespondingType(importedCompetition.getType()) );
             importedTournament.setCompetitionId(importedCompetition.getId());
             ManagerFactory.getInstance(context).getEntityManager(Tournament.class).insert(importedTournament);
 
