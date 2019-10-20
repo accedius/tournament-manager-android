@@ -25,8 +25,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  * Fragment is used in
  */
 public class BowlingMatchOverviewFragment extends AbstractDataFragment {
-    private TextView homeScore, awayScore, round, period, date, note;
-    private ImageButton homePlus, homeMinus, awayPlus, awayMinus;
+    private TextView round, period, date, note;
     private int intHomeScore = -1, intAwayScore = -1;
     private Long tournament_id;
 
@@ -90,8 +89,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
             intHomeScore = match.getHomeScore();
             intAwayScore = match.getAwayScore();
         }
-        homeScore.setText(String.valueOf(intHomeScore));
-        awayScore.setText(String.valueOf(intAwayScore));
         round.setText(String.valueOf(match.getRound()));
         period.setText(String.valueOf(match.getPeriod()));
         if (match.getDate()!= null) {
@@ -116,19 +113,12 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_match_view, container, false);
 
-        homeScore = (TextView) v.findViewById(R.id.tv_home_score);
-        awayScore = (TextView) v.findViewById(R.id.tv_away_score);
+
         round = (TextView) v.findViewById(R.id.tv_round);
         period = (TextView) v.findViewById(R.id.tv_period);
         date = (TextView) v.findViewById(R.id.tv_date);
         note = (TextView) v.findViewById(R.id.tv_note);
 
-        homePlus = (ImageButton) v.findViewById(R.id.bt_ht_plus);
-        awayPlus = (ImageButton) v.findViewById(R.id.bt_at_plus);
-        homeMinus = (ImageButton) v.findViewById(R.id.bt_ht_minus);
-        awayMinus = (ImageButton) v.findViewById(R.id.bt_at_minus);
-
-        setOnClickListeners();
 
         return v;
     }
@@ -144,38 +134,7 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     /**
      * Set listeners for all buttons. This method is called in inject view
      */
-    private void setOnClickListeners() {
-        homePlus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                intHomeScore++;
-                homeScore.setText(String.valueOf(intHomeScore));
-            }
-        });
-        awayPlus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                intAwayScore++;
-                awayScore.setText(String.valueOf(intAwayScore));
-            }
-        });
-        homeMinus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (intHomeScore <= 0) return;
-                intHomeScore--;
-                homeScore.setText(String.valueOf(intHomeScore));
-            }
-        });
-        awayMinus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (intAwayScore <= 0) return;
-                intAwayScore--;
-                awayScore.setText(String.valueOf(intAwayScore));
-            }
-        });
-    }
+
 
     public Match getScore() {
         Match res = new Match();
