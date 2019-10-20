@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 
 /**
@@ -30,7 +31,7 @@ public class PlayerMatchStatDialog extends DialogFragment {
                         break;
                     }
                     case 1: {
-                        ((BowlingMatchStatsFragment)getTargetFragment()).removePlayer(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION));
+                        ((BowlingFFAMatchStatsFragment)getTargetFragment()).removePlayer(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         break;
                     }
                 }

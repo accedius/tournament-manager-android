@@ -104,12 +104,8 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 }
 
                 ArrayList<PlayerStat> homeStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
-                ArrayList<PlayerStat> awayStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS);
 
                 for (PlayerStat playerStat : homeStats)
-                    ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(playerStat);
-
-                for (PlayerStat playerStat : awayStats)
                     ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(playerStat);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
