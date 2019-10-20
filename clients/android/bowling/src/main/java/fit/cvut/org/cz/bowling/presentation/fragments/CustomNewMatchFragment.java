@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.managers.TeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
@@ -83,7 +85,7 @@ public abstract class CustomNewMatchFragment extends AbstractDataFragment {
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_new_match, container, false);
+        View v = inflater.inflate(R.layout.fragment_new_ffa_match, container, false);
 
         mDate = (EditText) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.et_date);
         period = (EditText) v.findViewById(fit.cvut.org.cz.tmlibrary.R.id.et_period);
@@ -115,7 +117,16 @@ public abstract class CustomNewMatchFragment extends AbstractDataFragment {
         if (dDate != null)
             sDate = dDate.getTime();
 
-        return new Match(id, tournamentId, sDate, false, note.getText().toString(), sPeriod, sRound);
+        //return new Match(id, tournamentId, sDate, false, note.getText().toString(), sPeriod, sRound);
+
+
+        long participantId = 0;
+
+
+        Match sm = new Match(id, tournamentId, sDate, false, note.getText().toString(), sPeriod, sRound);
+        if (id == -1) {sm.addParticipant(new Participant(id, participantId, ParticipantType.home.toString())); }
+
+        return sm;
     }
 
     /**

@@ -22,6 +22,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
@@ -68,7 +69,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = BowlingMatchStatsFragment.newInstance(matchId);
+        Fragment f2 = BowlingFFAMatchStatsFragment.newInstance(matchId);
         fragments = new Fragment[]{ f1, f2 };
 
         super.onCreate(savedInstanceState);
