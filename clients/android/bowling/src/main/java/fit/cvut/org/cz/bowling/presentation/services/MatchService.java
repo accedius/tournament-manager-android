@@ -63,13 +63,13 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 fit.cvut.org.cz.tmlibrary.data.entities.Match m = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
                 Match BowlingMatch = new Match(m);
                 ManagerFactory.getInstance(this).getEntityManager(Match.class).insert(BowlingMatch);
-                for (Participant participant : BowlingMatch.getParticipants()) {
+                /*for (Participant participant : BowlingMatch.getParticipants()) {
                     Team team =ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(participant.getParticipantId());
                     List<Player> teamPlayers = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getTeamPlayers(team);
                     for (Player player : teamPlayers) {
                         ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(new PlayerStat(participant.getId(), player.getId()));
                     }
-                }
+                }*/
                 break;
             }
             case ACTION_UPDATE_FOR_OVERVIEW: {
@@ -119,18 +119,18 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 Intent res = new Intent(action);
                 long matchId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 long tourId = intent.getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
-                List<Team> tourTeams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(tourId);
+                //List<Team> tourTeams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(tourId);
                 if (matchId != -1) {
                     Match m = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(matchId);
                     res.putExtra(ExtraConstants.EXTRA_MATCH, m);
                 }
 
                 ArrayList<Participant> participants = new ArrayList<>();
-                for (Team team : tourTeams) {
+                /*for (Team team : tourTeams) {
                     Participant participant = new Participant(matchId, team.getId(), null);
                     participant.setName(team.getName());
                     participants.add(participant);
-                }
+                }*/
 
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, participants);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -148,7 +148,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     for (Participant p : participants) {
                         m.addParticipant(p);
                         int score = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getScoreByParticipantId(p.getId());
-                        Team t = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(p.getParticipantId());
+                        //Team t = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(p.getParticipantId());
                         if (ParticipantType.home.toString().equals(p.getRole())) {
                             m.setHomeScore(score);
                         }
@@ -181,7 +181,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 for (Participant participant : participants) {
                     match.addParticipant(participant);
                     int score = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getScoreByParticipantId(participant.getId());
-                    Team team = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(participant.getParticipantId());
+                    //Team team = ManagerFactory.getInstance(this).getEntityManager(Team.class).getById(participant.getParticipantId());
                     if (ParticipantType.home.toString().equals(participant.getRole())) {
                         match.setHomeScore(score);
                     }

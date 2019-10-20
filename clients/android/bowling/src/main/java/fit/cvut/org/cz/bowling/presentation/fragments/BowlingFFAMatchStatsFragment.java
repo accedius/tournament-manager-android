@@ -172,10 +172,10 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<PlayerStat> omitStats = ((BowlingMatchStatsFragment)getTargetFragment()).getOmitPlayers();
+                ArrayList<PlayerStat> omitStats = getOmitPlayers();
                 Intent intent = AddPlayersActivity.newStartIntent(getContext(), AddPlayersFragment.OPTION_PARTICIPANT, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID));
                 intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitStats);
-                getTargetFragment().startActivityForResult(intent, BowlingFFAMatchStatsFragment.REQUEST_PART);
+                thisFragment.startActivityForResult(intent, BowlingFFAMatchStatsFragment.REQUEST_PART);
             }
         });
     }
