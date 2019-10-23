@@ -19,7 +19,7 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
     public void insert(Tournament tournament) {
         try {
             super.insert(tournament);
-            PointConfiguration pointConfiguration = (PointConfiguration) tournament.getPointConfiguration();
+            PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();//(PointConfiguration) tournament.getPointConfiguration();
             if (tournament.getPointConfiguration() == null) {
                 pointConfiguration = PointConfiguration.defaultConfig();
             }

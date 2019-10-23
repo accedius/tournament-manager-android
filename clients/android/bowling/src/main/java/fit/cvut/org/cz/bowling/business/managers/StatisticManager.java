@@ -42,20 +42,27 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         switch (result) {
             case WIN:
                 if (match.isShootouts())
-                    return pointConfig.soW;
+                    //return pointConfig.soW;
+                    return 1;
                 if (match.isOvertime())
-                    return pointConfig.otW;
-                return pointConfig.ntW;
+                    //return pointConfig.otW;
+                    return 1;
+                //return pointConfig.ntW;
             case DRAW:
                 if (match.isOvertime())
-                    return pointConfig.otD;
-                return pointConfig.ntD;
+                    return 1;
+                    //return pointConfig.otD;
+                return 1;
+                //return pointConfig.ntD;
             case LOSS:
                 if (match.isShootouts())
-                    return pointConfig.soL;
+                    return 1;
+                    //return pointConfig.soL;
                 if (match.isOvertime())
-                    return pointConfig.otL;
-                return pointConfig.ntL;
+                    return 1;
+                    //return pointConfig.otL;
+                return 1;
+                //eturn pointConfig.ntL;
             default:
                 return 0;
         }
@@ -237,7 +244,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
         List<Team> teams = teamManager.getByTournamentId(tournamentId);
         ArrayList<Standing> standings = new ArrayList<>();
-        PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
+        //PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
+        PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), t.getId()));

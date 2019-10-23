@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
@@ -53,5 +57,13 @@ public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragm
     @Override
     protected String getPlayersSumKey() {
         return ExtraConstants.EXTRA_PLAYERS_COUNT;
+    }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        View v = super.injectView(inflater, container);
+        v.findViewById(R.id.comp_type_label).setVisibility(View.VISIBLE);
+        v.findViewById(R.id.comp_type).setVisibility(View.VISIBLE);
+        return v;
     }
 }

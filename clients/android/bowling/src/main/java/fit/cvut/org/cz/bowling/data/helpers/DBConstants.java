@@ -25,4 +25,6 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String cSCORE = "score";
     public static final String cSHOOTOUTS = "shootouts";
     public static final String cOVERTIME = "overtime";
+
+    public static final String cSIDES_NUMBER = "sides_number";
 }

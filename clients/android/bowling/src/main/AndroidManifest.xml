@@ -50,6 +50,7 @@
         <service android:name=".presentation.services.MatchService"/>
         <service android:name=".presentation.services.PlayerService"/>
         <service android:name=".presentation.services.TeamService"/>
+        <service android:name=".presentation.services.PointConfigurationService"/>
         <service android:name="fit.cvut.org.cz.bowling.presentation.services.BowlingService"
             android:exported="true"/>
 

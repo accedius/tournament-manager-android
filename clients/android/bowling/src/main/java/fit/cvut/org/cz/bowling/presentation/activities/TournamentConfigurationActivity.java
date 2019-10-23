@@ -66,14 +66,14 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_finish, menu);
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            PointConfiguration pointConfig = ((ConfigurePointsFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
+        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_cancel) {
+            /*PointConfiguration pointConfig = ((ConfigurePointsFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
             if (pointConfig == null) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
@@ -82,8 +82,9 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
             Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
             intent.putExtra(ExtraConstants.EXTRA_CONFIGURATION, pointConfig);
             startService(intent);
-            finish();
+            finish();*/
         }
+        finish();
         return super.onOptionsItemSelected(item);
     }
 }

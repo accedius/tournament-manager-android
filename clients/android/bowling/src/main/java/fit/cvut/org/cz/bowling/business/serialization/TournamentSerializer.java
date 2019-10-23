@@ -91,7 +91,7 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         String pointConfigurationString = String.valueOf(syncData.get(Constants.POINT_CONFIGURATION));
         JsonReader pointConfigurationJsonReader = new JsonReader(new StringReader(pointConfigurationString.trim()));
         pointConfigurationJsonReader.setLenient(true);
-        PointConfiguration pointConfiguration = new Gson().fromJson(pointConfigurationJsonReader, new TypeToken<PointConfiguration>(){}.getType());
-        entity.setPointConfiguration(pointConfiguration);
+        /*PointConfiguration pointConfiguration = new Gson().fromJson(pointConfigurationJsonReader, new TypeToken<PointConfiguration>(){}.getType());
+        entity.setPointConfiguration(pointConfiguration);*/
     }
 }
