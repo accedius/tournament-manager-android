@@ -88,6 +88,7 @@
     <string name="add_match">Add match</string>
     <string name="add_single_match">Add single match</string>
     <string name="add_round">Add round</string>
+    <string name="generate_matches">Generate matches</string>
     <string name="add_player">Add player</string>
     <string name="add_players">Add players</string>
     <string name="add_player_to">Add player to</string>
