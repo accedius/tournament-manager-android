@@ -22,8 +22,9 @@ public interface IMatchManager extends IManager<Match> {
     /**
      * generates matches by lanes
      * @param tournamentId id of the tournament
+     * @param lanes number of lanes
      */
-    void generateByLanes(long tournamentId);
+    void generateByLanes(long tournamentId,int lanes);
 
     /**
      * resets match, so the match is empty and not played

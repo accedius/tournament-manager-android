@@ -19,11 +19,13 @@ import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
@@ -86,8 +88,10 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         }
     }
     @Override
-    public void generateByLanes(long tournamentId) {
-
+    public void generateByLanes(long tournamentId,int lanes) {
+        ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
+        List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
+        ArrayList<Participant> partsForGenerator = new ArrayList<>();
     }
 
     @Override

@@ -62,9 +62,11 @@ public class AddMatchDialog extends DialogFragment {
                         alertDialog.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        int lines = Integer.parseInt(input.getText().toString()) ;
+                                        int lanes = Integer.parseInt(input.getText().toString()) ;
                                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, getContext());
                                         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                                        intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
+                                        getContext().startService(intent);
                                         a.finish();
                                     }
                                 });
