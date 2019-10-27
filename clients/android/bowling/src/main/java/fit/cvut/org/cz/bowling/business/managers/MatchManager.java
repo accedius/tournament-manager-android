@@ -85,6 +85,10 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             update(match);
         }
     }
+    @Override
+    public void generateByLanes(long tournamentId) {
+
+    }
 
     @Override
     public void generateRound(long tournamentId) {

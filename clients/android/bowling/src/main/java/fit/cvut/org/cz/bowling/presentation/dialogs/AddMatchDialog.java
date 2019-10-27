@@ -63,7 +63,8 @@ public class AddMatchDialog extends DialogFragment {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         int lines = Integer.parseInt(input.getText().toString()) ;
-                                        generateMatchByLines(lines,a,c);
+                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
+                                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                                         a.finish();
                                     }
                                 });

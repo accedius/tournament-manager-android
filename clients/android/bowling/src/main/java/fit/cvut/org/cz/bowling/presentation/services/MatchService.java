@@ -36,6 +36,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GENERATE_ROUND = "action_generate_round";
     public static final String ACTION_FIND_BY_ID_FOR_OVERVIEW = "action_find_match_for_match_overview";
     public static final String ACTION_UPDATE_FOR_OVERVIEW = "action_update_match_for_overview";
+    public static final String ACTION_GENERATE_BY_LANES = "action_generate_by_lanes";
 
     public MatchService() {
         super("Bowling Match Service");
@@ -213,6 +214,13 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 match.setPlayed(originalMatch.isPlayed());
 
                 ManagerFactory.getInstance(this).getEntityManager(Match.class).update(match);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+                break;
+            }
+            case ACTION_GENERATE_BY_LANES: {
+                Intent res = new Intent(action);
+                long tourId = intent.getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
+                ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).generateRound(tourId);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
