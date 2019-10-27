@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
+import android.util.Log;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,14 +91,13 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
     @Override
     public void generateByLanes(long tournamentId,int lanes) {
+        lanes = 2;
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
-
         for(int i = 0 ; i < lanes ; i++)
         {
-            Participant p = new Participant(-1,-1, null);
-
+            Participant p = new Participant(-1,0, null);
 
             fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
             match.setPeriod(0);
@@ -117,7 +118,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             List<PlayerStat> playerStats = new ArrayList<>();
 
             int split = players.size() / lanes;
-            List<Player> matchPlayers = players.subList(0, split - 1);
+            List<Player> matchPlayers = players.subList(0, split);
             players = players.subList(split, players.size());
 
             for (Participant participant : match.getParticipants()) {
