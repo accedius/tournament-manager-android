@@ -220,7 +220,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
             case ACTION_GENERATE_BY_LANES: {
                 Intent res = new Intent(action);
                 long tourId = intent.getLongExtra(ExtraConstants.EXTRA_TOUR_ID, -1);
-                ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).generateRound(tourId);
+                ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).generateByLanes(tourId);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
             }
