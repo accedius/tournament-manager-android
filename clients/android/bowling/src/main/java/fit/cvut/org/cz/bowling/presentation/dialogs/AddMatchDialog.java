@@ -47,12 +47,7 @@ public class AddMatchDialog extends DialogFragment {
                     }
                     case 2: {
                         final Activity a = getActivity();
-                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, getContext());
-                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-                        intent.putExtra(ExtraConstants.EXTRA_LANES, 2);
-                        getContext().startService(intent);
-                        a.finish();
-                        /*
+                        final  Context c = getContext();
                         Log.i("info", "Generate");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                         alertDialog.setTitle("Generate matches by lines");
@@ -67,8 +62,12 @@ public class AddMatchDialog extends DialogFragment {
                         alertDialog.setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
                                         int lanes = Integer.parseInt(input.getText().toString()) ;
-
+                                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                                        intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
+                                        c.startService(intent);
+                                        a.finish();
                                     }
                                 });
 
@@ -80,7 +79,7 @@ public class AddMatchDialog extends DialogFragment {
                                     }
                                 });
 
-                        alertDialog.show();*/
+                        alertDialog.show();
                         break;
                     }
                 }
