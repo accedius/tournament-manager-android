@@ -91,7 +91,45 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     public void generateByLanes(long tournamentId,int lanes) {
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
-        ArrayList<Participant> partsForGenerator = new ArrayList<>();
+        ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
+
+        for(int i = 0 ; i < lanes ; i++)
+        {
+            Participant p = new Participant(-1,-1, null);
+
+
+            fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
+            match.setPeriod(0);
+            match.setRound(0);
+            Participant home = new Participant(p);
+            home.setRole(ParticipantType.home.toString());
+            match.addParticipant(home);
+            matches.add(match);
+        }
+
+        for (fit.cvut.org.cz.tmlibrary.data.entities.Match match : matches) {
+            match.setDate(new Date());
+            match.setNote("");
+            match.setTournamentId(tournamentId);
+            Match bowlingMatch = new Match(match);
+            insert(bowlingMatch);
+
+            List<PlayerStat> playerStats = new ArrayList<>();
+
+            int split = players.size() / lanes;
+            List<Player> matchPlayers = players.subList(0, split - 1);
+            players = players.subList(split, players.size());
+
+            for (Participant participant : match.getParticipants()) {
+                for (Player player : matchPlayers) {
+                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
+                }
+            }
+            for (PlayerStat playerStat : playerStats) {
+                managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+            }
+            --lanes;
+        }
     }
 
     @Override
