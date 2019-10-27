@@ -91,7 +91,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
     @Override
     public void generateByLanes(long tournamentId,int lanes) {
-        lanes = 2;
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
