@@ -41,12 +41,12 @@ android {
 repositories { jcenter() }
 
 dependencies {
-    androidTestCompile 'junit:junit:4.12'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.1.4'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    compile 'com.android.support:appcompat-v7:28.0.0'
-    compile project(':tmlibrary')
+    androidTestImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.1.4'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation project(':tmlibrary')
 }

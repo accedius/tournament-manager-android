@@ -14,25 +14,21 @@ import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tPLAYER_STATS)
 public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat implements Parcelable {
 
-    @DatabaseField(columnName = DBConstants.cGOALS)
-    private int goals;
+    @DatabaseField(columnName = DBConstants.cSTRIKES)
+    private int strikes;
 
-    @DatabaseField(columnName = DBConstants.cASSISTS)
-    private int assists;
+    @DatabaseField(columnName = DBConstants.cSPARES)
+    private int spares;
 
-    @DatabaseField(columnName = DBConstants.cPLUS_MINUS)
-    private int plus_minus;
-
-    @DatabaseField(columnName = DBConstants.cSAVES)
-    private int saves;
+    @DatabaseField(columnName = DBConstants.cPOINTS)
+    private int points;
 
     public PlayerStat(PlayerStat p) {
         this.participant_id = p.participant_id;
         this.player_id = p.player_id;
-        this.goals = p.goals;
-        this.assists = p.assists;
-        this.plus_minus = p.plus_minus;
-        this.saves = p.saves;
+        this.strikes = p.strikes;
+        this.spares = p.spares;
+        this.points = p.points;
     }
 
     public PlayerStat() {}
@@ -49,10 +45,9 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(goals);
-        dest.writeInt(assists);
-        dest.writeInt(plus_minus);
-        dest.writeInt(saves);
+        dest.writeInt(strikes);
+        dest.writeInt(spares);
+        dest.writeInt(points);
     }
 
     public PlayerStat(fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat p) {
@@ -61,10 +56,9 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
 
     public PlayerStat(Parcel in) {
         super(in);
-        goals = in.readInt();
-        assists = in.readInt();
-        plus_minus = in.readInt();
-        saves = in.readInt();
+        strikes = in.readInt();
+        spares = in.readInt();
+        points = in.readInt();
     }
 
     public static final Creator<PlayerStat> CREATOR = new Creator<PlayerStat>() {
@@ -79,36 +73,28 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
         }
     };
 
-    public int getGoals() {
-        return goals;
+    public int getStrikes() {
+        return strikes;
     }
 
-    public void setGoals(int goals) {
-        this.goals = goals;
+    public void setStrikes(int strikes) {
+        this.strikes = strikes;
     }
 
-    public int getAssists() {
-        return assists;
+    public int getSpares() {
+        return spares;
     }
 
-    public void setAssists(int assists) {
-        this.assists = assists;
+    public void setSpares(int spares) {
+        this.spares = spares;
     }
 
-    public int getPlusMinus() {
-        return plus_minus;
+    public int getPoints() {
+        return points;
     }
 
-    public void setPlusMinus(int plus_minus) {
-        this.plus_minus = plus_minus;
-    }
-
-    public int getSaves() {
-        return saves;
-    }
-
-    public void setSaves(int saves) {
-        this.saves = saves;
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     @Override

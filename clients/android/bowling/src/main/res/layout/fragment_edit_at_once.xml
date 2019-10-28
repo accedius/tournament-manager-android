@@ -31,34 +31,30 @@
                         android:layout_weight="8"
                         android:id="@+id/as_name"
                         android:text="@string/name"/>
+
                     <TextView
+                        android:id="@+id/as_strikes"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:id="@+id/as_goals"
-                        android:text="@string/g"/>
+                        android:gravity="center"
+                        android:text="@string/st" />
+
                     <TextView
+                        android:id="@+id/as_spares"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:id="@+id/as_assists"
-                        android:text="@string/a"/>
+                        android:gravity="center"
+                        android:text="@string/sp" />
+
                     <TextView
+                        android:id="@+id/as_points"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:id="@+id/as_pmp"
-                        android:text="@string/pmp"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:layout_weight="5"
-                        android:id="@+id/as_saves"
-                        android:text="@string/s"/>
+                        android:text="@string/pt" />
 
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView
@@ -87,30 +83,27 @@
                         android:gravity="left"
                         android:layout_weight="8"
                         android:text="@string/name"/>
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:text="@string/g"/>
+                        android:gravity="center"
+                        android:text="@string/st" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:text="@string/a"/>
+                        android:gravity="center"
+                        android:text="@string/sp" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="5"
-                        android:text="@string/pmp"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:layout_weight="5"
-                        android:text="@string/s"/>
+                        android:text="@string/pt" />
 
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView

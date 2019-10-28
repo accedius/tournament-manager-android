@@ -38,10 +38,9 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<PlayerStat, Matc
     public void onBindViewHolder(MatchStatisticsViewHolder holder, int position) {
         PlayerStat stats = data.get(position);
         holder.name.setText(stats.getName());
-        holder.G.setText(Long.toString(stats.getGoals()));
-        holder.A.setText(Long.toString(stats.getAssists()));
-        holder.I.setText(Long.toString(stats.getSaves()));
-        holder.PMP.setText(Long.toString(stats.getPlusMinus()));
+        holder.ST.setText(Long.toString(stats.getStrikes()));
+        holder.SP.setText(Long.toString(stats.getSpares()));
+        holder.PT.setText(Long.toString(stats.getPoints()));
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), position, stats.getName());
     }
 
@@ -72,16 +71,15 @@ public class MatchStatisticsAdapter extends AbstractListAdapter<PlayerStat, Matc
     public class MatchStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         public View wholeView;
-        TextView name, G, A, PMP, I;
+        TextView name, ST, SP, PT;
 
         public MatchStatisticsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
-            G = (TextView) itemView.findViewById(R.id.as_goals);
-            A = (TextView) itemView.findViewById(R.id.as_assists);
-            PMP = (TextView) itemView.findViewById(R.id.as_pmp);
-            I = (TextView) itemView.findViewById(R.id.as_saves);
+            ST = (TextView) itemView.findViewById(R.id.as_strikes);
+            SP = (TextView) itemView.findViewById(R.id.as_spares);
+            PT = (TextView) itemView.findViewById(R.id.as_points);
             wholeView = itemView;
         }
     }

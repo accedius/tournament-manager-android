@@ -129,9 +129,15 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 if (CompetitionTypes.teams().equals(competition.getType())) {
                     final ITeamManager teamManager = ManagerFactory.getInstance(this).getEntityManager(Team.class);
                     Team team = teamManager.getById(homeId);
-                    homeName = team.getName();
-                    team = teamManager.getById(awayId);
-                    awayName = team.getName();
+
+                    //Case for individuals
+                    if(team != null) {
+                        homeName = team.getName();
+                        team = teamManager.getById(awayId);
+                        awayName = team.getName();
+                    } else {
+                        homeName = awayName = "";
+                    }
                 } else {
                     final IManager<Player> playerManager = ManagerFactory.getInstance(this).getEntityManager(Player.class);
                     Player player = playerManager.getById(homeId);

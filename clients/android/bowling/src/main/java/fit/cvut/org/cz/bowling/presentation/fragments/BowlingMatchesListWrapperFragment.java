@@ -7,7 +7,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
 /**
  * Fragment is used in
  */
-public class BowlingMatchesListWrapperFragment extends MatchesListWrapperFragment {
+public class BowlingMatchesListWrapperFragment extends FFAMatchesListWrapperFragment {
     @Override
     protected Fragment supplyFragment(long tournamentId) {
         return BowlingMatchesListFragment.newInstance(tournamentId);

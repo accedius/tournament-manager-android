@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
+import android.util.Log;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +21,13 @@ import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
@@ -72,10 +76,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
-            if (ParticipantType.home.toString().equals(participant.getRole()))
-                match.setHomeName(participant.getName());
-            else if (ParticipantType.away.toString().equals(participant.getRole()))
-                match.setAwayName(participant.getName());
         }
         return match;
     }
@@ -87,6 +87,48 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setPlayed(true);
             match.setLastModified(new Date());
             update(match);
+        }
+    }
+    @Override
+    public void generateByLanes(long tournamentId,int lanes) {
+        ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
+        List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
+        ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
+        for(int i = 0 ; i < lanes ; i++)
+        {
+            Participant p = new Participant(-1,0, null);
+
+            fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
+            match.setPeriod(0);
+            match.setRound(0);
+            Participant home = new Participant(p);
+            home.setRole(ParticipantType.home.toString());
+            match.addParticipant(home);
+            matches.add(match);
+        }
+
+        for (fit.cvut.org.cz.tmlibrary.data.entities.Match match : matches) {
+            match.setDate(new Date());
+            match.setNote("");
+            match.setTournamentId(tournamentId);
+            Match bowlingMatch = new Match(match);
+            insert(bowlingMatch);
+
+            List<PlayerStat> playerStats = new ArrayList<>();
+
+            int split = players.size() / lanes;
+            List<Player> matchPlayers = players.subList(0, split);
+            players = players.subList(split, players.size());
+
+            for (Participant participant : match.getParticipants()) {
+                for (Player player : matchPlayers) {
+                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
+                }
+            }
+            for (PlayerStat playerStat : playerStats) {
+                managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+            }
+            --lanes;
         }
     }
 
@@ -145,18 +187,15 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
-                    stat.setGoals(0);
-                    stat.setAssists(0);
-                    stat.setPlusMinus(0);
-                    stat.setSaves(0);
+                    stat.setStrikes(0);
+                    stat.setSpares(0);
+                    stat.setPoints(0);
                     playerStatDAO.updateItem(stat);
                 }
             }
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
 
         match.setPlayed(false);
-        match.setOvertime(false);
-        match.setShootouts(false);
         update(match);
     }
 

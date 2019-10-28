@@ -28,15 +28,13 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
     public void onBindViewHolder(EditableStatsViewHolder holder, int position) {
         PlayerStat rowItem = data.get(position);
 
-        holder.goalLsnr.updatePosition(position);
-        holder.assLsnr.updatePosition(position);
-        holder.pmpLsnr.updatePosition(position);
-        holder.interLsnr.updatePosition(position);
+        holder.strikeLsnr.updatePosition(position);
+        holder.spareLsnr.updatePosition(position);
+        holder.pointLsnr.updatePosition(position);
 
-        holder.goals.setText(Integer.toString(rowItem.getGoals()));
-        holder.assists.setText(Integer.toString(rowItem.getAssists()));
-        holder.plusMinus.setText(Integer.toString(rowItem.getPlusMinus()));
-        holder.interv.setText(Integer.toString(rowItem.getSaves()));
+        holder.strikes.setText(Integer.toString(rowItem.getStrikes()));
+        holder.spares.setText(Integer.toString(rowItem.getSpares()));
+        holder.points.setText(Integer.toString(rowItem.getPoints()));
 
         holder.name.setText(rowItem.getName());
     }
@@ -47,28 +45,25 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
     public class EditableStatsViewHolder extends RecyclerView.ViewHolder {
         public long id;
         TextView name;
-        EditText goals, assists, plusMinus, interv;
+        EditText strikes, spares, points;
         public View wholeView;
-        public EditDataListener goalLsnr, assLsnr, pmpLsnr, interLsnr;
+        public EditDataListener strikeLsnr, spareLsnr, pointLsnr;
 
         public EditableStatsViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.as_name);
-            goals = (EditText) itemView.findViewById(R.id.et_goals);
-            assists = (EditText) itemView.findViewById(R.id.et_assists);
-            plusMinus = (EditText) itemView.findViewById(R.id.et_plus_minus);
-            interv = (EditText) itemView.findViewById(R.id.et_saves);
+            strikes = (EditText) itemView.findViewById(R.id.et_strikes);
+            spares = (EditText) itemView.findViewById(R.id.et_spares);
+            points = (EditText) itemView.findViewById(R.id.et_points);
             wholeView = itemView;
 
-            this.goalLsnr = new EditDataListener(EditDataListener.LISTEN_GOALS);
-            this.assLsnr = new EditDataListener(EditDataListener.LISTEN_ASSISTS);
-            this.pmpLsnr = new EditDataListener(EditDataListener.LISTEN_PLUSMP);
-            this.interLsnr = new EditDataListener(EditDataListener.LISTEN_SAVES);
+            this.strikeLsnr = new EditDataListener(EditDataListener.LISTEN_STRIKES);
+            this.spareLsnr = new EditDataListener(EditDataListener.LISTEN_SPARES);
+            this.pointLsnr = new EditDataListener(EditDataListener.LISTEN_POINTS);
 
-            goals.addTextChangedListener(goalLsnr);
-            assists.addTextChangedListener(assLsnr);
-            plusMinus.addTextChangedListener(pmpLsnr);
-            interv.addTextChangedListener(interLsnr);
+            strikes.addTextChangedListener(strikeLsnr);
+            spares.addTextChangedListener(spareLsnr);
+            points.addTextChangedListener(pointLsnr);
         }
     }
 
@@ -76,10 +71,9 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
      * Listener that changes the data in adapter whenever something changed on the screen
      */
     private class EditDataListener implements TextWatcher {
-        public static final int LISTEN_GOALS = 0;
-        public static final int LISTEN_ASSISTS = 1;
-        public static final int LISTEN_PLUSMP = 2;
-        public static final int LISTEN_SAVES = 3;
+        public static final int LISTEN_STRIKES = 0;
+        public static final int LISTEN_SPARES = 1;
+        public static final int LISTEN_POINTS = 2;
 
         private int listenType;
         private int position;
@@ -111,17 +105,14 @@ public class EditableStatsAdapter extends AbstractListAdapter<PlayerStat, Editab
                 value = Integer.parseInt(s.toString());
 
             switch (listenType) {
-                case LISTEN_GOALS:
-                    data.get(position).setGoals(value);
+                case LISTEN_STRIKES:
+                    data.get(position).setStrikes(value);
                     break;
-                case LISTEN_ASSISTS:
-                    data.get(position).setAssists(value);
+                case LISTEN_SPARES:
+                    data.get(position).setSpares(value);
                     break;
-                case LISTEN_SAVES:
-                    data.get(position).setSaves(value);
-                    break;
-                case LISTEN_PLUSMP:
-                    data.get(position).setPlusMinus(value);
+                case LISTEN_POINTS:
+                    data.get(position).setPoints(value);
                     break;
             }
         }
