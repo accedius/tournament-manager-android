@@ -24,6 +24,7 @@ import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.FFAMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
@@ -64,7 +65,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
         Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
         Fragment f5 = AggregStatsTitleFragment.newInstance(tournamentId, false);
-        Fragment f3 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
+        Fragment f3 = FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
         Fragment f4 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
         fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 

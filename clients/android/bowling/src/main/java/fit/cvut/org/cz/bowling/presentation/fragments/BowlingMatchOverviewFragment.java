@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
@@ -80,10 +82,12 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
+
         tournament_id = match.getTournamentId();
 
-        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " +
-                match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
+        getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " + (match.getDate()!=null?dateFormat.format(match.getDate()):"[no Date]"));
+                //match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
 
         if (intHomeScore == -1 && intAwayScore == -1) {
             intHomeScore = match.getHomeScore();

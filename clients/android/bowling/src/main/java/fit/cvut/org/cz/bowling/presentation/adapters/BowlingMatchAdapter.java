@@ -8,8 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchAdapter.MatchViewHolder> {
@@ -23,7 +28,7 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
 
     @Override
     public MatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MatchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match, parent, false));
+        return new MatchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_ffa_match, parent, false));
     }
 
     /**
@@ -34,15 +39,22 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
     @Override
     public void onBindViewHolder(MatchViewHolder holder, int position) {
         Match m = data.get(position);
-        holder.home.setText(m.getHomeName());
-        holder.away.setText(m.getAwayName());
+        SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
+        //List<Participant> parts = m.getParticipants();
+        //int players = 0;
+        //for(Participant p : parts) if(p!=null) players += 1;
+        holder.name.setText("Per. " + m.getPeriod() + " - Round " + m.getRound());
+        holder.date.setText(m.getDate()!=null?dateFormat.format(m.getDate()):"[no Date]");
+
+        /*
         if (m.isPlayed()) {
             //TODO consider using date/name?
             holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
         } else {
             holder.score.setText(R.string.vs);
         }
+        */
 
         if (position > 0) {
             holder.roundSeparator1.setVisibility(View.GONE);
@@ -56,7 +68,7 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
             }
         }
 
-        String title = m.getHomeName()+" "+res.getString(R.string.vs)+" "+m.getAwayName();
+        String title = m.getDate()!=null?dateFormat.format(m.getDate()):"[no Date]";
         setOnClickListeners(holder.card, m, position, title);
     }
 
@@ -64,13 +76,12 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
      * Match specific View Holder
      */
     public class MatchViewHolder extends RecyclerView.ViewHolder {
-        public TextView home, away, score;
+        public TextView name, date;
         View periodSeparator, roundSeparator1, roundSeparator2, card;
         public MatchViewHolder(View itemView) {
             super (itemView);
-            home = (TextView) itemView.findViewById(R.id.tv_home);
-            away = (TextView) itemView.findViewById(R.id.tv_away);
-            score = (TextView) itemView.findViewById(R.id.tv_score);
+            name = (TextView) itemView.findViewById(R.id.tv_matchname);
+            date = (TextView) itemView.findViewById(R.id.tv_date);
 
             periodSeparator = itemView.findViewById(R.id.period_separator);
             roundSeparator1 = itemView.findViewById(R.id.round_separator);
