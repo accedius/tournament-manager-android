@@ -8,16 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 
@@ -51,8 +53,12 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
         Bundle args = new Bundle();
         if (forTournament)
             args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
-        else
+        else {
+            IPointConfigurationManager iPointConfigurationManager = ManagerFactory.getInstance().getEntityManager(PointConfiguration.class);
+            long tournamentId = iPointConfigurationManager.getById(id).tournamentId;
+            args.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
             args.putLong(ExtraConstants.EXTRA_ID, id);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,30 +78,10 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (sidesNumber.getText().toString().isEmpty() || isDataSourceWorking())
-                    return;
-
-                if(Long.parseLong(sidesNumber.getText().toString()) < 2){
-                    Toast.makeText(getContext(),getResources().getString(R.string.pc_format_violated), Toast.LENGTH_LONG ).show();
-                    return;
-                }
-
-                long sn = Long.parseLong(sidesNumber.getText().toString());
-                if (tournamentId != -1) {
-                    List<Float> pc = new ArrayList<Float>();
-                    for (int i = 0; i<sn; i++) {
-                        pc.add(i, 0f);
-                    }
-                    insertPointConfiguration(new PointConfiguration(tournamentId, sn, pc));
-                } else if (pointConfigurationId != -1) {
-                    configuration.setSidesNumber(sn);
-                    editPointConfiguration(configuration);
-                }
-                if (getTargetFragment() != null)
-                    getTargetFragment().onActivityResult(0, 1, null);
-                dismiss();
+                //empty, because must be overridden in onResume in order not to close on bad input (https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked)
             }
         });
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -119,6 +105,71 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
 
         builder.setTitle(getResources().getString(R.string.point_configuration_settings));
         return builder.create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final AlertDialog dialog = (AlertDialog) getDialog();
+        if(dialog != null) {
+            Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (sidesNumber.getText().toString().isEmpty() || isDataSourceWorking()) {
+                        return;
+                    }
+
+                    if(Long.parseLong(sidesNumber.getText().toString()) < 2){
+                        TextInputLayout til = getDialog().findViewById(R.id.text_input_layout);
+                        til.setError(getResources().getString(R.string.pc_format_violated));
+                        /*sidesNumber.setError(getResources().getString(R.string.pc_format_violated));
+                        View rootView = getActivity().findViewById(R.id.rootView);
+                        Snackbar.make(rootView, R.string.pc_format_violated, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(v, R.string.pc_format_violated, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),getResources().getString(R.string.pc_format_violated), Toast.LENGTH_LONG ).show();*/
+                        return;
+                    }
+
+                    long sn = Long.parseLong(sidesNumber.getText().toString());
+                    IPointConfigurationManager iPointConfigurationManager = ManagerFactory.getInstance(getContext()).getEntityManager(PointConfiguration.class);
+                    PointConfiguration resultPC = iPointConfigurationManager.getBySidesNumber(tournamentId, sn);
+                    if(resultPC != null) {
+                        TextInputLayout til = getDialog().findViewById(R.id.text_input_layout);
+                        til.setError(getResources().getString(R.string.pc_already_exists));
+                        return;
+                    }
+
+                    if (tournamentId != -1) {
+                        List<Float> pc = new ArrayList<Float>();
+                        for (int i = 0; i<sn; i++) {
+                            pc.add(i, 0f);
+                        }
+                        insertPointConfiguration(new PointConfiguration(tournamentId, sn, pc));
+                    } else if (pointConfigurationId != -1) {
+                        int csn = (int) configuration.sidesNumber;
+                        List<Float> configurationPlacePoints = configuration.getConfigurationPlacePoints();
+
+                        if(sn < csn) {
+                            configurationPlacePoints.subList(((int) sn), csn).clear();
+                            configuration.setSidesNumber(sn);
+                            configuration.setConfigurationPlacePoints(configurationPlacePoints);
+                            editPointConfiguration(configuration);
+                        } else if(sn > csn) {
+                            for (int i = csn; i < sn; i++) {
+                                configurationPlacePoints.add(0f);
+                            }
+                            configuration.setSidesNumber(sn);
+                            configuration.setConfigurationPlacePoints(configurationPlacePoints);
+                            editPointConfiguration(configuration);
+                        }
+                    }
+                    if (getTargetFragment() != null)
+                        getTargetFragment().onActivityResult(0, 1, null);
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     @Nullable

@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.StandingsHelpDialog;
@@ -26,6 +28,9 @@ import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
@@ -42,9 +47,6 @@ public class ShowTournamentActivity extends AbstractTabActivity {
     private long competitionId;
     private long tournamentId;
 
-    private Fragment[] fragments;
-    private String[] titles;
-
     private DefaultViewPagerAdapter adapter;
     private String sportContext;
     private int selectedPage = 0;
@@ -54,19 +56,6 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         sportContext = ((BowlingPackage) this.getApplication()).getSportContext();
         competitionId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_COMP_ID);
         tournamentId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
-
-        titles = new String[]{
-                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.teams),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
-        Fragment f1 = TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class);
-        Fragment f2 = StandingsStatsTitleFragment.newInstance(tournamentId);
-        Fragment f5 = AggregStatsTitleFragment.newInstance(tournamentId, false);
-        Fragment f3 = MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class);
-        Fragment f4 = BowlingTeamsListFragment.newInstance(tournamentId, competitionId);
-        fragments = new Fragment[]{ f1, f2, f3, f4, f5};
 
         super.onCreate(savedInstanceState);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,9 +110,45 @@ public class ShowTournamentActivity extends AbstractTabActivity {
 
     @Override
     protected PagerAdapter getAdapter(FragmentManager manager) {
-        PagerAdapter res = new DefaultViewPagerAdapter(manager, fragments, titles);
-        adapter = (DefaultViewPagerAdapter)res;
-        return res;
+        competitionId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_COMP_ID);
+        tournamentId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
+        Tournament t = ManagerFactory.getInstance().getEntityManager(Tournament.class).getById(tournamentId);
+        TournamentType type = TournamentTypes.getMyTournamentType(t.getTypeId());
+
+        if(type.equals(TournamentTypes.individuals())) {
+            adapter = new DefaultViewPagerAdapter(manager,
+                    new Fragment[] {
+                            TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
+                            StandingsStatsTitleFragment.newInstance(tournamentId),
+                            MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
+                            AggregStatsTitleFragment.newInstance(tournamentId, false)
+                    },
+                    new String[] {
+                        getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                        getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
+                        getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
+                        getString(fit.cvut.org.cz.tmlibrary.R.string.players)
+                    }
+                    );
+        } else {
+            adapter = new DefaultViewPagerAdapter(manager,
+                    new Fragment[] {
+                            TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
+                            StandingsStatsTitleFragment.newInstance(tournamentId),
+                            MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
+                            BowlingTeamsListFragment.newInstance(tournamentId, competitionId),
+                            AggregStatsTitleFragment.newInstance(tournamentId, false)
+                    },
+                    new String[] {
+                            getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                            getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
+                            getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
+                            getString(fit.cvut.org.cz.tmlibrary.R.string.teams),
+                            getString(fit.cvut.org.cz.tmlibrary.R.string.players)
+                    }
+            );
+        }
+        return adapter;
     }
 
     /**

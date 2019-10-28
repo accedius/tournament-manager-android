@@ -83,9 +83,14 @@
     <string name="legend_TPAVG" tools:ignore="MissingTranslation">Avg TP: Average team points per match</string>
     <string name="legend_note" tools:ignore="MissingTranslation">Get more statistics by change orientation to landscape</string>
 
+    <string name="point_configurations" tools:ignore="Missingtranslation">Point configurations</string>
     <string name="point_configuration_settings" tools:ignore="MissingTranslation">Point configuration settings</string>
     <string name="pcd_input_label" tools:ignore="MissingTranslation">Set number of competing sides:</string>
     <string name="prebaked_label_pc" tools:ignore="MissingTranslation">Number of competing sides:</string>
     <string name="cant_delete_pc" tools:ignore="MissingTranslation">Can\'t delete this.</string>
     <string name="pc_format_violated" tools:ignore="MissingTranslation">Number of competing sides must be a unique decimal bigger than 1!</string>
+    <string name="pc_already_exists" tools:ignore="MissingTranslation">Such point configuration already exists!</string>
+    <string name="pc_place_label_1" tools:ignore="MissingTranslation">Points for</string>
+    <string name="pc_place_label_2" tools:ignore="MissingTranslation">. place:</string>
+    <string name="spca_title_fragment" tools:ignore="MissingTranslation">Sides number</string>
 </resources>

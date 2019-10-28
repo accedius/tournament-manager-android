@@ -27,4 +27,5 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String cOVERTIME = "overtime";
 
     public static final String cSIDES_NUMBER = "sides_number";
+    public static final String cPLACE_POINTS = "place_points";
 }

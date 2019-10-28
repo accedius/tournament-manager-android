@@ -58,33 +58,4 @@ public class TournamentConfigurationActivity extends AbstractToolbarActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.container, ConfigurePointsFragment.newInstance(tourID)).commit();
         }
     }
-
-    /**
-     * Method to set a menu UI
-     * @param menu menu to inflate a UI to
-     * @return true if menu is inflated, false otherwise
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_cancel, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_cancel) {
-            /*PointConfiguration pointConfig = ((ConfigurePointsFragment)(getSupportFragmentManager().findFragmentById(R.id.container))).getPointConfig();
-            if (pointConfig == null) {
-                Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.not_all_fields_error), Snackbar.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-            }
-
-            Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_SET_CONFIG, this);
-            intent.putExtra(ExtraConstants.EXTRA_CONFIGURATION, pointConfig);
-            startService(intent);
-            finish();*/
-        }
-        finish();
-        return super.onOptionsItemSelected(item);
-    }
 }

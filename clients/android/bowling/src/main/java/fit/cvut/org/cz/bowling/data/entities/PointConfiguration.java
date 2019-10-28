@@ -3,9 +3,16 @@ package fit.cvut.org.cz.bowling.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +33,10 @@ public class PointConfiguration implements Parcelable, IEntity {
     @DatabaseField(columnName = DBConstants.cSIDES_NUMBER)
     public long sidesNumber;
 
-    public List<Float> configurations = new ArrayList<>();
+    @DatabaseField(columnName = DBConstants.cPLACE_POINTS)
+    public String placePoints;
+
+    public List<Float> configurationPlacePoints = new ArrayList<>();
 
     public PointConfiguration() {}
 
@@ -34,9 +44,8 @@ public class PointConfiguration implements Parcelable, IEntity {
         id = in.readLong();
         tournamentId = in.readLong();
         sidesNumber = in.readLong();
-        for (int i = 0; i<sidesNumber; i++) {
-            configurations.add(in.readFloat());
-        }
+        placePoints = in.readString();
+        in.readList(configurationPlacePoints, Float.class.getClassLoader());
     }
 
     public static final Creator<PointConfiguration> CREATOR = new Creator<PointConfiguration>() {
@@ -59,22 +68,21 @@ public class PointConfiguration implements Parcelable, IEntity {
         dest.writeLong(id);
         dest.writeLong(tournamentId);
         dest.writeLong(sidesNumber);
-        for (int i = 0; i<sidesNumber; i++) {
-            dest.writeFloat((float) configurations.get(i));
-        }
+        dest.writeString(placePoints);
+        dest.writeList(configurationPlacePoints);
     }
 
     public PointConfiguration(long id, long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
         this.id = id;
         this.tournamentId = tournamentId;
         this.sidesNumber = sidesNumber;
-        this.configurations.addAll(pointConfiguration.subList(0, (int) sidesNumber));
+        setConfigurationPlacePoints(pointConfiguration);
     }
 
     public PointConfiguration(long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
         this.tournamentId = tournamentId;
         this.sidesNumber = sidesNumber;
-        this.configurations.addAll(pointConfiguration.subList(0, (int) sidesNumber));
+        setConfigurationPlacePoints(pointConfiguration);
     }
 
     public long getId() {
@@ -99,6 +107,25 @@ public class PointConfiguration implements Parcelable, IEntity {
 
     public void setTournamentId(long tournamentId) {
         this.tournamentId = tournamentId;
+    }
+
+    public void updateConfigurationPlacePoints() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Float>>() {}.getType();
+        configurationPlacePoints = gson.fromJson(placePoints, type);
+    }
+
+    public List<Float> getConfigurationPlacePoints() {
+        if(configurationPlacePoints.isEmpty()) {
+            updateConfigurationPlacePoints();
+        }
+        return configurationPlacePoints;
+    }
+
+    public void setConfigurationPlacePoints(List<Float> placePoints) {
+        this.configurationPlacePoints = placePoints;
+        Gson gson = new Gson();
+        this.placePoints = gson.toJson(placePoints);
     }
 
     public static PointConfiguration defaultConfig() {

@@ -58,8 +58,13 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
                 tournamentPlayerDAO.deleteById(player.getId());
             }
 
+            //delete point configurations
             EntityDAO<PointConfiguration, Long> pointConfigurationDAO = managerFactory.getDaoFactory().getMyDao(PointConfiguration.class);
-            pointConfigurationDAO.deleteById(id);
+            List<PointConfiguration> pointConfigurations = pointConfigurationDAO.getListItemById(DBConstants.cTOURNAMENT_ID, id);
+            for (PointConfiguration pointConfiguration : pointConfigurations) {
+                pointConfigurationDAO.deleteById(pointConfiguration.getId());
+            }
+
             return true;
         } catch (RuntimeException e) {
             return false;

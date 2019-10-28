@@ -26,6 +26,9 @@
             android:label="@string/tournament"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.TournamentConfigurationActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/point_configurations"/>
+        <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowPointConfigurationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/point_configuration"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity"
             android:theme="@style/AppTheme.NoActionBar"

@@ -18,17 +18,14 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
-import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
-import fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity;
-import fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity;
+import fit.cvut.org.cz.bowling.presentation.activities.ShowPointConfigurationActivity;
 import fit.cvut.org.cz.bowling.presentation.adapters.PointConfigurationAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.BowlingInsertPointConfigurationDialog;
 import fit.cvut.org.cz.bowling.presentation.dialogs.InsertPointConfigurationDialog;
+import fit.cvut.org.cz.bowling.presentation.dialogs.PointConfigurationsDialog;
 import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
-import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 /**
@@ -51,14 +48,14 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
     protected AbstractListAdapter getAdapter() {
         return new PointConfigurationAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long pointConfigurationId, int position, long sidesNumber) {
+            protected void setOnClickListeners(View v, final long pointConfigurationId, final int position, final long sidesNumber) {
                 super.setOnClickListeners(v, pointConfigurationId, position, sidesNumber);
 
                 v.setOnClickListener( new View.OnClickListener(){
                                           @Override
                                           public void onClick(View v) {
-                                              /*Intent i = .newStartIntent(getContext(), pointConfigurationId);
-                                              startActivity(i);*/
+                                              Intent i = ShowPointConfigurationActivity.newStartIntent(getContext(), pointConfigurationId);
+                                              startActivity(i);
                                           }
                                       }
                 );
@@ -66,8 +63,9 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                                              @Override
                                              public boolean onLongClick(View v) {
-                                                 /*TeamsDialog dialog = TeamsDialog.newInstance(teamId, position, name);
-                                                 dialog.show(getFragmentManager(), "tag3");*/
+                                                 String title = getResources().getString(R.string.prebaked_label_pc) + " " + sidesNumber;
+                                                 PointConfigurationsDialog dialog = PointConfigurationsDialog.newInstance(pointConfigurationId, position, title);
+                                                 dialog.show(getFragmentManager(), "tag3");
                                                  return true;
                                              }
                                          }
@@ -81,20 +79,6 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
         return ExtraConstants.EXTRA_CONFIGURATIONS;
     }
 
-    /*
-     * Validates whether all input texts have numbers
-     * @return true or false
-
-    private boolean validate() {
-        if (  ) {
-            return false;
-        }
-
-        return true;
-    }*/
-
-
-
     @Override
     public void askForData() {
         Intent intent = PointConfigurationService.newStartIntent(PointConfigurationService.ACTION_GET_CONFIGS_BY_TOURNAMENT, getContext());
@@ -107,14 +91,6 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
     protected boolean isDataSourceWorking() {
         return PointConfigurationService.isWorking(PointConfigurationService.ACTION_GET_CONFIGS_BY_TOURNAMENT);
     }
-
-    /*@Override
-    protected void bindDataOnView(Intent intent) {
-        PointConfiguration pointConfiguration = intent.getParcelableExtra(ExtraConstants.EXTRA_CONFIGURATION);
-        if (pointConfiguration != null) {
-
-        }
-    }*/
 
     @Override
     protected void registerReceivers() {
@@ -168,26 +144,5 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
             }
         }
     }
-
-    /*
-    @Override
-    protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(R.layout.fragment_config_points, container, false);
-
-
-
-        return v;
-    }
-
-    public PointConfiguration getPointConfig() {
-        if (!validate())
-            return null;
-        try {
-            return new PointConfiguration(
-                    getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID), );
-        } catch(NumberFormatException ex) {
-            return null;
-        }
-    }*/
 }
 
