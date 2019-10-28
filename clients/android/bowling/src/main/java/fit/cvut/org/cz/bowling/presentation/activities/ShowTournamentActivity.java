@@ -121,7 +121,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                     new Fragment[] {
                             TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
                             StandingsStatsTitleFragment.newInstance(tournamentId),
-                            MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
+                            FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
                             AggregStatsTitleFragment.newInstance(tournamentId, false)
                     },
                     new String[] {
@@ -136,7 +136,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                     new Fragment[] {
                             TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
                             StandingsStatsTitleFragment.newInstance(tournamentId),
-                            MatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
+                            FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
                             BowlingTeamsListFragment.newInstance(tournamentId, competitionId),
                             AggregStatsTitleFragment.newInstance(tournamentId, false)
                     },

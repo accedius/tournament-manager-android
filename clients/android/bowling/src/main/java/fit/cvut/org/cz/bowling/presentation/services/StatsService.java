@@ -141,9 +141,14 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 } else {
                     final IManager<Player> playerManager = ManagerFactory.getInstance(this).getEntityManager(Player.class);
                     Player player = playerManager.getById(homeId);
-                    homeName = player.getName();
-                    player = playerManager.getById(awayId);
-                    awayName = player.getName();
+
+                    if(player != null) {
+                        homeName = player.getName();
+                        player = playerManager.getById(awayId);
+                        awayName = player.getName();
+                    } else {
+                        homeName = awayName = "";
+                    }
                 }
 
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
