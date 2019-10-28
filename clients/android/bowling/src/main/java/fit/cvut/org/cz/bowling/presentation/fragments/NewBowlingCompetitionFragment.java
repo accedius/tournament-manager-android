@@ -44,7 +44,7 @@ public class NewBowlingCompetitionFragment extends NewCompetitionFragment {
 
     @Override
     protected boolean isTypeChoosable() {
-        return false;
+        return true;
     }
 
     @Override

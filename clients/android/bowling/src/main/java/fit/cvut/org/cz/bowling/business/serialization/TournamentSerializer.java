@@ -71,8 +71,8 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         HashMap<String, Object> hm = super.serializeSyncData(entity);
 
         /* Serialize Point Configuration */
-        PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class).getById(entity.getId());
-        hm.put(Constants.POINT_CONFIGURATION, pointConfiguration);
+        /*PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class).getById(entity.getId());
+        hm.put(Constants.POINT_CONFIGURATION, pointConfiguration);*/
         return hm;
     }
 
@@ -88,10 +88,10 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     @Override
     public void deserializeSyncData(HashMap<String, Object> syncData, Tournament entity) {
         super.deserializeSyncData(syncData, entity);
-        String pointConfigurationString = String.valueOf(syncData.get(Constants.POINT_CONFIGURATION));
+        /*String pointConfigurationString = String.valueOf(syncData.get(Constants.POINT_CONFIGURATION));
         JsonReader pointConfigurationJsonReader = new JsonReader(new StringReader(pointConfigurationString.trim()));
         pointConfigurationJsonReader.setLenient(true);
         PointConfiguration pointConfiguration = new Gson().fromJson(pointConfigurationJsonReader, new TypeToken<PointConfiguration>(){}.getType());
-        entity.setPointConfiguration(pointConfiguration);
+        entity.setPointConfiguration(pointConfiguration);*/
     }
 }

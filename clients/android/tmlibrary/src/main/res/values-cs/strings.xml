@@ -42,8 +42,8 @@
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
 
-    <string name="competition_delete">Opravdu chcete odstranit danou soutěž včetně všech turnajů?</string>
-    <string name="tournament_delete">Opravdu chcete odstranit daný turnaj včetně všech týmů a zápasů?</string>
+    <string name="competition_delete">Opravdu chcete odstranit danou soutěž včetně jejího obsahu?</string>
+    <string name="tournament_delete">Opravdu chcete odstranit daný turnaj včetně jeho obsahu?</string>
     <string name="competition_created">Soutěž vytvořena.</string>
     <string name="tournament_created">Turnaj vytvořen.</string>
     <string name="player_created">Hráč vytvořen.</string>

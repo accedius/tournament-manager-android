@@ -7,12 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import fit.cvut.org.cz.tmlibrary.R;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 
@@ -20,7 +24,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
  * Fragment for displaying Competition overview.
  */
 public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
-    private TextView start, end, tourSum, playerSum, note;
+    private TextView type, start, end, tourSum, playerSum, note;
     protected long competitionId;
     protected Competition competition = null;
 
@@ -68,6 +72,7 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_competition_overview, container, false);
 
+        type = (TextView) v.findViewById(R.id.comp_type);
         start = (TextView) v.findViewById(R.id.comp_start);
         end = (TextView) v.findViewById(R.id.comp_end);
         tourSum = (TextView) v.findViewById(R.id.comp_tour_sum);
@@ -90,6 +95,15 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         }
 
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.competition)+" – "+competition.getName());
+
+        CompetitionType competitionType;
+        try {
+            int typeId = competition.getTypeId();
+            competitionType = CompetitionTypes.getMyCompetitionType(typeId);
+        } catch (Exception e) {
+            competitionType = CompetitionTypes.teams();
+        }
+        type.setText(competitionType.value);
 
         DateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 

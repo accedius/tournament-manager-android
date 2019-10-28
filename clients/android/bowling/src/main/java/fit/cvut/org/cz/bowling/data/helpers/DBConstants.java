@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 /**
  * Resource strings for database communication
  */
-public class DBConstants  {
+public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants {
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
 
@@ -26,4 +26,7 @@ public class DBConstants  {
     public static final String cSCORE = "score";
     public static final String cSHOOTOUTS = "shootouts";
     public static final String cOVERTIME = "overtime";
+
+    public static final String cSIDES_NUMBER = "sides_number";
+    public static final String cPLACE_POINTS = "place_points";
 }

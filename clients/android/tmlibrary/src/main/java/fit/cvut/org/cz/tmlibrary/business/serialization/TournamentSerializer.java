@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
@@ -46,7 +47,9 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
         entity.setName(String.valueOf(syncData.get(Constants.NAME)));
         entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
-        entity.setType(TournamentTypes.tournamentTypes()[Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE)))]);
+        try {
+            entity.setType(TournamentTypes.tournamentTypes()[Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE)))]);
+        } catch (NumberFormatException e) {entity.setType(null);}
         try {
             entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get(Constants.START))));
         } catch (ParseException e) {} catch(NullPointerException e) {}

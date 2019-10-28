@@ -12,6 +12,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/comp_type_label"
+                android:text="@string/type"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comp_type"
+                style="@style/TextAppearance.AppCompat.Display1"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/startDate"/>
             <TextView
                 android:layout_width="match_parent"

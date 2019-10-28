@@ -41,11 +41,28 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
         switch (result) {
             case WIN:
-                return pointConfig.ntW;
+                if (match.isShootouts())
+                    //return pointConfig.soW;
+                    return 1;
+                if (match.isOvertime())
+                    //return pointConfig.otW;
+                    return 1;
+                //return pointConfig.ntW;
             case DRAW:
-                return pointConfig.ntD;
+                if (match.isOvertime())
+                    return 1;
+                    //return pointConfig.otD;
+                return 1;
+                //return pointConfig.ntD;
             case LOSS:
-                return pointConfig.ntL;
+                if (match.isShootouts())
+                    return 1;
+                    //return pointConfig.soL;
+                if (match.isOvertime())
+                    return 1;
+                    //return pointConfig.otL;
+                return 1;
+                //eturn pointConfig.ntL;
             default:
                 return 0;
         }
@@ -210,7 +227,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
         List<Team> teams = teamManager.getByTournamentId(tournamentId);
         ArrayList<Standing> standings = new ArrayList<>();
-        PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
+        //PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
+        PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();
 
         for (Team t : teams) {
             standings.add(new Standing(t.getName(), t.getId()));

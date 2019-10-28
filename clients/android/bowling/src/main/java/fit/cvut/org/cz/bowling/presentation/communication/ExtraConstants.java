@@ -9,5 +9,7 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String EXTRA_BOOLEAN_HOME = "extra_boolean_home";
     public static final String EXTRA_OMIT_IDS = "extra_omit_ids";
 
+    public static final String EXTRA_CONFIGURATIONS = "extra_configurations";
+    public static final String EXTRA_CONFIGURATION_ID = "extra_configuration_id";
     public static final String EXTRA_LANES = "extra_lanes";
 }

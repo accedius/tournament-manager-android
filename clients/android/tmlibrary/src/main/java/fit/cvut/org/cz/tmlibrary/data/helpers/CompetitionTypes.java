@@ -9,6 +9,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
  * Class for types of Competition.
  */
 public class CompetitionTypes {
+    public final static int type_teams = 1;
+    public final static int type_individuals = 0;
     /**
      * Get all competition types.
      * @param resources resources for translation
@@ -46,5 +48,21 @@ public class CompetitionTypes {
      */
     public static CompetitionType teams() {
         return new CompetitionType(null, 1, R.string.type_teams);
+    }
+
+    /**
+     * Get Competition's type from typeId
+     * @param typeId typeId of Competition
+     * @return corresponding Competition type
+     */
+    public static CompetitionType getMyCompetitionType(int typeId) {
+        switch (typeId) {
+            case type_teams:
+                return teams();
+            case type_individuals:
+                return individuals();
+            default:
+                return teams();
+        }
     }
 }

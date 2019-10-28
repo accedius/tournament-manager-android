@@ -94,8 +94,8 @@
     <string name="add_players_home">Add players to home team</string>
     <string name="add_players_away">Add players to away team</string>
 
-    <string name="competition_delete">Do you really want to delete the competition including all it\'s tournaments?</string>
-    <string name="tournament_delete">Do you really want to delete the tournament including all it\'s teams and matches?</string>
+    <string name="competition_delete">Do you really want to delete the competition including all it\'s contents?</string>
+    <string name="tournament_delete">Do you really want to delete the tournament including all it\'s contents?</string>
     <string name="competition_created">Competition created.</string>
     <string name="tournament_created">Tournament created.</string>
     <string name="player_created">Player created.</string>

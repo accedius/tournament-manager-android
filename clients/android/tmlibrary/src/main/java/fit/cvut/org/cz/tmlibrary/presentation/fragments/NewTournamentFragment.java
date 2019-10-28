@@ -64,15 +64,15 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    private TextView type_label;
-    private EditText note, name, startDate, endDate;
-    private AppCompatSpinner type;
-    private Calendar dStartDate = null, dEndDate = null;
-    private ArrayAdapter<TournamentType> adapter;
+    protected TextView type_label;
+    protected EditText note, name, startDate, endDate;
+    protected AppCompatSpinner type;
+    protected Calendar dStartDate = null, dEndDate = null;
+    protected ArrayAdapter<TournamentType> adapter;
     protected long tournamentId = -1;
     protected long competitionId = -1;
 
-    private Tournament tournament = null;
+    protected Tournament tournament = null;
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
@@ -180,7 +180,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
         bindTournamentOnView(tournament);
     }
 
-    private void bindTournamentOnView(Tournament t) {
+    protected void bindTournamentOnView(Tournament t) {
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
         Calendar argStart = Calendar.getInstance();
         Calendar argEnd = Calendar.getInstance();
@@ -206,7 +206,7 @@ public abstract class NewTournamentFragment extends AbstractDataFragment {
     }
 
     // Set Datepicker dates to Tournament start and end
-    private void setDatepicker(final Calendar start, final Calendar end) {
+    protected void setDatepicker(final Calendar start, final Calendar end) {
         startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

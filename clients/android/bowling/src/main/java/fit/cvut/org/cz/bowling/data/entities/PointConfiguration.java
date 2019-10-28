@@ -3,55 +3,49 @@ package fit.cvut.org.cz.bowling.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
- * PointConfiguration entity (describes how many points costs different standings in a tournament: how much for win/lose/draw etc.) and its representation in database
+ * PointConfiguration entity (describes how many points costs different standings in a match: how much for 1st, 2nd and 3rd place and on etc.) and its representation in database
  */
 @DatabaseTable(tableName = DBConstants.tCONFIGURATIONS)
-public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.PointConfiguration implements Parcelable, IEntity {
-    @DatabaseField(columnName = DBConstants.cNTW)
-    public int ntW;
+public class PointConfiguration implements Parcelable, IEntity {
+    @DatabaseField(generatedId = true, columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cID)
+    public long id;
 
-    @DatabaseField(columnName = DBConstants.cNTD)
-    public int ntD;
+    @DatabaseField(columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cTOURNAMENT_ID)
+    public long tournamentId;
 
-    @DatabaseField(columnName = DBConstants.cNTL)
-    public int ntL;
+    @DatabaseField(columnName = DBConstants.cSIDES_NUMBER)
+    public long sidesNumber;
 
-    @DatabaseField(columnName = DBConstants.cOTW)
-    public int otW;
+    @DatabaseField(columnName = DBConstants.cPLACE_POINTS)
+    public String placePoints;
 
-    @DatabaseField(columnName = DBConstants.cOTD)
-    public int otD;
-
-    @DatabaseField(columnName = DBConstants.cOTL)
-    public int otL;
-
-    @DatabaseField(columnName = DBConstants.cSOW)
-    public int soW;
-
-    @DatabaseField(columnName = DBConstants.cSOL)
-    public int soL;
+    public List<Float> configurationPlacePoints = new ArrayList<>();
 
     public PointConfiguration() {}
 
     public PointConfiguration(Parcel in) {
-        super(in);
-        this.ntW = in.readInt();
-        this.ntD = in.readInt();
-        this.ntL = in.readInt();
-
-        this.otW = in.readInt();
-        this.otD = in.readInt();
-        this.otL = in.readInt();
-
-        this.soW = in.readInt();
-        this.soL = in.readInt();
+        id = in.readLong();
+        tournamentId = in.readLong();
+        sidesNumber = in.readLong();
+        placePoints = in.readString();
+        in.readList(configurationPlacePoints, Float.class.getClassLoader());
     }
 
     public static final Creator<PointConfiguration> CREATOR = new Creator<PointConfiguration>() {
@@ -66,42 +60,48 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.
         }
     };
 
-    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeInt(ntW);
-        dest.writeInt(ntD);
-        dest.writeInt(ntL);
-
-        dest.writeInt(otW);
-        dest.writeInt(otD);
-        dest.writeInt(otL);
-
-        dest.writeInt(soW);
-        dest.writeInt(soL);
+        dest.writeLong(id);
+        dest.writeLong(tournamentId);
+        dest.writeLong(sidesNumber);
+        dest.writeString(placePoints);
+        dest.writeList(configurationPlacePoints);
     }
 
-    public PointConfiguration(long tournamentId, int nW, int nD, int nL, int oW, int oD, int oL, int sW, int sL) {
+    public PointConfiguration(long id, long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
+        this.id = id;
         this.tournamentId = tournamentId;
-        this.ntW = nW;
-        this.ntD = nD;
-        this.ntL = nL;
-
-        this.otW = oW;
-        this.otD = oD;
-        this.otL = oL;
-
-        this.soW = sW;
-        this.soL = sL;
+        this.sidesNumber = sidesNumber;
+        setConfigurationPlacePoints(pointConfiguration);
     }
 
-    @Override
+    public PointConfiguration(long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
+        this.tournamentId = tournamentId;
+        this.sidesNumber = sidesNumber;
+        setConfigurationPlacePoints(pointConfiguration);
+    }
+
     public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getSidesNumber() {
+        return sidesNumber;
+    }
+
+    public void setSidesNumber(long sidesNumber) {
+        this.sidesNumber = sidesNumber;
+    }
+
+    public long getTournamentId() {
         return tournamentId;
     }
 
@@ -109,7 +109,29 @@ public class PointConfiguration extends fit.cvut.org.cz.tmlibrary.data.entities.
         this.tournamentId = tournamentId;
     }
 
+    public void updateConfigurationPlacePoints() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Float>>() {}.getType();
+        configurationPlacePoints = gson.fromJson(placePoints, type);
+    }
+
+    public List<Float> getConfigurationPlacePoints() {
+        if(configurationPlacePoints.isEmpty()) {
+            updateConfigurationPlacePoints();
+        }
+        return configurationPlacePoints;
+    }
+
+    public void setConfigurationPlacePoints(List<Float> placePoints) {
+        this.configurationPlacePoints = placePoints;
+        Gson gson = new Gson();
+        this.placePoints = gson.toJson(placePoints);
+    }
+
     public static PointConfiguration defaultConfig() {
-        return new PointConfiguration(-1, 3, 1, 0, 2, 1, 1, 2, 1);
+        List<Float> defaultConfiguration = new ArrayList<>();
+        defaultConfiguration.add(1f);
+        defaultConfiguration.add(0f);
+        return new PointConfiguration(-1, 2, defaultConfiguration);
     }
 }
