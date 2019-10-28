@@ -39,13 +39,13 @@ public class AddMatchDialog extends DialogFragment {
                         startActivity(intent);
                         break;
                     }
-                    case 1: {
+                    /*case 1: {
                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, getContext());
                         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                         getContext().startService(intent);
                         break;
-                    }
-                    case 2: {
+                    }*/
+                    case 1: {
                         final Activity a = getActivity();
                         final  Context c = getContext();
                         Log.i("info", "Generate");
@@ -135,7 +135,7 @@ public class AddMatchDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_single_match), getActivity().getString(R.string.add_round), getActivity().getString(R.string.generate_matches) };
+        String[] items = new String[]{ getActivity().getString(fit.cvut.org.cz.tmlibrary.R.string.add_single_match), /*getActivity().getString(R.string.add_round),*/ getActivity().getString(R.string.generate_matches) };
 
         builder.setItems(items, supplyListener());
 
