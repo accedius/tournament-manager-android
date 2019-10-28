@@ -22,6 +22,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
@@ -68,7 +69,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = BowlingMatchStatsFragment.newInstance(matchId);
+        Fragment f2 = BowlingFFAMatchStatsFragment.newInstance(matchId);
         fragments = new Fragment[]{ f1, f2 };
 
         super.onCreate(savedInstanceState);
@@ -102,17 +103,13 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     private void sendToSaveMatch() {
         Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-        if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
-            Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
-            return;
-        }
-        List<PlayerStat> homeStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
-        List<PlayerStat> awayStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
+
+        //Grab our new/current list of player and pass it service to update the DB
+        List<PlayerStat> stats = ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
 
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
         intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
-        intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
-        intent.putExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
+        intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(stats));
 
         startService(intent);
 
@@ -122,24 +119,10 @@ public class ShowMatchActivity extends AbstractTabActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {
-            Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-            if (score.isShootouts() && (score.getHomeScore() == score.getAwayScore())) {
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.shootouts_error), Snackbar.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-            }
-            List<PlayerStat> homeStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
-            List<PlayerStat> awayStats = ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getAwayList();
-
-            Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
-            intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
-            intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
-            intent.putExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
-
-            startService(intent);
-
-            finish();
+            //When match is closed and saved
+            sendToSaveMatch();
         } else if (item.getItemId() == R.id.action_edit_stats) {
-            ((BowlingMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
+            ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
         } else if (item.getItemId() == R.id.action_edit) {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) fragments[0];
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());

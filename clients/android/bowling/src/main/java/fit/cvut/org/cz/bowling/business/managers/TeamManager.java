@@ -36,7 +36,7 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
             } else if (generatingType == TournamentService.GENERATE_BY_WINS) {
                 statsHashMap.put(s.getPlayerId(), s.getAvgWins());
             } else if (generatingType == TournamentService.GENERATE_BY_GOALS) {
-                statsHashMap.put(s.getPlayerId(), s.getAvgGoals());
+                statsHashMap.put(s.getPlayerId(), s.getAvgStrikes());
             } else if (generatingType == TournamentService.GENERATE_RANDOMLY) {
                 statsHashMap.put(s.getPlayerId(), r.nextDouble());
             }

@@ -41,20 +41,10 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
         switch (result) {
             case WIN:
-                if (match.isShootouts())
-                    return pointConfig.soW;
-                if (match.isOvertime())
-                    return pointConfig.otW;
                 return pointConfig.ntW;
             case DRAW:
-                if (match.isOvertime())
-                    return pointConfig.otD;
                 return pointConfig.ntD;
             case LOSS:
-                if (match.isShootouts())
-                    return pointConfig.soL;
-                if (match.isOvertime())
-                    return pointConfig.otL;
                 return pointConfig.ntL;
             default:
                 return 0;
@@ -64,28 +54,12 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     private void addMatchResultToStanding(int result, Standing standing, Match match) {
         switch (result) {
             case WIN:
-                if (match.isShootouts()) {
-                    standing.addWinSo();
-                    break;
-                }
-                if (match.isOvertime()) {
-                    standing.addWinOt();
-                    break;
-                }
                 standing.addWin();
                 break;
             case DRAW:
                 standing.addDraw();
                 break;
             case LOSS:
-                if (match.isShootouts()) {
-                    standing.addLossSo();
-                    break;
-                }
-                if (match.isOvertime()) {
-                    standing.addLossOt();
-                    break;
-                }
                 standing.addLoss();
                 break;
         }
@@ -125,17 +99,16 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
-        long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
+        long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
         for (PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
             Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
             if (!match.isPlayed())
                 continue;
 
-            goals += stat.getGoals();
-            assists += stat.getAssists();
-            plusMinusPoints += stat.getPlusMinus();
-            saves += stat.getSaves();
+            strikes += stat.getStrikes();
+            spares += stat.getSpares();
+            points += stat.getPoints();
             matches++;
 
             // Count team points, win, and other...
@@ -155,8 +128,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                     break;
             }
         }
-        //long matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, plusMinusPoints = 0, teamPoints = 0, saves = 0;
-        return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, goals, assists, plusMinusPoints, teamPoints, saves);
+        //long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
+        return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, strikes, spares, points, teamPoints);
     }
 
     @Override
@@ -306,8 +279,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             public int compare(AggregatedStatistics ls, AggregatedStatistics rs) {
                 if (rs.getPoints() != ls.getPoints())
                     return (int)(rs.getPoints() - ls.getPoints());
-                if (rs.getGoals() != ls.getGoals()) {
-                    return (int)(rs.getGoals()- ls.getGoals());
+                if (rs.getStrikes() != ls.getStrikes()) {
+                    return (int)(rs.getStrikes()- ls.getStrikes());
                 }
                 return (int)(ls.getMatches()-rs.getMatches());
             }

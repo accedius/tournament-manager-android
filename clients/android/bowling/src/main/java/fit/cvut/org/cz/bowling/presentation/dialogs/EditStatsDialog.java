@@ -18,7 +18,7 @@ import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
  * Dialog, that occurs, when you hold player's field in match players fragment to edit his stats
  */
 public class EditStatsDialog extends DialogFragment {
-    private TextView goals, assists, plusMinusPoints, saves;
+    private TextView strikes, spares, points;
     private PlayerStat stat;
 
     public static EditStatsDialog newInstance(PlayerStat statistic, int pos, boolean isHome) {
@@ -46,19 +46,16 @@ public class EditStatsDialog extends DialogFragment {
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (goals.getText().toString().isEmpty())
-                    goals.setText(String.valueOf(0));
-                if (assists.getText().toString().isEmpty())
-                    assists.setText(String.valueOf(0));
-                if (plusMinusPoints.getText().toString().isEmpty())
-                    plusMinusPoints.setText(String.valueOf(0));
-                if (saves.getText().toString().isEmpty())
-                    saves.setText(String.valueOf(0));
+                if (strikes.getText().toString().isEmpty())
+                    strikes.setText(String.valueOf(0));
+                if (spares.getText().toString().isEmpty())
+                    spares.setText(String.valueOf(0));
+                if (points.getText().toString().isEmpty())
+                    points.setText(String.valueOf(0));
 
-                stat.setGoals(Integer.parseInt(goals.getText().toString()));
-                stat.setAssists(Integer.parseInt(assists.getText().toString()));
-                stat.setPlusMinus(Integer.parseInt(plusMinusPoints.getText().toString()));
-                stat.setSaves(Integer.parseInt(saves.getText().toString()));
+                stat.setStrikes(Integer.parseInt(strikes.getText().toString()));
+                stat.setSpares(Integer.parseInt(spares.getText().toString()));
+                stat.setPoints(Integer.parseInt(points.getText().toString()));
 
                 saveStats();
                 dismiss();
@@ -73,15 +70,13 @@ public class EditStatsDialog extends DialogFragment {
 
         View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stats, null);
 
-        goals = (TextView) v.findViewById(R.id.tv_goals);
-        assists = (TextView) v.findViewById(R.id.tv_assists);
-        plusMinusPoints = (TextView) v.findViewById(R.id.tv_plus_minus);
-        saves = (TextView) v.findViewById(R.id.tv_saves);
+        strikes = (TextView) v.findViewById(R.id.tv_strikes);
+        spares = (TextView) v.findViewById(R.id.tv_spares);
+        points = (TextView) v.findViewById(R.id.tv_points);
 
-        goals.setText(String.valueOf(stat.getGoals()));
-        assists.setText(String.valueOf(stat.getAssists()));
-        plusMinusPoints.setText(String.valueOf(stat.getPlusMinus()));
-        saves.setText(String.valueOf(stat.getSaves()));
+        strikes.setText(String.valueOf(stat.getStrikes()));
+        spares.setText(String.valueOf(stat.getSpares()));
+        points.setText(String.valueOf(stat.getPoints()));
 
         builder.setTitle(stat.getName());
         builder.setView(v);

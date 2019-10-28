@@ -93,13 +93,6 @@ public class CreateMatchActivity extends AbstractToolbarActivity {
                 return super.onOptionsItemSelected(item);
             }
             Match BowlingMatch = new Match(match);
-            if (BowlingMatch.getId() == -1) {
-                List<Participant> participants = BowlingMatch.getParticipants();
-                if (participants.get(0).getParticipantId() == participants.get(1).getParticipantId()) {
-                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.match_same_participants_error), Snackbar.LENGTH_LONG).show();
-                    return super.onOptionsItemSelected(item);
-                }
-            }
 
             Intent intent;
             if (BowlingMatch.getId() == -1) {

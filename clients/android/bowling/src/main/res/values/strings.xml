@@ -27,6 +27,9 @@
     <string name="sp" tools:ignore="MissingTranslation">Sp</string>
     <string name="legend_SPA" tools:ignore="MissingTranslation">Sp: Spares</string>
 
+    <string name="pt" tools:ignore="MissingTranslation">Pt</string>
+    <string name="legend_PT" tools:ignore="MissingTranslation">Pt: Points</string>
+
     <string name="p" tools:ignore="MissingTranslation">P</string>
     <string name="pmp" tools:ignore="MissingTranslation">+/-</string>
     <string name="tp" tools:ignore="MissingTranslation">TP</string>

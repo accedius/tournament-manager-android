@@ -72,10 +72,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Participant> participants = participantManager.getByMatchId(id);
         for (Participant participant : participants) {
             match.addParticipant(participant);
-            if (ParticipantType.home.toString().equals(participant.getRole()))
-                match.setHomeName(participant.getName());
-            else if (ParticipantType.away.toString().equals(participant.getRole()))
-                match.setAwayName(participant.getName());
         }
         return match;
     }
@@ -145,18 +141,15 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
-                    stat.setGoals(0);
-                    stat.setAssists(0);
-                    stat.setPlusMinus(0);
-                    stat.setSaves(0);
+                    stat.setStrikes(0);
+                    stat.setSpares(0);
+                    stat.setPoints(0);
                     playerStatDAO.updateItem(stat);
                 }
             }
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
 
         match.setPlayed(false);
-        match.setOvertime(false);
-        match.setShootouts(false);
         update(match);
     }
 
