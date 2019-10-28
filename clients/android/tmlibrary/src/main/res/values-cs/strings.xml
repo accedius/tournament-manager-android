@@ -64,7 +64,6 @@
     <string name="add_match">Přidat zápas</string>
     <string name="add_single_match">Přidat jeden zápas</string>
     <string name="add_round">Přidat kolo</string>
-    <string name="generate_matches">Vygenerovat zápasy</string>
     <string name="competition_settings">Nastavení soutěže</string>
     <string name="generate_randomly">Generovat náhodně</string>
     <string name="generate_by_team_points">Generovat podle týmových bodů</string>
