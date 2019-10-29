@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -26,6 +27,7 @@ public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, E
     private final String regexp2 = "^.*[0-9].*$";
     private Pattern pattern1 = Pattern.compile(regexp1);
     private Pattern pattern2 = Pattern.compile(regexp2);
+    private final Character separatorSymbol = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
 
     @NonNull
     @Override
@@ -43,7 +45,13 @@ public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, E
         holder.label.setText(label);
         int adapterPosition = holder.getAdapterPosition();
         holder.listener.updatePosition(adapterPosition);
-        holder.points.setText(String.format(Locale.getDefault(), "%f", data.get(adapterPosition)));
+        String pointsNormalized = String.format(Locale.getDefault(), "%f", data.get(adapterPosition));
+        if (separatorSymbol != '.') {
+            pointsNormalized = pointsNormalized.contains(separatorSymbol.toString()) ? pointsNormalized.replaceAll("0+$", "").replaceAll(separatorSymbol.toString() + "$", "") : pointsNormalized;
+        } else {
+            pointsNormalized = pointsNormalized.contains(separatorSymbol.toString()) ? pointsNormalized.replaceAll("0+$", "").replaceAll("\\.$", "") : pointsNormalized;
+        }
+        holder.points.setText(pointsNormalized);
     }
 
     public class PointConfigurationEditViewHolder extends RecyclerView.ViewHolder {
@@ -75,23 +83,28 @@ public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, E
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             String text = charSequence.toString();
+            if(separatorSymbol != '.'){
+                text = text.replace('.', separatorSymbol);
+            } else {
+                text = text + "00000";
+            }
             Matcher matcher1 = pattern1.matcher(text);
             Matcher matcher2 = pattern2.matcher(text);
+            Float points;
             if(matcher1.matches() && matcher2.matches()) {
-                Float points;
                 try {
-                    points = NumberFormat.getNumberInstance().parse(text).floatValue();
+                    points = NumberFormat.getNumberInstance(Locale.getDefault()).parse(text).floatValue();
                 } catch (ParseException pe) {
                     try {
                         points = Float.parseFloat(text);
                     } catch (NumberFormatException nfe) {
-                        return;
+                        points = 0f;
                     }
                 }
-                data.set(position, points);
             } else {
-                return;
+                points = 0f;
             }
+            data.set(position, points);
         }
 
         @Override

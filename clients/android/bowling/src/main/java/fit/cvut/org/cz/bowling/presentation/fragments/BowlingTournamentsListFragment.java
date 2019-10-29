@@ -36,7 +36,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 import static fit.cvut.org.cz.tmlibrary.business.serialization.Constants.END;
 
 /**
- * Fragment is used in
+ * Fragment is used in ShowCompetitionActivity
  */
 public class BowlingTournamentsListFragment extends AbstractListFragment<Tournament> {
     private long competitionId;
