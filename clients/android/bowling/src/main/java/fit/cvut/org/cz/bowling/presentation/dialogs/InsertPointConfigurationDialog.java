@@ -34,10 +34,11 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
     private ProgressBar progressBar;
     private TextView sidesNumber;
     private PointConfiguration configuration;
+    private boolean forCreation;
 
     protected long pointConfigurationId, tournamentId;
 
-    public static InsertPointConfigurationDialog newInstance(long id, boolean forTournament, Class<? extends InsertPointConfigurationDialog> clazz) {
+    public static InsertPointConfigurationDialog newInstance(long id, boolean forCreation, Class<? extends InsertPointConfigurationDialog> clazz) {
         InsertPointConfigurationDialog fragment = null;
         try {
             fragment = clazz.getConstructor().newInstance();
@@ -51,7 +52,8 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
             e.printStackTrace();
         }
         Bundle args = new Bundle();
-        if (forTournament)
+        args.putBoolean(ExtraConstants.EXTRA_SELECTED, forCreation);
+        if (forCreation)
             args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
         else {
             IPointConfigurationManager iPointConfigurationManager = ManagerFactory.getInstance().getEntityManager(PointConfiguration.class);
@@ -93,6 +95,7 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
         builder.setView(v);
         sidesNumber = (TextView) v.findViewById(R.id.pcv_sides_number);
         progressBar = (ProgressBar) v.findViewById(R.id.progress_spinner);
+        forCreation = getArguments().getBoolean(ExtraConstants.EXTRA_SELECTED, true);
         pointConfigurationId = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
         tournamentId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
@@ -140,13 +143,13 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
                         return;
                     }
 
-                    if (tournamentId != -1) {
+                    if (forCreation) {
                         List<Float> pc = new ArrayList<Float>();
                         for (int i = 0; i<sn; i++) {
                             pc.add(i, 0f);
                         }
                         insertPointConfiguration(new PointConfiguration(tournamentId, sn, pc));
-                    } else if (pointConfigurationId != -1) {
+                    } else {
                         int csn = (int) configuration.sidesNumber;
                         List<Float> configurationPlacePoints = configuration.getConfigurationPlacePoints();
 
@@ -155,7 +158,7 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
                             configuration.setSidesNumber(sn);
                             configuration.setConfigurationPlacePoints(configurationPlacePoints);
                             editPointConfiguration(configuration);
-                        } else if(sn > csn) {
+                        } else if (sn > csn) {
                             for (int i = csn; i < sn; i++) {
                                 configurationPlacePoints.add(0f);
                             }

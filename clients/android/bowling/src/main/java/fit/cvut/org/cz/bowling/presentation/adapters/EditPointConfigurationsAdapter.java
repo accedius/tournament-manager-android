@@ -21,11 +21,11 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, EditPointConfigurationsAdapter.PointConfigurationEditViewHolder> {
-    String label_1, label_2;
-    final String regexp1 = "^[+-]?[0-9]*[,.]?[0-9]*$";
-    final String regexp2 = "^.*[0-9].*$";
-    Pattern pattern1 = Pattern.compile(regexp1);
-    Pattern pattern2 = Pattern.compile(regexp2);
+    private String label_1, label_2;
+    private final String regexp1 = "^[+-]?[0-9]*[,.]?[0-9]*$";
+    private final String regexp2 = "^.*[0-9].*$";
+    private Pattern pattern1 = Pattern.compile(regexp1);
+    private Pattern pattern2 = Pattern.compile(regexp2);
 
     @NonNull
     @Override
