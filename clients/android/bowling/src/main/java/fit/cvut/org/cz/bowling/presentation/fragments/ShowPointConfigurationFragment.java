@@ -3,9 +3,11 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import java.text.DecimalFormat;
@@ -63,26 +65,7 @@ public class ShowPointConfigurationFragment extends PointConfigurationDetailFrag
         if(item.getItemId() == R.id.action_cancel) {
             adapter.swapData(oldPC);
         } else {
-            List<Float> resultPC = new ArrayList<>();
-            for(int i = 0; i < pointConfiguration.sidesNumber; ++i) {
-                String text = ((EditText) recyclerView.getLayoutManager().findViewByPosition(i).findViewById(R.id.place_points)).getText().toString();
-                Float points;
-                /*DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-                symbols.setDecimalSeparator('.');
-                DecimalFormat format = new DecimalFormat("0.#");
-                format.setDecimalFormatSymbols(symbols);
-                try {
-                    points = format.parse(text).floatValue();
-                } catch (ParseException pe) {
-                    points = 0f;
-                }*/
-                try {
-                    points = NumberFormat.getNumberInstance().parse(text).floatValue();
-                } catch (ParseException pe) {
-                    points = Float.parseFloat(text);
-                }
-                resultPC.add(points);
-            }
+            List<Float> resultPC = adapter.getData();
             if(!oldPC.equals(resultPC)) {
                 pointConfiguration.setConfigurationPlacePoints(resultPC);
                 updateConfigurations(pointConfiguration);

@@ -13,16 +13,6 @@ import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
 public class PointConfigurationsDialog extends EditDeleteDialog {
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        String[] items = new String[]{ " ", getActivity().getString(R.string.delete) };
-        builder.setItems(items, supplyListener());
-
-        builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
-        return builder.create();
-    }
-
-    @Override
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override

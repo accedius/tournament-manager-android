@@ -76,7 +76,7 @@ public class ShowPointConfigurationActivity extends AbstractToolbarActivity {
         MenuItem item = new MenuItem() {
             @Override
             public int getItemId() {
-                return R.id.home;
+                return android.R.id.home;
             }
 
             @Override

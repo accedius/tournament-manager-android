@@ -58,6 +58,7 @@ public abstract class PointConfigurationDetailFragment extends AbstractDataFragm
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
         return v;
     }
 
