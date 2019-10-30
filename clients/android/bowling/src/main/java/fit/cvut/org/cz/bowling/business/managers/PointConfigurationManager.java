@@ -22,8 +22,12 @@ public class PointConfigurationManager extends BaseManager<PointConfiguration> i
     @Override
     public List<PointConfiguration> getByTournamentId(long tournamentId) {
         try {
-            List<PointConfiguration> configurations = managerFactory.getDaoFactory()
-                    .getMyDao(PointConfiguration.class).queryForEq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            IEntityDAO<PointConfiguration, Long> pointConfigurationDAO = managerFactory.getDaoFactory().getMyDao(PointConfiguration.class);
+            QueryBuilder<PointConfiguration, Long> queryBuilder = pointConfigurationDAO.queryBuilder();
+            queryBuilder.where().eq(DBConstants.cTOURNAMENT_ID, tournamentId);
+            queryBuilder.orderBy(DBConstants.cSIDES_NUMBER, true);
+            PreparedQuery<PointConfiguration> preparedQuery = queryBuilder.prepare();
+            List<PointConfiguration> configurations = pointConfigurationDAO.query(preparedQuery);
             return new ArrayList<>(configurations);
         } catch (SQLException e) {
             return new ArrayList<>();
