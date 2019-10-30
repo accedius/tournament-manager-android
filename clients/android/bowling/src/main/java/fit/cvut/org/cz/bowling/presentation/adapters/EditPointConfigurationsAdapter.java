@@ -52,7 +52,8 @@ public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, E
         if (separatorSymbol != '.') {
             pointsNormalized = pointsNormalized.contains(separatorSymbol.toString()) ? pointsNormalized.replaceAll("0+$", "").replaceAll(separatorSymbol.toString() + "$", "") : pointsNormalized;
         } else {
-            pointsNormalized = pointsNormalized.contains(separatorSymbol.toString()) ? pointsNormalized.replaceAll("0+$", "").replaceAll("\\.$", "") : pointsNormalized;
+            pointsNormalized = pointsNormalized.replaceAll(",", separatorSymbol.toString());
+            pointsNormalized = pointsNormalized.contains(separatorSymbol.toString()) ? pointsNormalized.replaceAll("0+$", "").replaceAll("\\.+$", "") : pointsNormalized;
         }
         holder.points.setText(pointsNormalized);
     }
@@ -88,8 +89,11 @@ public class EditPointConfigurationsAdapter extends AbstractListAdapter<Float, E
             String text = charSequence.toString();
             if(separatorSymbol != '.'){
                 text = text.replace('.', separatorSymbol);
-            } else {
-                text = text + "00000";
+            } else  {
+                text = text.replace(',', separatorSymbol);
+                if (text.contains(separatorSymbol.toString()) ) {
+                    text = text + "00000";
+                }
             }
             Matcher matcher1 = pattern1.matcher(text);
             Matcher matcher2 = pattern2.matcher(text);
