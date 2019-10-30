@@ -10,6 +10,9 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
 
+/**
+ * Dialog, that occurs, when the point configuration in Configure Points Fragment is held (long click). Edits point configuration's number of places/sides + widens/shortens it's place point's list or deletes this point configuration
+ */
 public class PointConfigurationsDialog extends EditDeleteDialog {
 
     @Override

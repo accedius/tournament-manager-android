@@ -8,6 +8,9 @@ import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
 
+/**
+ * Dialog, that occurs, when the + button in Configure Points Fragment is clicked (set and edit point configuration's number of places/sides)
+ */
 public class BowlingInsertPointConfigurationDialog extends InsertPointConfigurationDialog {
     @Override
     protected void askForData() {

@@ -14,6 +14,9 @@ import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
+/**
+ * Bowling point configuration service to handle intent/service/activity work in point configuration's scope
+ */
 public class PointConfigurationService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_ID = "action_get_config_by_id";
     public static final String ACTION_INSERT = "action_insert_config";

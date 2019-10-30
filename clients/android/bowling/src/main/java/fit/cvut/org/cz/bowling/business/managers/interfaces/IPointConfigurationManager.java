@@ -19,5 +19,5 @@ public interface IPointConfigurationManager extends IManager<PointConfiguration>
      * @param sidesNumber number of match's competing sides
      * @return found point configuration
      */
-    public PointConfiguration getBySidesNumber (long tournamentId, long sidesNumber);
+    PointConfiguration getBySidesNumber (long tournamentId, long sidesNumber);
 }

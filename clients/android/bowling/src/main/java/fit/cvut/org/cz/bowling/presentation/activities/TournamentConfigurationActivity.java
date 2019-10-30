@@ -20,7 +20,7 @@ import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 
 /**
- * Activity to view and edit Tournament's Point Configuration for wins, loses etc.
+ * Activity to view and edit Tournament's Point Configurations for wins, loses, places etc.
  */
 public class TournamentConfigurationActivity extends AbstractToolbarActivity {
     /**

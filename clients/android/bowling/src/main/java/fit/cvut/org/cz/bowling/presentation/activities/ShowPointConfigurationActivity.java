@@ -25,7 +25,7 @@ public class ShowPointConfigurationActivity extends AbstractToolbarActivity {
     /**
      * Creates a new intent to start this activity
      * @param context
-     * @param id id of the team to be shown
+     * @param id id of the point configuration to be shown
      * @return Intent to that can be used to start this activity
      */
     public static Intent newStartIntent(Context context, long id) {
@@ -71,6 +71,9 @@ public class ShowPointConfigurationActivity extends AbstractToolbarActivity {
         }
     }
 
+    /**
+     * In order to only pass backPressed menu item to the fragments onOptionsItemSelected
+     */
     @Override
     public void onBackPressed() {
         MenuItem item = new MenuItem() {

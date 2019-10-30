@@ -23,6 +23,9 @@ import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
 
+/**
+ * Fragment is used in ShowPointConfigurationActivity to show and edit place points settings of point configuration
+ */
 public class ShowPointConfigurationFragment extends PointConfigurationDetailFragment {
     @Override
     protected void updateConfigurations(PointConfiguration pc) {
