@@ -20,7 +20,8 @@
             android:id="@+id/pcv_sides_number"
             android:hint="@string/pcd_input_label"
             android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"/>
+            android:selectAllOnFocus="true"
+            android:digits="0123456789"/>
     </android.support.design.widget.TextInputLayout>
 
 </FrameLayout>

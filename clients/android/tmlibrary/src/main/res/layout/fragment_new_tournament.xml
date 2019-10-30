@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/competitionType"
+            android:text="@string/tournamentType"
             android:id="@+id/tv_tournament_type_label"
             android:layout_below="@+id/til_name"
             android:visibility="gone"/>
