@@ -111,7 +111,7 @@ abstract public class TournamentManager extends BaseManager<Tournament> implemen
         try {
             Tournament tournament = managerFactory.getDaoFactory().getMyDao(Tournament.class).queryForId(tournamentId);
             Competition competition = managerFactory.getDaoFactory().getMyDao(Competition.class).queryForId(tournament.getCompetitionId());
-            competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+            competition.setType(CompetitionTypes.getTypeByTypeId(competition.getTypeId()) );
 
             // Check if some team in this tournament contains this player
             String query =  "SELECT * " +

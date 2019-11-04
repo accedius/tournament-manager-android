@@ -19,6 +19,7 @@ import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.bowling.business.loaders.CompetitionLoader;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.bowling.business.serialization.CompetitionSerializer;
+import fit.cvut.org.cz.bowling.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStats;
 import fit.cvut.org.cz.tmlibrary.business.entities.PlayerAggregatedStatsRecord;
@@ -31,7 +32,6 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
@@ -92,7 +92,7 @@ public class BowlingService extends AbstractIntentServiceWProgress {
                 ICompetitionManager iCompetitionManager = iManagerFactory.getEntityManager(Competition.class);
                 List<Competition> competitions = iCompetitionManager.getAll();
                 for (Competition competition : competitions) {
-                    competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+                    competition.setType(CompetitionTypes.getTypeByTypeId(competition.getTypeId()) );
                 }
 
                 res.putExtra(CrossPackageConstants.EXTRA_TYPE, CrossPackageConstants.TYPE_COMPETITION);

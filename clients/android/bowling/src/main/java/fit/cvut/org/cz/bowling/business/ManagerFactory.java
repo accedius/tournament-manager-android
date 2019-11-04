@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
+import fit.cvut.org.cz.bowling.business.managers.CompetitionManager;
 import fit.cvut.org.cz.bowling.business.managers.MatchManager;
 import fit.cvut.org.cz.bowling.business.managers.ParticipantManager;
 import fit.cvut.org.cz.bowling.business.managers.ParticipantStatManager;
@@ -46,7 +47,7 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
 
         // Competition
         if (entity.getName().equals(Competition.class.getName())) {
-            manager = new fit.cvut.org.cz.tmlibrary.business.managers.CompetitionManager();
+            manager = new CompetitionManager();
         }
         // Tournament
         else if (entity.getName().equals(Tournament.class.getName())) {

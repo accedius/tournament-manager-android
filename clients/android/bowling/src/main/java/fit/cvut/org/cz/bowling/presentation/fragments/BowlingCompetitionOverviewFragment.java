@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragment;
 
 /**
@@ -65,5 +67,23 @@ public class BowlingCompetitionOverviewFragment extends CompetitionOverviewFragm
         v.findViewById(R.id.comp_type_label).setVisibility(View.VISIBLE);
         v.findViewById(R.id.comp_type).setVisibility(View.VISIBLE);
         return v;
+    }
+
+    @Override
+    protected void bindDataOnView(Intent intent) {
+        super.bindDataOnView(intent);
+        CompetitionType competitionType;
+        int typeId = competition.getTypeId();
+        if(typeId != CompetitionTypes.type_none) {
+            try {
+                competitionType = CompetitionTypes.getTypeByTypeId(typeId);
+            } catch (Exception e) {
+                competitionType = CompetitionTypes.none();
+            }
+            type.setText(competitionType.value);
+        } else {
+            getView().findViewById(R.id.comp_type_label).setVisibility(View.GONE);
+            getView().findViewById(R.id.comp_type).setVisibility(View.GONE);
+        }
     }
 }

@@ -14,6 +14,7 @@
     <string name="generate_by_wins" tools:ignore="MissingTranslation">Generate by wins</string>
     <string name="generate_matches" tools:ignore="MissingTranslation">Generate matches</string>
 
+    <string name="type_none" tools:ignore="MissingTranslation">None</string>
 
     <string name="gp" tools:ignore="MissingTranslation">GP</string>
     <string name="w" tools:ignore="MissingTranslation">W</string>

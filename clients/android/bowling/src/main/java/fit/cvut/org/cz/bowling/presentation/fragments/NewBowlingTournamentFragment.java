@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
@@ -27,7 +28,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
-import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
@@ -112,22 +112,26 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
             type.setVisibility(View.VISIBLE);
         }
 
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.addAll(TournamentTypes.tournamentTypes(getResources()));
+
+        type.setAdapter(adapter);
+
         if (tournamentId == -1) {
             CompetitionType competitionType = getCompetitionType();
-            if(competitionType.value == CompetitionTypes.teams().value) {
+            if(competitionType.id == CompetitionTypes.type_teams) {
                 type.setSelection(TournamentTypes.type_teams);
+                type.setEnabled(false);
+            }
+            if(competitionType.id == CompetitionTypes.type_individuals) {
+                type.setSelection(TournamentTypes.type_individuals);
                 type.setEnabled(false);
             }
             setDatepicker(Calendar.getInstance(), Calendar.getInstance());
         } else {
             type.setEnabled(false);
         }
-
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.addAll(TournamentTypes.tournamentTypes(getResources()));
-
-        type.setAdapter(adapter);
 
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);

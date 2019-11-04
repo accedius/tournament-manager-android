@@ -24,7 +24,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
  * Fragment for displaying Competition overview.
  */
 public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
-    private TextView type, start, end, tourSum, playerSum, note;
+    protected TextView type, start, end, tourSum, playerSum, note;
     protected long competitionId;
     protected Competition competition = null;
 
@@ -99,9 +99,9 @@ public abstract class CompetitionOverviewFragment extends AbstractDataFragment {
         CompetitionType competitionType;
         try {
             int typeId = competition.getTypeId();
-            competitionType = CompetitionTypes.getMyCompetitionType(typeId);
+            competitionType = CompetitionTypes.getTypeByTypeId(typeId);
         } catch (Exception e) {
-            competitionType = CompetitionTypes.teams();
+            competitionType = CompetitionTypes.individuals();
         }
         type.setText(competitionType.value);
 
