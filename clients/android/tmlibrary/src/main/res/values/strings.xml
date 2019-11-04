@@ -7,6 +7,8 @@
     <string name="Tennis">Tennis</string>
     <string name="Volleyball">Volleyball</string>
 
+    <string name="Bowling">Bowling</string>
+
     <string name="competition">Competition</string>
     <string name="competitions">Competitions</string>
     <string name="competition_settings">Competition settings</string>
@@ -23,12 +25,14 @@
     <string name="players">Players</string>
     <string name="player_settings">Player settings</string>
     <string name="settings">Settings</string>
+    <string name="about">About</string>
     <string name="standings">Standings</string>
     <string name="overview">Overview</string>
     <string name="point_configuration">Point configuration</string>
     <string name="player_info">Player info</string>
 
     <string name="competitionType">Competition type</string>
+    <string name="tournamentType">Tournament type</string>
     <string name="type_individuals">Individuals</string>
     <string name="type_teams">Teams</string>
 
@@ -91,13 +95,14 @@
     <string name="add_players_home">Add players to home team</string>
     <string name="add_players_away">Add players to away team</string>
 
-    <string name="competition_delete">Do you really want to delete the competition including all it\'s tournaments?</string>
-    <string name="tournament_delete">Do you really want to delete the tournament including all it\'s teams and matches?</string>
+    <string name="competition_delete">Do you really want to delete the competition including all it\'s contents?</string>
+    <string name="tournament_delete">Do you really want to delete the tournament including all it\'s contents?</string>
     <string name="competition_created">Competition created.</string>
     <string name="tournament_created">Tournament created.</string>
     <string name="player_created">Player created.</string>
     <string name="competitionNotFound">Competition not found.</string>
     <string name="settings_saved">Settings have been saved.</string>
+    <string name="settings_restored">Settings have been restored.</string>
     <string name="tournamentNotFound">Tournament not found.</string>
 
     <string name="name_empty_error">Name is empty!</string>

@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractSelectableListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.vh.OneActionViewHolder;
@@ -40,6 +43,8 @@ public class SettingsFragment extends Fragment {
     private ArrayList<Setting> sportSettings;
     private AbstractSelectableListAdapter<Setting, ? extends OneActionViewHolder> adapter;
 
+    private SortedSet<Integer> historyList;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,7 @@ public class SettingsFragment extends Fragment {
             }
         }
         sportsCount = i;
+        historyList = new TreeSet<>();
     }
 
     @Nullable
@@ -96,20 +102,33 @@ public class SettingsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (sportsCount == 0)
             return;
-        inflater.inflate(R.menu.menu_finish, menu);
+        inflater.inflate(R.menu.menu_cancel, menu);
+    }
+
+    private void saveSelectedSports () {
+        ((ISettingManager)ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class)).deleteAll();
+        ArrayList<Setting> settings = adapter.getSelectedItems();
+        for (Setting s : sportSettings) {
+            if (!settings.contains(s)) {
+                ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class).insert(s);
+            }
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_finish) {
-            ((ISettingManager)ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class)).deleteAll();
-            ArrayList<Setting> settings = adapter.getSelectedItems();
-            for (Setting s : sportSettings) {
-                if (!settings.contains(s)) {
-                    ManagerFactory.getInstance(getContext()).getEntityManager(Setting.class).insert(s);
-                }
-            }
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_finish) {
+            saveSelectedSports();
             Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_saved, Snackbar.LENGTH_LONG).show();
+        } else if (itemId == R.id.action_cancel && !historyList.isEmpty()) {
+            ArrayList<Integer> history = new ArrayList<>(historyList);
+            for (Integer position : history) {
+                adapter.doAction(position);
+                adapter.notifyItemChanged(position);
+            }
+            Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.settings_restored, Snackbar.LENGTH_LONG).show();
+            historyList.clear();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -129,6 +148,17 @@ public class SettingsFragment extends Fragment {
         public SimpleOneActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(fit.cvut.org.cz.tmlibrary.R.layout.row_select_item, parent, false);
             return new SimpleOneActionViewHolder(v, this);
+        }
+
+        @Override
+        public void doAction(int position) {
+            super.doAction(position);
+            if(historyList.contains(position)){
+                historyList.remove(position);
+            } else {
+                historyList.add(position);
+            }
+            saveSelectedSports();
         }
     }
 }

@@ -22,6 +22,7 @@ public class Constants {
     public static final String TYPE = DBConstants.cTYPE;
 
     public static final String POINT_CONFIGURATION = "point_configuration";
+    public static final String POINT_CONFIGURATIONS = "point_configurations";
 
     public static final String DATE = DBConstants.cDATE;
     public static final String PLAYED = DBConstants.cPLAYED;

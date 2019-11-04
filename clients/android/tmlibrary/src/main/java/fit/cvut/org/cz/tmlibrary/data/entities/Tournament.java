@@ -13,6 +13,7 @@ import java.util.Date;
 import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 /**
  * Created by Vaclav on 12. 3. 2016.
@@ -38,6 +39,11 @@ public class Tournament extends ShareBase implements Parcelable {
     @DatabaseField(columnName = DBConstants.cNOTE)
     private String note;
 
+    @DatabaseField(columnName = DBConstants.cTYPE)
+    private int typeId;
+
+    private TournamentType type;
+
     private PointConfiguration pointConfiguration;
 
     private static SimpleDateFormat dateFormat = DateFormatter.getInstance().getDBDateFormat();
@@ -48,6 +54,8 @@ public class Tournament extends ShareBase implements Parcelable {
         this.id = id;
         this.uid = uid;
         this.name = name;
+        this.type = TournamentTypes.teams();
+        this.typeId = type.id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
@@ -56,6 +64,30 @@ public class Tournament extends ShareBase implements Parcelable {
     public Tournament(long id, long competitionId, String name, Date startDate, Date endDate, String note) {
         this.id = id;
         this.name = name;
+        this.type = TournamentTypes.teams();
+        this.typeId = type.id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = note;
+        this.setCompetitionId(competitionId);
+    }
+
+    public Tournament(long id, String uid, String name, Date startDate, Date endDate, String note, TournamentType type) {
+        this.id = id;
+        this.uid = uid;
+        this.name = name;
+        this.type = type;
+        this.typeId = type.id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = note;
+    }
+
+    public Tournament(long id, long competitionId, String name, Date startDate, Date endDate, String note, TournamentType type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.typeId = type.id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
@@ -66,6 +98,8 @@ public class Tournament extends ShareBase implements Parcelable {
         id = in.readLong();
         name = in.readString();
         note = in.readString();
+        typeId = in.readInt();
+        type = in.readParcelable(TournamentType.class.getClassLoader());
 
         try {
             String text = in.readString();
@@ -98,6 +132,8 @@ public class Tournament extends ShareBase implements Parcelable {
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(note);
+        dest.writeInt(typeId);
+        dest.writeParcelable(type, flags);
         if (startDate == null) dest.writeString(null);
         else dest.writeString(dateFormat.format(startDate));
         if (endDate == null) dest.writeString(null);
@@ -145,6 +181,24 @@ public class Tournament extends ShareBase implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    public TournamentType getType() {
+        return type;
+    }
+
+    public void setType(TournamentType type) {
+        this.type = type;
+        if (type != null)
+            this.typeId = type.id;
     }
 
     public Date getStartDate() {

@@ -1,16 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    signingConfigs {
+        release {
+            storeFile file(fitkeystore)
+            storePassword fitpass
+            keyAlias = fitalias
+            keyPassword fitpass
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "fit.cvut.org.cz.hockey"
         minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 25
+        versionCode 2
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
@@ -28,12 +41,12 @@ android {
 repositories { jcenter() }
 
 dependencies {
-    androidTestCompile 'junit:junit:4.12'
-    testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.1.4"
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile project(':tmlibrary')
+    androidTestImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.1.4'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation project(':tmlibrary')
 }

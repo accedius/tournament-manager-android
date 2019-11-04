@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 /**
  * Created by Vaclav on 2. 4. 2016.
+ * Class for handling competition type
  */
 public class CompetitionType implements Parcelable {
     public int id;

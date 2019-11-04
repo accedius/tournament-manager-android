@@ -32,9 +32,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 public abstract class NewCompetitionFragment extends AbstractDataFragment {
     /**
      * Constructor for this fragment with id of competition that needs to update
-     * @param id
-     * @param clazz
-     * @return
      */
     public static NewCompetitionFragment newInstance(long id, Class<? extends NewCompetitionFragment> clazz){
         NewCompetitionFragment fragment = null;
@@ -58,11 +55,11 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         return fragment;
     }
 
-    private TextView type_label;
-    private EditText note, name, startDate, endDate;
-    private AppCompatSpinner type;
-    private Calendar dStartDate = null, dEndDate = null;
-    private ArrayAdapter<CompetitionType> adapter;
+    protected TextView type_label;
+    protected EditText note, name, startDate, endDate;
+    protected AppCompatSpinner type;
+    protected Calendar dStartDate = null, dEndDate = null;
+    protected ArrayAdapter<CompetitionType> adapter;
     protected long competitionId = -1;
 
     private Competition competition = null;
@@ -147,7 +144,7 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
         bindCompetitionOnView(competition);
     }
 
-    private void bindCompetitionOnView(final Competition c){
+    protected void bindCompetitionOnView(final Competition c){
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
         Calendar argStart = Calendar.getInstance();
         Calendar argEnd = Calendar.getInstance();
@@ -166,8 +163,8 @@ public abstract class NewCompetitionFragment extends AbstractDataFragment {
             argEnd = dEndDate;
         }
         note.setText(c.getNote());
-
         setDatepicker(argStart, argEnd);
+
         int index = c.getType().id;
         type.setSelection(index);
     }

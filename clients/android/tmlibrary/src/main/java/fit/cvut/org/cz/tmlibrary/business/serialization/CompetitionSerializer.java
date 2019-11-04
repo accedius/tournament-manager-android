@@ -48,7 +48,7 @@ abstract public class CompetitionSerializer extends BaseSerializer<Competition> 
 
         entity.setName(String.valueOf(syncData.get(Constants.NAME)));
         entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
-        entity.setType(CompetitionTypes.competitionTypes()[Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE)))]);
+        entity.setType(CompetitionTypes.getTypeByTypeId( Integer.parseInt(String.valueOf(syncData.get(Constants.TYPE))) ) );
         try {
             entity.setStartDate(dateFormat.parse(String.valueOf(syncData.get(Constants.START))));
         } catch (ParseException e) {} catch (NullPointerException e) {}

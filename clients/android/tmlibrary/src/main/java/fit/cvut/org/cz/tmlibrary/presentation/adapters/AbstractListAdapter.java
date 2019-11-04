@@ -12,6 +12,10 @@ import java.util.List;
 public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     protected final List<T> data = new ArrayList<>();
 
+    /**
+     * Method to refresh a view and see the changes
+     * @param list new data to replace
+     */
     public void swapData(List<T> list){
         this.data.clear();
         this.data.addAll(list);
