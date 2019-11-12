@@ -24,7 +24,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 1;
+    private static final int DBVersion = 5;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -33,40 +33,56 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, Competition.class);
-            TableUtils.createTable(connectionSource, CompetitionPlayer.class);
-            TableUtils.createTable(connectionSource, Tournament.class);
-            TableUtils.createTable(connectionSource, TournamentPlayer.class);
-            TableUtils.createTable(connectionSource, PointConfiguration.class);
-            TableUtils.createTable(connectionSource, Team.class);
-            TableUtils.createTable(connectionSource, TeamPlayer.class);
-            TableUtils.createTable(connectionSource, Match.class);
-            TableUtils.createTable(connectionSource, Participant.class);
-            TableUtils.createTable(connectionSource, ParticipantStat.class);
-            TableUtils.createTable(connectionSource, PlayerStat.class);
+            TableUtils.createTableIfNotExists(connectionSource, Competition.class);
+            TableUtils.createTableIfNotExists(connectionSource, CompetitionPlayer.class);
+            TableUtils.createTableIfNotExists(connectionSource, Tournament.class);
+            TableUtils.createTableIfNotExists(connectionSource, TournamentPlayer.class);
+            TableUtils.createTableIfNotExists(connectionSource, PointConfiguration.class);
+            TableUtils.createTableIfNotExists(connectionSource, Team.class);
+            TableUtils.createTableIfNotExists(connectionSource, TeamPlayer.class);
+            TableUtils.createTableIfNotExists(connectionSource, Match.class);
+            TableUtils.createTableIfNotExists(connectionSource, Participant.class);
+            TableUtils.createTableIfNotExists(connectionSource, ParticipantStat.class);
+            TableUtils.createTableIfNotExists(connectionSource, PlayerStat.class);
         } catch (SQLException e) {}
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        try {
-            TableUtils.dropTable(connectionSource, Competition.class, true);
-            TableUtils.dropTable(connectionSource, CompetitionPlayer.class, true);
-            TableUtils.dropTable(connectionSource, Tournament.class, true);
-            TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
-            TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
-            TableUtils.dropTable(connectionSource, Team.class, true);
-            TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
-            TableUtils.dropTable(connectionSource, Match.class, true);
-            TableUtils.dropTable(connectionSource, Participant.class, true);
-            TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
-            TableUtils.dropTable(connectionSource, PlayerStat.class, true);
-        } catch (SQLException e) {}
-        onCreate(db);
+        int fromVersion = oldVersion;
+
+        /*Upgrade from versions <=3 to version 4*/
+        if(fromVersion <= 3) {
+            try {
+                TableUtils.dropTable(connectionSource, Match.class, true);
+                TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+                TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+            } catch (SQLException e) {}
+            onCreate(db, connectionSource);
+            fromVersion = 4;
+        }
+        switch (fromVersion) {
+            case 4: /*from 4 to 5*/
+                fromVersion++;
+        }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
+        for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
+            switch (fromVersion) {
+                case 5: /*from 5 to 4*/
+                    break;
+                case 4: /*from 4 to 3 (and less)*/
+                    try {
+                        TableUtils.dropTable(connectionSource, Match.class, true);
+                        TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+                        TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+                    } catch (SQLException e) {}
+                    onCreate(db, connectionSource);
+                    fromVersion = 1;
+                    break;
+            }
+        }
     }
 }

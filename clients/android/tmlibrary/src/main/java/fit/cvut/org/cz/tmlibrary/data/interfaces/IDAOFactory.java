@@ -16,12 +16,4 @@ public interface IDAOFactory {
      * @return class' DAO interface
      */
     <D extends IEntityDAO<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz);
-
-    /*<D extends EntityDAO<E, Long>, E extends IEntity> D getEntityDao(Class<E> clazz);
-
-    <D extends Dao<E, Long>, E extends IEntity> D getAppDao(Class<E> clazz);*/
-
-    /*<D extends Dao<E, Long>, E extends IEntity> D getMyDao(Class<E> clazz);
-
-    <D extends IEntityDAO<E, Long>, E extends IEntity> D getEntityDAO(Class<E> clazz);*/
 }
