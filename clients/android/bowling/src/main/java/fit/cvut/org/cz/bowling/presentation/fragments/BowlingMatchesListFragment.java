@@ -19,6 +19,7 @@ import fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity;
 import fit.cvut.org.cz.bowling.presentation.adapters.BowlingMatchAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.AddMatchDialog;
+import fit.cvut.org.cz.bowling.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
@@ -67,8 +68,8 @@ public class BowlingMatchesListFragment extends AbstractListFragment<Match> {
                 v.setOnLongClickListener(new View.OnLongClickListener(){
                     @Override
                     public boolean onLongClick(View v) {
-                        /*EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentId, title);
-                        dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");*/
+                        EditDeleteResetDialog dialog = EditDeleteResetDialog.newInstance(fmId, tournamentId, title);
+                        dialog.show(getFragmentManager(), "Edit_Delete_Reset_Dialog");
                         return true;
                     }
                 });
