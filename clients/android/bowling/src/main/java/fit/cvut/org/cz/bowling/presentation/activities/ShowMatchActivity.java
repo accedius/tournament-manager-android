@@ -67,10 +67,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
+                getString(R.string.match_statistics),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = BowlingFFAMatchStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2 };
+        Fragment f2 = BowlingMatchEditStatsFragment.newInstance(matchId);
+        Fragment f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
+        fragments = new Fragment[]{ f1, f2, f3 };
 
         super.onCreate(savedInstanceState);
 

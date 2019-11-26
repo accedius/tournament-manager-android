@@ -98,4 +98,6 @@
     <string name="pc_place_label_1" tools:ignore="MissingTranslation">Points for</string>
     <string name="pc_place_label_2" tools:ignore="MissingTranslation">. place:</string>
     <string name="spca_title_fragment" tools:ignore="MissingTranslation">Sides number</string>
+
+    <string name="match_statistics" tools:ignore="MissingTranslation">Match statistics</string>
 </resources>

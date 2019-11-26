@@ -20,9 +20,12 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
  */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
+    //if match statistics should be considered valid and propagated to upper levels of application (for example, it's not, then match is played by drunk buddies just for fun, lol)
+    @DatabaseField(columnName = DBConstants.cVALID_FOR_STATS)
+    boolean validForStats;
 
     public Match() {}
-    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean shootouts, boolean overtime) {
+    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round) {
         super(id, tournamentId, date, played, note, period, round);
     }
 
