@@ -24,7 +24,7 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
 
     public ParticipantStat() {}
 
-    public ParticipantStat(long participantId, int score, int framesPlayedNumber) {
+    public ParticipantStat(long participantId, int score, byte framesPlayedNumber) {
         super(participantId);
         this.score = score;
         this.framesPlayedNumber = framesPlayedNumber;
@@ -39,13 +39,13 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(score);
-        dest.writeInt(framesPlayedNumber);
+        dest.writeByte(framesPlayedNumber);
     }
 
     public ParticipantStat(Parcel in) {
         super(in);
         this.score = in.readInt();
-        this.framesPlayedNumber = in.readInt();
+        this.framesPlayedNumber = in.readByte();
     }
 
     public static final Creator<ParticipantStat> CREATOR = new Creator<ParticipantStat>() {
@@ -68,11 +68,11 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
         this.score = score;
     }
 
-    public int getFramesPlayedNumber() {
+    public byte getFramesPlayedNumber() {
         return framesPlayedNumber;
     }
 
-    public void setFramesPlayedNumber(int framesPlayedNumber) {
+    public void setFramesPlayedNumber(byte framesPlayedNumber) {
         this.framesPlayedNumber = framesPlayedNumber;
     }
 }
