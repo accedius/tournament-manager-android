@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
@@ -99,7 +100,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
-    public void generateByLanes(long tournamentId,int lanes) {
+    public void generateByLanes(long tournamentId, int lanes) {
+        if(lanes < 1) {
+            return;
+        }
+
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
@@ -150,15 +155,22 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         // Figure out placement of players on all lanes
         boolean newCombination = false;
         List<List<Long>> lanePlayers = new LinkedList<>();
-        int remainingPlayers = players.size();
         for(int i = 0; i < lanes; ++i) {
             List<Long> currentLane = new LinkedList<Long>();
 
-            int split = remainingPlayers / (lanes - i);
+            int split = players.size() / (lanes - i);
+
+            // In case of lanes > players
+            if(players.size() == 1) {
+                split = 1;
+            } else if(players.size() < 1) {
+                break;
+            }
 
             //For each empty 'spot' on lane
-            currentLane.add(players.get(0).getId());
-            players.remove(0);
+            int firstBorn = (int)(Math.random() * (players.size())) % players.size();
+            currentLane.add(players.get(firstBorn).getId());
+            players.remove(firstBorn);
             for(int j = 1; j < split; ++j) {
                 //For each player already inside this lane
                 for(Long pid : currentLane) {
@@ -187,7 +199,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 }
             }
 
-            remainingPlayers -= split;
             lanePlayers.add(currentLane);
         }
 
