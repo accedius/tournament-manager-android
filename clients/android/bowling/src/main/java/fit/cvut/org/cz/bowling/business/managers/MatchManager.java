@@ -8,11 +8,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -56,6 +60,10 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                     int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
                     match.setAwayScore(participantId);
                 }
+
+                //Add player stats
+                List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
+                participant.setPlayerStats(playerStats);
             }
         }
 
@@ -89,18 +97,122 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             update(match);
         }
     }
+
     @Override
     public void generateByLanes(long tournamentId,int lanes) {
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
-        for(int i = 0 ; i < lanes ; i++)
-        {
+
+        // List of all matches
+        List<Match> matchList = getByTournamentId(tournamentId);
+
+        // Find all matches in last round
+        List<Match> lastMatchList = new LinkedList<>();
+        long maxRoundId = 0;
+        for(Match match : matchList) {
+            if(match.getRound() > maxRoundId) {
+                lastMatchList.clear();
+                maxRoundId = match.getRound();
+            }
+
+            if(match.getRound() == maxRoundId) {
+                lastMatchList.add(match);
+            }
+        }
+
+        // Discover who played against who
+        Map<Long, Set<Long>> playedAgainst = new HashMap<>();
+
+        Set<Long> tmpPlayers = new HashSet<>();
+
+        for(Match match : lastMatchList) {
+            tmpPlayers.clear();
+
+            for(Participant participant : match.getParticipants()) {
+                for(fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat playerStat : participant.getPlayerStats()) {
+                    tmpPlayers.add(playerStat.getPlayerId());
+                }
+            }
+
+            for(Long id : tmpPlayers) {
+                Set<Long> against = playedAgainst.get(id);
+
+                if(against == null) {
+                    against = new HashSet<>();
+                    playedAgainst.put(id, against);
+                }
+
+                against.addAll(tmpPlayers);
+            }
+        }
+
+        // Figure out placement of players on all lanes
+        boolean newCombination = false;
+        List<List<Long>> lanePlayers = new LinkedList<>();
+        int remainingPlayers = players.size();
+        for(int i = 0; i < lanes; ++i) {
+            List<Long> currentLane = new LinkedList<Long>();
+
+            int split = remainingPlayers / (lanes - i);
+
+            //For each empty 'spot' on lane
+            currentLane.add(players.get(0).getId());
+            players.remove(0);
+            for(int j = 1; j < split; ++j) {
+                //For each player already inside this lane
+                for(Long pid : currentLane) {
+                    // Try to find someone he hasn't played with
+                    for(Player candidate : players) {
+                        //Candidate hasn't played any match against pid
+                        Set<Long> pag = playedAgainst.get(pid);
+                        if(pag == null || !pag.contains(candidate.getId())) {
+                            currentLane.add(candidate.getId());
+                            players.remove(candidate);
+                            newCombination = true;
+                            break;
+                        }
+                    }
+
+                    //Player was picked for this spot, no need to pick another one
+                    if(currentLane.size() > j) {
+                        break;
+                    }
+                }
+
+                //We couldn't find any player, let's throw in some random weirdo
+                if(currentLane.size() == j) {
+                    currentLane.add(players.get(0).getId());
+                    players.remove(0);
+                }
+            }
+
+            remainingPlayers -= split;
+            lanePlayers.add(currentLane);
+        }
+
+        // Find which period and round is next
+        //TODO rewrite
+        int targetPeriod = 0;
+        int targetRound = lastMatchList.isEmpty() ? 1 : (lastMatchList.get(0).getRound() + (newCombination ? 0 : 1));
+        for(Match m : lastMatchList) {
+            if(m.getPeriod() > targetPeriod) {
+                targetPeriod = m.getPeriod();
+            }
+        }
+        targetPeriod++;
+
+        if(!newCombination) {
+            targetPeriod = 1;
+        }
+
+        // Create entities
+        for(int i = 0 ; i < lanes ; i++) {
             Participant p = new Participant(-1,0, null);
 
             fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
-            match.setPeriod(0);
-            match.setRound(0);
+            match.setPeriod(targetPeriod);
+            match.setRound(targetRound);
             Participant home = new Participant(p);
             home.setRole(ParticipantType.home.toString());
             match.addParticipant(home);
@@ -115,20 +227,16 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             insert(bowlingMatch);
 
             List<PlayerStat> playerStats = new ArrayList<>();
-
-            int split = players.size() / lanes;
-            List<Player> matchPlayers = players.subList(0, split);
-            players = players.subList(split, players.size());
-
-            for (Participant participant : match.getParticipants()) {
-                for (Player player : matchPlayers) {
-                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
-                }
+            //TODO consider future changes on what playerstats and participants are
+            Participant participant = bowlingMatch.getParticipants().get(0);
+            for(Long id : lanePlayers.get(0)) {
+                playerStats.add(new PlayerStat(participant.getId(), id));
             }
+            lanePlayers.remove(0);
+
             for (PlayerStat playerStat : playerStats) {
                 managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
             }
-            --lanes;
         }
     }
 

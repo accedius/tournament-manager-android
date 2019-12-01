@@ -15,8 +15,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.Date;
+import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
@@ -48,6 +51,8 @@ public class AddMatchDialog extends DialogFragment {
                     case 1: {
                         final Activity a = getActivity();
                         final  Context c = getContext();
+                        List<Match> matchList = ((IMatchManager) ManagerFactory.getInstance(getContext()).getEntityManager(Match.class)).getByTournamentId(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+
                         Log.i("info", "Generate");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                         alertDialog.setTitle(R.string.generate_by_lanes);
