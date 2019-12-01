@@ -20,13 +20,14 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
  */
 @DatabaseTable(tableName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.tMATCHES)
 public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match implements Parcelable {
-    //if match statistics should be considered valid and propagated to upper levels of application (for example, it's not, then match is played by drunk buddies just for fun, lol)
+    //if match statistics should be considered valid and propagated to upper levels of application (for example, then match is not finished, but we want stats to be taken in account)
     @DatabaseField(columnName = DBConstants.cVALID_FOR_STATS)
-    boolean validForStats;
+    private boolean validForStats;
 
     public Match() {}
-    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round) {
+    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean validForStats) {
         super(id, tournamentId, date, played, note, period, round);
+        this.validForStats = validForStats;
     }
 
     public Match(fit.cvut.org.cz.tmlibrary.data.entities.Match m) {
@@ -41,10 +42,12 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeByte((byte) (validForStats ? 1 : 0));
     }
 
     public Match(Parcel in) {
         super(in);
+        validForStats = in.readByte() != 0;
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -59,35 +62,11 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
         }
     };
 
-    public String getHomeName() {
-        return "";
+    public boolean isValidForStats() {
+        return validForStats;
     }
 
-    public String getAwayName() {
-        return "";
-    }
-
-    public long getHomeParticipantId() {
-        for (Participant participant : participants) {
-            if (ParticipantType.home.toString().equals(participant.getRole()))
-                return participant.getParticipantId();
-        }
-        return -1;
-    }
-
-    public long getAwayParticipantId() {
-        for (Participant participant : participants) {
-            if (ParticipantType.away.toString().equals(participant.getRole()))
-                return participant.getParticipantId();
-        }
-        return -1;
-    }
-
-    public List<PlayerStat> getHomePlayers() {
-        return new LinkedList<>();
-    }
-
-    public List<PlayerStat> getAwayPlayers() {
-        return new LinkedList<>();
+    public void setValidForStats(boolean validForStats) {
+        this.validForStats = validForStats;
     }
 }

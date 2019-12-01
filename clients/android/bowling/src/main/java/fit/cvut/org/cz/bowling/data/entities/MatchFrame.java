@@ -1,4 +1,4 @@
-package fit.cvut.org.cz.bowling.business.entities;
+package fit.cvut.org.cz.bowling.data.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
@@ -22,15 +21,14 @@ public class MatchFrame implements Parcelable {
     @DatabaseField(columnName = DBConstants.cMATCH_ID)
     private long matchId;
 
+    @DatabaseField(columnName = DBConstants.cPARTICIPANT_ID)
+    private long participantId;
+
     @DatabaseField(columnName = DBConstants.cFRAME_NUMBER)
-    private long frameNumber;
+    private byte frameNumber;
 
     @DatabaseField(columnName = DBConstants.cPLAYER_ID)
     private long playerId;
-
-    //gson of the frame rolls
-    @DatabaseField(columnName = DBConstants.cFRAME)
-    private String frame;
 
     private List<Integer> rolls = null;
 
@@ -38,44 +36,29 @@ public class MatchFrame implements Parcelable {
         //empty
     }
 
-    public MatchFrame(long matchId, long frameNumber, long playerId, String frame, List<Integer> rolls) {
+    public MatchFrame(long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
         this.matchId = matchId;
+        this.participantId = participantId;
         this.frameNumber = frameNumber;
         this.playerId = playerId;
-        this.frame = frame;
         this.rolls = rolls;
     }
 
-    public MatchFrame(long id, long matchId, long frameNumber, long playerId, String frame, List<Integer> rolls) {
+    public MatchFrame(long id, long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
         this.id = id;
         this.matchId = matchId;
+        this.participantId = participantId;
         this.frameNumber = frameNumber;
         this.playerId = playerId;
-        this.frame = frame;
         this.rolls = rolls;
-    }
-
-    public MatchFrame(long matchId, long playerId, long frameNumber, List<Integer> rolls) {
-        this.matchId = matchId;
-        this.frameNumber = frameNumber;
-        this.playerId = playerId;
-        setRolls(rolls);
-    }
-
-    public MatchFrame(long id, long matchId, long playerId, long frameNumber, List<Integer> rolls) {
-        this.id = id;
-        this.matchId = matchId;
-        this.frameNumber = frameNumber;
-        this.playerId = playerId;
-        setRolls(rolls);
     }
 
     public MatchFrame(Parcel in) {
         id = in.readLong();
         matchId = in.readLong();
-        frameNumber = in.readLong();
+        participantId = in.readLong();
+        frameNumber = in.readByte();
         playerId = in.readLong();
-        frame = in.readString();
         in.readList(rolls, Integer.class.getClassLoader());
     }
 
@@ -88,9 +71,9 @@ public class MatchFrame implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeLong(matchId);
-        dest.writeLong(frameNumber);
+        dest.writeLong(participantId);
+        dest.writeByte(frameNumber);
         dest.writeLong(playerId);
-        dest.writeString(frame);
         dest.writeList(rolls);
     }
 
@@ -106,23 +89,12 @@ public class MatchFrame implements Parcelable {
         }
     };
 
-    private void updateRolls () {
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<Integer>>() {}.getType();
-        rolls = gson.fromJson(frame, type);
-    }
-
     public List<Integer> getRolls () {
-        if(rolls == null || rolls.isEmpty()) {
-            updateRolls();
-        }
         return rolls;
     }
 
     public void setRolls(List<Integer> rolls) {
         this.rolls = rolls;
-        Gson gson = new Gson();
-        this.frame = gson.toJson(rolls);
     }
 
     public long getPlayerId() {
@@ -141,11 +113,19 @@ public class MatchFrame implements Parcelable {
         this.matchId = matchId;
     }
 
-    public String getFrame() {
-        return frame;
+    public long getParticipantId() {
+        return participantId;
     }
 
-    public void setFrame(String frame) {
-        this.frame = frame;
+    public void setParticipantId(long participantId) {
+        this.participantId = participantId;
+    }
+
+    public byte getFrameNumber() {
+        return frameNumber;
+    }
+
+    public void setFrameNumber(byte frameNumber) {
+        this.frameNumber = frameNumber;
     }
 }

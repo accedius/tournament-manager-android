@@ -8,7 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
 
-import fit.cvut.org.cz.bowling.business.entities.MatchFrame;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 
 /**
@@ -22,8 +21,6 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
 
     @DatabaseField(columnName = DBConstants.cFRAMES_NUMBER)
     private int framesPlayedNumber;
-
-    private List<MatchFrame> frames;
 
     public ParticipantStat() {}
 

@@ -9,6 +9,7 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     // t prefix stands for table
     public static final String tCONFIGURATIONS = "configurations";
     public static final String tMATCH_FRAMES = "match_frames";
+    public static final String tMATCH_FRAME_ROLLS = "match_frame_rolls";
 
     //c prefix stands for column
     public static final String cFRAMES_NUMBER = "frames_number";
@@ -20,6 +21,7 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
 
     public static final String cSCORE = "score";
     public static final String cFRAME = "frame";
+    public static final String cFRAME_ID = "frame_id";
 
     public static final String cSIDES_NUMBER = "sides_number";
     public static final String cPLACE_POINTS = "place_points";
