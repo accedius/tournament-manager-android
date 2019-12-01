@@ -22,6 +22,7 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String cSCORE = "score";
     public static final String cFRAME = "frame";
     public static final String cFRAME_ID = "frame_id";
+    public static final String cROLL_NUMBER = "roll_number";
 
     public static final String cSIDES_NUMBER = "sides_number";
     public static final String cPLACE_POINTS = "place_points";

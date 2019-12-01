@@ -20,7 +20,7 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
     private int score;
 
     @DatabaseField(columnName = DBConstants.cFRAMES_NUMBER)
-    private int framesPlayedNumber;
+    private byte framesPlayedNumber;
 
     public ParticipantStat() {}
 

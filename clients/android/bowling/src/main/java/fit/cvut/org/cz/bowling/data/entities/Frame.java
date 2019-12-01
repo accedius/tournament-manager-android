@@ -3,18 +3,16 @@ package fit.cvut.org.cz.bowling.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 @DatabaseTable(tableName = DBConstants.tMATCH_FRAMES)
-public class MatchFrame implements Parcelable {
+public class Frame implements Parcelable, IEntity {
     @DatabaseField(generatedId = true, columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cID)
     private long id;
 
@@ -32,11 +30,11 @@ public class MatchFrame implements Parcelable {
 
     private List<Integer> rolls = null;
 
-    public MatchFrame() {
+    public Frame() {
         //empty
     }
 
-    public MatchFrame(long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
+    public Frame(long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
         this.matchId = matchId;
         this.participantId = participantId;
         this.frameNumber = frameNumber;
@@ -44,7 +42,7 @@ public class MatchFrame implements Parcelable {
         this.rolls = rolls;
     }
 
-    public MatchFrame(long id, long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
+    public Frame(long id, long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
         this.id = id;
         this.matchId = matchId;
         this.participantId = participantId;
@@ -53,7 +51,7 @@ public class MatchFrame implements Parcelable {
         this.rolls = rolls;
     }
 
-    public MatchFrame(Parcel in) {
+    public Frame(Parcel in) {
         id = in.readLong();
         matchId = in.readLong();
         participantId = in.readLong();
@@ -77,17 +75,26 @@ public class MatchFrame implements Parcelable {
         dest.writeList(rolls);
     }
 
-    public static final Creator<MatchFrame> CREATOR = new Creator<MatchFrame>() {
+    public static final Creator<Frame> CREATOR = new Creator<Frame>() {
         @Override
-        public MatchFrame createFromParcel(Parcel in) {
-            return new MatchFrame(in);
+        public Frame createFromParcel(Parcel in) {
+            return new Frame(in);
         }
 
         @Override
-        public MatchFrame[] newArray(int size) {
-            return new MatchFrame[size];
+        public Frame[] newArray(int size) {
+            return new Frame[size];
         }
     };
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public List<Integer> getRolls () {
         return rolls;
