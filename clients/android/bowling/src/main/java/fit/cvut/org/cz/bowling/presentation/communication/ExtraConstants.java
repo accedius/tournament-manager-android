@@ -12,4 +12,11 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String EXTRA_CONFIGURATIONS = "extra_configurations";
     public static final String EXTRA_CONFIGURATION_ID = "extra_configuration_id";
     public static final String EXTRA_LANES = "extra_lanes";
+
+    public static final String EXTRA_FRAME = "extra_frame";
+    public static final String EXTRA_FRAMES = "extra_frames";
+    public static final String EXTRA_FRAME_ID = "extra_frame_id";
+    public static final String EXTRA_PARTICIPANT_ID = "extra_participant_id";
+    public static final String EXTRA_ROLL = "extra_roll";
+    public static final String EXTRA_ROLLS = "extra_rolls";
 }
