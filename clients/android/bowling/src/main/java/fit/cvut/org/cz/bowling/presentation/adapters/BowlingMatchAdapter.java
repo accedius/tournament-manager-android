@@ -41,25 +41,29 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
         Match m = data.get(position);
         SimpleDateFormat dateFormat = DateFormatter.getInstance().getDisplayDateFormat();
 
-        //List<Participant> parts = m.getParticipants();
-        //int players = 0;
-        //for(Participant p : parts) if(p!=null) players += 1;
-        holder.name.setText("Per. " + m.getPeriod() + " - Round " + m.getRound());
-        holder.date.setText(m.getDate()!=null?dateFormat.format(m.getDate()):"[no Date]");
-
-        /*
-        if (m.isPlayed()) {
-            //TODO consider using date/name?
-            holder.score.setText(String.format("%d:%d", m.getHomeScore(), m.getAwayScore()));
-        } else {
-            holder.score.setText(R.string.vs);
+        //Determine the number of match by checking the previous matches until one with diff round or period is found
+        int matchNum;
+        for (int i = position - 1;; i--) {
+            if (i < 0 || data.get(i).getRound() != m.getRound() || data.get(i).getPeriod() != m.getPeriod()) {
+                matchNum = position - i;
+                break;
+            }
         }
-        */
+
+        // Nominee for hack of 2019 award
+        holder.name.setText(R.string.lane);
+        if(!(matchNum == 1 && (position + 1 >= data.size() || (data.get(position + 1).getRound() != m.getRound() || data.get(position + 1).getPeriod() != m.getPeriod())))) {
+            //Give match a number only if there is another match with different period or round and this one isn't the first match
+            holder.name.setText(holder.name.getText() + " #" + matchNum);
+        }
+        holder.date.setText(m.getDate() != null ? dateFormat.format(m.getDate()) : "-");
 
         if (position > 0) {
+            //Separate matches using lines
             holder.roundSeparator1.setVisibility(View.GONE);
             holder.roundSeparator2.setVisibility(View.GONE);
             holder.periodSeparator.setVisibility(View.GONE);
+
             if (data.get(position-1).getRound() != m.getRound()) {
                 holder.roundSeparator1.setVisibility(View.VISIBLE);
                 holder.roundSeparator2.setVisibility(View.VISIBLE);
@@ -68,7 +72,7 @@ public class BowlingMatchAdapter extends AbstractListAdapter<Match,BowlingMatchA
             }
         }
 
-        String title = m.getDate()!=null?dateFormat.format(m.getDate()):"[no Date]";
+        String title = m.getDate() != null ? dateFormat.format(m.getDate()) : "-";
         setOnClickListeners(holder.card, m, position, title);
     }
 
