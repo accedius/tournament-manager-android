@@ -90,7 +90,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         int fromVersion = oldVersion;
 
         //sorry for dumb implementation of versions <=1.0.4, because in all of them DBVersion is the same and equals "1" - wasn't taken into account at the start of development, that's why we need to control if something exists to differentiate between them
-        if (checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
+        if (fromVersion < 5 && checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
             fromVersion = 4;
         }
 
