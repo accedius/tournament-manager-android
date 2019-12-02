@@ -15,8 +15,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.Date;
+import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
@@ -48,10 +51,12 @@ public class AddMatchDialog extends DialogFragment {
                     case 1: {
                         final Activity a = getActivity();
                         final  Context c = getContext();
+                        List<Match> matchList = ((IMatchManager) ManagerFactory.getInstance(getContext()).getEntityManager(Match.class)).getByTournamentId(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+
                         Log.i("info", "Generate");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                        alertDialog.setTitle("Generate matches by lines");
-                        alertDialog.setMessage("Enter number of lines");
+                        alertDialog.setTitle(R.string.generate_by_lanes);
+                        alertDialog.setMessage(R.string.enter_number_of_lanes);
                         final EditText input = new EditText(getActivity());
                         input.setInputType(InputType.TYPE_CLASS_NUMBER);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -59,7 +64,7 @@ public class AddMatchDialog extends DialogFragment {
                                 LinearLayout.LayoutParams.MATCH_PARENT);
                         input.setLayoutParams(lp);
                         alertDialog.setView(input);
-                        alertDialog.setPositiveButton("OK",
+                        alertDialog.setPositiveButton(R.string.ok,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
@@ -71,7 +76,7 @@ public class AddMatchDialog extends DialogFragment {
                                     }
                                 });
 
-                        alertDialog.setNegativeButton("Close",
+                        alertDialog.setNegativeButton(R.string.cancel,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 

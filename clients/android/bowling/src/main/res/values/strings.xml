@@ -12,7 +12,10 @@
 
     <string name="generate_by_goals" tools:ignore="MissingTranslation">Generate by goals</string>
     <string name="generate_by_wins" tools:ignore="MissingTranslation">Generate by wins</string>
+    <string name="generate_by_lanes" tools:ignore="MissingTranslation">Generate by lane</string>
     <string name="generate_matches" tools:ignore="MissingTranslation">Generate matches</string>
+
+    <string name="enter_number_of_lanes" tools:ignore="MissingTranslation">Enter number of lanes</string>
 
     <string name="type_none" tools:ignore="MissingTranslation">None</string>
 
