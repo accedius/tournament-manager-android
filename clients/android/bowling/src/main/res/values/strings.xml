@@ -104,6 +104,10 @@
     <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and 10!</string>
     <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 300!</string>
 
+    <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 10!</string>
+    <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">The total amount of pins knocked down should be between 1 and 10!</string>
+    <string name="flf_last_frame_invalid_extra_roll_error" tools:ignore="MissingTranslation">You only get a bonus roll if you had a strike/spare!</string>
+
     <string name="played_frames_input_label" tools:ignore="MissingTranslation">Played frames:</string>
     <string name="total_score_input_label" tools:ignore="MissingTranslation">Total score:</string>
     <string name="throw_1_input_label" tools:ignore="MissingTranslation">Throw 1:</string>
