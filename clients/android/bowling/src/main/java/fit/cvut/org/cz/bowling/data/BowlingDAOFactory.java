@@ -112,6 +112,12 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 } catch (SQLException e) {
                     dropTable(ParticipantStat.class);
                 }
+                IEntityDAO<Match, Long> matchDAO = ManagerFactory.getInstance().getDaoFactory().getMyDao(Match.class);
+                try {
+                    matchDAO.executeRaw("ALTER TABLE `" + DBConstants.tMATCHES + "` ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " INTEGER;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
+                } catch (SQLException e) {
+                    dropTable(Match.class);
+                }
                 onCreate(db, connectionSource);
                 fromVersion++;
         }
@@ -124,7 +130,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 case 5: /*from 5 to 4*/
                     try {
                         TableUtils.dropTable(connectionSource, Frame.class, true);
-                        TableUtils.dropTable(connectionSource, Frame.class, true);
+                        TableUtils.dropTable(connectionSource, Roll.class, true);
                     } catch (SQLException e) {}
                     break;
                 case 4: /*from 4 to 3 (and less)*/
