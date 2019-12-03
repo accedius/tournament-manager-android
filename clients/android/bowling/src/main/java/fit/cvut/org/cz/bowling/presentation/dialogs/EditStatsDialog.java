@@ -12,6 +12,7 @@ import android.widget.TextView;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 
 /**
@@ -35,7 +36,7 @@ public class EditStatsDialog extends DialogFragment {
      * Override this function to save the stats when dialog is closed
      */
     protected void saveStats() {
-        ((BowlingMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
+        ((BowlingFFAMatchStatsFragment)getTargetFragment()).setPlayerStats(((PlayerStat)getArguments().getParcelable(ExtraConstants.EXTRA_DATA)).getParticipantId(), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
     };
 
     @Override
