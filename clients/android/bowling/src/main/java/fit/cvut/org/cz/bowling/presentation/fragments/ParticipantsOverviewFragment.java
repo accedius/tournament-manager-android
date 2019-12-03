@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
@@ -44,7 +43,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
-public class MatchParticipantsOverviewFragment extends AbstractListFragment<ParticipantOverview> {
+public class ParticipantsOverviewFragment extends AbstractListFragment<ParticipantOverview> {
     private BroadcastReceiver participantStatReceiver = new ParticipantStatReceiver();
     protected static List<ParticipantStat> participantStats = new ArrayList<>();
     protected static List<ParticipantOverview> participantOverviews = new ArrayList<>();
@@ -55,7 +54,7 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
     }
 
     public static void setParticipantStats(List<ParticipantStat> participantStats) {
-        MatchParticipantsOverviewFragment.participantStats = participantStats;
+        ParticipantsOverviewFragment.participantStats = participantStats;
     }
 
     public static List<ParticipantOverview> getParticipantOverviews() {
@@ -63,11 +62,11 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
     }
 
     public static void setParticipantOverviews(List<ParticipantOverview> participantOverviews) {
-        MatchParticipantsOverviewFragment.participantOverviews = participantOverviews;
+        ParticipantsOverviewFragment.participantOverviews = participantOverviews;
     }
 
-    public static MatchParticipantsOverviewFragment newInstance(long matchId) {
-        MatchParticipantsOverviewFragment fragment = new MatchParticipantsOverviewFragment();
+    public static ParticipantsOverviewFragment newInstance(long matchId) {
+        ParticipantsOverviewFragment fragment = new ParticipantsOverviewFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);

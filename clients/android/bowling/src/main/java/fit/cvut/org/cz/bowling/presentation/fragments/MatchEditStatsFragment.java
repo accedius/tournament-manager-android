@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +11,20 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import java.lang.reflect.InvocationTargetException;
-
 import fit.cvut.org.cz.bowling.R;
-import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
-public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
+public class MatchEditStatsFragment extends AbstractDataFragment {
     private Match match = null;
     private long matchId = -1;
     private Switch statsInputSwitch;
     private CheckBox partialDataPropagation;
 
-    public static BowlingMatchEditStatsFragment newInstance (long matchId) {
-        BowlingMatchEditStatsFragment fragment = new BowlingMatchEditStatsFragment();
+    public static MatchEditStatsFragment newInstance (long matchId) {
+        MatchEditStatsFragment fragment = new MatchEditStatsFragment();
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
         fragment.setArguments(args);
@@ -52,7 +47,7 @@ public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
         if(isChecked) {
 
         } else {
-            getFragmentManager().beginTransaction().add(R.id.input_container, MatchParticipantsOverviewFragment.newInstance(matchId)).commit();
+            getFragmentManager().beginTransaction().add(R.id.input_container, ParticipantsOverviewFragment.newInstance(matchId)).commit();
         }
     }
 

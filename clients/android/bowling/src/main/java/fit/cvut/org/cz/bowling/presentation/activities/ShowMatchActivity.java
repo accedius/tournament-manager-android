@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,9 +22,8 @@ import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
-import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchEditStatsFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.MatchEditStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
-import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
@@ -71,7 +69,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
                 getString(R.string.match_statistics),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = BowlingMatchEditStatsFragment.newInstance(matchId);
+        Fragment f2 = MatchEditStatsFragment.newInstance(matchId);
         Fragment f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
         fragments = new Fragment[]{ f1, f2, f3 };
 
