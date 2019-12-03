@@ -30,6 +30,9 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         String participantName = participantOverview.getName();
         Integer score = participantOverview.getScore();
         Byte framesPlayedNumber = participantOverview.getFramesPlayedNumber();
+        holder.participantName.setText(participantName);
+        holder.score.setText(String.format(Locale.getDefault(),"%d", score));
+        holder.framesPlayedNumber.setText(String.format(Locale.getDefault(),"%d", framesPlayedNumber));
     }
 
     public class ParticipantOverviewViewHolder extends RecyclerView.ViewHolder{

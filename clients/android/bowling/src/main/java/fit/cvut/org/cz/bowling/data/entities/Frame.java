@@ -31,7 +31,7 @@ public class Frame implements Parcelable, IEntity {
     private List<Integer> rolls = null;
 
     public Frame() {
-        //empty
+        //empty, for database needs
     }
 
     public Frame(long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {

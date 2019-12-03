@@ -8,25 +8,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.ParticipantOverview;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.presentation.adapters.ParticipantOverviewAdapter;
@@ -46,6 +48,7 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
     private BroadcastReceiver participantStatReceiver = new ParticipantStatReceiver();
     protected static List<ParticipantStat> participantStats = new ArrayList<>();
     protected static List<ParticipantOverview> participantOverviews = new ArrayList<>();
+    protected static boolean bindFromDialogInsertions = false;
 
     public static List<ParticipantStat> getParticipantStats() {
         return participantStats;
@@ -77,12 +80,22 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
     protected AbstractListAdapter getAdapter() {
         return new ParticipantOverviewAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long participantStatId, int position, String name, int score, byte framesPlayedNumber) {
+            protected void setOnClickListeners(View v, final long participantStatId, int position, final String name, int score, byte framesPlayedNumber) {
                 super.setOnClickListeners(v, participantStatId, position, name, score, framesPlayedNumber);
 
                 v.setOnClickListener( new View.OnClickListener(){
                                           @Override
                                           public void onClick(View v) {
+                                              int index = 0;
+                                              while(index < participantOverviews.size()){
+                                                  ParticipantOverview overview = participantOverviews.get(index);
+                                                  if(overview.getParticipantStatId() == participantStatId) {
+                                                      break;
+                                                  }
+                                                  ++index;
+                                              }
+                                              EditParticipantOverviewDialog dialog = EditParticipantOverviewDialog.newInstance(index, name);
+                                              dialog.show(getFragmentManager(), "dialog");
                                           }
                                       }
                 );
@@ -105,39 +118,48 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
 
     @Override
     public void askForData() {
-        Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
-        intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1));
-
-        getContext().startService(intent);
+        if(bindFromDialogInsertions) {
+            Intent intent = new Intent();
+            bindDataOnView(intent);
+        } else {
+            Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
+            intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1));
+            getContext().startService(intent);
+        }
     }
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        ArrayList<Participant> participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-        long matchId = participants.get(0).getMatchId();
-        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-        Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
-        long tournamentId = match.getTournamentId();
-        Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
-        TournamentType tournamentType = tournament.getType();
-        for(Participant participant : participants) {
-            ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0);
-            participantStats.add(stat);
-            ParticipantOverview overview = new ParticipantOverview();
-            overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
-            long participantId = stat.getParticipantId();
-            overview.setParticipantStatId(participantId);
-            overview.setScore(stat.getScore());
-            String name;
-            if( tournamentType.equals(TournamentTypes.individuals()) ) {
-                Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
-                name = player.getName();
-            } else {
-                Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
-                name = team.getName();
+        if(bindFromDialogInsertions) {
+            bindFromDialogInsertions = false;
+        } else {
+            ArrayList<Participant> participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+            long matchId = participants.get(0).getMatchId();
+            IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+            Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
+            long tournamentId = match.getTournamentId();
+            Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+            TournamentType tournamentType = tournament.getType();
+            for (Participant participant : participants) {
+                ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0);
+                participantStats.add(stat);
+                ParticipantOverview overview = new ParticipantOverview();
+                overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
+                long participantId = stat.getParticipantId();
+                long participantStatId = stat.getId();
+                overview.setParticipantStatId(participantStatId);
+                overview.setScore(stat.getScore());
+                String name;
+                if (tournamentType.equals(TournamentTypes.individuals())) {
+                    Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
+                    name = player.getName();
+                } else {
+                    Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
+                    name = team.getName();
+                }
+                overview.setName(name);
+                participantOverviews.add(overview);
             }
-            overview.setName(name);
-            participantOverviews.add(overview);
         }
         intent.removeExtra(ExtraConstants.EXTRA_PARTICIPANTS);
         intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<ParticipantOverview>) participantOverviews);
@@ -174,7 +196,7 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
             contentView.setVisibility(View.VISIBLE);
             switch (action) {
                 case ParticipantService.ACTION_GET_BY_MATCH_ID: {
-
+                    bindDataOnView(intent);
                     break;
                 }
                 /*case ParticipantService.ACTION_DELETE: {
@@ -184,16 +206,16 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
         }
     }
 
-    public static class EditParticipantStatDialog extends DialogFragment {
+    public static class EditParticipantOverviewDialog extends DialogFragment {
         ProgressBar progressBar;
         TextView score, framesPlayedNumber;
-        ParticipantStat participantStat;
+        ParticipantOverview participantOverview = null;
         int arrayPosition;
         String name;
 
-        //Position of a ParticipantStat in a participantStats list in MatchParticipantsOverviewFragment
-        public static EditParticipantStatDialog newInstance(int participantStatToEditArrayPosition, String name) {
-            EditParticipantStatDialog dialog = new EditParticipantStatDialog();
+        //Position of a ParticipantOverview in a participantOverviews list in MatchParticipantsOverviewFragment
+        public static EditParticipantOverviewDialog newInstance(int participantStatToEditArrayPosition, String name) {
+            EditParticipantOverviewDialog dialog = new EditParticipantOverviewDialog();
             Bundle args = new Bundle();
             args.putInt(ExtraConstants.EXTRA_SELECTED, participantStatToEditArrayPosition);
             args.putString(ExtraConstants.EXTRA_PARTICIPANT_NAME, name);
@@ -222,14 +244,78 @@ public class MatchParticipantsOverviewFragment extends AbstractListFragment<Part
             View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_match_participant_stats, null);
             builder.setView(v);
             progressBar = (ProgressBar) v.findViewById(R.id.progress_spinner);
+            score = v.findViewById(R.id.total_score_input);
+            framesPlayedNumber = v.findViewById(R.id.played_frames_input);
             arrayPosition = getArguments().getInt(ExtraConstants.EXTRA_SELECTED);
             name = getArguments().getString(ExtraConstants.EXTRA_PARTICIPANT_NAME);
-            if(arrayPosition != -1) {
-                progressBar.setVisibility(View.VISIBLE);
-
+            if(arrayPosition >= 0 && arrayPosition < participantOverviews.size() ) {
+                participantOverview = participantOverviews.get(arrayPosition);
             }
+            builder.setTitle( getResources().getString(R.string.participant_overview_label) + " " + participantOverview.getName());
+            return builder.create();
+        }
 
-            return super.onCreateDialog(savedInstanceState);
+        @Override
+        public void onResume() {
+            super.onResume();
+            final AlertDialog dialog = (AlertDialog) getDialog();
+            if(dialog != null) {
+                Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean returnToken = false;
+                        if (framesPlayedNumber.getText().toString().isEmpty() ) {
+                            TextInputLayout til = getDialog().findViewById(R.id.played_frames_input);
+                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated));
+                            returnToken = true;
+                        }
+
+                        if(score.getText().toString().isEmpty()) {
+                            TextInputLayout til = getDialog().findViewById(R.id.total_score_input);
+                            til.setError(getResources().getString(R.string.mpof_score_format_violated));
+                            returnToken = true;
+                        }
+
+                        if(returnToken)
+                            return;
+
+                        Byte framesNumber = Byte.parseByte(framesPlayedNumber.getText().toString());
+                        Integer totalScore = Integer.parseInt(score.getText().toString());
+
+                        if( framesNumber > 10 || framesNumber < 1){
+                            TextInputLayout til = getDialog().findViewById(R.id.played_frames_input);
+                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated));
+                            returnToken = true;
+                        }
+
+                        if(totalScore > 300 || totalScore < 0) {
+                            TextInputLayout til = getDialog().findViewById(R.id.total_score_input);
+                            til.setError(getResources().getString(R.string.mpof_score_format_violated));
+                            returnToken = true;
+                        }
+
+                        if(returnToken)
+                            return;
+
+                        participantOverview.setScore(totalScore);
+                        participantOverview.setFramesPlayedNumber(framesNumber);
+
+                        if (getTargetFragment() != null)
+                            getTargetFragment().onActivityResult(0, 1, null);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            framesPlayedNumber.setFocusableInTouchMode(true);
+            framesPlayedNumber.requestFocus();
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
 }

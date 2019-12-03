@@ -100,6 +100,9 @@
     <string name="spca_title_fragment" tools:ignore="MissingTranslation">Sides number</string>
 
     <string name="match_statistics" tools:ignore="MissingTranslation">Statistics</string>
+    <string name="participant_overview_label" tools:ignore="MissingTranslation">Match stats:</string>
+    <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and 10!</string>
+    <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 300!</string>
 
     <string name="played_frames_input_label" tools:ignore="MissingTranslation">Played frames:</string>
     <string name="total_score_input_label" tools:ignore="MissingTranslation">Total score:</string>

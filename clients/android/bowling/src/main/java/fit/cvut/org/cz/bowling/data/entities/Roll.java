@@ -26,6 +26,10 @@ public class Roll implements Parcelable, IEntity {
     @DatabaseField(columnName = DBConstants.cPOINTS)
     private byte points;
 
+    public Roll() {
+        //empty, for database needs
+    }
+
     public Roll(long id, long frameId, byte rollNumber, long playerId, byte points) {
         this.id = id;
         this.frameId = frameId;
