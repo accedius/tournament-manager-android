@@ -54,7 +54,7 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     private FloatingActionButton fab;
     private ScrollView scrv;
     private long matchId;
-    List<List<PlayerStat>> tmpPartStats = new ArrayList<>();
+    List<List<PlayerStat>> tmpPartStats = new ArrayList<List<PlayerStat>>();
     private Fragment thisFragment;
 
     public static BowlingFFAMatchStatsFragment newInstance(long matchId) {
