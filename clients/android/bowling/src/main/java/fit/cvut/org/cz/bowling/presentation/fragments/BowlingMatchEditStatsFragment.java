@@ -26,7 +26,7 @@ public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
     private Match match = null;
     private long matchId = -1;
     private Switch statsInputSwitch;
-    private CheckBox partitialDataPropagation;
+    private CheckBox partialDataPropagation;
 
     public static BowlingMatchEditStatsFragment newInstance (long matchId) {
         BowlingMatchEditStatsFragment fragment = new BowlingMatchEditStatsFragment();
@@ -60,7 +60,7 @@ public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
     protected void bindDataOnView(Intent intent) {
         match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
         statsInputSwitch.setChecked(match.isTrackRolls());
-        partitialDataPropagation.setChecked(match.isValidForStats());
+        partialDataPropagation.setChecked(match.isValidForStats());
         setContentFragment(statsInputSwitch.isChecked());
         statsInputSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -69,7 +69,7 @@ public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
                 setContentFragment(isChecked);
             }
         });
-        partitialDataPropagation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        partialDataPropagation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 match.setValidForStats(isChecked);
@@ -92,7 +92,7 @@ public class BowlingMatchEditStatsFragment extends AbstractDataFragment {
         View v = inflater.inflate(R.layout.fragment_match_edit_stats, container, false);
         matchId = getArguments().getLong(ExtraConstants.EXTRA_ID, -1);
         statsInputSwitch = v.findViewById(R.id.individual_throw_switch);
-        partitialDataPropagation = v.findViewById(R.id.match_stats_update_with_partial_data);
+        partialDataPropagation = v.findViewById(R.id.match_stats_update_with_partial_data);
         return v;
     }
 }

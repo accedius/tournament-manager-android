@@ -25,7 +25,7 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     @DatabaseField(columnName = DBConstants.cVALID_FOR_STATS)
     private boolean validForStats;
 
-    @DatabaseField(columnName = DBConstants.cTRACK_ROLLS, dataType = DataType.BOOLEAN, defaultValue = )
+    @DatabaseField(columnName = DBConstants.cTRACK_ROLLS)
     private boolean trackRolls;
 
     public Match() {}
