@@ -54,7 +54,7 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     private FloatingActionButton fab;
     private ScrollView scrv;
     private long matchId;
-    List<List<PlayerStat>> tmpPartStats;
+    List<List<PlayerStat>> tmpPartStats = new ArrayList<>();
     private Fragment thisFragment;
 
     public static BowlingFFAMatchStatsFragment newInstance(long matchId) {
@@ -126,12 +126,13 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         if (tmpPartStats == null) {
+            tmpPartStats = new ArrayList<>();
             for (int i = 0; i < parts.size(); i++) {
                 List<PlayerStat> tmp = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
-                tmpPartStats.set(i,tmp);
+                tmpPartStats.add(tmp);
             }
         }
-        parts = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
+        //parts = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
         for (int i = 0; i < parts.size(); i++)
             partsAdapters.get(i).swapData(tmpPartStats.get(i));
     }
