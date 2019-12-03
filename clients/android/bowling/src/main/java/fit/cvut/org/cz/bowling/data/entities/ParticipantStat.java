@@ -24,6 +24,11 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
 
     public ParticipantStat() {}
 
+    public ParticipantStat(long participantId, int score) {
+        this.score = score;
+        framesPlayedNumber = 0;
+    }
+
     public ParticipantStat(long participantId, int score, byte framesPlayedNumber) {
         super(participantId);
         this.score = score;

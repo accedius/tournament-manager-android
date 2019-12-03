@@ -3,6 +3,7 @@ package fit.cvut.org.cz.bowling.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -24,14 +25,20 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     @DatabaseField(columnName = DBConstants.cVALID_FOR_STATS)
     private boolean validForStats;
 
+    @DatabaseField(columnName = DBConstants.cTRACK_ROLLS, dataType = DataType.BOOLEAN, defaultValue = )
+    private boolean trackRolls;
+
     public Match() {}
-    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean validForStats) {
+    public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean validForStats, boolean trackRolls) {
         super(id, tournamentId, date, played, note, period, round);
         this.validForStats = validForStats;
+        this.trackRolls = trackRolls;
     }
 
     public Match(fit.cvut.org.cz.tmlibrary.data.entities.Match m) {
         super(m);
+        validForStats = false;
+        trackRolls = false;
     }
 
     @Override
@@ -43,11 +50,13 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeByte((byte) (validForStats ? 1 : 0));
+        dest.writeByte((byte) (trackRolls ? 1 : 0));
     }
 
     public Match(Parcel in) {
         super(in);
         validForStats = in.readByte() != 0;
+        trackRolls = in.readByte() != 0;
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -68,5 +77,13 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
 
     public void setValidForStats(boolean validForStats) {
         this.validForStats = validForStats;
+    }
+
+    public boolean isTrackRolls() {
+        return trackRolls;
+    }
+
+    public void setTrackRolls(boolean trackRolls) {
+        this.trackRolls = trackRolls;
     }
 }

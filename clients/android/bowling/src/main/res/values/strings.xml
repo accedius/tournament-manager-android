@@ -99,7 +99,7 @@
     <string name="pc_place_label_2" tools:ignore="MissingTranslation">. place:</string>
     <string name="spca_title_fragment" tools:ignore="MissingTranslation">Sides number</string>
 
-    <string name="match_statistics" tools:ignore="MissingTranslation">Match statistics</string>
+    <string name="match_statistics" tools:ignore="MissingTranslation">Statistics</string>
 
     <string name="played_frames_input_label" tools:ignore="MissingTranslation">Played frames:</string>
     <string name="total_score_input_label" tools:ignore="MissingTranslation">Total score:</string>
@@ -111,6 +111,7 @@
     <string name="throws_label" tools:ignore="MissingTranslation">Throws:</string>
     <string name="current_score_label" tools:ignore="MissingTranslation">Current Score:</string>
     <string name="track_individual_throws" tools:ignore="MissingTranslation">Track individual throws</string>
+    <string name="update_stats_with_partial_data" tools:ignore="MissingTranslation">Update stats with partial data</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="simple_stats" tools:ignore="MissingTranslation">Simple stats</string>

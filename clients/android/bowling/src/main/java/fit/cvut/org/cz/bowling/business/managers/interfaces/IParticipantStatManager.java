@@ -20,4 +20,11 @@ public interface IParticipantStatManager extends IManager<ParticipantStat> {
      * @return scored goals.
      */
     int getScoreByParticipantId(long participantId);
+
+    /**
+     * Get all participant stats in match
+     * @param matchId id of match
+     * @return list of participant stats.
+     */
+    List<ParticipantStat> getByMatchId (long matchId);
 }

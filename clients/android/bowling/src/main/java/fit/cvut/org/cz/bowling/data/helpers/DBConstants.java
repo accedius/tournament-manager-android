@@ -28,4 +28,5 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String cPLACE_POINTS = "place_points";
 
     public static final String cVALID_FOR_STATS = "valid_for_stats";
+    public static final String cTRACK_ROLLS = "track_rolls";
 }
