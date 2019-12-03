@@ -21,12 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.bowling.presentation.adapters.MatchStatisticsAdapter;
 import fit.cvut.org.cz.bowling.presentation.adapters.MatchStatisticsListAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -75,6 +78,9 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
                 tmpPartStats.set(i, tmp);
             }
         } else {
+            IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+            IParticipantManager iParticipantManager = iManagerFactory.getEntityManager(Participant.class);
+            parts = iParticipantManager.getByMatchId(matchId);
             tmpPartStats = null;
         }
         thisFragment = this;
