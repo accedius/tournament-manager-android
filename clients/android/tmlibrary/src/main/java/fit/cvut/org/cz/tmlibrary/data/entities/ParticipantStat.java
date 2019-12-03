@@ -18,7 +18,7 @@ public class ParticipantStat implements IEntity, Parcelable {
     private long id;
 
     @DatabaseField(columnName = DBConstants.cPARTICIPANT_ID)
-    // Team id or Player id (based on Competition type)
+    //Id of corresponding Participant class object
     private long participant_id;
 
     public ParticipantStat() {}

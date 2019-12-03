@@ -103,6 +103,7 @@
     <string name="participant_overview_label" tools:ignore="MissingTranslation">Match stats:</string>
     <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and 10!</string>
     <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 300!</string>
+    <string name="poa_no_value_yet" tools:ignore="MissingTranslation">no value yet</string>
 
     <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 10!</string>
     <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">The total amount of pins knocked down should be between 1 and 10!</string>

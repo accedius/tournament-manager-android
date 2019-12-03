@@ -22,6 +22,8 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
 
     protected void setOnClickListeners(View v, final long participantStatId, int position, String name, int score, byte framesPlayedNumber) {}
 
+    private String formatNumber(int num) { return String.format(Locale.getDefault(),"%d", num); }
+
     @Override
     public void onBindViewHolder(ParticipantOverviewViewHolder holder, int position) {
         ParticipantOverview participantOverview = data.get(position);
@@ -31,8 +33,10 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         Integer score = participantOverview.getScore();
         Byte framesPlayedNumber = participantOverview.getFramesPlayedNumber();
         holder.participantName.setText(participantName);
-        holder.score.setText(String.format(Locale.getDefault(),"%d", score));
-        holder.framesPlayedNumber.setText(String.format(Locale.getDefault(),"%d", framesPlayedNumber));
+        if(score != -1) {
+            holder.score.setText(formatNumber(score));
+            holder.framesPlayedNumber.setText(formatNumber(framesPlayedNumber));
+        }
     }
 
     public class ParticipantOverviewViewHolder extends RecyclerView.ViewHolder{
@@ -46,6 +50,8 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
             participantName = (TextView) itemView.findViewById(R.id.participant_label);
             framesPlayedNumber = (TextView) itemView.findViewById(R.id.played_frames_text_view);
             score = (TextView) itemView.findViewById(R.id.final_score_text_view);
+            score.setText(itemView.getResources().getString(R.string.poa_no_value_yet));
+            framesPlayedNumber.setText(itemView.getResources().getString(R.string.poa_no_value_yet));
             wholeView = itemView;
         }
     }

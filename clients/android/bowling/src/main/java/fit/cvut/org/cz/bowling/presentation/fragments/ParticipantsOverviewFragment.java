@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
@@ -44,26 +44,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 public class ParticipantsOverviewFragment extends AbstractListFragment<ParticipantOverview> {
-    private BroadcastReceiver participantStatReceiver = new ParticipantStatReceiver();
-    protected static List<ParticipantStat> participantStats = new ArrayList<>();
-    protected static List<ParticipantOverview> participantOverviews = new ArrayList<>();
+    private BroadcastReceiver participantReceiver = new ParticipantReceiver();
+    protected static ArrayList<ParticipantOverview> participantOverviews = new ArrayList<>();
     protected static boolean bindFromDialogInsertions = false;
-
-    public static List<ParticipantStat> getParticipantStats() {
-        return participantStats;
-    }
-
-    public static void setParticipantStats(List<ParticipantStat> participantStats) {
-        ParticipantsOverviewFragment.participantStats = participantStats;
-    }
-
-    public static List<ParticipantOverview> getParticipantOverviews() {
-        return participantOverviews;
-    }
-
-    public static void setParticipantOverviews(List<ParticipantOverview> participantOverviews) {
-        ParticipantsOverviewFragment.participantOverviews = participantOverviews;
-    }
+    private Fragment thisFragment;
 
     public static ParticipantsOverviewFragment newInstance(long matchId) {
         ParticipantsOverviewFragment fragment = new ParticipantsOverviewFragment();
@@ -73,6 +57,22 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            participantOverviews = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_DATA);
+        }
+        thisFragment = this;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        participantOverviews = new ArrayList<>(adapter.getData());
+        outState.putParcelableArrayList(ExtraConstants.EXTRA_DATA, participantOverviews);
     }
 
     @Override
@@ -94,6 +94,7 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                                                   ++index;
                                               }
                                               EditParticipantOverviewDialog dialog = EditParticipantOverviewDialog.newInstance(index, name);
+                                              dialog.setTargetFragment(thisFragment, 0);
                                               dialog.show(getFragmentManager(), "dialog");
                                           }
                                       }
@@ -122,7 +123,8 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
             bindDataOnView(intent);
         } else {
             Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
-            intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1));
+            Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
+            intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
             getContext().startService(intent);
         }
     }
@@ -140,14 +142,21 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
             Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
             TournamentType tournamentType = tournament.getType();
             for (Participant participant : participants) {
-                ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0);
-                participantStats.add(stat);
                 ParticipantOverview overview = new ParticipantOverview();
-                overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
-                long participantId = stat.getParticipantId();
-                long participantStatId = stat.getId();
-                overview.setParticipantStatId(participantStatId);
-                overview.setScore(stat.getScore());
+                long participantId = participant.getParticipantId();
+                overview.setParticipantId(participantId);
+                if(participant.getParticipantStats().isEmpty()){
+                    Byte framesNumber = -1;
+                    overview.setParticipantStatId(-1);
+                    overview.setFramesPlayedNumber(framesNumber);
+                    overview.setScore(-1);
+                } else {
+                    ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0); // 0 because it only can have 1 ParticipantStat
+                    overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
+                    long participantStatId = stat.getId();
+                    overview.setParticipantStatId(participantStatId);
+                    overview.setScore(stat.getScore());
+                }
                 String name;
                 if (tournamentType.equals(TournamentTypes.individuals())) {
                     Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
@@ -174,12 +183,12 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
     protected void registerReceivers() {
         IntentFilter filter = new IntentFilter(ParticipantService.ACTION_GET_BY_MATCH_ID);
         //filter.addAction(ParticipantService.ACTION_DELETE);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(participantStatReceiver, filter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(participantReceiver, filter);
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantStatReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
     }
 
     @Override
@@ -187,7 +196,7 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         return null;
     }
 
-    public class ParticipantStatReceiver extends BroadcastReceiver {
+    public class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

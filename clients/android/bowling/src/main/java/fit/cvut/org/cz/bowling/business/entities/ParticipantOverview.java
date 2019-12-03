@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ParticipantOverview implements Parcelable {
-    private long participantStatId;
+    private long participantStatId, participantId;
     private String name;
     private int score;
     private byte framesPlayedNumber;
@@ -13,8 +13,9 @@ public class ParticipantOverview implements Parcelable {
         //nothing
     }
 
-    public ParticipantOverview(long participantStatId, String name, int score, byte framesPlayedNumber) {
+    public ParticipantOverview(long participantStatId, long participantId, String name, int score, byte framesPlayedNumber) {
         this.participantStatId = participantStatId;
+        this.participantId = participantId;
         this.name = name;
         this.score = score;
         this.framesPlayedNumber = framesPlayedNumber;
@@ -22,6 +23,7 @@ public class ParticipantOverview implements Parcelable {
 
     public ParticipantOverview(Parcel in) {
         participantStatId = in.readLong();
+        participantId = in.readLong();
         name = in.readString();
         score = in.readInt();
         framesPlayedNumber = in.readByte();
@@ -47,6 +49,7 @@ public class ParticipantOverview implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(participantStatId);
+        dest.writeLong(participantId);
         dest.writeString(name);
         dest.writeInt(score);
         dest.writeByte(framesPlayedNumber);
@@ -82,5 +85,13 @@ public class ParticipantOverview implements Parcelable {
 
     public void setParticipantStatId(long participantStatId) {
         this.participantStatId = participantStatId;
+    }
+
+    public long getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(long participantId) {
+        this.participantId = participantId;
     }
 }
