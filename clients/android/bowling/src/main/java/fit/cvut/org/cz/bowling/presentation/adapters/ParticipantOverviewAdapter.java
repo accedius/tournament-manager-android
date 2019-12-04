@@ -36,6 +36,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         holder.participantName.setText(participantName);
         if(score != -1) {
             holder.warningLayout.setVisibility(View.GONE);
+            holder.dataLayout.setVisibility(View.VISIBLE);
             holder.score.setText(formatNumber(score));
             holder.framesPlayedNumber.setText(formatNumber(framesPlayedNumber));
         } else {

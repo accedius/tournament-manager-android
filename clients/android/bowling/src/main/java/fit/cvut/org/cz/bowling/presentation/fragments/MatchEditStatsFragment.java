@@ -47,8 +47,9 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     }
 
     protected void setContentFragment (boolean isChecked) {
+        if(inputFragment != null)
+            getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
         if(isChecked) {
-
         } else {
             inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
             getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment).commit();
