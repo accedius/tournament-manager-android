@@ -140,7 +140,7 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
             Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
             long tournamentId = match.getTournamentId();
             Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
-            TournamentType tournamentType = tournament.getType();
+            TournamentType tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
             for (Participant participant : participants) {
                 ParticipantOverview overview = new ParticipantOverview();
                 long participantId = participant.getParticipantId();
