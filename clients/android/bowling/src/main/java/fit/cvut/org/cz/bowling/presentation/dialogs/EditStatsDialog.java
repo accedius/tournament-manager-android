@@ -36,11 +36,7 @@ public class EditStatsDialog extends DialogFragment {
      * Override this function to save the stats when dialog is closed
      */
     protected void saveStats() {
-        if(getTargetFragment() instanceof BowlingFFAMatchStatsFragment) {
-            ((BowlingFFAMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
-        } else {
-            ((BowlingMatchStatsFragment)getTargetFragment()).setPlayerStats(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
-        }
+        ((BowlingFFAMatchStatsFragment)getTargetFragment()).setPlayerStats(((PlayerStat)getArguments().getParcelable(ExtraConstants.EXTRA_DATA)).getParticipantId(), getArguments().getInt(ExtraConstants.EXTRA_POSITION), stat);
     };
 
     @Override

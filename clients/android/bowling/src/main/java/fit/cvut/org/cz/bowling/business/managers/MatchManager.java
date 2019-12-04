@@ -15,12 +15,16 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
+import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
@@ -335,9 +339,14 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     public boolean delete(long id) {
         IParticipantManager iParticipantManager = managerFactory.getEntityManager(Participant.class);
         List<Participant> participants = iParticipantManager.getByMatchId(id);
+
+        IFrameManager iFrameManager = managerFactory.getEntityManager(Frame.class);
+        iFrameManager.deleteAllByMatchId(id);
+
         try {
             IEntityDAO<ParticipantStat, Long> ParticipantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
             IEntityDAO<PlayerStat, Long> PlayerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+
             for (Participant participant : participants) {
                 ParticipantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
 
