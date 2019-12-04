@@ -204,6 +204,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             }
 
             lanePlayers.add(currentLane);
+            //Log.d("Lane de Bug", "added new lane, current number is "+lanePlayers.size());
         }
 
         // Find which period and round is next
@@ -223,14 +224,18 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
         //TODO merge this and next for cycles into one, merge their inner for cycles, there it's possible
         //Create entities
+        //Log.d("Lane de Bug", "we want " + lanes + " lanes and we have " + lanePlayers.size() + " generated");
         for(int i = 0 ; i < lanes ; i++) {
 
             //Make participants from players (tournamentType == Individuals)
             List<Participant> currentLaneParticipants = new ArrayList<>();
-            List<Long> currentLanePlayerIds = lanePlayers.get(i);
-            for(Long currentLanePlayerId : currentLanePlayerIds){
-                Participant p = new Participant(-1, currentLanePlayerId, null);
-                currentLaneParticipants.add(p);
+            if (i < lanePlayers.size()) {
+                List<Long> currentLanePlayerIds = lanePlayers.get(i);
+                for (Long currentLanePlayerId : currentLanePlayerIds) {
+                    Participant p = new Participant(-1, currentLanePlayerId, null);
+
+                    currentLaneParticipants.add(p);
+                }
             }
 
             fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
@@ -253,6 +258,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             //TODO ~DONE, to understand view entities and managers or contact Alex
             for(Participant participant : participants) {
                 PlayerStat playerStat = new PlayerStat(participant.getId(), participant.getParticipantId());
+                //Log.d("Lane de Bug", "participant " + participant.getId() + " and " + participant.getParticipantId() + "/" + playerStat.getPlayerId());
                 playerStats.add(playerStat);
             }
 
