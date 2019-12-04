@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -34,8 +35,12 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         Byte framesPlayedNumber = participantOverview.getFramesPlayedNumber();
         holder.participantName.setText(participantName);
         if(score != -1) {
+            holder.warningLayout.setVisibility(View.GONE);
             holder.score.setText(formatNumber(score));
             holder.framesPlayedNumber.setText(formatNumber(framesPlayedNumber));
+        } else {
+            holder.dataLayout.setVisibility(View.GONE);
+            holder.warningLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -43,6 +48,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         TextView participantName;
         TextView framesPlayedNumber;
         TextView score;
+        LinearLayout dataLayout, warningLayout;
         View wholeView;
 
         public ParticipantOverviewViewHolder(View itemView) {
@@ -50,8 +56,8 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
             participantName = (TextView) itemView.findViewById(R.id.participant_label);
             framesPlayedNumber = (TextView) itemView.findViewById(R.id.played_frames_text_view);
             score = (TextView) itemView.findViewById(R.id.final_score_text_view);
-            score.setText(itemView.getResources().getString(R.string.poa_no_value_yet));
-            framesPlayedNumber.setText(itemView.getResources().getString(R.string.poa_no_value_yet));
+            dataLayout = itemView.findViewById(R.id.participant_data_layout);
+            warningLayout = itemView.findViewById(R.id.warning_not_played_yet);
             wholeView = itemView;
         }
     }

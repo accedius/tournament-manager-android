@@ -221,16 +221,22 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             targetPeriod = 1;
         }
 
-        // Create entities
+        //TODO merge this and next for cycles into one, merge their inner for cycles, there it's possible
+        //Create entities
         for(int i = 0 ; i < lanes ; i++) {
-            Participant p = new Participant(-1,0, null);
+
+            //Make participants from players (tournamentType == Individuals)
+            List<Participant> currentLaneParticipants = new ArrayList<>();
+            List<Long> currentLanePlayerIds = lanePlayers.get(i);
+            for(Long currentLanePlayerId : currentLanePlayerIds){
+                Participant p = new Participant(-1, currentLanePlayerId, null);
+                currentLaneParticipants.add(p);
+            }
 
             fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
             match.setPeriod(targetPeriod);
             match.setRound(targetRound);
-            Participant home = new Participant(p);
-            home.setRole(ParticipantType.home.toString());
-            match.addParticipant(home);
+            match.addParticipants(currentLaneParticipants);
             matches.add(match);
         }
 
@@ -241,13 +247,22 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             Match bowlingMatch = new Match(match);
             insert(bowlingMatch);
 
+            List<Participant> participants = match.getParticipants();
             List<PlayerStat> playerStats = new ArrayList<>();
             //TODO consider future changes on what playerstats and participants are
+            //TODO ~DONE, to understand view entities and managers or contact Alex
+            for(Participant participant : participants) {
+                PlayerStat playerStat = new PlayerStat(participant.getId(), participant.getParticipantId());
+                playerStats.add(playerStat);
+            }
+
+            /* Tohle urcite ne
             Participant participant = bowlingMatch.getParticipants().get(0);
             for(Long id : lanePlayers.get(0)) {
                 playerStats.add(new PlayerStat(participant.getId(), id));
             }
             lanePlayers.remove(0);
+            */
 
             for (PlayerStat playerStat : playerStats) {
                 managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);

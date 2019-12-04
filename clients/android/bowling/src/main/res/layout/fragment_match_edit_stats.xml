@@ -21,8 +21,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/input_container"
-        android:padding="16dp"/>
+        android:id="@+id/input_container" />
 
     <CheckBox
         android:id="@+id/match_stats_update_with_partial_data"
