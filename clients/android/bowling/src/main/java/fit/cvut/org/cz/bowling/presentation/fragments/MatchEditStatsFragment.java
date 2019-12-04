@@ -34,6 +34,12 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID, getContext());
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID);
@@ -58,9 +64,11 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
-        statsInputSwitch.setChecked(match.isTrackRolls());
-        partialDataPropagation.setChecked(match.isValidForStats());
+        if(match == null) {
+            match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
+            statsInputSwitch.setChecked(match.isTrackRolls());
+            partialDataPropagation.setChecked(match.isValidForStats());
+        }
         if (getChildFragmentManager().findFragmentById(R.id.input_container) == null) {
             setContentFragment(statsInputSwitch.isChecked());
         }

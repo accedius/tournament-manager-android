@@ -18,17 +18,17 @@
             android:textOff="@string/no"
             android:textOn="@string/yes" />
 
+        <CheckBox
+            android:id="@+id/match_stats_update_with_partial_data"
+            android:text="@string/update_stats_with_partial_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/input_container" />
-
-    <CheckBox
-        android:id="@+id/match_stats_update_with_partial_data"
-        android:text="@string/update_stats_with_partial_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 
     </LinearLayout>
 

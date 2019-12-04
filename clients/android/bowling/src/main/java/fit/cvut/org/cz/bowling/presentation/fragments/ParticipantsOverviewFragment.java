@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +68,7 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         participantOverviews.clear();
         if (savedInstanceState != null) {
             participantOverviews = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_DATA);
@@ -114,6 +118,43 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                 );
             }
         };
+    }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        // Inflate the layout for this fragment
+
+        View fragmentView = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_list, container, false);
+
+        recyclerView = (RecyclerView) fragmentView.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
+        adapter = getAdapter();
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        int orientation = getActivity().getResources().getConfiguration().orientation;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT) {
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        } else {
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        }
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
+        if (fab != null) {
+            this.fab = fab;
+            ((ViewGroup) fragmentView).addView(fab);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                        fab.show();
+
+                    else fab.hide();
+                }
+            });
+        }
+
+        return fragmentView;
     }
 
     @Override
