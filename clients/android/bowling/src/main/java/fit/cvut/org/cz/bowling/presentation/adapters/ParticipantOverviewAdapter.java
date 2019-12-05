@@ -21,14 +21,14 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         return new ParticipantOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_participant_stats, parent, false));
     }
 
-    protected void setOnClickListeners(View v, final long participantStatId, int position, String name, int score, byte framesPlayedNumber) {}
+    protected void setOnClickListeners(View v, final long participantId, int position, String name, int score, byte framesPlayedNumber) {}
 
     private String formatNumber(int num) { return String.format(Locale.getDefault(),"%d", num); }
 
     @Override
     public void onBindViewHolder(ParticipantOverviewViewHolder holder, int position) {
         ParticipantOverview participantOverview = data.get(position);
-        setOnClickListeners(holder.wholeView, participantOverview.getParticipantStatId(), position, participantOverview.getName(), participantOverview.getScore(), participantOverview.getFramesPlayedNumber());
+        setOnClickListeners(holder.wholeView, participantOverview.getParticipantId(), position, participantOverview.getName(), participantOverview.getScore(), participantOverview.getFramesPlayedNumber());
 
         String participantName = participantOverview.getName();
         Integer score = participantOverview.getScore();

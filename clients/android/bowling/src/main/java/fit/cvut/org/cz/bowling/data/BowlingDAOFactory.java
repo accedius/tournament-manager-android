@@ -61,7 +61,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
     private boolean checkIfColumnExists (SQLiteDatabase db, String tableName, String columnName) {
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM" + tableName + "LIMIT 0", null);
+            cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0 ", null);
             if(cursor.getColumnIndex(columnName) != -1){
                 return true;
             } else {
@@ -109,15 +109,15 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 IEntityDAO<ParticipantStat, Long> participantStatDAO = ManagerFactory.getInstance().getDaoFactory().getMyDao(ParticipantStat.class);
                 try {
                     if (!checkIfColumnExists(db, DBConstants.tPARTICIPANT_STATS, DBConstants.cFRAMES_NUMBER))
-                        participantStatDAO.executeRaw("ALTER TABLE `" + DBConstants.tPARTICIPANT_STATS + "` ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
+                        participantStatDAO.executeRaw("ALTER TABLE " + DBConstants.tPARTICIPANT_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
                 } catch (SQLException e) {
                     dropTable(ParticipantStat.class);
                 }
                 IEntityDAO<Match, Long> matchDAO = ManagerFactory.getInstance().getDaoFactory().getMyDao(Match.class);
                 try {
                     if (!checkIfColumnExists(db, DBConstants.tMATCHES, DBConstants.cVALID_FOR_STATS)) {
-                        matchDAO.executeRaw("ALTER TABLE `" + DBConstants.tMATCHES + "` ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
-                        matchDAO.executeRaw("ALTER TABLE `" + DBConstants.tMATCHES + "` ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
+                        matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
+                        matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
                     }
                 } catch (SQLException e) {
                     dropTable(Match.class);

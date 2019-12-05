@@ -88,8 +88,8 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
     protected AbstractListAdapter getAdapter() {
         return new ParticipantOverviewAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long participantStatId, int position, final String name, int score, byte framesPlayedNumber) {
-                super.setOnClickListeners(v, participantStatId, position, name, score, framesPlayedNumber);
+            protected void setOnClickListeners(View v, final long participantId, int position, final String name, int score, byte framesPlayedNumber) {
+                super.setOnClickListeners(v, participantId, position, name, score, framesPlayedNumber);
 
                 v.setOnClickListener( new View.OnClickListener(){
                                           @Override
@@ -97,7 +97,7 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                                               int index = 0;
                                               while(index < participantOverviews.size()){
                                                   ParticipantOverview overview = participantOverviews.get(index);
-                                                  if(overview.getParticipantStatId() == participantStatId) {
+                                                  if(overview.getParticipantId() == participantId) {
                                                       break;
                                                   }
                                                   ++index;
@@ -272,6 +272,8 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         }
     }
 
+
+    //inner dialog
     public static class EditParticipantOverviewDialog extends DialogFragment {
         ProgressBar progressBar;
         TextView score, framesPlayedNumber;
