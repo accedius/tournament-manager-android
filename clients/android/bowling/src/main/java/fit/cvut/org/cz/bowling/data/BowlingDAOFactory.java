@@ -9,10 +9,12 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.PointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
@@ -20,6 +22,7 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
@@ -104,16 +107,19 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             onCreate(db, connectionSource);
             fromVersion = 4;
         }
+
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+
         switch (fromVersion) {
             case 4: /*from 4 to 5*/
-                IEntityDAO<ParticipantStat, Long> participantStatDAO = ManagerFactory.getInstance().getDaoFactory().getMyDao(ParticipantStat.class);
+                IEntityDAO<ParticipantStat, Long> participantStatDAO = iManagerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
                 try {
                     if (!checkIfColumnExists(db, DBConstants.tPARTICIPANT_STATS, DBConstants.cFRAMES_NUMBER))
                         participantStatDAO.executeRaw("ALTER TABLE " + DBConstants.tPARTICIPANT_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
                 } catch (SQLException e) {
                     dropTable(ParticipantStat.class);
                 }
-                IEntityDAO<Match, Long> matchDAO = ManagerFactory.getInstance().getDaoFactory().getMyDao(Match.class);
+                IEntityDAO<Match, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(Match.class);
                 try {
                     if (!checkIfColumnExists(db, DBConstants.tMATCHES, DBConstants.cVALID_FOR_STATS)) {
                         matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
@@ -121,8 +127,19 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                     }
                 } catch (SQLException e) {
                     dropTable(Match.class);
+                    dropTable(Participant.class);
+                    dropTable(PlayerStat.class);
+                    dropTable(ParticipantStat.class);
                 }
                 onCreate(db, connectionSource);
+
+                //we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
+                IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
+                List<Match> allMatches= iMatchManager.getAll();
+                for(Match match : allMatches) {
+                    iMatchManager.delete(match.getId());
+                }
+
                 fromVersion++;
         }
     }
