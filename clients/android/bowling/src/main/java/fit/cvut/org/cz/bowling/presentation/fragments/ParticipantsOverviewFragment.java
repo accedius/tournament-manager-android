@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.j256.ormlite.stmt.query.In;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
@@ -37,6 +38,7 @@ import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.presentation.adapters.ParticipantOverviewAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -323,6 +325,17 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
             return builder.create();
         }
 
+        private boolean checkIfScoreIsPossible(int score, int frames) {
+            int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
+            if(frames > 2 && frames < ConstraintsConstants.tenPinMatchParticipantMaxFrames) {
+                return score <= maxFrameScore * 3 *(frames - 1); // 10 (last) + 20 (second from end) + 30 * allOtherFrames
+            } else if(frames == 2) {
+                return score <= maxFrameScore * 3;
+            } else {
+                return score <= maxFrameScore;
+            }
+        }
+
         @Override
         public void onResume() {
             super.onResume();
@@ -333,15 +346,18 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                     @Override
                     public void onClick(View v) {
                         boolean returnToken = false;
+                        int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+                        int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
+
                         if (framesPlayedNumber.getText().toString().isEmpty() ) {
                             TextInputLayout til = getDialog().findViewById(R.id.played_frames_input_layout);
-                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated));
+                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated) + " " + maxFrames + "!");
                             returnToken = true;
                         }
 
                         if(score.getText().toString().isEmpty()) {
                             TextInputLayout til = getDialog().findViewById(R.id.total_score_input_layout);
-                            til.setError(getResources().getString(R.string.mpof_score_format_violated));
+                            til.setError(getResources().getString(R.string.mpof_score_format_violated)  + " " + maxScore + "!");
                             returnToken = true;
                         }
 
@@ -351,15 +367,22 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                         Byte framesNumber = Byte.parseByte(framesPlayedNumber.getText().toString());
                         Integer totalScore = Integer.parseInt(score.getText().toString());
 
-                        if( framesNumber > 10 || framesNumber < 1){
+                        if( framesNumber > maxFrames || framesNumber < 1){
                             TextInputLayout til = getDialog().findViewById(R.id.played_frames_input_layout);
-                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated));
+                            til.setError(getResources().getString(R.string.mpof_frames_played_format_violated) + " " + maxFrames + "!");
                             returnToken = true;
                         }
 
-                        if(totalScore > 300 || totalScore < 0) {
+                        if(totalScore > maxScore || totalScore < 0) {
                             TextInputLayout til = getDialog().findViewById(R.id.total_score_input_layout);
-                            til.setError(getResources().getString(R.string.mpof_score_format_violated));
+                            til.setError(getResources().getString(R.string.mpof_score_format_violated)  + " " + maxScore + "!");
+                            returnToken = true;
+                        }
+
+                        //check when game is not finished (has less frames then it should) if score is possible, for example, situation, then played 2 frames with >30 score is impossible
+                        if(framesNumber < maxFrames && !checkIfScoreIsPossible(totalScore, framesNumber)) {
+                            TextInputLayout til = getDialog().findViewById(R.id.total_score_input_layout);
+                            til.setError(getResources().getString(R.string.mpof_score_violated));
                             returnToken = true;
                         }
 
@@ -382,6 +405,12 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            if(participantOverview != null && participantOverview.getFramesPlayedNumber() > 0) {
+                String previousFramesInput = String.format(Locale.getDefault(), "%d", participantOverview.getFramesPlayedNumber());
+                String previousScoreInput = String.format(Locale.getDefault(), "%d", participantOverview.getScore());
+                framesPlayedNumber.setText(previousFramesInput);
+                score.setText(previousScoreInput);
+            }
             framesPlayedNumber.setFocusableInTouchMode(true);
             framesPlayedNumber.requestFocus();
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);

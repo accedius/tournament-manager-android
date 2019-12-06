@@ -104,8 +104,9 @@
 
     <string name="match_statistics" tools:ignore="MissingTranslation">Statistics</string>
     <string name="participant_overview_label" tools:ignore="MissingTranslation">Match stats:</string>
-    <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and 10!</string>
-    <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 300!</string>
+    <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and</string>
+    <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and</string>
+    <string name="mpof_score_violated" tools:ignore="MissingTranslation">Such score is invalid!</string>
     <string name="poa_not_played_yet" tools:ignore="MissingTranslation">This participant has not played yet</string>
 
     <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 10!</string>

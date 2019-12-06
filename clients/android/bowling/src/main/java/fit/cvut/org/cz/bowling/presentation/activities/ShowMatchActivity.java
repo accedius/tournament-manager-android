@@ -64,21 +64,21 @@ public class ShowMatchActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         matchId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_MATCH_ID);
 
-        titles = new String[]{
+        /*titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(R.string.match_statistics)};
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
         Fragment f2 = MatchEditStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2};
+        fragments = new Fragment[]{ f1, f2};*/
 
-        /*titles = new String[]{
+        titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(R.string.match_statistics),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
         Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
         Fragment f2 = MatchEditStatsFragment.newInstance(matchId);
         Fragment f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2, f3 };*/
+        fragments = new Fragment[]{ f1, f2, f3 };
 
         /*titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
