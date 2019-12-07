@@ -27,13 +27,16 @@
     <string name="g" tools:ignore="MissingTranslation">G</string>
     <string name="st" tools:ignore="MissingTranslation">St</string>
     <string name="legend_ST" tools:ignore="MissingTranslation">St: Strikes</string>
+    <string name="strikes" tools:ignore="MissingTranslation">Strikes</string>
 
     <string name="a" tools:ignore="MissingTranslation">A</string>
     <string name="sp" tools:ignore="MissingTranslation">Sp</string>
     <string name="legend_SPA" tools:ignore="MissingTranslation">Sp: Spares</string>
+    <string name="spares" tools:ignore="MissingTranslation">Spares</string>
 
     <string name="pt" tools:ignore="MissingTranslation">Pt</string>
     <string name="legend_PT" tools:ignore="MissingTranslation">Pt: Points</string>
+    <string name="points" tools:ignore="MissingTranslation">Points</string>
 
     <string name="p" tools:ignore="MissingTranslation">P</string>
     <string name="pmp" tools:ignore="MissingTranslation">+/-</string>

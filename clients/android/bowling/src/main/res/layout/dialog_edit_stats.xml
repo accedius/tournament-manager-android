@@ -14,35 +14,38 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/tv_strikes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/tv_strikes"
-            android:hint="@string/goals"
+            android:hint="@string/strikes"
             android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"/>
+            android:selectAllOnFocus="true" />
     </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/tv_spares"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/tv_spares"
-                android:hint="@string/assists"
+                android:hint="@string/spares"
                 android:inputType="numberDecimal"
-                android:selectAllOnFocus="true"/>
+                android:selectAllOnFocus="true" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/tv_points"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/tv_points"
-                android:hint="@string/plus_minus_points"
+                android:hint="@string/points"
                 android:inputType="numberSigned"
-                android:selectAllOnFocus="true"/>
+                android:selectAllOnFocus="true" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </ScrollView>
