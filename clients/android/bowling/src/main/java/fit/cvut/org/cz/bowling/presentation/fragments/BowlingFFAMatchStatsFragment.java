@@ -299,9 +299,15 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
      */
     public void setPlayerStats(long participant, int position, PlayerStat statistic) {
         int partindex = getParticipantIndex(participant);
+        Log.d("List de Bug","partindex = " + partindex + "; position = " + position);
         List<PlayerStat> dat = partsAdapters.get(partindex).getData();
-        dat.remove(position);
-        dat.add(position, statistic);
+        int newpos = position;
+        for(int i = 0; i < partindex; i++)
+        {
+            newpos -= partsAdapters.get(i).getData().size();
+        }
+        dat.remove(newpos);
+        dat.add(newpos, statistic);
         partsAdapters.get(partindex).swapData(dat);
 
         updateAdapterByPartsAdapter();
