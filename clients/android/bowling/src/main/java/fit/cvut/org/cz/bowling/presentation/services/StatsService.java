@@ -112,18 +112,14 @@ public class StatsService extends AbstractIntentServiceWProgress {
                 List<PlayerStat> awayStats = new ArrayList<>();
 
                 long homeId = 0, awayId = 0;
-                for (Participant participant : participants) {
+                //for (Participant participant : participants) {
+                for (int i = 0; i < participants.size(); i ++){
                     final IPlayerStatManager playerStatManager = ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class);
-                    if (ParticipantType.home.toString().equals(participant.getRole())) {
-                        homeStats = playerStatManager.getByParticipantId(participant.getId());
-                        res.putExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT, participant);
-                        homeId = participant.getParticipantId();
-                    }
-                    else if (ParticipantType.away.toString().equals(participant.getRole())) {
-                        awayStats = playerStatManager.getByParticipantId(participant.getId());
-                        res.putExtra(ExtraConstants.EXTRA_AWAY_PARTICIPANT, participant);
-                        awayId = participant.getParticipantId();
-                    }
+                    homeStats = playerStatManager.getByParticipantId(participants.get(i).getId());
+                    res.putExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT, participants.get(i));
+                    homeId = participants.get(i).getParticipantId();
+
+                    res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i, new ArrayList<>(homeStats));
                 }
                 String homeName, awayName;
                 if (CompetitionTypes.teams().equals(competition.getType())) {
@@ -133,8 +129,8 @@ public class StatsService extends AbstractIntentServiceWProgress {
                     //Case for individuals
                     if(team != null) {
                         homeName = team.getName();
-                        team = teamManager.getById(awayId);
-                        awayName = team.getName();
+                        //team = teamManager.getById(awayId);
+                        //awayName = team.getName();
                     } else {
                         homeName = awayName = "";
                     }
@@ -144,18 +140,17 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
                     if(player != null) {
                         homeName = player.getName();
-                        player = playerManager.getById(awayId);
-                        awayName = player.getName();
+                        //player = playerManager.getById(awayId);
+                        //awayName = player.getName();
                     } else {
                         homeName = awayName = "";
                     }
                 }
 
-                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(homeStats));
-                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
+                //res.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
 
                 res.putExtra(ExtraConstants.EXTRA_HOME_NAME, homeName);
-                res.putExtra(ExtraConstants.EXTRA_AWAY_NAME, awayName);
+                //res.putExtra(ExtraConstants.EXTRA_AWAY_NAME, awayName);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 

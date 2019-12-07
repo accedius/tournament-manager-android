@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,8 +46,10 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     public static final int REQUEST_PART = 1;
     public static final int REQUEST_EDIT = 3;
 
+
+    private MatchStatisticsAdapter adapter;
     private List<MatchStatisticsAdapter> partsAdapters;
-    private MatchStatisticsListAdapter listAdapter;
+    //private MatchStatisticsListAdapter listAdapter;
 
     private List<Participant> parts = null;
     private RecyclerView recyclerView;
@@ -95,8 +98,9 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        for(int i = 0; i < parts.size(); i++)
+        for(int i = 0; i < parts.size(); i++) {
             tmpPartStats.add(partsAdapters.get(i).getData());
+        }
         outState.putParcelableArrayList(SAVE_PART, new ArrayList<>(parts));
         for(int i = 0; i < parts.size(); i++)
             outState.putParcelableArrayList(SAVE_LIST+i, new ArrayList<>(tmpPartStats.get(i)));
@@ -128,13 +132,17 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         if (tmpPartStats == null) {
             tmpPartStats = new ArrayList<List<PlayerStat>>();
             for (int i = 0; i < parts.size(); i++) {
-                List<PlayerStat> tmp = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+                List<PlayerStat> tmp = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i);
                 tmpPartStats.add(tmp);
             }
         }
         //parts = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
-        for (int i = 0; i < parts.size(); i++)
+        List<PlayerStat> tmp = new ArrayList<>();
+        for (int i = 0; i < parts.size(); i++) {
             partsAdapters.get(i).swapData(tmpPartStats.get(i));
+            tmp.addAll(tmpPartStats.get(i));
+        }
+        adapter.swapData(tmp);
     }
 
     @Override
@@ -157,12 +165,13 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
 
         partsAdapters = new ArrayList<>();
-        for(int i = 0; i < parts.size(); i++)
+        for (int i = 0; i < parts.size(); i++) {
             partsAdapters.add(new MatchStatisticsAdapter(this));
+        }
+        adapter = new MatchStatisticsAdapter(this);
+        //listAdapter = new MatchStatisticsListAdapter();
 
-        listAdapter = new MatchStatisticsListAdapter();
-
-        recyclerView.setAdapter(listAdapter);
+        recyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -205,15 +214,18 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         if (resultCode != AddPlayersActivity.RESULT_OK)
             return;
 
-/*
+
         if (requestCode == REQUEST_EDIT) {
+            ArrayList<PlayerStat> tmp = new ArrayList<>();
             for (int i = 0; i < parts.size(); i++) {
                 ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i);
                 partsAdapters.get(i).swapData(homeStats);
-                tmpPartStats = homeStats;
-                return;
+                tmp.addAll(homeStats);
+                //tmpPartStats = homeStats;
             }
-        }*/
+            adapter.swapData(tmp);
+            return;
+        }
 
         //Participant participant;
         ArrayList<Player> players = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
@@ -221,7 +233,11 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         //playerStatistics = partsAdapters.getData();
         //participant = parts;
 
-        List<MatchStatisticsAdapter> list = listAdapter.getData();
+        //List<MatchStatisticsAdapter> list = listAdapter.getData();
+        //List<MatchStatisticsAdapter> list = partsAdapter;
+
+
+        List<PlayerStat> tmp = adapter.getData();
 
         for (Player player : players) {
             Participant part = new Participant(matchId, player.getId(), ParticipantType.home.toString());
@@ -236,10 +252,14 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
             parts.add(part);
             tmpPartStats.add(playerStatistics);
             partsAdapters.add(adapter);
-            list.add(adapter);
+            //list.add(adapter);
+            tmp.add(playerStat);
         }
 
-        listAdapter.swapData(list);
+        adapter.swapData(tmp);
+
+        //partsAdapter = list;
+        //listAdapter.swapData(list);
         //tmpPartStats = playerStatistics;
     }
 
@@ -283,7 +303,21 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         dat.remove(position);
         dat.add(position, statistic);
         partsAdapters.get(partindex).swapData(dat);
+
+        updateAdapterByPartsAdapter();
     }
+
+    private void updateAdapterByPartsAdapter()
+    {
+        ArrayList<PlayerStat> tmp = new ArrayList<>();
+        for (int i = 0; i < partsAdapters.size(); i++)
+        {
+            tmp.addAll(partsAdapters.get(i).getData());
+        }
+        adapter.swapData(tmp);
+    }
+
+
 
     /**
      * removes player from team
@@ -292,7 +326,17 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
      */
     public void removePlayer(long participant, int position){
         int partindex = getParticipantIndex(participant);
+        PlayerStat stat = partsAdapters.get(partindex).getData().get(position);
         partsAdapters.get(partindex).removePos(position);
+        List<PlayerStat> stats = adapter.getData();
+        for(int i = 0; i < stats.size(); i++)
+        {
+            if(stats.get(i).getPlayerId() == stat.getPlayerId())
+            {
+                adapter.removePos(i);
+                return;
+            }
+        }
     }
 
     private int getParticipantIndex(long participant)
