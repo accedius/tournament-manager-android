@@ -195,21 +195,17 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
             }
-        } catch (SQLException e) {
-            dropTable(Match.class);
-            dropTable(Participant.class);
-            dropTable(PlayerStat.class);
-            dropTable(ParticipantStat.class);
-        }
+        } catch (SQLException e) {}
         dropTable(Match.class);
         dropTable(Participant.class);
         dropTable(PlayerStat.class);
         dropTable(ParticipantStat.class);
         onCreate(db, connectionSource);
 
-        //we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
-        //deleteTableContents(iManagerFactory, Match.class);
-        /*IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
+        /*we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
+        deleteTableContents(iManagerFactory, Match.class);
+        or
+        IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
         List<Match> allMatches= iMatchManager.getAll();
         for(Match match : allMatches) {
             iMatchManager.delete(match.getId());
