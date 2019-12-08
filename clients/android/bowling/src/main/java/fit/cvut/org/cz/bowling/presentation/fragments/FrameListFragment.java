@@ -156,7 +156,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && frameOverviews.size()<10)
                         fab.show();
 
                     else fab.hide();
@@ -404,7 +404,8 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             } else if (position == frameOverviews.size()) {
                 toCreate = true;
                 frameOverview = new FrameOverview();
-                frameOverview.setFrameNumber( (byte) position);
+                int frameNumber = position + 1;
+                frameOverview.setFrameNumber( (byte) frameNumber);
                 if(tournamentType.equals(TournamentTypes.individuals())){
                     Player player = participantPlayers.get(0);
                     frameOverview.setPlayerName(player.getName());
@@ -413,8 +414,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                     //TODO
                 }
             }
-            int frameNumberTitle = frameOverview.getFrameNumber() + 1;
-            builder.setTitle(getResources().getString(R.string.frame_num) + frameNumberTitle + ": " + frameOverview.getPlayerName());
+            builder.setTitle(getResources().getString(R.string.frame_num) + frameOverview.getFrameNumber() + ": " + frameOverview.getPlayerName());
             return builder.create();
         }
 
@@ -428,31 +428,21 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                     @Override
                     public void onClick(View v) {
                         boolean returnToken = false;
-                        if (roll1.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_1_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if (roll2.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if (frameOverview.getFrameNumber() == 10 && roll3.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_3_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if(returnToken) {
-                            return;
-                        }
-
-                        int pinsInRoll1 = Integer.parseInt(roll1.getText().toString());
-                        int pinsInRoll2 = Integer.parseInt(roll2.getText().toString());
+                        int pinsInRoll1 = 0;
+                        int pinsInRoll2 = 0;
                         int pinsInRoll3 = 0;
+                        if (!roll1.getText().toString().isEmpty() ) {
+                            pinsInRoll1 = Integer.parseInt(roll1.getText().toString());
+                        }
+
+                        if (!roll2.getText().toString().isEmpty() ) {
+                            pinsInRoll2 = Integer.parseInt(roll2.getText().toString());
+                        }
+
+                        if (frameOverview.getFrameNumber() == 10 && !roll3.getText().toString().isEmpty() ) {
+                            pinsInRoll3 = Integer.parseInt(roll3.getText().toString());
+                        }
+
                         ArrayList<Byte> rolls = new ArrayList<>();
 
                         if( pinsInRoll1 > 10 || pinsInRoll1 < 0){
@@ -466,7 +456,6 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                             returnToken = true;
                         } else rolls.add((byte) pinsInRoll2);
                         if (frameOverview.getFrameNumber() == 10) {
-                            pinsInRoll3 = Integer.parseInt(roll3.getText().toString());
                             if (pinsInRoll3 > 10 || pinsInRoll3 < 0) {
                                 TextInputLayout til = getDialog().findViewById(R.id.throw_3_input_layout);
                                 til.setError(getResources().getString(R.string.flf_roll_format_violated));

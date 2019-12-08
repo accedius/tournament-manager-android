@@ -41,7 +41,6 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         FrameOverview frameOw = data.get(i);
         long playerId = frameOw.getPlayerId();
         byte frameNum = frameOw.getFrameNumber();
-        ++frameNum;
         List<Byte> rolls = frameOw.getRolls();
         String playerName = frameOw.getPlayerName();
         int currentScore = frameOw.getCurrentScore();
