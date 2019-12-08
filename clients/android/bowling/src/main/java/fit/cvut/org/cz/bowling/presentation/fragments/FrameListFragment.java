@@ -46,6 +46,7 @@ import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
@@ -55,7 +56,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
-    protected static int participantNumber = 0;
     protected static int participantSelectedIndex = -1;
     protected static TournamentType tournamentType = null;
     protected static List<List<FrameOverview>> participantsFrameOverviews = new ArrayList<>();
@@ -194,6 +194,17 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                         participantPlayers.add(player);
                     }
 
+                    String name;
+                    long participantId = participant.getParticipantId();
+                    if (tournamentType.equals(TournamentTypes.individuals())) {
+                        Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
+                        name = player.getName();
+                    } else {
+                        Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
+                        name = team.getName();
+                    }
+                    participant.setName(name);
+
                     participantsFrameOverviews.add(new ArrayList<FrameOverview>());
                     frameOverviews = participantsFrameOverviews.get(index);
 
@@ -242,8 +253,9 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
     }
 
     private void bindParticipantsOnView(ArrayList<Participant> participants) {
-        participantArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participants);
+        participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, participants);
         participantArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        participantSpinner.setAdapter(participantArrayAdapter);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -258,7 +270,6 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
             }
         });
-        participantSpinner.setAdapter(participantArrayAdapter);
     }
 
     @Override
