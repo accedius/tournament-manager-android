@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
+import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, FrameOverviewAdapter.FrameViewHolder> {
@@ -51,26 +52,49 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         Byte roll1 = getOrNull(rolls, 0);
         Byte roll2 = getOrNull(rolls, 1);
         Byte roll3 = getOrNull(rolls, 2);
+
         if (roll1 != null) {
-            holder.roll1.setText(formatNumber(roll1));
+            if(roll1 == 10){
+                holder.roll1.setText(ExtraConstants.STRIKE_SYMBOL);
+                if(frameNum!=10){
+                    roll2 = null;
+                }
+            } else {
+                holder.roll1.setText(formatNumber(roll1));
+            }
             holder.roll1.setVisibility(View.VISIBLE);
         }
         else {
             holder.roll1.setVisibility(View.GONE);
         }
+
         if (roll2 != null) {
-            holder.roll2.setText(formatNumber(roll2));
+            if(roll2 == 10) {
+                holder.roll2.setText(ExtraConstants.STRIKE_SYMBOL);
+            } else if (roll2 + roll1 == 10 && roll2 > 0) {
+                holder.roll2.setText(ExtraConstants.SPARE_SYMBOL);
+            } else {
+                holder.roll2.setText(formatNumber(roll2));
+            }
             holder.roll2.setVisibility(View.VISIBLE);
         }
         else {
             holder.roll2.setVisibility(View.GONE);
         }
+
         if (roll3 != null) {
-            holder.roll3.setText(formatNumber(roll3));
+            if(roll3 == 10) {
+                holder.roll3.setText(ExtraConstants.STRIKE_SYMBOL);
+            } else if (roll3 + roll2 == 10 && roll3 > 0 && roll1 + roll2 != 10) {
+                holder.roll3.setText(ExtraConstants.SPARE_SYMBOL);
+            } else {
+                holder.roll3.setText(formatNumber(roll3));
+            }
             holder.roll3.setVisibility(View.VISIBLE);
         }
         else
             holder.roll3.setVisibility(View.GONE);
+
         holder.currentScore.setText(formatNumber(currentScore));
     }
 

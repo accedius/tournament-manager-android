@@ -399,8 +399,6 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             position = getArguments().getInt(ExtraConstants.EXTRA_SELECTED);
             if(position >= 0 && position < frameOverviews.size() ) {
                 frameOverview = frameOverviews.get(position);
-                if (frameOverview.getFrameNumber() == 10)
-                    v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
             } else if (position == frameOverviews.size()) {
                 toCreate = true;
                 frameOverview = new FrameOverview();
@@ -414,6 +412,8 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                     //TODO
                 }
             }
+            if (frameOverview.getFrameNumber() == 10)
+                v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
             builder.setTitle(getResources().getString(R.string.frame_num) + frameOverview.getFrameNumber() + ": " + frameOverview.getPlayerName());
             return builder.create();
         }
