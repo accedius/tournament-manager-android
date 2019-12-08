@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
@@ -23,6 +25,11 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     public List<ParticipantStat> getByParticipantId(long participantId) {
         IEntityDAO<ParticipantStat, Long> participantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
         List<ParticipantStat> stats = participantStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
+        for(ParticipantStat stat : stats) {
+            IFrameManager frameManager = ( (IFrameManager) managerFactory.getEntityManager(Frame.class));
+            List<Frame> frames = frameManager.getInMatchByParticipantId(participantId);
+            stat.setFrames(frames);
+        }
         return new ArrayList<>(stats);
     }
 

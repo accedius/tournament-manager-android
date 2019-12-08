@@ -28,27 +28,25 @@ public class Frame implements Parcelable, IEntity {
     @DatabaseField(columnName = DBConstants.cPLAYER_ID)
     private long playerId;
 
-    private List<Integer> rolls = null;
+    private List<Roll> rolls = null;
 
     public Frame() {
         //empty, for database needs
     }
 
-    public Frame(long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
+    public Frame(long matchId, long participantId, byte frameNumber, long playerId) {
         this.matchId = matchId;
         this.participantId = participantId;
         this.frameNumber = frameNumber;
         this.playerId = playerId;
-        this.rolls = rolls;
     }
 
-    public Frame(long id, long matchId, long participantId, byte frameNumber, long playerId, List<Integer> rolls) {
+    public Frame(long id, long matchId, long participantId, byte frameNumber, long playerId) {
         this.id = id;
         this.matchId = matchId;
         this.participantId = participantId;
         this.frameNumber = frameNumber;
         this.playerId = playerId;
-        this.rolls = rolls;
     }
 
     public Frame(Parcel in) {
@@ -57,7 +55,6 @@ public class Frame implements Parcelable, IEntity {
         participantId = in.readLong();
         frameNumber = in.readByte();
         playerId = in.readLong();
-        in.readList(rolls, Integer.class.getClassLoader());
     }
 
     @Override
@@ -72,7 +69,6 @@ public class Frame implements Parcelable, IEntity {
         dest.writeLong(participantId);
         dest.writeByte(frameNumber);
         dest.writeLong(playerId);
-        dest.writeList(rolls);
     }
 
     public static final Creator<Frame> CREATOR = new Creator<Frame>() {
@@ -94,14 +90,6 @@ public class Frame implements Parcelable, IEntity {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public List<Integer> getRolls () {
-        return rolls;
-    }
-
-    public void setRolls(List<Integer> rolls) {
-        this.rolls = rolls;
     }
 
     public long getPlayerId() {
@@ -134,5 +122,13 @@ public class Frame implements Parcelable, IEntity {
 
     public void setFrameNumber(byte frameNumber) {
         this.frameNumber = frameNumber;
+    }
+
+    public List<Roll> getRolls() {
+        return rolls;
+    }
+
+    public void setRolls(List<Roll> rolls) {
+        this.rolls = rolls;
     }
 }

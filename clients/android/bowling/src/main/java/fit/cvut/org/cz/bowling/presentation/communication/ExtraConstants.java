@@ -22,4 +22,5 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
 
     public static final String EXTRA_PARTICIPANT_NAME = "extra_participant_name";
     public static final String EXTRA_PARTICIPANT_OVERVIEWS = "extra_participant_overviews";
+    public static final String EXTRA_FRAME_OVERVIEWS = "extra_frame_overviews";
 }

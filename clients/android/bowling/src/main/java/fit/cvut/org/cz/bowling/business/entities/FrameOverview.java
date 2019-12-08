@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FrameOverview implements Parcelable {
     private byte frameNumber;
-    private List<Integer> rolls;
+    private List<Byte> rolls;
     private String playerName;
     private int currentScore;
     private long playerId;
@@ -16,7 +16,7 @@ public class FrameOverview implements Parcelable {
         // empty
     }
 
-    public FrameOverview(byte frameNumber, List<Integer> rolls, String playerName, Integer currentScore, long playerId) {
+    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId) {
         this.frameNumber = frameNumber;
         this.rolls = rolls;
         this.playerName = playerName;
@@ -26,6 +26,7 @@ public class FrameOverview implements Parcelable {
 
     protected FrameOverview(Parcel in) {
         frameNumber = in.readByte();
+        in.readList(rolls, Byte.class.getClassLoader());
         playerName = in.readString();
         currentScore = in.readInt();
         playerId = in.readLong();
@@ -51,6 +52,7 @@ public class FrameOverview implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte(frameNumber);
+        dest.writeList(rolls);
         dest.writeString(playerName);
         dest.writeInt(currentScore);
         dest.writeLong(playerId);
@@ -64,11 +66,11 @@ public class FrameOverview implements Parcelable {
         this.frameNumber = frameNumber;
     }
 
-    public List<Integer> getRolls() {
+    public List<Byte> getRolls() {
         return rolls;
     }
 
-    public void setRolls(List<Integer> rolls) {
+    public void setRolls(List<Byte> rolls) {
         this.rolls = rolls;
     }
 

@@ -22,6 +22,8 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
     @DatabaseField(columnName = DBConstants.cFRAMES_NUMBER)
     private byte framesPlayedNumber;
 
+    private List<Frame> frames;
+
     public ParticipantStat() {}
 
     public ParticipantStat(long participantId, int score) {
@@ -79,5 +81,13 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
 
     public void setFramesPlayedNumber(byte framesPlayedNumber) {
         this.framesPlayedNumber = framesPlayedNumber;
+    }
+
+    public List<Frame> getFrames() {
+        return frames;
+    }
+
+    public void setFrames(List<Frame> frames) {
+        this.frames = frames;
     }
 }

@@ -93,7 +93,7 @@ public class FrameService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
                 long participantId = intent.getLongExtra(ExtraConstants.EXTRA_PARTICIPANT_ID, -1);
                 Intent res = new Intent(action);
-                List<Frame> frames = ((IFrameManager)ManagerFactory.getInstance(this).getEntityManager(Frame.class)).getInMatchByParticipantId(matchId, participantId);
+                List<Frame> frames = ((IFrameManager)ManagerFactory.getInstance(this).getEntityManager(Frame.class)).getInMatchByParticipantId(participantId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_FRAMES, new ArrayList<>(frames));
                 break;
             }

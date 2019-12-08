@@ -126,9 +126,9 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
         // Inflate the layout for this fragment
 
-        View fragmentView = inflater.inflate(fit.cvut.org.cz.tmlibrary.R.layout.fragment_abstract_list, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_match_simple_stats, container, false);
 
-        recyclerView = (RecyclerView) fragmentView.findViewById(fit.cvut.org.cz.tmlibrary.R.id.recycler_view);
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.simple_stats_recycler_view);
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -191,6 +191,8 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                 Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
                 TournamentType tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
                 for (Participant participant : participants) {
+                    if(participant.getParticipantId() < 1)
+                        continue;
                     ParticipantOverview overview = new ParticipantOverview();
                     long participantId = participant.getParticipantId();
                     overview.setParticipantId(participantId);

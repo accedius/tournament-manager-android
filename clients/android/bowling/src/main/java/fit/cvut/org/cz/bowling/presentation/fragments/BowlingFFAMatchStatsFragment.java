@@ -71,6 +71,7 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setHasOptionsMenu(true);
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
 

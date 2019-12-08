@@ -29,10 +29,10 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         return new FrameViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_match_frame, viewGroup, false));
     }
 
-    protected void setOnClickListeners(View v, int position, final long playerId, byte frameNumber, List<Integer> rolls, String playerName, int currentScore) {}
+    protected void setOnClickListeners(View v, int position, final long playerId, byte frameNumber, List<Byte> rolls, String playerName, int currentScore) {}
 
     private String formatNumber(int num) { return String.format(Locale.getDefault(),"%d", num); }
-    private Integer getOrNull(List<Integer> list, int index) {
+    private Byte getOrNull(List<Byte> list, int index) {
         return index < list.size() ? list.get(index) : null;
     }
 
@@ -41,16 +41,17 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         FrameOverview frameOw = data.get(i);
         long playerId = frameOw.getPlayerId();
         byte frameNum = frameOw.getFrameNumber();
-        List<Integer> rolls = frameOw.getRolls();
+        ++frameNum;
+        List<Byte> rolls = frameOw.getRolls();
         String playerName = frameOw.getPlayerName();
         int currentScore = frameOw.getCurrentScore();
         setOnClickListeners(holder.wholeView, i, playerId, frameNum, rolls, playerName, currentScore);
 
         holder.frameLabel.setText(formatNumber(frameNum));
         holder.playerLabel.setText(playerName);
-        Integer roll1 = getOrNull(rolls, 0);
-        Integer roll2 = getOrNull(rolls, 1);
-        Integer roll3 = getOrNull(rolls, 2);
+        Byte roll1 = getOrNull(rolls, 0);
+        Byte roll2 = getOrNull(rolls, 1);
+        Byte roll3 = getOrNull(rolls, 2);
         if (roll1 != null) {
             holder.roll1.setText(formatNumber(roll1));
             holder.roll1.setVisibility(View.VISIBLE);

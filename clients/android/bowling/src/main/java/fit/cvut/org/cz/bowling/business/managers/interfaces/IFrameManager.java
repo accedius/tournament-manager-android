@@ -16,11 +16,10 @@ public interface IFrameManager extends IManager<Frame> {
 
     /**
      * get frames in match, which are related to a participant
-     * @param matchId
      * @param participantId
      * @return list of frames
      */
-    List<Frame> getInMatchByParticipantId (long matchId, long participantId);
+    List<Frame> getInMatchByParticipantId (long participantId);
 
     /**
      * get frames in match, which are related to a player

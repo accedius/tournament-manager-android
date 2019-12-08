@@ -107,6 +107,9 @@
 
     <string name="match_statistics" tools:ignore="MissingTranslation">Statistics</string>
     <string name="participant_overview_label" tools:ignore="MissingTranslation">Match stats:</string>
+    <string name="edit_stats_fragment_switch_warning_title" tools:ignore="MissingTranslation">Warning</string>
+    <string name="edit_stats_fragment_switch_warning_message" tools:ignore="MissingTranslation">Do you really want to switch to another input mode? All unsaved data will be lost.</string>
+
     <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and</string>
     <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and</string>
     <string name="mpof_score_violated" tools:ignore="MissingTranslation">Such score is invalid!</string>

@@ -22,6 +22,7 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
@@ -32,6 +33,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
+import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
@@ -79,7 +81,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         }
     }
 
-    private boolean dropTable (Class clazz) {
+    public boolean dropTable (Class clazz) {
         try {
             TableUtils.dropTable(connectionSource, clazz, true);
         } catch (SQLException e) {
@@ -92,55 +94,15 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         int fromVersion = oldVersion;
 
-        //sorry for dumb implementation of versions <=1.0.4, because in all of them DBVersion is the same and equals "1" - wasn't taken into account at the start of development, that's why we need to control if something exists to differentiate between them
-        if (fromVersion < 5 && checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
-            fromVersion = 4;
-        }
+        //check if it's version 4 or older
+        checkForOldVersions(db, fromVersion);
 
-        /*Upgrade from versions <=3 (in reality only 1.0.3 is treated) to version 4*/
-        if(fromVersion <= 3) {
-            try {
-                TableUtils.dropTable(connectionSource, Match.class, true);
-                TableUtils.dropTable(connectionSource, PlayerStat.class, true);
-                TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
-            } catch (SQLException e) {}
-            onCreate(db, connectionSource);
-            fromVersion = 4;
-        }
-
-        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        //from <=3 to 4
+        upgradeFromLT3To4(db, fromVersion);
 
         switch (fromVersion) {
             case 4: /*from 4 to 5*/
-                IEntityDAO<ParticipantStat, Long> participantStatDAO = iManagerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
-                try {
-                    if (!checkIfColumnExists(db, DBConstants.tPARTICIPANT_STATS, DBConstants.cFRAMES_NUMBER))
-                        participantStatDAO.executeRaw("ALTER TABLE " + DBConstants.tPARTICIPANT_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
-                } catch (SQLException e) {
-                    dropTable(ParticipantStat.class);
-                }
-                IEntityDAO<Match, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(Match.class);
-                try {
-                    if (!checkIfColumnExists(db, DBConstants.tMATCHES, DBConstants.cVALID_FOR_STATS)) {
-                        matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
-                        matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
-                    }
-                } catch (SQLException e) {
-                    dropTable(Match.class);
-                    dropTable(Participant.class);
-                    dropTable(PlayerStat.class);
-                    dropTable(ParticipantStat.class);
-                }
-                onCreate(db, connectionSource);
-
-                //we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
-                IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
-                List<Match> allMatches= iMatchManager.getAll();
-                for(Match match : allMatches) {
-                    iMatchManager.delete(match.getId());
-                }
-
-                fromVersion++;
+                upgradeFrom4To5(db, fromVersion);
         }
     }
 
@@ -165,5 +127,94 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                     break;
             }
         }
+    }
+
+    /**
+     * Sorry for dumb implementation of versions <=1.0.4, because in all of them DBVersion is the same and equals "1" - wasn't taken into account at the start of development, that's why we need to control if something exists to differentiate between them
+     * @param db
+     * @param fromVersion
+     */
+    private void checkForOldVersions (SQLiteDatabase db, int fromVersion) {
+        if (fromVersion < 5 && checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
+            fromVersion = 4;
+        }
+    }
+
+    /**
+     * Upgrade from versions <=3 (in reality only 1.0.3 is treated) to version 4
+     * @param db
+     * @param fromVersion
+     */
+    private void upgradeFromLT3To4 (SQLiteDatabase db, int fromVersion) {
+        if(fromVersion <= 3) {
+            try {
+                TableUtils.dropTable(connectionSource, Match.class, true);
+                TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+                TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+            } catch (SQLException e) {}
+            onCreate(db, connectionSource);
+            fromVersion = 4;
+        }
+    }
+
+    /**
+     * Deletes all table contents with manager methods - use, then there are dependencies between tables/classes for safe delete
+     * @param iManagerFactory
+     * @param clazz class object of a table to be purged
+     * @param <E> table class
+     * @param <M> class iManager
+     * @return is successful
+     */
+    public <E extends IEntity, M extends IManager<E>> boolean deleteTableContents (IManagerFactory iManagerFactory, Class<E> clazz) {
+        M iClassManager = iManagerFactory.getEntityManager(clazz);
+        List<E> tableContents = iClassManager.getAll();
+        for(E object : tableContents) {
+            long objectId = object.getId();
+            iClassManager.delete(objectId);
+        }
+        return true;
+    }
+
+    /**
+     * Upgrade script for moving from version 4 to 5
+     * @param db
+     * @param fromVersion
+     */
+    private void upgradeFrom4To5 (SQLiteDatabase db, int fromVersion) {
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IEntityDAO<ParticipantStat, Long> participantStatDAO = iManagerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
+        try {
+            if (!checkIfColumnExists(db, DBConstants.tPARTICIPANT_STATS, DBConstants.cFRAMES_NUMBER))
+                participantStatDAO.executeRaw("ALTER TABLE " + DBConstants.tPARTICIPANT_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
+        } catch (SQLException e) {
+            dropTable(ParticipantStat.class);
+        }
+        IEntityDAO<Match, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(Match.class);
+        try {
+            if (!checkIfColumnExists(db, DBConstants.tMATCHES, DBConstants.cVALID_FOR_STATS)) {
+                matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cVALID_FOR_STATS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
+                matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
+            }
+        } catch (SQLException e) {
+            dropTable(Match.class);
+            dropTable(Participant.class);
+            dropTable(PlayerStat.class);
+            dropTable(ParticipantStat.class);
+        }
+        dropTable(Match.class);
+        dropTable(Participant.class);
+        dropTable(PlayerStat.class);
+        dropTable(ParticipantStat.class);
+        onCreate(db, connectionSource);
+
+        //we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
+        //deleteTableContents(iManagerFactory, Match.class);
+        /*IMatchManager iMatchManager = iManagerFactory.getEntityManager(Match.class);
+        List<Match> allMatches= iMatchManager.getAll();
+        for(Match match : allMatches) {
+            iMatchManager.delete(match.getId());
+        }*/
+
+        ++fromVersion;
     }
 }

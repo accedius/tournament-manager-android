@@ -81,7 +81,7 @@ public class RollService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
                 long frameId = intent.getLongExtra(ExtraConstants.EXTRA_FRAME_ID, -1);
                 Intent res = new Intent(action);
-                List<Roll> rolls = ((IRollManager)ManagerFactory.getInstance(this).getEntityManager(Roll.class)).getByFrameId(matchId, frameId);
+                List<Roll> rolls = ((IRollManager)ManagerFactory.getInstance(this).getEntityManager(Roll.class)).getByFrameId(frameId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_ROLLS, new ArrayList<>(rolls));
                 break;
             }

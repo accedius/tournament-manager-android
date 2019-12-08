@@ -20,15 +20,15 @@ public class RollManager extends BaseManager<Roll> implements IRollManager {
     }
 
     @Override
-    public List<Roll> getByFrameId(long matchId, long frameId) {
+    public List<Roll> getByFrameId(long frameId) {
         try {
             IEntityDAO<Roll, Long> rollDAO = managerFactory.getDaoFactory().getMyDao(Roll.class);
             QueryBuilder<Roll, Long> queryBuilder = rollDAO.queryBuilder();
-            queryBuilder.where().eq(DBConstants.cMATCH_ID, matchId).and().eq(DBConstants.cFRAME_ID, frameId);
+            queryBuilder.where().eq(DBConstants.cFRAME_ID, frameId);
             queryBuilder.orderBy(DBConstants.cROLL_NUMBER, true);
             PreparedQuery<Roll> preparedQuery = queryBuilder.prepare();
-            List<Roll> configurations = rollDAO.query(preparedQuery);
-            return new ArrayList<>(configurations);
+            List<Roll> rolls = rollDAO.query(preparedQuery);
+            return new ArrayList<>(rolls);
         } catch (SQLException e) {
             return new ArrayList<>();
         }

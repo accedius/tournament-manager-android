@@ -135,7 +135,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {
             //When match is closed and saved
-            sendToSaveMatch();
+            //sendToSaveMatch();
+            finish();
         } else if (item.getItemId() == R.id.action_edit_stats) {
             ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
         } else if (item.getItemId() == R.id.action_edit) {
@@ -152,7 +153,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     @Override
     public void onBackPressed() {
-        sendToSaveMatch();
+        //sendToSaveMatch();
+        finish();
     }
 
 }

@@ -10,9 +10,8 @@ public interface IRollManager extends IManager<Roll> {
 
     /**
      * get rolls in match, which are related to a frame
-     * @param matchId
      * @param frameId
      * @return list of rolls
      */
-    List<Roll> getByFrameId (long matchId, long frameId);
+    List<Roll> getByFrameId (long frameId);
 }

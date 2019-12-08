@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -56,10 +58,11 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(inputFragment != null)
             getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
         if(isChecked) {
+            inputFragment = FrameListFragment.newInstance(matchId);
         } else {
             inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
-            getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment).commit();
         }
+        getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment).commit();
     }
 
     @Override
@@ -73,10 +76,43 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
             setContentFragment(statsInputSwitch.isChecked());
         }
         statsInputSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            boolean abortToken;
+
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //TODO display a warning
-                setContentFragment(isChecked);
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+                if(abortToken) {
+                    abortToken = false;
+                    return;
+                }
+
+                //Warning message
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle(R.string.edit_stats_fragment_switch_warning_title);
+                alertDialog.setMessage(R.string.edit_stats_fragment_switch_warning_message);
+                alertDialog.setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                setContentFragment(isChecked);
+                            }
+                        });
+
+                alertDialog.setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        abortToken = true;
+                        statsInputSwitch.setChecked(!isChecked);
+                        dialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
             }
         });
         partialDataPropagation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
