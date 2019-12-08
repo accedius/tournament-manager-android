@@ -7,19 +7,23 @@ import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.bowling.business.managers.CompetitionManager;
+import fit.cvut.org.cz.bowling.business.managers.FrameManager;
 import fit.cvut.org.cz.bowling.business.managers.MatchManager;
 import fit.cvut.org.cz.bowling.business.managers.ParticipantManager;
 import fit.cvut.org.cz.bowling.business.managers.ParticipantStatManager;
 import fit.cvut.org.cz.bowling.business.managers.PlayerStatManager;
 import fit.cvut.org.cz.bowling.business.managers.PointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.RollManager;
 import fit.cvut.org.cz.bowling.business.managers.StatisticManager;
 import fit.cvut.org.cz.bowling.business.managers.TeamManager;
 import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.data.BowlingDAOFactory;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
@@ -44,45 +48,54 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
     @Override
     public <M extends IManager<E>, E extends IEntity> M getEntityManager(Class<E> entity) {
         BaseManager<? extends IEntity> manager = null;
-
+        String entityName = entity.getName();
+        
         // Competition
-        if (entity.getName().equals(Competition.class.getName())) {
+        if (entityName.equals(Competition.class.getName())) {
             manager = new CompetitionManager();
         }
         // Tournament
-        else if (entity.getName().equals(Tournament.class.getName())) {
+        else if (entityName.equals(Tournament.class.getName())) {
             manager = new TournamentManager();
         }
         // Team
-        else if (entity.getName().equals(Team.class.getName())) {
+        else if (entityName.equals(Team.class.getName())) {
             manager = new TeamManager();
         }
         // PointConfiguration
-        else if (entity.getName().equals(PointConfiguration.class.getName())) {
+        else if (entityName.equals(PointConfiguration.class.getName())) {
             manager = new PointConfigurationManager();
         }
         // Match
-        else if (entity.getName().equals(Match.class.getName())) {
+        else if (entityName.equals(Match.class.getName())) {
             manager = new MatchManager();
         }
+        //Frame
+        else if (entityName.equals(Frame.class.getName())) {
+            manager = new FrameManager();
+        }
+        //Roll
+        else if (entityName.equals(Roll.class.getName())) {
+            manager = new RollManager();
+        }
         // Participant
-        else if (entity.getName().equals(Participant.class.getName())) {
+        else if (entityName.equals(Participant.class.getName())) {
             manager = new ParticipantManager();
         }
         // ParticipantStat
-        else if (entity.getName().equals(ParticipantStat.class.getName())) {
+        else if (entityName.equals(ParticipantStat.class.getName())) {
             manager = new ParticipantStatManager();
         }
         // PlayerStat
-        else if (entity.getName().equals(PlayerStat.class.getName())) {
+        else if (entityName.equals(PlayerStat.class.getName())) {
             manager = new PlayerStatManager();
         }
         // Statistic
-        else if (entity.getName().equals(AggregatedStatistics.class.getName())) {
+        else if (entityName.equals(AggregatedStatistics.class.getName())) {
             manager = new StatisticManager();
         }
         // Core Player
-        else if (entity.getName().equals(Player.class.getName())) {
+        else if (entityName.equals(Player.class.getName())) {
             return (M) new PackagePlayerManager(context);
         }
 

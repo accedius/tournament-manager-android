@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,13 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity;
-import fit.cvut.org.cz.bowling.presentation.activities.EditAtOnceActivity;
 import fit.cvut.org.cz.bowling.presentation.adapters.MatchStatisticsAdapter;
+import fit.cvut.org.cz.bowling.presentation.adapters.MatchStatisticsListAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
-import fit.cvut.org.cz.bowling.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.bowling.presentation.services.StatsService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -43,15 +46,18 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     public static final int REQUEST_PART = 1;
     public static final int REQUEST_EDIT = 3;
 
-    private MatchStatisticsAdapter partAdapter;
 
-    private Participant part = null;
+    private MatchStatisticsAdapter adapter;
+    private List<MatchStatisticsAdapter> partsAdapters;
+    //private MatchStatisticsListAdapter listAdapter;
+
+    private List<Participant> parts = null;
     private RecyclerView recyclerView;
     private TextView tvPart;
     private FloatingActionButton fab;
     private ScrollView scrv;
     private long matchId;
-    List<PlayerStat> tmpPartStats;
+    List<List<PlayerStat>> tmpPartStats;
     private Fragment thisFragment;
 
     public static BowlingFFAMatchStatsFragment newInstance(long matchId) {
@@ -65,13 +71,20 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setHasOptionsMenu(true);
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
 
         if (savedInstanceState != null) {
-            tmpPartStats = savedInstanceState.getParcelableArrayList(SAVE_LIST);
-            part = savedInstanceState.getParcelable(SAVE_PART);
+            parts = savedInstanceState.getParcelableArrayList(SAVE_PART);
+            for(int i = 0; i < parts.size(); i++) {
+                List<PlayerStat> tmp = savedInstanceState.getParcelableArrayList(SAVE_LIST + i);
+                tmpPartStats.set(i, tmp);
+            }
         } else {
+            IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+            IParticipantManager iParticipantManager = iManagerFactory.getEntityManager(Participant.class);
+            parts = iParticipantManager.getByMatchId(matchId);
             tmpPartStats = null;
         }
         thisFragment = this;
@@ -86,9 +99,12 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        tmpPartStats = partAdapter.getData();
-        outState.putParcelable(SAVE_PART, part);
-        outState.putParcelableArrayList(SAVE_LIST, new ArrayList<>(tmpPartStats));
+        for(int i = 0; i < parts.size(); i++) {
+            tmpPartStats.add(partsAdapters.get(i).getData());
+        }
+        outState.putParcelableArrayList(SAVE_PART, new ArrayList<>(parts));
+        for(int i = 0; i < parts.size(); i++)
+            outState.putParcelableArrayList(SAVE_LIST+i, new ArrayList<>(tmpPartStats.get(i)));
     }
 
     @Override
@@ -115,10 +131,19 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     @Override
     protected void bindDataOnView(Intent intent) {
         if (tmpPartStats == null) {
-            tmpPartStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+            tmpPartStats = new ArrayList<List<PlayerStat>>();
+            for (int i = 0; i < parts.size(); i++) {
+                List<PlayerStat> tmp = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i);
+                tmpPartStats.add(tmp);
+            }
         }
-        part = intent.getParcelableExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
-        partAdapter.swapData(tmpPartStats);
+        //parts = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT);
+        List<PlayerStat> tmp = new ArrayList<>();
+        for (int i = 0; i < parts.size(); i++) {
+            partsAdapters.get(i).swapData(tmpPartStats.get(i));
+            tmp.addAll(tmpPartStats.get(i));
+        }
+        adapter.swapData(tmp);
     }
 
     @Override
@@ -140,9 +165,14 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         tvPart = (TextView) fragmentView.findViewById(R.id.tv_home);
         scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
 
-        partAdapter = new MatchStatisticsAdapter(this);
-        partAdapter.setIsHome(true);
-        recyclerView.setAdapter(partAdapter);
+        partsAdapters = new ArrayList<>();
+        for (int i = 0; i < parts.size(); i++) {
+            partsAdapters.add(new MatchStatisticsAdapter(this));
+        }
+        adapter = new MatchStatisticsAdapter(this);
+        //listAdapter = new MatchStatisticsListAdapter();
+
+        recyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -185,42 +215,71 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
         if (resultCode != AddPlayersActivity.RESULT_OK)
             return;
 
+
         if (requestCode == REQUEST_EDIT) {
-            ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
-            partAdapter.swapData(homeStats);
-            tmpPartStats = homeStats;
+            ArrayList<PlayerStat> tmp = new ArrayList<>();
+            for (int i = 0; i < parts.size(); i++) {
+                ArrayList<PlayerStat> homeStats = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i);
+                partsAdapters.get(i).swapData(homeStats);
+                tmp.addAll(homeStats);
+                //tmpPartStats = homeStats;
+            }
+            adapter.swapData(tmp);
             return;
         }
 
-        Participant participant;
+        //Participant participant;
         ArrayList<Player> players = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
-        List<PlayerStat> playerStatistics;
-            playerStatistics = partAdapter.getData();
-            participant = part;
+        //List<PlayerStat> playerStatistics;
+        //playerStatistics = partsAdapters.getData();
+        //participant = parts;
+
+        //List<MatchStatisticsAdapter> list = listAdapter.getData();
+        //List<MatchStatisticsAdapter> list = partsAdapter;
+
+
+        List<PlayerStat> tmp = adapter.getData();
 
         for (Player player : players) {
-            //Participant part = new Participant(matchId, player.getId(), ParticipantType.home.toString());
-            PlayerStat playerStat = new PlayerStat(participant.getId(), player.getId());
+            Participant part = new Participant(matchId, player.getId(), ParticipantType.home.toString());
+            PlayerStat playerStat = new PlayerStat(part.getId(), player.getId());
             playerStat.setName(player.getName());
+            //playerStatistics.add(playerStat);
+
+            MatchStatisticsAdapter adapter = new MatchStatisticsAdapter(this);
+            List<PlayerStat> playerStatistics = new ArrayList<>();
             playerStatistics.add(playerStat);
+
+            parts.add(part);
+            tmpPartStats.add(playerStatistics);
+            partsAdapters.add(adapter);
+            //list.add(adapter);
+            tmp.add(playerStat);
         }
 
-            partAdapter.swapData(playerStatistics);
-            tmpPartStats = playerStatistics;
+        adapter.swapData(tmp);
+
+        //partsAdapter = list;
+        //listAdapter.swapData(list);
+        //tmpPartStats = playerStatistics;
     }
 
     public ArrayList<PlayerStat> getOmitPlayers() {
         ArrayList<PlayerStat> res = new ArrayList<>();
-        res.addAll(partAdapter.getData());
+        for(int i = 0; i < parts.size(); i++)
+            res.addAll(partsAdapters.get(i).getData());
         return res;
     }
 
     /**
      *
-     * @return current list of statistics of part team
+     * @return current list of statistics of parts team
      */
     public List<PlayerStat> getHomeList() {
-        return partAdapter.getData();
+        ArrayList<PlayerStat> res = new ArrayList<>();
+        for(int i = 0; i < parts.size(); i++)
+            res.addAll(partsAdapters.get(i).getData());
+        return res;
     }
 
     /**
@@ -235,27 +294,67 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
 
     /**
      * Sets stats of a player. Used by edit stats dialog
-     * @param home is it about part team or away team
+     * @param participant is id of the team
      * @param position position in data
      * @param statistic statistic to be changed to
      */
-    public void setPlayerStats(boolean home, int position, PlayerStat statistic) {
-        if (home) {
-            List<PlayerStat> dat = partAdapter.getData();
-            dat.remove(position);
-            dat.add(position, statistic);
-            partAdapter.swapData(dat);
+    public void setPlayerStats(long participant, int position, PlayerStat statistic) {
+        int partindex = getParticipantIndex(participant);
+        Log.d("List de Bug","partindex = " + partindex + "; position = " + position);
+        List<PlayerStat> dat = partsAdapters.get(partindex).getData();
+        int newpos = position;
+        for(int i = 0; i < partindex; i++)
+        {
+            newpos -= partsAdapters.get(i).getData().size();
         }
+        dat.remove(newpos);
+        dat.add(newpos, statistic);
+        partsAdapters.get(partindex).swapData(dat);
+
+        updateAdapterByPartsAdapter();
     }
+
+    private void updateAdapterByPartsAdapter()
+    {
+        ArrayList<PlayerStat> tmp = new ArrayList<>();
+        for (int i = 0; i < partsAdapters.size(); i++)
+        {
+            tmp.addAll(partsAdapters.get(i).getData());
+        }
+        adapter.swapData(tmp);
+    }
+
+
 
     /**
      * removes player from team
-     * @param home is it about part team or away team
+     * @param participant is id of the team
      * @param position position in data to be removed
      */
-    public void removePlayer(boolean home, int position){
-        if (home) {
-            partAdapter.removePos(position);
+    public void removePlayer(long participant, int position){
+        int partindex = getParticipantIndex(participant);
+        PlayerStat stat = partsAdapters.get(partindex).getData().get(position);
+        partsAdapters.get(partindex).removePos(position);
+        List<PlayerStat> stats = adapter.getData();
+        for(int i = 0; i < stats.size(); i++)
+        {
+            if(stats.get(i).getPlayerId() == stat.getPlayerId())
+            {
+                adapter.removePos(i);
+                return;
+            }
         }
+    }
+
+    private int getParticipantIndex(long participant)
+    {
+        int partindex = 0;
+        for (int i = 0; i < parts.size(); i++) {
+            if (parts.get(i).getId() == participant) {
+                partindex = i;
+                break;
+            }
+        }
+        return partindex;
     }
 }

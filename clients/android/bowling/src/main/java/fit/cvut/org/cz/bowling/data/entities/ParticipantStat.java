@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.List;
+
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 
 /**
@@ -17,11 +19,22 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
     @DatabaseField(columnName = DBConstants.cSCORE)
     private int score;
 
+    @DatabaseField(columnName = DBConstants.cFRAMES_NUMBER)
+    private byte framesPlayedNumber;
+
+    private List<Frame> frames;
+
     public ParticipantStat() {}
 
     public ParticipantStat(long participantId, int score) {
+        this.score = score;
+        framesPlayedNumber = 0;
+    }
+
+    public ParticipantStat(long participantId, int score, byte framesPlayedNumber) {
         super(participantId);
         this.score = score;
+        this.framesPlayedNumber = framesPlayedNumber;
     }
 
     @Override
@@ -33,11 +46,13 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeInt(score);
+        dest.writeByte(framesPlayedNumber);
     }
 
     public ParticipantStat(Parcel in) {
         super(in);
         this.score = in.readInt();
+        this.framesPlayedNumber = in.readByte();
     }
 
     public static final Creator<ParticipantStat> CREATOR = new Creator<ParticipantStat>() {
@@ -58,5 +73,21 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public byte getFramesPlayedNumber() {
+        return framesPlayedNumber;
+    }
+
+    public void setFramesPlayedNumber(byte framesPlayedNumber) {
+        this.framesPlayedNumber = framesPlayedNumber;
+    }
+
+    public List<Frame> getFrames() {
+        return frames;
+    }
+
+    public void setFrames(List<Frame> frames) {
+        this.frames = frames;
     }
 }

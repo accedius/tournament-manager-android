@@ -63,7 +63,7 @@ public class MatchLoader {
             }
 
             // Add Player stats to match
-            for (PlayerStat playerStat : importedMatch.getHomePlayers()) {
+            /*for (PlayerStat playerStat : importedMatch.getHomePlayers()) {
                 // TODO, getPlayerId in case of FileStrategy, getUid otherwise
                 PlayerStat homePlayerStat = new PlayerStat(playerStat);
                 homePlayerStat.setParticipantId(homeParticipant.getId());
@@ -76,7 +76,7 @@ public class MatchLoader {
                 awayPlayerStat.setParticipantId(awayParticipant.getId());
                 awayPlayerStat.setPlayerId(importedPlayers.get(String.valueOf(playerStat.getPlayerId())).getId());
                 ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class).insert(awayPlayerStat);
-            }
+            }*/
         }
     }
 }

@@ -207,8 +207,8 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
 
     @Override
     protected FloatingActionButton getFAB(ViewGroup parent) {
-        final LayoutInflater layourInflater = LayoutInflater.from(getContext());
-        FloatingActionButton fab = (FloatingActionButton) layourInflater.inflate(R.layout.floatingbutton_add, parent, false);
+        final LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        FloatingActionButton fab = (FloatingActionButton) layoutInflater.inflate(R.layout.floatingbutton_add, parent, false);
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {

@@ -31,7 +31,7 @@ public class PlayerMatchStatDialog extends DialogFragment {
                         break;
                     }
                     case 1: {
-                        ((BowlingFFAMatchStatsFragment)getTargetFragment()).removePlayer(getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME), getArguments().getInt(ExtraConstants.EXTRA_POSITION));
+                        ((BowlingFFAMatchStatsFragment)getTargetFragment()).removePlayer(((PlayerStat)getArguments().getParcelable(ExtraConstants.EXTRA_DATA)).getParticipantId(), getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         break;
                     }
                 }

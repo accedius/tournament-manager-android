@@ -12,7 +12,10 @@
 
     <string name="generate_by_goals" tools:ignore="MissingTranslation">Generate by goals</string>
     <string name="generate_by_wins" tools:ignore="MissingTranslation">Generate by wins</string>
+    <string name="generate_by_lanes" tools:ignore="MissingTranslation">Generate by lane</string>
     <string name="generate_matches" tools:ignore="MissingTranslation">Generate matches</string>
+
+    <string name="enter_number_of_lanes" tools:ignore="MissingTranslation">Enter number of lanes</string>
 
     <string name="type_none" tools:ignore="MissingTranslation">None</string>
 
@@ -24,13 +27,16 @@
     <string name="g" tools:ignore="MissingTranslation">G</string>
     <string name="st" tools:ignore="MissingTranslation">St</string>
     <string name="legend_ST" tools:ignore="MissingTranslation">St: Strikes</string>
+    <string name="strikes" tools:ignore="MissingTranslation">Strikes</string>
 
     <string name="a" tools:ignore="MissingTranslation">A</string>
     <string name="sp" tools:ignore="MissingTranslation">Sp</string>
     <string name="legend_SPA" tools:ignore="MissingTranslation">Sp: Spares</string>
+    <string name="spares" tools:ignore="MissingTranslation">Spares</string>
 
     <string name="pt" tools:ignore="MissingTranslation">Pt</string>
     <string name="legend_PT" tools:ignore="MissingTranslation">Pt: Points</string>
+    <string name="points" tools:ignore="MissingTranslation">Points</string>
 
     <string name="p" tools:ignore="MissingTranslation">P</string>
     <string name="pmp" tools:ignore="MissingTranslation">+/-</string>
@@ -98,4 +104,37 @@
     <string name="pc_place_label_1" tools:ignore="MissingTranslation">Points for</string>
     <string name="pc_place_label_2" tools:ignore="MissingTranslation">. place:</string>
     <string name="spca_title_fragment" tools:ignore="MissingTranslation">Sides number</string>
+
+    <string name="match_statistics" tools:ignore="MissingTranslation">Statistics</string>
+    <string name="participant_overview_label" tools:ignore="MissingTranslation">Match stats:</string>
+    <string name="edit_stats_fragment_switch_warning_title" tools:ignore="MissingTranslation">Warning</string>
+    <string name="edit_stats_fragment_switch_warning_message" tools:ignore="MissingTranslation">Do you really want to switch to another input mode? All unsaved data will be lost.</string>
+
+    <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Should be a number between 1 and</string>
+    <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and</string>
+    <string name="mpof_score_violated" tools:ignore="MissingTranslation">Such score is invalid!</string>
+    <string name="poa_not_played_yet" tools:ignore="MissingTranslation">This participant has not played yet</string>
+
+    <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 10!</string>
+    <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">The total amount of pins knocked down should be between 1 and 10!</string>
+    <string name="flf_last_frame_invalid_extra_roll_error" tools:ignore="MissingTranslation">You only get a bonus roll if you had a strike/spare!</string>
+
+    <string name="played_frames_input_label" tools:ignore="MissingTranslation">Played frames:</string>
+    <string name="total_score_input_label" tools:ignore="MissingTranslation">Total score:</string>
+    <string name="throw_1_input_label" tools:ignore="MissingTranslation">Throw 1:</string>
+    <string name="throw_2_input_label" tools:ignore="MissingTranslation">Throw 2:</string>
+    <string name="throw_3_input_label" tools:ignore="MissingTranslation">Throw 3:</string>
+    <string name="played_frames_label" tools:ignore="MissingTranslation">Played frames:</string>
+    <string name="final_score_label" tools:ignore="MissingTranslation">Final score:</string>
+    <string name="frame_num" tools:ignore="MissingTranslation">Frame #</string>
+    <string name="throws_label" tools:ignore="MissingTranslation">Throws:</string>
+    <string name="current_score_label" tools:ignore="MissingTranslation">Current Score:</string>
+    <string name="track_individual_throws" tools:ignore="MissingTranslation">Track individual throws</string>
+    <string name="update_stats_with_partial_data" tools:ignore="MissingTranslation">Update stats with partial data</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="simple_stats" tools:ignore="MissingTranslation">Simple stats</string>
+    <string name="complex_stats" tools:ignore="MissingTranslation">Complex stats</string>
+
+    <string name="lane" tools:ignore="MissingTranslation">Lane</string>
 </resources>
