@@ -126,7 +126,7 @@ public abstract class CustomNewMatchFragment extends AbstractDataFragment {
 
 
         Match sm = new Match(id, tournamentId, sDate, false, note.getText().toString(), sPeriod, sRound);
-        //if (id == -1) {sm.addParticipant(new Participant(id, participantId, ParticipantType.home.toString())); }
+        if (id == -1) {sm.addParticipant(new Participant(id, participantId, ParticipantType.home.toString())); }
 
         return sm;
     }

@@ -47,6 +47,11 @@ public class DefaultViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         final Fragment fragment = (Fragment) super.instantiateItem(container, position);
+
+        //in order to not forget fragment instances while rotating device we should check if adapter holds the right information
+        if(getItem(position) == null)
+            fragments[position] = fragment;
+
         tags[position] = fragment.getTag();
         return fragment;
     }

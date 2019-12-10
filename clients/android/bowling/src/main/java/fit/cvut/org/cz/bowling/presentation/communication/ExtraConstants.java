@@ -26,4 +26,5 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
 
     public static final String STRIKE_SYMBOL = "X";
     public static final String SPARE_SYMBOL = "/";
+    public static final String ZERO_SYMBOL = "-";
 }

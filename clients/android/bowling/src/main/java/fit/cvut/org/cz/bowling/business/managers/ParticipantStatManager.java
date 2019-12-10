@@ -25,6 +25,18 @@ public class ParticipantStatManager extends BaseManager<ParticipantStat> impleme
     public List<ParticipantStat> getByParticipantId(long participantId) {
         IEntityDAO<ParticipantStat, Long> participantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
         List<ParticipantStat> stats = participantStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
+        /*for(ParticipantStat stat : stats) {
+            IFrameManager frameManager = ( (IFrameManager) managerFactory.getEntityManager(Frame.class));
+            List<Frame> frames = frameManager.getInMatchByParticipantId(participantId);
+            stat.setFrames(frames);
+        }*/
+        return new ArrayList<>(stats);
+    }
+
+    @Override
+    public List<ParticipantStat> getByParticipantIdWithAllContents(long participantId) {
+        IEntityDAO<ParticipantStat, Long> participantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
+        List<ParticipantStat> stats = participantStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participantId);
         for(ParticipantStat stat : stats) {
             IFrameManager frameManager = ( (IFrameManager) managerFactory.getEntityManager(Frame.class));
             List<Frame> frames = frameManager.getInMatchByParticipantId(participantId);

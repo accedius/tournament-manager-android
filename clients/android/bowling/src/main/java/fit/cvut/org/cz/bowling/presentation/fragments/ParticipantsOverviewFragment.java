@@ -284,6 +284,9 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         ParticipantOverview participantOverview = null;
         int arrayPosition;
         String name;
+        final int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+        final int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
+        final int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
 
         //Position of a ParticipantOverview in a participantOverviews list in MatchParticipantsOverviewFragment
         public static EditParticipantOverviewDialog newInstance(int participantStatToEditArrayPosition, String name) {
@@ -328,7 +331,6 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         }
 
         private boolean checkIfScoreIsPossible(int score, int frames) {
-            int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
             if(frames > 2 && frames < ConstraintsConstants.tenPinMatchParticipantMaxFrames) {
                 return score <= maxFrameScore * 3 *(frames - 1); // 10 (last) + 20 (second from end) + 30 * allOtherFrames
             } else if(frames == 2) {
@@ -348,8 +350,6 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
                     @Override
                     public void onClick(View v) {
                         boolean returnToken = false;
-                        int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
-                        int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
 
                         if (framesPlayedNumber.getText().toString().isEmpty() ) {
                             TextInputLayout til = getDialog().findViewById(R.id.played_frames_input_layout);

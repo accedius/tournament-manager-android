@@ -38,15 +38,10 @@ public class ShowMatchActivity extends AbstractTabActivity {
     private ViewPager pager;
 
     private Fragment[] fragments;
+    private Fragment f1, f2, f3;
     private String[] titles;
 
     private DefaultViewPagerAdapter adapter;
-
-    @Override
-    protected View injectView(ViewGroup parent) {
-        v = super.injectView(parent);
-        return v;
-    }
 
     /**
      * Creates a new intent to start this activity
@@ -64,28 +59,18 @@ public class ShowMatchActivity extends AbstractTabActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         matchId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_MATCH_ID);
 
-        /*titles = new String[]{
-                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                getString(R.string.match_statistics)};
-        Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = MatchEditStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2};*/
-
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(R.string.match_statistics),
                 getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
-        Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = MatchEditStatsFragment.newInstance(matchId);
-        Fragment f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2, f3 };
 
-        /*titles = new String[]{
-                getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
-        Fragment f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-        Fragment f2 = BowlingFFAMatchStatsFragment.newInstance(matchId);
-        fragments = new Fragment[]{ f1, f2};*/
+        if(savedInstanceState == null) {
+            f1 = BowlingMatchOverviewFragment.newInstance(matchId);
+            f2 = MatchEditStatsFragment.newInstance(matchId);
+            f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
+        }
+
+        fragments = new Fragment[]{ f1, f2, f3 };
 
         super.onCreate(savedInstanceState);
 
@@ -97,6 +82,13 @@ public class ShowMatchActivity extends AbstractTabActivity {
         TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("refresh", 0);
     }
 
     @Override
@@ -117,7 +109,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     }
 
     private void sendToSaveMatch() {
-        Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
+        /*Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
 
         //Grab our new/current list of player and pass it service to update the DB
         List<PlayerStat> stats = ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
@@ -126,19 +118,36 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
         intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(stats));
 
-        startService(intent);
+        startService(intent);*/
 
         finish();
     }
 
+    /**
+     * Restores lost fragments - they are destroyed on device rotation, but still available via pager and its adapter, because we set the retain instance state to true (I don't know why and how this works, but it's a simple solution)
+     */
+    private void restoreFragments(){
+        if(f1 == null) {
+            f1 = adapter.getItem(0);
+        }
+        if(f2 == null) {
+            f2 = adapter.getItem(1);
+        }
+        if(f3 == null) {
+            f3 = adapter.getItem(2);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Restores lost fragments - they are destroyed on device rotation, but still available via pager and its adapter, because we set the retain instance state to true (I don't know why and how this works, but it's a simple solution)
+        restoreFragments();
+
         if (item.getItemId() == R.id.action_finish  || item.getItemId() == android.R.id.home) {
             //When match is closed and saved
-            //sendToSaveMatch();
-            finish();
+            sendToSaveMatch();
         } else if (item.getItemId() == R.id.action_edit_stats) {
-            ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).editAll();
+            ((BowlingFFAMatchStatsFragment) f3).editAll();
         } else if (item.getItemId() == R.id.action_edit) {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) fragments[0];
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
@@ -153,8 +162,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
     @Override
     public void onBackPressed() {
-        //sendToSaveMatch();
-        finish();
+        sendToSaveMatch();
     }
 
 }

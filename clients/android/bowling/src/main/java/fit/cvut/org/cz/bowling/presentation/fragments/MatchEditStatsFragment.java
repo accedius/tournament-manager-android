@@ -27,6 +27,10 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     private CheckBox partialDataPropagation;
     private AbstractListFragment inputFragment;
 
+    public Match getMatchResults() {
+        return match;
+    }
+
     public static MatchEditStatsFragment newInstance (long matchId) {
         MatchEditStatsFragment fragment = new MatchEditStatsFragment();
         Bundle args = new Bundle();
@@ -92,6 +96,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                 alertDialog.setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                match.setTrackRolls(isChecked);
                                 setContentFragment(isChecked);
                             }
                         });

@@ -23,11 +23,13 @@
             android:text="@string/update_stats_with_partial_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
             />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/input_container" />
 
     </LinearLayout>

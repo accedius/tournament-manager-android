@@ -115,8 +115,8 @@
     <string name="mpof_score_violated" tools:ignore="MissingTranslation">Such score is invalid!</string>
     <string name="poa_not_played_yet" tools:ignore="MissingTranslation">This participant has not played yet</string>
 
-    <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and 10!</string>
-    <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">The total amount of pins knocked down should be between 1 and 10!</string>
+    <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Should be a number between 0 and</string>
+    <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">The total amount of pins knocked down should be between 0 and</string>
     <string name="flf_last_frame_invalid_extra_roll_error" tools:ignore="MissingTranslation">You only get a bonus roll if you had a strike/spare!</string>
 
     <string name="played_frames_input_label" tools:ignore="MissingTranslation">Played frames:</string>
@@ -128,7 +128,7 @@
     <string name="final_score_label" tools:ignore="MissingTranslation">Final score:</string>
     <string name="frame_num" tools:ignore="MissingTranslation">Frame #</string>
     <string name="throws_label" tools:ignore="MissingTranslation">Throws:</string>
-    <string name="current_score_label" tools:ignore="MissingTranslation">Current Score:</string>
+    <string name="current_score_label" tools:ignore="MissingTranslation">Score:</string>
     <string name="track_individual_throws" tools:ignore="MissingTranslation">Track individual throws</string>
     <string name="update_stats_with_partial_data" tools:ignore="MissingTranslation">Update stats with partial data</string>
     <string name="no">No</string>

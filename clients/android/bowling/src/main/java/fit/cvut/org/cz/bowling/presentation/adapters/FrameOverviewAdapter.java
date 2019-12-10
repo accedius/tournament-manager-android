@@ -14,14 +14,16 @@ import java.util.Locale;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, FrameOverviewAdapter.FrameViewHolder> {
 
-    private Resources res;
+    private TournamentType type;
 
-    public FrameOverviewAdapter(Resources res) {
-        this.res = res;
+    public FrameOverviewAdapter(TournamentType type) {
+        this.type = type;
     }
 
     @NonNull
@@ -59,6 +61,8 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
                 if(frameNum!=10){
                     roll2 = null;
                 }
+            } else if (roll1 == 0) {
+              holder.roll1.setText(ExtraConstants.ZERO_SYMBOL);
             } else {
                 holder.roll1.setText(formatNumber(roll1));
             }
@@ -73,6 +77,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
                 holder.roll2.setText(ExtraConstants.STRIKE_SYMBOL);
             } else if (roll2 + roll1 == 10 && roll2 > 0) {
                 holder.roll2.setText(ExtraConstants.SPARE_SYMBOL);
+                holder.roll3.setVisibility(View.GONE);
+            } else if (roll2 == 0) {
+                holder.roll2.setText(ExtraConstants.ZERO_SYMBOL);
             } else {
                 holder.roll2.setText(formatNumber(roll2));
             }
@@ -87,6 +94,8 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
                 holder.roll3.setText(ExtraConstants.STRIKE_SYMBOL);
             } else if (roll3 + roll2 == 10 && roll3 > 0 && roll1 + roll2 != 10) {
                 holder.roll3.setText(ExtraConstants.SPARE_SYMBOL);
+            } else if (roll3 == 0) {
+                holder.roll3.setText(ExtraConstants.ZERO_SYMBOL);
             } else {
                 holder.roll3.setText(formatNumber(roll3));
             }
@@ -112,6 +121,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
             roll3 = itemView.findViewById(R.id.throw_3_text_view);
             currentScore = itemView.findViewById(R.id.current_score_text_view);
             wholeView = itemView;
+            if(type.equals(TournamentTypes.individuals())) {
+                playerLabel.setVisibility(View.GONE);
+            }
         }
     }
 }

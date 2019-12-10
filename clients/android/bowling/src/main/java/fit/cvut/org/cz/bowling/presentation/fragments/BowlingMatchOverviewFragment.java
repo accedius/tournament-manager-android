@@ -58,6 +58,7 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         if (savedInstanceState != null) {
             intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
