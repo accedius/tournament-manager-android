@@ -45,6 +45,7 @@ public class ParticipantService extends AbstractIntentServiceWProgress {
                     break;
                 ArrayList<Participant> participants = new ArrayList<>(((IParticipantManager) ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchId(matchId));
 
+                res.putExtra(ExtraConstants.EXTRA_MATCH_ID,matchId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, participants);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
@@ -59,6 +60,7 @@ public class ParticipantService extends AbstractIntentServiceWProgress {
                     break;
                 ArrayList<Participant> participants = new ArrayList<>(((IParticipantManager) ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchIdWithAllContents(matchId));
 
+                res.putExtra(ExtraConstants.EXTRA_MATCH_ID,matchId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, participants);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
