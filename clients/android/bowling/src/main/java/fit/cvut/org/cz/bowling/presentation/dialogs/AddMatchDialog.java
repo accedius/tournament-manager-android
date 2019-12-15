@@ -72,8 +72,8 @@ public class AddMatchDialog extends DialogFragment {
                                         intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
                                         intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
                                         c.startService(intent);
-                                        c.startActivity(a.getIntent());
-
+                                        //c.startActivity(a.getIntent());
+                                        a.recreate();
                                     }
                                 });
 
