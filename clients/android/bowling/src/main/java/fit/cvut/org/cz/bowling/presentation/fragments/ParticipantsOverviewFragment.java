@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -60,7 +61,10 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
     private Fragment thisFragment;
 
     @Override
-    public List<Participant> getMatchStats() {
+    public Bundle getMatchStats() {
+        Bundle bundle = new Bundle();
+        List<ParticipantStat> participantStatsToCreate, participantStatsToUpdate;
+        participantStatsToCreate = participantStatsToUpdate = new ArrayList<>();
         int i = 0;
         for(Participant participant : matchParticipants) {
             ParticipantOverview overview = participantOverviews.get(i);
@@ -74,15 +78,31 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
             }
             stat.setFramesPlayedNumber(overview.getFramesPlayedNumber());
             stat.setScore(overview.getScore());
-            if(noPreviousStats){
+            boolean participantStatToUpdate = true;
+            if(noPreviousStats) {
                 List<ParticipantStat> stats = new ArrayList<>();
                 stats.add(stat);
                 participant.setParticipantStats(stats);
+                participantStatToUpdate = false;
+            }
+
+            if(participantStatToUpdate) {
+                participantStatsToUpdate.add(stat);
+            } else {
+                participantStatsToCreate.add(stat);
             }
 
             ++i;
         }
 
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_CREATE, (ArrayList<? extends Parcelable>) participantStatsToCreate);
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_UPDATE, (ArrayList<? extends Parcelable>) participantStatsToUpdate);
+
+        return bundle;
+    }
+
+    @Override
+    public List<Participant> getMatchParticipants() {
         return matchParticipants;
     }
 

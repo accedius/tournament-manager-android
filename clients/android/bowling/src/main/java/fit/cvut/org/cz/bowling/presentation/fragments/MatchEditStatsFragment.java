@@ -31,11 +31,18 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     private BowlingAbstractMatchStatsListFragment inputFragment;
     private static final String inputFragmentTag = "inputFragmentTag";
 
-    public Match getMatchResults() {
+    public Bundle getResultsBundle() {
         if(inputFragment == null) {
             inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
         }
-        List<Participant> matchParticipants = inputFragment.getMatchStats();
+        return inputFragment.getMatchStats();
+    }
+
+    public Match getMatchWithResults() {
+        if(inputFragment == null) {
+            inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
+        }
+        List<Participant> matchParticipants = inputFragment.getMatchParticipants();
         match.setParticipants(matchParticipants);
         return match;
     }

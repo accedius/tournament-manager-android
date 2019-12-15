@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
@@ -25,6 +28,8 @@ import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragme
 import fit.cvut.org.cz.bowling.presentation.fragments.MatchEditStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 
@@ -118,7 +123,13 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(stats));
 
         startService(intent);*/
-        Match matchWithResults = ((MatchEditStatsFragment) f2).getMatchResults();
+        IManagerFactory managerFactory = ManagerFactory.getInstance();
+        IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
+        IParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
+        Match matchWithPreviousResults = matchManager.getById(matchId);
+        List<Participant> matchParticipantsWithPreviousStats = participantManager.getByMatchIdWithAllContents(matchId);
+        Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
+        Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
 
         finish();
     }

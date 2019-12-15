@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -77,19 +78,34 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
 
     @Override
-    public List<Participant> getMatchStats() {
+    public Bundle getMatchStats() {
+        Bundle bundle = new Bundle();
+        List<ParticipantStat> participantStatsToCreate, participantStatsToUpdate;
+        participantStatsToCreate = participantStatsToUpdate = new ArrayList<>();
+        List<Frame> framesToCreate, framesToUpdate, framesToDelete;
+        framesToCreate = framesToUpdate = framesToDelete = new ArrayList<>();
+        List<Roll> rollsToCreate, rollsToUpdate, rollsToDelete;
+        rollsToCreate = rollsToUpdate = rollsToDelete = new ArrayList<>();
         int participantIndex = 0;
         for(Participant participant : matchParticipants) {
             List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
             ParticipantStat stat;
             boolean noPreviousStats = participant.getParticipantStats().isEmpty();
+            boolean participantStatToUpdate = true;
             if(noPreviousStats) {
                 stat = new ParticipantStat();
                 stat.setParticipantId(participant.getId());
+                stat.setFramesPlayedNumber((byte)0);
+                participantStatToUpdate = false;
             } else {
                 stat = (ParticipantStat) participant.getParticipantStats().get(0);
             }
+            byte previousFramesNumber = stat.getFramesPlayedNumber();
             byte framesNumber = (byte) overviews.size();
+            if(framesNumber < previousFramesNumber && previousFramesNumber > 0) {
+                List<Frame> participantFrames = stat.getFrames();
+                framesToDelete.addAll(participantFrames.subList(framesNumber-1, previousFramesNumber-1));
+            }
             stat.setFramesPlayedNumber(framesNumber);
             if(framesNumber < 1){
                 stat.setScore(0);
@@ -102,6 +118,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 }
                 int frameIndex = 0;
                 for(FrameOverview overview : overviews) {
+                    boolean frameToUpdate = true;
                     if(frameIndex >= participantFrames.size()) {
                         Frame frame = new Frame();
                         frame.setMatchId(matchId);
@@ -110,14 +127,22 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         frame.setPlayerId(overview.getPlayerId());
                         frame.setRolls(new ArrayList<Roll>());
                         participantFrames.add(frame);
+                        frameToUpdate = false;
                     }
                     Frame frame = participantFrames.get(frameIndex);
+                    int previousRollsNumber = frame.getRolls().size();
+                    int rollsNumber = overview.getRolls().size();
                     List<Roll> frameRolls = frame.getRolls();
+                    if(previousRollsNumber > rollsNumber && previousFramesNumber > 0) {
+                        rollsToDelete.addAll(frameRolls.subList(rollsNumber-1, previousRollsNumber-1));
+                    }
                     byte rollNumber = 1;
                     for(Byte overviewRoll : overview.getRolls()){
+                        boolean rollToUpdate = true;
                         if(rollNumber > frameRolls.size()) {
                             Roll roll = new Roll();
                             frameRolls.add(roll);
+                            rollToUpdate = false;
                         }
                         Roll roll = frameRolls.get(rollNumber - 1);
                         roll.setFrameId(frame.getId());
@@ -125,9 +150,21 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         roll.setRollNumber(rollNumber);
                         roll.setPoints(overviewRoll);
 
+                        if(rollToUpdate) {
+                            rollsToUpdate.add(roll);
+                        } else {
+                            rollsToCreate.add(roll);
+                        }
+
                         ++rollNumber;
                     }
                     frame.setRolls(frameRolls);
+
+                    if(frameToUpdate) {
+                        framesToUpdate.add(frame);
+                    } else {
+                        framesToCreate.add(frame);
+                    }
 
                     ++frameIndex;
                 }
@@ -140,9 +177,31 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 participant.setParticipantStats(stats);
             }
 
+            if(participantStatToUpdate) {
+                participantStatsToUpdate.add(stat);
+            } else {
+                participantStatsToCreate.add(stat);
+            }
+
             ++participantIndex;
         }
 
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_CREATE, (ArrayList<? extends Parcelable>) participantStatsToCreate);
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_UPDATE, (ArrayList<? extends Parcelable>) participantStatsToUpdate);
+
+        bundle.putParcelableArrayList(FRAMES_TO_CREATE, (ArrayList<? extends Parcelable>) framesToCreate);
+        bundle.putParcelableArrayList(FRAMES_TO_UPDATE, (ArrayList<? extends Parcelable>) framesToUpdate);
+        bundle.putParcelableArrayList(FRAMES_TO_DELETE, (ArrayList<? extends Parcelable>) framesToDelete);
+
+        bundle.putParcelableArrayList(ROLLS_TO_CREATE, (ArrayList<? extends Parcelable>) rollsToCreate);
+        bundle.putParcelableArrayList(ROLLS_TO_UPDATE, (ArrayList<? extends Parcelable>) rollsToUpdate);
+        bundle.putParcelableArrayList(ROLLS_TO_DELETE, (ArrayList<? extends Parcelable>) rollsToDelete);
+
+        return bundle;
+    }
+
+    @Override
+    public List<Participant> getMatchParticipants() {
         return matchParticipants;
     }
 
