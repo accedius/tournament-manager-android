@@ -70,6 +70,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     protected static boolean participantsBinded = false;
     protected static final int REQUEST_CODE_UPDATE_LOCALLY = 1337;
     private static Fragment thisFragment;
+    private long matchId;
 
     final static int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
@@ -77,9 +78,9 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
     @Override
     public List<Participant> getMatchStats() {
-        int i = 0;
+        int participantIndex = 0;
         for(Participant participant : matchParticipants) {
-            List<FrameOverview> overviews = participantsFrameOverviews.get(i);
+            List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
             ParticipantStat stat;
             boolean noPreviousStats = participant.getParticipantStats().isEmpty();
             if(noPreviousStats) {
@@ -95,11 +96,42 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 stat.setFrames(new ArrayList<Frame>());
             } else {
                 stat.setScore(overviews.get(framesNumber - 1).getCurrentScore());
-                List<Frame> frames = new ArrayList<>();
-                for(FrameOverview overview : overviews) {
-                    Frame frame = new Frame();
-                    //TODO
+                List<Frame> participantFrames = stat.getFrames();
+                if(participantFrames == null) {
+                    participantFrames = new ArrayList<>();
                 }
+                int frameIndex = 0;
+                for(FrameOverview overview : overviews) {
+                    if(frameIndex >= participantFrames.size()) {
+                        Frame frame = new Frame();
+                        frame.setMatchId(matchId);
+                        frame.setFrameNumber( (byte) (frameIndex+1));
+                        frame.setParticipantId(participant.getId());
+                        frame.setPlayerId(overview.getPlayerId());
+                        frame.setRolls(new ArrayList<Roll>());
+                        participantFrames.add(frame);
+                    }
+                    Frame frame = participantFrames.get(frameIndex);
+                    List<Roll> frameRolls = frame.getRolls();
+                    byte rollNumber = 1;
+                    for(Byte overviewRoll : overview.getRolls()){
+                        if(rollNumber > frameRolls.size()) {
+                            Roll roll = new Roll();
+                            frameRolls.add(roll);
+                        }
+                        Roll roll = frameRolls.get(rollNumber - 1);
+                        roll.setFrameId(frame.getId());
+                        roll.setPlayerId(frame.getPlayerId());
+                        roll.setRollNumber(rollNumber);
+                        roll.setPoints(overviewRoll);
+
+                        ++rollNumber;
+                    }
+                    frame.setRolls(frameRolls);
+
+                    ++frameIndex;
+                }
+                stat.setFrames(participantFrames);
             }
 
             if(noPreviousStats){
@@ -108,7 +140,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 participant.setParticipantStats(stats);
             }
 
-            ++i;
+            ++participantIndex;
         }
 
         return matchParticipants;
@@ -137,7 +169,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         participantPlayers = null;
         participantsBinded = false;
 
-        Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
+        matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
         long tournamentId = match.getTournamentId();
@@ -295,7 +327,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                     participantsFrameOverviews.add(new ArrayList<FrameOverview>());
                     frameOverviews = participantsFrameOverviews.get(index);
 
-                    if(participant.getParticipantStats() != null && participant.getParticipantStats().size() > 0){
+                    if(participant.getParticipantStats() != null && !participant.getParticipantStats().isEmpty()){
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
                         List<Frame> frames = participantStat.getFrames();
                         byte i = 1;
@@ -316,6 +348,8 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                             String playerName = player.getName();
                             FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, frameScore);
                             frameOverviews.add(frameOverview);
+
+                            ++i;
                         }
 
                     }

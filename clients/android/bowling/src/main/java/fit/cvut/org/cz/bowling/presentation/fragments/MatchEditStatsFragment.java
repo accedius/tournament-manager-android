@@ -21,7 +21,6 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 public class MatchEditStatsFragment extends AbstractDataFragment {
     private Match match = null;
@@ -33,6 +32,9 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     private static final String inputFragmentTag = "inputFragmentTag";
 
     public Match getMatchResults() {
+        if(inputFragment == null) {
+            inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
+        }
         List<Participant> matchParticipants = inputFragment.getMatchStats();
         match.setParticipants(matchParticipants);
         return match;

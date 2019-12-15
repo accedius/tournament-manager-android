@@ -227,10 +227,9 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
                         long participantId = participant.getParticipantId();
                         overview.setParticipantId(participantId);
                         if (participant.getParticipantStats().isEmpty()) {
-                            Byte framesNumber = -1;
-                            overview.setParticipantStatId(-1);
+                            Byte framesNumber = 0;
                             overview.setFramesPlayedNumber(framesNumber);
-                            overview.setScore(-1);
+                            overview.setScore(0);
                         } else {
                             ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0); // 0 because it only can have 1 ParticipantStat
                             overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());

@@ -118,6 +118,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(stats));
 
         startService(intent);*/
+        Match matchWithResults = ((MatchEditStatsFragment) f2).getMatchResults();
 
         finish();
     }
@@ -154,9 +155,11 @@ public class ShowMatchActivity extends AbstractTabActivity {
         } else if (item.getItemId() == R.id.action_cancel) {
             finish();
             return true;
+        } else {
+            return false;
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
