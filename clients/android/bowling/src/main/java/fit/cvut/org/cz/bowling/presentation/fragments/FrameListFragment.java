@@ -69,7 +69,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     protected static boolean bindFromDialogInsertions = false;
     protected static boolean participantsBinded = false;
     protected static final int REQUEST_CODE_UPDATE_LOCALLY = 1337;
-    private Fragment thisFragment;
+    private static Fragment thisFragment;
 
     final static int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
@@ -154,30 +154,28 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     protected AbstractListAdapter getAdapter() {
         return new FrameOverviewAdapter(tournamentType) {
             @Override
-            protected void setOnClickListeners(View v, int position, final long playerId, final byte frameNumber, List<Byte> rolls, String playerName, int currentScore) {
+            protected void setOnClickListeners(View v, final int position, final long playerId, final byte frameNumber, List<Byte> rolls, String playerName, int currentScore) {
                 super.setOnClickListeners(v, position, playerId, frameNumber, rolls, playerName, currentScore);
 
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO rework, already can get via position
-                        int index = 0;
-                        while(index < frameOverviews.size()) {
-                            FrameOverview frameOw = frameOverviews.get(index);
-                            if (frameOw.getFrameNumber() == frameNumber && frameOw.getPlayerId() == playerId)
-                                break;
-                            ++index;
-                        }
+                        int index = frameNumber - 1;
                         EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
                         dialog.setTargetFragment(thisFragment, 0);
-                        dialog.show(getFragmentManager(), "dialog");
+                        dialog.show(getFragmentManager(), "dialogEdit");
                     }
                 });
 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return true; //should deleting frames be possible?
+                        int index = frameNumber - 1;
+                        String title = "Frame #" + frameNumber;
+                        EditDeleteFrameDialog dialog = EditDeleteFrameDialog.newInstance(index, title);
+                        dialog.setTargetFragment(thisFragment, 0);
+                        dialog.show(getFragmentManager(), "dialogEditDelete");
+                        return true;
                     }
                 });
             }
@@ -379,7 +377,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                                        int index = frameOverviews.size();
                                        EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
                                        dialog.setTargetFragment(thisFragment, 0);
-                                       dialog.show(getFragmentManager(), "dialog");
+                                       dialog.show(getFragmentManager(), "dialogCreate");
                                    }
                                }
         );
@@ -626,19 +624,42 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         }
     }
 
-    public static class EditDeleteFrameDialog extends EditDeleteDialog {
+    public static class EditDeleteFrameDialog extends DialogFragment {
+        int position;
+
         @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            position = getArguments().getInt(ExtraConstants.EXTRA_POSITION);
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+            String[] items;
+            if(position == frameOverviews.size()-1){
+                items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
+            } else {
+                items = new String[]{ getActivity().getString(R.string.edit)};
+            }
+            builder.setItems( items, supplyListener());
+
+            builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
+            return builder.create();
+        }
+
         protected DialogInterface.OnClickListener supplyListener() {
             return new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case 0:
-
+                            EditFrameListDialog dialogEdit = EditFrameListDialog.newInstance(position);
+                            dialogEdit.setTargetFragment(thisFragment, 0);
+                            dialogEdit.show(getFragmentManager(), "dialogEdit");
                             dialog.dismiss();
                             break;
                         case 1:
-
+                            frameOverviews.remove(position);
+                            if (getTargetFragment() != null){
+                                int resultCodeUpdateFrom = position >= 2 ? position - 2 : 0 ;
+                                getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, resultCodeUpdateFrom, null);
+                            }
                             dialog.dismiss();
                             break;
                     }
