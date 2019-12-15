@@ -43,6 +43,7 @@ import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.adapters.FrameOverviewAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -54,7 +55,7 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
-public class FrameListFragment extends AbstractListFragment<FrameOverview> {
+public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
     protected static int participantSelectedIndex = 0;
@@ -62,7 +63,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
     protected static List<List<FrameOverview>> participantsFrameOverviews = new ArrayList<>();
     protected static List<List<Player>> matchPlayers = new ArrayList<>();
     protected static List<Player> participantPlayers = new ArrayList<>();
-    protected static ArrayList<Participant> participants = new ArrayList<>();
+    protected static ArrayList<Participant> matchParticipants = new ArrayList<>();
     private Spinner participantSpinner = null;
     private ArrayAdapter<Participant> participantArrayAdapter = null;
     protected static boolean bindFromDialogInsertions = false;
@@ -73,6 +74,45 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
     final static int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
     final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
+
+    @Override
+    public List<Participant> getMatchStats() {
+        int i = 0;
+        for(Participant participant : matchParticipants) {
+            List<FrameOverview> overviews = participantsFrameOverviews.get(i);
+            ParticipantStat stat;
+            boolean noPreviousStats = participant.getParticipantStats().isEmpty();
+            if(noPreviousStats) {
+                stat = new ParticipantStat();
+                stat.setParticipantId(participant.getId());
+            } else {
+                stat = (ParticipantStat) participant.getParticipantStats().get(0);
+            }
+            byte framesNumber = (byte) overviews.size();
+            stat.setFramesPlayedNumber(framesNumber);
+            if(framesNumber < 1){
+                stat.setScore(0);
+                stat.setFrames(new ArrayList<Frame>());
+            } else {
+                stat.setScore(overviews.get(framesNumber - 1).getCurrentScore());
+                List<Frame> frames = new ArrayList<>();
+                for(FrameOverview overview : overviews) {
+                    Frame frame = new Frame();
+                    //TODO
+                }
+            }
+
+            if(noPreviousStats){
+                List<ParticipantStat> stats = new ArrayList<>();
+                stats.add(stat);
+                participant.setParticipantStats(stats);
+            }
+
+            ++i;
+        }
+
+        return matchParticipants;
+    }
 
     public static FrameListFragment newInstance(long matchId) {
         FrameListFragment fragment = new FrameListFragment();
@@ -120,6 +160,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //TODO rework, already can get via position
                         int index = 0;
                         while(index < frameOverviews.size()) {
                             FrameOverview frameOw = frameOverviews.get(index);
@@ -224,12 +265,14 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             bindFromDialogInsertions = false;
         } else {
             if(participantsFrameOverviews == null) {
-                participantsFrameOverviews = new ArrayList<>();
                 matchPlayers = new ArrayList<>();
-                participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+                matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+                if(!matchParticipants.isEmpty()){
+                    participantsFrameOverviews = new ArrayList<>();
+                }
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
                 int index = 0;
-                for(Participant participant : participants) {
+                for(Participant participant : matchParticipants) {
 
                     matchPlayers.add(new ArrayList<Player>());
                     participantPlayers = matchPlayers.get(index);
@@ -285,8 +328,12 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             }
             intent.removeExtra(ExtraConstants.EXTRA_PARTICIPANTS);
         }
+        if(participantsFrameOverviews == null) {
+            fab.hide();
+            return;
+        }
         if(!participantsBinded){
-            bindParticipantsOnView(participants);
+            bindParticipantsOnView(matchParticipants);
             participantsBinded = true;
         }
         if(frameOverviews.size() >= 10 || participantSelectedIndex == -1) {
@@ -299,8 +346,8 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         super.bindDataOnView(intent);
     }
 
-    private void bindParticipantsOnView(ArrayList<Participant> participants) {
-        participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, participants);
+    private void bindParticipantsOnView(ArrayList<Participant> matchParticipants) {
+        participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
         participantArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         participantSpinner.setAdapter(participantArrayAdapter);
         participantSpinner.setSelection(participantSelectedIndex);
@@ -576,6 +623,37 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             roll1.requestFocus();
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             return super.onCreateView(inflater, container, savedInstanceState);
+        }
+    }
+
+    public static class EditDeleteFrameDialog extends EditDeleteDialog {
+        @Override
+        protected DialogInterface.OnClickListener supplyListener() {
+            return new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+
+                            dialog.dismiss();
+                            break;
+                        case 1:
+
+                            dialog.dismiss();
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            };
+        }
+
+        public static EditDeleteFrameDialog newInstance (int position, String title) {
+            EditDeleteFrameDialog dialog = new EditDeleteFrameDialog();
+            Bundle args = new Bundle();
+            args.putInt(ExtraConstants.EXTRA_POSITION, position);
+            args.putString(ExtraConstants.EXTRA_TITLE, title);
+            dialog.setArguments(args);
+            return dialog;
         }
     }
 }

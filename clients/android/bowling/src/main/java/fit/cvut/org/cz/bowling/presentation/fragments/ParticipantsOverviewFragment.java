@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.j256.ormlite.stmt.query.In;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
@@ -50,12 +51,40 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
-public class ParticipantsOverviewFragment extends AbstractListFragment<ParticipantOverview> {
+public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListFragment<ParticipantOverview> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     protected static ArrayList<ParticipantOverview> participantOverviews = new ArrayList<>();
+    protected static List<Participant> matchParticipants = new ArrayList<>();
     protected static boolean bindFromDialogInsertions = false;
     protected static final int REQUEST_CODE_UPDATE_LOCALLY = 1337;
     private Fragment thisFragment;
+
+    @Override
+    public List<Participant> getMatchStats() {
+        int i = 0;
+        for(Participant participant : matchParticipants) {
+            ParticipantOverview overview = participantOverviews.get(i);
+            ParticipantStat stat;
+            boolean noPreviousStats = participant.getParticipantStats().isEmpty();
+            if(noPreviousStats) {
+                stat = new ParticipantStat();
+                stat.setParticipantId(participant.getId());
+            } else {
+                stat = (ParticipantStat) participant.getParticipantStats().get(0);
+            }
+            stat.setFramesPlayedNumber(overview.getFramesPlayedNumber());
+            stat.setScore(overview.getScore());
+            if(noPreviousStats){
+                List<ParticipantStat> stats = new ArrayList<>();
+                stats.add(stat);
+                participant.setParticipantStats(stats);
+            }
+
+            ++i;
+        }
+
+        return matchParticipants;
+    }
 
     public static ParticipantsOverviewFragment newInstance(long matchId) {
         ParticipantsOverviewFragment fragment = new ParticipantsOverviewFragment();
@@ -183,41 +212,43 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
             bindFromDialogInsertions = false;
         } else {
             if(participantOverviews.isEmpty()) {
-                ArrayList<Participant> participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-                long matchId = participants.get(0).getMatchId();
-                IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-                Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
-                long tournamentId = match.getTournamentId();
-                Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
-                TournamentType tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
-                for (Participant participant : participants) {
-                    if(participant.getParticipantId() < 1)
-                        continue;
-                    ParticipantOverview overview = new ParticipantOverview();
-                    long participantId = participant.getParticipantId();
-                    overview.setParticipantId(participantId);
-                    if (participant.getParticipantStats().isEmpty()) {
-                        Byte framesNumber = -1;
-                        overview.setParticipantStatId(-1);
-                        overview.setFramesPlayedNumber(framesNumber);
-                        overview.setScore(-1);
-                    } else {
-                        ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0); // 0 because it only can have 1 ParticipantStat
-                        overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
-                        long participantStatId = stat.getId();
-                        overview.setParticipantStatId(participantStatId);
-                        overview.setScore(stat.getScore());
+                matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+                if (!matchParticipants.isEmpty()) {
+                    long matchId = matchParticipants.get(0).getMatchId();
+                    IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+                    Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
+                    long tournamentId = match.getTournamentId();
+                    Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+                    TournamentType tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
+                    for (Participant participant : matchParticipants) {
+                        if (participant.getParticipantId() < 1)
+                            continue;
+                        ParticipantOverview overview = new ParticipantOverview();
+                        long participantId = participant.getParticipantId();
+                        overview.setParticipantId(participantId);
+                        if (participant.getParticipantStats().isEmpty()) {
+                            Byte framesNumber = -1;
+                            overview.setParticipantStatId(-1);
+                            overview.setFramesPlayedNumber(framesNumber);
+                            overview.setScore(-1);
+                        } else {
+                            ParticipantStat stat = (ParticipantStat) participant.getParticipantStats().get(0); // 0 because it only can have 1 ParticipantStat
+                            overview.setFramesPlayedNumber(stat.getFramesPlayedNumber());
+                            long participantStatId = stat.getId();
+                            overview.setParticipantStatId(participantStatId);
+                            overview.setScore(stat.getScore());
+                        }
+                        String name;
+                        if (tournamentType.equals(TournamentTypes.individuals())) {
+                            Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
+                            name = player.getName();
+                        } else {
+                            Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
+                            name = team.getName();
+                        }
+                        overview.setName(name);
+                        participantOverviews.add(overview);
                     }
-                    String name;
-                    if (tournamentType.equals(TournamentTypes.individuals())) {
-                        Player player = iManagerFactory.getEntityManager(Player.class).getById(participantId);
-                        name = player.getName();
-                    } else {
-                        Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
-                        name = team.getName();
-                    }
-                    overview.setName(name);
-                    participantOverviews.add(overview);
                 }
             }
             intent.removeExtra(ExtraConstants.EXTRA_PARTICIPANTS);

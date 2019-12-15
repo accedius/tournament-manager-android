@@ -33,7 +33,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  */
 public class ShowMatchActivity extends AbstractTabActivity {
     private long matchId;
-    private View v;
 
     private ViewPager pager;
 
@@ -149,7 +148,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         } else if (item.getItemId() == R.id.action_edit_stats) {
             ((BowlingFFAMatchStatsFragment) f3).editAll();
         } else if (item.getItemId() == R.id.action_edit) {
-            BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) fragments[0];
+            BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) f1;
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_cancel) {
