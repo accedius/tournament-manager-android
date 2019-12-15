@@ -184,7 +184,8 @@ public class ParticipantsOverviewFragment extends AbstractListFragment<Participa
         } else {
             if(participantOverviews.isEmpty()) {
                 ArrayList<Participant> participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-                long matchId = participants.get(0).getMatchId();
+                //long matchId = participants.get(0).getMatchId();
+                long matchId = intent.getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
                 Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
                 long tournamentId = match.getTournamentId();
