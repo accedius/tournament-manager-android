@@ -80,32 +80,44 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     @Override
     public Bundle getMatchStats() {
         Bundle bundle = new Bundle();
-        List<ParticipantStat> participantStatsToCreate, participantStatsToUpdate;
-        participantStatsToCreate = participantStatsToUpdate = new ArrayList<>();
-        List<Frame> framesToCreate, framesToUpdate, framesToDelete;
-        framesToCreate = framesToUpdate = framesToDelete = new ArrayList<>();
-        List<Roll> rollsToCreate, rollsToUpdate, rollsToDelete;
-        rollsToCreate = rollsToUpdate = rollsToDelete = new ArrayList<>();
+        List<ParticipantStat> participantStatsToCreate = new ArrayList<>(), participantStatsToUpdate = new ArrayList<>();
+        List<Frame> framesToCreate = new ArrayList<>(), framesToUpdate = new ArrayList<>(), framesToDelete = new ArrayList<>();
+        List<Roll> rollsToCreate = new ArrayList<>(), rollsToUpdate = new ArrayList<>(), rollsToDelete = new ArrayList<>();
+
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
         int participantIndex = 0;
         for(Participant participant : matchParticipants) {
             List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
             ParticipantStat stat;
+
             boolean noPreviousStats = participant.getParticipantStats().isEmpty();
             boolean participantStatToUpdate = true;
+
+            //whether or not previous stats and new ones are different [ParticipantStat = PS]
+            boolean isPreviousAndNewDifferentPS = true;
+
             if(noPreviousStats) {
                 stat = new ParticipantStat();
                 stat.setParticipantId(participant.getId());
                 stat.setFramesPlayedNumber((byte)0);
+                stat.setScore(0);
                 participantStatToUpdate = false;
             } else {
                 stat = (ParticipantStat) participant.getParticipantStats().get(0);
             }
             byte previousFramesNumber = stat.getFramesPlayedNumber();
             byte framesNumber = (byte) overviews.size();
-            if(framesNumber < previousFramesNumber && previousFramesNumber > 0) {
+            int score = framesNumber < 1 ? 0 : overviews.get(framesNumber-1).getCurrentScore();
+            if(framesNumber < previousFramesNumber && previousFramesNumber > 0 && stat.getFrames() != null && !stat.getFrames().isEmpty()) {
                 List<Frame> participantFrames = stat.getFrames();
-                framesToDelete.addAll(participantFrames.subList(framesNumber-1, previousFramesNumber-1));
+                framesToDelete.addAll(participantFrames.subList(framesNumber, previousFramesNumber));
+            } else if(previousFramesNumber == framesNumber && participantStatToUpdate && score == stat.getScore()){
+                isPreviousAndNewDifferentPS = false;
             }
+
             stat.setFramesPlayedNumber(framesNumber);
             if(framesNumber < 1){
                 stat.setScore(0);
@@ -119,6 +131,10 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 int frameIndex = 0;
                 for(FrameOverview overview : overviews) {
                     boolean frameToUpdate = true;
+
+                    //whether or not previous stats and new ones are different [F = Frame]
+                    boolean isPreviousAndNewDifferentF = true;
+
                     if(frameIndex >= participantFrames.size()) {
                         Frame frame = new Frame();
                         frame.setMatchId(matchId);
@@ -130,29 +146,51 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         frameToUpdate = false;
                     }
                     Frame frame = participantFrames.get(frameIndex);
+
+                    //no need to control other values, because participantId, frameNumber are the same, if the entity existed before
+                    if(frame.getPlayerId() == overview.getPlayerId()){
+                        isPreviousAndNewDifferentF = false;
+                    }
+
                     int previousRollsNumber = frame.getRolls().size();
                     int rollsNumber = overview.getRolls().size();
                     List<Roll> frameRolls = frame.getRolls();
-                    if(previousRollsNumber > rollsNumber && previousFramesNumber > 0) {
-                        rollsToDelete.addAll(frameRolls.subList(rollsNumber-1, previousRollsNumber-1));
+                    if(previousRollsNumber > rollsNumber) {
+                        rollsToDelete.addAll(frameRolls.subList(rollsNumber, previousRollsNumber));
                     }
                     byte rollNumber = 1;
                     for(Byte overviewRoll : overview.getRolls()){
                         boolean rollToUpdate = true;
+
+                        //whether or not previous stats and new ones are different [Roll = R]
+                        boolean isPreviousAndNewDifferentR = true;
+
                         if(rollNumber > frameRolls.size()) {
                             Roll roll = new Roll();
                             frameRolls.add(roll);
                             rollToUpdate = false;
                         }
                         Roll roll = frameRolls.get(rollNumber - 1);
+
+                        //no need to control other values, because frameId, rollNumber are the same, if the entity existed before
+                        if(roll.getPoints() == overviewRoll && roll.getPlayerId() == frame.getPlayerId()){
+                            isPreviousAndNewDifferentR = false;
+                        }
+
                         roll.setFrameId(frame.getId());
                         roll.setPlayerId(frame.getPlayerId());
                         roll.setRollNumber(rollNumber);
                         roll.setPoints(overviewRoll);
 
                         if(rollToUpdate) {
-                            rollsToUpdate.add(roll);
+                            if(isPreviousAndNewDifferentR){
+                                rollsToUpdate.add(roll);
+                            }
                         } else {
+                            //little trick to identify different rolls before frame is created in database (frameId == 0)
+                            roll.setId(frame.getParticipantId());
+                            roll.setFrameId(frame.getFrameNumber());
+
                             rollsToCreate.add(roll);
                         }
 
@@ -161,13 +199,21 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                     frame.setRolls(frameRolls);
 
                     if(frameToUpdate) {
-                        framesToUpdate.add(frame);
+                        if(isPreviousAndNewDifferentF) {
+                            framesToUpdate.add(frame);
+                        }
                     } else {
                         framesToCreate.add(frame);
                     }
 
                     ++frameIndex;
                 }
+
+                //participant has played all 10 frames => his game is completed
+                if(frameIndex == ConstraintsConstants.tenPinMatchParticipantMaxFrames-1){
+                    ++participantsWhoCompletedGameNumber;
+                }
+
                 stat.setFrames(participantFrames);
             }
 
@@ -178,13 +224,21 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
             }
 
             if(participantStatToUpdate) {
-                participantStatsToUpdate.add(stat);
+                if(isPreviousAndNewDifferentPS){
+                    participantStatsToUpdate.add(stat);
+                }
             } else {
                 participantStatsToCreate.add(stat);
             }
 
             ++participantIndex;
         }
+
+        if(participantsWhoCompletedGameNumber == matchParticipants.size()) {
+            isMatchPlayed = true;
+        }
+
+        bundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
 
         bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_CREATE, (ArrayList<? extends Parcelable>) participantStatsToCreate);
         bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_UPDATE, (ArrayList<? extends Parcelable>) participantStatsToUpdate);
@@ -390,9 +444,9 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
                         List<Frame> frames = participantStat.getFrames();
                         byte i = 1;
-                        byte frameScore = 0;
 
                         for(Frame frame : frames) {
+                            byte frameScore = 0;
                             List<Byte> rolls = new ArrayList<>();
                             List<Roll> playedRolls = frame.getRolls();
 

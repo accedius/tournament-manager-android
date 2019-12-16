@@ -4,7 +4,10 @@ package fit.cvut.org.cz.bowling.presentation.communication;
  * Some extra resource strings for intent/service/activity work
  */
 public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants {
-    public static final String EXTRA_MATCH_SCORE = "extra_match_score";
+    public static final String EXTRA_MATCH_WITH_RESULTS = "extra_match_with_results";
+    public static final String EXTRA_MATCH_BUNDLE = "extra_match_bundle";
+    public static final String EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED = "extra_boolean_is_input_type_changed";
+    public static final String EXTRA_BOOLEAN_IS_MATCH_PLAYED = "extra_boolean_is_match_played";
 
     public static final String EXTRA_BOOLEAN_HOME = "extra_boolean_home";
     public static final String EXTRA_OMIT_IDS = "extra_omit_ids";
@@ -24,7 +27,23 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String EXTRA_PARTICIPANT_OVERVIEWS = "extra_participant_overviews";
     public static final String EXTRA_FRAME_OVERVIEWS = "extra_frame_overviews";
 
+    public static final String EXTRA_PLAYER_STATS = "extra_player_stats";
+
     public static final String STRIKE_SYMBOL = "X";
     public static final String SPARE_SYMBOL = "/";
     public static final String ZERO_SYMBOL = "-";
+
+    public static final String PARTICIPANT_STATS_TO_CREATE = "participant_stats_to_create";
+    public static final String PARTICIPANT_STATS_TO_UPDATE = "participant_stats_to_update";
+
+    public static final String PLAYER_STATS_TO_CREATE = "player_stats_to_create";
+    public static final String PLAYER_STATS_TO_UPDATE = "player_stats_to_update";
+
+    public static final String FRAMES_TO_CREATE = "frames_to_create";
+    public static final String FRAMES_TO_UPDATE = "frames_to_update";
+    public static final String FRAMES_TO_DELETE = "frames_to_delete";
+
+    public static final String ROLLS_TO_CREATE = "rolls_to_create";
+    public static final String ROLLS_TO_UPDATE = "rolls_to_update";
+    public static final String ROLLS_TO_DELETE = "rolls_to_delete";
 }

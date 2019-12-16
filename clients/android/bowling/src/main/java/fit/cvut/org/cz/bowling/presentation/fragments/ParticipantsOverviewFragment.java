@@ -63,21 +63,42 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
     @Override
     public Bundle getMatchStats() {
         Bundle bundle = new Bundle();
-        List<ParticipantStat> participantStatsToCreate, participantStatsToUpdate;
-        participantStatsToCreate = participantStatsToUpdate = new ArrayList<>();
+        List<ParticipantStat> participantStatsToCreate = new ArrayList<>(), participantStatsToUpdate = new ArrayList<>();
+
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
         int i = 0;
         for(Participant participant : matchParticipants) {
             ParticipantOverview overview = participantOverviews.get(i);
             ParticipantStat stat;
             boolean noPreviousStats = participant.getParticipantStats().isEmpty();
+
+            //whether or not previous stats and new ones are different
+            boolean isPreviousAndNewDifferent = true;
+
             if(noPreviousStats) {
                 stat = new ParticipantStat();
                 stat.setParticipantId(participant.getId());
+                stat.setFramesPlayedNumber((byte)0);
+                stat.setScore(0);
             } else {
                 stat = (ParticipantStat) participant.getParticipantStats().get(0);
             }
-            stat.setFramesPlayedNumber(overview.getFramesPlayedNumber());
-            stat.setScore(overview.getScore());
+            byte newPlayedFramesNumber = overview.getFramesPlayedNumber();
+            int newScore = overview.getScore();
+            if(newPlayedFramesNumber == stat.getFramesPlayedNumber() && newScore == stat.getScore()){
+                isPreviousAndNewDifferent = false;
+            } else {
+                stat.setFramesPlayedNumber(newPlayedFramesNumber);
+                stat.setScore(newScore);
+            }
+
+            if(stat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames) {
+                ++participantsWhoCompletedGameNumber;
+            }
+
             boolean participantStatToUpdate = true;
             if(noPreviousStats) {
                 List<ParticipantStat> stats = new ArrayList<>();
@@ -87,13 +108,21 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
             }
 
             if(participantStatToUpdate) {
-                participantStatsToUpdate.add(stat);
+                if(isPreviousAndNewDifferent) {
+                    participantStatsToUpdate.add(stat);
+                }
             } else {
                 participantStatsToCreate.add(stat);
             }
 
             ++i;
         }
+
+        if(participantsWhoCompletedGameNumber == matchParticipants.size()) {
+            isMatchPlayed = true;
+        }
+
+        bundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
 
         bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_CREATE, (ArrayList<? extends Parcelable>) participantStatsToCreate);
         bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_UPDATE, (ArrayList<? extends Parcelable>) participantStatsToUpdate);

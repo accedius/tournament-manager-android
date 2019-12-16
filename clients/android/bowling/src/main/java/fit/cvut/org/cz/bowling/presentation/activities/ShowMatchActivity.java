@@ -113,23 +113,28 @@ public class ShowMatchActivity extends AbstractTabActivity {
     }
 
     private void sendToSaveMatch() {
-        /*Match score = ((BowlingMatchOverviewFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(0)))).getScore();
-
-        //Grab our new/current list of player and pass it service to update the DB
-        List<PlayerStat> stats = ((BowlingFFAMatchStatsFragment) (getSupportFragmentManager().findFragmentByTag(adapter.getTag(1)))).getHomeList();
-
-        Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
-        intent.putExtra(ExtraConstants.EXTRA_MATCH_SCORE, score);
-        intent.putExtra(ExtraConstants.EXTRA_HOME_STATS, new ArrayList<>(stats));
-
-        startService(intent);*/
-        IManagerFactory managerFactory = ManagerFactory.getInstance();
+        //Grab old and new match stats
+        /*IManagerFactory managerFactory = ManagerFactory.getInstance();
         IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
         IParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
         Match matchWithPreviousResults = matchManager.getById(matchId);
-        List<Participant> matchParticipantsWithPreviousStats = participantManager.getByMatchIdWithAllContents(matchId);
+        List<Participant> matchParticipantsWithPreviousStats = participantManager.getByMatchIdWithAllContents(matchId);*/
+
         Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
         Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
+        boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+        matchResultsBundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+
+        //Grab our new/current list of player and pass it service to update the DB
+        List<PlayerStat> stats = ((BowlingFFAMatchStatsFragment) f3).getPlayerStats();
+
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_FOR_OVERVIEW, this);
+        intent.putExtra(ExtraConstants.EXTRA_PLAYER_STATS, new ArrayList<>(stats));
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_BUNDLE, matchResultsBundle);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
+        intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
+
+        startService(intent);
 
         finish();
     }

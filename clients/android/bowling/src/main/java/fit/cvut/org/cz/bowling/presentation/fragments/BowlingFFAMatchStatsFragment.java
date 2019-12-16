@@ -272,10 +272,10 @@ public class BowlingFFAMatchStatsFragment extends AbstractDataFragment {
     }
 
     /**
-     *
-     * @return current list of statistics of parts team
+     * Method to obtain statistics of players of current participants
+     * @return list of statistics of players participating in match
      */
-    public List<PlayerStat> getHomeList() {
+    public List<PlayerStat> getPlayerStats() {
         ArrayList<PlayerStat> res = new ArrayList<>();
         for(int i = 0; i < parts.size(); i++)
             res.addAll(partsAdapters.get(i).getData());

@@ -35,7 +35,12 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(inputFragment == null) {
             inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
         }
-        return inputFragment.getMatchStats();
+        Bundle bundle = inputFragment.getMatchStats();
+        boolean isMatchPlayed = bundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_MATCH_PLAYED, false);
+        match.setPlayed(isMatchPlayed);
+        bundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_MATCH_PLAYED);
+        bundle.putBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, switchChanged);
+        return bundle;
     }
 
     public Match getMatchWithResults() {
