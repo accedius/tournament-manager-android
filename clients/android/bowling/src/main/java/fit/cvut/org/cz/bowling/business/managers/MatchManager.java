@@ -103,6 +103,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
 
+        if(lanes > players.size())
+        {
+            return;
+        }
+        
         // List of all matches
         List<Match> matchList = getByTournamentId(tournamentId);
 
