@@ -1,0 +1,53 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="generate_by_wins" tools:ignore="MissingTranslation">Generovat podle výher</string>
+    <string name="generate_by_lanes" tools:ignore="MissingTranslation">Generovat podle lajn</string>
+    <string name="generate_matches" tools:ignore="MissingTranslation">Vygenerovat zápasy</string>
+    <string name="enter_number_of_lanes" tools:ignore="MissingTranslation">Zadejte počet lajn</string>
+    <string name="type_none" tools:ignore="MissingTranslation">Nespecifikováno</string>
+    <string name="legend_ST" tools:ignore="MissingTranslation">St: Striky</string>
+    <string name="strikes" tools:ignore="MissingTranslation">Striky</string>
+    <string name="sp" tools:ignore="MissingTranslation">Sp</string>
+    <string name="legend_SPA" tools:ignore="MissingTranslation">Sp: Spary</string>
+    <string name="spares" tools:ignore="MissingTranslation">Spary</string>
+    <string name="legend_PT" tools:ignore="MissingTranslation">Pt: Body</string>
+    <string name="points" tools:ignore="MissingTranslation">Body</string>
+    <string name="legend_AvgST" tools:ignore="MissingTranslation">Avg. St: Průměrný počet striků za zápas</string>
+    <string name="legend_AvgSP" tools:ignore="MissingTranslation">Avg. Sp: Průměrný počet sparů za zápas</string>
+    <string name="score" tools:ignore="MissingTranslation">Skóre</string>
+    <string name="point_configurations" tools:ignore="Missingtranslation">Přidělení bodů</string>
+    <string name="point_configuration_settings" tools:ignore="MissingTranslation">Nastavení přidělení bodů</string>
+    <string name="pcd_input_label" tools:ignore="MissingTranslation">Nastavit počet účastníků:</string>
+    <string name="prebaked_label_pc" tools:ignore="MissingTranslation">Počet účastníků:</string>
+    <string name="cant_delete_pc" tools:ignore="MissingTranslation">Nelze odstranit.</string>
+    <string name="pc_format_violated" tools:ignore="MissingTranslation">Počet účastníků musí být unikátní číslo větší než 1!</string>
+    <string name="pc_already_exists" tools:ignore="MissingTranslation">Takověhle rozdělení už existuje!</string>
+    <string name="pc_place_label_1" tools:ignore="MissingTranslation">Body za</string>
+    <string name="pc_place_label_2" tools:ignore="MissingTranslation">. místo:</string>
+    <string name="spca_title_fragment" tools:ignore="MissingTranslation">Počet účastníků</string>
+    <string name="match_statistics" tools:ignore="MissingTranslation">Statistiky</string>
+    <string name="participant_overview_label" tools:ignore="MissingTranslation">Statistiky zápasu:</string>
+    <string name="edit_stats_fragment_switch_warning_title" tools:ignore="MissingTranslation">Varování</string>
+    <string name="edit_stats_fragment_switch_warning_message" tools:ignore="MissingTranslation">Opravdu chcete změnit režim zadávání? Všechna neuložená data budou ztracena.</string>
+    <string name="mpof_frames_played_format_violated" tools:ignore="MissingTranslation">Musí být číslo mezi 1 a</string>
+    <string name="mpof_score_format_violated" tools:ignore="MissingTranslation">Musí být číslo mezi 0 a</string>
+    <string name="mpof_score_violated" tools:ignore="MissingTranslation">Takové skóre není validní!</string>
+    <string name="poa_not_played_yet" tools:ignore="MissingTranslation">Tento účastník ještě nehrál</string>
+    <string name="flf_roll_format_violated" tools:ignore="MissingTranslation">Musí být číslo mezi 0 a</string>
+    <string name="flf_regular_frame_too_many_pins_error" tools:ignore="MissingTranslation">Počet poražených kuželek musí být mezi 0 a</string>
+    <string name="flf_last_frame_invalid_extra_roll_error" tools:ignore="MissingTranslation">Nárok na bonusový hod máte pouze po sparu/striku!</string>
+    <string name="played_frames_input_label" tools:ignore="MissingTranslation">Odehrané rámce:</string>
+    <string name="total_score_input_label" tools:ignore="MissingTranslation">Celkové skóre:</string>
+    <string name="throw_1_input_label" tools:ignore="MissingTranslation">Hod 1:</string>
+    <string name="throw_2_input_label" tools:ignore="MissingTranslation">Hod 2:</string>
+    <string name="throw_3_input_label" tools:ignore="MissingTranslation">Hod 3:</string>
+    <string name="played_frames_label" tools:ignore="MissingTranslation">Odehrané rámce:</string>
+    <string name="final_score_label" tools:ignore="MissingTranslation">Celkové skóre:</string>
+    <string name="frame_num" tools:ignore="MissingTranslation">Rámec #</string>
+    <string name="throws_label" tools:ignore="MissingTranslation">Hody:</string>
+    <string name="current_score_label" tools:ignore="MissingTranslation">Skóre:</string>
+    <string name="track_individual_throws" tools:ignore="MissingTranslation">Zaznamenávat jednotlivé hody</string>
+    <string name="update_stats_with_partial_data" tools:ignore="MissingTranslation">Započítat neúplná data do statistik</string>
+    <string name="simple_stats" tools:ignore="MissingTranslation">Celkové statistiky</string>
+    <string name="complex_stats" tools:ignore="MissingTranslation">Statistiky pro jednotlivé hody</string>
+    <string name="lane" tools:ignore="MissingTranslation">Dráha</string>
+</resources>
