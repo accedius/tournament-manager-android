@@ -113,6 +113,10 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
         for (PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
+
+            if(participant == null)
+                continue;
+
             Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
             /*if (!match.isPlayed())
                 continue;*/

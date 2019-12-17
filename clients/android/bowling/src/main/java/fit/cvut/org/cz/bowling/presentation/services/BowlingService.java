@@ -127,7 +127,7 @@ public class BowlingService extends AbstractIntentServiceWProgress {
                 }
 
                 for (Competition competition : competitions) {
-                    competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId()]);
+                    competition.setType(CompetitionTypes.competitionTypes()[competition.getTypeId() + 1]);
                 }
 
                 res.putExtra(CrossPackageConstants.EXTRA_PACKAGE, package_name);
