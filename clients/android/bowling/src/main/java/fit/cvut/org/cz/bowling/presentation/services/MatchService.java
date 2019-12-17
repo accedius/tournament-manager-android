@@ -164,43 +164,6 @@ public class MatchService extends AbstractIntentServiceWProgress {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;
-
-                /*Intent res = new Intent(action);
-                Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS);
-                Match original = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(match.getId());
-                if (!original.isPlayed()) {
-                    ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).beginMatch(match.getId());
-                }
-                match.setTournamentId(original.getTournamentId());
-                match.setDate(original.getDate());
-                match.setNote(original.getNote());
-                match.setPeriod(original.getPeriod());
-                match.setRound(original.getRound());
-                ManagerFactory.getInstance(this).getEntityManager(Match.class).update(match);
-                List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchId(match.getId());
-                for (Participant participant : participants) {
-                    int score = ParticipantType.home.toString().equals(participant.getRole()) ? match.getHomeScore() : match.getAwayScore();
-                    List<ParticipantStat> stats = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getByParticipantId(participant.getId());
-                    ParticipantStat stat;
-                    if (stats.isEmpty()) {
-                        stat = new ParticipantStat(participant.getId(), score);
-                        ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class).insert(stat);
-                    } else {
-                        stat = stats.get(0);
-                        stat.setScore(score);
-                        ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class).update(stat);
-                    }
-
-                    // Remove original stats and add new ones (way to handle removed items)
-                    ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).deleteByParticipantId(participant.getId());
-                }
-
-                ArrayList<PlayerStat> homeStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
-
-                for (PlayerStat playerStat : homeStats)
-                    ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(playerStat);
-
-                LocalBroadcastManager.getInstance(this).sendBroadcast(res);*/
             }
             case ACTION_FIND_BY_ID: {
                 Intent res = new Intent(action);

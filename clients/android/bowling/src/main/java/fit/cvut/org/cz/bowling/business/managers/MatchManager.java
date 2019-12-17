@@ -55,16 +55,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             List<Participant> participants = participantManager.getByMatchId(match.getId());
             match.addParticipants(participants);
             for (Participant participant : participants) {
-                /*if (ParticipantType.home.toString().equals(participant.getRole())){
-                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
-                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
-                    match.setHomeScore(participantId);
-                }
-                else if (ParticipantType.away.toString().equals(participant.getRole())){
-                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
-                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
-                    match.setAwayScore(participantId);
-                }*/
 
                 //Add player stats
                 List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
@@ -345,6 +335,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
         match.setPlayed(false);
         match.setTrackRolls(false);
+        match.setValidForStats(false);
         update(match);
     }
 
