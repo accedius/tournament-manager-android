@@ -81,7 +81,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     public Bundle getMatchStats() {
         Bundle bundle = new Bundle();
         List<ParticipantStat> participantStatsToCreate = new ArrayList<>(), participantStatsToUpdate = new ArrayList<>();
-        List<Frame> framesToCreate = new ArrayList<>(), framesToUpdate = new ArrayList<>(), framesToDelete = new ArrayList<>();
+        List<Frame> framesToCreate = new ArrayList<>(), framesToUpdate = new ArrayList<>(), framesToDelete = new ArrayList<>(), notChangedFramesButToAddRollsTo = new ArrayList<>();
         List<Roll> rollsToCreate = new ArrayList<>(), rollsToUpdate = new ArrayList<>(), rollsToDelete = new ArrayList<>();
 
         //whether or not the game is completed by all participants
@@ -140,12 +140,12 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         frame.setMatchId(matchId);
                         frame.setFrameNumber( (byte) (frameIndex+1));
                         frame.setParticipantId(participant.getId());
-                        frame.setPlayerId(overview.getPlayerId());
                         frame.setRolls(new ArrayList<Roll>());
                         participantFrames.add(frame);
                         frameToUpdate = false;
                     }
                     Frame frame = participantFrames.get(frameIndex);
+                    frame.setPlayerId(overview.getPlayerId());
 
                     //no need to control other values, because participantId, frameNumber are the same, if the entity existed before
                     if(frame.getPlayerId() == overview.getPlayerId()){
@@ -190,6 +190,10 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                             //little trick to identify different rolls before frame is created in database (frameId == 0)
                             roll.setId(frame.getParticipantId());
                             roll.setFrameId(frame.getFrameNumber());
+
+                            if(frameToUpdate && !isPreviousAndNewDifferentF){
+                                notChangedFramesButToAddRollsTo.add(frame);
+                            }
 
                             rollsToCreate.add(roll);
                         }
@@ -246,6 +250,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         bundle.putParcelableArrayList(FRAMES_TO_CREATE, (ArrayList<? extends Parcelable>) framesToCreate);
         bundle.putParcelableArrayList(FRAMES_TO_UPDATE, (ArrayList<? extends Parcelable>) framesToUpdate);
         bundle.putParcelableArrayList(FRAMES_TO_DELETE, (ArrayList<? extends Parcelable>) framesToDelete);
+        bundle.putParcelableArrayList(NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO, (ArrayList<? extends Parcelable>) notChangedFramesButToAddRollsTo);
 
         bundle.putParcelableArrayList(ROLLS_TO_CREATE, (ArrayList<? extends Parcelable>) rollsToCreate);
         bundle.putParcelableArrayList(ROLLS_TO_UPDATE, (ArrayList<? extends Parcelable>) rollsToUpdate);

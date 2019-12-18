@@ -42,6 +42,7 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String FRAMES_TO_CREATE = "frames_to_create";
     public static final String FRAMES_TO_UPDATE = "frames_to_update";
     public static final String FRAMES_TO_DELETE = "frames_to_delete";
+    public static final String NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO = "not_changed_frames_but_to_add_rolls_to";
 
     public static final String ROLLS_TO_CREATE = "rolls_to_create";
     public static final String ROLLS_TO_UPDATE = "rolls_to_update";

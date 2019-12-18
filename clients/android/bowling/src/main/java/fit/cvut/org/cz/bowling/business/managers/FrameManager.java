@@ -92,8 +92,8 @@ public class FrameManager extends BaseManager<Frame> implements IFrameManager {
                 matchFramesId.add(id);
             }
             rollDeleteBuilder.where().in(DBConstants.cFRAME_ID, matchFramesId);
-            frameDeleteBuilder.delete();
             rollDeleteBuilder.delete();
+            frameDeleteBuilder.delete();
 
         } catch (SQLException e) {
             return false;
