@@ -14,6 +14,7 @@
     <string name="generate_by_wins">Generate by wins</string>
     <string name="generate_by_lanes">Generate by lane</string>
     <string name="generate_matches">Generate matches</string>
+    <string name="wrong_lanes">Number of lanes cant be more then number of players.</string>
 
     <string name="enter_number_of_lanes">Enter number of lanes</string>
 

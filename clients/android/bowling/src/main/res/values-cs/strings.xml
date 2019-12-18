@@ -50,4 +50,5 @@
     <string name="simple_stats">Celkové statistiky</string>
     <string name="complex_stats">Statistiky pro jednotlivé hody</string>
     <string name="lane">Dráha</string>
+    <string name="wrong_lanes">Počet dráh nesmí být větší než je počet hráčů.</string>
 </resources>

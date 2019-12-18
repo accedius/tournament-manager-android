@@ -78,8 +78,7 @@ public class AddMatchDialog extends DialogFragment {
                                         List<Player> players = iTournamentManager.getTournamentPlayers(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
 
                                         if(lanes > players.size() || lanes < 1) {
-                                            //here we should inform the user that he chose poorly
-                                            
+                                            Toast.makeText(a,R.string.wrong_lanes,Toast.LENGTH_LONG).show();
                                         }
                                         else {
                                             Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
