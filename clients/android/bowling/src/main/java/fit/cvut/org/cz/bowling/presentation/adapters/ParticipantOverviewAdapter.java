@@ -21,7 +21,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         return new ParticipantOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_participant_stats, parent, false));
     }
 
-    protected void setOnClickListeners(View v, final long participantId, int position, String name, int score, byte framesPlayedNumber) {}
+    protected void setOnClickListeners(View v, final long participantId, final int position, String name, int score, byte framesPlayedNumber) {}
 
     private String formatNumber(int num) { return String.format(Locale.getDefault(),"%d", num); }
 

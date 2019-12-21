@@ -46,7 +46,7 @@
     <string name="throws_label">Hody:</string>
     <string name="current_score_label">Skóre:</string>
     <string name="track_individual_throws">Zaznamenávat jednotlivé hody</string>
-    <string name="update_stats_with_partial_data">Započítat neúplná data do statistik</string>
+    <string name="are_match_stats_valid">Započítat do statistik data, včetně neúplných</string> //TODO Starý převod: Započítat neúplná data do statistik
     <string name="simple_stats">Celkové statistiky</string>
     <string name="complex_stats">Statistiky pro jednotlivé hody</string>
     <string name="lane">Dráha</string>

@@ -58,7 +58,7 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
     protected static List<Participant> matchParticipants = new ArrayList<>();
     protected static boolean bindFromDialogInsertions = false;
     protected static final int REQUEST_CODE_UPDATE_LOCALLY = 1337;
-    private Fragment thisFragment;
+    private static Fragment thisFragment;
 
     @Override
     public Bundle getMatchStats() {
@@ -168,23 +168,16 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
     protected AbstractListAdapter getAdapter() {
         return new ParticipantOverviewAdapter() {
             @Override
-            protected void setOnClickListeners(View v, final long participantId, int position, final String name, int score, byte framesPlayedNumber) {
+            protected void setOnClickListeners(View v, final long participantId, final int position, final String name, int score, byte framesPlayedNumber) {
                 super.setOnClickListeners(v, participantId, position, name, score, framesPlayedNumber);
 
                 v.setOnClickListener( new View.OnClickListener(){
                                           @Override
                                           public void onClick(View v) {
-                                              int index = 0;
-                                              while(index < participantOverviews.size()){
-                                                  ParticipantOverview overview = participantOverviews.get(index);
-                                                  if(overview.getParticipantId() == participantId) {
-                                                      break;
-                                                  }
-                                                  ++index;
-                                              }
+                                              int index = position;
                                               EditParticipantOverviewDialog dialog = EditParticipantOverviewDialog.newInstance(index, name);
-                                              dialog.setTargetFragment(thisFragment, 0);
-                                              dialog.show(getFragmentManager(), "dialog");
+                                              dialog.setTargetFragment(thisFragment, REQUEST_CODE_UPDATE_LOCALLY);
+                                              dialog.show(getFragmentManager(), "dialogEdit");
                                           }
                                       }
                 );
@@ -192,7 +185,10 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                                              @Override
                                              public boolean onLongClick(View v) {
-                                                 return true; //don't know if we want to have an option to delete participants
+                                                 EditResetParticipantStatsDialog dialog = EditResetParticipantStatsDialog.newInstance(position, name);
+                                                 dialog.setTargetFragment(thisFragment, REQUEST_CODE_UPDATE_LOCALLY);
+                                                 dialog.show(getFragmentManager(), "dialogEditReset");
+                                                 return true;
                                              }
                                          }
                 );
@@ -259,6 +255,19 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
     protected void bindDataOnView(Intent intent) {
         if(bindFromDialogInsertions) {
             bindFromDialogInsertions = false;
+            //Check if match is played to set MatchEditStatsFragment's CheckBox partialDataPropagation checked attribute to true or false
+            int participantsWhoNotCompletedGameNumber = participantOverviews.size();
+            for(ParticipantOverview overview : participantOverviews){
+                if(overview.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames)
+                    --participantsWhoNotCompletedGameNumber;
+            }
+            if(getParentFragment() != null) {
+                if(participantsWhoNotCompletedGameNumber == 0 ) {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 1, null);
+                } else {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 0, null);
+                }
+            }
         } else {
             if(participantOverviews.isEmpty()) {
                 matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
@@ -301,6 +310,7 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
             }
             intent.removeExtra(ExtraConstants.EXTRA_PARTICIPANTS);
         }
+
         intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<ParticipantOverview>) participantOverviews);
         super.bindDataOnView(intent);
     }
@@ -496,6 +506,55 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
             framesPlayedNumber.requestFocus();
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             return super.onCreateView(inflater, container, savedInstanceState);
+        }
+    }
+
+    public static class EditResetParticipantStatsDialog extends DialogFragment {
+        int position;
+        String name;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            position = getArguments().getInt(ExtraConstants.EXTRA_POSITION);
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+            String[] items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.reset) };
+            builder.setItems( items, supplyListener());
+            name = getArguments().getString(ExtraConstants.EXTRA_PARTICIPANT_NAME);
+            builder.setTitle(name);
+            return builder.create();
+        }
+
+        protected DialogInterface.OnClickListener supplyListener() {
+            return new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            EditParticipantOverviewDialog dialogEdit = EditParticipantOverviewDialog.newInstance(position, name);
+                            dialogEdit.setTargetFragment(thisFragment, REQUEST_CODE_UPDATE_LOCALLY);
+                            dialogEdit.show(getFragmentManager(), "dialogEdit");
+                            dialog.dismiss();
+                            break;
+                        case 1: //reset
+                            ParticipantOverview overview = participantOverviews.get(position);
+                            overview.setScore(0);
+                            overview.setFramesPlayedNumber((byte)0);
+                            getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, 1, null);
+                            dialog.dismiss();
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            };
+        }
+
+        public static EditResetParticipantStatsDialog newInstance (int position, String name) {
+            EditResetParticipantStatsDialog dialog = new EditResetParticipantStatsDialog();
+            Bundle args = new Bundle();
+            args.putInt(ExtraConstants.EXTRA_POSITION, position);
+            args.putString(ExtraConstants.EXTRA_PARTICIPANT_NAME, name);
+            dialog.setArguments(args);
+            return dialog;
         }
     }
 }

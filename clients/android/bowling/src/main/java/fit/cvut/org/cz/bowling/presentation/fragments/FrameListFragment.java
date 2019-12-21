@@ -411,6 +411,19 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     protected void bindDataOnView(Intent intent) {
         if(bindFromDialogInsertions) {
             bindFromDialogInsertions = false;
+            //Check if match is played to set MatchEditStatsFragment's CheckBox partialDataPropagation checked attribute to true or false
+            int participantsWhoNotCompletedGameNumber = participantsFrameOverviews.size();
+            for(List<FrameOverview> overviews : participantsFrameOverviews) {
+                if(overviews.size() == ConstraintsConstants.tenPinMatchParticipantMaxFrames)
+                    --participantsWhoNotCompletedGameNumber;
+            }
+            if(getParentFragment() != null) {
+                if(participantsWhoNotCompletedGameNumber == 0 ) {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 1, null);
+                } else {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 0, null);
+                }
+            }
         } else {
             if(participantsFrameOverviews == null) {
                 matchPlayers = new ArrayList<>();

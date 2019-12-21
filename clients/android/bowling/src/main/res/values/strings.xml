@@ -131,7 +131,7 @@
     <string name="throws_label">Throws:</string>
     <string name="current_score_label">Score:</string>
     <string name="track_individual_throws">Track individual throws</string>
-    <string name="update_stats_with_partial_data">Update stats with partial data</string>
+    <string name="are_match_stats_valid">Match data, including partial, is valid for stats</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="simple_stats">Simple stats</string>
