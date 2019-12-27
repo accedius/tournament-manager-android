@@ -42,7 +42,12 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     }
 
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
+        if(pointConfig == null) {
+            return 0;
+        }
+
         List<Float> config = pointConfig.getConfigurationPlacePoints();
+
         if(config.size() <= result) {
             return 0;
         }
@@ -103,11 +108,17 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for(PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
 
+
             if(participant == null) {
                 continue;
             }
 
             Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
+
+            //TODO needs to be fixed: match.isPlayed() &&
+            if(!match.isValidForStats()) {
+                continue;
+            }
 
             //Get all participants in this match
             List<Participant> commonMatchParticipants = ((ParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(participant.getMatchId());
@@ -132,7 +143,17 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
             //Get the point award configuration
             final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
-            PointConfiguration pointConfiguration = pointConfigurationManager.getById(match.getTournamentId());
+            List<PointConfiguration> pointConfigurations = pointConfigurationManager.getByTournamentId(match.getTournamentId());
+
+            //Find the one based on the amount of sides in the match
+            PointConfiguration pointConfiguration = null;
+
+            for(PointConfiguration p : pointConfigurations) {
+                if(p.sidesNumber == match.getParticipants().size()) {
+                    pointConfiguration = p;
+                    break;
+                }
+            }
 
             //First wins
             if(stat == winner) {
