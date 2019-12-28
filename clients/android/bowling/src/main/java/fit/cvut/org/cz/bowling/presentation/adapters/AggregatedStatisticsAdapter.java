@@ -29,10 +29,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         holder.ST.setText(Long.toString(stats.getStrikes()));
         holder.SP.setText(Long.toString(stats.getSpares()));
         holder.P.setText(Long.toString(stats.getPoints()));
-        if (holder.W != null) {
-            holder.W.setText(Long.toString(stats.getWins()));
-            holder.L.setText(Long.toString(stats.getLosses()));
-            holder.D.setText(Long.toString(stats.getDraws()));
+        if (holder.TP != null) {
             holder.TP.setText(Long.toString(stats.getTeamPoints()));
             holder.AST.setText(String.format("%.2f", stats.getAvgStrikes()));
             holder.ASP.setText(String.format("%.2f", stats.getAvgPoints()));
@@ -54,7 +51,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
      */
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, ST, SP, P, W, D, L, TP, AST, ASP, ATP;
+        TextView name, GP, ST, SP, P, TP, AST, ASP, ATP;
         public View wholeView;
 
         public AggregatedStatisticsViewHolder(View itemView) {
@@ -66,9 +63,6 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
             SP = (TextView) itemView.findViewById(R.id.as_spares);
             P = (TextView) itemView.findViewById(R.id.as_points);
 
-            W = (TextView) itemView.findViewById(R.id.as_wins);
-            D = (TextView) itemView.findViewById(R.id.as_draws);
-            L = (TextView) itemView.findViewById(R.id.as_losses);
             TP = (TextView) itemView.findViewById(R.id.as_team_points);
             AST = (TextView) itemView.findViewById(R.id.as_avg_st);
             ASP = (TextView) itemView.findViewById(R.id.as_avg_sp);
