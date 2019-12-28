@@ -138,4 +138,6 @@
     <string name="complex_stats">Complex stats</string>
 
     <string name="lane">Lane</string>
+    <string name="stat_match_point" tools:ignore="MissingTranslation">MP</string>
+    <string name="stat_match_point_average" tools:ignore="MissingTranslation">MP avg.</string>
 </resources>

@@ -1,8 +1,10 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,8 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
+import fit.cvut.org.cz.bowling.business.managers.CompetitionManager;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
+import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 /**
@@ -45,6 +57,46 @@ public class AggregStatsTitleFragment extends Fragment {
         setOrderingListeners(v);
         setDefaultOrder(v);
         return v;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        Long id = (Long) getArguments().get(ExtraConstants.EXTRA_COMP_ID);
+
+        boolean isTeamMatch = false;
+
+        if(id != null) {
+            final CompetitionManager cm = ManagerFactory.getInstance().getEntityManager(Competition.class);
+            final Competition c = cm.getById(id);
+            final CompetitionType ct = CompetitionTypes.getTypeByTypeId(c.getTypeId());
+
+            if(c == null) {
+                Log.e("AggregStatsTitleFragment","Competition " + id + " not found");
+            } else {
+                isTeamMatch = CompetitionTypes.teams().equals(ct);
+            }
+        } else if((id = (Long)getArguments().get(ExtraConstants.EXTRA_TOUR_ID)) != null) {
+            final TournamentManager tm = ManagerFactory.getInstance().getEntityManager(Tournament.class);
+            final Tournament t = tm.getById(id);
+            final TournamentType tt = TournamentTypes.getMyTournamentType(t.getTypeId());
+
+            if(t == null) {
+                Log.e("AggregStatsTitleFragment","Tournament " + id + " not found");
+            } else {
+                isTeamMatch = TournamentTypes.teams().equals(tt);
+            }
+        }
+
+        if(!isTeamMatch) {
+            TextView tp = view.findViewById(R.id.stats_team_points);
+            if(tp != null) {
+                tp.setText(R.string.stat_match_point);
+            }
+        }
     }
 
     @Override
@@ -119,10 +171,7 @@ public class AggregStatsTitleFragment extends Fragment {
         columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.stats_strikes));
         columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.stats_spares));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.stats_points));
-        if (v.findViewById(R.id.stats_wins) != null) {
-            columns.put(Constants.WINS, (TextView) v.findViewById(R.id.stats_wins));
-            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.stats_draws));
-            columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.stats_losses));
+        if (v.findViewById(R.id.stats_team_points) != null) {
             columns.put(Constants.TEAM_POINTS, (TextView) v.findViewById(R.id.stats_team_points));
             columns.put(Constants.STRIKES_AVG, (TextView) v.findViewById(R.id.stats_strikes_avg));
             columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
