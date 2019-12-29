@@ -25,23 +25,11 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
     public void onBindViewHolder(StandingsViewHolder holder, int position) {
         Standing stats = data.get(position);
         holder.name.setText(stats.getName());
-        if (holder.Wot == null) {
-            holder.W.setText(Integer.toString(stats.getTotalWins()));
-            holder.L.setText(Integer.toString(stats.getTotalLosses()));
-        }
-        holder.D.setText(Integer.toString(stats.getDraws()));
-        holder.SCORE.setText(Integer.toString(stats.getGoalsGiven())+":"+Long.toString(stats.getGoalsReceived()));
         holder.GP.setText(Integer.toString(stats.getMatches()));
-        holder.P.setText(Integer.toString(stats.getPoints()));
-
-        if (holder.Wot != null) {
-            holder.W.setText(Integer.toString(stats.getWins()));
-            holder.Wot.setText(Integer.toString(stats.getWinsOt()));
-            holder.Wso.setText(Integer.toString(stats.getWinsSo()));
-            holder.L.setText(Integer.toString(stats.getLosses()));
-            holder.Lot.setText(Integer.toString(stats.getLossesOt()));
-            holder.Lso.setText(Integer.toString(stats.getLossesSo()));
-        }
+        holder.MP.setText(Integer.toString(stats.getMatchPoints()));
+        holder.strikes.setText(Integer.toString(stats.getStrikes()));
+        holder.spares.setText(Integer.toString(stats.getSpares()));
+        holder.points.setText(Integer.toString(stats.getPoints()));
     }
 
     /**
@@ -49,22 +37,17 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
      */
     public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, W, Wot, Wso, L, Lot, Lso, D, SCORE, P;
+        TextView name, GP, MP, strikes, spares, points;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.as_name);
             GP = (TextView) itemView.findViewById(R.id.as_games_played);
-            W = (TextView) itemView.findViewById(R.id.as_wins);
-            Wot = (TextView) itemView.findViewById(R.id.as_wins_ot);
-            Wso = (TextView) itemView.findViewById(R.id.as_wins_so);
-            L = (TextView) itemView.findViewById(R.id.as_losses);
-            Lot = (TextView) itemView.findViewById(R.id.as_losses_ot);
-            Lso = (TextView) itemView.findViewById(R.id.as_losses_so);
-            D = (TextView) itemView.findViewById(R.id.as_draws);
-            SCORE = (TextView) itemView.findViewById(R.id.as_score);
-            P = (TextView) itemView.findViewById(R.id.as_points);
+            MP = (TextView) itemView.findViewById(R.id.as_match_points);
+            strikes = (TextView) itemView.findViewById(R.id.as_strikes);
+            spares = (TextView) itemView.findViewById(R.id.as_spares);
+            points = (TextView) itemView.findViewById(R.id.as_points);
         }
     }
 }

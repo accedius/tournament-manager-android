@@ -54,19 +54,6 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         return config.get(result).intValue();
     }
 
-    private void addMatchResultToStanding(int result, Standing standing, Match match) {
-        switch (result) {
-            case WIN:
-                standing.addWin();
-                break;
-            case DRAW:
-                standing.addDraw();
-                break;
-            case LOSS:
-                standing.addLoss();
-                break;
-        }
-    }
 
     private int getMatchResultForParticipant(Participant participant, Match match) {
         int participant_score = 0, opponent_score = 0;
@@ -265,36 +252,6 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             if (!match.isPlayed())
                 continue;
 
-            Standing standingH = null;
-            Standing standingA = null;
-            /*for (Standing standing : standings) {
-                if (standing.getTeamId() == match.getHomeParticipantId())
-                    standingH = standing;
-                else if (standing.getTeamId() == match.getAwayParticipantId())
-                    standingA = standing;
-            }*/
-
-            if (standingA == null || standingH == null)
-                continue;
-
-            standingH.addGoalsGiven(match.getHomeScore());
-            standingH.addGoalsReceived(match.getAwayScore());
-
-            standingA.addGoalsGiven(match.getAwayScore());
-            standingA.addGoalsReceived(match.getHomeScore());
-
-            for (Participant participant : match.getParticipants()) {
-                int result = getMatchResultForParticipant(participant, match);
-                int points = calculatePoints(result, pointConfiguration, match);
-                Standing actualStanding;
-                /*if (standingH.getTeamId() == participant.getParticipantId()) {
-                    actualStanding = standingH;
-                } else */{
-                    actualStanding = standingA;
-                }
-                actualStanding.addPoints(points);
-                addMatchResultToStanding(result, actualStanding, match);
-            }
         }
         orderStandings(standings);
         return standings;
@@ -306,12 +263,6 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             public int compare(Standing ls, Standing rs) {
                 if (rs.getPoints() != ls.getPoints())
                     return rs.getPoints() - ls.getPoints();
-                if (rs.getGoalsGiven() - rs.getGoalsReceived() != ls.getGoalsGiven() - ls.getGoalsReceived()) {
-                    return (rs.getGoalsGiven() - rs.getGoalsReceived()) - (ls.getGoalsGiven() - ls.getGoalsReceived());
-                }
-                if (rs.getGoalsGiven() != ls.getGoalsGiven()) {
-                    return rs.getGoalsGiven()- ls.getGoalsGiven();
-                }
                 return ls.getMatches()-rs.getMatches();
             }
         });

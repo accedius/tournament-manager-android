@@ -26,62 +26,30 @@
                 android:layout_weight="2"
                 android:id="@+id/standings_games_played"
                 android:text="@string/gp"/>
+
             <TextView
+                android:id="@+id/standings_match_points"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:id="@+id/standings_wins"
-                android:text="@string/w"/>
+                android:gravity="center"
+                android:text="@string/mp" />
+
             <TextView
+                android:id="@+id/standings_strikes"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:id="@+id/standings_wins_ot"
-                android:text="@string/wot"/>
+                android:gravity="center"
+                android:text="@string/st" />
+
             <TextView
+                android:id="@+id/standings_spares"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:id="@+id/standings_wins_so"
-                android:text="@string/wso"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="2"
-                android:id="@+id/standings_draws"
-                android:text="@string/d"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:id="@+id/standings_losses_so"
-                android:text="@string/lso"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:id="@+id/standings_losses_ot"
-                android:text="@string/lot"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:id="@+id/standings_losses"
-                android:text="@string/l"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                android:id="@+id/standings_score"
-                android:text="@string/score"/>
+                android:text="@string/sp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
