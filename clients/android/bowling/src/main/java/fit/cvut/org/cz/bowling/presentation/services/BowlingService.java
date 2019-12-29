@@ -71,13 +71,13 @@ public class BowlingService extends AbstractIntentServiceWProgress {
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.st), Long.toString(ags.getStrikes()), true));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.sp), Long.toString(ags.getSpares()), true));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.pt), Long.toString(ags.getPoints()), true));
-                as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.tp), Long.toString(ags.getTeamPoints()), false));
+                as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.tp), Long.toString(ags.getMatchPoints()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.w), Long.toString(ags.getWins()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.d), Long.toString(ags.getDraws()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.l), Long.toString(ags.getLosses()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.ag), String.format("%.2f", ags.getAvgStrikes()), false));
                 as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.ap), String.format("%.2f", ags.getAvgPoints()), false));
-                as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgTeamPoints()), false));
+                as.addRecord(new PlayerAggregatedStatsRecord(getString(R.string.atp), String.format("%.2f", ags.getAvgMatchPoints()), false));
                 statsToSend.add(as);
 
                 Intent res = new Intent(sportContext + package_name + action);

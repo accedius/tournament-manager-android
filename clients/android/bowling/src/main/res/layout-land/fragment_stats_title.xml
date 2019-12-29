@@ -7,74 +7,82 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/label_card">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/stats_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
                 android:layout_weight="3"
-                android:text="@string/name"/>
+                android:gravity="left|center_vertical"
+                android:text="@string/name" />
+
             <TextView
                 android:id="@+id/stats_games_played"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/gp"/>
+                android:gravity="center"
+                android:text="@string/gp" />
+
             <TextView
                 android:id="@+id/stats_strikes"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/st"/>
+                android:gravity="center"
+                android:text="@string/st" />
+
             <TextView
                 android:id="@+id/stats_spares"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/sp"/>
+                android:gravity="center"
+                android:text="@string/sp" />
+
             <TextView
                 android:id="@+id/stats_points"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/p"/>
+                android:gravity="center"
+                android:text="@string/p" />
 
             <TextView
-                android:id="@+id/stats_team_points"
+                android:id="@+id/stats_match_points"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/tp"/>
+                android:gravity="center"
+                android:text="@string/mp" />
+
             <TextView
                 android:id="@+id/stats_strikes_avg"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="2"
-                android:text="@string/ast"/>
+                android:text="@string/ast" />
+
             <TextView
                 android:id="@+id/stats_points_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/ap"/>
+                android:gravity="center"
+                android:text="@string/ap" />
+
             <TextView
                 android:id="@+id/stats_team_points_avg"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_weight="2"
-                android:text="@string/atp"/>
+                android:gravity="center"
+                android:text="@string/atp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
     <View

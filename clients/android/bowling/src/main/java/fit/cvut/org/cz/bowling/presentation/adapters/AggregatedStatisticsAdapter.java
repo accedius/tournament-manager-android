@@ -30,10 +30,10 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         holder.SP.setText(Long.toString(stats.getSpares()));
         holder.P.setText(Long.toString(stats.getPoints()));
         if (holder.TP != null) {
-            holder.TP.setText(Long.toString(stats.getTeamPoints()));
+            holder.TP.setText(Long.toString(stats.getMatchPoints()));
             holder.AST.setText(String.format("%.2f", stats.getAvgStrikes()));
             holder.ASP.setText(String.format("%.2f", stats.getAvgPoints()));
-            holder.ATP.setText(String.format("%.2f", stats.getAvgTeamPoints()));
+            holder.ATP.setText(String.format("%.2f", stats.getAvgMatchPoints()));
         }
         setOnClickListeners(holder.wholeView, stats.getPlayerId(), stats.getPlayerName());
     }
