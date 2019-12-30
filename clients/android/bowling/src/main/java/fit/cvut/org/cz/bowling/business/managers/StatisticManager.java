@@ -28,6 +28,8 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 
 public class StatisticManager extends BaseManager<AggregatedStatistics> implements IStatisticManager {
@@ -91,7 +93,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
-        long matches = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
+        long matches = 0, strikes = 0, spares = 0, points = 0, matchPoints = 0;
         for(PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
 
@@ -106,43 +108,51 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                 continue;
             }
 
-            //Get all participants in this match
-            List<Participant> commonMatchParticipants = ((ParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(participant.getMatchId());
+            Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
 
-            //Get all participant stats in this match
-            List<PlayerStat> participantStats = new LinkedList<>();
-            for(Participant p : commonMatchParticipants) {
-                participantStats.addAll(((PlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(p.getId()));
-            }
+            boolean isMatchOfIndividuals = TournamentTypes.individuals().equals(TournamentTypes.getMyTournamentType(tournament.getTypeId()));
 
-            //Determine the winner
-            PlayerStat winner = stat;
-            int place = 0;
-            for(PlayerStat s : participantStats) {
-                if(stat.getPoints() < s.getPoints()) {
-                    place++;
+            if(isMatchOfIndividuals) {
+                //Get all participants in this match
+                List<Participant> commonMatchParticipants = ((ParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(participant.getMatchId());
+
+                //Get all participant stats in this match
+                List<PlayerStat> participantStats = new LinkedList<>();
+                for(Participant p : commonMatchParticipants) {
+                    participantStats.addAll(((PlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(p.getId()));
                 }
-                if(winner.getPoints() < s.getPoints()) {
-                    winner = s;
+
+                //Determine the winner
+                PlayerStat winner = stat;
+                int place = 0;
+                for(PlayerStat s : participantStats) {
+                    if(stat.getPoints() < s.getPoints()) {
+                        place++;
+                    }
+                    if(winner.getPoints() < s.getPoints()) {
+                        winner = s;
+                    }
                 }
-            }
 
-            //Get the point award configuration
-            final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
-            List<PointConfiguration> pointConfigurations = pointConfigurationManager.getByTournamentId(match.getTournamentId());
+                //Get the point award configuration
+                final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+                List<PointConfiguration> pointConfigurations = pointConfigurationManager.getByTournamentId(match.getTournamentId());
 
-            //Find the one based on the amount of sides in the match
-            PointConfiguration pointConfiguration = null;
+                //Find the one based on the amount of sides in the match
+                PointConfiguration pointConfiguration = null;
 
-            for(PointConfiguration p : pointConfigurations) {
-                if(p.sidesNumber == match.getParticipants().size()) {
-                    pointConfiguration = p;
-                    break;
+                for(PointConfiguration p : pointConfigurations) {
+                    if(p.sidesNumber == match.getParticipants().size()) {
+                        pointConfiguration = p;
+                        break;
+                    }
                 }
-            }
 
-            //Give team point based on place in current match
-            teamPoints += calculatePoints(place, pointConfiguration, match);
+                //Give team point based on place in current match
+                matchPoints += calculatePoints(place, pointConfiguration, match);
+            } else {
+                //TODO wait for specifications
+            }
 
             //Accumulate stats
             matches++;
@@ -151,7 +161,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             points += stat.getPoints();
         }
 
-        return new AggregatedStatistics(player.getId(), player.getName(), matches, strikes, spares, points, teamPoints);
+        return new AggregatedStatistics(player.getId(), player.getName(), matches, strikes, spares, points, matchPoints);
     }
 
     @Override
