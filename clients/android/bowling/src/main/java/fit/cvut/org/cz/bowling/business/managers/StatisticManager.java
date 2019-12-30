@@ -91,7 +91,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
-        long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
+        long matches = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
         for(PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
 
@@ -102,7 +102,6 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
             Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
 
-            //TODO needs to be fixed: match.isPlayed() &&
             if(!match.isValidForStats()) {
                 continue;
             }
@@ -142,13 +141,6 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                 }
             }
 
-            //First wins
-            if(stat == winner) {
-                wins++;
-            } else {
-                losses++;
-            }
-
             //Give team point based on place in current match
             teamPoints += calculatePoints(place, pointConfiguration, match);
 
@@ -159,7 +151,7 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             points += stat.getPoints();
         }
 
-        return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, strikes, spares, points, teamPoints);
+        return new AggregatedStatistics(player.getId(), player.getName(), matches, strikes, spares, points, teamPoints);
     }
 
     @Override

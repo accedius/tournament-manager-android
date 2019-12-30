@@ -13,7 +13,7 @@ public class AggregatedStatistics implements Parcelable, IEntity {
     private long playerId;
     private String playerName;
 
-    private long strikes, spares, points, matchPoints, matches, wins, losses, draws;
+    private long strikes, spares, points, matchPoints, matches;
     private double avgStrikes, avgPoints, avgMatchPoints;
 
     private void calcAvg() {
@@ -29,13 +29,10 @@ public class AggregatedStatistics implements Parcelable, IEntity {
         }
     }
 
-    public AggregatedStatistics(long pID, String pName, long matches, long wins, long draws, long losses, long strikes, long spares, long points, long matchPoints) {
+    public AggregatedStatistics(long pID, String pName, long matches, long strikes, long spares, long points, long matchPoints) {
         this.playerId = pID;
         this.playerName = pName;
         this.matches = matches;
-        this.wins = wins;
-        this.draws = draws;
-        this.losses = losses;
         this.strikes = strikes;
         this.spares = spares;
         this.points = points;
@@ -69,9 +66,6 @@ public class AggregatedStatistics implements Parcelable, IEntity {
         dest.writeLong(points);
         dest.writeLong(matchPoints);
         dest.writeLong(matches);
-        dest.writeLong(wins);
-        dest.writeLong(losses);
-        dest.writeLong(draws);
         dest.writeDouble(avgStrikes);
         dest.writeDouble(avgPoints);
         dest.writeDouble(avgMatchPoints);
@@ -86,9 +80,6 @@ public class AggregatedStatistics implements Parcelable, IEntity {
         points = in.readLong();
         matchPoints = in.readLong();
         matches = in.readLong();
-        wins = in.readLong();
-        losses = in.readLong();
-        draws = in.readLong();
 
         avgStrikes = in.readDouble();
         avgPoints = in.readDouble();
@@ -124,18 +115,6 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     public void setMatches(long matches) { this.matches = matches; }
 
-    public long getWins() { return wins; }
-
-    public void setWins(long wins) { this.wins = wins; }
-
-    public long getLosses() { return losses; }
-
-    public void setLosses(long losses) { this.losses = losses; }
-
-    public long getDraws() { return draws; }
-
-    public void setDraws(long draws) { this.draws = draws; }
-
     public double getAvgStrikes() { return avgStrikes; }
 
     public void setAvgStrikes(long avgStrikes) { this.avgStrikes = avgStrikes; }
@@ -148,21 +127,12 @@ public class AggregatedStatistics implements Parcelable, IEntity {
 
     public void setAvgMatchPoints(long avgMatchPoints) { this.avgMatchPoints = avgMatchPoints; }
 
-    public double getAvgWins() {
-        if (matches == 0)
-            return 0;
-        return wins/matches;
-    }
-
     public double getStat(String key) {
         switch (key) {
             case Constants.MATCHES: return getMatches();
             case Constants.STRIKES: return getStrikes();
             case Constants.SPARES: return getSpares();
             case Constants.POINTS: return getPoints();
-            case Constants.WINS: return getWins();
-            case Constants.DRAWS: return getDraws();
-            case Constants.LOSSES: return getLosses();
             case Constants.MATCH_POINTS: return getMatchPoints();
             case Constants.STRIKES_AVG: return getAvgStrikes();
             case Constants.POINTS_AVG: return getAvgPoints();
