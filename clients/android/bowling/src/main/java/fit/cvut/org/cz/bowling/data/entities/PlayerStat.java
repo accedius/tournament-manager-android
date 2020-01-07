@@ -23,12 +23,15 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
     @DatabaseField(columnName = DBConstants.cPOINTS)
     private int points;
 
+    private String participantName;
+
     public PlayerStat(PlayerStat p) {
         this.participant_id = p.participant_id;
         this.player_id = p.player_id;
         this.strikes = p.strikes;
         this.spares = p.spares;
         this.points = p.points;
+        this.participantName = p.participantName;
     }
 
     public PlayerStat() {}
@@ -95,6 +98,14 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public String getParticipantName() {
+        return participantName;
+    }
+
+    public void setParticipantName(String participantName) {
+        this.participantName = participantName;
     }
 
     @Override

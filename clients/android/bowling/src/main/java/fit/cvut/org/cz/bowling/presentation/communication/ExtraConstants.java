@@ -33,11 +33,16 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String SPARE_SYMBOL = "/";
     public static final String ZERO_SYMBOL = "-";
 
+    public static final String PARTICIPANTS_TO_CREATE = "participants_to_create";
+    public static final String PARTICIPANTS_TO_UPDATE = "participants_to_update";
+    public static final String PARTICIPANTS_TO_DELETE = "participants_to_delete";
+
     public static final String PARTICIPANT_STATS_TO_CREATE = "participant_stats_to_create";
     public static final String PARTICIPANT_STATS_TO_UPDATE = "participant_stats_to_update";
 
     public static final String PLAYER_STATS_TO_CREATE = "player_stats_to_create";
     public static final String PLAYER_STATS_TO_UPDATE = "player_stats_to_update";
+    public static final String PLAYER_STATS_TO_DELETE = "player_stats_to_delete";
 
     public static final String FRAMES_TO_CREATE = "frames_to_create";
     public static final String FRAMES_TO_UPDATE = "frames_to_update";

@@ -2,6 +2,7 @@ package fit.cvut.org.cz.bowling.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
@@ -108,49 +109,15 @@ public class StatsService extends AbstractIntentServiceWProgress {
 
                 final IParticipantManager participantManager = ManagerFactory.getInstance(this).getEntityManager(Participant.class);
                 List<Participant> participants = participantManager.getByMatchId(matchId);
-                List<PlayerStat> homeStats = new ArrayList<>();
-                List<PlayerStat> awayStats = new ArrayList<>();
+                List<PlayerStat> playerStats;
 
-                long homeId = 0, awayId = 0;
-                //for (Participant participant : participants) {
-                for (int i = 0; i < participants.size(); i ++){
+                for (int i = 0; i < participants.size(); ++i){
                     final IPlayerStatManager playerStatManager = ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class);
-                    homeStats = playerStatManager.getByParticipantId(participants.get(i).getId());
-                    res.putExtra(ExtraConstants.EXTRA_HOME_PARTICIPANT, participants.get(i));
-                    homeId = participants.get(i).getParticipantId();
+                    playerStats = playerStatManager.getByParticipantId(participants.get(i).getId());
 
-                    res.putParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS+i, new ArrayList<>(homeStats));
+                    res.putParcelableArrayListExtra(ExtraConstants.EXTRA_STATS+i, new ArrayList<>(playerStats));
                 }
-                String homeName, awayName;
-                if (CompetitionTypes.teams().equals(competition.getType())) {
-                    final ITeamManager teamManager = ManagerFactory.getInstance(this).getEntityManager(Team.class);
-                    Team team = teamManager.getById(homeId);
-
-                    //Case for individuals
-                    if(team != null) {
-                        homeName = team.getName();
-                        //team = teamManager.getById(awayId);
-                        //awayName = team.getName();
-                    } else {
-                        homeName = awayName = "";
-                    }
-                } else {
-                    final IManager<Player> playerManager = ManagerFactory.getInstance(this).getEntityManager(Player.class);
-                    Player player = playerManager.getById(homeId);
-
-                    if(player != null) {
-                        homeName = player.getName();
-                        //player = playerManager.getById(awayId);
-                        //awayName = player.getName();
-                    } else {
-                        homeName = awayName = "";
-                    }
-                }
-
-                //res.putParcelableArrayListExtra(ExtraConstants.EXTRA_AWAY_STATS, new ArrayList<>(awayStats));
-
-                res.putExtra(ExtraConstants.EXTRA_HOME_NAME, homeName);
-                //res.putExtra(ExtraConstants.EXTRA_AWAY_NAME, awayName);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, new ArrayList<Parcelable>(participants));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
 

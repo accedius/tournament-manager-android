@@ -111,15 +111,31 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
+        try {
+            TableUtils.dropTable(connectionSource, Competition.class, true);
+            TableUtils.dropTable(connectionSource, CompetitionPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Tournament.class, true);
+            TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
+            TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+            TableUtils.dropTable(connectionSource, Team.class, true);
+            TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Match.class, true);
+            TableUtils.dropTable(connectionSource, Frame.class, true);
+            TableUtils.dropTable(connectionSource, Roll.class, true);
+            TableUtils.dropTable(connectionSource, Participant.class, true);
+            TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
+            TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+        } catch (SQLException e) {}
+        onCreate(db, connectionSource);
+        /*for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
             switch (fromVersion) {
-                case 5: /*from 5 to 4*/
+                case 5: //from 5 to 4
                     try {
                         TableUtils.dropTable(connectionSource, Frame.class, true);
                         TableUtils.dropTable(connectionSource, Roll.class, true);
                     } catch (SQLException e) {}
                     break;
-                case 4: /*from 4 to 3 (and less)*/
+                case 4: //from 4 to 3 (and less)
                     try {
                         TableUtils.dropTable(connectionSource, Match.class, true);
                         TableUtils.dropTable(connectionSource, PlayerStat.class, true);
@@ -129,7 +145,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                     fromVersion = 1;
                     break;
             }
-        }
+        }*/
     }
 
     /**
