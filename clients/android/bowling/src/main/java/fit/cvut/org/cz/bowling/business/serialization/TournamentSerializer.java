@@ -12,6 +12,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -62,6 +63,12 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         List<Match> matches = ((IMatchManager)ManagerFactory.getInstance(context).getEntityManager(Match.class)).getByTournamentId(entity.getId());
         for (Match sm : matches) {
             item.subItems.add(MatchSerializer.getInstance(context).serialize(sm));
+        }
+
+        /* Serialize Point Configurations */
+        List<PointConfiguration> pointConfigurations = ((IPointConfigurationManager)ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class)).getByTournamentId(entity.getId());
+        for (PointConfiguration pc : pointConfigurations) {
+            item.getSubItems().add(PointConfigurationSerializer.getInstance(context).serialize(pc));
         }
         return item;
     }

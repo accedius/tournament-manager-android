@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.bowling.business.serialization.TournamentSerializer;
+import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
-import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
@@ -65,6 +67,7 @@ public class TournamentLoader {
             List<ServerCommunicationItem> tournamentPlayers = new ArrayList<>();
             List<ServerCommunicationItem> tournamentTeams = new ArrayList<>();
             List<ServerCommunicationItem> tournamentMatches = new ArrayList<>();
+            List<ServerCommunicationItem> tournamentPointConfigurations = new ArrayList<>();
 
             Log.d("IMPORT", "Tournament: " + tournament.syncData);
             Tournament importedTournament = TournamentSerializer.getInstance(context).deserialize(tournament);
@@ -80,6 +83,8 @@ public class TournamentLoader {
                     tournamentTeams.add(subItem);
                 } else if (subItem.getType().equals(Constants.MATCH)) {
                     tournamentMatches.add(subItem);
+                } else if (subItem.getType().equals(Constants.POINT_CONFIGURATION)) {
+                    tournamentPointConfigurations.add(subItem);
                 }
             }
 
@@ -111,6 +116,9 @@ public class TournamentLoader {
 
             /* Matches loading */
             MatchLoader.importMatches(context, tournamentMatches, importedTournament, importedCompetition, importedTeams, importedPlayers);
+
+            /* PointConfigurations Loading */
+            PointConfigurationLoader.importPointConfigurations(context, tournamentPointConfigurations, importedTournament);
         }
     }
 }
