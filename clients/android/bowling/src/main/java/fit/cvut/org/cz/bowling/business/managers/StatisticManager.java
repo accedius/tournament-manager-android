@@ -1,10 +1,16 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.bowling.business.entities.Standing;
@@ -87,6 +93,96 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         return intersection;
     }
 
+    private AggregatedStatistics processTournamentOfIndividualsRankedByGlobalPoints(Player player, Tournament tournament) {
+        TreeMap<Long, Long> playerScores = new TreeMap<>();
+        long strikes = 0, spares = 0, matchesPlayed = 0;
+        final List<Match> matches = ((IMatchManager)managerFactory.getEntityManager(Match.class)).getByTournamentId(tournament.getId());
+        for(Match match : matches) {
+
+            if(!match.isValidForStats()) {
+                continue;
+            }
+
+            for(Participant participant : match.getParticipants()) {
+
+                if(participant == null) {
+                    //Shouldn't happen
+                    continue;
+                }
+
+                for(fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat ps : participant.getPlayerStats()) {
+                    PlayerStat playerStat = (PlayerStat) ps;
+                    if(ps == null) {
+                        Log.d("STATISFIX", "Bad cast");
+                        continue;
+                    }
+
+                    Long currentPoints = playerScores.get(playerStat.getPlayerId());
+
+                    if(currentPoints == null) {
+                        playerScores.put(playerStat.getPlayerId(), (long) playerStat.getPoints());
+                    } else {
+                        currentPoints += playerStat.getPoints();
+                    }
+
+                    if(playerStat.getPlayerId() == player.getId()) {
+                        strikes += playerStat.getStrikes();
+                        spares += playerStat.getSpares();
+                        matchesPlayed++;
+                    }
+                }
+            }
+        }
+
+        //Find the player's place and give him match points for his effort
+        TreeMap<Long, List<Long>> scoreToPlayer = new TreeMap<>();
+
+        for(Map.Entry<Long, Long> entry : playerScores.entrySet()) {
+            List<Long> list = scoreToPlayer.get(entry.getValue());
+
+            if(list == null) {
+                list = new LinkedList<>();
+                scoreToPlayer.put(entry.getValue(), list);
+            }
+            list.add(entry.getKey());
+        }
+
+        int place = scoreToPlayer.size() - 1;
+        long matchPoints = 0;
+        long points = 0;
+        long lastPointCount = Long.MAX_VALUE;
+
+        for(Map.Entry<Long, List<Long>> list : scoreToPlayer.entrySet()) {
+            for(Long playerId : list.getValue()) {
+                if(playerId == player.getId()) {
+                    final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+                    List<PointConfiguration> pointConfigurations = pointConfigurationManager.getByTournamentId(tournament.getId());
+
+                    //Find the one based on the amount of players that played in the tournament
+                    PointConfiguration pointConfiguration = null;
+                    for(PointConfiguration p : pointConfigurations) {
+                        if(p.sidesNumber == playerScores.size()) {
+                            pointConfiguration = p;
+                            break;
+                        }
+                    }
+                    matchPoints = calculatePoints(place, pointConfiguration, null);
+                    points = playerScores.get(playerId);
+                    break;
+                }
+
+                long pts = playerScores.get(playerId);
+                Log.d("STATISFIX", "place: " + place + " goes to " + playerId + " with " + pts);
+            }
+            place--;
+        }
+
+        Log.d("STATISFIX", "" + playerScores.size() + " Player " + player.getId() + " in TRNMNT: " + tournament.getId() + " has " + place + " with P: " +  points + ", St: " + strikes + ", Sp: " + spares);
+
+        //It's fine if the player in question was never in this tournament
+        return new AggregatedStatistics(player.getId(), player.getName(), matchesPlayed, strikes, spares, points, matchPoints);
+    }
+
     private AggregatedStatistics aggregateStats(Player player, List<PlayerStat> allStats) {
         final IPlayerStatManager playerStatManager = managerFactory.getEntityManager(PlayerStat.class);
         List<PlayerStat> playerStats = playerStatManager.getByPlayerId(player.getId());
@@ -109,6 +205,27 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             }
 
             Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
+
+            boolean isTournamentRankedByTotalPointsAcrossMatches = false; //TODO
+
+            if(isTournamentRankedByTotalPointsAcrossMatches) {
+                final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
+
+                final List<Match> matchList = matchManager.getByTournamentId(tournament.getId());
+
+                if(matchList.isEmpty() || matchList.get(0).getId() != match.getId()) {
+                    //Avoid duplicate testing
+                    continue;
+                }
+
+                AggregatedStatistics result = processTournamentOfIndividualsRankedByGlobalPoints(player, tournament);
+                matches += result.getMatches();
+                strikes += result.getStrikes();
+                spares += result.getSpares();
+                points += result.getPoints();
+                matchPoints += result.getMatchPoints();
+                continue;
+            }
 
             boolean isMatchOfIndividuals = TournamentTypes.individuals().equals(TournamentTypes.getMyTournamentType(tournament.getTypeId()));
 
