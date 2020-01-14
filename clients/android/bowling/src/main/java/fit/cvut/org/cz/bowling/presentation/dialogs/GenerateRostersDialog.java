@@ -1,0 +1,54 @@
+package fit.cvut.org.cz.bowling.presentation.dialogs;
+
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+
+import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
+
+/**
+ * Created by kevin on 2.9.2016.
+ */
+public class GenerateRostersDialog extends DialogFragment {
+    protected DialogInterface.OnClickListener supplyListener() {
+        return new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = TournamentService.newStartIntent(TournamentService.ACTION_GENERATE_ROSTERS, getContext());
+                intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_COMP_ID));
+                intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                intent.putExtra(ExtraConstants.EXTRA_GENERATING_TYPE, which);
+                getContext().startService(intent);
+                dialog.dismiss();
+            }
+        };
+    }
+
+    public static GenerateRostersDialog newInstance(long competitionId, long tournamentId) {
+        GenerateRostersDialog fragment = new GenerateRostersDialog();
+        Bundle b = new Bundle();
+        b.putLong(ExtraConstants.EXTRA_COMP_ID, competitionId);
+        b.putLong(ExtraConstants.EXTRA_TOUR_ID, tournamentId);
+        fragment.setArguments(b);
+        return fragment;
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        String[] items = new String[TournamentService.GENERATING_TYPES_CNT];
+        //items[TournamentService.GENERATE_BY_TEAM_POINTS] = getActivity().getString(R.string.generate_by_team_points);
+        items[TournamentService.GENERATE_BY_WINS] = getActivity().getString(R.string.generate_by_wins);
+        items[TournamentService.GENERATE_BY_GOALS] = getActivity().getString(R.string.generate_by_goals);
+        items[TournamentService.GENERATE_RANDOMLY] = getActivity().getString(R.string.generate_randomly);
+        builder.setItems(items, supplyListener());
+
+        builder.setTitle(getResources().getString(R.string.generate_rosters));
+        return builder.create();
+    }
+}
