@@ -93,7 +93,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(isChecked) {
             inputFragment = FrameListFragment.newInstance(matchId);
         } else {
-            inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
+            //inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
+            inputFragment = SimpleStatsFragment.newInstance(matchId);
         }
         getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
         inputFragment.setTargetFragment(null, REQUEST_CODE_MANAGE_CHECKBOX_STATE);

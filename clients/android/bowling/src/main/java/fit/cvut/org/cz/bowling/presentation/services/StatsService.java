@@ -39,7 +39,7 @@ public class StatsService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_MATCH_PLAYER_STATISTICS = "get_match_player_statistics";
 
     public StatsService() {
-        super("Hockey Stats Service");
+        super("Bowling Stats Service");
     }
 
     @Override

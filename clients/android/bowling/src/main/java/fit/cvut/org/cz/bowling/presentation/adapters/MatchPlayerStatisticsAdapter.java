@@ -56,7 +56,8 @@ public class MatchPlayerStatisticsAdapter extends AbstractListAdapter<PlayerStat
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                PlayerMatchStatDialog dialog = PlayerMatchStatDialog.newInstance(data.get(position), position, name);
+                PlayerStat statToEdit = new PlayerStat(data.get(position));
+                PlayerMatchStatDialog dialog = PlayerMatchStatDialog.newInstance(statToEdit, position, name);
                 dialog.setTargetFragment(parentFrag, 1);
                 dialog.show(parentFrag.getFragmentManager(), "EDIT_DELETE_PLAYER_STATS");
                 return true;

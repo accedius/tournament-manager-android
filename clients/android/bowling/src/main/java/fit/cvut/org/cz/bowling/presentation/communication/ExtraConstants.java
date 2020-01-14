@@ -27,7 +27,9 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String EXTRA_PARTICIPANT_OVERVIEWS = "extra_participant_overviews";
     public static final String EXTRA_FRAME_OVERVIEWS = "extra_frame_overviews";
 
+    public static final String EXTRA_PLAYER_STAT = "extra_player_stat";
     public static final String EXTRA_PLAYER_STATS = "extra_player_stats";
+    public static final String EXTRA_PLAYER_STAT_OVERVIEWS = "extra_player_stat_overviews";
 
     public static final String STRIKE_SYMBOL = "X";
     public static final String SPARE_SYMBOL = "/";
@@ -52,4 +54,7 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String ROLLS_TO_CREATE = "rolls_to_create";
     public static final String ROLLS_TO_UPDATE = "rolls_to_update";
     public static final String ROLLS_TO_DELETE = "rolls_to_delete";
+
+    public static final String EXTRA_BOOLEAN_IS_SCORE_CHANGED = "extra_boolean_is_score_changed";
+    public static final String EXTRA_BOOLEAN_IS_FRAMES_CHANGED = "extra_boolean_is_frames_changed";
 }

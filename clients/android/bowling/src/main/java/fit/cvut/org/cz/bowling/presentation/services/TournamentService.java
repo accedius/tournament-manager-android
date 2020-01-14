@@ -41,7 +41,7 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final int GENERATE_RANDOMLY = 3;
 
     public TournamentService() {
-        super("Hockey Tournament Service");
+        super("Bowling Tournament Service");
     }
 
     public static Intent newStartIntent(String action, Context context) {

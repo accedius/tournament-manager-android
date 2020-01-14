@@ -84,6 +84,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
+    public Match getByIdFromDao(long matchId) {
+        return super.getById(matchId);
+    }
+
+    @Override
     public void beginMatch(long matchId) {
         Match match = getById(matchId);
         if (!(match.isPlayed())) {
@@ -293,8 +298,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setDate(new Date());
             match.setNote("");
             match.setTournamentId(tournamentId);
-            Match hockeyMatch = new Match(match);
-            insert(hockeyMatch);
+            Match bowlingMatch = new Match(match);
+            insert(bowlingMatch);
             List<PlayerStat> playerStats = new ArrayList<>();
             for (Participant participant : match.getParticipants())
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())

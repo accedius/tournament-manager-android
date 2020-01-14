@@ -33,7 +33,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     }
 
     public TeamService() {
-        super("Hockey Team Service");
+        super("Bowling Team Service");
     }
 
     @Override

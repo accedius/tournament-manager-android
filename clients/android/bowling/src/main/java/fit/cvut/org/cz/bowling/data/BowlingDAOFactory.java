@@ -38,7 +38,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 6;
+    private static final int DBVersion = 7;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -106,6 +106,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 upgradeFrom4To5(db, fromVersion);
             case 5:
                 upgradeFrom5To6(db, fromVersion);
+            case 6:
+                upgradeFrom6To7(db, fromVersion);
         }
     }
 
@@ -248,6 +250,17 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         } catch (SQLException e) {}
 
         onCreate(db, connectionSource);
+        ++fromVersion;
+    }
+
+    private void upgradeFrom6To7 (SQLiteDatabase db, int fromVersion) {
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IEntityDAO<PlayerStat, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+        try {
+            if (!checkIfColumnExists(db, DBConstants.tPLAYER_STATS, DBConstants.cFRAMES_NUMBER)) {
+                matchDAO.executeRaw("ALTER TABLE " + DBConstants.tPLAYER_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
+            }
+        } catch (SQLException e) {}
         ++fromVersion;
     }
 }

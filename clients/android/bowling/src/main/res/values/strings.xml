@@ -111,10 +111,13 @@
     <string name="edit_stats_fragment_switch_warning_title">Warning</string>
     <string name="edit_stats_fragment_switch_warning_message">Do you really want to switch to another input mode? All unsaved data will be lost.</string>
 
+    <string name="number_required_warning">Number value required!</string>
+
     <string name="mpof_frames_played_format_violated">Should be a number between 1 and</string>
     <string name="mpof_score_format_violated">Should be a number between 0 and</string>
     <string name="mpof_score_violated">Such score is invalid!</string>
-    <string name="poa_not_played_yet">This participant has not played yet</string>
+    <string name="participant_not_played_yet">This participant has not played yet</string>
+    <string name="player_not_played_yet">This player has not played yet</string>
 
     <string name="flf_roll_format_violated">Should be a number between 0 and</string>
     <string name="flf_regular_frame_too_many_pins_error">The total amount of pins knocked down should be between 0 and</string>
@@ -127,6 +130,10 @@
     <string name="throw_3_input_label">Throw 3:</string>
     <string name="played_frames_label">Played frames:</string>
     <string name="final_score_label">Final score:</string>
+    <string name="score_label">Score:</string>
+    <string name="strikes_label">St:</string>
+    <string name="spares_label">Sp:</string>
+    <string name="place_label">#</string>
     <string name="frame_num">Frame #</string>
     <string name="throws_label">Throws:</string>
     <string name="current_score_label">Score:</string>

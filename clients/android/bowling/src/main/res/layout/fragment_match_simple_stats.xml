@@ -15,6 +15,12 @@
             android:text="@string/simple_stats"
             android:visibility="gone" />
 
+        <Spinner
+            android:id="@+id/participant_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

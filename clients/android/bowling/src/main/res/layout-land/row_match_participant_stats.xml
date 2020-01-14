@@ -71,7 +71,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/poa_not_played_yet" />
+                android:text="@string/participant_not_played_yet" />
         </LinearLayout>
 
     </LinearLayout>
