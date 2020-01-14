@@ -6,11 +6,13 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 @DatabaseTable(tableName = DBConstants.tMATCH_FRAME_ROLLS)
-public class Roll implements Parcelable, IEntity {
+public class Roll extends ShareBase implements Parcelable, IEntity {
     @DatabaseField(generatedId = true, columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cID)
     private long id;
 
@@ -28,6 +30,11 @@ public class Roll implements Parcelable, IEntity {
 
     public Roll() {
         //empty, for database needs
+    }
+
+    @Override
+    public String getEntityType() {
+        return Constants.ROLL;
     }
 
     public Roll(long id, long frameId, byte rollNumber, long playerId, byte points) {
