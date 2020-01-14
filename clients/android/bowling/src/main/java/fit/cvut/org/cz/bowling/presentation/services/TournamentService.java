@@ -35,10 +35,10 @@ public class TournamentService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.bowling.presentation.services.generate_rosters";
 
     public static final int GENERATING_TYPES_CNT = 3;
-    public static final int GENERATE_BY_TEAM_POINTS = 0;
-    public static final int GENERATE_BY_WINS = 1;
-    public static final int GENERATE_BY_GOALS = 2;
-    public static final int GENERATE_RANDOMLY = 3;
+    //public static final int GENERATE_BY_TEAM_POINTS = ;
+    public static final int GENERATE_BY_WINS = 0;
+    public static final int GENERATE_BY_GOALS = 1;
+    public static final int GENERATE_RANDOMLY = 2;
 
     public TournamentService() {
         super("Bowling Tournament Service");
