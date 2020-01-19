@@ -144,5 +144,7 @@
     <string name="simple_stats">Simple stats</string>
     <string name="complex_stats">Complex stats</string>
 
+    <string name="participants">Participants</string>
+
     <string name="lane">Lane</string>
 </resources>

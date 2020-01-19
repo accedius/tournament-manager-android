@@ -27,6 +27,7 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.MatchEditStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.MatchParticipantsManageFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -66,12 +67,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(R.string.match_statistics),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
+                getString(fit.cvut.org.cz.bowling.R.string.participants) };
 
         if(savedInstanceState == null) {
             f1 = BowlingMatchOverviewFragment.newInstance(matchId);
             f2 = MatchEditStatsFragment.newInstance(matchId);
-            f3 = BowlingMatchOverviewFragment.newInstance(matchId);//BowlingFFAMatchStatsFragment.newInstance(matchId);
+            f3 = MatchParticipantsManageFragment.newInstance(matchId);//BowlingFFAMatchStatsFragment.newInstance(matchId);
         }
 
         fragments = new Fragment[]{ f1, f2, f3 };
