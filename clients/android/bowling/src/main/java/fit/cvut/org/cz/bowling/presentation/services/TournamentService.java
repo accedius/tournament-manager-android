@@ -36,8 +36,8 @@ public class TournamentService extends AbstractIntentServiceWProgress {
 
     public static final int GENERATING_TYPES_CNT = 3;
     //public static final int GENERATE_BY_TEAM_POINTS = ;
-    public static final int GENERATE_BY_WINS = 0;
-    public static final int GENERATE_BY_GOALS = 1;
+    public static final int GENERATE_BY_TEAM_POINTS = 0;
+    public static final int GENERATE_BY_SCORE = 1;
     public static final int GENERATE_RANDOMLY = 2;
 
     public TournamentService() {

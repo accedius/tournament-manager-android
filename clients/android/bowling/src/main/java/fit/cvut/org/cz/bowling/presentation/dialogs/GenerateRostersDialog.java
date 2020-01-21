@@ -43,8 +43,8 @@ public class GenerateRostersDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] items = new String[TournamentService.GENERATING_TYPES_CNT];
         //items[TournamentService.GENERATE_BY_TEAM_POINTS] = getActivity().getString(R.string.generate_by_team_points);
-        items[TournamentService.GENERATE_BY_WINS] = getActivity().getString(R.string.generate_by_wins);
-        items[TournamentService.GENERATE_BY_GOALS] = getActivity().getString(R.string.generate_by_goals);
+        items[TournamentService.GENERATE_BY_TEAM_POINTS] = getActivity().getString(R.string.generate_by_team_points);
+        items[TournamentService.GENERATE_BY_SCORE] = getActivity().getString(R.string.generate_by_score);
         items[TournamentService.GENERATE_RANDOMLY] = getActivity().getString(R.string.generate_randomly);
         builder.setItems(items, supplyListener());
 
