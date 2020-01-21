@@ -30,6 +30,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     private CheckBox partialDataPropagation;
     private BowlingAbstractMatchStatsListFragment inputFragment;
     private static final String inputFragmentTag = "inputFragmentTag";
+    public static final int REQUEST_CODE_MANAGE_CHECKBOX_STATE = 3137;
+    private boolean userInputOnCheckBox = false;
 
     public Bundle getResultsBundle() {
         if(inputFragment == null) {
@@ -49,6 +51,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         }
         List<Participant> matchParticipants = inputFragment.getMatchParticipants();
         match.setParticipants(matchParticipants);
+        match.setTrackRolls(statsInputSwitch.isChecked());
+        match.setValidForStats(partialDataPropagation.isChecked());
         return match;
     }
 
@@ -92,6 +96,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
             inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
         }
         getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
+        inputFragment.setTargetFragment(null, REQUEST_CODE_MANAGE_CHECKBOX_STATE);
     }
 
     @Override
@@ -122,7 +127,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 switchChanged = !switchChanged;
-                                match.setTrackRolls(isChecked);
+                                //match.setTrackRolls(isChecked);
                                 setContentFragment(isChecked);
                             }
                         });
@@ -149,7 +154,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         partialDataPropagation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                match.setValidForStats(isChecked);
+                userInputOnCheckBox = true;
+                //match.setValidForStats(isChecked);
             }
         });
     }
@@ -171,5 +177,26 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         statsInputSwitch = v.findViewById(R.id.individual_throw_switch);
         partialDataPropagation = v.findViewById(R.id.match_stats_update_with_partial_data);
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case REQUEST_CODE_MANAGE_CHECKBOX_STATE:
+                //if true, that match is played by all participants
+                if(userInputOnCheckBox)
+                    break;
+                boolean checkBoxShouldBeState = resultCode == 1;
+                if(checkBoxShouldBeState) {
+                    //checks only then wasn't checked before + if user didn't use manual input in last save, how works -> negation of (do nothing, then previously user set notValid for played match, because it seems user done this for purpose)
+                    if(!partialDataPropagation.isChecked() && !(!match.isValidForStats() && match.isPlayed()) )
+                        partialDataPropagation.setChecked(true);
+                } else {
+                    //same thing for opposite case
+                    if(partialDataPropagation.isChecked() && !(match.isValidForStats() && !match.isPlayed()) )
+                        partialDataPropagation.setChecked(false);
+                }
+                break;
+        }
     }
 }

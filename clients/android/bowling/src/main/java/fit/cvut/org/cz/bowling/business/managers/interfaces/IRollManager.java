@@ -14,4 +14,10 @@ public interface IRollManager extends IManager<Roll> {
      * @return list of rolls
      */
     List<Roll> getByFrameId (long frameId);
+
+    /**
+     * deletes rolls in match, which are related to a frame
+     * @param frameId
+     */
+    boolean deleteByFrameId (long frameId);
 }

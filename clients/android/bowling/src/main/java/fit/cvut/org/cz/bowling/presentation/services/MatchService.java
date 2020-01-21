@@ -114,13 +114,14 @@ public class MatchService extends AbstractIntentServiceWProgress {
                     participantStatManager.update(participantStat);
                 }
 
-                boolean isInputTypeChanged = matchResults.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+                boolean isInputTypeChanged = intent.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, false);
 
                 if(match.isTrackRolls()){
                     List<Frame> framesToCreate = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_CREATE);
                     List<Frame> framesToUpdate = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_UPDATE);
                     List<Frame> framesToDelete = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_DELETE);
                     IFrameManager frameManager = managerFactory.getEntityManager(Frame.class);
+                    IRollManager rollManager = managerFactory.getEntityManager(Roll.class);
                     for(Frame frame : framesToCreate){
                         frameManager.insert(frame);
                     }
@@ -128,16 +129,18 @@ public class MatchService extends AbstractIntentServiceWProgress {
                         frameManager.update(frame);
                     }
                     for(Frame frame : framesToDelete){
+                        rollManager.deleteByFrameId(frame.getId());
                         frameManager.delete(frame.getId());
                     }
 
                     List<Roll> rollsToCreate = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_CREATE);
                     List<Roll> rollsToUpdate = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_UPDATE);
                     List<Roll> rollsToDelete = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_DELETE);
-                    IRollManager rollManager = managerFactory.getEntityManager(Roll.class);
+                    List<Frame> notChangedFramesButToAddRollsTo = matchResults.getParcelableArrayList(ExtraConstants.NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO);
                     List<Frame> framesToExist = new ArrayList<>();
                     framesToExist.addAll(framesToCreate);
                     framesToExist.addAll(framesToUpdate);
+                    framesToExist.addAll(notChangedFramesButToAddRollsTo);
                     for(Roll roll : rollsToCreate){
                         for(Frame frame : framesToExist) {
                             if(roll.getId() == frame.getParticipantId() && roll.getFrameId() == frame.getFrameNumber()) {

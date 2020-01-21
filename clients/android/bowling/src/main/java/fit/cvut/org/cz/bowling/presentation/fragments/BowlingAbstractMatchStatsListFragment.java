@@ -20,6 +20,7 @@ public abstract class BowlingAbstractMatchStatsListFragment<T extends Parcelable
     public static final String FRAMES_TO_CREATE = ExtraConstants.FRAMES_TO_CREATE;
     public static final String FRAMES_TO_UPDATE = ExtraConstants.FRAMES_TO_UPDATE;
     public static final String FRAMES_TO_DELETE = ExtraConstants.FRAMES_TO_DELETE;
+    public static final String NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO = ExtraConstants.NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO;
 
     public static final String ROLLS_TO_CREATE = ExtraConstants.ROLLS_TO_CREATE;
     public static final String ROLLS_TO_UPDATE = ExtraConstants.ROLLS_TO_UPDATE;
