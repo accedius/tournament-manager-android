@@ -82,20 +82,10 @@ public class StandingsStatsTitleFragment extends Fragment {
         final HashMap<String, TextView> columns = new HashMap<>();
         columns.put(Constants.MATCHES, (TextView)v.findViewById(R.id.standings_games_played));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.standings_points));
-        columns.put(Constants.SCORE, (TextView)v.findViewById(R.id.standings_score));
-        if (v.findViewById(R.id.standings_total_wins) != null) {
-            columns.put(Constants.WINS_TOTAL, (TextView) v.findViewById(R.id.standings_total_wins));
-            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.standings_draws));
-            columns.put(Constants.LOSSES_TOTAL, (TextView) v.findViewById(R.id.standings_total_losses));
-        } else {
-            columns.put(Constants.WINS, (TextView) v.findViewById(R.id.standings_wins));
-            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.standings_draws));
-            columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.standings_losses));
-            columns.put(Constants.WINS_OT, (TextView) v.findViewById(R.id.standings_wins_ot));
-            columns.put(Constants.LOSSES_OT, (TextView) v.findViewById(R.id.standings_losses_ot));
-            columns.put(Constants.WINS_SO, (TextView) v.findViewById(R.id.standings_wins_so));
-            columns.put(Constants.LOSSES_SO, (TextView) v.findViewById(R.id.standings_losses_so));
-        }
+        columns.put(Constants.MATCH_POINTS, (TextView)v.findViewById(R.id.standings_match_points));
+        columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.standings_strikes));
+        columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.standings_spares));
+
         for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
