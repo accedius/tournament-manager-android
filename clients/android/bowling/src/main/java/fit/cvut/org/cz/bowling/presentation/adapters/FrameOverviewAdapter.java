@@ -13,14 +13,17 @@ import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
+import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, FrameOverviewAdapter.FrameViewHolder> {
 
-    private Resources res;
+    private TournamentType type;
 
-    public FrameOverviewAdapter(Resources res) {
-        this.res = res;
+    public FrameOverviewAdapter(TournamentType type) {
+        this.type = type;
     }
 
     @NonNull
@@ -41,7 +44,6 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         FrameOverview frameOw = data.get(i);
         long playerId = frameOw.getPlayerId();
         byte frameNum = frameOw.getFrameNumber();
-        ++frameNum;
         List<Byte> rolls = frameOw.getRolls();
         String playerName = frameOw.getPlayerName();
         int currentScore = frameOw.getCurrentScore();
@@ -52,26 +54,56 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         Byte roll1 = getOrNull(rolls, 0);
         Byte roll2 = getOrNull(rolls, 1);
         Byte roll3 = getOrNull(rolls, 2);
+
         if (roll1 != null) {
-            holder.roll1.setText(formatNumber(roll1));
+            if(roll1 == 10){
+                holder.roll1.setText(ExtraConstants.STRIKE_SYMBOL);
+                if(frameNum!=10){
+                    roll2 = null;
+                }
+            } else if (roll1 == 0) {
+              holder.roll1.setText(ExtraConstants.ZERO_SYMBOL);
+            } else {
+                holder.roll1.setText(formatNumber(roll1));
+            }
             holder.roll1.setVisibility(View.VISIBLE);
         }
         else {
             holder.roll1.setVisibility(View.GONE);
         }
+
         if (roll2 != null) {
-            holder.roll2.setText(formatNumber(roll2));
+            if(roll2 == 10) {
+                holder.roll2.setText(ExtraConstants.STRIKE_SYMBOL);
+            } else if (roll2 + roll1 == 10 && roll2 > 0) {
+                holder.roll2.setText(ExtraConstants.SPARE_SYMBOL);
+                holder.roll3.setVisibility(View.GONE);
+            } else if (roll2 == 0) {
+                holder.roll2.setText(ExtraConstants.ZERO_SYMBOL);
+            } else {
+                holder.roll2.setText(formatNumber(roll2));
+            }
             holder.roll2.setVisibility(View.VISIBLE);
         }
         else {
             holder.roll2.setVisibility(View.GONE);
         }
+
         if (roll3 != null) {
-            holder.roll3.setText(formatNumber(roll3));
+            if(roll3 == 10) {
+                holder.roll3.setText(ExtraConstants.STRIKE_SYMBOL);
+            } else if (roll3 + roll2 == 10 && roll3 > 0 && roll1 + roll2 != 10) {
+                holder.roll3.setText(ExtraConstants.SPARE_SYMBOL);
+            } else if (roll3 == 0) {
+                holder.roll3.setText(ExtraConstants.ZERO_SYMBOL);
+            } else {
+                holder.roll3.setText(formatNumber(roll3));
+            }
             holder.roll3.setVisibility(View.VISIBLE);
         }
         else
             holder.roll3.setVisibility(View.GONE);
+
         holder.currentScore.setText(formatNumber(currentScore));
     }
 
@@ -89,6 +121,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
             roll3 = itemView.findViewById(R.id.throw_3_text_view);
             currentScore = itemView.findViewById(R.id.current_score_text_view);
             wholeView = itemView;
+            if(type.equals(TournamentTypes.individuals())) {
+                playerLabel.setVisibility(View.GONE);
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 
 public class StatisticManager extends BaseManager<AggregatedStatistics> implements IStatisticManager {
+    private static final int UNKNOWN = -1;
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;
@@ -79,6 +80,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for (Participant matchParticipant : matchParticipants) {
             final IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
             List<ParticipantStat> participantStats = participantStatManager.getByParticipantId(matchParticipant.getId());
+            if(participantStats.isEmpty())
+                return UNKNOWN;
             if (matchParticipant.getId() == participant.getId())
                 participant_score = participantStats.get(0).getScore();
             else
@@ -111,8 +114,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for (PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
             Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
-            if (!match.isPlayed())
-                continue;
+            /*if (!match.isPlayed())
+                continue;*/
 
             strikes += stat.getStrikes();
             spares += stat.getSpares();

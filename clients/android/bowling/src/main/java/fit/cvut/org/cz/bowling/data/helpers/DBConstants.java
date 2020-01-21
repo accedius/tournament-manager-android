@@ -15,6 +15,7 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String cFRAMES_NUMBER = "frames_number";
     public static final String cFRAME_NUMBER = "frame_number";
 
+    public static final String cSTRIKE_OR_SPARE = "strike_or_spare";
     public static final String cSTRIKES = "strikes";
     public static final String cSPARES = "spares";
     public static final String cPOINTS = "points";

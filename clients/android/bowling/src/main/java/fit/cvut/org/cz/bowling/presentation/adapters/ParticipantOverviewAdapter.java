@@ -34,7 +34,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         Integer score = participantOverview.getScore();
         Byte framesPlayedNumber = participantOverview.getFramesPlayedNumber();
         holder.participantName.setText(participantName);
-        if(score != -1) {
+        if(framesPlayedNumber > 0) {
             holder.warningLayout.setVisibility(View.GONE);
             holder.dataLayout.setVisibility(View.VISIBLE);
             holder.score.setText(formatNumber(score));

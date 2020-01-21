@@ -13,19 +13,48 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import java.util.List;
+
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 public class MatchEditStatsFragment extends AbstractDataFragment {
     private Match match = null;
     private long matchId = -1;
     private Switch statsInputSwitch;
+    private boolean switchChanged = false;
     private CheckBox partialDataPropagation;
-    private AbstractListFragment inputFragment;
+    private BowlingAbstractMatchStatsListFragment inputFragment;
+    private static final String inputFragmentTag = "inputFragmentTag";
+
+    public Bundle getResultsBundle() {
+        if(inputFragment == null) {
+            inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
+        }
+        Bundle bundle = inputFragment.getMatchStats();
+        boolean isMatchPlayed = bundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_MATCH_PLAYED, false);
+        match.setPlayed(isMatchPlayed);
+        bundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_MATCH_PLAYED);
+        bundle.putBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, switchChanged);
+        return bundle;
+    }
+
+    public Match getMatchWithResults() {
+        if(inputFragment == null) {
+            inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
+        }
+        List<Participant> matchParticipants = inputFragment.getMatchParticipants();
+        match.setParticipants(matchParticipants);
+        return match;
+    }
+
+    public boolean isSwitchChanged() {
+        return switchChanged;
+    }
 
     public static MatchEditStatsFragment newInstance (long matchId) {
         MatchEditStatsFragment fragment = new MatchEditStatsFragment();
@@ -62,7 +91,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         } else {
             inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
         }
-        getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment).commit();
+        getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
     }
 
     @Override
@@ -92,6 +121,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                 alertDialog.setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                switchChanged = !switchChanged;
+                                match.setTrackRolls(isChecked);
                                 setContentFragment(isChecked);
                             }
                         });

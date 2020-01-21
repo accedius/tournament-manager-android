@@ -28,6 +28,7 @@ import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -37,7 +38,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 5;
+    private static final int DBVersion = 6;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -103,6 +104,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         switch (fromVersion) {
             case 4: /*from 4 to 5*/
                 upgradeFrom4To5(db, fromVersion);
+            case 5:
+                upgradeFrom5To6(db, fromVersion);
         }
     }
 
@@ -196,10 +199,10 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
             }
         } catch (SQLException e) {}
-        dropTable(Match.class);
-        dropTable(Participant.class);
-        dropTable(PlayerStat.class);
         dropTable(ParticipantStat.class);
+        dropTable(PlayerStat.class);
+        dropTable(Participant.class);
+        dropTable(Match.class);
         onCreate(db, connectionSource);
 
         /*we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
@@ -211,6 +214,24 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             iMatchManager.delete(match.getId());
         }*/
 
+        ++fromVersion;
+    }
+
+    /**
+     * Upgrade script for moving from version 5 to 6
+     * @param db
+     * @param fromVersion
+     */
+    private void upgradeFrom5To6 (SQLiteDatabase db, int fromVersion) {
+        dropTable(ParticipantStat.class);
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IEntityDAO<Participant, Long> participantDao = iManagerFactory.getDaoFactory().getMyDao(Participant.class);
+
+        try {
+            participantDao.deleteItemById(DBConstants.cROLE, ParticipantType.home.toString());
+        } catch (SQLException e) {}
+
+        onCreate(db, connectionSource);
         ++fromVersion;
     }
 }
