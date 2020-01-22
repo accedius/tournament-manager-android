@@ -52,7 +52,7 @@ public class ParticipantStatSerializer {
 
     public void deserializeSyncData(HashMap<String, Object> syncData, ParticipantStat entity) {
         entity.setScore(Integer.parseInt(String.valueOf(syncData.get(Constants.SCORE))));
-        entity.setFramesPlayedNumber(Byte.parseByte(String.valueOf(syncData.get(Constants.FRAME_NUMBER))));
+        entity.setFramesPlayedNumber(Byte.parseByte(String.valueOf(syncData.get(Constants.FRAMES_PLAYED))));
     }
 
     public String getEntityType() {
