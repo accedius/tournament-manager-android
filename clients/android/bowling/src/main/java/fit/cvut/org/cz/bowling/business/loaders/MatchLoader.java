@@ -56,7 +56,7 @@ public class MatchLoader {
 
             IParticipantManager participantManager = ManagerFactory.getInstance(context).getEntityManager(Participant.class);
 
-            if (tournament.getType().equals(TournamentTypes.individuals())) {
+            if (tournament.getTypeId() == TournamentTypes.individuals().id) {
                 for (String uid : importedPlayers.keySet()) {
                     Player player = importedPlayers.get(uid);
                     Participant participant = new Participant(importedMatch.getId(), player.getId(), null);
@@ -83,7 +83,7 @@ public class MatchLoader {
                     }
                 }
             }
-            else if (tournament.getType().equals(TournamentTypes.teams())) {
+            else if (tournament.getTypeId() == TournamentTypes.teams().id) {
                 // TODO: Add import of team tournament matches
             }
         }

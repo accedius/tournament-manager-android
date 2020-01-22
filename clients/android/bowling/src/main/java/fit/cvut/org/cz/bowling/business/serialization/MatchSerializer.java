@@ -1,6 +1,7 @@
 package fit.cvut.org.cz.bowling.business.serialization;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,9 +65,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setSyncData(serializeSyncData(entity));
 
         Tournament tournament = ManagerFactory.getInstance(context).getEntityManager(Tournament.class).getById(entity.getTournamentId());
-
         /* Teams match */
-        if (tournament.getType().equals(TournamentTypes.teams())) {
+        if (tournament.getTypeId() == TournamentTypes.teams().id) {
             /* Serialize Teams and their ParticipantStats*/
             for (Team team :((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getByTournamentId(tournament.getId())) {
                 ServerCommunicationItem teamSCI = TeamSerializer.getInstance(context).serializeToMinimal(team);
@@ -79,7 +79,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
                 item.getSubItems().add(teamSCI);
             }
         }
-        else if (tournament.getType().equals(TournamentTypes.individuals())) {
+        else if (tournament.getTypeId() == TournamentTypes.individuals().id) {
             /* Serialize Players their ParticipantStats and PlayerStats */
             for (Participant participant :((IParticipantManager)ManagerFactory.getInstance(context).getEntityManager(Participant.class)).getByMatchId(entity.getId())) {
                 Player player = ManagerFactory.getInstance(context).getEntityManager(Player.class).getById(participant.getParticipantId());
