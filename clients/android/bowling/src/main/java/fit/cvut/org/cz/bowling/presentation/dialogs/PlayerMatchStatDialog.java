@@ -40,11 +40,10 @@ public class PlayerMatchStatDialog extends DialogFragment {
         };
     }
 
-    public static PlayerMatchStatDialog newInstance(PlayerStat statistic, int pos, boolean isHome, String name) {
+    public static PlayerMatchStatDialog newInstance(PlayerStat statistic, int pos, String name) {
         PlayerMatchStatDialog fragment = new PlayerMatchStatDialog();
         Bundle b = new Bundle();
         b.putParcelable(ExtraConstants.EXTRA_DATA, statistic);
-        b.putBoolean(ExtraConstants.EXTRA_BOOLEAN_HOME, isHome);
         b.putInt(ExtraConstants.EXTRA_POSITION, pos);
         b.putString(ExtraConstants.EXTRA_TITLE, name);
         fragment.setArguments(b);

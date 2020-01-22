@@ -15,6 +15,13 @@ public interface IParticipantStatManager extends IManager<ParticipantStat> {
     List<ParticipantStat> getByParticipantId(long participantId);
 
     /**
+     * Get all participant stats for participant with all its frames, rolls etc.
+     * @param participantId id of participant.
+     * @return list of participant stats.
+     */
+    List<ParticipantStat> getByParticipantIdWithAllContents(long participantId);
+
+    /**
      * Get scored goals for specified team participant.
      * @param participantId id of participant.
      * @return scored goals.

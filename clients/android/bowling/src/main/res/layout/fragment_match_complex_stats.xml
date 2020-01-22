@@ -12,12 +12,15 @@
             android:id="@+id/complex_stats_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/complex_stats" />
+            android:text="@string/complex_stats"
+            android:visibility="gone"/>
 
         <Spinner
             android:id="@+id/participant_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,7 +30,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/complex_stats_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
     </LinearLayout>

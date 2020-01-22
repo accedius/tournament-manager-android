@@ -2,19 +2,25 @@ package fit.cvut.org.cz.bowling.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
+import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -75,39 +81,89 @@ public class MatchService extends AbstractIntentServiceWProgress {
             }
             case ACTION_UPDATE_FOR_OVERVIEW: {
                 Intent res = new Intent(action);
-                Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH_SCORE);
-                Match original = ManagerFactory.getInstance(this).getEntityManager(Match.class).getById(match.getId());
-                if (!original.isPlayed()) {
-                    ((IMatchManager)ManagerFactory.getInstance(this).getEntityManager(Match.class)).beginMatch(match.getId());
-                }
-                match.setTournamentId(original.getTournamentId());
+                Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS);
+                IManagerFactory managerFactory = ManagerFactory.getInstance(this);
+                Match original = managerFactory.getEntityManager(Match.class).getById(match.getId());
+
+                //need to update these variables, because they may be edited during ShowMatchActivity
                 match.setDate(original.getDate());
                 match.setNote(original.getNote());
                 match.setPeriod(original.getPeriod());
                 match.setRound(original.getRound());
-                ManagerFactory.getInstance(this).getEntityManager(Match.class).update(match);
+
+                managerFactory.getEntityManager(Match.class).update(match);
+
                 List<Participant> participants = ((IParticipantManager)ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchId(match.getId());
                 for (Participant participant : participants) {
-                    int score = ParticipantType.home.toString().equals(participant.getRole()) ? match.getHomeScore() : match.getAwayScore();
-                    List<ParticipantStat> stats = ((IParticipantStatManager)ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class)).getByParticipantId(participant.getId());
-                    ParticipantStat stat;
-                    if (stats.isEmpty()) {
-                        stat = new ParticipantStat(participant.getId(), score);
-                        ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class).insert(stat);
-                    } else {
-                        stat = stats.get(0);
-                        stat.setScore(score);
-                        ManagerFactory.getInstance(this).getEntityManager(ParticipantStat.class).update(stat);
-                    }
+                    // Remove original player stats and add new ones afterwards (way to handle removed items)
+                    ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).deleteByParticipantId(participant.getId());
+                }
+                ArrayList<PlayerStat> playerStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PLAYER_STATS);
+                for (PlayerStat playerStat : playerStats)
+                    managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
 
-                    // Remove original stats and add new ones (way to handle removed items)
-                    ((IPlayerStatManager)ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class)).deleteByParticipantId(participant.getId());
+                Bundle matchResults = intent.getBundleExtra(ExtraConstants.EXTRA_MATCH_BUNDLE);
+
+                List<ParticipantStat> participantStatsToCreate = matchResults.getParcelableArrayList(ExtraConstants.PARTICIPANT_STATS_TO_CREATE);
+                List<ParticipantStat> participantStatsToUpdate = matchResults.getParcelableArrayList(ExtraConstants.PARTICIPANT_STATS_TO_UPDATE);
+                IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+                for(ParticipantStat participantStat : participantStatsToCreate){
+                    participantStatManager.insert(participantStat);
+                }
+                for(ParticipantStat participantStat : participantStatsToUpdate){
+                    participantStatManager.update(participantStat);
                 }
 
-                ArrayList<PlayerStat> homeStats = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_HOME_STATS);
+                boolean isInputTypeChanged = intent.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, false);
 
-                for (PlayerStat playerStat : homeStats)
-                    ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(playerStat);
+                if(match.isTrackRolls()){
+                    List<Frame> framesToCreate = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_CREATE);
+                    List<Frame> framesToUpdate = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_UPDATE);
+                    List<Frame> framesToDelete = matchResults.getParcelableArrayList(ExtraConstants.FRAMES_TO_DELETE);
+                    IFrameManager frameManager = managerFactory.getEntityManager(Frame.class);
+                    IRollManager rollManager = managerFactory.getEntityManager(Roll.class);
+                    for(Frame frame : framesToCreate){
+                        frameManager.insert(frame);
+                    }
+                    for(Frame frame : framesToUpdate){
+                        frameManager.update(frame);
+                    }
+                    for(Frame frame : framesToDelete){
+                        rollManager.deleteByFrameId(frame.getId());
+                        frameManager.delete(frame.getId());
+                    }
+
+                    List<Roll> rollsToCreate = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_CREATE);
+                    List<Roll> rollsToUpdate = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_UPDATE);
+                    List<Roll> rollsToDelete = matchResults.getParcelableArrayList(ExtraConstants.ROLLS_TO_DELETE);
+                    List<Frame> notChangedFramesButToAddRollsTo = matchResults.getParcelableArrayList(ExtraConstants.NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO);
+                    List<Frame> framesToExist = new ArrayList<>();
+                    framesToExist.addAll(framesToCreate);
+                    framesToExist.addAll(framesToUpdate);
+                    framesToExist.addAll(notChangedFramesButToAddRollsTo);
+                    for(Roll roll : rollsToCreate){
+                        for(Frame frame : framesToExist) {
+                            if(roll.getId() == frame.getParticipantId() && roll.getFrameId() == frame.getFrameNumber()) {
+                                roll.setId(0);
+                                roll.setFrameId(frame.getId());
+                                break;
+                            }
+                        }
+                        if(roll.getId() == 0){
+                            rollManager.insert(roll);
+                        }
+                    }
+                    for(Roll roll : rollsToUpdate){
+                        rollManager.update(roll);
+                    }
+                    for(Roll roll : rollsToDelete){
+                        rollManager.delete(roll.getId());
+                    }
+                    
+                } else if (isInputTypeChanged) {
+                    IFrameManager frameManager = managerFactory.getEntityManager(Frame.class);
+                    frameManager.deleteAllByMatchId(match.getId());
+                }
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
                 break;

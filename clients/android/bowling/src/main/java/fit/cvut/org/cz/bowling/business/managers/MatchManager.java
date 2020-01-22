@@ -55,16 +55,6 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             List<Participant> participants = participantManager.getByMatchId(match.getId());
             match.addParticipants(participants);
             for (Participant participant : participants) {
-                if (ParticipantType.home.toString().equals(participant.getRole())){
-                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
-                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
-                    match.setHomeScore(participantId);
-                }
-                else if (ParticipantType.away.toString().equals(participant.getRole())){
-                    IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
-                    int participantId = participantStatManager.getScoreByParticipantId(participant.getId());
-                    match.setAwayScore(participantId);
-                }
 
                 //Add player stats
                 List<PlayerStat> playerStats = ((IPlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId());
@@ -94,6 +84,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
+    public Match getByIdFromDao(long matchId) {
+        return super.getById(matchId);
+    }
+
+    @Override
     public void beginMatch(long matchId) {
         Match match = getById(matchId);
         if (!(match.isPlayed())) {
@@ -112,7 +107,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         ITournamentManager iTournamentManager = managerFactory.getEntityManager(Tournament.class);
         List<Player> players = iTournamentManager.getTournamentPlayers(tournamentId);
         ArrayList<fit.cvut.org.cz.tmlibrary.data.entities.Match> matches = new ArrayList<>();
-
+        
         // List of all matches
         List<Match> matchList = getByTournamentId(tournamentId);
 
@@ -303,8 +298,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setDate(new Date());
             match.setNote("");
             match.setTournamentId(tournamentId);
-            Match hockeyMatch = new Match(match);
-            insert(hockeyMatch);
+            Match bowlingMatch = new Match(match);
+            insert(bowlingMatch);
             List<PlayerStat> playerStats = new ArrayList<>();
             for (Participant participant : match.getParticipants())
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
@@ -318,15 +313,19 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     @Override
     public void resetMatch(long matchId) {
         Match match = getById(matchId);
-        if (!match.isPlayed())
-            return;
+
+        /*if (!match.isPlayed())
+            return;*/
+
         IParticipantManager iParticipantManager = managerFactory.getEntityManager(Participant.class);
         List<Participant> participants = iParticipantManager.getByMatchId(matchId);
 
         try {
             // Remove Participant Stats and reset Player Stats
             IEntityDAO<ParticipantStat, Long> participantStatDAO = managerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
-            IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);;
+            IEntityDAO<PlayerStat, Long> playerStatDAO = managerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+            IFrameManager iFrameManager = managerFactory.getEntityManager(Frame.class);
+            iFrameManager.deleteAllByMatchId(matchId);
             for (Participant participant : participants) {
                 participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
@@ -340,6 +339,8 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         } catch (SQLException e) {} //SQL exception je jenom nazev/class chyby, nema nic spolecneho s implementaci
 
         match.setPlayed(false);
+        match.setTrackRolls(false);
+        match.setValidForStats(false);
         update(match);
     }
 

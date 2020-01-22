@@ -28,13 +28,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
  */
 public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     private TextView round, period, date, note;
-    private int intHomeScore = -1, intAwayScore = -1;
     private Long tournament_id;
-
-    private static String SAVE_HOME_SCORE = "save_home_score";
-    private static String SAVE_AWAY_SCORE = "save_away_score";
-    private static String SAVE_OVERTIME = "save_overtime";
-    private static String SAVE_SHOOTOUTS = "save_shootouts";
 
     public static BowlingMatchOverviewFragment newInstance(long matchId){
         BowlingMatchOverviewFragment fragment = new BowlingMatchOverviewFragment();
@@ -58,14 +52,7 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        if (savedInstanceState != null) {
-            intHomeScore = savedInstanceState.getInt(SAVE_HOME_SCORE);
-            intAwayScore = savedInstanceState.getInt(SAVE_AWAY_SCORE);
-        } else {
-            intHomeScore = -1;
-            intAwayScore = -1;
-        }
+        setRetainInstance(true);
     }
 
     @Override
@@ -89,10 +76,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
         getActivity().setTitle(getResources().getString(fit.cvut.org.cz.tmlibrary.R.string.match) + " – " + (match.getDate()!=null?dateFormat.format(match.getDate()):"[no Date]"));
                 //match.getHomeName() + " " + getResources().getString(R.string.vs) + " " + match.getAwayName());
 
-        if (intHomeScore == -1 && intAwayScore == -1) {
-            intHomeScore = match.getHomeScore();
-            intAwayScore = match.getAwayScore();
-        }
         round.setText(String.valueOf(match.getRound()));
         period.setText(String.valueOf(match.getPeriod()));
         if (match.getDate()!= null) {
@@ -130,23 +113,6 @@ public class BowlingMatchOverviewFragment extends AbstractDataFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putInt(SAVE_HOME_SCORE, intHomeScore);
-        outState.putInt(SAVE_AWAY_SCORE, intAwayScore);
-    }
-
-    /**
-     * Set listeners for all buttons. This method is called in inject view
-     */
-
-
-    public Match getScore() {
-        Match res = new Match();
-        res.setId(getArguments().getLong(ExtraConstants.EXTRA_ID));
-        res.setPlayed(true);
-        res.setHomeScore(intHomeScore);
-        res.setAwayScore(intAwayScore);
-        return res;
     }
 
     public Long getTournamentId() {

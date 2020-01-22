@@ -86,4 +86,6 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     public void setTrackRolls(boolean trackRolls) {
         this.trackRolls = trackRolls;
     }
+
+    public void setParticipants (List<Participant> participants) {this.participants = participants;}
 }

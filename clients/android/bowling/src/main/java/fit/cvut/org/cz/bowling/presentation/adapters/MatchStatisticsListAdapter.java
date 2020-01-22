@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class MatchStatisticsListAdapter extends AbstractListAdapter<MatchStatisticsAdapter,MatchStatisticsListAdapter.StatisticsListViewHolder> {
+public class MatchStatisticsListAdapter extends AbstractListAdapter<MatchPlayerStatisticsAdapter,MatchStatisticsListAdapter.StatisticsListViewHolder> {
 
 
     @NonNull

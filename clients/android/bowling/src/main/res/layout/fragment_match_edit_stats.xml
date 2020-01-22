@@ -20,14 +20,16 @@
 
         <CheckBox
             android:id="@+id/match_stats_update_with_partial_data"
-            android:text="@string/update_stats_with_partial_data"
+            android:text="@string/are_match_stats_valid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
             />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/input_container" />
 
     </LinearLayout>

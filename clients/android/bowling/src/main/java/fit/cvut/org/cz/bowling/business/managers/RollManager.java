@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -32,5 +33,19 @@ public class RollManager extends BaseManager<Roll> implements IRollManager {
         } catch (SQLException e) {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public boolean deleteByFrameId(long frameId) {
+        try {
+            IEntityDAO<Roll, Long> rollDAO = managerFactory.getDaoFactory().getMyDao(Roll.class);
+            DeleteBuilder<Roll, Long> rollDeleteBuilder = rollDAO.deleteBuilder();
+            rollDeleteBuilder.where().eq(DBConstants.cFRAME_ID, frameId);
+            rollDeleteBuilder.delete();
+
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
     }
 }

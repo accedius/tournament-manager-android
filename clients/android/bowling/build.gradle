@@ -19,7 +19,7 @@ android {
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25
         versionCode 162
-        versionName "1.0.5"
+        versionName "1.0.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release

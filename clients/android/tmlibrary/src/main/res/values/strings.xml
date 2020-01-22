@@ -92,6 +92,8 @@
     <string name="add_round">Add round</string>
     <string name="add_player">Add player</string>
     <string name="add_players">Add players</string>
+    <string name="add_participants">Add participants</string>
+    <string name="select_team_players">Select team players</string>
     <string name="add_player_to">Add player to</string>
     <string name="add_players_home">Add players to home team</string>
     <string name="add_players_away">Add players to away team</string>

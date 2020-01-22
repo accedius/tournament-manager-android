@@ -12,16 +12,20 @@ public class FrameOverview implements Parcelable {
     private int currentScore;
     private long playerId;
 
+    //only frame rolls score, nothing else, no bonuses from strike or spare except 10th frame, where bonuses are interpreted as frame rolls
+    private byte frameScore;
+
     public FrameOverview() {
         // empty
     }
 
-    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId) {
+    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId, byte frameScore) {
         this.frameNumber = frameNumber;
         this.rolls = rolls;
         this.playerName = playerName;
         this.currentScore = currentScore;
         this.playerId = playerId;
+        this.frameScore = frameScore;
     }
 
     protected FrameOverview(Parcel in) {
@@ -30,6 +34,7 @@ public class FrameOverview implements Parcelable {
         playerName = in.readString();
         currentScore = in.readInt();
         playerId = in.readLong();
+        frameScore = in.readByte();
     }
 
     public static final Creator<FrameOverview> CREATOR = new Creator<FrameOverview>() {
@@ -56,6 +61,7 @@ public class FrameOverview implements Parcelable {
         dest.writeString(playerName);
         dest.writeInt(currentScore);
         dest.writeLong(playerId);
+        dest.writeByte(frameScore);
     }
 
     public byte getFrameNumber() {
@@ -96,5 +102,13 @@ public class FrameOverview implements Parcelable {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public byte getFrameScore() {
+        return frameScore;
+    }
+
+    public void setFrameScore(byte frameScore) {
+        this.frameScore = frameScore;
     }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -25,6 +26,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     public static final String ACTION_DELETE_MEMBERS = "action_delete_members";
     public static final String ACTION_DELETE = "action_delete_team";
     public static final String ACTION_GET_TEAMS_BY_TOURNAMENT = "action_get_teams_by_tournament";
+    public static final String ACTION_GET_TEAMS_IN_TOURNAMENT_BY_MATCH_ID = "action_get_teams_in_tournament_by_match_id";
 
     public static Intent newStartIntent(String action, Context context) {
         Intent res = new Intent(context, TeamService.class);
@@ -33,7 +35,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
     }
 
     public TeamService() {
-        super("Hockey Team Service");
+        super("Bowling Team Service");
     }
 
     @Override
@@ -103,6 +105,18 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 long id = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
                 sendTeams(id);
                 break;
+            }
+            case ACTION_GET_TEAMS_IN_TOURNAMENT_BY_MATCH_ID: {
+                long matchId = intent.getLongExtra(ExtraConstants.EXTRA_ID, -1);
+                IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
+                Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
+                long tournamentId = match.getTournamentId();
+
+                Intent res = new Intent(ACTION_GET_TEAMS_IN_TOURNAMENT_BY_MATCH_ID);
+                List<Team> teams = ((ITeamManager)ManagerFactory.getInstance(this).getEntityManager(Team.class)).getByTournamentId(tournamentId);
+                res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TEAMS, new ArrayList<>(teams));
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(res);
             }
             case ACTION_DELETE: {
                 Intent res = new Intent(ACTION_DELETE);

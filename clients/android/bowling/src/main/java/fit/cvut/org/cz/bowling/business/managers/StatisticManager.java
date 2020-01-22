@@ -3,6 +3,7 @@ package fit.cvut.org.cz.bowling.business.managers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
@@ -16,6 +17,7 @@ import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
@@ -29,6 +31,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 
 public class StatisticManager extends BaseManager<AggregatedStatistics> implements IStatisticManager {
+    private static final int UNKNOWN = -1;
     private static final int WIN = 1;
     private static final int DRAW = 2;
     private static final int LOSS = 3;
@@ -39,24 +42,11 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
     }
 
     private int calculatePoints(int result, PointConfiguration pointConfig, Match match) {
-        switch (result) {
-            case WIN:
-                    //return pointConfig.soW;
-                    //return pointConfig.otW;
-                    return 1;
-                //return pointConfig.ntW;
-            case DRAW:
-                    //return pointConfig.otD;
-                return 1;
-                //return pointConfig.ntD;
-            case LOSS:
-                    //return pointConfig.soL;
-                    //return pointConfig.otL;
-                return 1;
-                //eturn pointConfig.ntL;
-            default:
-                return 0;
+        List<Float> config = pointConfig.getConfigurationPlacePoints();
+        if(config.size() <= result) {
+            return 0;
         }
+        return config.get(result).intValue();
     }
 
     private void addMatchResultToStanding(int result, Standing standing, Match match) {
@@ -79,6 +69,8 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         for (Participant matchParticipant : matchParticipants) {
             final IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
             List<ParticipantStat> participantStats = participantStatManager.getByParticipantId(matchParticipant.getId());
+            if(participantStats.isEmpty())
+                return UNKNOWN;
             if (matchParticipant.getId() == participant.getId())
                 participant_score = participantStats.get(0).getScore();
             else
@@ -108,35 +100,57 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
         long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
-        for (PlayerStat stat : playerStats) {
+        for(PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
-            Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
-            if (!match.isPlayed())
-                continue;
 
+            if(participant == null) {
+                continue;
+            }
+
+            Match match = managerFactory.getEntityManager(Match.class).getById(participant.getMatchId());
+
+            //Get all participants in this match
+            List<Participant> commonMatchParticipants = ((ParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(participant.getMatchId());
+
+            //Get all participant stats in this match
+            List<PlayerStat> participantStats = new LinkedList<>();
+            for(Participant p : commonMatchParticipants) {
+                participantStats.addAll(((PlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(p.getId()));
+            }
+
+            //Determine the winner
+            PlayerStat winner = stat;
+            int place = 0;
+            for(PlayerStat s : participantStats) {
+                if(stat.getPoints() < s.getPoints()) {
+                    place++;
+                }
+                if(winner.getPoints() < s.getPoints()) {
+                    winner = s;
+                }
+            }
+
+            //Get the point award configuration
+            final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+            PointConfiguration pointConfiguration = pointConfigurationManager.getById(match.getTournamentId());
+
+            //First wins
+            if(stat == winner) {
+                wins++;
+            } else {
+                losses++;
+            }
+
+            //Give team point based on place in current match
+            teamPoints += calculatePoints(place, pointConfiguration, match);
+
+            //Accumulate stats
+            matches++;
             strikes += stat.getStrikes();
             spares += stat.getSpares();
             points += stat.getPoints();
-            matches++;
-
-            // Count team points, win, and other...
-            int result = getMatchResultForParticipant(participant, match);
-            final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
-            PointConfiguration pointConfiguration = pointConfigurationManager.getById(match.getTournamentId());
-            teamPoints += calculatePoints(result, pointConfiguration, match);
-            switch (result) {
-                case WIN:
-                    wins++;
-                    break;
-                case DRAW:
-                    draws++;
-                    break;
-                case LOSS:
-                    losses++;
-                    break;
-            }
         }
-        //long matches = 0, wins = 0, draws = 0, losses = 0, strikes = 0, spares = 0, points = 0, teamPoints = 0;
+
         return new AggregatedStatistics(player.getId(), player.getName(), matches, wins, draws, losses, strikes, spares, points, teamPoints);
     }
 

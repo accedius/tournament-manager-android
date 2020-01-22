@@ -28,6 +28,7 @@ import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -37,7 +38,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 5;
+    private static final int DBVersion = 7;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -103,20 +104,40 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         switch (fromVersion) {
             case 4: /*from 4 to 5*/
                 upgradeFrom4To5(db, fromVersion);
+            case 5:
+                upgradeFrom5To6(db, fromVersion);
+            case 6:
+                upgradeFrom6To7(db, fromVersion);
         }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
+        try {
+            TableUtils.dropTable(connectionSource, Competition.class, true);
+            TableUtils.dropTable(connectionSource, CompetitionPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Tournament.class, true);
+            TableUtils.dropTable(connectionSource, TournamentPlayer.class, true);
+            TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
+            TableUtils.dropTable(connectionSource, Team.class, true);
+            TableUtils.dropTable(connectionSource, TeamPlayer.class, true);
+            TableUtils.dropTable(connectionSource, Match.class, true);
+            TableUtils.dropTable(connectionSource, Frame.class, true);
+            TableUtils.dropTable(connectionSource, Roll.class, true);
+            TableUtils.dropTable(connectionSource, Participant.class, true);
+            TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
+            TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+        } catch (SQLException e) {}
+        onCreate(db, connectionSource);
+        /*for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
             switch (fromVersion) {
-                case 5: /*from 5 to 4*/
+                case 5: //from 5 to 4
                     try {
                         TableUtils.dropTable(connectionSource, Frame.class, true);
                         TableUtils.dropTable(connectionSource, Roll.class, true);
                     } catch (SQLException e) {}
                     break;
-                case 4: /*from 4 to 3 (and less)*/
+                case 4: //from 4 to 3 (and less)
                     try {
                         TableUtils.dropTable(connectionSource, Match.class, true);
                         TableUtils.dropTable(connectionSource, PlayerStat.class, true);
@@ -126,7 +147,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                     fromVersion = 1;
                     break;
             }
-        }
+        }*/
     }
 
     /**
@@ -196,10 +217,10 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
             }
         } catch (SQLException e) {}
-        dropTable(Match.class);
-        dropTable(Participant.class);
-        dropTable(PlayerStat.class);
         dropTable(ParticipantStat.class);
+        dropTable(PlayerStat.class);
+        dropTable(Participant.class);
+        dropTable(Match.class);
         onCreate(db, connectionSource);
 
         /*we need to delete all previously created matches - easy solution to avoid troubles, anyway there is no stats in them (they are empty - <=1.0.4 there was no way to edit/view stats).
@@ -211,6 +232,35 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             iMatchManager.delete(match.getId());
         }*/
 
+        ++fromVersion;
+    }
+
+    /**
+     * Upgrade script for moving from version 5 to 6
+     * @param db
+     * @param fromVersion
+     */
+    private void upgradeFrom5To6 (SQLiteDatabase db, int fromVersion) {
+        dropTable(ParticipantStat.class);
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IEntityDAO<Participant, Long> participantDao = iManagerFactory.getDaoFactory().getMyDao(Participant.class);
+
+        try {
+            participantDao.deleteItemById(DBConstants.cROLE, ParticipantType.home.toString());
+        } catch (SQLException e) {}
+
+        onCreate(db, connectionSource);
+        ++fromVersion;
+    }
+
+    private void upgradeFrom6To7 (SQLiteDatabase db, int fromVersion) {
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IEntityDAO<PlayerStat, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(PlayerStat.class);
+        try {
+            if (!checkIfColumnExists(db, DBConstants.tPLAYER_STATS, DBConstants.cFRAMES_NUMBER)) {
+                matchDAO.executeRaw("ALTER TABLE " + DBConstants.tPLAYER_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
+            }
+        } catch (SQLException e) {}
         ++fromVersion;
     }
 }

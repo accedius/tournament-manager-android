@@ -13,7 +13,9 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,9 @@ import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.NewBowlingMatchFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Player;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 
 import static java.lang.Integer.parseInt;
 
@@ -67,13 +72,22 @@ public class AddMatchDialog extends DialogFragment {
                         alertDialog.setPositiveButton(R.string.ok,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
                                         int lanes = Integer.parseInt(input.getText().toString()) ;
-                                        intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-                                        intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
-                                        c.startService(intent);
-                                        c.startActivity(a.getIntent());
 
+                                        ITournamentManager iTournamentManager = ManagerFactory.getInstance().getEntityManager(Tournament.class);
+                                        List<Player> players = iTournamentManager.getTournamentPlayers(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+
+                                        if(lanes > players.size() || lanes < 1) {
+                                            Toast.makeText(a,R.string.wrong_lanes,Toast.LENGTH_LONG).show();
+                                        }
+                                        else {
+                                            Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
+                                            intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                                            intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
+                                            c.startService(intent);
+                                            //c.startActivity(a.getIntent());
+                                        }
+                                        a.recreate();
                                     }
                                 });
 

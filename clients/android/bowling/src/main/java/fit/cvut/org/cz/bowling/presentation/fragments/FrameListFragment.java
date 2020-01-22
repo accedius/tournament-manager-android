@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +43,7 @@ import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.adapters.FrameOverviewAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -51,23 +53,214 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
-public class FrameListFragment extends AbstractListFragment<FrameOverview> {
+public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
-    protected static int participantSelectedIndex = -1;
+    protected static int participantSelectedIndex = 0;
     protected static TournamentType tournamentType = null;
     protected static List<List<FrameOverview>> participantsFrameOverviews = new ArrayList<>();
     protected static List<List<Player>> matchPlayers = new ArrayList<>();
     protected static List<Player> participantPlayers = new ArrayList<>();
-    protected static ArrayList<Participant> participants = new ArrayList<>();
+    protected static ArrayList<Participant> matchParticipants = new ArrayList<>();
     private Spinner participantSpinner = null;
     private ArrayAdapter<Participant> participantArrayAdapter = null;
     protected static boolean bindFromDialogInsertions = false;
     protected static boolean participantsBinded = false;
     protected static final int REQUEST_CODE_UPDATE_LOCALLY = 1337;
-    private Fragment thisFragment;
+    private static Fragment thisFragment;
+    private long matchId;
+
+    final static int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+    final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
+    final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
+
+    @Override
+    public Bundle getMatchStats() {
+        Bundle bundle = new Bundle();
+        List<ParticipantStat> participantStatsToCreate = new ArrayList<>(), participantStatsToUpdate = new ArrayList<>();
+        List<Frame> framesToCreate = new ArrayList<>(), framesToUpdate = new ArrayList<>(), framesToDelete = new ArrayList<>(), notChangedFramesButToAddRollsTo = new ArrayList<>();
+        List<Roll> rollsToCreate = new ArrayList<>(), rollsToUpdate = new ArrayList<>(), rollsToDelete = new ArrayList<>();
+
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
+        int participantIndex = 0;
+        for(Participant participant : matchParticipants) {
+            List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
+            ParticipantStat stat;
+
+            boolean noPreviousStats = participant.getParticipantStats().isEmpty();
+            boolean participantStatToUpdate = true;
+
+            //whether or not previous stats and new ones are different [ParticipantStat = PS]
+            boolean isPreviousAndNewDifferentPS = true;
+
+            if(noPreviousStats) {
+                stat = new ParticipantStat();
+                stat.setParticipantId(participant.getId());
+                stat.setFramesPlayedNumber((byte)0);
+                stat.setScore(0);
+                participantStatToUpdate = false;
+            } else {
+                stat = (ParticipantStat) participant.getParticipantStats().get(0);
+            }
+            byte previousFramesNumber = stat.getFramesPlayedNumber();
+            byte framesNumber = (byte) overviews.size();
+            int score = framesNumber < 1 ? 0 : overviews.get(framesNumber-1).getCurrentScore();
+            if(framesNumber < previousFramesNumber && previousFramesNumber > 0 && stat.getFrames() != null && !stat.getFrames().isEmpty()) {
+                List<Frame> participantFrames = stat.getFrames();
+                framesToDelete.addAll(participantFrames.subList(framesNumber, previousFramesNumber));
+            } else if(previousFramesNumber == framesNumber && participantStatToUpdate && score == stat.getScore()){
+                isPreviousAndNewDifferentPS = false;
+            }
+
+            stat.setFramesPlayedNumber(framesNumber);
+            if(framesNumber < 1){
+                stat.setScore(0);
+                stat.setFrames(new ArrayList<Frame>());
+            } else {
+                stat.setScore(overviews.get(framesNumber - 1).getCurrentScore());
+                List<Frame> participantFrames = stat.getFrames();
+                if(participantFrames == null) {
+                    participantFrames = new ArrayList<>();
+                }
+                int frameIndex = 0;
+                for(FrameOverview overview : overviews) {
+                    boolean frameToUpdate = true;
+
+                    //whether or not previous stats and new ones are different [F = Frame]
+                    boolean isPreviousAndNewDifferentF = true;
+
+                    if(frameIndex >= participantFrames.size()) {
+                        Frame frame = new Frame();
+                        frame.setMatchId(matchId);
+                        frame.setFrameNumber( (byte) (frameIndex+1));
+                        frame.setParticipantId(participant.getId());
+                        frame.setRolls(new ArrayList<Roll>());
+                        participantFrames.add(frame);
+                        frameToUpdate = false;
+                    }
+                    Frame frame = participantFrames.get(frameIndex);
+                    frame.setPlayerId(overview.getPlayerId());
+
+                    //no need to control other values, because participantId, frameNumber are the same, if the entity existed before
+                    if(frame.getPlayerId() == overview.getPlayerId()){
+                        isPreviousAndNewDifferentF = false;
+                    }
+
+                    int previousRollsNumber = frame.getRolls().size();
+                    int rollsNumber = overview.getRolls().size();
+                    List<Roll> frameRolls = frame.getRolls();
+                    if(previousRollsNumber > rollsNumber) {
+                        rollsToDelete.addAll(frameRolls.subList(rollsNumber, previousRollsNumber));
+                    }
+                    byte rollNumber = 1;
+                    for(Byte overviewRoll : overview.getRolls()){
+                        boolean rollToUpdate = true;
+
+                        //whether or not previous stats and new ones are different [Roll = R]
+                        boolean isPreviousAndNewDifferentR = true;
+
+                        if(rollNumber > frameRolls.size()) {
+                            Roll roll = new Roll();
+                            frameRolls.add(roll);
+                            rollToUpdate = false;
+                        }
+                        Roll roll = frameRolls.get(rollNumber - 1);
+
+                        //no need to control other values, because frameId, rollNumber are the same, if the entity existed before
+                        if(roll.getPoints() == overviewRoll && roll.getPlayerId() == frame.getPlayerId()){
+                            isPreviousAndNewDifferentR = false;
+                        }
+
+                        roll.setFrameId(frame.getId());
+                        roll.setPlayerId(frame.getPlayerId());
+                        roll.setRollNumber(rollNumber);
+                        roll.setPoints(overviewRoll);
+
+                        if(rollToUpdate) {
+                            if(isPreviousAndNewDifferentR){
+                                rollsToUpdate.add(roll);
+                            }
+                        } else {
+                            //little trick to identify different rolls before frame is created in database (frameId == 0)
+                            roll.setId(frame.getParticipantId());
+                            roll.setFrameId(frame.getFrameNumber());
+
+                            if(frameToUpdate && !isPreviousAndNewDifferentF){
+                                notChangedFramesButToAddRollsTo.add(frame);
+                            }
+
+                            rollsToCreate.add(roll);
+                        }
+
+                        ++rollNumber;
+                    }
+                    frame.setRolls(frameRolls);
+
+                    if(frameToUpdate) {
+                        if(isPreviousAndNewDifferentF) {
+                            framesToUpdate.add(frame);
+                        }
+                    } else {
+                        framesToCreate.add(frame);
+                    }
+
+                    ++frameIndex;
+                }
+
+                //participant has played all 10 frames => his game is completed
+                if(frameIndex == ConstraintsConstants.tenPinMatchParticipantMaxFrames-1){
+                    ++participantsWhoCompletedGameNumber;
+                }
+
+                stat.setFrames(participantFrames);
+            }
+
+            if(noPreviousStats){
+                List<ParticipantStat> stats = new ArrayList<>();
+                stats.add(stat);
+                participant.setParticipantStats(stats);
+            }
+
+            if(participantStatToUpdate) {
+                if(isPreviousAndNewDifferentPS){
+                    participantStatsToUpdate.add(stat);
+                }
+            } else {
+                participantStatsToCreate.add(stat);
+            }
+
+            ++participantIndex;
+        }
+
+        if(participantsWhoCompletedGameNumber == matchParticipants.size()) {
+            isMatchPlayed = true;
+        }
+
+        bundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
+
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_CREATE, (ArrayList<? extends Parcelable>) participantStatsToCreate);
+        bundle.putParcelableArrayList(PARTICIPANT_STATS_TO_UPDATE, (ArrayList<? extends Parcelable>) participantStatsToUpdate);
+
+        bundle.putParcelableArrayList(FRAMES_TO_CREATE, (ArrayList<? extends Parcelable>) framesToCreate);
+        bundle.putParcelableArrayList(FRAMES_TO_UPDATE, (ArrayList<? extends Parcelable>) framesToUpdate);
+        bundle.putParcelableArrayList(FRAMES_TO_DELETE, (ArrayList<? extends Parcelable>) framesToDelete);
+        bundle.putParcelableArrayList(NOT_CHANGED_FRAMES_BUT_TO_ADD_ROLLS_TO, (ArrayList<? extends Parcelable>) notChangedFramesButToAddRollsTo);
+
+        bundle.putParcelableArrayList(ROLLS_TO_CREATE, (ArrayList<? extends Parcelable>) rollsToCreate);
+        bundle.putParcelableArrayList(ROLLS_TO_UPDATE, (ArrayList<? extends Parcelable>) rollsToUpdate);
+        bundle.putParcelableArrayList(ROLLS_TO_DELETE, (ArrayList<? extends Parcelable>) rollsToDelete);
+
+        return bundle;
+    }
+
+    @Override
+    public List<Participant> getMatchParticipants() {
+        return matchParticipants;
+    }
 
     public static FrameListFragment newInstance(long matchId) {
         FrameListFragment fragment = new FrameListFragment();
@@ -85,12 +278,19 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         setRetainInstance(true);
         thisFragment = this;
         bindFromDialogInsertions = false;
-        participantSelectedIndex = -1;
+        participantSelectedIndex = 0;
         participantsFrameOverviews = null;
         frameOverviews = null;
         matchPlayers = null;
         participantPlayers = null;
         participantsBinded = false;
+
+        matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
+        long tournamentId = match.getTournamentId();
+        Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+        tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
     }
 
     @Override
@@ -100,31 +300,30 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new FrameOverviewAdapter(getResources()) {
+        return new FrameOverviewAdapter(tournamentType) {
             @Override
-            protected void setOnClickListeners(View v, int position, final long playerId, final byte frameNumber, List<Byte> rolls, String playerName, int currentScore) {
+            protected void setOnClickListeners(View v, final int position, final long playerId, final byte frameNumber, List<Byte> rolls, String playerName, int currentScore) {
                 super.setOnClickListeners(v, position, playerId, frameNumber, rolls, playerName, currentScore);
 
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int index = 0;
-                        while(index < frameOverviews.size()) {
-                            FrameOverview frameOw = frameOverviews.get(index);
-                            if (frameOw.getFrameNumber() == frameNumber && frameOw.getPlayerId() == playerId)
-                                break;
-                            ++index;
-                        }
+                        int index = frameNumber - 1;
                         EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
                         dialog.setTargetFragment(thisFragment, 0);
-                        dialog.show(getFragmentManager(), "dialog");
+                        dialog.show(getFragmentManager(), "dialogEdit");
                     }
                 });
 
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return true; //should deleting frames be possible?
+                        int index = frameNumber - 1;
+                        String title = "Frame #" + frameNumber;
+                        EditDeleteFrameDialog dialog = EditDeleteFrameDialog.newInstance(index, title);
+                        dialog.setTargetFragment(thisFragment, 0);
+                        dialog.show(getFragmentManager(), "dialogEditDelete");
+                        return true;
                     }
                 });
             }
@@ -133,6 +332,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
     @Override
     protected View injectView(LayoutInflater inflater, ViewGroup container) {
+
         View fragmentView = inflater.inflate(R.layout.fragment_match_complex_stats, container, false);
 
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.complex_stats_recycler_view);
@@ -156,7 +356,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && frameOverviews.size()<10)
                         fab.show();
 
                     else fab.hide();
@@ -167,23 +367,71 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         return fragmentView;
     }
 
+    private int getNextRollScore(final int positionFrom, final int rollsNumber) {
+        int rollsRemaining = rollsNumber;
+        int arraySize = frameOverviews.size();
+        int readPosition = positionFrom + 1;
+        int score = 0;
+        while (rollsRemaining > 0 && readPosition < arraySize) {
+            List<Byte> frameRolls = frameOverviews.get(readPosition).getRolls();
+            score += frameRolls.get(0);
+            if(frameRolls.size() >= rollsRemaining) {
+                if(rollsRemaining == 2) {
+                    score += frameRolls.get(1);
+                }
+                rollsRemaining = 0;
+            } else {
+                --rollsRemaining;
+                ++readPosition;
+            }
+        }
+        return score;
+    }
+
+    private void updateScores(final int positionFrom) {
+        int arraySize = frameOverviews.size();
+        for(int i = positionFrom; i < arraySize; ++i) {
+            FrameOverview f = frameOverviews.get(i);
+            int currentFrameScore = i == 0 ? 0 : frameOverviews.get(i-1).getCurrentScore();
+            currentFrameScore += f.getFrameScore();
+            if(f.getFrameScore() == maxFrameScore) {
+                if(f.getRolls().get(0) == maxFrameScore){
+                    currentFrameScore += getNextRollScore(i, 2);
+                } else {
+                    currentFrameScore += getNextRollScore(i, 1);
+                }
+            }
+            f.setCurrentScore(currentFrameScore);
+        }
+    }
+
     @Override
     protected void bindDataOnView(Intent intent) {
         if(bindFromDialogInsertions) {
             bindFromDialogInsertions = false;
+            //Check if match is played to set MatchEditStatsFragment's CheckBox partialDataPropagation checked attribute to true or false
+            int participantsWhoNotCompletedGameNumber = participantsFrameOverviews.size();
+            for(List<FrameOverview> overviews : participantsFrameOverviews) {
+                if(overviews.size() == ConstraintsConstants.tenPinMatchParticipantMaxFrames)
+                    --participantsWhoNotCompletedGameNumber;
+            }
+            if(getParentFragment() != null) {
+                if(participantsWhoNotCompletedGameNumber == 0 ) {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 1, null);
+                } else {
+                    getParentFragment().onActivityResult(getTargetRequestCode(), 0, null);
+                }
+            }
         } else {
             if(participantsFrameOverviews == null) {
-                participantsFrameOverviews = new ArrayList<>();
                 matchPlayers = new ArrayList<>();
-                participants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-                long matchId = participants.get(0).getMatchId();
+                matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+                if(!matchParticipants.isEmpty()){
+                    participantsFrameOverviews = new ArrayList<>();
+                }
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-                Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
-                long tournamentId = match.getTournamentId();
-                Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
-                tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
                 int index = 0;
-                for(Participant participant : participants) {
+                for(Participant participant : matchParticipants) {
 
                     matchPlayers.add(new ArrayList<Player>());
                     participantPlayers = matchPlayers.get(index);
@@ -208,38 +456,45 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                     participantsFrameOverviews.add(new ArrayList<FrameOverview>());
                     frameOverviews = participantsFrameOverviews.get(index);
 
-                    if(participant.getParticipantStats() != null && participant.getParticipantStats().size() > 0){
+                    if(participant.getParticipantStats() != null && !participant.getParticipantStats().isEmpty()){
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
                         List<Frame> frames = participantStat.getFrames();
                         byte i = 1;
-                        int score = 0;
 
                         for(Frame frame : frames) {
+                            byte frameScore = 0;
                             List<Byte> rolls = new ArrayList<>();
                             List<Roll> playedRolls = frame.getRolls();
 
                             for(Roll roll : playedRolls) {
                                 byte rollPoints = roll.getPoints();
-                                score += rollPoints;
+                                frameScore += rollPoints;
                                 rolls.add(rollPoints);
                             }
 
                             long playerId = frame.getPlayerId();
                             Player player = iManagerFactory.getEntityManager(Player.class).getById(playerId);
                             String playerName = player.getName();
-                            FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, score, playerId);
+                            FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, frameScore);
                             frameOverviews.add(frameOverview);
+
+                            ++i;
                         }
 
                     }
 
+                    updateScores(0);
                     ++index;
                 }
             }
             intent.removeExtra(ExtraConstants.EXTRA_PARTICIPANTS);
         }
+        if(participantsFrameOverviews == null) {
+            fab.hide();
+            return;
+        }
         if(!participantsBinded){
-            bindParticipantsOnView(participants);
+            bindParticipantsOnView(matchParticipants);
             participantsBinded = true;
         }
         if(frameOverviews.size() >= 10 || participantSelectedIndex == -1) {
@@ -252,10 +507,11 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         super.bindDataOnView(intent);
     }
 
-    private void bindParticipantsOnView(ArrayList<Participant> participants) {
-        participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, participants);
+    private void bindParticipantsOnView(ArrayList<Participant> matchParticipants) {
+        participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
         participantArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         participantSpinner.setAdapter(participantArrayAdapter);
+        participantSpinner.setSelection(participantSelectedIndex);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -284,7 +540,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                                        int index = frameOverviews.size();
                                        EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
                                        dialog.setTargetFragment(thisFragment, 0);
-                                       dialog.show(getFragmentManager(), "dialog");
+                                       dialog.show(getFragmentManager(), "dialogCreate");
                                    }
                                }
         );
@@ -303,7 +559,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             Intent intent = new Intent();
             bindDataOnView(intent);
         } else {
-            Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
+            Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS, getContext());
             Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
             intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
             getContext().startService(intent);
@@ -312,12 +568,12 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
     @Override
     protected boolean isDataSourceWorking() {
-        return ParticipantService.isWorking(ParticipantService.ACTION_GET_BY_MATCH_ID);
+        return ParticipantService.isWorking(ParticipantService.ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS);
     }
 
     @Override
     protected void registerReceivers() {
-        IntentFilter filter = new IntentFilter(ParticipantService.ACTION_GET_BY_MATCH_ID);
+        IntentFilter filter = new IntentFilter(ParticipantService.ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS);
         //filter.addAction(ParticipantService.ACTION_DELETE);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(participantReceiver, filter);
     }
@@ -337,7 +593,7 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             progressBar.setVisibility(View.GONE);
             contentView.setVisibility(View.VISIBLE);
             switch (action) {
-                case ParticipantService.ACTION_GET_BY_MATCH_ID: {
+                case ParticipantService.ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS: {
                     participantsBinded = false;
                     bindDataOnView(intent);
                     break;
@@ -350,8 +606,9 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_UPDATE_LOCALLY) {
+            updateScores(resultCode);
             bindDataOnView(new Intent());
         } else {
             progressBar.setVisibility(View.VISIBLE);
@@ -363,7 +620,10 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         TextView roll1, roll2, roll3;
         int position;
         FrameOverview frameOverview = null;
+        int frameNumber;
         boolean toCreate = false;
+        Spinner playerSpinner = null;
+        boolean initialInput;
 
         public static EditFrameListDialog newInstance(int arrayListPosition) {
             EditFrameListDialog dialog = new EditFrameListDialog();
@@ -376,6 +636,8 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            initialInput = true;
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -393,28 +655,53 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
 
             View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_frame_throws, null);
             builder.setView(v);
+
+            playerSpinner = v.findViewById(R.id.player_spinner);
+            ArrayAdapter<Player> playerSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participantPlayers);
+            playerSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            playerSpinner.setAdapter(playerSpinnerAdapter);
+            playerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(!initialInput) {
+                        Player selectedPlayer = ((Player)parent.getSelectedItem());
+                        frameOverview.setPlayerName(selectedPlayer.getName());
+                        frameOverview.setPlayerId(selectedPlayer.getId());
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //empty
+                }
+            });
+
             roll1 = v.findViewById(R.id.throw_1_input);
             roll2 = v.findViewById(R.id.throw_2_input);
             roll3 = v.findViewById(R.id.throw_3_input);
             position = getArguments().getInt(ExtraConstants.EXTRA_SELECTED);
+            frameNumber = position + 1;
             if(position >= 0 && position < frameOverviews.size() ) {
                 frameOverview = frameOverviews.get(position);
-                if (frameOverview.getFrameNumber() == 10)
-                    v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
             } else if (position == frameOverviews.size()) {
                 toCreate = true;
                 frameOverview = new FrameOverview();
-                frameOverview.setFrameNumber( (byte) position);
+                frameOverview.setFrameNumber( (byte) frameNumber);
                 if(tournamentType.equals(TournamentTypes.individuals())){
                     Player player = participantPlayers.get(0);
                     frameOverview.setPlayerName(player.getName());
                     frameOverview.setPlayerId(player.getId());
+                    playerSpinner.setVisibility(View.GONE);
                 } else {
-                    //TODO
+                    //TODO if needed
                 }
             }
-            int frameNumberTitle = frameOverview.getFrameNumber() + 1;
-            builder.setTitle(getResources().getString(R.string.frame_num) + frameNumberTitle + ": " + frameOverview.getPlayerName());
+            if (frameNumber == maxFrames)
+                v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
+            builder.setTitle(getResources().getString(R.string.frame_num) + frameNumber + ": " + frameOverview.getPlayerName());
+
+            initialInput = false;
+
             return builder.create();
         }
 
@@ -428,60 +715,58 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                     @Override
                     public void onClick(View v) {
                         boolean returnToken = false;
-                        if (roll1.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_1_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if (roll2.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if (frameOverview.getFrameNumber() == 10 && roll3.getText().toString().isEmpty() ) {
-                            TextInputLayout til = getDialog().findViewById(R.id.throw_3_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
-                            returnToken = true;
-                        }
-
-                        if(returnToken) {
-                            return;
-                        }
-
-                        int pinsInRoll1 = Integer.parseInt(roll1.getText().toString());
-                        int pinsInRoll2 = Integer.parseInt(roll2.getText().toString());
+                        int pinsInRoll1 = 0;
+                        int pinsInRoll2 = 0;
                         int pinsInRoll3 = 0;
+                        if (!roll1.getText().toString().isEmpty() ) {
+                            pinsInRoll1 = Integer.parseInt(roll1.getText().toString());
+                        }
+
+                        if (!roll2.getText().toString().isEmpty() ) {
+                            pinsInRoll2 = Integer.parseInt(roll2.getText().toString());
+                        }
+
+                        if (frameNumber == maxFrames && !roll3.getText().toString().isEmpty() ) {
+                            pinsInRoll3 = Integer.parseInt(roll3.getText().toString());
+                        }
+
                         ArrayList<Byte> rolls = new ArrayList<>();
 
-                        if( pinsInRoll1 > 10 || pinsInRoll1 < 0){
+                        if( pinsInRoll1 > maxFrameScore || pinsInRoll1 < 0){
                             TextInputLayout til = getDialog().findViewById(R.id.throw_1_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
+                            til.setError(getResources().getString(R.string.flf_roll_format_violated) + " " + maxFrameScore + "!");
                             returnToken = true;
                         } else rolls.add((byte) pinsInRoll1);
-                        if( pinsInRoll2 > 10 || pinsInRoll2 < 0 ) {
+
+                        if( pinsInRoll2 > maxFrameScore || pinsInRoll2 < 0 ) {
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
-                            til.setError(getResources().getString(R.string.flf_roll_format_violated));
+                            til.setError(getResources().getString(R.string.flf_roll_format_violated) + " " + maxFrameScore + "!");
                             returnToken = true;
-                        } else rolls.add((byte) pinsInRoll2);
-                        if (frameOverview.getFrameNumber() == 10) {
-                            pinsInRoll3 = Integer.parseInt(roll3.getText().toString());
-                            if (pinsInRoll3 > 10 || pinsInRoll3 < 0) {
+                        } else if (frameNumber == maxFrames || pinsInRoll1 != maxFrameScore) {
+                            rolls.add((byte) pinsInRoll2);
+                        }
+
+                        if (frameNumber == maxFrames) {
+                            if (pinsInRoll3 > maxFrameScore || pinsInRoll3 < 0) {
                                 TextInputLayout til = getDialog().findViewById(R.id.throw_3_input_layout);
-                                til.setError(getResources().getString(R.string.flf_roll_format_violated));
+                                til.setError(getResources().getString(R.string.flf_roll_format_violated) + " " + maxFrameScore + "!");
                                 returnToken = true;
-                            } else rolls.add((byte) pinsInRoll3);
+                            } else if (pinsInRoll1 + pinsInRoll2 >= maxFrameScore) {
+                                rolls.add((byte) pinsInRoll3);
+                            }
                         }
 
-                        if (pinsInRoll1 + pinsInRoll2 > 10 && frameOverview.getFrameNumber() != 10) {
+                        if(returnToken)
+                            return;
+
+                        if ( pinsInRoll1 + pinsInRoll2 > maxFrameScore && ( frameNumber != maxFrames || pinsInRoll1 != maxFrameScore) ) {
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
-                            til.setError(getResources().getString(R.string.flf_regular_frame_too_many_pins_error));
+                            til.setError(getResources().getString(R.string.flf_regular_frame_too_many_pins_error) + " " + maxFrameScore + "!");
                             returnToken = true;
                         }
 
-                        if (pinsInRoll1 + pinsInRoll2 < 10
-                                && frameOverview.getFrameNumber() == 10
+                        if (pinsInRoll1 + pinsInRoll2 < maxFrameScore
+                                && frameNumber == maxFrames
                                 && pinsInRoll3 > 0) {
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
                             til.setError(getResources().getString(R.string.flf_last_frame_invalid_extra_roll_error));
@@ -492,14 +777,15 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
                             return;
 
                         frameOverview.setRolls(rolls);
-                        int score = pinsInRoll1 + pinsInRoll2 + pinsInRoll3;
-                        frameOverview.setCurrentScore(score);
+                        byte score = (byte)(pinsInRoll1 + pinsInRoll2 + pinsInRoll3);
+                        int resultCodeUpdateFrom = position >= 2 ? position - 2 : 0 ;
+                        frameOverview.setFrameScore(score);
                         if(toCreate) {
                             frameOverviews.add(frameOverview);
                         }
 
                         if (getTargetFragment() != null)
-                            getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, 1, null);
+                            getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, resultCodeUpdateFrom, null);
                         dialog.dismiss();
                     }
                 });
@@ -527,6 +813,60 @@ public class FrameListFragment extends AbstractListFragment<FrameOverview> {
             roll1.requestFocus();
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             return super.onCreateView(inflater, container, savedInstanceState);
+        }
+    }
+
+    public static class EditDeleteFrameDialog extends DialogFragment {
+        int position;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            position = getArguments().getInt(ExtraConstants.EXTRA_POSITION);
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+            String[] items;
+            if(position == frameOverviews.size()-1){
+                items = new String[]{ getActivity().getString(R.string.edit), getActivity().getString(R.string.delete) };
+            } else {
+                items = new String[]{ getActivity().getString(R.string.edit)};
+            }
+            builder.setItems( items, supplyListener());
+
+            builder.setTitle(getArguments().getString(ExtraConstants.EXTRA_TITLE));
+            return builder.create();
+        }
+
+        protected DialogInterface.OnClickListener supplyListener() {
+            return new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            EditFrameListDialog dialogEdit = EditFrameListDialog.newInstance(position);
+                            dialogEdit.setTargetFragment(thisFragment, 0);
+                            dialogEdit.show(getFragmentManager(), "dialogEdit");
+                            dialog.dismiss();
+                            break;
+                        case 1:
+                            frameOverviews.remove(position);
+                            if (getTargetFragment() != null){
+                                int resultCodeUpdateFrom = position >= 2 ? position - 2 : 0 ;
+                                getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, resultCodeUpdateFrom, null);
+                            }
+                            dialog.dismiss();
+                            break;
+                    }
+                    dialog.dismiss();
+                }
+            };
+        }
+
+        public static EditDeleteFrameDialog newInstance (int position, String title) {
+            EditDeleteFrameDialog dialog = new EditDeleteFrameDialog();
+            Bundle args = new Bundle();
+            args.putInt(ExtraConstants.EXTRA_POSITION, position);
+            args.putString(ExtraConstants.EXTRA_TITLE, title);
+            dialog.setArguments(args);
+            return dialog;
         }
     }
 }

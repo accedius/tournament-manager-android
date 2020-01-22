@@ -21,7 +21,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         return new ParticipantOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_participant_stats, parent, false));
     }
 
-    protected void setOnClickListeners(View v, final long participantId, int position, String name, int score, byte framesPlayedNumber) {}
+    protected void setOnClickListeners(View v, final long participantId, final int position, String name, int score, byte framesPlayedNumber) {}
 
     private String formatNumber(int num) { return String.format(Locale.getDefault(),"%d", num); }
 
@@ -34,7 +34,7 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         Integer score = participantOverview.getScore();
         Byte framesPlayedNumber = participantOverview.getFramesPlayedNumber();
         holder.participantName.setText(participantName);
-        if(score != -1) {
+        if(framesPlayedNumber > 0) {
             holder.warningLayout.setVisibility(View.GONE);
             holder.dataLayout.setVisibility(View.VISIBLE);
             holder.score.setText(formatNumber(score));
