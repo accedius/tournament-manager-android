@@ -20,6 +20,7 @@ import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.GenerateRostersDialog;
 import fit.cvut.org.cz.bowling.presentation.dialogs.StandingsHelpDialog;
 import fit.cvut.org.cz.bowling.presentation.dialogs.StatsHelpDialog;
 import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
@@ -181,11 +182,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 startActivity(intent);
                 break;
             }
-            /*case GEN_ROSTER_ID:{
+            case GEN_ROSTER_ID:{
                 GenerateRostersDialog dialog = GenerateRostersDialog.newInstance(competitionId, tournamentId);
                 dialog.show(getSupportFragmentManager(), "GENERATE_ROSTERS_DIALOG");
                 break;
-            }*/
+            }
 
             case fit.cvut.org.cz.tmlibrary.R.id.action_help:
                 if (selectedPage == 1) {
