@@ -449,7 +449,11 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         name = player.getName();
                     } else {
                         Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
-                        name = team.getName();
+                        if(team != null) {
+                            name = team.getName();
+                        } else {
+                            name = "NONAME";
+                        }
                     }
                     participant.setName(name);
 
