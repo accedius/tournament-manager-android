@@ -15,7 +15,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 
 public class TeamSerializer extends fit.cvut.org.cz.tmlibrary.business.serialization.TeamSerializer {
     protected static TeamSerializer instance = null;
-    protected TeamSerializer(Context context) {
+    public TeamSerializer(Context context) {
         this.context = context;
     }
 

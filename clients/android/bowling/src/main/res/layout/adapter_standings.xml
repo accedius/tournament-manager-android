@@ -24,25 +24,20 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
-            android:id="@+id/as_wins"/>
+            android:id="@+id/as_match_points"/>
+
+        <TextView
+            android:id="@+id/as_strikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2"
-            android:id="@+id/as_draws"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:id="@+id/as_losses"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:id="@+id/as_score"/>
+            android:id="@+id/as_spares"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"

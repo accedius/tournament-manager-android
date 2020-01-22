@@ -47,33 +47,12 @@
             android:layout_marginTop="2dp" />
 
         <TextView
-            android:text="@string/legend_TW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_D"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_TL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_TP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
+            android:text="@string/legend_MP" />
         <TextView
             android:text="@string/legend_AvgSP"
             android:layout_width="match_parent"
@@ -88,12 +67,13 @@
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp" />
+
         <TextView
-            android:text="@string/legend_TPAVG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
+            android:text="@string/legend_MPAVG" />
     </LinearLayout>
 </ScrollView>

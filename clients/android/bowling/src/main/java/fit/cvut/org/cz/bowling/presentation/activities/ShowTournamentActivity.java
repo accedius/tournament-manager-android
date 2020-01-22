@@ -121,13 +121,11 @@ public class ShowTournamentActivity extends AbstractTabActivity {
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[] {
                             TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
-                            StandingsStatsTitleFragment.newInstance(tournamentId),
                             FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
                             AggregStatsTitleFragment.newInstance(tournamentId, false)
                     },
                     new String[] {
                         getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
-                        getString(fit.cvut.org.cz.tmlibrary.R.string.standings),
                         getString(fit.cvut.org.cz.tmlibrary.R.string.matches),
                         getString(fit.cvut.org.cz.tmlibrary.R.string.players)
                     }

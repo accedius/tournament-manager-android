@@ -43,10 +43,10 @@
 
     <string name="p" tools:ignore="MissingTranslation">P</string>
     <string name="pmp" tools:ignore="MissingTranslation">+/-</string>
-    <string name="tp" tools:ignore="MissingTranslation">TP</string>
 
     <string name="ag" tools:ignore="MissingTranslation">Avg. G</string>
     <string name="ast" tools:ignore="MissingTranslation">Avg. St</string>
+    <string name="amp" tools:ignore="MissingTranslation">Avg. MP</string>
     <string name="legend_AvgST" tools:ignore="MissingTranslation">Avg. St: Average strikes per match</string>
 
     <string name="ap" tools:ignore="MissingTranslation">Avg. P</string>
@@ -55,7 +55,6 @@
 
 
     <string name="score">Score</string>
-    <string name="atp" tools:ignore="MissingTranslation">Avg. TP</string>
     <string name="so" tools:ignore="MissingTranslation">so</string>
     <string name="ot" tools:ignore="MissingTranslation">ot</string>
 
@@ -73,6 +72,7 @@
     <string name="lso" tools:ignore="MissingTranslation">L so</string>
     <string name="wot" tools:ignore="MissingTranslation">W ot</string>
     <string name="wso" tools:ignore="MissingTranslation">W so</string>
+    <string name="mp" tools:ignore="MissingTranslation">MP</string>
 
     <string name="legend" tools:ignore="MissingTranslation">Stats legend:</string>
     <string name="legend_GP" tools:ignore="MissingTranslation">GP: Games played</string>
@@ -90,11 +90,11 @@
     <string name="legend_G" tools:ignore="MissingTranslation">G: Goals scored</string>
     <string name="legend_A" tools:ignore="MissingTranslation">A: Assists</string>
     <string name="legend_S" tools:ignore="MissingTranslation">S: Saves</string>
-    <string name="legend_TP" tools:ignore="MissingTranslation">TP: Team points</string>
+    <string name="legend_MP" tools:ignore="MissingTranslation">MP: Match points</string>
     <string name="legend_PM" tools:ignore="MissingTranslation">+/-: Plus minus points</string>
     <string name="legend_GAVG" tools:ignore="MissingTranslation">Avg G: Average goals per match</string>
     <string name="legend_PAVG" tools:ignore="MissingTranslation">Avg P: Average points per match</string>
-    <string name="legend_TPAVG" tools:ignore="MissingTranslation">Avg TP: Average team points per match</string>
+    <string name="legend_MPAVG" tools:ignore="MissingTranslation">Avg MP: Average match points per match</string>
     <string name="legend_note" tools:ignore="MissingTranslation">Get more statistics by change orientation to landscape</string>
 
     <string name="point_configurations" tools:ignore="Missingtranslation">Point configurations</string>
@@ -151,4 +151,7 @@
     <string name="lane">Lane</string>
 
     <string name="coming_soon_label">This feature is coming soon…</string>
+    
+    <string name="stat_match_point" tools:ignore="MissingTranslation">MP</string>
+    <string name="stat_match_point_average" tools:ignore="MissingTranslation">MP avg.</string>
 </resources>

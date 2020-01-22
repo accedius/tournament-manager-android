@@ -1,0 +1,20 @@
+image: gradle:alpine
+
+stages:
+  - build
+  - test
+
+build:
+   stage: build
+   script: 
+   - cd ./clients/android
+   - gradle assemble -p bowling
+   allow_failure: false
+
+test:
+   stage: test
+   script: 
+   - cd ./clients/android
+   - gradle check -x lint -p bowling
+
+    

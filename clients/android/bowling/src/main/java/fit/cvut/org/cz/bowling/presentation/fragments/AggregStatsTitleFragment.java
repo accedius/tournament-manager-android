@@ -119,14 +119,11 @@ public class AggregStatsTitleFragment extends Fragment {
         columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.stats_strikes));
         columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.stats_spares));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.stats_points));
-        if (v.findViewById(R.id.stats_wins) != null) {
-            columns.put(Constants.WINS, (TextView) v.findViewById(R.id.stats_wins));
-            columns.put(Constants.DRAWS, (TextView) v.findViewById(R.id.stats_draws));
-            columns.put(Constants.LOSSES, (TextView) v.findViewById(R.id.stats_losses));
-            columns.put(Constants.TEAM_POINTS, (TextView) v.findViewById(R.id.stats_team_points));
+        if (v.findViewById(R.id.stats_match_points) != null) {
+            columns.put(Constants.MATCH_POINTS, (TextView) v.findViewById(R.id.stats_match_points));
             columns.put(Constants.STRIKES_AVG, (TextView) v.findViewById(R.id.stats_strikes_avg));
             columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
-            columns.put(Constants.TEAM_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
+            columns.put(Constants.MATCH_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
         }
         return columns;
     }
