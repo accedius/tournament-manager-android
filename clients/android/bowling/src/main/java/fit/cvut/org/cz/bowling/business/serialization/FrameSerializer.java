@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.HashMap;
 
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
@@ -33,7 +35,7 @@ public class FrameSerializer extends fit.cvut.org.cz.tmlibrary.business.serializ
         item.setSyncData(serializeSyncData(entity));
 
         /* Serialize rolls */
-        for (Roll rl : entity.getRolls()) {
+        for (Roll rl : ((IRollManager) ManagerFactory.getInstance(context).getEntityManager(Roll.class)).getByFrameId(entity.getId())) {
             item.getSubItems().add(RollSerializer.getInstance(context).serialize(rl));
         }
 

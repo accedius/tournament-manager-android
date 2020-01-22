@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
-import fit.cvut.org.cz.bowling.business.serialization.Constants;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -95,8 +95,14 @@ public class MatchSerializer extends BaseSerializer<Match> {
                     plStats.add(PlayerStatSerializer.getInstance(context).serialize(stat));
                 }
 
+                List<ServerCommunicationItem> frames = new ArrayList<>();
+                for (Frame frame : ((IFrameManager)ManagerFactory.getInstance(context).getEntityManager(Frame.class)).getInMatchByPlayerId(entity.getId(), player.getId())) {
+                    plStats.add(FrameSerializer.getInstance(context).serialize(frame));
+                }
+
                 playerSCI.getSubItems().addAll(paStats);
                 playerSCI.getSubItems().addAll(plStats);
+                playerSCI.getSubItems().addAll(frames);
                 item.getSubItems().add(playerSCI);
             }
         }
@@ -160,24 +166,6 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setRound(Integer.valueOf(String.valueOf(syncData.get(Constants.ROUND))));
         entity.setTrackRolls((boolean)syncData.get(Constants.TRACK_ROLLS));
         entity.setValidForStats((boolean)syncData.get(Constants.VALID_FOR_STATS));
-
-        //TODO review
-        //entity.addParticipants((List<Participant>)(syncData.get()));
-
-        //TODO discover the reason for this code
-        // 2017-04-21 #116 Temporary fix of compatibility
-        /*String homePlayersString = String.valueOf(syncData.get(Constants.PLAYERS_HOME)).replaceFirst("name=.*, saves=", "saves=");
-        JsonReader homePlayersJsonReader = new JsonReader(new StringReader(homePlayersString.trim()));
-        homePlayersJsonReader.setLenient(true);
-        List<PlayerStat> homePlayers = new Gson().fromJson(homePlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
-        entity.setHomePlayers(homePlayers);
-
-        // 2017-04-21 #116 Temporary fix of compatibility
-        String awayPlayersString = String.valueOf(syncData.get(Constants.PLAYERS_AWAY)).replaceFirst("name=.*, saves=", "saves=");
-        JsonReader awayPlayersJsonReader = new JsonReader(new StringReader(awayPlayersString.trim()));
-        awayPlayersJsonReader.setLenient(true);
-        List<PlayerStat> awayPlayers = new Gson().fromJson(awayPlayersJsonReader, new TypeToken<List<PlayerStat>>(){}.getType());
-        entity.setAwayPlayers(awayPlayers);*/
     }
 
     @Override

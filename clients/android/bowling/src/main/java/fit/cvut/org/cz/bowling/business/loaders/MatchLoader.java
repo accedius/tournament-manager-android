@@ -62,6 +62,8 @@ public class MatchLoader {
                     Participant participant = new Participant(importedMatch.getId(), player.getId(), null);
                     participantManager.insert(participant);
 
+                    List<ServerCommunicationItem> playerFrames = new ArrayList<>();
+
                     ServerCommunicationItem playerSCI = matchPlayerSCIs.get(uid);
                     for (ServerCommunicationItem subItem : playerSCI.getSubItems()) {
                         if (subItem.getType().equals(Constants.PLAYER_STAT)) {
@@ -70,16 +72,13 @@ public class MatchLoader {
                         if (subItem.getType().equals(Constants.PARTICIPANT_STAT)) {
                             ParticipantStatLoader.importParticipantStat(context, subItem, participant);
                         }
+                        if (subItem.getType().equals(Constants.FRAME)) {
+                            playerFrames.add(subItem);
+                        }
                     }
 
                     if (importedMatch.isTrackRolls()) {
-                        List<ServerCommunicationItem> importedFrames = new ArrayList<>();
-                        for (ServerCommunicationItem subItem : match.getSubItems()) {
-                            if (subItem.getType().equals(Constants.FRAME)) {
-                                importedFrames.add(subItem);
-                            }
-                        }
-                        FrameLoader.importFrames(context, importedFrames, player, importedMatch, participant);
+                        FrameLoader.importFrames(context, playerFrames, player, importedMatch, participant);
                     }
                 }
             }
