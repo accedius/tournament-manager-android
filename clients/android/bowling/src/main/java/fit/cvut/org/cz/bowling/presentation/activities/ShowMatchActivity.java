@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,13 +115,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     }
 
     private void sendToSaveMatch() {
-        //Grab old and new match stats
-        /*IManagerFactory managerFactory = ManagerFactory.getInstance();
-        IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
-        IParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
-        Match matchWithPreviousResults = matchManager.getById(matchId);
-        List<Participant> matchParticipantsWithPreviousStats = participantManager.getByMatchIdWithAllContents(matchId);*/
-
+        /*//Grab old and new match stats
         Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
         Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
         boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
@@ -135,7 +130,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
         intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
 
-        startService(intent);
+        startService(intent);*/
 
         finish();
     }
@@ -164,7 +159,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
             //When match is closed and saved
             sendToSaveMatch();
         } else if (item.getItemId() == R.id.action_edit_stats) {
-            ((BowlingFFAMatchStatsFragment) f3).editAll();
+            Toast.makeText(this, R.string.coming_soon_label, Toast.LENGTH_LONG).show();
         } else if (item.getItemId() == R.id.action_edit) {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) f1;
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());

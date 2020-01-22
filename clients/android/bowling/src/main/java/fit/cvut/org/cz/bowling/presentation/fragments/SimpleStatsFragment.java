@@ -39,7 +39,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<PlayerStat> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
-    protected List<PlayerStat> participantsPlayerStats;
     protected List<Participant> matchParticipants;
     protected long matchId;
     protected boolean bindFromDialog;
@@ -53,12 +52,15 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
 
     @Override
     public Bundle getMatchStats() {
-        return null;
+        Bundle matchStatsBundle = new Bundle();
+        //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+        matchStatsBundle.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
+        return matchStatsBundle;
     }
 
     @Override
     public List<Participant> getMatchParticipants() {
-        return null;
+        return matchParticipants;
     }
 
     public static SimpleStatsFragment newInstance(long matchId) {
@@ -78,7 +80,7 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID);
         matchParticipants = null;
         if(savedInstanceState != null) {
-            //TODO
+            matchParticipants = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS);
         }
         thisFragment = this;
         bindFromDialog = false;
@@ -87,13 +89,7 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        //TODO
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_match_stats, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        outState.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
     }
 
     @Override

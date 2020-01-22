@@ -59,4 +59,6 @@
     <string name="participants">Účastníci</string>
 
     <string name="number_required_warning">Musí být číselná hodnota!</string>
+
+    <string name="coming_soon_label">Brzy to zde bude…</string>
 </resources>

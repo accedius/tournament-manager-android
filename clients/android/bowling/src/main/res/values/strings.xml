@@ -147,4 +147,6 @@
     <string name="participants">Participants</string>
 
     <string name="lane">Lane</string>
+
+    <string name="coming_soon_label">This feature is coming soon…</string>
 </resources>

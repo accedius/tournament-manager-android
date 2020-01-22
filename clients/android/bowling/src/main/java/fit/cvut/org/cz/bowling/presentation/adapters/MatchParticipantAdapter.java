@@ -2,7 +2,6 @@ package fit.cvut.org.cz.bowling.presentation.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,23 +21,24 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOverview, MatchParticipantAdapter.MatchParticipantStatViewHolder> {
     private TournamentType tournamentType;
     private Context context;
-    private Fragment parentFrag;
 
-    public MatchParticipantAdapter(Context ctx, Fragment f, TournamentType tournamentType) {
+    public MatchParticipantAdapter(Context ctx, TournamentType tournamentType) {
         this.context = ctx;
-        this.parentFrag = f;
         this.tournamentType = tournamentType;
     }
 
     @NonNull
     @Override
-    public MatchParticipantAdapter.MatchParticipantStatViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MatchParticipantStatViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MatchParticipantStatViewHolder(LayoutInflater.from(context).inflate(R.layout.row_participant, viewGroup, false));
     }
 
+    protected void setOnClickListeners(View clickableView, View buttonView, ParticipantOverview overview, int position) {}
+
     @Override
-    public void onBindViewHolder(@NonNull MatchParticipantAdapter.MatchParticipantStatViewHolder holder, int i) {
-        ParticipantOverview stats = data.get(i);
+    public void onBindViewHolder(@NonNull MatchParticipantStatViewHolder holder, int position) {
+        ParticipantOverview stats = data.get(position);
+        setOnClickListeners(holder.wholeView, holder.manage_participant, stats, position);
         String participantName = stats.getName();
 
         if(tournamentType.equals(TournamentTypes.individuals()))
@@ -53,7 +53,7 @@ public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOver
         {
             holder.score_display.setVisibility(View.GONE);
             holder.warning_not_played_yet.setVisibility(View.VISIBLE);
-            holder.place_lable.setVisibility(View.GONE);
+            holder.place_label.setVisibility(View.GONE);
             holder.final_score_text_view.setVisibility(View.GONE);
             holder.final_score_text_view.setText("");
         }
@@ -61,9 +61,9 @@ public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOver
         {
             holder.score_display.setVisibility(View.VISIBLE);
             holder.warning_not_played_yet.setVisibility(View.GONE);
-            holder.place_lable.setVisibility(View.VISIBLE);
+            holder.place_label.setVisibility(View.VISIBLE);
             holder.final_score_text_view.setVisibility(View.VISIBLE);
-            holder.final_score_text_view.setText(String.format(Locale.getDefault(),"%d",i+1));
+            holder.final_score_text_view.setText(String.format(Locale.getDefault(),"%d",position+1));
         }
         holder.as_score.setText(String.format(Locale.getDefault(), "%d", stats.getScore()));
         holder.participant_label.setText(participantName);
@@ -74,7 +74,7 @@ public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOver
         public long id;
         public View wholeView;
         LinearLayout score_display,warning_not_played_yet;
-        TextView place_lable,final_score_text_view,participant_label,as_score;
+        TextView place_label,final_score_text_view,participant_label,as_score;
         ImageView manage_participant;
 
 
@@ -85,7 +85,7 @@ public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOver
 
             score_display = itemView.findViewById(R.id.score_display);
             warning_not_played_yet = itemView.findViewById(R.id.warning_not_played_yet);
-            place_lable = itemView.findViewById(R.id.place_label);
+            place_label = itemView.findViewById(R.id.place_label);
             final_score_text_view = itemView.findViewById(R.id.final_score_text_view);
             participant_label = itemView.findViewById(R.id.participant_label);
             as_score = itemView.findViewById(R.id.as_score);

@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -22,17 +23,19 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.ParticipantOverview;
+import fit.cvut.org.cz.bowling.business.managers.TeamManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
+import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.activities.AddParticipantsActivity;
+import fit.cvut.org.cz.bowling.presentation.activities.SelectTeamPlayersActivity;
 import fit.cvut.org.cz.bowling.presentation.adapters.MatchParticipantAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.DeleteParticipantDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -46,8 +49,9 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     private MatchParticipantAdapter adapter;
 
-    private List<Participant> participants = null;
-    private List<ParticipantOverview> participantStats = null;
+    private List<Participant> matchParticipants = null;
+    private List<ParticipantOverview> participantStatOverviews = null;
+    private int managedParticipantPosition;
 
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
@@ -56,6 +60,11 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
     private Fragment thisFragment;
     private TournamentType tournamentType;
 
+    private static final class RequestCodes {
+        static final int NEW_PARTICIPANT = 1;
+        static final int DELETE = 2;
+        static final int MANAGE = 3;
+    }
 
     public static MatchParticipantsManageFragment newInstance(long matchId) {
         MatchParticipantsManageFragment fragment = new MatchParticipantsManageFragment();
@@ -73,11 +82,11 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
 
         if (savedInstanceState != null) {
-            participants = savedInstanceState.getParcelableArrayList(SAVE_PART);
+            matchParticipants = savedInstanceState.getParcelableArrayList(SAVE_PART);
         } else {
             IManagerFactory iManagerFactory = ManagerFactory.getInstance();
             IParticipantManager iParticipantManager = iManagerFactory.getEntityManager(Participant.class);
-            participants = iParticipantManager.getByMatchId(matchId);
+            matchParticipants = iParticipantManager.getByMatchId(matchId);
             Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
             long tournamentId = match.getTournamentId();
             Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
@@ -89,7 +98,83 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(SAVE_PART, new ArrayList<>(participants));
+        outState.putParcelableArrayList(SAVE_PART, new ArrayList<>(matchParticipants));
+    }
+
+    @Override
+    protected View injectView(LayoutInflater inflater, ViewGroup container) {
+        View fragmentView = inflater.inflate(R.layout.fragment_match_participant_wrapper, container, false);
+
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_part);
+        scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
+
+        adapter = getAdapter();
+
+        recyclerView.setAdapter(adapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, (ViewGroup)fragmentView, false);
+        ((ViewGroup) fragmentView).addView(fab);
+
+        setOnClickListeners();
+
+        return fragmentView;
+    }
+
+    private MatchParticipantAdapter getAdapter() {
+        return new MatchParticipantAdapter(getContext(), tournamentType) {
+            @Override
+            protected void setOnClickListeners(View clickableView, View buttonView, final ParticipantOverview overview, final int position) {
+                super.setOnClickListeners(clickableView, buttonView, overview, position);
+
+                clickableView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        DeleteParticipantDialog dialog = DeleteParticipantDialog.newInstance(overview.getParticipantId(), position, overview.getName());
+                        dialog.setTargetFragment(thisFragment, RequestCodes.DELETE);
+                        dialog.show(getFragmentManager(), "DELETE_PARTICIPANT_DIALOG");
+                        return true;
+                    }
+                });
+
+                buttonView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Participant selectedParticipant = matchParticipants.get(position);
+                        managedParticipantPosition = position;
+                        Intent selectTeamPlayersIntent = SelectTeamPlayersActivity.newStartIntent(getContext(), overview.getParticipantId(), (ArrayList<PlayerStat>) selectedParticipant.getPlayerStats());
+                        thisFragment.startActivityForResult(selectTeamPlayersIntent, RequestCodes.MANAGE);
+                    }
+                });
+            }
+        };
+    }
+
+    private void setOnClickListeners() {
+        scrv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                fab.hide();
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    fab.show();
+                }
+                return false;
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Participant> omitParticipants = new ArrayList<>(matchParticipants);
+                int option = tournamentType.id == TournamentTypes.type_individuals ? AddParticipantsFragment.OPTION_INDIVIDUALS : AddParticipantsFragment.OPTION_TEAMS;
+                Intent intent = AddParticipantsActivity.newStartIntent(getContext(), option, matchId);
+                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitParticipants);
+                thisFragment.startActivityForResult(intent, RequestCodes.NEW_PARTICIPANT);
+            }
+        });
     }
 
     @Override
@@ -106,27 +191,17 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        //aktualizování participantStats a swapnutí dat
-        participantStats = new ArrayList<>();
-        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-        IManager manager;
-        if(tournamentType.equals(TournamentTypes.individuals()))
-            manager = iManagerFactory.getEntityManager(Player.class);
-        else
-            manager = iManagerFactory.getEntityManager(Team.class);
-        for(int i = 0; i < participants.size(); i++)
+        //aktualizování participantStatOverviews a swapnutí dat
+        participantStatOverviews = new ArrayList<>();
+        for(int i = 0; i < matchParticipants.size(); i++)
         {
-            String name = "";
-            if(tournamentType.equals(TournamentTypes.individuals()))
-                name = ((Player)manager.getById(participants.get(i).getParticipantId())).getName();
-            else
-                name = ((Team)manager.getById(participants.get(i).getParticipantId())).getName();
-            ParticipantOverview ps = new ParticipantOverview(-1,participants.get(i).getParticipantId(),name,i>3?-1:10*i,(byte) i);
-            participantStats.add(ps);
+            String name = matchParticipants.get(i).getName();
+            ParticipantOverview ps = new ParticipantOverview(-1, matchParticipants.get(i).getParticipantId(),name,i>3?-1:10*i,(byte) i);
+            participantStatOverviews.add(ps);
         }
 
-        participantStats = orderParticipantStats(participantStats);
-        adapter.swapData(participantStats);
+        participantStatOverviews = orderParticipantStats(participantStatOverviews);
+        adapter.swapData(participantStatOverviews);
     }
 
     private class ParticipantStatComparatorByScore implements Comparator<ParticipantOverview>
@@ -154,49 +229,87 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
     }
 
     @Override
-    protected View injectView(LayoutInflater inflater, ViewGroup container) {
-        View fragmentView = inflater.inflate(R.layout.fragment_match_participant_wrapper, container, false);
-
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.rv_part);
-        scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
-
-        adapter = new MatchParticipantAdapter(getContext(), this,tournamentType);
-
-        recyclerView.setAdapter(adapter);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        fab = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.floatingbutton_add, (ViewGroup)fragmentView, false);
-        ((ViewGroup) fragmentView).addView(fab);
-
-        setOnClickListeners();
-
-        return fragmentView;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RequestCodes.NEW_PARTICIPANT: {
+                if (resultCode != AddParticipantsActivity.RESULT_OK)
+                    return;
+                ArrayList<Participant> participantsToAdd = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
+                if (participantsToAdd.size() > 0) {
+                    integrateNewParticipants(participantsToAdd);
+                }
+                break;
+            }
+            case RequestCodes.DELETE: {
+                if(resultCode != Activity.RESULT_OK)
+                    return;
+                int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
+                matchParticipants.remove(position);
+                bindDataOnView(null);
+                break;
+            }
+            case RequestCodes.MANAGE: {
+                if(resultCode != SelectTeamPlayersActivity.RESULT_OK)
+                    return;
+                List<Player> teamPlayers = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
+                setTeamPlayers(teamPlayers);
+                bindDataOnView(null);
+                break;
+            }
+        }
     }
 
-    private void setOnClickListeners() {
-        scrv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                fab.hide();
-                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    fab.show();
-                }
-                return false;
-            }
-        });
+    private void setTeamPlayers(List<Player> newTeamPlayers) {
+        Participant teamToSetPlayersFor = matchParticipants.get(managedParticipantPosition);
+        List<PlayerStat> newPlayerStats = new ArrayList<>();
+        for(Player player : newTeamPlayers) {
+            PlayerStat newPlayerStat = new PlayerStat(teamToSetPlayersFor.getId(), player.getId());
+            newPlayerStats.add(newPlayerStat);
+        }
+        teamToSetPlayersFor.setPlayerStats(newPlayerStats);
+    }
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<Participant> omitParticipants = new ArrayList<>(participants);
-                int option = tournamentType.id == TournamentTypes.type_individuals ? AddParticipantsFragment.OPTION_INDIVIDUALS : AddParticipantsFragment.OPTION_TEAMS;
-                Intent intent = AddParticipantsActivity.newStartIntent(getContext(), option, matchId);
-                intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitParticipants);
-                thisFragment.startActivityForResult(intent, BowlingFFAMatchStatsFragment.REQUEST_PART);
-            }
-        });
+    private void integrateNewParticipants(List<Participant> newParticipants) {
+        IManagerFactory managerFactory = ManagerFactory.getInstance(getContext());
+        switch (tournamentType.id) {
+            case TournamentTypes.type_individuals:
+                for (Participant newParticipant : newParticipants) {
+                    PlayerStat individualStat = new PlayerStat(-1, newParticipant.getId());
+                    individualStat.setName(newParticipant.getName());
+                    List<PlayerStat> participantsPlayerStats = new ArrayList<>();
+                    participantsPlayerStats.add(individualStat);
+                    newParticipant.setPlayerStats(participantsPlayerStats);
+
+                    setDefaultParticipantStat(newParticipant);
+                }
+                break;
+            case TournamentTypes.type_teams:
+                for (Participant newParticipant : newParticipants) {
+                    TeamManager teamManager = managerFactory.getEntityManager(Team.class);
+                    Team participantTeam = teamManager.getById(newParticipant.getParticipantId());
+                    List<Player> teamPlayers = participantTeam.getPlayers();
+                    List<PlayerStat> participantsPlayerStats = new ArrayList<>();
+                    for (Player teamPlayer : teamPlayers) {
+                        PlayerStat individualStat = new PlayerStat(-1, newParticipant.getId());
+                        individualStat.setName(teamPlayer.getName());
+                        participantsPlayerStats.add(individualStat);
+                    }
+                    if (participantsPlayerStats.size() > 0)
+                        participantsPlayerStats.get(0).setParticipantName(newParticipant.getName());
+                    newParticipant.setPlayerStats(participantsPlayerStats);
+
+                    setDefaultParticipantStat(newParticipant);
+                }
+                break;
+        }
+
+        matchParticipants.addAll(newParticipants);
+    }
+
+    private void setDefaultParticipantStat(Participant participant) {
+        ArrayList<ParticipantStat> participantStats = new ArrayList<ParticipantStat>();
+        ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
+        participantStats.add(participantStat);
+        participant.setParticipantStats(participantStats);
     }
 }

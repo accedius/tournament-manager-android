@@ -36,6 +36,9 @@
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.AddParticipantsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/add_participants"/>
+        <activity android:name=".presentation.activities.SelectTeamPlayersActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/select_team_players"/>
         <activity android:name="fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/team"/>

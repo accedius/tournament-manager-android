@@ -14,10 +14,10 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractSelectableListFr
 public class AddParticipantsActivity extends SelectableListActivity<Participant> {
     /**
      * Creates a new intent to start this activity
-     * @param context context of intent
-     * @param option option if to add individuals or teams
-     * @param matchId id of match to add participant to
-     * @return Intent to that can be used to start this activity
+     * @param context Context of intent
+     * @param option Option if to add individuals or teams
+     * @param matchId Id of match to add participants to
+     * @return Intent that can be used to start this activity
      */
     public static Intent newStartIntent(Context context, int option, long matchId) {
         Intent intent = new Intent(context, AddParticipantsActivity.class);
