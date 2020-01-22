@@ -14,4 +14,12 @@ public class Constants extends fit.cvut.org.cz.tmlibrary.business.serialization.
     public static final String FRAME_ID                 = DBConstants.cFRAME_ID;
     public static final String ROLL_NUMBER              = DBConstants.cROLL_NUMBER;
     public static final String POINTS                   = DBConstants.cPOINTS;
+    public static final String TRACK_ROLLS              = DBConstants.cTRACK_ROLLS;
+    public static final String VALID_FOR_STATS          = DBConstants.cVALID_FOR_STATS;
+    public static final String PARTICIPANT_STAT         = "ParticipantStat";
+    public static final String SCORE                    = DBConstants.cSCORE;
+    public static final String FRAMES_PLAYED            = DBConstants.cFRAMES_NUMBER;
+    public static final String PLAYER_STAT              = "PlayerStat";
+    public static final String STRIKES                  = DBConstants.cSTRIKES;
+    public static final String SPARES                   = DBConstants.cSPARES;
 }

@@ -9,29 +9,36 @@ import com.google.gson.stream.JsonReader;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
-import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
+import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 
 public class MatchSerializer extends BaseSerializer<Match> {
-    private static final String OVERTIME = "overtime";
-    private static final String SHOOTOUTS = "shootouts";
     private static final String SCORE_HOME = "score_home";
     private static final String SCORE_AWAY = "score_away";
 
@@ -56,11 +63,43 @@ public class MatchSerializer extends BaseSerializer<Match> {
         item.setModified(entity.getLastModified());
         item.setSyncData(serializeSyncData(entity));
 
-        /* Serialize Teams */
-        /*Team home = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getHomeParticipantId());
-        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(home));
-        Team away = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(entity.getAwayParticipantId());
-        item.subItems.add(TeamSerializer.getInstance(context).serializeToMinimal(away));*/
+        Tournament tournament = ManagerFactory.getInstance(context).getEntityManager(Tournament.class).getById(entity.getTournamentId());
+
+        /* Teams match */
+        if (tournament.getType().equals(TournamentTypes.teams())) {
+            /* Serialize Teams and their ParticipantStats*/
+            for (Team team :((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getByTournamentId(tournament.getId())) {
+                ServerCommunicationItem teamSCI = TeamSerializer.getInstance(context).serializeToMinimal(team);
+
+                List<ServerCommunicationItem> paStats = new ArrayList<>();
+                for (ParticipantStat stat : ((IParticipantStatManager)ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class)).getByMatchId(entity.getId())) {
+                    paStats.add(ParticipantStatSerializer.getInstance(context).serialize(stat));
+                }
+                teamSCI.getSubItems().addAll(paStats);
+                item.getSubItems().add(teamSCI);
+            }
+        }
+        else if (tournament.getType().equals(TournamentTypes.individuals())) {
+            /* Serialize Players their ParticipantStats and PlayerStats */
+            for (Participant participant :((IParticipantManager)ManagerFactory.getInstance(context).getEntityManager(Participant.class)).getByMatchId(entity.getId())) {
+                Player player = ManagerFactory.getInstance(context).getEntityManager(Player.class).getById(participant.getParticipantId());
+                ServerCommunicationItem playerSCI = PlayerSerializer.getInstance(context).serializeToMinimal(player);
+
+                List<ServerCommunicationItem> paStats = new ArrayList<>();
+                for (ParticipantStat stat : ((IParticipantStatManager)ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class)).getByParticipantId(participant.getId())) {
+                    paStats.add(ParticipantStatSerializer.getInstance(context).serialize(stat));
+                }
+
+                List<ServerCommunicationItem> plStats = new ArrayList<>();
+                for (PlayerStat stat : ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(participant.getId())) {
+                    plStats.add(PlayerStatSerializer.getInstance(context).serialize(stat));
+                }
+
+                playerSCI.getSubItems().addAll(paStats);
+                playerSCI.getSubItems().addAll(plStats);
+                item.getSubItems().add(playerSCI);
+            }
+        }
 
         return item;
     }
@@ -86,9 +125,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         hm.put(Constants.NOTE, entity.getNote());
         hm.put(Constants.PERIOD, String.valueOf(entity.getPeriod()));
         hm.put(Constants.ROUND, String.valueOf(entity.getRound()));
-
-        hm.put(SCORE_HOME, String.valueOf(entity.getHomeScore()));
-        hm.put(SCORE_AWAY, String.valueOf(entity.getAwayScore()));
+        hm.put(Constants.TRACK_ROLLS, entity.isTrackRolls());
+        hm.put(Constants.VALID_FOR_STATS, entity.isValidForStats());
 
         /* Serialize rosters and stats */
         Map<Long, Player> playerMap = ((IPackagePlayerManager)ManagerFactory.getInstance(context).getEntityManager(Player.class)).getMapAll();
@@ -120,9 +158,8 @@ public class MatchSerializer extends BaseSerializer<Match> {
         entity.setNote(String.valueOf(syncData.get(Constants.NOTE)));
         entity.setPeriod(Integer.valueOf(String.valueOf(syncData.get(Constants.PERIOD))));
         entity.setRound(Integer.valueOf(String.valueOf(syncData.get(Constants.ROUND))));
-
-        entity.setHomeScore(Integer.valueOf(String.valueOf(syncData.get(SCORE_HOME))));
-        entity.setAwayScore(Integer.valueOf(String.valueOf(syncData.get(SCORE_AWAY))));
+        entity.setTrackRolls((boolean)syncData.get(Constants.TRACK_ROLLS));
+        entity.setValidForStats((boolean)syncData.get(Constants.VALID_FOR_STATS));
 
         //TODO review
         //entity.addParticipants((List<Participant>)(syncData.get()));
