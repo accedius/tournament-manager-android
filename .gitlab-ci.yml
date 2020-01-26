@@ -9,7 +9,6 @@ build:
    script: 
    - cd ./clients/android
    - gradle assemble -p bowling
-   allow_failure: false
 
 test:
    stage: test
