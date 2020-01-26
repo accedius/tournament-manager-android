@@ -25,23 +25,23 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
  * Bowling tournament service to handle intent/service/activity work in tournament's scope
  */
 public class TournamentService extends AbstractIntentServiceWProgress {
-    public static final String ACTION_CREATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_create";
-    public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_find_by_id";
-    public static final String ACTION_UPDATE = "fit.cvut.org.cz.hockey.presentation.services.tournament_update";
-    public static final String ACTION_GET_ALL = "fit.cvut.org.cz.hockey.presentation.services.tournament_all";
-    public static final String ACTION_GET_CONFIG_BY_ID = "fit.cvut.org.cz.hockey.presentation.services.tournament_get_configuration_by_tournament_id";
-    public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.hockey.presentation.services.tournament_set_configuration";
-    public static final String ACTION_DELETE = "fit.cvut.org.cz.hockey.presentation.services.tournament_delete";
-    public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.hockey.presentation.services.generate_rosters";
+    public static final String ACTION_CREATE = "fit.cvut.org.cz.bowling.presentation.services.tournament_create";
+    public static final String ACTION_FIND_BY_ID = "fit.cvut.org.cz.bowling.presentation.services.tournament_find_by_id";
+    public static final String ACTION_UPDATE = "fit.cvut.org.cz.bowling.presentation.services.tournament_update";
+    public static final String ACTION_GET_ALL = "fit.cvut.org.cz.bowling.presentation.services.tournament_all";
+    public static final String ACTION_GET_CONFIG_BY_ID = "fit.cvut.org.cz.bowling.presentation.services.tournament_get_configuration_by_tournament_id";
+    public static final String ACTION_SET_CONFIG = "fit.cvut.org.cz.bowling.presentation.services.tournament_set_configuration";
+    public static final String ACTION_DELETE = "fit.cvut.org.cz.bowling.presentation.services.tournament_delete";
+    public static final String ACTION_GENERATE_ROSTERS = "fit.cvut.org.cz.bowling.presentation.services.generate_rosters";
 
-    public static final int GENERATING_TYPES_CNT = 4;
+    public static final int GENERATING_TYPES_CNT = 3;
+    //public static final int GENERATE_BY_TEAM_POINTS = ;
     public static final int GENERATE_BY_TEAM_POINTS = 0;
-    public static final int GENERATE_BY_WINS = 1;
-    public static final int GENERATE_BY_GOALS = 2;
-    public static final int GENERATE_RANDOMLY = 3;
+    public static final int GENERATE_BY_SCORE = 1;
+    public static final int GENERATE_RANDOMLY = 2;
 
     public TournamentService() {
-        super("Hockey Tournament Service");
+        super("Bowling Tournament Service");
     }
 
     public static Intent newStartIntent(String action, Context context) {

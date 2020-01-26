@@ -11,7 +11,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.dialogs.InsertTeamDialog;
 /**
  * Dialog, that occurs, when the team is selected (hold) in team's fragment of tournament
  */
-public class TeamsDialog extends EditDeleteDialog {
+public class TeamsDialog extends EditDeleteDeleteDialog {
     protected DialogInterface.OnClickListener supplyListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -28,6 +28,13 @@ public class TeamsDialog extends EditDeleteDialog {
                         intent.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
                         intent.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
                         getContext().startService(intent);
+                        dialog.dismiss();
+                        break;
+                    case 2:
+                        Intent inten2 = TeamService.newStartIntent(TeamService.ACTION_DELETE_MEMBERS, getContext());
+                        inten2.putExtra(ExtraConstants.EXTRA_ID, getArguments().getLong(ExtraConstants.EXTRA_ID));
+                        inten2.putExtra(ExtraConstants.EXTRA_POSITION, getArguments().getInt(ExtraConstants.EXTRA_POSITION));
+                        getContext().startService(inten2);
                         dialog.dismiss();
                         break;
                 }

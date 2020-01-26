@@ -23,12 +23,22 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
     @DatabaseField(columnName = DBConstants.cPOINTS)
     private int points;
 
+    @DatabaseField(columnName = DBConstants.cFRAMES_NUMBER)
+    private byte framesPlayedNumber;
+
+    private String participantName;
+
     public PlayerStat(PlayerStat p) {
+        this.id = p.id;
         this.participant_id = p.participant_id;
         this.player_id = p.player_id;
+        this.uid = p.uid;
+        this.setName(p.getName());
         this.strikes = p.strikes;
         this.spares = p.spares;
         this.points = p.points;
+        this.framesPlayedNumber = p.framesPlayedNumber;
+        this.participantName = p.participantName;
     }
 
     public PlayerStat() {}
@@ -48,6 +58,7 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
         dest.writeInt(strikes);
         dest.writeInt(spares);
         dest.writeInt(points);
+        dest.writeByte(framesPlayedNumber);
     }
 
     public PlayerStat(fit.cvut.org.cz.tmlibrary.data.entities.PlayerStat p) {
@@ -59,6 +70,7 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
         strikes = in.readInt();
         spares = in.readInt();
         points = in.readInt();
+        framesPlayedNumber = in.readByte();
     }
 
     public static final Creator<PlayerStat> CREATOR = new Creator<PlayerStat>() {
@@ -95,6 +107,22 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public byte getFramesPlayedNumber() {
+        return framesPlayedNumber;
+    }
+
+    public void setFramesPlayedNumber(byte framesPlayedNumber) {
+        this.framesPlayedNumber = framesPlayedNumber;
+    }
+
+    public String getParticipantName() {
+        return participantName;
+    }
+
+    public void setParticipantName(String participantName) {
+        this.participantName = participantName;
     }
 
     @Override

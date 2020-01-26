@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.MatchEditStatsFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.MatchParticipantsManageFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -66,12 +68,12 @@ public class ShowMatchActivity extends AbstractTabActivity {
         titles = new String[]{
                 getString(fit.cvut.org.cz.tmlibrary.R.string.overview),
                 getString(R.string.match_statistics),
-                getString(fit.cvut.org.cz.tmlibrary.R.string.players) };
+                getString(fit.cvut.org.cz.bowling.R.string.participants) };
 
         if(savedInstanceState == null) {
             f1 = BowlingMatchOverviewFragment.newInstance(matchId);
             f2 = MatchEditStatsFragment.newInstance(matchId);
-            f3 = BowlingFFAMatchStatsFragment.newInstance(matchId);
+            f3 = MatchParticipantsManageFragment.newInstance(matchId);//BowlingFFAMatchStatsFragment.newInstance(matchId);
         }
 
         fragments = new Fragment[]{ f1, f2, f3 };
@@ -113,13 +115,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     }
 
     private void sendToSaveMatch() {
-        //Grab old and new match stats
-        /*IManagerFactory managerFactory = ManagerFactory.getInstance();
-        IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
-        IParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
-        Match matchWithPreviousResults = matchManager.getById(matchId);
-        List<Participant> matchParticipantsWithPreviousStats = participantManager.getByMatchIdWithAllContents(matchId);*/
-
+        /*//Grab old and new match stats
         Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
         Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
         boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
@@ -134,7 +130,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
         intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
 
-        startService(intent);
+        startService(intent);*/
 
         finish();
     }
@@ -163,7 +159,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
             //When match is closed and saved
             sendToSaveMatch();
         } else if (item.getItemId() == R.id.action_edit_stats) {
-            ((BowlingFFAMatchStatsFragment) f3).editAll();
+            Toast.makeText(this, R.string.coming_soon_label, Toast.LENGTH_LONG).show();
         } else if (item.getItemId() == R.id.action_edit) {
             BowlingMatchOverviewFragment fr = (BowlingMatchOverviewFragment) f1;
             Intent intent = CreateMatchActivity.newStartIntent(this, matchId, fr.getTournamentId());

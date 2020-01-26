@@ -31,7 +31,8 @@
     <string name="mpof_frames_played_format_violated">Musí být číslo mezi 1 a</string>
     <string name="mpof_score_format_violated">Musí být číslo mezi 0 a</string>
     <string name="mpof_score_violated">Takové skóre není validní!</string>
-    <string name="poa_not_played_yet">Tento účastník ještě nehrál</string>
+    <string name="participant_not_played_yet">Tento účastník ještě nehrál</string>
+    <string name="player_not_played_yet">Tento hráč ještě nehrál</string>
     <string name="flf_roll_format_violated">Musí být číslo mezi 0 a</string>
     <string name="flf_regular_frame_too_many_pins_error">Počet poražených kuželek musí být mezi 0 a</string>
     <string name="flf_last_frame_invalid_extra_roll_error">Nárok na bonusový hod máte pouze po sparu/striku!</string>
@@ -42,6 +43,10 @@
     <string name="throw_3_input_label">Hod 3:</string>
     <string name="played_frames_label">Odehrané rámce:</string>
     <string name="final_score_label">Celkové skóre:</string>
+    <string name="score_label">Skóre:</string>
+    <string name="strikes_label">St:</string>
+    <string name="spares_label">Sp:</string>
+    <string name="place_label">#</string>
     <string name="frame_num">Rámec #</string>
     <string name="throws_label">Hody:</string>
     <string name="current_score_label">Skóre:</string>
@@ -51,4 +56,9 @@
     <string name="complex_stats">Statistiky pro jednotlivé hody</string>
     <string name="lane">Dráha</string>
     <string name="wrong_lanes">Počet dráh nesmí být větší než je počet hráčů.</string>
+    <string name="participants">Účastníci</string>
+
+    <string name="number_required_warning">Musí být číselná hodnota!</string>
+
+    <string name="coming_soon_label">Brzy to zde bude…</string>
 </resources>
