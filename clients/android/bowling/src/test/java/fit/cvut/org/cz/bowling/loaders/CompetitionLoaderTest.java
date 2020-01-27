@@ -42,7 +42,8 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.CompetitionTypes;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class
+        , sdk = 21)
 public class CompetitionLoaderTest {
     private Context context;
     private static final String sportContext = "Bowling";
