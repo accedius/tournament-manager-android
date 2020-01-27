@@ -115,7 +115,9 @@ public class AddMatchDialog extends DialogFragment {
                         }
                         else if (type == TournamentTypes.type_teams)
                         {
-                            /////gen
+                            Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_ROUND, c);
+                            intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                            c.startService(intent);
                         }
                     }
                 }
