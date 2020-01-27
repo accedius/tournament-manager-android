@@ -21,15 +21,20 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.NewBowlingMatchFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 import static java.lang.Integer.parseInt;
 
@@ -54,54 +59,64 @@ public class AddMatchDialog extends DialogFragment {
                         break;
                     }*/
                     case 1: {
+                        long tourId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID);
+                        ITournamentManager iTournamentManager = ManagerFactory.getInstance().getEntityManager(Tournament.class);
+                        Tournament tournament =  iTournamentManager.getById(tourId);
+                        int type = tournament.getTypeId();
+
                         final Activity a = getActivity();
-                        final  Context c = getContext();
-                        List<Match> matchList = ((IMatchManager) ManagerFactory.getInstance(getContext()).getEntityManager(Match.class)).getByTournamentId(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                        final Context c = getContext();
 
-                        Log.i("info", "Generate");
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                        alertDialog.setTitle(R.string.generate_by_lanes);
-                        alertDialog.setMessage(R.string.enter_number_of_lanes);
-                        final EditText input = new EditText(getActivity());
-                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT);
-                        input.setLayoutParams(lp);
-                        alertDialog.setView(input);
-                        alertDialog.setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        int lanes = Integer.parseInt(input.getText().toString()) ;
+                        if (type == TournamentTypes.type_individuals) {
+                            Log.i("info", "Generate");
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            alertDialog.setTitle(R.string.generate_by_lanes);
+                            alertDialog.setMessage(R.string.enter_number_of_lanes);
+                            final EditText input = new EditText(getActivity());
+                            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT);
+                            input.setLayoutParams(lp);
+                            alertDialog.setView(input);
+                            alertDialog.setPositiveButton(R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            int lanes = Integer.parseInt(input.getText().toString());
 
-                                        ITournamentManager iTournamentManager = ManagerFactory.getInstance().getEntityManager(Tournament.class);
-                                        List<Player> players = iTournamentManager.getTournamentPlayers(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
 
-                                        if(lanes > players.size() || lanes < 1) {
-                                            Toast.makeText(a,R.string.wrong_lanes,Toast.LENGTH_LONG).show();
+                                            ITournamentManager iTournamentManager = ManagerFactory.getInstance().getEntityManager(Tournament.class);
+                                            List<Player> players = iTournamentManager.getTournamentPlayers(getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+
+                                            if (lanes > players.size() || lanes < 1) {
+                                                Toast.makeText(a, R.string.wrong_lanes, Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
+                                                intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
+                                                intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
+                                                c.startService(intent);
+                                                //c.startActivity(a.getIntent());
+                                            }
+                                            a.recreate();
                                         }
-                                        else {
-                                            Intent intent = MatchService.newStartIntent(MatchService.ACTION_GENERATE_BY_LANES, c);
-                                            intent.putExtra(ExtraConstants.EXTRA_TOUR_ID, getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID));
-                                            intent.putExtra(ExtraConstants.EXTRA_LANES, lanes);
-                                            c.startService(intent);
-                                            //c.startActivity(a.getIntent());
+                                    });
+
+                            alertDialog.setNegativeButton(R.string.cancel,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            dialog.cancel();
                                         }
-                                        a.recreate();
-                                    }
-                                });
+                                    });
 
-                        alertDialog.setNegativeButton(R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.show();
 
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        alertDialog.show();
-
-                        break;
+                            break;
+                        }
+                        else if (type == TournamentTypes.type_teams)
+                        {
+                            /////gen
+                        }
                     }
                 }
                 dialog.dismiss();
