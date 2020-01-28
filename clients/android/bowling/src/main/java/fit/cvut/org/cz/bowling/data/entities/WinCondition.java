@@ -28,6 +28,11 @@ public class WinCondition implements Parcelable, IEntity {
         winCondition = WinConditionTypes.win_condition_default;
     }
 
+    public WinCondition(long tournamentId, int winCondition) {
+        this.tournamentId = tournamentId;
+        this.winCondition = winCondition;
+    }
+
     public static final Creator<WinCondition> CREATOR = new Creator<WinCondition>() {
         @Override
         public WinCondition createFromParcel(Parcel in) {
