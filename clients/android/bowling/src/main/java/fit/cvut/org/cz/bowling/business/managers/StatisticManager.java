@@ -23,6 +23,8 @@ import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
+import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
@@ -206,7 +208,9 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
             Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
 
-            boolean isTournamentRankedByTotalPointsAcrossMatches = false; //TODO
+            //Use alternative evaluation if alternative winCondition is detected
+            WinCondition winCondition = ((WinConditionManager)managerFactory.getEntityManager(WinCondition.class)).getByTournamentId(match.getTournamentId());
+            boolean isTournamentRankedByTotalPointsAcrossMatches = winCondition != null && (winCondition.getWinCondition() == WinConditionTypes.win_condition_total_points);
 
             if(isTournamentRankedByTotalPointsAcrossMatches) {
                 final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
