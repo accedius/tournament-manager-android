@@ -70,8 +70,8 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
         return matchParticipants;
     }
 
-    public static TeamSimpleStatsFragment newInstance(long matchId) {
-        TeamSimpleStatsFragment fragment = new TeamSimpleStatsFragment();
+    public static IndividualSimpleStatsFragment newInstance(long matchId) {
+        IndividualSimpleStatsFragment fragment = new IndividualSimpleStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
@@ -168,7 +168,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
             for(Participant participant : matchParticipants) {
-                if(participant.getParticipantStats() == null) {
+                if(participant.getParticipantStats() == null || participant.getParticipantStats().get(0) == null) {
                     List<ParticipantStat> participantStats = new ArrayList<>();
                     ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
                     participantStats.add(participantStat);

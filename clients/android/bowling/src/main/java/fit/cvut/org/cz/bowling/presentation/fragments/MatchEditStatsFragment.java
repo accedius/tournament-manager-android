@@ -108,11 +108,11 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(isChecked) {
             switch(tournamentTypeId) {
                 case TournamentTypes.type_individuals: {
-                    inputFragment = FrameListFragment.newInstance(matchId);
+                    inputFragment = IndividualComplexStatsFragment.newInstance(matchId);
                     break;
                 }
                 case TournamentTypes.type_teams: {
-                    inputFragment = ComplexStatsFragment.newInstance(matchId);
+                    inputFragment = TeamComplexStatsFragment.newInstance(matchId);
                     break;
                 }
             }

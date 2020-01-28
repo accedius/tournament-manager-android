@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
-import fit.cvut.org.cz.bowling.presentation.fragments.ComplexStatsFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.TeamComplexStatsFragment;
 
 public class EditDeleteFrameDialog extends DialogFragment {
     long participantId;
@@ -67,7 +67,7 @@ public class EditDeleteFrameDialog extends DialogFragment {
                     case 1:
                         Intent data = new Intent();
                         data.putExtra(ExtraConstants.EXTRA_POSITION, position);
-                        getTargetFragment().onActivityResult(ComplexStatsFragment.RequestCodes.REMOVE_FRAME, Activity.RESULT_OK, data);
+                        getTargetFragment().onActivityResult(TeamComplexStatsFragment.RequestCodes.REMOVE_FRAME, Activity.RESULT_OK, data);
                         dialog.dismiss();
                         break;
                 }

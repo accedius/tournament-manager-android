@@ -38,7 +38,7 @@ public class EditFrameDialog extends DialogFragment {
     int position;
     FrameOverview frameOverview = null;
     int frameNumber;
-    boolean toCreate = false;
+    boolean toCreate;
     int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
 

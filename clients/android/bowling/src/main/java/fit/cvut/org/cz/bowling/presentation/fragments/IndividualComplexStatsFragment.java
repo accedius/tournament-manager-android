@@ -54,7 +54,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
+public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
     protected static int participantSelectedIndex = 0;
@@ -88,6 +88,10 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
         int participantIndex = 0;
         for(Participant participant : matchParticipants) {
+            //-----------------------------------------------------------
+            int strikes = 0, spares = 0, points = 0, framesPlayed = 0;
+            //-----------------------------------------------------------
+
             List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
             ParticipantStat stat;
 
@@ -121,6 +125,12 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 stat.setScore(0);
                 stat.setFrames(new ArrayList<Frame>());
             } else {
+
+                //-----------------------------------------------------------
+                framesPlayed = framesNumber;
+                points = overviews.get(framesNumber - 1).getCurrentScore();
+                //-----------------------------------------------------------
+
                 stat.setScore(overviews.get(framesNumber - 1).getCurrentScore());
                 List<Frame> participantFrames = stat.getFrames();
                 if(participantFrames == null) {
@@ -128,6 +138,17 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 }
                 int frameIndex = 0;
                 for(FrameOverview overview : overviews) {
+
+                    //-----------------------------------------------------------
+                    if(overview.getFrameScore() == maxFrameScore) {
+                        if(overview.getRolls().get(0) == 10) {
+                            ++strikes;
+                        } else {
+                            ++spares;
+                        }
+                    }
+                    //-----------------------------------------------------------
+
                     boolean frameToUpdate = true;
 
                     //whether or not previous stats and new ones are different [F = Frame]
@@ -217,6 +238,14 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 }
 
                 stat.setFrames(participantFrames);
+
+                //-----------------------------------------------------------
+                PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(0);
+                playerStat.setStrikes(strikes);
+                playerStat.setSpares(spares);
+                playerStat.setPoints(points);
+                playerStat.setFramesPlayedNumber((byte) framesPlayed);
+                //-----------------------------------------------------------
             }
 
             if(noPreviousStats){
@@ -268,8 +297,8 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         return matchParticipants;
     }
 
-    public static FrameListFragment newInstance(long matchId) {
-        FrameListFragment fragment = new FrameListFragment();
+    public static IndividualComplexStatsFragment newInstance(long matchId) {
+        IndividualComplexStatsFragment fragment = new IndividualComplexStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
@@ -438,6 +467,12 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
                 int index = 0;
                 for(Participant participant : matchParticipants) {
+                    if(participant.getParticipantStats() == null) {
+                        List<ParticipantStat> participantStats = new ArrayList<>();
+                        ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
+                        participantStats.add(participantStat);
+                        participant.setParticipantStats(participantStats);
+                    }
 
                     matchPlayers.add(new ArrayList<Player>());
                     participantPlayers = matchPlayers.get(index);

@@ -43,14 +43,13 @@ import fit.cvut.org.cz.bowling.presentation.dialogs.EditFrameDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
-    private BroadcastReceiver participantReceiver;
+public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
+    private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     private Spinner participantSpinner;
     protected List<Participant> matchParticipants;
     protected List<ParticipantPlayer> matchParticipantPlayers;
@@ -96,8 +95,8 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
         return matchParticipants;
     }
 
-    public static ComplexStatsFragment newInstance(long matchId) {
-        ComplexStatsFragment fragment = new ComplexStatsFragment();
+    public static TeamComplexStatsFragment newInstance(long matchId) {
+        TeamComplexStatsFragment fragment = new TeamComplexStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
@@ -175,7 +174,7 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
                                        int participantIndex = participantPlayer.matchParticipantReferencePosition;
                                        long participantId = matchParticipants.get(participantIndex).getId();
                                        EditFrameDialog dialog = EditFrameDialog.newInstance(true, participantId, participantPlayer.playerStat.getPlayerId(), participantPlayer.playerStat.getName());
-                                       dialog.setTargetFragment(thisFragment, 0);
+                                       dialog.setTargetFragment(thisFragment, RequestCodes.ADD_FRAME);
                                        dialog.show(getFragmentManager(), "dialogCreate");
                                    }
                                }
@@ -218,7 +217,7 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
                         FrameOverview frameOverviewToEdit = new FrameOverview( data.get(position) );
                         boolean isLast = position == (data.size()-1);
                         EditDeleteFrameDialog dialog = EditDeleteFrameDialog.newInstance(frameOverviewToEdit, position, isLast, participantId);
-                        dialog.setTargetFragment(thisFragment, 0);
+                        dialog.setTargetFragment(thisFragment, RequestCodes.EDIT_FRAME);
                         dialog.show(getFragmentManager(), "dialogEditDelete");
                         return true;
                     }
@@ -383,9 +382,54 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
         if(resultCode != Activity.RESULT_OK)
             return;
 
+        ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
+        Participant participant = matchParticipants.get(participantPlayer.matchParticipantReferencePosition);
+        ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+
         switch (requestCode) {
+            case RequestCodes.ADD_FRAME: {
+                FrameOverview newFrame = data.getParcelableExtra(ExtraConstants.EXTRA_FRAME_OVERVIEW);
+                List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+                int lastPositionOld = frameOverviews.size() - 1;
+                int oldScore = 0;
+                if(lastPositionOld >= 0) {
+                    oldScore = frameOverviews.get(lastPositionOld).getCurrentScore();
+                }
+                frameOverviews.add(newFrame);
+                int positionToUpdateFrom = data.getIntExtra(ExtraConstants.EXTRA_POSITION_UPDATE_FROM, 0);
+                updateScores(frameOverviews, positionToUpdateFrom);
+                byte framesPlayedNumber = participantStat.getFramesPlayedNumber();
+                int newScore = frameOverviews.get(lastPositionOld + 1).getCurrentScore();
+                ++framesPlayedNumber;
+
+                if(newScore != oldScore) {
+                    int score = participantStat.getScore();
+                    score += newScore - oldScore;
+                    participantStat.setScore(score);
+                }
+
+                participantStat.setFramesPlayedNumber(framesPlayedNumber);
+                break;
+            }
+            case RequestCodes.EDIT_FRAME: {
+                int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
+                FrameOverview editedFrame = data.getParcelableExtra(ExtraConstants.EXTRA_FRAME_OVERVIEW);
+                List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+                int positionToUpdateFrom = data.getIntExtra(ExtraConstants.EXTRA_POSITION_UPDATE_FROM, 0);
+                int lastPositionOld = frameOverviews.size() - 1;
+                int oldScore = frameOverviews.get(lastPositionOld).getCurrentScore();
+                frameOverviews.set(position, editedFrame);
+                updateScores(frameOverviews, positionToUpdateFrom);
+                int newScore = frameOverviews.get(lastPositionOld + 1).getCurrentScore();
+
+                if(newScore != oldScore) {
+                    int score = participantStat.getScore();
+                    score += newScore - oldScore;
+                    participantStat.setScore(score);
+                }
+                break;
+            }
             case RequestCodes.REMOVE_FRAME: {
-                ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                 participantPlayer.frameOverviews.remove(position);
                 adapter.delete(position);
