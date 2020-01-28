@@ -7,6 +7,7 @@ import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
@@ -63,6 +64,12 @@ public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.manage
             List<PointConfiguration> pointConfigurations = pointConfigurationDAO.getListItemById(DBConstants.cTOURNAMENT_ID, id);
             for (PointConfiguration pointConfiguration : pointConfigurations) {
                 pointConfigurationDAO.deleteById(pointConfiguration.getId());
+            }
+
+            // delete win condition
+            final WinConditionManager winConditionManager = managerFactory.getEntityManager(WinCondition.class);
+            if(winConditionManager.getByTournamentId(id) != null) {
+                winConditionManager.deleteByTournamentId(id);
             }
 
             return true;
