@@ -259,7 +259,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
     @Override
     public Bundle getMatchStats() {
-        Bundle matchResults = new Bundle();
+        Bundle matchResults = getMatchStatsOld();
         return matchResults;
     }
 
