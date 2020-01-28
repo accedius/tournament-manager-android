@@ -37,7 +37,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<PlayerStat> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
-    protected List<Participant> matchParticipants;
+    protected static List<Participant> matchParticipants;
     protected long matchId;
     private Spinner participantSpinner;
     private Fragment thisFragment;
@@ -135,7 +135,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
                         PlayerStat statToEdit = new PlayerStat(stat);
                         Participant participant = (Participant) participantSpinner.getSelectedItem();
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
-                        EditPlayerStatDialog dialog = EditPlayerStatDialog.newInstance(statToEdit, (byte) (ConstraintsConstants.tenPinMatchParticipantMaxFrames - (participantStat.getFramesPlayedNumber() - stat.getFramesPlayedNumber()) ), position);
+                        EditPlayerStatDialog dialog = EditPlayerStatDialog.newInstance(statToEdit, (byte) (ConstraintsConstants.tenPinMatchParticipantMaxFrames), position);
                         dialog.setTargetFragment(thisFragment, RecyclerViewUpdateCodes.DIALOG);
                         dialog.show(getFragmentManager(), "editPlayerStatDialog");
                     }
@@ -213,7 +213,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
         int participantsWhoNotCompletedGameNumber = matchParticipants.size();
         for(Participant participant : matchParticipants){
             ParticipantStat overallStat = (ParticipantStat) participant.getParticipantStats().get(0);
-            if(overallStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames)
+            if(overallStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames * participant.getPlayerStats().size())
                 --participantsWhoNotCompletedGameNumber;
         }
         if(getParentFragment() != null) {

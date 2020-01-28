@@ -26,6 +26,10 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         this.type = type;
     }
 
+    public void setItem (int position, FrameOverview frameOverview) {
+        data.set(position, frameOverview);
+    }
+
     @NonNull
     @Override
     public FrameViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

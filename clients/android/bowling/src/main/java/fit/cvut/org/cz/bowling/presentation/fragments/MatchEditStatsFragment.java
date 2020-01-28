@@ -227,12 +227,16 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                 boolean checkBoxShouldBeState = resultCode == 1;
                 if(checkBoxShouldBeState) {
                     //checks only then wasn't checked before + if user didn't use manual input in last save, how works -> negation of (do nothing, then previously user set notValid for played match, because it seems user done this for purpose)
-                    if(!partialDataPropagation.isChecked() && !(!match.isValidForStats() && match.isPlayed()) )
+                    if(!partialDataPropagation.isChecked() && !(!match.isValidForStats() && match.isPlayed()) ) {
                         partialDataPropagation.setChecked(true);
+                        userInputOnCheckBox = false;
+                    }
                 } else {
                     //same thing for opposite case
-                    if(partialDataPropagation.isChecked() && !(match.isValidForStats() && !match.isPlayed()) )
+                    if(partialDataPropagation.isChecked() && !(match.isValidForStats() && !match.isPlayed()) ) {
                         partialDataPropagation.setChecked(false);
+                        userInputOnCheckBox = false;
+                    }
                 }
                 break;
         }

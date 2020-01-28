@@ -248,26 +248,19 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             insert(bowlingMatch);
 
             List<Participant> participants = match.getParticipants();
-            List<PlayerStat> playerStats = new ArrayList<>();
+
             //TODO consider future changes on what playerstats and participants are
             //TODO ~DONE, to understand view entities and managers or contact Alex
             for(Participant participant : participants) {
                 PlayerStat playerStat = new PlayerStat(participant.getId(), participant.getParticipantId());
-                //Log.d("Lane de Bug", "participant " + participant.getId() + " and " + participant.getParticipantId() + "/" + playerStat.getPlayerId());
-                playerStats.add(playerStat);
-            }
-
-            /* Tohle urcite ne
-            Participant participant = bowlingMatch.getParticipants().get(0);
-            for(Long id : lanePlayers.get(0)) {
-                playerStats.add(new PlayerStat(participant.getId(), id));
-            }
-            lanePlayers.remove(0);
-            */
-
-            for (PlayerStat playerStat : playerStats) {
                 managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+                ParticipantStat participantStat = new ParticipantStat(participant.getId());
+                managerFactory.getEntityManager(ParticipantStat.class).insert(participantStat);
             }
+
+            /*for (PlayerStat playerStat : playerStats) {
+                managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+            }*/
         }
     }
 
@@ -309,13 +302,19 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             match.setTournamentId(tournamentId);
             Match bowlingMatch = new Match(match);
             insert(bowlingMatch);
-            List<PlayerStat> playerStats = new ArrayList<>();
-            for (Participant participant : match.getParticipants())
-                for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
-                    playerStats.add(new PlayerStat(participant.getId(), player.getId()));
 
-            for (PlayerStat playerStat : playerStats)
-                managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+            for (Participant participant : match.getParticipants()) {
+                for (Player player : teamMap.get(participant.getParticipantId()).getPlayers()) {
+                    PlayerStat playerStat = new PlayerStat(participant.getId(), player.getId());
+                    managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
+                    ParticipantStat participantStat = new ParticipantStat(participant.getId());
+                    managerFactory.getEntityManager(ParticipantStat.class).insert(participantStat);
+                }
+            }
+
+            /*for (PlayerStat playerStat : playerStats)
+                managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);*/
+
         //}
     }
 

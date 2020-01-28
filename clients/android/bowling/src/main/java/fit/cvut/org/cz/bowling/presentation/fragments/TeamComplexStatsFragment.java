@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,13 +53,12 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     private Spinner participantSpinner;
-    protected List<Participant> matchParticipants;
-    protected List<ParticipantPlayer> matchParticipantPlayers;
-    protected List<List<FrameOverview>> playerFrameOveriviews;
+    protected static List<Participant> matchParticipants;
+    protected static List<ParticipantPlayer> matchParticipantPlayers;
     protected long matchId;
     protected TournamentType tournamentType;
     private Fragment thisFragment;
-    int maxFrameScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
+    int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
 
     private class ParticipantPlayer {
         String name;
@@ -140,6 +141,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         thisFragment = this;
+        matchParticipantPlayers = null;
+        matchParticipants = null;
 
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
@@ -203,7 +206,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                                        ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
                                        int participantIndex = participantPlayer.matchParticipantReferencePosition;
                                        long participantId = matchParticipants.get(participantIndex).getId();
-                                       EditFrameDialog dialog = EditFrameDialog.newInstance(true, participantId, participantPlayer.playerStat.getPlayerId(), participantPlayer.playerStat.getName());
+                                       int position = participantPlayer.frameOverviews.size();
+                                       EditFrameDialog dialog = EditFrameDialog.newInstance(true, participantId, participantPlayer.playerStat.getPlayerId(), participantPlayer.playerStat.getName(), position);
                                        dialog.setTargetFragment(thisFragment, RequestCodes.ADD_FRAME);
                                        dialog.show(getFragmentManager(), "dialogCreate");
                                    }
@@ -265,7 +269,9 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             return;
         }
 
-
+        ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
+        List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+        intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) frameOverviews);
         super.bindDataOnView(intent);
     }
 
@@ -391,7 +397,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
     private void bindParticipantsOnSpinner() {
         matchParticipantPlayers = createMatchParticipantPlayers();
-        ArrayAdapter<ParticipantPlayer> participantSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
+        ParticipantPlayerAdapter participantSpinnerAdapter = new ParticipantPlayerAdapter(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
         participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         participantSpinner.setAdapter(participantSpinnerAdapter);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -405,6 +411,34 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 //empty
             }
         });
+    }
+
+    class ParticipantPlayerAdapter extends ArrayAdapter<ParticipantPlayer> {
+        List<ParticipantPlayer> participantPlayers;
+
+        public ParticipantPlayerAdapter(@NonNull Context context, int resource, @NonNull List<ParticipantPlayer> objects) {
+            super(context, resource, objects);
+            participantPlayers = objects;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            TextView label = (TextView) super.getView(position, convertView, parent);
+            //label.setTextColor(Color.BLACK);
+            String title = participantPlayers.get(position).name;
+            label.setText(title);
+            return label;
+        }
+
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            TextView label = (TextView) super.getView(position, convertView, parent);
+            //label.setTextColor(Color.BLACK);
+            String title = participantPlayers.get(position).name;
+            label.setText(title);
+            return label;
+        }
     }
 
     @Override
@@ -426,6 +460,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     oldScore = frameOverviews.get(lastPositionOld).getCurrentScore();
                 }
                 frameOverviews.add(newFrame);
+                //participantPlayer.frameOverviews = frameOverviews;
                 int positionToUpdateFrom = data.getIntExtra(ExtraConstants.EXTRA_POSITION_UPDATE_FROM, 0);
                 updateScores(frameOverviews, positionToUpdateFrom);
                 byte framesPlayedNumber = participantStat.getFramesPlayedNumber();
@@ -439,6 +474,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 }
 
                 participantStat.setFramesPlayedNumber(framesPlayedNumber);
+
+                bindDataOnView(new Intent());
                 break;
             }
             case RequestCodes.EDIT_FRAME: {
@@ -450,18 +487,24 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 int oldScore = frameOverviews.get(lastPositionOld).getCurrentScore();
                 frameOverviews.set(position, editedFrame);
                 updateScores(frameOverviews, positionToUpdateFrom);
-                int newScore = frameOverviews.get(lastPositionOld + 1).getCurrentScore();
+                int newScore = frameOverviews.get(lastPositionOld).getCurrentScore();
 
                 if(newScore != oldScore) {
                     int score = participantStat.getScore();
                     score += newScore - oldScore;
                     participantStat.setScore(score);
                 }
+
+                ((FrameOverviewAdapter) adapter).setItem(position, new FrameOverview(editedFrame) );
+                adapter.notifyItemChanged(position);
                 break;
             }
             case RequestCodes.REMOVE_FRAME: {
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
                 participantPlayer.frameOverviews.remove(position);
+                List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+                int positionFrom = frameOverviews.size() > 2 ? frameOverviews.size()-2 : 0;
+                updateScores(participantPlayer.frameOverviews, positionFrom);
                 adapter.delete(position);
                 break;
             }

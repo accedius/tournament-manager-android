@@ -50,13 +50,14 @@ public class EditFrameDialog extends DialogFragment {
      * @param playerName
      * @return
      */
-    public static EditFrameDialog newInstance(boolean toCreate, long participantId, long playerId, String playerName) {
+    public static EditFrameDialog newInstance(boolean toCreate, long participantId, long playerId, String playerName, int position) {
         EditFrameDialog dialog = new EditFrameDialog();
         Bundle args = new Bundle();
         args.putBoolean(ExtraConstants.EXTRA_BOOLEAN_FRAME_TO_CREATE, toCreate);
         args.putLong(ExtraConstants.EXTRA_PARTICIPANT_ID, participantId);
         args.putLong(ExtraConstants.EXTRA_PLAYER_ID, playerId);
         args.putString(ExtraConstants.EXTRA_PLAYER_NAME, playerName);
+        args.putInt(ExtraConstants.EXTRA_SELECTED, position);
         dialog.setArguments(args);
         return dialog;
     }
@@ -64,14 +65,14 @@ public class EditFrameDialog extends DialogFragment {
     /**
      * To update frame
      * @param frameOverview
-     * @param arrayListPosition
+     * @param position
      * @return
      */
-    public static EditFrameDialog newInstance(FrameOverview frameOverview, int arrayListPosition) {
+    public static EditFrameDialog newInstance(FrameOverview frameOverview, int position) {
         EditFrameDialog dialog = new EditFrameDialog();
         Bundle args = new Bundle();
         args.putParcelable(ExtraConstants.EXTRA_FRAME_OVERVIEW, frameOverview);
-        args.putInt(ExtraConstants.EXTRA_SELECTED, arrayListPosition);
+        args.putInt(ExtraConstants.EXTRA_SELECTED, position);
         dialog.setArguments(args);
         return dialog;
     }
