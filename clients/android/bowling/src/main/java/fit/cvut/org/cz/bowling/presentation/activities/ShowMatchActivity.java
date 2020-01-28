@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,6 +145,32 @@ public class ShowMatchActivity extends AbstractTabActivity {
             participant.getPlayerStats();
             ++i;
         }*/
+
+        Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
+        Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
+        boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+        matchResultsBundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+
+        //Grab our new/current list of player and pass it service to update the DB
+        List<PlayerStat> stats = null;
+
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_CASCADE, this);
+        //intent.putExtra(ExtraConstants.EXTRA_PLAYER_STATS, new ArrayList<>(stats));
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_BUNDLE, matchResultsBundle);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
+        intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
+
+        int i = 0;
+        for(Participant participant : matchWithNewResults.getParticipants()) {
+            ArrayList<ParticipantStat> participantStats = (ArrayList<ParticipantStat>) participant.getParticipantStats();
+            intent.putParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i, participantStats);
+            participant.getPlayerStats();
+            i++;
+        }
+
+        // Participant stat, parcel write, pridej zapis framy
+
+        startService(intent);
 
         finish();
     }

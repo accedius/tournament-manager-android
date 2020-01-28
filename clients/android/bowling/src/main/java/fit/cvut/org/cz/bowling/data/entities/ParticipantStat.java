@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
@@ -47,12 +48,14 @@ public class ParticipantStat extends fit.cvut.org.cz.tmlibrary.data.entities.Par
         super.writeToParcel(dest, flags);
         dest.writeInt(score);
         dest.writeByte(framesPlayedNumber);
+        dest.writeTypedList(frames);
     }
 
     public ParticipantStat(Parcel in) {
         super(in);
         this.score = in.readInt();
         this.framesPlayedNumber = in.readByte();
+        in.readTypedList(this.frames = new ArrayList<>(), Frame.CREATOR);
     }
 
     public static final Creator<ParticipantStat> CREATOR = new Creator<ParticipantStat>() {

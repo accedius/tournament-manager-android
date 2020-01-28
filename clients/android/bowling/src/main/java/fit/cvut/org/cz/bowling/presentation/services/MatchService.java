@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.FrameManager;
+import fit.cvut.org.cz.bowling.business.managers.MatchManager;
+import fit.cvut.org.cz.bowling.business.managers.ParticipantManager;
+import fit.cvut.org.cz.bowling.business.managers.ParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.RollManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
@@ -42,6 +48,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GENERATE_ROUND = "action_generate_round";
     public static final String ACTION_FIND_BY_ID_FOR_OVERVIEW = "action_find_match_for_match_overview";
     public static final String ACTION_UPDATE_FOR_OVERVIEW = "action_update_match_for_overview";
+    public static final String ACTION_UPDATE_CASCADE = "action_update_cascade";
     public static final String ACTION_GENERATE_BY_LANES = "action_generate_by_lanes";
 
     public MatchService() {
@@ -77,6 +84,67 @@ public class MatchService extends AbstractIntentServiceWProgress {
                         ManagerFactory.getInstance(this).getEntityManager(PlayerStat.class).insert(new PlayerStat(participant.getId(), player.getId()));
                     }
                 }*/
+                break;
+            }
+            case ACTION_UPDATE_CASCADE: {
+                // Emergency mark 5 fusion placeholder code MIRV
+                // The ultimate weapon of mass de-code-struction
+
+                Log.d("ASDF2", "HELLO WORLD!");
+
+                final Intent res = new Intent(action);
+                final Match match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS);
+
+                // 1. Delete everything in the old match
+                final IManagerFactory managerFactory = ManagerFactory.getInstance();
+                final MatchManager matchManager = managerFactory.getEntityManager(Match.class);
+                matchManager.resetMatch(match.getId()); //TODO make sure this deletes all the participants, playerstats, participantstats, frames, rolls and etc.
+                matchManager.deleteContents(match.getId());
+
+                // 2. Save everything
+                matchManager.update(match);
+
+                // Participants
+                final ParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
+                final ParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+                final FrameManager frameManager = managerFactory.getEntityManager(Frame.class);
+                final RollManager rollManager = managerFactory.getEntityManager(Roll.class);
+                Log.d("ASDF2", "Participans: " + match.getParticipants().size());
+
+                int i = 0;
+                for(Participant participant : match.getParticipants()) {
+                    participantManager.insert(participant);
+
+                    ArrayList<ParticipantStat> stats = intent.getParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i++);
+
+                    if(stats == null) {
+                        //Ouch
+                        Log.e("MatchService", "Stats null");
+                    } else {
+                        Log.d("ASDF2", "ParticipantStats " + stats.size());
+                        for(fit.cvut.org.cz.tmlibrary.data.entities.ParticipantStat ps : stats) {
+                            final ParticipantStat participantStat = (ParticipantStat) ps;
+
+                            Log.d("ASDF2", "Participant get id: " + participantStat.getParticipantId() + " vs " + participant.getId());
+                            participantStat.setParticipantId(participant.getId());
+                            participantStatManager.insert(participantStat);
+
+                            for(Frame frame : participantStat.getFrames()) {
+                                frame.setMatchId(match.getId());
+                                frame.setParticipantId(participant.getId());
+                                frameManager.insert(frame);
+                                Log.d("ASDF2", "Frame");
+
+                                for(Roll roll : frame.getRolls()) {
+                                    roll.setFrameId(frame.getId());
+                                    rollManager.insert(roll);
+                                    Log.d("ASDF2", "Roll");
+                                }
+                            }
+                        }
+                    }
+                }
+
                 break;
             }
             case ACTION_UPDATE_FOR_OVERVIEW: {
