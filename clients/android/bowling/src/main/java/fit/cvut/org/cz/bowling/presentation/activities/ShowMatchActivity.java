@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingFFAMatchStatsFragment;
@@ -130,8 +132,41 @@ public class ShowMatchActivity extends AbstractTabActivity {
         intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
         intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
 
-        startService(intent);*/
+        startService(intent);
 
+        int i = 0;
+        List<Participant> matchParticipants = matchWithNewResults.getParticipants();
+        for(Participant participant : matchParticipants) {
+            ArrayList<ParticipantStat> participantStats = (ArrayList<ParticipantStat>) participant.getParticipantStats();
+            intent.putParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i, participantStats);
+
+            List<ParticipantStat> statsRE = intent.getParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i);
+
+            participant.getPlayerStats();
+            ++i;
+        }*/
+
+        Bundle matchResultsBundle = ((MatchEditStatsFragment) f2).getResultsBundle();
+        Match matchWithNewResults = ((MatchEditStatsFragment) f2).getMatchWithResults();
+        boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+        matchResultsBundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
+
+        Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_CASCADE, this);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_BUNDLE, matchResultsBundle);
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
+        intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
+
+        // Pass entities that aren't bundled in Match to the service
+        int i = 0;
+        for(Participant participant : matchWithNewResults.getParticipants()) {
+            ArrayList<ParticipantStat> participantStats = (ArrayList<ParticipantStat>) participant.getParticipantStats();
+            ArrayList<PlayerStat> playerStats = (ArrayList<PlayerStat>) participant.getPlayerStats();
+            intent.putParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i, participantStats);
+            intent.putParcelableArrayListExtra(ExtraConstants.PLAYER_STATS_TO_CREATE + i, playerStats);
+            i++;
+        }
+
+        startService(intent);
         finish();
     }
 

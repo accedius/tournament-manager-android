@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
@@ -55,6 +56,7 @@ public class Frame implements Parcelable, IEntity {
         participantId = in.readLong();
         frameNumber = in.readByte();
         playerId = in.readLong();
+        in.readTypedList(rolls = new ArrayList<>(), Roll.CREATOR);
     }
 
     @Override
@@ -69,6 +71,7 @@ public class Frame implements Parcelable, IEntity {
         dest.writeLong(participantId);
         dest.writeByte(frameNumber);
         dest.writeLong(playerId);
+        dest.writeTypedList(rolls);
     }
 
     public static final Creator<Frame> CREATOR = new Creator<Frame>() {

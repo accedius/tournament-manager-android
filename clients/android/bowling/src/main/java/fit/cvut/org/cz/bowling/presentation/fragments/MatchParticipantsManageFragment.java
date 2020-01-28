@@ -204,15 +204,14 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         adapter.swapData(participantStatOverviews);
     }
 
-    private class ParticipantStatComparatorByScore implements Comparator<ParticipantOverview>
-    {
+    private class ParticipantStatComparatorByScore implements Comparator<ParticipantOverview> {
         @Override
         public int compare(ParticipantOverview o1, ParticipantOverview o2) {
             return o2.getScore()-o1.getScore();
         }
     }
-    private List<ParticipantOverview> orderParticipantStats(List<ParticipantOverview> list)
-    {
+
+    private List<ParticipantOverview> orderParticipantStats(List<ParticipantOverview> list) {
         ParticipantStatComparatorByScore comparatorByScore = new ParticipantStatComparatorByScore();
         Collections.sort(list,comparatorByScore);
         return list;

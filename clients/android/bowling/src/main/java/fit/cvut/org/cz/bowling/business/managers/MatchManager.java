@@ -366,8 +366,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             managerFactory.getEntityManager(Participant.class).insert(participant);
     }
 
-    @Override
-    public boolean delete(long id) {
+    /**
+     * Delete participants and frames
+     * @param id    match id
+     */
+    public boolean deleteContents(long id) {
         IParticipantManager iParticipantManager = managerFactory.getEntityManager(Participant.class);
         List<Participant> participants = iParticipantManager.getByMatchId(id);
 
@@ -388,8 +391,15 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         } catch (SQLException e) {
             return false;
         }
-
-        super.delete(id);
         return true;
+    }
+
+    @Override
+    public boolean delete(long id) {
+        if(deleteContents(id)) {
+            super.delete(id);
+            return true;
+        }
+        return false;
     }
 }
