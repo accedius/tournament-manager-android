@@ -122,7 +122,7 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
             currentScore = itemView.findViewById(R.id.current_score_text_view);
             wholeView = itemView;
             if(type.equals(TournamentTypes.individuals())) {
-                playerLabel.setVisibility(View.GONE);
+                //playerLabel.setVisibility(View.GONE);
             }
         }
     }

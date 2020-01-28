@@ -527,7 +527,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //empty
             }
         });
     }

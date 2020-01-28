@@ -25,7 +25,6 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
@@ -105,20 +104,26 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(inputFragment != null)
             getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
         if(isChecked) {
-            inputFragment = FrameListFragment.newInstance(matchId);
-        } else {
             switch(tournamentTypeId) {
                 case TournamentTypes.type_individuals: {
-                    //inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
-                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                    inputFragment = FrameListFragment.newInstance(matchId);
                     break;
                 }
                 case TournamentTypes.type_teams: {
-                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                    inputFragment = ComplexStatsFragment.newInstance(matchId);
                     break;
                 }
+            }
+        } else {
+            switch(tournamentTypeId) {
+                case TournamentTypes.type_individuals: {
+                    inputFragment = IndividualSimpleStatsFragment.newInstance(matchId);
+                    break;
+                }
+                case TournamentTypes.type_teams:
                 default: {
-                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                    inputFragment = TeamSimpleStatsFragment.newInstance(matchId);
+                    break;
                 }
             }
         }

@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.List;
+
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 
 /**
@@ -27,6 +29,8 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
     private byte framesPlayedNumber;
 
     private String participantName;
+
+    private List<Frame> frames;
 
     public PlayerStat(PlayerStat p) {
         this.id = p.id;
@@ -123,6 +127,14 @@ public class PlayerStat extends fit.cvut.org.cz.tmlibrary.data.entities.PlayerSt
 
     public void setParticipantName(String participantName) {
         this.participantName = participantName;
+    }
+
+    public List<Frame> getFrames() {
+        return frames;
+    }
+
+    public void setFrames(List<Frame> frames) {
+        this.frames = frames;
     }
 
     @Override

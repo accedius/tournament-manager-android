@@ -15,8 +15,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,7 +27,7 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
-import fit.cvut.org.cz.bowling.presentation.adapters.PlayerStatOverviewAdapter;
+import fit.cvut.org.cz.bowling.presentation.adapters.SimpleStatAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.EditPlayerStatDialog;
@@ -37,11 +35,10 @@ import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<PlayerStat> {
+public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<PlayerStat> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     protected List<Participant> matchParticipants;
     protected long matchId;
-    protected boolean bindFromDialog;
     private Spinner participantSpinner;
     private Fragment thisFragment;
 
@@ -63,8 +60,8 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
         return matchParticipants;
     }
 
-    public static SimpleStatsFragment newInstance(long matchId) {
-        SimpleStatsFragment fragment = new SimpleStatsFragment();
+    public static TeamSimpleStatsFragment newInstance(long matchId) {
+        TeamSimpleStatsFragment fragment = new TeamSimpleStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
@@ -83,7 +80,6 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
             matchParticipants = savedInstanceState.getParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS);
         }
         thisFragment = this;
-        bindFromDialog = false;
     }
 
     @Override
@@ -110,28 +106,12 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
 
         participantSpinner = fragmentView.findViewById(R.id.participant_spinner);
 
-        final FloatingActionButton fab = getFAB((ViewGroup) fragmentView);
-        if (fab != null) {
-            this.fab = fab;
-            ((ViewGroup) fragmentView).addView(fab);
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                        fab.show();
-
-                    else fab.hide();
-                }
-            });
-        }
-
         return fragmentView;
     }
 
     @Override
     protected AbstractListAdapter getAdapter() {
-        return new PlayerStatOverviewAdapter() {
+        return new SimpleStatAdapter() {
             @Override
             protected void setOnClickListeners(View v, final PlayerStat stat, final int position) {
                 super.setOnClickListeners(v, stat, position);
@@ -174,11 +154,7 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
 
     @Override
     protected void bindDataOnView(Intent intent) {
-        if(bindFromDialog) {
-            bindFromDialog = false;
-            setIsMatchPlayedInParentFragment();
-        } else if(matchParticipants == null) {
-                //participantsPlayerStats = new ArrayList<>();
+        if(matchParticipants == null) {
                 matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
                 //TODO map of actions
                 bindParticipantsOnSpinner();
@@ -239,13 +215,15 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
                 ( (List<PlayerStat>) participant.getPlayerStats() ).set(position, editedPlayerStat);
                 //TODO Action map change for that player stat
 
-                progressBar.setVisibility(View.GONE);
-                contentView.setVisibility(View.VISIBLE);
+                //switchRecyclerViewsProgressBar();
 
-                bindFromDialog = true;
-                ( (PlayerStatOverviewAdapter) recyclerView.getAdapter() ).setItemAtPosition(position, new PlayerStat(editedPlayerStat) );
+                ( (SimpleStatAdapter) recyclerView.getAdapter() ).setItemAtPosition(position, new PlayerStat(editedPlayerStat) );
                 recyclerView.getAdapter().notifyItemChanged(position);
-                //bindDataOnView(new Intent());
+
+                if(framesChanged) {
+                    setIsMatchPlayedInParentFragment();
+                }
+
                 break;
             }
         }
@@ -254,13 +232,14 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
     /**
      * Switches between states: progress bar is only visible / content view with data is only visible
      */
-    private void switchRecyclerViewProgressBar(){
+    private void switchRecyclerViewsProgressBar(){
         switch (progressBar.getVisibility()) {
             case View.VISIBLE: {
                 progressBar.setVisibility(View.GONE);
                 contentView.setVisibility(View.VISIBLE);
                 break;
             }
+            case View.GONE:
             case View.INVISIBLE:
             default: {
                 progressBar.setVisibility(View.VISIBLE);
@@ -268,11 +247,6 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
                 break;
             }
         }
-    }
-
-    @Override
-    protected FloatingActionButton getFAB(ViewGroup parent) {
-        return null;
     }
 
     @Override
@@ -295,8 +269,7 @@ public class SimpleStatsFragment extends BowlingAbstractMatchStatsListFragment<P
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            progressBar.setVisibility(View.GONE);
-            contentView.setVisibility(View.VISIBLE);
+            switchRecyclerViewsProgressBar();
             switch (action) {
                 case ParticipantService.ACTION_GET_BY_MATCH_ID: {
                     bindDataOnView(intent);

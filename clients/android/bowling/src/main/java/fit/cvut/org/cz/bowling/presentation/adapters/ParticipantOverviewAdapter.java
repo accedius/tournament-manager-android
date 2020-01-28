@@ -11,14 +11,13 @@ import java.util.Locale;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.ParticipantOverview;
-import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantOverview, ParticipantOverviewAdapter.ParticipantOverviewViewHolder> {
 
     @Override
     public ParticipantOverviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ParticipantOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_participant_stats, parent, false));
+        return new ParticipantOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_simple_stat, parent, false));
     }
 
     protected void setOnClickListeners(View v, final long participantId, final int position, String name, int score, byte framesPlayedNumber) {}
@@ -55,9 +54,9 @@ public class ParticipantOverviewAdapter extends AbstractListAdapter<ParticipantO
         public ParticipantOverviewViewHolder(View itemView) {
             super(itemView);
             participantName = (TextView) itemView.findViewById(R.id.participant_label);
-            framesPlayedNumber = (TextView) itemView.findViewById(R.id.played_frames_text_view);
+            framesPlayedNumber = (TextView) itemView.findViewById(R.id.as_frames);
             score = (TextView) itemView.findViewById(R.id.final_score_text_view);
-            dataLayout = itemView.findViewById(R.id.participant_data_layout);
+            dataLayout = itemView.findViewById(R.id.player_data_layout);
             warningLayout = itemView.findViewById(R.id.warning_not_played_yet);
             wholeView = itemView;
         }
