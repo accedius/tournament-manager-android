@@ -64,15 +64,17 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         List<FrameOverview> frameOverviews;
         PlayerStat playerStat;
         int matchParticipantReferencePosition;
+        long participantId;
 
         public ParticipantPlayer() {
         }
 
-        public ParticipantPlayer(String name, List<FrameOverview> frameOverviews, PlayerStat playerStat, int matchParticipantReferencePosition) {
+        public ParticipantPlayer(String name, List<FrameOverview> frameOverviews, PlayerStat playerStat, int matchParticipantReferencePosition, long participantId) {
             this.name = name;
             this.frameOverviews = frameOverviews;
             this.playerStat = playerStat;
             this.matchParticipantReferencePosition = matchParticipantReferencePosition;
+            this.participantId = participantId;
         }
     }
 
@@ -84,8 +86,36 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
     @Override
     public Bundle getMatchStats() {
-        Bundle matchStatsBundle = new Bundle();
         //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+        for(Participant participant : matchParticipants) {
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            participantStat.setFrames(new ArrayList<Frame>());
+        }
+
+        for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
+            List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+            Participant participant = matchParticipants.get(participantPlayer.matchParticipantReferencePosition);
+            List<Frame> newFrames = new ArrayList<>();
+            byte i = 1;
+            for(FrameOverview overview : frameOverviews) {
+                Frame newFrame = new Frame(matchId, participant.getId(), i, overview.getPlayerId());
+                List<Byte> rolls = overview.getRolls();
+                byte j = 1;
+                List<Roll> newRolls = new ArrayList<>();
+                for(Byte roll : rolls) {
+                    Roll newRoll = new Roll(newFrame.getId(), j, overview.getPlayerId(), roll);
+                    newRolls.add(newRoll);
+                    ++j;
+                }
+                newFrame.setRolls(newRolls);
+                newFrames.add(newFrame);
+                ++i;
+            }
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            participantStat.getFrames().addAll(newFrames);
+        }
+
+        Bundle matchStatsBundle = new Bundle();
         matchStatsBundle.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
         return matchStatsBundle;
     }
@@ -277,7 +307,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(j);
                     List<FrameOverview> playerFrameOverviews = setPlayerFrames(playerStat, participant);
                     String name = participant.getName() + " - " + playerStat.getName();
-                    ParticipantPlayer participantPlayer = new ParticipantPlayer(name, playerFrameOverviews, playerStat, i);
+                    ParticipantPlayer participantPlayer = new ParticipantPlayer(name, playerFrameOverviews, playerStat, i, participant.getParticipantId());
                     participantPlayers.add(participantPlayer);
                 }
             }
