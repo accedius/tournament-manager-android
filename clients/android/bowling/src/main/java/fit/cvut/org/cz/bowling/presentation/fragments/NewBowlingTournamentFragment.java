@@ -155,6 +155,8 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
         win_condition_adapter.add(def);
         win_condition_adapter.add(tot);
 
+        win_condition.setAdapter(win_condition_adapter);
+
         if (tournamentId == -1) {
             CompetitionType competitionType = getCompetitionType();
             if(competitionType.id == CompetitionTypes.type_teams) {
