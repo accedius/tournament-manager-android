@@ -151,27 +151,22 @@ public class ShowMatchActivity extends AbstractTabActivity {
         boolean isSwitchChanged = matchResultsBundle.getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
         matchResultsBundle.remove(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
 
-        //Grab our new/current list of player and pass it service to update the DB
-        List<PlayerStat> stats = null;
-
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_UPDATE_CASCADE, this);
-        //intent.putExtra(ExtraConstants.EXTRA_PLAYER_STATS, new ArrayList<>(stats));
         intent.putExtra(ExtraConstants.EXTRA_MATCH_BUNDLE, matchResultsBundle);
         intent.putExtra(ExtraConstants.EXTRA_MATCH_WITH_RESULTS, matchWithNewResults);
         intent.putExtra(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchChanged);
 
+        // Pass entities that aren't bundled in Match to the service
         int i = 0;
         for(Participant participant : matchWithNewResults.getParticipants()) {
             ArrayList<ParticipantStat> participantStats = (ArrayList<ParticipantStat>) participant.getParticipantStats();
+            ArrayList<PlayerStat> playerStats = (ArrayList<PlayerStat>) participant.getPlayerStats();
             intent.putParcelableArrayListExtra(ExtraConstants.PARTICIPANT_STATS_TO_CREATE + i, participantStats);
-            participant.getPlayerStats();
+            intent.putParcelableArrayListExtra(ExtraConstants.PLAYER_STATS_TO_CREATE + i, playerStats);
             i++;
         }
 
-        // Participant stat, parcel write, pridej zapis framy
-
         startService(intent);
-
         finish();
     }
 
