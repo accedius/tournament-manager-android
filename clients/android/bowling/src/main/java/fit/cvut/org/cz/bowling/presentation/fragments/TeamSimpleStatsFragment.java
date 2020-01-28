@@ -168,15 +168,24 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     @Override
     protected void bindDataOnView(Intent intent) {
         if(matchParticipants == null) {
-                matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-                //TODO map of actions
-                bindParticipantsOnSpinner();
-                return;
+            matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+            for(Participant participant : matchParticipants) {
+                if(participant.getParticipantStats() == null) {
+                    List<ParticipantStat> participantStats = new ArrayList<>();
+                    ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
+                    participantStats.add(participantStat);
+                    participant.setParticipantStats(participantStats);
+                }
+            }
+            //TODO map of actions
+            bindParticipantsOnSpinner();
+            return;
         }
 
         ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
         intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
         super.bindDataOnView(intent);
+        switchRecyclerViewsProgressBar();
     }
 
     private void bindParticipantsOnSpinner() {
@@ -188,6 +197,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 /*ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) parent.getSelectedItem()).getPlayerStats();
                 intent.putParcelableArrayListExtra(getDataKey(), playerStatsToShow);*/
+                switchRecyclerViewsProgressBar();
                 bindDataOnView(new Intent());
             }
 
