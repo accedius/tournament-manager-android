@@ -84,6 +84,11 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
     }
 
     @Override
+    public Match getByIdFromDao(long matchId) {
+        return super.getById(matchId);
+    }
+
+    @Override
     public void beginMatch(long matchId) {
         Match match = getById(matchId);
         if (!(match.isPlayed())) {
@@ -271,12 +276,12 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
         ITeamManager iTeamManager = managerFactory.getEntityManager(Team.class);
         List<Team> teams = iTeamManager.getByTournamentId(tournamentId);
         Map<Long, Team> teamMap = new HashMap<>();
-        ArrayList<Participant> partsForGenerator = new ArrayList<>();
+        ArrayList<Participant> participants = new ArrayList<>();
 
         for (Team team : teams) {
             teamMap.put(team.getId(), team);
             // match_id and role will be added by generator
-            partsForGenerator.add(new Participant(-1, team.getId(), null));
+            participants.add(new Participant(-1, team.getId(), null));
         }
 
         int lastRound = 0;
@@ -286,15 +291,24 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
                 lastRound = match.getRound();
         }
 
-        IMatchGenerator generator = new AllPlayAllMatchGenerator();
-        List<fit.cvut.org.cz.tmlibrary.data.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
+        //IMatchGenerator generator = new AllPlayAllMatchGenerator();
+        //List<fit.cvut.org.cz.tmlibrary.data.entities.Match> matchList = generator.generateRound(partsForGenerator, lastRound + 1);
 
-        for (fit.cvut.org.cz.tmlibrary.data.entities.Match match : matchList) {
+
+        fit.cvut.org.cz.tmlibrary.data.entities.Match match = new fit.cvut.org.cz.tmlibrary.data.entities.Match();
+
+        match.setPeriod(1);
+        match.setRound(lastRound + 1);
+
+        match.addParticipants(participants);
+
+
+        //for (fit.cvut.org.cz.tmlibrary.data.entities.Match match : matchList) {
             match.setDate(new Date());
             match.setNote("");
             match.setTournamentId(tournamentId);
-            Match hockeyMatch = new Match(match);
-            insert(hockeyMatch);
+            Match bowlingMatch = new Match(match);
+            insert(bowlingMatch);
             List<PlayerStat> playerStats = new ArrayList<>();
             for (Participant participant : match.getParticipants())
                 for (Player player : teamMap.get(participant.getParticipantId()).getPlayers())
@@ -302,7 +316,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
 
             for (PlayerStat playerStat : playerStats)
                 managerFactory.getEntityManager(PlayerStat.class).insert(playerStat);
-        }
+        //}
     }
 
     @Override

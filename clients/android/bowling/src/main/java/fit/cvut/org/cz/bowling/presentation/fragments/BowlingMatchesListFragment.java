@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.activities.ShowTournamentActivity;
@@ -21,6 +23,10 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.AddMatchDialog;
 import fit.cvut.org.cz.bowling.presentation.dialogs.EditDeleteResetDialog;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
@@ -119,7 +125,6 @@ public class BowlingMatchesListFragment extends AbstractListFragment<Match> {
             @Override
             public void onClick(View v) {
                 final long tourId = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
-
                 AddMatchDialog dialog = AddMatchDialog.newInstance(tourId);
                 dialog.show(getFragmentManager(), "Add Match");
             }

@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -16,14 +18,20 @@ import android.widget.Switch;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
+import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 public class MatchEditStatsFragment extends AbstractDataFragment {
     private Match match = null;
+    private int tournamentTypeId;
     private long matchId = -1;
     private Switch statsInputSwitch;
     private boolean switchChanged = false;
@@ -75,6 +83,12 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_match_stats, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void askForData() {
         Intent intent = MatchService.newStartIntent(MatchService.ACTION_FIND_BY_ID, getContext());
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID);
@@ -93,7 +107,20 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(isChecked) {
             inputFragment = FrameListFragment.newInstance(matchId);
         } else {
-            inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
+            switch(tournamentTypeId) {
+                case TournamentTypes.type_individuals: {
+                    //inputFragment = ParticipantsOverviewFragment.newInstance(matchId);
+                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                    break;
+                }
+                case TournamentTypes.type_teams: {
+                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                    break;
+                }
+                default: {
+                    inputFragment = SimpleStatsFragment.newInstance(matchId);
+                }
+            }
         }
         getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
         inputFragment.setTargetFragment(null, REQUEST_CODE_MANAGE_CHECKBOX_STATE);
@@ -105,6 +132,10 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
             match = intent.getParcelableExtra(ExtraConstants.EXTRA_MATCH);
             statsInputSwitch.setChecked(match.isTrackRolls());
             partialDataPropagation.setChecked(match.isValidForStats());
+            long tournamentId = match.getTournamentId();
+            TournamentManager tournamentManager = ManagerFactory.getInstance(getContext()).getEntityManager(Tournament.class);
+            Tournament tournament = tournamentManager.getById(tournamentId);
+            tournamentTypeId = tournament.getTypeId();
         }
         if (getChildFragmentManager().findFragmentById(R.id.input_container) == null) {
             setContentFragment(statsInputSwitch.isChecked());

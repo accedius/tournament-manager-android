@@ -13,6 +13,7 @@ public class ExtraConstants {
 
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_COMP_ID = "extra_comp_id";
+    public static final String EXTRA_TOUR_TYPE = "extra_tour_type";
     public static final String EXTRA_TOUR_ID = "extra_tour_id";
     public static final String EXTRA_MATCH_ID = "extra_match_id";
     public static final String EXTRA_PLAYER_ID = "extra_player_id";

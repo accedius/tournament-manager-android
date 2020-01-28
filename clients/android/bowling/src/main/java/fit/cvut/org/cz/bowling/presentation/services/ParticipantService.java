@@ -43,7 +43,7 @@ public class ParticipantService extends AbstractIntentServiceWProgress {
                 long matchId = intent.getLongExtra(ExtraConstants.EXTRA_MATCH_ID, -1);
                 if(matchId == -1)
                     break;
-                ArrayList<Participant> participants = new ArrayList<>(((IParticipantManager) ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchId(matchId));
+                ArrayList<Participant> participants = new ArrayList<>(((IParticipantManager) ManagerFactory.getInstance(this).getEntityManager(Participant.class)).getByMatchIdWithPlayerStats(matchId));
 
                 res.putExtra(ExtraConstants.EXTRA_MATCH_ID,matchId);
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS, participants);

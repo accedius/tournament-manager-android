@@ -33,4 +33,5 @@ public abstract class AbstractListAdapter<T, VH extends RecyclerView.ViewHolder>
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount() - position);
     }
+
 }

@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.activities.ShowTeamActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;

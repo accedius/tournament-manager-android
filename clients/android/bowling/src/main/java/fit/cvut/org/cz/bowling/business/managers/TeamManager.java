@@ -31,13 +31,13 @@ public class TeamManager extends fit.cvut.org.cz.tmlibrary.business.managers.Tea
 
         HashMap<Long, Double> statsHashMap = new HashMap<>();
         for (AggregatedStatistics s : stats) {
-            if (generatingType == TournamentService.GENERATE_BY_TEAM_POINTS) {
+           // if (generatingType == TournamentService.GENERATE_BY_TEAM_POINTS) {
+                //statsHashMap.put(s.getPlayerId(), s.getAvgTeamPoints());
+            //} else
+                if (generatingType == TournamentService.GENERATE_BY_TEAM_POINTS) {
                 statsHashMap.put(s.getPlayerId(), s.getAvgMatchPoints());
-            } else if (generatingType == TournamentService.GENERATE_BY_WINS) {
-                //TODO reconsider?
-                statsHashMap.put(s.getPlayerId(), s.getAvgMatchPoints());
-            } else if (generatingType == TournamentService.GENERATE_BY_GOALS) {
-                statsHashMap.put(s.getPlayerId(), s.getAvgStrikes());
+            } else if (generatingType == TournamentService.GENERATE_BY_SCORE) {
+                statsHashMap.put(s.getPlayerId(), s.getAvgPoints());
             } else if (generatingType == TournamentService.GENERATE_RANDOMLY) {
                 statsHashMap.put(s.getPlayerId(), r.nextDouble());
             }

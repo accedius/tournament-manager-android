@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +24,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.activities.AddPlayersActivity;
 import fit.cvut.org.cz.bowling.presentation.activities.EditAtOnceActivity;
-import fit.cvut.org.cz.bowling.presentation.adapters.MatchStatisticsAdapter;
+import fit.cvut.org.cz.bowling.presentation.adapters.MatchPlayerStatisticsAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.HomeAwayDialog;
 import fit.cvut.org.cz.bowling.presentation.services.StatsService;
@@ -46,7 +45,7 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
     public static final int REQUEST_AWAY = 2;
     public static final int REQUEST_EDIT = 3;
 
-    private MatchStatisticsAdapter homeAdapter, awayAdapter;
+    private MatchPlayerStatisticsAdapter homeAdapter, awayAdapter;
 
     private Participant home = null, away = null;
     private RecyclerView recyclerView;
@@ -157,10 +156,10 @@ public class BowlingMatchStatsFragment extends AbstractDataFragment {
         tvAway = (TextView) fragmentView.findViewById(R.id.tv_away);
         scrv = (ScrollView) fragmentView.findViewById(R.id.scroll_v);
 
-        homeAdapter = new MatchStatisticsAdapter(this);
-        homeAdapter.setIsHome(true);
-        awayAdapter = new MatchStatisticsAdapter(this);
-        awayAdapter.setIsHome(false);
+        homeAdapter = new MatchPlayerStatisticsAdapter(getContext(),this);
+        //homeAdapter.setIsHome(true);
+        awayAdapter = new MatchPlayerStatisticsAdapter(getContext(),this);
+        //awayAdapter.setIsHome(false);
         recyclerView.setAdapter(homeAdapter);
         awayRecyclerView.setAdapter(awayAdapter);
 

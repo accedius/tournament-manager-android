@@ -14,6 +14,13 @@ public interface IMatchManager extends IManager<Match> {
     List<Match> getByTournamentId(long tournamentId);
 
     /**
+     * Get match representation from database AO, without business operations - only match db table contents
+     * @param matchId
+     * @return pure match entity from db
+     */
+    Match getByIdFromDao(long matchId);
+
+    /**
      * generates one round of matches for specified tournament
      * @param tournamentId id of the tournament
      */

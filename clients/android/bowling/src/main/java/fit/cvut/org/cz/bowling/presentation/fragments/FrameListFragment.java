@@ -44,7 +44,6 @@ import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.adapters.FrameOverviewAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
-import fit.cvut.org.cz.bowling.presentation.dialogs.EditDeleteDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -54,7 +53,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;
 
 public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
@@ -369,7 +367,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         return fragmentView;
     }
 
-    private int getNextRollsScore(final int positionFrom, final int rollsNumber) {
+    private int getNextRollScore(final int positionFrom, final int rollsNumber) {
         int rollsRemaining = rollsNumber;
         int arraySize = frameOverviews.size();
         int readPosition = positionFrom + 1;
@@ -398,9 +396,9 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
             currentFrameScore += f.getFrameScore();
             if(f.getFrameScore() == maxFrameScore) {
                 if(f.getRolls().get(0) == maxFrameScore){
-                    currentFrameScore += getNextRollsScore(i, 2);
+                    currentFrameScore += getNextRollScore(i, 2);
                 } else {
-                    currentFrameScore += getNextRollsScore(i, 1);
+                    currentFrameScore += getNextRollScore(i, 1);
                 }
             }
             f.setCurrentScore(currentFrameScore);
@@ -451,7 +449,11 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                         name = player.getName();
                     } else {
                         Team team = iManagerFactory.getEntityManager(Team.class).getById(participantId);
-                        name = team.getName();
+                        if(team != null) {
+                            name = team.getName();
+                        } else {
+                            name = "NONAME";
+                        }
                     }
                     participant.setName(name);
 
@@ -624,6 +626,8 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         FrameOverview frameOverview = null;
         int frameNumber;
         boolean toCreate = false;
+        Spinner playerSpinner = null;
+        boolean initialInput;
 
         public static EditFrameListDialog newInstance(int arrayListPosition) {
             EditFrameListDialog dialog = new EditFrameListDialog();
@@ -636,6 +640,8 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            initialInput = true;
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -653,6 +659,27 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
             View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_frame_throws, null);
             builder.setView(v);
+
+            playerSpinner = v.findViewById(R.id.player_spinner);
+            ArrayAdapter<Player> playerSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participantPlayers);
+            playerSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            playerSpinner.setAdapter(playerSpinnerAdapter);
+            playerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(!initialInput) {
+                        Player selectedPlayer = ((Player)parent.getSelectedItem());
+                        frameOverview.setPlayerName(selectedPlayer.getName());
+                        frameOverview.setPlayerId(selectedPlayer.getId());
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //empty
+                }
+            });
+
             roll1 = v.findViewById(R.id.throw_1_input);
             roll2 = v.findViewById(R.id.throw_2_input);
             roll3 = v.findViewById(R.id.throw_3_input);
@@ -668,13 +695,17 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                     Player player = participantPlayers.get(0);
                     frameOverview.setPlayerName(player.getName());
                     frameOverview.setPlayerId(player.getId());
+                    playerSpinner.setVisibility(View.GONE);
                 } else {
-                    //TODO
+                    //TODO if needed
                 }
             }
             if (frameNumber == maxFrames)
                 v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
             builder.setTitle(getResources().getString(R.string.frame_num) + frameNumber + ": " + frameOverview.getPlayerName());
+
+            initialInput = false;
+
             return builder.create();
         }
 
