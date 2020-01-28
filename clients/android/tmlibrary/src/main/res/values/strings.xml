@@ -149,4 +149,5 @@
     <string name="email_exists_error">This email already exists!</string>
     <string name="no_sport_found">No sport found</string>
     <string name="no_sport_description">No sports found in the application. Install some module to start using Tournament Manager.</string>
+    <string name="no_storage_permission">Storage permission is required for importing and exporting.</string>
 </resources>

@@ -1,12 +1,15 @@
 package fit.cvut.org.cz.tournamentmanager.presentation.dialogs;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
@@ -46,6 +49,11 @@ public class AddCompetitionDialog extends DialogFragment {
                         break;
                     }
                     case 2: {*/
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            Snackbar.make(view, fit.cvut.org.cz.tmlibrary.R.string.no_storage_permission, Snackbar.LENGTH_LONG).show();
+                            break;
+                        }
                         if (FilesHelper.getFileNames(sportContext).length == 0) {
                             dialog.dismiss();
                             Snackbar.make(view, fit.cvut.org.cz.tmlibrary.R.string.no_competition_file_error, Snackbar.LENGTH_LONG).show();

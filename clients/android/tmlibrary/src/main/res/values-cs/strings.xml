@@ -146,4 +146,5 @@
     <string name="no_sport_found">Sport nenalezen</string>
     <string name="no_sport_description">Nebyly nalezeny žádné sporty. Začněte používat Tournament Manager instalací modulu.</string>
     <string name="help">Nápověda</string>
+    <string name="no_storage_permission">K využití importování a exportování je třeba dát aplikaci právo přistupovat k úložišti.</string>
 </resources>
