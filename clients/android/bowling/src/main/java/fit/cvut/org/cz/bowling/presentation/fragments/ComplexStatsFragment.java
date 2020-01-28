@@ -38,6 +38,8 @@ import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.presentation.adapters.FrameOverviewAdapter;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
+import fit.cvut.org.cz.bowling.presentation.dialogs.EditDeleteFrameDialog;
+import fit.cvut.org.cz.bowling.presentation.dialogs.EditFrameDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -78,6 +80,7 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
     public static final class RequestCodes {
         public static final int ADD_FRAME = 0;
         public static final int REMOVE_FRAME = 1;
+        public static final int EDIT_FRAME = 2;
     }
 
     @Override
@@ -168,8 +171,10 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
-                                       int index = frameOverviews.size();
-                                       EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
+                                       ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
+                                       int participantIndex = participantPlayer.matchParticipantReferencePosition;
+                                       long participantId = matchParticipants.get(participantIndex).getId();
+                                       EditFrameDialog dialog = EditFrameDialog.newInstance(true, participantId, participantPlayer.playerStat.getPlayerId(), participantPlayer.playerStat.getName());
                                        dialog.setTargetFragment(thisFragment, 0);
                                        dialog.show(getFragmentManager(), "dialogCreate");
                                    }
@@ -197,9 +202,9 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int index = frameNumber - 1;
-                        EditFrameListDialog dialog = EditFrameListDialog.newInstance(index);
-                        dialog.setTargetFragment(thisFragment, 0);
+                        FrameOverview frameOverviewToEdit = new FrameOverview( data.get(position) );
+                        EditFrameDialog dialog = EditFrameDialog.newInstance(frameOverviewToEdit, position);
+                        dialog.setTargetFragment(thisFragment, RequestCodes.EDIT_FRAME);
                         dialog.show(getFragmentManager(), "dialogEdit");
                     }
                 });
@@ -207,9 +212,12 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
                 v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        int index = frameNumber - 1;
-                        String title = "Frame #" + frameNumber;
-                        EditDeleteFrameDialog dialog = EditDeleteFrameDialog.newInstance(index, title);
+                        ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
+                        int participantIndex = participantPlayer.matchParticipantReferencePosition;
+                        long participantId = matchParticipants.get(participantIndex).getId();
+                        FrameOverview frameOverviewToEdit = new FrameOverview( data.get(position) );
+                        boolean isLast = position == (data.size()-1);
+                        EditDeleteFrameDialog dialog = EditDeleteFrameDialog.newInstance(frameOverviewToEdit, position, isLast, participantId);
                         dialog.setTargetFragment(thisFragment, 0);
                         dialog.show(getFragmentManager(), "dialogEditDelete");
                         return true;
@@ -301,7 +309,7 @@ public class ComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<
                     rolls.add(rollPoints);
                 }
 
-                FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, frameScore);
+                FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, participant.getId() , frameScore);
                 playerFrameOverviews.add(frameOverview);
 
                 ++i;

@@ -1,8 +1,10 @@
 package fit.cvut.org.cz.bowling.presentation.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,20 +26,51 @@ import java.util.Locale;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 public class EditFrameDialog extends DialogFragment {
     TextView roll1, roll2, roll3;
+    long participantId;
+    long playerId;
+    String playerName;
     int position;
     FrameOverview frameOverview = null;
     int frameNumber;
     boolean toCreate = false;
-    boolean initialInput;
+    int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+    int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
 
-    public static EditFrameDialog newInstance(int arrayListPosition) {
+    /**
+     * To create frame
+     * @param toCreate
+     * @param participantId
+     * @param playerId
+     * @param playerName
+     * @return
+     */
+    public static EditFrameDialog newInstance(boolean toCreate, long participantId, long playerId, String playerName) {
         EditFrameDialog dialog = new EditFrameDialog();
         Bundle args = new Bundle();
+        args.putBoolean(ExtraConstants.EXTRA_BOOLEAN_FRAME_TO_CREATE, toCreate);
+        args.putLong(ExtraConstants.EXTRA_PARTICIPANT_ID, participantId);
+        args.putLong(ExtraConstants.EXTRA_PLAYER_ID, playerId);
+        args.putString(ExtraConstants.EXTRA_PLAYER_NAME, playerName);
+        dialog.setArguments(args);
+        return dialog;
+    }
+
+    /**
+     * To update frame
+     * @param frameOverview
+     * @param arrayListPosition
+     * @return
+     */
+    public static EditFrameDialog newInstance(FrameOverview frameOverview, int arrayListPosition) {
+        EditFrameDialog dialog = new EditFrameDialog();
+        Bundle args = new Bundle();
+        args.putParcelable(ExtraConstants.EXTRA_FRAME_OVERVIEW, frameOverview);
         args.putInt(ExtraConstants.EXTRA_SELECTED, arrayListPosition);
         dialog.setArguments(args);
         return dialog;
@@ -46,8 +79,6 @@ public class EditFrameDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        initialInput = true;
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(fit.cvut.org.cz.tmlibrary.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -70,27 +101,23 @@ public class EditFrameDialog extends DialogFragment {
         roll2 = v.findViewById(R.id.throw_2_input);
         roll3 = v.findViewById(R.id.throw_3_input);
         position = getArguments().getInt(ExtraConstants.EXTRA_SELECTED);
+        toCreate = getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_FRAME_TO_CREATE, false);
+        participantId = getArguments().getLong(ExtraConstants.EXTRA_PARTICIPANT_ID);
+        playerId = getArguments().getLong(ExtraConstants.EXTRA_PLAYER_ID);
+        playerName = getArguments().getString(ExtraConstants.EXTRA_PLAYER_NAME);
         frameNumber = position + 1;
-        if(position >= 0 && position < frameOverviews.size() ) {
-            frameOverview = frameOverviews.get(position);
-        } else if (position == frameOverviews.size()) {
-            toCreate = true;
+        if(toCreate) {
             frameOverview = new FrameOverview();
+            frameOverview.setParticipantId(participantId);
             frameOverview.setFrameNumber( (byte) frameNumber);
-            if(tournamentType.equals(TournamentTypes.individuals())){
-                Player player = participantPlayers.get(0);
-                frameOverview.setPlayerName(player.getName());
-                frameOverview.setPlayerId(player.getId());
-                playerSpinner.setVisibility(View.GONE);
-            } else {
-                //TODO if needed
-            }
+            frameOverview.setPlayerId(playerId);
+            frameOverview.setPlayerName(playerName);
+        } else {
+            frameOverview = getArguments().getParcelable(ExtraConstants.EXTRA_FRAME_OVERVIEW);
         }
         if (frameNumber == maxFrames)
             v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
         builder.setTitle(getResources().getString(R.string.frame_num) + frameNumber + ": " + frameOverview.getPlayerName());
-
-        initialInput = false;
 
         return builder.create();
     }
@@ -168,14 +195,14 @@ public class EditFrameDialog extends DialogFragment {
 
                     frameOverview.setRolls(rolls);
                     byte score = (byte)(pinsInRoll1 + pinsInRoll2 + pinsInRoll3);
-                    int resultCodeUpdateFrom = position >= 2 ? position - 2 : 0 ;
+                    int positionUpdateFrom = position >= 2 ? position - 2 : 0 ;
                     frameOverview.setFrameScore(score);
-                    if(toCreate) {
-                        frameOverviews.add(frameOverview);
-                    }
-
+                    Intent data = new Intent();
+                    data.putExtra(ExtraConstants.EXTRA_FRAME_OVERVIEW, frameOverview);
+                    data.putExtra(ExtraConstants.EXTRA_POSITION, position);
+                    data.putExtra(ExtraConstants.EXTRA_POSITION_UPDATE_FROM, positionUpdateFrom);
                     if (getTargetFragment() != null)
-                        getTargetFragment().onActivityResult(REQUEST_CODE_UPDATE_LOCALLY, resultCodeUpdateFrom, null);
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
                     dialog.dismiss();
                 }
             });

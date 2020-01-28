@@ -114,7 +114,6 @@
     <string name="edit_stats_fragment_switch_warning_message">Do you really want to switch to another input mode? All unsaved data will be lost.</string>
 
     <string name="number_required_warning">Number value required!</string>
-
     <string name="mpof_frames_played_format_violated">Should be a number between 1 and</string>
     <string name="mpof_score_format_violated">Should be a number between 0 and</string>
     <string name="mpof_score_violated">Such score is invalid!</string>

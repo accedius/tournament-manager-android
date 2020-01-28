@@ -3,6 +3,7 @@ package fit.cvut.org.cz.bowling.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FrameOverview implements Parcelable {
@@ -20,12 +21,23 @@ public class FrameOverview implements Parcelable {
         // empty
     }
 
-    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId, byte frameScore) {
+    public FrameOverview(FrameOverview overview) {
+        this.frameNumber = overview.getFrameNumber();
+        this.rolls = new ArrayList<>(overview.getRolls());
+        this.playerName = overview.getPlayerName();
+        this.currentScore = overview.getCurrentScore();
+        this.playerId = overview.getPlayerId();
+        this.participantId = overview.getParticipantId();
+        this.frameScore = overview.getFrameScore();
+    }
+
+    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId, long participantId, byte frameScore) {
         this.frameNumber = frameNumber;
         this.rolls = rolls;
         this.playerName = playerName;
         this.currentScore = currentScore;
         this.playerId = playerId;
+        this.participantId = participantId;
         this.frameScore = frameScore;
     }
 

@@ -9,6 +9,7 @@ public class ExtraConstants {
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_OPTION = "extra_option";
     public static final String EXTRA_POSITION = "extra_position";
+    public static final String EXTRA_POSITION_UPDATE_FROM = "extra_position_update_from";
     public static final String EXTRA_DATA = "extra_data";
 
     public static final String EXTRA_ID = "extra_id";

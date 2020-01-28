@@ -49,8 +49,21 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
 
     @Override
     public Bundle getMatchStats() {
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
+        for(Participant participant : matchParticipants) {
+            //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            if(participant.getPlayerStats() != null && participantStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames * participant.getPlayerStats().size())
+                ++participantsWhoCompletedGameNumber;
+        }
+        if(participantsWhoCompletedGameNumber == matchParticipants.size())
+            isMatchPlayed = true;
+
         Bundle matchStatsBundle = new Bundle();
-        //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+        matchStatsBundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
         matchStatsBundle.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
         return matchStatsBundle;
     }
@@ -211,8 +224,20 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
                 PlayerStat editedPlayerStat = data.getParcelableExtra(ExtraConstants.EXTRA_PLAYER_STAT);
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
 
-                Participant participant = (Participant) participantSpinner.getSelectedItem();
-                ( (List<PlayerStat>) participant.getPlayerStats() ).set(position, editedPlayerStat);
+                Participant teamToEditStats = (Participant) participantSpinner.getSelectedItem();
+                ParticipantStat participantStat = (ParticipantStat) teamToEditStats.getParticipantStats().get(0);
+                int framesPlayed = participantStat.getFramesPlayedNumber();
+                int score = participantStat.getScore();
+                PlayerStat previousPlayerStat = ( (List<PlayerStat>) teamToEditStats.getPlayerStats() ).get(position);
+                framesPlayed -= previousPlayerStat.getFramesPlayedNumber();
+                score -= previousPlayerStat.getPoints();
+                framesPlayed += editedPlayerStat.getFramesPlayedNumber();
+                score += editedPlayerStat.getPoints();
+                participantStat.setFramesPlayedNumber( (byte) framesPlayed);
+                participantStat.setScore(score);
+
+                ( (List<PlayerStat>) teamToEditStats.getPlayerStats() ).set(position, editedPlayerStat);
+
                 //TODO Action map change for that player stat
 
                 //switchRecyclerViewsProgressBar();

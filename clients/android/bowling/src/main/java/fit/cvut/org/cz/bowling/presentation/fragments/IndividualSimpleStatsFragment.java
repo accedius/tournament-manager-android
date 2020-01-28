@@ -46,8 +46,21 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
 
     @Override
     public Bundle getMatchStats() {
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
+        for(Participant participant : matchParticipants) {
+            //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            if(participantStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames)
+                ++participantsWhoCompletedGameNumber;
+        }
+        if(participantsWhoCompletedGameNumber == matchParticipants.size())
+            isMatchPlayed = true;
+
         Bundle matchStatsBundle = new Bundle();
-        //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
+        matchStatsBundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
         matchStatsBundle.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
         return matchStatsBundle;
     }
@@ -195,6 +208,11 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
 
                 Participant individualToSetPlayerStat = matchParticipants.get(position);
                 ( (List<PlayerStat>) individualToSetPlayerStat.getPlayerStats() ).set(0, editedPlayerStat);
+
+                ParticipantStat participantStat = (ParticipantStat) individualToSetPlayerStat.getParticipantStats().get(0);
+                participantStat.setScore(editedPlayerStat.getPoints());
+                participantStat.setFramesPlayedNumber(editedPlayerStat.getFramesPlayedNumber());
+
                 //TODO Action map change for that player stat
 
                 //switchRecyclerViewsProgressBar();

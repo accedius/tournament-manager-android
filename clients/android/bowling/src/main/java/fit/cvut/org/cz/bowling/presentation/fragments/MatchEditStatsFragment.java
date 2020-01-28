@@ -53,6 +53,8 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     }
 
     public Match getMatchWithResults() {
+        getResultsBundle();
+
         if(inputFragment == null) {
             inputFragment = (BowlingAbstractMatchStatsListFragment) getChildFragmentManager().findFragmentByTag(inputFragmentTag);
         }
