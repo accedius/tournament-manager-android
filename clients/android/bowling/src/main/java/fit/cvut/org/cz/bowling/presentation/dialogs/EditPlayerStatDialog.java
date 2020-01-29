@@ -118,10 +118,10 @@ public class EditPlayerStatDialog extends DialogFragment {
                 int inputScore, inputFrames, inputStrikes, inputSpares;
                 inputScore = Integer.parseInt(score.getText().toString());
                 inputFrames = Integer.parseInt(frames.getText().toString());
-                inputStrikes = Integer.parseInt(spares.getText().toString());
-                inputSpares = Integer.parseInt(strikes.getText().toString());
+                inputSpares = Integer.parseInt(spares.getText().toString());
+                inputStrikes = Integer.parseInt(strikes.getText().toString());
 
-                if(inputFrames < 1 || inputFrames > maxFrames) {
+                if(inputFrames < 1 || inputFrames > maxFrames || inputFrames > availableFrames) {
                     TextInputLayout til = dialog.findViewById(R.id.frames_input_layout);
                     til.setError(getResources().getString(R.string.mpof_frames_played_format_violated) + " " + availableFrames + "!");
                     returnToken = true;

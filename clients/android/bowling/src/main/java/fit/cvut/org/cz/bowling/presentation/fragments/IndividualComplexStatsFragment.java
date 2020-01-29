@@ -54,7 +54,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
+public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
     protected static int participantSelectedIndex = 0;
@@ -75,8 +75,8 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
     final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
 
-    @Override
-    public Bundle getMatchStats() {
+    //@Override
+    public Bundle getMatchStatsOld() {
         Bundle bundle = new Bundle();
         List<ParticipantStat> participantStatsToCreate = new ArrayList<>(), participantStatsToUpdate = new ArrayList<>();
         List<Frame> framesToCreate = new ArrayList<>(), framesToUpdate = new ArrayList<>(), framesToDelete = new ArrayList<>(), notChangedFramesButToAddRollsTo = new ArrayList<>();
@@ -88,6 +88,10 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
         int participantIndex = 0;
         for(Participant participant : matchParticipants) {
+            //-----------------------------------------------------------
+            int strikes = 0, spares = 0, points = 0, framesPlayed = 0;
+            //-----------------------------------------------------------
+
             List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
             ParticipantStat stat;
 
@@ -121,6 +125,12 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 stat.setScore(0);
                 stat.setFrames(new ArrayList<Frame>());
             } else {
+
+                //-----------------------------------------------------------
+                framesPlayed = framesNumber;
+                points = overviews.get(framesNumber - 1).getCurrentScore();
+                //-----------------------------------------------------------
+
                 stat.setScore(overviews.get(framesNumber - 1).getCurrentScore());
                 List<Frame> participantFrames = stat.getFrames();
                 if(participantFrames == null) {
@@ -128,6 +138,17 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 }
                 int frameIndex = 0;
                 for(FrameOverview overview : overviews) {
+
+                    //-----------------------------------------------------------
+                    if(overview.getFrameScore() == maxFrameScore) {
+                        if(overview.getRolls().get(0) == 10) {
+                            ++strikes;
+                        } else {
+                            ++spares;
+                        }
+                    }
+                    //-----------------------------------------------------------
+
                     boolean frameToUpdate = true;
 
                     //whether or not previous stats and new ones are different [F = Frame]
@@ -217,6 +238,14 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 }
 
                 stat.setFrames(participantFrames);
+
+                //-----------------------------------------------------------
+                PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(0);
+                playerStat.setStrikes(strikes);
+                playerStat.setSpares(spares);
+                playerStat.setPoints(points);
+                playerStat.setFramesPlayedNumber((byte) framesPlayed);
+                //-----------------------------------------------------------
             }
 
             if(noPreviousStats){
@@ -258,12 +287,18 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
     }
 
     @Override
+    public Bundle getMatchStats() {
+        Bundle matchResults = getMatchStatsOld();
+        return matchResults;
+    }
+
+    @Override
     public List<Participant> getMatchParticipants() {
         return matchParticipants;
     }
 
-    public static FrameListFragment newInstance(long matchId) {
-        FrameListFragment fragment = new FrameListFragment();
+    public static IndividualComplexStatsFragment newInstance(long matchId) {
+        IndividualComplexStatsFragment fragment = new IndividualComplexStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
@@ -432,6 +467,12 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
                 int index = 0;
                 for(Participant participant : matchParticipants) {
+                    if(participant.getParticipantStats() == null) {
+                        List<ParticipantStat> participantStats = new ArrayList<>();
+                        ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
+                        participantStats.add(participantStat);
+                        participant.setParticipantStats(participantStats);
+                    }
 
                     matchPlayers.add(new ArrayList<Player>());
                     participantPlayers = matchPlayers.get(index);
@@ -479,7 +520,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                             long playerId = frame.getPlayerId();
                             Player player = iManagerFactory.getEntityManager(Player.class).getById(playerId);
                             String playerName = player.getName();
-                            FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, frameScore);
+                            FrameOverview frameOverview = new FrameOverview(i, rolls, playerName, 0, playerId, participantStat.getParticipantId(), frameScore);
                             frameOverviews.add(frameOverview);
 
                             ++i;
@@ -527,7 +568,7 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //empty
             }
         });
     }
@@ -626,7 +667,6 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
         FrameOverview frameOverview = null;
         int frameNumber;
         boolean toCreate = false;
-        Spinner playerSpinner = null;
         boolean initialInput;
 
         public static EditFrameListDialog newInstance(int arrayListPosition) {
@@ -660,26 +700,6 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
             View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_frame_throws, null);
             builder.setView(v);
 
-            playerSpinner = v.findViewById(R.id.player_spinner);
-            ArrayAdapter<Player> playerSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, participantPlayers);
-            playerSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            playerSpinner.setAdapter(playerSpinnerAdapter);
-            playerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if(!initialInput) {
-                        Player selectedPlayer = ((Player)parent.getSelectedItem());
-                        frameOverview.setPlayerName(selectedPlayer.getName());
-                        frameOverview.setPlayerId(selectedPlayer.getId());
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    //empty
-                }
-            });
-
             roll1 = v.findViewById(R.id.throw_1_input);
             roll2 = v.findViewById(R.id.throw_2_input);
             roll3 = v.findViewById(R.id.throw_3_input);
@@ -695,7 +715,6 @@ public class FrameListFragment extends BowlingAbstractMatchStatsListFragment<Fra
                     Player player = participantPlayers.get(0);
                     frameOverview.setPlayerName(player.getName());
                     frameOverview.setPlayerId(player.getId());
-                    playerSpinner.setVisibility(View.GONE);
                 } else {
                     //TODO if needed
                 }

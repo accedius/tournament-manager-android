@@ -114,7 +114,6 @@
     <string name="edit_stats_fragment_switch_warning_message">Do you really want to switch to another input mode? All unsaved data will be lost.</string>
 
     <string name="number_required_warning">Number value required!</string>
-
     <string name="mpof_frames_played_format_violated">Should be a number between 1 and</string>
     <string name="mpof_score_format_violated">Should be a number between 0 and</string>
     <string name="mpof_score_violated">Such score is invalid!</string>
@@ -154,4 +153,7 @@
     
     <string name="stat_match_point" tools:ignore="MissingTranslation">MP</string>
     <string name="stat_match_point_average" tools:ignore="MissingTranslation">MP avg.</string>
+    <string name="default_win_condition">Default</string>
+    <string name="total_points_win_condition">Win by total points</string>
+    <string name="win_condition">Win condition</string>
 </resources>

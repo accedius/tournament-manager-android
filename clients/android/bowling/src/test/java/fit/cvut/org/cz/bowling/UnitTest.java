@@ -21,16 +21,16 @@ public class UnitTest {
 
     List<Byte> rolls1 = new ArrayList<>();
     String playerName = "Player A";
-    FrameOverview f1 = new FrameOverview((byte) 1, rolls1, playerName, 0, 1, (byte) 0);
+    FrameOverview f1 = new FrameOverview((byte) 1, rolls1, playerName, 0, 1, 1, (byte) 0);
 
     List<Byte> rolls2 = new ArrayList<>();
-    FrameOverview f2 = new FrameOverview((byte) 2, rolls2, playerName, 0, 1, (byte) 10);
+    FrameOverview f2 = new FrameOverview((byte) 2, rolls2, playerName, 0, 1, 1, (byte) 10);
 
     List<Byte> rolls3 = new ArrayList<>();
-    FrameOverview f3 = new FrameOverview((byte) 3, rolls3, playerName, 0, 1, (byte) 10);
+    FrameOverview f3 = new FrameOverview((byte) 3, rolls3, playerName, 0, 1, 1, (byte) 10);
 
     List<Byte> rolls4 = new ArrayList<>();
-    FrameOverview f4 = new FrameOverview((byte) 10, rolls4, playerName, 0, 1, (byte) 20);
+    FrameOverview f4 = new FrameOverview((byte) 10, rolls4, playerName, 0, 1, 1, (byte) 20);
 
 
     public void add()

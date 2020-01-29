@@ -61,4 +61,7 @@
     <string name="number_required_warning">Musí být číselná hodnota!</string>
 
     <string name="coming_soon_label">Brzy to zde bude…</string>
+    <string name="default_win_condition">Standartní</string>
+    <string name="total_points_win_condition">Výhra celkovými body</string>
+    <string name="win_condition">Druh bodování</string>
 </resources>

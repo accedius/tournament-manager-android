@@ -10,6 +10,7 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
     public static final String tCONFIGURATIONS = "configurations";
     public static final String tMATCH_FRAMES = "match_frames";
     public static final String tMATCH_FRAME_ROLLS = "match_frame_rolls";
+    public static final String tWIN_CONDITION = "win_condition";
 
     //c prefix stands for column
     public static final String cFRAMES_NUMBER = "frames_number";
@@ -30,4 +31,5 @@ public class DBConstants extends fit.cvut.org.cz.tmlibrary.data.helpers.DBConsta
 
     public static final String cVALID_FOR_STATS = "valid_for_stats";
     public static final String cTRACK_ROLLS = "track_rolls";
+    public static final String cWIN_CONDITION = "win_condition";
 }

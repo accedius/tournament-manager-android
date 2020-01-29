@@ -3,6 +3,7 @@ package fit.cvut.org.cz.bowling.business.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FrameOverview implements Parcelable {
@@ -11,6 +12,7 @@ public class FrameOverview implements Parcelable {
     private String playerName;
     private int currentScore;
     private long playerId;
+    private long participantId;
 
     //only frame rolls score, nothing else, no bonuses from strike or spare except 10th frame, where bonuses are interpreted as frame rolls
     private byte frameScore;
@@ -19,12 +21,23 @@ public class FrameOverview implements Parcelable {
         // empty
     }
 
-    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId, byte frameScore) {
+    public FrameOverview(FrameOverview overview) {
+        this.frameNumber = overview.getFrameNumber();
+        this.rolls = new ArrayList<>(overview.getRolls());
+        this.playerName = overview.getPlayerName();
+        this.currentScore = overview.getCurrentScore();
+        this.playerId = overview.getPlayerId();
+        this.participantId = overview.getParticipantId();
+        this.frameScore = overview.getFrameScore();
+    }
+
+    public FrameOverview(byte frameNumber, List<Byte> rolls, String playerName, Integer currentScore, long playerId, long participantId, byte frameScore) {
         this.frameNumber = frameNumber;
         this.rolls = rolls;
         this.playerName = playerName;
         this.currentScore = currentScore;
         this.playerId = playerId;
+        this.participantId = participantId;
         this.frameScore = frameScore;
     }
 
@@ -34,6 +47,7 @@ public class FrameOverview implements Parcelable {
         playerName = in.readString();
         currentScore = in.readInt();
         playerId = in.readLong();
+        participantId = in.readLong();
         frameScore = in.readByte();
     }
 
@@ -61,6 +75,7 @@ public class FrameOverview implements Parcelable {
         dest.writeString(playerName);
         dest.writeInt(currentScore);
         dest.writeLong(playerId);
+        dest.writeLong(participantId);
         dest.writeByte(frameScore);
     }
 
@@ -88,11 +103,11 @@ public class FrameOverview implements Parcelable {
         this.playerName = playerName;
     }
 
-    public Integer getCurrentScore() {
+    public int getCurrentScore() {
         return currentScore;
     }
 
-    public void setCurrentScore(Integer currentScore) {
+    public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
     }
 
@@ -102,6 +117,14 @@ public class FrameOverview implements Parcelable {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public long getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(long participantId) {
+        this.participantId = participantId;
     }
 
     public byte getFrameScore() {

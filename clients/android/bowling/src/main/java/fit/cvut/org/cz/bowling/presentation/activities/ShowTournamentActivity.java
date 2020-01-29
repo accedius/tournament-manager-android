@@ -27,6 +27,7 @@ import fit.cvut.org.cz.bowling.presentation.fragments.AggregStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTeamsListFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.BowlingTournamentOverviewFragment;
+import fit.cvut.org.cz.bowling.presentation.fragments.CustomTournamentOverviewFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.FFAMatchesListWrapperFragment;
 import fit.cvut.org.cz.bowling.presentation.fragments.StandingsStatsTitleFragment;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
@@ -120,7 +121,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         if(type.equals(TournamentTypes.individuals())) {
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[] {
-                            TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
+                            CustomTournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
                             FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
                             AggregStatsTitleFragment.newInstance(tournamentId, false)
                     },
@@ -133,7 +134,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         } else {
             adapter = new DefaultViewPagerAdapter(manager,
                     new Fragment[] {
-                            TournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
+                            CustomTournamentOverviewFragment.newInstance(tournamentId, BowlingTournamentOverviewFragment.class),
                             StandingsStatsTitleFragment.newInstance(tournamentId),
                             FFAMatchesListWrapperFragment.newInstance(tournamentId, BowlingMatchesListWrapperFragment.class),
                             BowlingTeamsListFragment.newInstance(tournamentId, competitionId),

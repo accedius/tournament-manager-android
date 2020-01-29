@@ -14,7 +14,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
-public class PlayerStatOverviewAdapter extends AbstractListAdapter<PlayerStat, PlayerStatOverviewAdapter.PlayerStatOverviewViewHolder> {
+public class SimpleStatAdapter extends AbstractListAdapter<PlayerStat, SimpleStatAdapter.PlayerStatOverviewViewHolder> {
 
     public void setItemAtPosition(int position, PlayerStat playerStat) {
         data.set(position, playerStat);
@@ -23,7 +23,7 @@ public class PlayerStatOverviewAdapter extends AbstractListAdapter<PlayerStat, P
     @NonNull
     @Override
     public PlayerStatOverviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        return new PlayerStatOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_player_stat, parent, false));
+        return new PlayerStatOverviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_match_simple_stat, parent, false));
     }
 
     protected void setOnClickListeners(View v, PlayerStat overview, int position) {}

@@ -17,6 +17,7 @@ import fit.cvut.org.cz.bowling.business.managers.RollManager;
 import fit.cvut.org.cz.bowling.business.managers.StatisticManager;
 import fit.cvut.org.cz.bowling.business.managers.TeamManager;
 import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
+import fit.cvut.org.cz.bowling.business.managers.WinConditionManager;
 import fit.cvut.org.cz.bowling.data.BowlingDAOFactory;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
@@ -24,6 +25,7 @@ import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.PackagePlayerManager;
@@ -97,6 +99,10 @@ public class ManagerFactory extends fit.cvut.org.cz.tmlibrary.business.ManagerFa
         // Core Player
         else if (entityName.equals(Player.class.getName())) {
             return (M) new PackagePlayerManager(context);
+        }
+        // Win Condition
+        else if (entityName.equals(WinCondition.class.getName())) {
+            manager = new WinConditionManager();
         }
 
         if (manager == null)

@@ -26,6 +26,10 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         this.type = type;
     }
 
+    public void setItem (int position, FrameOverview frameOverview) {
+        data.set(position, frameOverview);
+    }
+
     @NonNull
     @Override
     public FrameViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -121,9 +125,7 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
             roll3 = itemView.findViewById(R.id.throw_3_text_view);
             currentScore = itemView.findViewById(R.id.current_score_text_view);
             wholeView = itemView;
-            if(type.equals(TournamentTypes.individuals())) {
-                playerLabel.setVisibility(View.GONE);
-            }
+            playerLabel.setVisibility(View.GONE);
         }
     }
 }

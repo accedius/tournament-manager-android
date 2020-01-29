@@ -22,9 +22,13 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
     public static final String EXTRA_PARTICIPANT_ID = "extra_participant_id";
     public static final String EXTRA_ROLL = "extra_roll";
     public static final String EXTRA_ROLLS = "extra_rolls";
+    public static final String EXTRA_BOOLEAN_LAST_FRAME = "extra_boolean_last_frame";
+    public static final String EXTRA_BOOLEAN_FRAME_TO_CREATE = "extra_boolean_frame_to_create";
 
     public static final String EXTRA_PARTICIPANT_NAME = "extra_participant_name";
+    public static final String EXTRA_PLAYER_NAME = "extra_player_name";
     public static final String EXTRA_PARTICIPANT_OVERVIEWS = "extra_participant_overviews";
+    public static final String EXTRA_FRAME_OVERVIEW = "extra_frame_overview";
     public static final String EXTRA_FRAME_OVERVIEWS = "extra_frame_overviews";
 
     public static final String EXTRA_PLAYER_STAT = "extra_player_stat";
@@ -57,4 +61,5 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
 
     public static final String EXTRA_BOOLEAN_IS_SCORE_CHANGED = "extra_boolean_is_score_changed";
     public static final String EXTRA_BOOLEAN_IS_FRAMES_CHANGED = "extra_boolean_is_frames_changed";
+    public static final String EXTRA_WIN_CONDITION = "win_condition";
 }
