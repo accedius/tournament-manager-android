@@ -28,9 +28,6 @@ public class Match extends fit.cvut.org.cz.tmlibrary.data.entities.Match impleme
     @DatabaseField(columnName = DBConstants.cTRACK_ROLLS)
     private boolean trackRolls;
 
-    @DatabaseField(columnName = DBConstants.cWIN_CONDITION)
-    private int winCondition;
-
     public Match() {}
     public Match(long id, long tournamentId, Date date, boolean played, String note, int period, int round, boolean validForStats, boolean trackRolls) {
         super(id, tournamentId, date, played, note, period, round);
