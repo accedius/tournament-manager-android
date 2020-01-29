@@ -31,6 +31,17 @@ public class Standing implements Parcelable {
 
     public void addMatchPoints(long points) { this.matchPoints += points; }
     public void addPoints(long points) { this.points += points; }
+    public void addMatches(int matches) { this.matches += matches; }
+    public void add(long strikes, long spares, long points) {
+        this.points += points;
+        this.spares += spares;
+        this.strikes += strikes;
+    }
+    public void add(Standing standing) {
+        add(standing.getStrikes(), standing.getSpares(), standing.getPoints());
+        this.matchPoints += standing.matchPoints;
+        this.matches += standing.matches;
+    }
 
     public int getMatches() {
         return matches;

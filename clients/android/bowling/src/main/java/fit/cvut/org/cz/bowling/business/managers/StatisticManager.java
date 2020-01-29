@@ -1,7 +1,9 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
 import android.util.Log;
+import android.view.FrameStats;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +23,7 @@ import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatMana
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IStatisticManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -414,25 +417,190 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         return res;
     }
 
+    /**
+     * Helper class which determines standings
+     */
+    private class StandingsProcessor {
+        private final IParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);
+        private final IParticipantStatManager participantStatManager = managerFactory.getEntityManager(ParticipantStat.class);
+        private final IPlayerStatManager playerStatManager = managerFactory.getEntityManager(PlayerStat.class);
+        private final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+
+        private ArrayList<Standing> standings = new ArrayList<>();
+        private HashMap<Long, Standing> teamToStanding = new HashMap<>();
+        private HashMap<Long, Team> teamHashMap = new HashMap<>();
+        private List<Team> teams;
+
+        public StandingsProcessor(List<Team> teams) {
+            // Init helper structures
+            this.teams = teams;
+            for(Team team : teams) {
+                teamHashMap.put(team.getId(), team);
+            }
+        }
+
+        private Standing getOrCreateStanding(long teamId) {
+            Standing standing = teamToStanding.get(teamId);
+            if(standing == null) {
+                standings.add(standing = new Standing(teamHashMap.get(teamId).getName(), teamId));
+                teamToStanding.put(teamId, standing);
+            }
+            return standing;
+        }
+
+        /**
+         * Add results of single match to standings
+         * Doesn't add matchpoints
+         * @param matchId     primary key of entity Match
+         * @return                  true if successful
+         */
+        private boolean processMatch(long matchId) {
+            // Sum scores of individuals
+            final List<Participant> participants = participantManager.getByMatchId(matchId);
+
+            if(participants == null) {
+                return false;
+            } else {
+                for(Participant participant : participants) {
+                    //Get standing
+                    Standing standing = getOrCreateStanding(participant.getParticipantId());
+                    final List<PlayerStat> playerStats = playerStatManager.getByParticipantId(participant.getId());
+                    if(playerStats == null) {
+                        return false;
+                    } else {
+                        //The participant has played in this match
+                        standing.addMatches(1);
+
+                        for(PlayerStat playerStat : playerStats) {
+                            standing.add(playerStat.getStrikes(), playerStat.getSpares(), playerStat.getPoints());
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /**
+         * Sort standings by points
+         */
+        private void orderByPoints() {
+            Collections.sort(standings, new Comparator<Standing>() {
+                @Override
+                public int compare(Standing o1, Standing o2) {
+                    return o2.getPoints() - o1.getPoints();
+                }
+            });
+        }
+
+        /**
+         * Determine the amount of matchpoints awarded in a tournament, when fighting against specific amount of sides and you've won certain place
+         * @return  match points based on point configuration or 0 if there is no point configuration for this amount of sides in this tournament
+         */
+        private float getMatchPointAmountFor(long tournamentId, long sides, int place) {
+            final PointConfiguration pointConfiguration = pointConfigurationManager.getBySidesNumber(tournamentId, sides);
+            final List<Float> configurationPlacePoints = pointConfiguration.getConfigurationPlacePoints();
+
+            if(configurationPlacePoints.size() > place) {
+                return configurationPlacePoints.get(place);
+            }
+            return 0;
+        }
+
+        /**
+         * Go over standings and determine the amount of match points awarded to each team
+         */
+        public StandingsProcessor awardMatchPoints(long tournamentId) {
+            if(standings.isEmpty()) {
+                return this;
+            }
+
+            orderByPoints();
+            int place = 0;
+            long previousBest = standings.get(0).getPoints();
+            for(Standing standing : standings) {
+                if(standing.getPoints() < previousBest) {
+                    place++;
+                    previousBest = standing.getPoints();
+                }
+                standing.addMatchPoints((long) getMatchPointAmountFor(tournamentId, standings.size(), place));
+            }
+
+            return this;
+        }
+
+        /**
+         * Reset any records of matches
+         */
+        private void reset() {
+            standings.clear();
+            teamToStanding.clear();
+        }
+
+        /**
+         * Get current standings
+         *
+         * Note: make sure to call awardMatchPoints if you want matchPoints to be calculated
+         */
+        public ArrayList<Standing> result() {
+            return standings;
+        }
+
+        /**
+         * Sum all points of these matches
+         * @param matches                       list of matches (only primary keys are needed)
+         * @param awardMatchPointsPerMatch      if true, matchpoints are awarded based on results of each individual match
+         */
+        public StandingsProcessor processMatches(final List<Match> matches, boolean awardMatchPointsPerMatch) {
+            // Create helper to resolve individual matches
+            StandingsProcessor matchProcessor = new StandingsProcessor(teams);
+
+            // Go over every single match where statistics are enabled
+            for(Match match : matches) {
+                if(!match.isValidForStats()) {
+                    continue;
+                }
+
+                // Remove previous records of matches
+                matchProcessor.reset();
+                if(matchProcessor.processMatch(match.getId())) {
+                    // Is the win condition regular? Or are we going by the total score?
+                    if(awardMatchPointsPerMatch) {
+                        matchProcessor.awardMatchPoints(match.getTournamentId());
+                    }
+
+                    final ArrayList<Standing> matchStandings = matchProcessor.result();
+
+                    // Merge results
+                    for(Standing standing : matchStandings) {
+                        getOrCreateStanding(standing.getTeamId()).add(standing);
+                    }
+                }
+            }
+            return this;
+        }
+    }
+
     @Override
     public List<Standing> getStandingsByTournamentId(long tournamentId) {
-        //final ITeamManager teamManager = managerFactory.getEntityManager(Team.class);
-        final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
-        //List<Team> teams = teamManager.getByTournamentId(tournamentId);
-        ArrayList<Standing> standings = new ArrayList<>();
-        //PointConfiguration pointConfiguration = pointConfigurationManager.getById(tournamentId);
-        PointConfiguration pointConfiguration = PointConfiguration.defaultConfig();
+        // Get basic data
+        final ITeamManager teamManager = managerFactory.getEntityManager(Team.class);
+        final List<Team> teams = teamManager.getByTournamentId(tournamentId);
 
-        /*for (Team t : teams) {
-            standings.add(new Standing(t.getName(), t.getId()));
-        }*/
         final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
-        List<Match> matches = matchManager.getByTournamentId(tournamentId);
-        for (Match match : matches) {
-            if (!match.isPlayed())
-                continue;
+        final List<Match> matches = matchManager.getByTournamentId(tournamentId);
 
+        // Get win condition
+        final IWinConditionManager winConditionManager = managerFactory.getEntityManager(WinCondition.class);
+        final WinCondition winCondition = winConditionManager.getByTournamentId(tournamentId);
+        boolean awardMatchpointsPerMatch = winCondition == null || WinConditionTypes.win_condition_total_points != winCondition.getWinCondition();
+
+        // Match point awards
+        StandingsProcessor standingsProcessor = new StandingsProcessor(teams).processMatches(matches, true);
+        if(!awardMatchpointsPerMatch) {
+            standingsProcessor.awardMatchPoints(tournamentId);
         }
+        ArrayList<Standing> standings = standingsProcessor.result();
+
         orderStandings(standings);
         return standings;
     }
