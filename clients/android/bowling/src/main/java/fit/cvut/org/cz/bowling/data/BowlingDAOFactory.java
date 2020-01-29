@@ -270,11 +270,6 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
     }
 
     private void upgradeFrom7To8(SQLiteDatabase db, int fromVersion) {
-        try {
-            TableUtils.createTableIfNotExists(connectionSource, WinCondition.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        onCreate(db, connectionSource);
     }
-
 }
