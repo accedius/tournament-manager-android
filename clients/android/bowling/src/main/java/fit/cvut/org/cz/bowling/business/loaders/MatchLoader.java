@@ -57,7 +57,7 @@ public class MatchLoader {
             IParticipantManager participantManager = ManagerFactory.getInstance(context).getEntityManager(Participant.class);
 
             if (tournament.getTypeId() == TournamentTypes.individuals().id) {
-                for (String uid : importedPlayers.keySet()) {
+                for (String uid : matchPlayerSCIs.keySet()) {
                     Player player = importedPlayers.get(uid);
                     Participant participant = new Participant(importedMatch.getId(), player.getId(), null);
                     participantManager.insert(participant);
@@ -83,7 +83,33 @@ public class MatchLoader {
                 }
             }
             else if (tournament.getTypeId() == TournamentTypes.teams().id) {
-                // TODO: Add import of team tournament matches
+                for (String uid : matchTeamSCIs.keySet()) {
+                    ServerCommunicationItem teamSCI = matchTeamSCIs.get(uid);
+                    Team team = importedTeams.get(teamSCI.getUid());
+                    Participant participant = new Participant(importedMatch.getId(), team.getId(), null);
+                    participantManager.insert(participant);
+
+                    for (ServerCommunicationItem subItem : teamSCI.getSubItems()) {
+                        if (subItem.getType().equals(Constants.PARTICIPANT_STAT)) {
+                            ParticipantStatLoader.importParticipantStat(context, subItem, participant);
+                        }
+                        else if (subItem.getType().equals(Constants.PLAYER)) {
+                            List<ServerCommunicationItem> frameSCIs = new ArrayList<>();
+                            for (ServerCommunicationItem playerSubItem : subItem.getSubItems()) {
+                                if (playerSubItem.getType().equals(Constants.PLAYER_STAT)) {
+                                    PlayerStatLoader.importPlayerStat(context, playerSubItem, importedPlayers.get(subItem.getUid()), participant);
+                                }
+                                else if (playerSubItem.getType().equals(Constants.FRAME)) {
+                                    frameSCIs.add(playerSubItem);
+                                }
+                            }
+                            if (importedMatch.isTrackRolls()) {
+                                FrameLoader.importFrames(context, frameSCIs, importedPlayers.get(subItem.getUid()), importedMatch, participant);
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

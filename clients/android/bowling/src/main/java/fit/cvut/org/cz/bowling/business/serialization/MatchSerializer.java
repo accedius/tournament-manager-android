@@ -67,15 +67,31 @@ public class MatchSerializer extends BaseSerializer<Match> {
         Tournament tournament = ManagerFactory.getInstance(context).getEntityManager(Tournament.class).getById(entity.getTournamentId());
         /* Teams match */
         if (tournament.getTypeId() == TournamentTypes.teams().id) {
-            /* Serialize Teams and their ParticipantStats*/
-            for (Team team :((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getByTournamentId(tournament.getId())) {
+            /* Serialize Teams and their ParticipantStats with Players and PlayerStats*/
+            for (Participant tPart :((IParticipantManager)ManagerFactory.getInstance(context).getEntityManager(Participant.class)).getByMatchIdWithAllContents(entity.getId())) {
+                Team team = ManagerFactory.getInstance(context).getEntityManager(Team.class).getById(tPart.getParticipantId());
                 ServerCommunicationItem teamSCI = TeamSerializer.getInstance(context).serializeToMinimal(team);
 
                 List<ServerCommunicationItem> paStats = new ArrayList<>();
                 for (ParticipantStat stat : ((IParticipantStatManager)ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class)).getByMatchId(entity.getId())) {
                     paStats.add(ParticipantStatSerializer.getInstance(context).serialize(stat));
                 }
+
+                List<ServerCommunicationItem> players = new ArrayList<>();
+                for (Player pl : ((ITeamManager)ManagerFactory.getInstance(context).getEntityManager(Team.class)).getTeamPlayers(team)) {
+                    ServerCommunicationItem playerSCI = PlayerSerializer.getInstance(context).serializeToMinimal(pl);
+                    for (PlayerStat stat : ((IPlayerStatManager)ManagerFactory.getInstance(context).getEntityManager(PlayerStat.class)).getByParticipantId(tPart.getId())) {
+                        if (stat.getPlayerId() == pl.getId())
+                            playerSCI.getSubItems().add(PlayerStatSerializer.getInstance(context).serialize(stat));
+                    }
+                    for (Frame frame : ((IFrameManager)ManagerFactory.getInstance(context).getEntityManager(Frame.class)).getInMatchByPlayerId(entity.getId(), pl.getId())) {
+                        playerSCI.getSubItems().add(FrameSerializer.getInstance(context).serialize(frame));
+                    }
+                    players.add(playerSCI);
+                }
+
                 teamSCI.getSubItems().addAll(paStats);
+                teamSCI.getSubItems().addAll(players);
                 item.getSubItems().add(teamSCI);
             }
         }
@@ -97,7 +113,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
 
                 List<ServerCommunicationItem> frames = new ArrayList<>();
                 for (Frame frame : ((IFrameManager)ManagerFactory.getInstance(context).getEntityManager(Frame.class)).getInMatchByPlayerId(entity.getId(), player.getId())) {
-                    plStats.add(FrameSerializer.getInstance(context).serialize(frame));
+                    frames.add(FrameSerializer.getInstance(context).serialize(frame));
                 }
 
                 playerSCI.getSubItems().addAll(paStats);
