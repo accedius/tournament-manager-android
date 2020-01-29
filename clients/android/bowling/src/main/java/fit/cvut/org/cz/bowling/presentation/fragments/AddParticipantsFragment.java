@@ -29,23 +29,6 @@ public class AddParticipantsFragment extends AbstractSelectableListFragment<Part
     private int option;
     private long matchId;
 
-    public AddParticipantsFragment() {}
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        option = getArguments().getInt(ExtraConstants.EXTRA_OPTION);
-        matchId = getArguments().getLong(ExtraConstants.EXTRA_ID);
-        switch (option) {
-            case OPTION_INDIVIDUALS:
-                serviceAction = PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID;
-                break;
-            case OPTION_TEAMS:
-                serviceAction = TeamService.ACTION_GET_TEAMS_BY_TOURNAMENT;
-                break;
-        }
-    }
-
     /**
      * return new instance of this fragment with set arguments
      * @param option option where to get data from (individuals or teams)
@@ -65,8 +48,37 @@ public class AddParticipantsFragment extends AbstractSelectableListFragment<Part
     }
 
     @Override
-    protected AbstractSelectableListAdapter<Participant, ? extends OneActionViewHolder> getAdapter() {
-        return new SelectParticipantAdapter();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        option = getArguments().getInt(ExtraConstants.EXTRA_OPTION);
+        matchId = getArguments().getLong(ExtraConstants.EXTRA_ID);
+        switch (option) {
+            case OPTION_INDIVIDUALS:
+                serviceAction = PlayerService.ACTION_GET_PLAYERS_IN_TOURNAMENT_BY_MATCH_ID;
+                break;
+            case OPTION_TEAMS:
+                serviceAction = TeamService.ACTION_GET_TEAMS_IN_TOURNAMENT_BY_MATCH_ID;
+                break;
+        }
+    }
+
+    @Override
+    public void askForData() {
+        Intent intent;
+        switch (option) {
+            case OPTION_INDIVIDUALS:
+                intent = PlayerService.newStartIntent(serviceAction, getContext());
+                break;
+            case OPTION_TEAMS:
+                intent = TeamService.newStartIntent(serviceAction, getContext());
+                break;
+            default:
+                intent = new Intent();
+                break;
+        }
+        intent.putExtra(ExtraConstants.EXTRA_ID, matchId);
+
+        getContext().startService(intent);
     }
 
     @Override
@@ -121,6 +133,11 @@ public class AddParticipantsFragment extends AbstractSelectableListFragment<Part
     }
 
     @Override
+    protected AbstractSelectableListAdapter<Participant, ? extends OneActionViewHolder> getAdapter() {
+        return new SelectParticipantAdapter();
+    }
+
+    @Override
     protected String getDataKey() {
         return ExtraConstants.EXTRA_PARTICIPANTS;
     }
@@ -128,25 +145,6 @@ public class AddParticipantsFragment extends AbstractSelectableListFragment<Part
     @Override
     protected String getDataSelectedKey() {
         return ExtraConstants.EXTRA_SELECTED;
-    }
-
-    @Override
-    public void askForData() {
-        Intent intent;
-        switch (option) {
-            case OPTION_INDIVIDUALS:
-                intent = PlayerService.newStartIntent(serviceAction, getContext());
-                break;
-            case OPTION_TEAMS:
-                intent = TeamService.newStartIntent(serviceAction, getContext());
-                break;
-            default:
-                intent = new Intent();
-                break;
-        }
-        intent.putExtra(ExtraConstants.EXTRA_ID, matchId);
-
-        getContext().startService(intent);
     }
 
     @Override

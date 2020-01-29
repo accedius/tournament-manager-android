@@ -117,6 +117,7 @@ public class TeamService extends AbstractIntentServiceWProgress {
                 res.putParcelableArrayListExtra(ExtraConstants.EXTRA_TEAMS, new ArrayList<>(teams));
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(res);
+                break;
             }
             case ACTION_DELETE: {
                 Intent res = new Intent(ACTION_DELETE);

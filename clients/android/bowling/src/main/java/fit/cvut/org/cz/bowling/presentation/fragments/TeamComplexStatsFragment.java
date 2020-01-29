@@ -183,7 +183,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && matchParticipants != null && matchParticipants.size() > 0)
                         fab.show();
 
                     else fab.hide();
@@ -264,15 +264,22 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     protected void bindDataOnView(Intent intent) {
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
+            if (matchParticipants == null || matchParticipants.size() < 1) {
+                fab.hide();
+            }
             orderParticipantsAndTheirPlayers(matchParticipants);
             bindParticipantsOnSpinner();
             return;
         }
 
-        ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
-        List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
-        intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) frameOverviews);
-        super.bindDataOnView(intent);
+        if (matchParticipants.size() < 1) {
+            fab.hide();
+        } else {
+            ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
+            List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+            intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) frameOverviews);
+            super.bindDataOnView(intent);
+        }
     }
 
     private List<Participant> orderParticipantsAndTheirPlayers(List<Participant> listToOrder) {
@@ -408,7 +415,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //empty
+                fab.hide();
             }
         });
     }

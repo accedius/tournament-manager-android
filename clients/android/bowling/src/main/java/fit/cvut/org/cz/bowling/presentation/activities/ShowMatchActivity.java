@@ -75,7 +75,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         if(savedInstanceState == null) {
             f1 = BowlingMatchOverviewFragment.newInstance(matchId);
             f2 = MatchEditStatsFragment.newInstance(matchId);
-            f3 = MatchParticipantsManageFragment.newInstance(matchId);//BowlingFFAMatchStatsFragment.newInstance(matchId);
+            f3 = MatchParticipantsManageFragment.newInstance(matchId);
         }
 
         fragments = new Fragment[]{ f1, f2, f3 };
