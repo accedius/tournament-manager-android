@@ -153,4 +153,7 @@
     
     <string name="stat_match_point" tools:ignore="MissingTranslation">MP</string>
     <string name="stat_match_point_average" tools:ignore="MissingTranslation">MP avg.</string>
+    <string name="default_win_condition">Default</string>
+    <string name="total_points_win_condition">Win by total points</string>
+    <string name="win_condition">Win condition</string>
 </resources>

@@ -10,8 +10,11 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
+import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
@@ -72,6 +75,20 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
                 ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
                 iTournamentManager.update(c);
+
+                IWinConditionManager iWinConditionManager = iManagerFactory.getEntityManager(WinCondition.class);
+                WinCondition wc = iWinConditionManager.getByTournamentId(c.getId());
+                int condition = intent.getIntExtra(ExtraConstants.EXTRA_OPTION, WinConditionTypes.win_condition_default);
+                if(wc != null)
+                {
+                    wc.setWinCondition(condition);
+                    iWinConditionManager.update(wc);
+                }
+                else
+                {
+                    wc = new WinCondition(c.getId(),condition);
+                    iWinConditionManager.insert(wc);
+                }
                 break;
             }
             case ACTION_DELETE: {

@@ -21,6 +21,7 @@ import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
@@ -38,7 +39,7 @@ import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 7;
+    private static final int DBVersion = 8;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -60,6 +61,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             TableUtils.createTableIfNotExists(connectionSource, Participant.class);
             TableUtils.createTableIfNotExists(connectionSource, ParticipantStat.class);
             TableUtils.createTableIfNotExists(connectionSource, PlayerStat.class);
+            TableUtils.createTableIfNotExists(connectionSource, WinCondition.class);
         } catch (SQLException e) {}
     }
 
@@ -108,6 +110,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 upgradeFrom5To6(db, fromVersion);
             case 6:
                 upgradeFrom6To7(db, fromVersion);
+            case 7:
+                upgradeFrom7To8(db, fromVersion);
         }
     }
 
@@ -127,6 +131,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             TableUtils.dropTable(connectionSource, Participant.class, true);
             TableUtils.dropTable(connectionSource, ParticipantStat.class, true);
             TableUtils.dropTable(connectionSource, PlayerStat.class, true);
+            TableUtils.dropTable(connectionSource, WinCondition.class, true);
         } catch (SQLException e) {}
         onCreate(db, connectionSource);
         /*for(int fromVersion = oldVersion; fromVersion > newVersion; --fromVersion){
@@ -262,5 +267,9 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             }
         } catch (SQLException e) {}
         ++fromVersion;
+    }
+
+    private void upgradeFrom7To8(SQLiteDatabase db, int fromVersion) {
+        onCreate(db, connectionSource);
     }
 }

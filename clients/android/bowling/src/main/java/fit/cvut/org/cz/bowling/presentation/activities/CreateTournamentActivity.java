@@ -76,8 +76,10 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == fit.cvut.org.cz.tmlibrary.R.id.action_finish) {
-            NewTournamentFragment tournamentFragment = (NewTournamentFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+            NewBowlingTournamentFragment tournamentFragment = (NewBowlingTournamentFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             Tournament tournament = tournamentFragment.getTournament();
+            int winCondition = tournamentFragment.getWinCondition();
+
             if (tournament.getName().isEmpty()) {
                 Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.name_empty_error), Snackbar.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
@@ -90,6 +92,7 @@ public class CreateTournamentActivity extends AbstractToolbarActivity {
                 intent = TournamentService.newStartIntent(TournamentService.ACTION_UPDATE, this);
             }
             intent.putExtra(ExtraConstants.EXTRA_TOURNAMENT, tournament);
+            intent.putExtra(ExtraConstants.EXTRA_OPTION, winCondition);
             startService(intent);
             finish();
         }

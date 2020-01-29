@@ -1,12 +1,15 @@
 image: openjdk:8-jdk
 
 variables:
+  # options for Android sdk
   ANDROID_COMPILE_SDK: "28"
   ANDROID_BUILD_TOOLS: "28.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
+  # recommended option for gradle 
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
+  # download and set of android sdk
   - export GRADLE_USER_HOME=`pwd`/clients/android/.gradle
   - apt-get --quiet update --yes
   - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
@@ -17,6 +20,7 @@ before_script:
   - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
+  # set gradlew permissions to executable
   - cd ./clients/android
   - chmod +x ./gradlew 
   - cd ..
@@ -26,16 +30,19 @@ before_script:
   - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
   - set -o pipefail
 
+# sets stages of determined tests
 stages:
   - build
   - test
 
+# tests build of bowling project by using "gradle assemble" task
 build:
   stage: build
   script:
     - cd ./clients/android
     - ./gradlew assemble -p bowling
 
+# tests build and unit tests of bowling project by using "gradle test" task
 test:
   stage: test
   script:
