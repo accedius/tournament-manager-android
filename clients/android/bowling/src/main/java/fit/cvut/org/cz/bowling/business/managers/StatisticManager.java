@@ -278,7 +278,58 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
                 //Give team point based on place in current match
                 matchPoints += calculatePoints(place, pointConfiguration, match);
             } else {
-                //TODO wait for specifications
+                //Get all participants in this match
+                List<Participant> commonMatchParticipants = ((ParticipantManager)managerFactory.getEntityManager(Participant.class)).getByMatchId(participant.getMatchId());
+
+                //Get all participant stats in this match
+                List<PlayerStat> participantStats = new LinkedList<>();
+                HashMap<Long, Long> scores = new HashMap<>();
+                for(Participant p : commonMatchParticipants) {
+                    participantStats.addAll(((PlayerStatManager)managerFactory.getEntityManager(PlayerStat.class)).getByParticipantId(p.getId()));
+                    scores.put(p.getId(), Long.valueOf(0));
+                }
+
+
+                //Determine the winner
+                // Score per participant + who am I?
+                long me = -1;
+                for(PlayerStat playerStat : participantStats) {
+                    Long l = scores.get(playerStat.getParticipantId());
+                    l += playerStat.getPoints();
+                    scores.remove(playerStat.getParticipantId());
+                    scores.put(playerStat.getParticipantId(), l);
+
+                    if(playerStat.getPlayerId() == player.getId()) {
+                        me = playerStat.getParticipantId();
+                    }
+                }
+
+                // Which place is 'me' on?
+                int place = 0;
+                long myPoints = scores.get(me);
+
+                for(Map.Entry<Long, Long> s : scores.entrySet()) {
+                    if(myPoints < s.getValue()) {
+                        place++;
+                    }
+                }
+
+                //Get the point award configuration
+                final IPointConfigurationManager pointConfigurationManager = managerFactory.getEntityManager(PointConfiguration.class);
+                List<PointConfiguration> pointConfigurations = pointConfigurationManager.getByTournamentId(match.getTournamentId());
+
+                //Find the one based on the amount of sides in the match
+                PointConfiguration pointConfiguration = null;
+
+                for(PointConfiguration p : pointConfigurations) {
+                    if(p.sidesNumber == match.getParticipants().size()) {
+                        pointConfiguration = p;
+                        break;
+                    }
+                }
+
+                //Give team point based on place in current match
+                matchPoints += calculatePoints(place, pointConfiguration, match);
             }
 
             //Accumulate stats
