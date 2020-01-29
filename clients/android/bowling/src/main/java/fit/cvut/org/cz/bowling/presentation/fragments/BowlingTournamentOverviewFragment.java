@@ -20,7 +20,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragme
 /**
  * Fragment is used in ShowTournamentActivity to show overview panel
  */
-public class BowlingTournamentOverviewFragment extends TournamentOverviewFragment {
+public class BowlingTournamentOverviewFragment extends CustomTournamentOverviewFragment {
     @Override
     protected String getTournamentKey() {
         return ExtraConstants.EXTRA_TOURNAMENT;
@@ -75,6 +75,8 @@ public class BowlingTournamentOverviewFragment extends TournamentOverviewFragmen
         View v = super.injectView(inflater, container);
         v.findViewById(R.id.tour_type_label).setVisibility(View.VISIBLE);
         v.findViewById(R.id.tour_type).setVisibility(View.VISIBLE);
+        v.findViewById(R.id.tour_win_condition_label).setVisibility(View.VISIBLE);
+        v.findViewById(R.id.tour_win_condition).setVisibility(View.VISIBLE);
         return v;
     }
 }

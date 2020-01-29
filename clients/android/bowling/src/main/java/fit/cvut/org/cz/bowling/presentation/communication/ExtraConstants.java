@@ -61,4 +61,5 @@ public class ExtraConstants extends fit.cvut.org.cz.tmlibrary.presentation.commu
 
     public static final String EXTRA_BOOLEAN_IS_SCORE_CHANGED = "extra_boolean_is_score_changed";
     public static final String EXTRA_BOOLEAN_IS_FRAMES_CHANGED = "extra_boolean_is_frames_changed";
+    public static final String EXTRA_WIN_CONDITION = "win_condition";
 }

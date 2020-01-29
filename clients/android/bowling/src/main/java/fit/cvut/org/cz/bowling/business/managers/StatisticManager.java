@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
@@ -23,6 +25,8 @@ import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
+import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
@@ -189,10 +193,12 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
         if (allStats != null) {
             playerStats = intersection(playerStats, allStats); // common elements -> players stats in competition
         }
+
+        Set<Long> checkedTournaments = new HashSet<>();
+
         long matches = 0, strikes = 0, spares = 0, points = 0, matchPoints = 0;
         for(PlayerStat stat : playerStats) {
             Participant participant = managerFactory.getEntityManager(Participant.class).getById(stat.getParticipantId());
-
 
             if(participant == null) {
                 continue;
@@ -206,17 +212,21 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
 
             Tournament tournament = managerFactory.getEntityManager(Tournament.class).getById(match.getTournamentId());
 
-            boolean isTournamentRankedByTotalPointsAcrossMatches = false; //TODO
+            //Use alternative evaluation if alternative winCondition is detected
+            WinCondition winCondition = ((WinConditionManager)managerFactory.getEntityManager(WinCondition.class)).getByTournamentId(match.getTournamentId());
+            boolean isTournamentRankedByTotalPointsAcrossMatches = winCondition != null && (winCondition.getWinCondition() == WinConditionTypes.win_condition_total_points);
 
             if(isTournamentRankedByTotalPointsAcrossMatches) {
                 final IMatchManager matchManager = managerFactory.getEntityManager(Match.class);
 
                 final List<Match> matchList = matchManager.getByTournamentId(tournament.getId());
 
-                if(matchList.isEmpty() || matchList.get(0).getId() != match.getId()) {
+                if(matchList.isEmpty() || checkedTournaments.contains(tournament.getId())) {
                     //Avoid duplicate testing
                     continue;
                 }
+
+                checkedTournaments.add(tournament.getId());
 
                 AggregatedStatistics result = processTournamentOfIndividualsRankedByGlobalPoints(player, tournament);
                 matches += result.getMatches();
