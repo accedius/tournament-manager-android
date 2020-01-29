@@ -85,6 +85,8 @@ public class TournamentLoader {
                     tournamentMatches.add(subItem);
                 } else if (subItem.getType().equals(Constants.POINT_CONFIGURATION)) {
                     tournamentPointConfigurations.add(subItem);
+                } else if (subItem.getType().equals(Constants.WIN_CONDITION)) {
+                    WinConditionLoader.importWinCondition(context, subItem, importedTournament);
                 }
             }
 

@@ -13,8 +13,10 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
+import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
@@ -70,6 +72,11 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
         for (PointConfiguration pc : pointConfigurations) {
             item.getSubItems().add(PointConfigurationSerializer.getInstance(context).serialize(pc));
         }
+
+        /* Serialize Win Condition */
+        WinCondition wc = ((IWinConditionManager)ManagerFactory.getInstance(context).getEntityManager(WinCondition.class)).getByTournamentId(entity.getId());
+        item.getSubItems().add(WinConditionSerializer.getInstance(context).serialize(wc));
+
         return item;
     }
 
@@ -77,9 +84,6 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
     public HashMap<String, Object> serializeSyncData(Tournament entity) {
         HashMap<String, Object> hm = super.serializeSyncData(entity);
 
-        /* Serialize Point Configuration */
-        /*PointConfiguration pointConfiguration = ManagerFactory.getInstance(context).getEntityManager(PointConfiguration.class).getById(entity.getId());
-        hm.put(Constants.POINT_CONFIGURATION, pointConfiguration);*/
         return hm;
     }
 

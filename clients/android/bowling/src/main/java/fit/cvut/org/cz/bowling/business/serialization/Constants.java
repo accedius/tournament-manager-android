@@ -22,4 +22,6 @@ public class Constants extends fit.cvut.org.cz.tmlibrary.business.serialization.
     public static final String PLAYER_STAT              = "PlayerStat";
     public static final String STRIKES                  = DBConstants.cSTRIKES;
     public static final String SPARES                   = DBConstants.cSPARES;
+    public static final String WIN_CONDITION            = "WinCondition";
+    public static final String WIN_CONDITION_ID         = DBConstants.cWIN_CONDITION;
 }
