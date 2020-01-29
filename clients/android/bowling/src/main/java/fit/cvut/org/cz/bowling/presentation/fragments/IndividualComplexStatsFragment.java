@@ -568,7 +568,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //empty
+                //fab.hide();
             }
         });
     }

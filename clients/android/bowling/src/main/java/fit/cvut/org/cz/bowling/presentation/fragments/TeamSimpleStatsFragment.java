@@ -182,10 +182,12 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             return;
         }
 
-        ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
-        intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
-        super.bindDataOnView(intent);
-        switchRecyclerViewsProgressBar();
+        if(participantSpinner.getSelectedItem() != null) {
+            ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
+            intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
+            super.bindDataOnView(intent);
+            switchRecyclerViewsProgressBar();
+        }
     }
 
     private void bindParticipantsOnSpinner() {
