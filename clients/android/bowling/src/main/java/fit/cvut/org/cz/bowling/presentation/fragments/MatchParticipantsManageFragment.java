@@ -24,6 +24,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.ParticipantOverview;
 import fit.cvut.org.cz.bowling.business.managers.TeamManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -34,6 +35,8 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.DeleteParticipantDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -207,14 +210,40 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
             participantStatOverviews = new ArrayList<>();
             for (int i = 0; i < matchParticipants.size(); i++) {
                 String name = matchParticipants.get(i).getName();
-                ParticipantOverview ps = new ParticipantOverview(-1, matchParticipants.get(i).getParticipantId(), name, i > 3 ? -1 : 10 * i, (byte) i);
-                participantStatOverviews.add(ps);
+                ParticipantOverview po = getParticipantOverview(matchParticipants.get(i).getId(),matchParticipants.get(i).getParticipantId());
+                participantStatOverviews.add(po);
             }
         }
 
         participantStatOverviews = orderParticipantStats(participantStatOverviews);
         adapter.swapData(participantStatOverviews);
     }
+
+    private ParticipantOverview getParticipantOverview(long id, long participantId) {
+        int score = -1;
+        byte frame = 0;
+        String name = "";
+
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+
+        if (tournamentType.equals(TournamentTypes.individuals())) {
+            IPackagePlayerManager manager = iManagerFactory.getEntityManager(Player.class);
+            name = manager.getById(participantId).getName();
+        } else {
+            ITeamManager manager = iManagerFactory.getEntityManager(Team.class);
+            name = manager.getById(participantId).getName();
+        }
+        IPlayerStatManager psManager = iManagerFactory.getEntityManager(PlayerStat.class);
+        List<PlayerStat> list = psManager.getByParticipantId(id);
+        for (PlayerStat ps : list) {
+            if (score < 0) score = ps.getPoints();
+            else score += ps.getPoints();
+            if (ps.getFramesPlayedNumber() > frame)
+                frame = ps.getFramesPlayedNumber();
+        }
+        return new ParticipantOverview(-1, id, name, score, frame);
+    }
+
 
     private class ParticipantStatComparatorByScore implements Comparator<ParticipantOverview> {
         @Override
