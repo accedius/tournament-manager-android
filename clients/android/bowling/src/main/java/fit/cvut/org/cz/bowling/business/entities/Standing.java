@@ -11,6 +11,7 @@ import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 public class Standing implements Parcelable {
     private String name;
     private int matches, matchPoints, strikes, spares, points;
+    private double averageMatchPoints, averagePoints, averageStrikes;
     private long teamId;
 
     public Standing() {}
@@ -27,20 +28,33 @@ public class Standing implements Parcelable {
         this.spares = spares;
         this.points = points;
         this.teamId = teamId;
+        recalculateAverages();
     }
 
-    public void addMatchPoints(long points) { this.matchPoints += points; }
-    public void addPoints(long points) { this.points += points; }
-    public void addMatches(int matches) { this.matches += matches; }
+    public void recalculateAverages() {
+        if(matches == 0) {
+            averageStrikes = averageMatchPoints = averagePoints = 0;
+            return;
+        }
+        averageMatchPoints = ((double) matchPoints) / matches;
+        averageStrikes  = ((double) strikes) / matches;
+        averagePoints = ((double) points) / matches;
+    }
+
+    public void addMatchPoints(long points) { this.matchPoints += points; recalculateAverages(); }
+    public void addPoints(long points) { this.points += points; recalculateAverages(); }
+    public void addMatches(int matches) { this.matches += matches; recalculateAverages(); }
     public void add(long strikes, long spares, long points) {
         this.points += points;
         this.spares += spares;
         this.strikes += strikes;
+        recalculateAverages();
     }
+
     public void add(Standing standing) {
-        add(standing.getStrikes(), standing.getSpares(), standing.getPoints());
         this.matchPoints += standing.matchPoints;
         this.matches += standing.matches;
+        add(standing.getStrikes(), standing.getSpares(), standing.getPoints());
     }
 
     public int getMatches() {
@@ -69,6 +83,12 @@ public class Standing implements Parcelable {
 
     public int getSpares() { return spares; }
 
+    public double getAverageMatchPoints() { return averageMatchPoints; }
+
+    public double getAveragePoints() { return averagePoints; }
+
+    public double getAverageStrikes() { return averageStrikes; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -93,6 +113,8 @@ public class Standing implements Parcelable {
         this.spares = in.readInt();
         this.points = in.readInt();
         this.teamId = in.readLong();
+
+        recalculateAverages();
     }
 
     public static final Creator<Standing> CREATOR = new Creator<Standing>() {
@@ -125,4 +147,5 @@ public class Standing implements Parcelable {
             default: return 0;
         }
     }
+
 }

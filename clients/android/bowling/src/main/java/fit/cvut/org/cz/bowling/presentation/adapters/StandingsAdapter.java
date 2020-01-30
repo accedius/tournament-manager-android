@@ -30,6 +30,14 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         holder.strikes.setText(Integer.toString(stats.getStrikes()));
         holder.spares.setText(Integer.toString(stats.getSpares()));
         holder.points.setText(Integer.toString(stats.getPoints()));
+
+        // Check if we are in landscape
+        if(holder.averageStrikes != null) {
+            stats.recalculateAverages();
+            holder.averageStrikes.setText(String.format("%.2f", stats.getAverageStrikes()));
+            holder.averagePoints.setText(String.format("%.2f", stats.getAveragePoints()));
+            holder.averageMP.setText(String.format("%.2f", stats.getAverageMatchPoints()));
+        }
     }
 
     /**
@@ -37,7 +45,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
      */
     public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, MP, strikes, spares, points;
+        TextView name, GP, MP, strikes, spares, points, averageStrikes, averagePoints, averageMP;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
@@ -48,6 +56,10 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
             strikes = (TextView) itemView.findViewById(R.id.as_strikes);
             spares = (TextView) itemView.findViewById(R.id.as_spares);
             points = (TextView) itemView.findViewById(R.id.as_points);
+
+            averageStrikes = (TextView) itemView.findViewById(R.id.as_avg_st);
+            averagePoints = (TextView) itemView.findViewById(R.id.as_avg_p);
+            averageMP = (TextView) itemView.findViewById(R.id.as_avg_mp);
         }
     }
 }
