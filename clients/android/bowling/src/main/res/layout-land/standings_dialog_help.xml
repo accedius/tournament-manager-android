@@ -25,56 +25,28 @@
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp" />
         <TextView
-            android:text="@string/legend_W"
+            android:text="@string/legend_MP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp" />
         <TextView
-            android:text="@string/legend_Wot"
+            android:text="@string/legend_ST"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp" />
         <TextView
-            android:text="@string/legend_Wso"
+            android:text="@string/legend_SPA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp" />
         <TextView
-            android:text="@string/legend_D"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_L"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_Lot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_Lso"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-        <TextView
-            android:text="@string/legend_SP"
+            android:text="@string/legend_P"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
