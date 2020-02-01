@@ -15,6 +15,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWPro
 
 public class ParticipantService extends AbstractIntentServiceWProgress {
     public static final String ACTION_GET_BY_MATCH_ID = "action_get_by_match_id";
+    public static final String ACTION_GET_BY_MATCH_ID_FOR_MANAGING = "action_get_by_match_id_for_managing";
     public static final String ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS = "action_get_by_match_id_with_all_contents";
 
     public static Intent newStartIntent(String action, Context context) {
@@ -37,6 +38,7 @@ public class ParticipantService extends AbstractIntentServiceWProgress {
         String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
 
         switch (action) {
+            case ACTION_GET_BY_MATCH_ID_FOR_MANAGING:
             case ACTION_GET_BY_MATCH_ID: {
                 Intent res = new Intent(action);
 

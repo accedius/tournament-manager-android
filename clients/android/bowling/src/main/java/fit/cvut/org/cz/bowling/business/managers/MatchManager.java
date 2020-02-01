@@ -37,7 +37,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
+import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class MatchManager extends BaseManager<Match> implements IMatchManager {
@@ -335,12 +335,25 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             IFrameManager iFrameManager = managerFactory.getEntityManager(Frame.class);
             iFrameManager.deleteAllByMatchId(matchId);
             for (Participant participant : participants) {
-                participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                //participantStatDAO.deleteItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                List<ParticipantStat> participantStats = participantStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
+                int i = 0;
+                for(ParticipantStat participantStat : participantStats) {
+                    participantStat.setFramesPlayedNumber((byte) 0);
+                    participantStat.setScore(0);
+                    if(i > 0) {
+                        participantStatDAO.deleteItemById(DBConstants.cID, participantStat.getId());
+                    } else {
+                        participantStatDAO.updateItem(participantStat);
+                    }
+                    ++i;
+                }
                 List<PlayerStat> stats = playerStatDAO.getListItemById(DBConstants.cPARTICIPANT_ID, participant.getId());
                 for (PlayerStat stat : stats) {
                     stat.setStrikes(0);
                     stat.setSpares(0);
                     stat.setPoints(0);
+                    stat.setFramesPlayedNumber((byte) 0);
                     playerStatDAO.updateItem(stat);
                 }
             }

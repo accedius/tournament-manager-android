@@ -1,6 +1,8 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -46,6 +48,8 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 
 public class MatchParticipantsManageFragment extends AbstractDataFragment {
+    ParticipantReceiver participantReceiver = new ParticipantReceiver();
+
     private static final String SAVE_PART = "save_part";
 
     private MatchParticipantAdapter adapter;
@@ -146,8 +150,10 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                     public void onClick(View v) {
                         long participantId = overview.getParticipantId();
                         Participant selectedParticipant = findParticipant(participantId);
-                        Intent selectTeamPlayersIntent = SelectTeamPlayersActivity.newStartIntent(getContext(), overview.getParticipantId(), (ArrayList<PlayerStat>) selectedParticipant.getPlayerStats());
-                        thisFragment.startActivityForResult(selectTeamPlayersIntent, RequestCodes.MANAGE);
+                        if(selectedParticipant != null) {
+                            Intent selectTeamPlayersIntent = SelectTeamPlayersActivity.newStartIntent(getContext(), overview.getParticipantId(), (ArrayList<PlayerStat>) selectedParticipant.getPlayerStats());
+                            thisFragment.startActivityForResult(selectTeamPlayersIntent, RequestCodes.MANAGE);
+                        }
                     }
                 });
             }
@@ -193,8 +199,8 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     @Override
     public void askForData() {
-        Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
-        intent.putExtra(ExtraConstants.EXTRA_ID, matchId);
+        Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID_FOR_MANAGING, getContext());
+        intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
         getContext().startService(intent);
     }
 
@@ -210,7 +216,8 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
             participantStatOverviews = new ArrayList<>();
             for (int i = 0; i < matchParticipants.size(); i++) {
                 String name = matchParticipants.get(i).getName();
-                ParticipantOverview po = getParticipantOverview(matchParticipants.get(i).getId(),matchParticipants.get(i).getParticipantId());
+                Participant participant = matchParticipants.get(i);
+                ParticipantOverview po = getParticipantOverview(participant);
                 participantStatOverviews.add(po);
             }
         }
@@ -219,29 +226,14 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         adapter.swapData(participantStatOverviews);
     }
 
-    private ParticipantOverview getParticipantOverview(long id, long participantId) {
-        int score = -1;
-        byte frame = 0;
-        String name = "";
-
-        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-
-        if (tournamentType.equals(TournamentTypes.individuals())) {
-            IPackagePlayerManager manager = iManagerFactory.getEntityManager(Player.class);
-            name = manager.getById(participantId).getName();
-        } else {
-            ITeamManager manager = iManagerFactory.getEntityManager(Team.class);
-            name = manager.getById(participantId).getName();
-        }
-        IPlayerStatManager psManager = iManagerFactory.getEntityManager(PlayerStat.class);
-        List<PlayerStat> list = psManager.getByParticipantId(id);
-        for (PlayerStat ps : list) {
-            if (score < 0) score = ps.getPoints();
-            else score += ps.getPoints();
-            if (ps.getFramesPlayedNumber() > frame)
-                frame = ps.getFramesPlayedNumber();
-        }
-        return new ParticipantOverview(-1, id, name, score, frame);
+    private ParticipantOverview getParticipantOverview(Participant participant) {
+        long participantId = participant.getParticipantId();
+        long participantStatId = participant.getParticipantStats().get(0).getId();
+        ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+        int score = participantStat.getScore();
+        byte frame = participantStat.getFramesPlayedNumber();
+        String name = participant.getName();
+        return new ParticipantOverview(participantStatId, participantId, name, score, frame);
     }
 
 
@@ -368,11 +360,45 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     @Override
     protected void registerReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, new IntentFilter(ParticipantService.ACTION_GET_BY_MATCH_ID));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(participantReceiver, new IntentFilter(ParticipantService.ACTION_GET_BY_MATCH_ID_FOR_MANAGING));
     }
 
     @Override
     protected void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
+    }
+
+    private class ParticipantReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switchRecyclerViewsProgressBar();
+            switch (action) {
+                case ParticipantService.ACTION_GET_BY_MATCH_ID_FOR_MANAGING: {
+                    bindDataOnView(intent);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Switches between states: progress bar is only visible / content view with data is only visible
+     */
+    private void switchRecyclerViewsProgressBar(){
+        switch (progressBar.getVisibility()) {
+            case View.VISIBLE: {
+                progressBar.setVisibility(View.GONE);
+                contentView.setVisibility(View.VISIBLE);
+                break;
+            }
+            case View.GONE:
+            case View.INVISIBLE:
+            default: {
+                progressBar.setVisibility(View.VISIBLE);
+                contentView.setVisibility(View.GONE);
+                break;
+            }
+        }
     }
 }

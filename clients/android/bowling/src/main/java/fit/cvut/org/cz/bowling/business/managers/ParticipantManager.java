@@ -74,6 +74,10 @@ public class ParticipantManager extends fit.cvut.org.cz.tmlibrary.business.manag
         MatchManager matchManager = managerFactory.getEntityManager(Match.class);
         Match match = matchManager.getByIdFromDao(matchId);
         Tournament tournament = tournamentManager.getById(match.getTournamentId());
+        if(tournament == null) {
+            tournament = new Tournament();
+            tournament.setTypeId(-1);
+        }
         return tournament;
     }
 

@@ -103,8 +103,11 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     }
 
     protected void setContentFragment (boolean isChecked) {
-        if(inputFragment != null)
+        boolean isSwitchedBetweenInputModes = false; //if method was called by user switching from one form of input to another after initial fragments' creation
+        if(inputFragment != null) {
             getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
+            isSwitchedBetweenInputModes = true;
+        }
         if(isChecked) {
             switch(tournamentTypeId) {
                 case TournamentTypes.type_individuals: {
@@ -112,7 +115,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                     break;
                 }
                 case TournamentTypes.type_teams: {
-                    inputFragment = TeamComplexStatsFragment.newInstance(matchId);
+                    inputFragment = TeamComplexStatsFragment.newInstance(matchId, isSwitchedBetweenInputModes);
                     break;
                 }
             }

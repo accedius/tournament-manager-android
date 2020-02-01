@@ -155,7 +155,6 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     @Override
     public void askForData() {
         Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
-        Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
         intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
         getContext().startService(intent);
     }
@@ -302,11 +301,13 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
     }
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switchRecyclerViewsProgressBar();
+            if(matchParticipants == null) {
+                switchRecyclerViewsProgressBar();
+            }
             switch (action) {
                 case ParticipantService.ACTION_GET_BY_MATCH_ID: {
                     bindDataOnView(intent);

@@ -94,7 +94,7 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 // 1. Delete everything in the old match
                 final IManagerFactory managerFactory = ManagerFactory.getInstance();
                 final MatchManager matchManager = managerFactory.getEntityManager(Match.class);
-                matchManager.resetMatch(match.getId()); //TODO be 100% sure this deletes all the participants, playerstats, participantstats, frames, rolls and etc.
+                //matchManager.resetMatch(match.getId()); //TODO be 100% sure this deletes all the participants, playerstats, participantstats, frames, rolls and etc.
                 matchManager.deleteContents(match.getId());
 
                 // 2. Save everything

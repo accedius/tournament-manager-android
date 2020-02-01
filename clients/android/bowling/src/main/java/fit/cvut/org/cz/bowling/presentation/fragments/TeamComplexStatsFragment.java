@@ -56,9 +56,11 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     protected static List<Participant> matchParticipants;
     protected static List<ParticipantPlayer> matchParticipantPlayers;
     protected long matchId;
+    boolean isSwitchedBetweenInputModes;
     protected TournamentType tournamentType;
     private Fragment thisFragment;
     int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
+    int maxFramesPerPlayer = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
 
     private class ParticipantPlayer {
         String name;
@@ -67,8 +69,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         int matchParticipantReferencePosition;
         long participantId;
 
-        public ParticipantPlayer() {
-        }
+        public ParticipantPlayer() {}
 
         public ParticipantPlayer(String name, List<FrameOverview> frameOverviews, PlayerStat playerStat, int matchParticipantReferencePosition, long participantId) {
             this.name = name;
@@ -91,27 +92,46 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         for(Participant participant : matchParticipants) {
             ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
             participantStat.setFrames(new ArrayList<Frame>());
+            ArrayList<ParticipantStat> participantStats = new ArrayList<>();
+            participantStats.add(participantStat);
+            participant.setParticipantStats(participantStats);
         }
 
         for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
+            PlayerStat playerStat = participantPlayer.playerStat;
+            playerStat.setStrikes(0);
+            playerStat.setSpares(0);
+
             List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
             Participant participant = matchParticipants.get(participantPlayer.matchParticipantReferencePosition);
             List<Frame> newFrames = new ArrayList<>();
-            byte i = 1;
+            byte i = 0;
             for(FrameOverview overview : frameOverviews) {
+                ++i;
                 Frame newFrame = new Frame(matchId, participant.getId(), i, overview.getPlayerId());
                 List<Byte> rolls = overview.getRolls();
                 byte j = 1;
                 List<Roll> newRolls = new ArrayList<>();
+                int frameScore = 0;
                 for(Byte roll : rolls) {
+                    frameScore += roll;
                     Roll newRoll = new Roll(newFrame.getId(), j, overview.getPlayerId(), roll);
                     newRolls.add(newRoll);
                     ++j;
                 }
+
+                addStSpFromFrame(rolls, frameScore, i, playerStat);
+
                 newFrame.setRolls(newRolls);
                 newFrames.add(newFrame);
-                ++i;
             }
+            int points = 0;
+            if(i > 0) {
+                points = frameOverviews.get(i - 1).getCurrentScore();
+            }
+            playerStat.setPoints(points);
+            playerStat.setFramesPlayedNumber(i);
+
             ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
             participantStat.getFrames().addAll(newFrames);
         }
@@ -121,16 +141,61 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         return matchStatsBundle;
     }
 
+    private void addStSpFromFrame (List<Byte> rolls, int frameScore, int frameNumber, PlayerStat playerStat) {
+        int strikes = 0;
+        int spares = 0;
+        int i = frameNumber;
+        int j = rolls.size();
+        if(frameScore == maxFrameScore && i != maxFramesPerPlayer) {
+            if (j == 1) {
+                ++strikes;
+            } else {
+                ++spares;
+            }
+        } else if (i == maxFramesPerPlayer) {
+            //basically all possibilities with strikes or spares (dot "." is any number of knocked down pins < 10) -> X(X(X)), X(./), ./(X)
+            if(frameScore >= maxFrameScore && j > 2) {
+                byte roll1 = rolls.get(0), roll2 = rolls.get(1), roll3 = rolls.get(2);
+                if(roll1 == maxFrameScore) {
+                    ++strikes;
+                    if(roll2 == maxFrameScore) {
+                        ++strikes;
+                        if(roll3 == maxFrameScore) {
+                            ++strikes;
+                        }
+                    } else if (roll2 + roll3 == maxFrameScore) {
+                        ++spares;
+                    }
+                } else {
+                    if (roll2 + roll1 == maxFrameScore) {
+                        ++spares;
+                        if(roll3 == maxFrameScore){
+                            ++strikes;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(strikes > 0) {
+            playerStat.setStrikes(playerStat.getStrikes() + strikes);
+        }
+        if(spares > 0) {
+            playerStat.setSpares(playerStat.getSpares() + spares);
+        }
+    }
+
     @Override
     public List<Participant> getMatchParticipants() {
         return matchParticipants;
     }
 
-    public static TeamComplexStatsFragment newInstance(long matchId) {
+    public static TeamComplexStatsFragment newInstance(long matchId, boolean isSwitchedBetweenInputModes) {
         TeamComplexStatsFragment fragment = new TeamComplexStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
+        args.putBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchedBetweenInputModes);
         fragment.setArguments(args);
 
         return fragment;
@@ -145,6 +210,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         matchParticipants = null;
 
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
+        isSwitchedBetweenInputModes = getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
         long tournamentId = match.getTournamentId();
@@ -183,10 +249,11 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE && matchParticipants != null && matchParticipants.size() > 0)
+                    if ( newState == RecyclerView.SCROLL_STATE_IDLE && matchParticipants != null && matchParticipants.size() > 0 && ((ParticipantPlayer) participantSpinner.getSelectedItem()).frameOverviews.size() != maxFramesPerPlayer ) {
                         fab.show();
-
-                    else fab.hide();
+                    } else {
+                        fab.hide();
+                    }
                 }
             });
         }
@@ -220,7 +287,6 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     @Override
     public void askForData() {
         Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID_WITH_ALL_CONTENTS, getContext());
-        Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
         intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
         getContext().startService(intent);
     }
@@ -277,6 +343,9 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         } else {
             ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
             List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
+            if(frameOverviews.size() >= maxFramesPerPlayer) {
+                fab.hide();
+            }
             intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) frameOverviews);
             super.bindDataOnView(intent);
         }
@@ -315,6 +384,12 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         List<ParticipantPlayer> participantPlayers = new ArrayList<>();
         for(int i = 0; i < matchParticipants.size(); ++i) {
             Participant participant = matchParticipants.get(i);
+            if(isSwitchedBetweenInputModes) {
+                isSwitchedBetweenInputModes = false;
+                ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+                participantStat.setScore(0);
+                participantStat.setFramesPlayedNumber((byte) 0);
+            }
             if(participant.getPlayerStats() != null) {
                 for(int j = 0; j < participant.getPlayerStats().size(); ++j) {
                     PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(j);
@@ -336,7 +411,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         List<FrameOverview> playerFrameOverviews = new ArrayList<>();
         String playerName = playerStat.getName();
         long playerId = playerStat.getPlayerId();
-        byte i = 0;
+        byte i = 1;
         for(Frame frame : participantFrames) {
             if(frame.getPlayerId() == playerStat.getPlayerId()) {
                 playerFrames.add(frame);
@@ -502,17 +577,39 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     participantStat.setScore(score);
                 }
 
-                ((FrameOverviewAdapter) adapter).setItem(position, new FrameOverview(editedFrame) );
-                adapter.notifyItemChanged(position);
+                //((FrameOverviewAdapter) adapter).setItem(position, new FrameOverview(editedFrame) );
+                bindDataOnView(new Intent());
                 break;
             }
             case RequestCodes.REMOVE_FRAME: {
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
+                FrameOverview overview = participantPlayer.frameOverviews.get(position);
+                int oldScore = overview.getCurrentScore();
                 participantPlayer.frameOverviews.remove(position);
                 List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
                 int positionFrom = frameOverviews.size() > 2 ? frameOverviews.size()-2 : 0;
                 updateScores(participantPlayer.frameOverviews, positionFrom);
-                adapter.delete(position);
+                bindDataOnView(new Intent());
+
+                int newScore = 0;
+                if(participantPlayer.frameOverviews.size() > 0) {
+                    newScore = participantPlayer.frameOverviews.get(position-1).getCurrentScore();
+                }
+
+                if(newScore != oldScore) {
+                    int score = participantStat.getScore();
+                    score += newScore - oldScore;
+                    participantStat.setScore(score);
+                }
+
+                byte newFramesCount = participantStat.getFramesPlayedNumber();
+                --newFramesCount;
+                participantStat.setFramesPlayedNumber(newFramesCount);
+
+                if(position == maxFramesPerPlayer) {
+                    fab.show();
+                }
+
                 break;
             }
         }
@@ -539,7 +636,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
     }
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

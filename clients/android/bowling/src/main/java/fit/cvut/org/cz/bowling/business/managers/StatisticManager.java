@@ -498,10 +498,12 @@ public class StatisticManager extends BaseManager<AggregatedStatistics> implemen
          */
         private float getMatchPointAmountFor(long tournamentId, long sides, int place) {
             final PointConfiguration pointConfiguration = pointConfigurationManager.getBySidesNumber(tournamentId, sides);
-            final List<Float> configurationPlacePoints = pointConfiguration.getConfigurationPlacePoints();
+            if(pointConfiguration != null) {
+                final List<Float> configurationPlacePoints = pointConfiguration.getConfigurationPlacePoints();
 
-            if(configurationPlacePoints.size() > place) {
-                return configurationPlacePoints.get(place);
+                if(configurationPlacePoints.size() > place) {
+                    return configurationPlacePoints.get(place);
+                }
             }
             return 0;
         }

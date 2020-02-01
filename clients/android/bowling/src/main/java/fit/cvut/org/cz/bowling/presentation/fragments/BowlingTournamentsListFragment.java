@@ -188,7 +188,7 @@ public class BowlingTournamentsListFragment extends AbstractListFragment<Tournam
         return fab;
     }
 
-    public class TournamentsListReceiver extends BroadcastReceiver {
+    private class TournamentsListReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

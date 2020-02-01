@@ -193,7 +193,7 @@ public abstract class InsertPointConfigurationDialog extends DialogFragment {
 
     protected BroadcastReceiver receiver = new PointConfigurationReceiver();
 
-    public class PointConfigurationReceiver extends BroadcastReceiver{
+    private class PointConfigurationReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
             progressBar.setVisibility(View.GONE);
