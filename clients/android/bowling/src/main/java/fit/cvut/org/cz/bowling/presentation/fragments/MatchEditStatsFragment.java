@@ -21,6 +21,7 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
+import fit.cvut.org.cz.bowling.presentation.activities.ShowMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
@@ -107,11 +108,12 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         if(inputFragment != null) {
             getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
             isSwitchedBetweenInputModes = true;
+            ((ShowMatchActivity) getActivity()).flushUnsavedChanges();
         }
         if(isChecked) {
             switch(tournamentTypeId) {
                 case TournamentTypes.type_individuals: {
-                    inputFragment = IndividualComplexStatsFragment.newInstance(matchId);
+                    inputFragment = IndividualComplexStatsFragment.newInstance(matchId, isSwitchedBetweenInputModes);
                     break;
                 }
                 case TournamentTypes.type_teams: {

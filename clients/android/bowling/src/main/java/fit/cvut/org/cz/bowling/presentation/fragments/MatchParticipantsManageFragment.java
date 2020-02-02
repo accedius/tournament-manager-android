@@ -1,11 +1,15 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -25,8 +29,8 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.ParticipantOverview;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.business.managers.TeamManager;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -37,8 +41,6 @@ import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.DeleteParticipantDialog;
 import fit.cvut.org.cz.bowling.presentation.services.ParticipantService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IPackagePlayerManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
@@ -65,8 +67,10 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
     private Fragment thisFragment;
     private TournamentType tournamentType;
 
+    private ParticipantSharedViewModel participantSharedViewModel;
+
     private static final class RequestCodes {
-        static final int NEW_PARTICIPANT = 1;
+        static final int ADD = 1;
         static final int DELETE = 2;
         static final int MANAGE = 3;
     }
@@ -192,9 +196,56 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 int option = tournamentType.id == TournamentTypes.type_individuals ? AddParticipantsFragment.OPTION_INDIVIDUALS : AddParticipantsFragment.OPTION_TEAMS;
                 Intent intent = AddParticipantsActivity.newStartIntent(getContext(), option, matchId);
                 intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_OMIT, omitParticipants);
-                thisFragment.startActivityForResult(intent, RequestCodes.NEW_PARTICIPANT);
+                thisFragment.startActivityForResult(intent, RequestCodes.ADD);
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        participantSharedViewModel = ViewModelProviders.of(requireActivity()).get(ParticipantSharedViewModel.class);
+
+        participantSharedViewModel.getToChangeStat().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                Participant participantToChangeStats = findParticipant(participant.getParticipantId());
+                ParticipantStat changed = (ParticipantStat) participant.getParticipantStats().get(0);
+                int score = changed.getScore();
+                byte frames = changed.getFramesPlayedNumber();
+                ParticipantStat toChange = (ParticipantStat) participantToChangeStats.getParticipantStats().get(0);
+                toChange.setScore(score);
+                toChange.setFramesPlayedNumber(frames);
+                ParticipantOverview overview = getParticipantOverview(participantToChangeStats.getParticipantId());
+                overview.setScore(score);
+                overview.setFramesPlayedNumber(frames);
+                bindDataOnView(new Intent());
+            }
+        });
+    }
+
+    public void flushUnsavedChanges () {
+        participantSharedViewModel.setToAdd(null);
+        participantSharedViewModel.setToDelete(null);
+        participantSharedViewModel.setToManage(null);
+        participantSharedViewModel.setToChangeStat(null);
+        matchParticipants = null;
+        participantStatOverviews = null;
+
+        switchRecyclerViewsProgressBar();
+        askForData();
+    }
+
+    private ParticipantOverview getParticipantOverview(long participantId) {
+        for(ParticipantOverview overview : participantStatOverviews) {
+            if(overview.getParticipantId() == participantId){
+                return overview;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -226,7 +277,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                     participant.setParticipantStats(participantStats);
                 }
 
-                ParticipantOverview po = getParticipantOverview(participant);
+                ParticipantOverview po = createParticipantOverview(participant);
                 participantStatOverviews.add(po);
             }
         }
@@ -235,7 +286,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         adapter.swapData(participantStatOverviews);
     }
 
-    private ParticipantOverview getParticipantOverview(Participant participant) {
+    private ParticipantOverview createParticipantOverview(Participant participant) {
         long participantId = participant.getParticipantId();
         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
         long participantStatId = participantStat.getId();
@@ -262,12 +313,14 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case RequestCodes.NEW_PARTICIPANT: {
+            case RequestCodes.ADD: {
                 if (resultCode != AddParticipantsActivity.RESULT_OK)
                     return;
                 ArrayList<Participant> participantsToAdd = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
                 if (participantsToAdd.size() > 0) {
                     integrateNewParticipants(participantsToAdd);
+
+                    participantSharedViewModel.setToAdd(participantsToAdd);
                 }
                 break;
             }
@@ -275,6 +328,10 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 if(resultCode != Activity.RESULT_OK)
                     return;
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
+
+                Participant participantToDelete = matchParticipants.get(managedParticipantPosition);
+                participantSharedViewModel.setToDelete(participantToDelete);
+
                 participantStatOverviews.remove(position);
                 matchParticipants.remove(managedParticipantPosition);
                 break;
@@ -284,10 +341,14 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                     return;
                 List<Player> teamPlayers = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
                 setTeamPlayers(teamPlayers);
+
+                Participant managedTeam = matchParticipants.get(managedParticipantPosition);
+                participantSharedViewModel.setToManage(managedTeam);
+
                 break;
             }
         }
-        bindDataOnView(null);
+        bindDataOnView(new Intent());
     }
 
     private void removeParticipantOverview(long participantId) {
@@ -306,6 +367,8 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         List<PlayerStat> newPlayerStats = new ArrayList<>();
         for(Player player : newTeamPlayers) {
             PlayerStat newPlayerStat = new PlayerStat(teamToSetPlayersFor.getId(), player.getId());
+            newPlayerStat.setName(player.getName());
+            newPlayerStat.setParticipantName(teamToSetPlayersFor.getName());
             newPlayerStats.add(newPlayerStat);
         }
         teamToSetPlayersFor.setPlayerStats(newPlayerStats);
@@ -316,8 +379,9 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         switch (tournamentType.id) {
             case TournamentTypes.type_individuals:
                 for (Participant newParticipant : newParticipants) {
-                    PlayerStat individualStat = new PlayerStat(-1, newParticipant.getId());
+                    PlayerStat individualStat = new PlayerStat(-1, newParticipant.getParticipantId());
                     individualStat.setName(newParticipant.getName());
+                    individualStat.setParticipantName(newParticipant.getName());
                     List<PlayerStat> participantsPlayerStats = new ArrayList<>();
                     participantsPlayerStats.add(individualStat);
                     newParticipant.setPlayerStats(participantsPlayerStats);
@@ -326,7 +390,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
                     long participantId = newParticipant.getParticipantId();
                     String name = newParticipant.getName();
-                    ParticipantOverview ps = new ParticipantOverview(-1, participantId, name, 30, (byte) 5);
+                    ParticipantOverview ps = new ParticipantOverview(-1, participantId, name, 0, (byte) 0);
 
                     participantStatOverviews.add(ps);
                 }
@@ -337,20 +401,19 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                     Team participantTeam = teamManager.getById(newParticipant.getParticipantId());
                     List<Player> teamPlayers = participantTeam.getPlayers();
                     List<PlayerStat> participantsPlayerStats = new ArrayList<>();
+                    String name = newParticipant.getName();
                     for (Player teamPlayer : teamPlayers) {
-                        PlayerStat individualStat = new PlayerStat(-1, newParticipant.getId());
+                        PlayerStat individualStat = new PlayerStat(-1, teamPlayer.getId());
                         individualStat.setName(teamPlayer.getName());
+                        individualStat.setParticipantName(name);
                         participantsPlayerStats.add(individualStat);
                     }
-                    if (participantsPlayerStats.size() > 0)
-                        participantsPlayerStats.get(0).setParticipantName(newParticipant.getName());
                     newParticipant.setPlayerStats(participantsPlayerStats);
 
                     setDefaultParticipantStat(newParticipant);
 
                     long participantId = newParticipant.getParticipantId();
-                    String name = newParticipant.getName();
-                    ParticipantOverview ps = new ParticipantOverview(-1, participantId, name, 30, (byte) 5);
+                    ParticipantOverview ps = new ParticipantOverview(-1, participantId, name, 0, (byte) 0);
 
                     participantStatOverviews.add(ps);
                 }

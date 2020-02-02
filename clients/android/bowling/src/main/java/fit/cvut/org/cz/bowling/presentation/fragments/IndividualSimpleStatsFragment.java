@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +11,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.adapters.SimpleStatAdapter;
@@ -38,6 +40,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
     protected List<Participant> matchParticipants;
     protected long matchId;
     private Fragment thisFragment;
+    private ParticipantSharedViewModel participantSharedViewModel;
 
     public static final class RecyclerViewUpdateCodes {
         public static final int DIALOG = 0;
@@ -151,6 +154,52 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        participantSharedViewModel = ViewModelProviders.of(requireActivity()).get(ParticipantSharedViewModel.class);
+
+        participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
+            @Override
+            public void onChanged(@Nullable List<Participant> participants) {
+                if(participants != null && participants.size() > 0) {
+                    matchParticipants.addAll(participants);
+                    bindDataOnView(new Intent());
+                }
+            }
+        });
+
+        participantSharedViewModel.getToDelete().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                boolean foundAndRemoved = removeParticipant(participant);
+                if(foundAndRemoved) {
+                    bindDataOnView(new Intent());
+                }
+            }
+        });
+    }
+
+    private boolean removeParticipant(Participant participantToRemove) {
+        int i = 0;
+        boolean found = false;
+        for(Participant participant : matchParticipants) {
+            if(participant.getParticipantId() == participantToRemove.getParticipantId()) {
+                found = true;
+                break;
+            }
+            ++i;
+        }
+        if(found) {
+            matchParticipants.remove(i);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void askForData() {
         Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
         Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
@@ -184,7 +233,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
             playerStatsToShow.add(individualStat);
         }
 
-        intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
+        intent.putParcelableArrayListExtra(getDataKey(), playerStatsToShow);
         super.bindDataOnView(intent);
     }
 
@@ -209,8 +258,8 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case TeamSimpleStatsFragment.RecyclerViewUpdateCodes.DIALOG: {
-                boolean scoreChanged = data.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_SCORE_CHANGED, false);
-                boolean framesChanged = data.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_FRAMES_CHANGED, false);
+                boolean scoreChanged = data.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_SCORE_CHANGED, true);
+                boolean framesChanged = data.getBooleanExtra(ExtraConstants.EXTRA_BOOLEAN_IS_FRAMES_CHANGED, true);
                 PlayerStat editedPlayerStat = data.getParcelableExtra(ExtraConstants.EXTRA_PLAYER_STAT);
                 int position = data.getIntExtra(ExtraConstants.EXTRA_POSITION, -1);
 
@@ -230,6 +279,9 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
 
                 if(framesChanged) {
                     setIsMatchPlayedInParentFragment();
+                }
+                if(scoreChanged) {
+                    participantSharedViewModel.setToChangeStat(individualToSetPlayerStat);
                 }
 
                 break;

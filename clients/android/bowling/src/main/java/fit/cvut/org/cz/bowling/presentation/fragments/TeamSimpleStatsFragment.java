@@ -1,5 +1,7 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +25,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.bowling.presentation.adapters.SimpleStatAdapter;
@@ -42,6 +49,8 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     private Spinner participantSpinner;
     private ArrayAdapter<Participant> participantSpinnerAdapter;
     private Fragment thisFragment;
+
+    private ParticipantSharedViewModel participantSharedViewModel;
 
     public static final class RecyclerViewUpdateCodes {
         public static final int DIALOG = 0;
@@ -151,6 +160,131 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
                 });
             }
         };
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        participantSharedViewModel = ViewModelProviders.of(requireActivity()).get(ParticipantSharedViewModel.class);
+
+        participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
+            @Override
+            public void onChanged(@Nullable List<Participant> participants) {
+                if(participants != null && participants.size() > 0) {
+                    if(matchParticipants == null) {
+                        matchParticipants = new ArrayList<>();
+                    }
+                    matchParticipants.addAll(participants);
+                    switchRecyclerViewsProgressBar();
+                    participantSpinnerAdapter = null;
+                    bindParticipantsOnSpinner();
+                }
+            }
+        });
+
+        participantSharedViewModel.getToDelete().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                boolean foundAndRemoved = removeParticipant(participant);
+                if(foundAndRemoved) {
+                    //switchRecyclerViewsProgressBar();
+                    participantSpinnerAdapter = null;
+                    bindParticipantsOnSpinner();
+                }
+            }
+        });
+
+        participantSharedViewModel.getToManage().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                Participant participantToChange = findParticipant(participant.getParticipantId());
+                ParticipantStat participantStat = (ParticipantStat) participantToChange.getParticipantStats().get(0);
+                List<PlayerStat> oldPlayerStats = (List<PlayerStat>) participantToChange.getPlayerStats();
+                List<PlayerStat> newPlayerStats = (List<PlayerStat>) participant.getPlayerStats();
+                List<PlayerStat> toAdd = new ArrayList<>();
+                List<PlayerStat> toRemove = new ArrayList<>();
+
+                //pair -> action, position in array
+                Map<Long, Pair<Integer, PlayerStat>> actionMap = new HashMap<>();
+                int remove = 0, stay = 1;
+
+                for(PlayerStat ps : oldPlayerStats) {
+                    actionMap.put(ps.getPlayerId(), new Pair<>(remove, ps));
+                }
+
+                for(PlayerStat newPlayerStat : newPlayerStats) {
+                    long playerId = newPlayerStat.getPlayerId();
+                    if(actionMap.get(playerId) != null) {
+                        actionMap.put(playerId, new Pair<>(stay, null));
+                    } else {
+                        toAdd.add(newPlayerStat);
+                    }
+                }
+
+                for(Map.Entry<Long, Pair<Integer, PlayerStat>> entry : actionMap.entrySet()) {
+                    if(entry.getValue().first == remove) {
+                        PlayerStat playerStat = entry.getValue().second;
+                        int score = participantStat.getScore() - playerStat.getPoints();
+                        int frames = participantStat.getFramesPlayedNumber() - playerStat.getFramesPlayedNumber();
+                        participantStat.setScore(score);
+                        participantStat.setFramesPlayedNumber((byte) frames);
+                        toRemove.add(playerStat);
+                    }
+                }
+
+                participantSharedViewModel.setToChangeStat(participantToChange);
+
+                removePlayerStatsFromParticipant(toRemove, participantToChange);
+                addPlayerStatsToParticipant(toAdd, participantToChange);
+
+                bindDataOnView(new Intent());
+            }
+        });
+    }
+
+    private void addPlayerStatsToParticipant(List<PlayerStat> toAdd, Participant participant) {
+        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
+        stats.addAll(toAdd);
+        participant.setPlayerStats(stats);
+    }
+
+    private void removePlayerStatsFromParticipant(List<PlayerStat> toRemove, Participant participant) {
+        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
+        stats.removeAll(toRemove);
+        participant.setPlayerStats(stats);
+    }
+
+    private boolean removeParticipant(Participant participantToRemove) {
+        int i = 0;
+        boolean found = false;
+        for(Participant participant : matchParticipants) {
+            if(participant.getParticipantId() == participantToRemove.getParticipantId()) {
+                found = true;
+                break;
+            }
+            ++i;
+        }
+        if(found) {
+            matchParticipants.remove(i);
+            return true;
+        }
+        return false;
+    }
+
+    private Participant findParticipant(long participantId) {
+        for(Participant participant : matchParticipants) {
+            if(participantId == participant.getParticipantId()) {
+                return participant;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -265,6 +399,9 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
 
                 if(framesChanged) {
                     setIsMatchPlayedInParentFragment();
+                }
+                if(scoreChanged) {
+                    participantSharedViewModel.setToChangeStat(teamToEditStats);
                 }
 
                 break;

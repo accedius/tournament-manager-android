@@ -44,6 +44,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
     private long matchId;
 
     private ViewPager pager;
+    private TabLayout tabLayout;
 
     private Fragment[] fragments;
     private Fragment f1, f2, f3;
@@ -74,8 +75,9 @@ public class ShowMatchActivity extends AbstractTabActivity {
 
         if(savedInstanceState == null) {
             f1 = BowlingMatchOverviewFragment.newInstance(matchId);
-            f2 = MatchEditStatsFragment.newInstance(matchId);
+            //safe in that order, risks are caused by sharedViewModel
             f3 = MatchParticipantsManageFragment.newInstance(matchId);
+            f2 = MatchEditStatsFragment.newInstance(matchId);
         }
 
         fragments = new Fragment[]{ f1, f2, f3 };
@@ -87,7 +89,7 @@ public class ShowMatchActivity extends AbstractTabActivity {
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(1);
 
-        TabLayout tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
+        tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
@@ -183,6 +185,11 @@ public class ShowMatchActivity extends AbstractTabActivity {
         if(f3 == null) {
             f3 = adapter.getItem(2);
         }
+    }
+
+    public void flushUnsavedChanges() {
+        restoreFragments();
+        ( (MatchParticipantsManageFragment) f3).flushUnsavedChanges();
     }
 
     @Override

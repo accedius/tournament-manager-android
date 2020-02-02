@@ -2,6 +2,8 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +38,7 @@ import java.util.Locale;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
@@ -54,6 +57,7 @@ import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
+//This fragment needs a rework
 public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
 
     protected static List<FrameOverview> frameOverviews = new ArrayList<>();
@@ -74,6 +78,10 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
     final static int maxFramesPerPlayer = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
     final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
+
+    boolean isSwitchedBetweenInputModes = false;
+
+    private ParticipantSharedViewModel participantSharedViewModel;
 
     //@Override
     public Bundle getMatchStatsOld() {
@@ -339,11 +347,12 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         return matchParticipants;
     }
 
-    public static IndividualComplexStatsFragment newInstance(long matchId) {
+    public static IndividualComplexStatsFragment newInstance(long matchId, boolean isSwitchedBetweenInputModes) {
         IndividualComplexStatsFragment fragment = new IndividualComplexStatsFragment();
 
         Bundle args = new Bundle();
         args.putLong(ExtraConstants.EXTRA_MATCH_ID, matchId);
+        args.putBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED, isSwitchedBetweenInputModes);
         fragment.setArguments(args);
 
         return fragment;
@@ -358,11 +367,12 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         participantSelectedIndex = 0;
         participantsFrameOverviews = null;
         frameOverviews = null;
-        matchPlayers = null;
-        participantPlayers = null;
+        //matchPlayers = null;
+        //participantPlayers = null;
         participantsBinded = false;
 
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
+        isSwitchedBetweenInputModes = getArguments().getBoolean(ExtraConstants.EXTRA_BOOLEAN_IS_INPUT_TYPE_CHANGED);
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
         long tournamentId = match.getTournamentId();
@@ -373,6 +383,76 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        participantSharedViewModel = ViewModelProviders.of(requireActivity()).get(ParticipantSharedViewModel.class);
+
+        participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
+            @Override
+            public void onChanged(@Nullable List<Participant> participants) {
+                if(participants != null && participants.size() > 0) {
+                    matchParticipants.addAll(participants);
+                    if(participantsFrameOverviews == null) {
+                        participantsFrameOverviews = new ArrayList<>();
+                        frameOverviews = new ArrayList<>();
+                    }
+                    for(Participant newParticipant : participants) {
+                        List<FrameOverview> frameOverviews = new ArrayList<>();
+                        participantsFrameOverviews.add(frameOverviews);
+                    }
+                    participantsBinded = false;
+                    bindParticipantsOnView(matchParticipants);
+                }
+            }
+        });
+
+        participantSharedViewModel.getToDelete().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if (participant == null)
+                    return;
+
+                boolean foundAndRemoved = removeParticipant(participant);
+                if (foundAndRemoved) {
+                    participantsBinded = false;
+                    bindDataOnView(new Intent());
+                }
+            }
+        });
+    }
+
+    private boolean removeParticipant(Participant participantToRemove) {
+        int i = 0;
+        boolean found = false;
+        for(Participant participant : matchParticipants) {
+            if(participant.getParticipantId() == participantToRemove.getParticipantId()) {
+                found = true;
+                break;
+            }
+            ++i;
+        }
+        if(found) {
+            matchParticipants.remove(i);
+            participantsFrameOverviews.remove(i);
+            if(participantSelectedIndex != i) {
+                if(participantSelectedIndex > i) {
+                    --participantSelectedIndex;
+                } else {
+                    //do nothing;
+                }
+            } else {
+                participantSelectedIndex = 0;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private int findParticipantPosition (long participantId) {
+        return -1;
     }
 
     @Override
@@ -501,7 +581,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
             }
         } else {
             if(participantsFrameOverviews == null) {
-                matchPlayers = new ArrayList<>();
+                //matchPlayers = new ArrayList<>();
                 matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
                 if(!matchParticipants.isEmpty()){
                     participantsFrameOverviews = new ArrayList<>();
@@ -512,18 +592,27 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                     if(participant.getParticipantStats() == null) {
                         List<ParticipantStat> participantStats = new ArrayList<>();
                         ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
+                        participantStat.setFrames(new ArrayList<>());
                         participantStats.add(participantStat);
                         participant.setParticipantStats(participantStats);
                     }
 
-                    matchPlayers.add(new ArrayList<Player>());
-                    participantPlayers = matchPlayers.get(index);
+                    if(isSwitchedBetweenInputModes) {
+                        isSwitchedBetweenInputModes = false;
+                        ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+                        participantStat.setScore(0);
+                        participantStat.setFramesPlayedNumber((byte) 0);
+                        participantSharedViewModel.setToChangeStat(participant);
+                    }
+
+                    //matchPlayers.add(new ArrayList<Player>());
+                    //participantPlayers = matchPlayers.get(index);
 
                     List<PlayerStat> playerStats = (List<PlayerStat>) participant.getPlayerStats();
-                    for(PlayerStat stat : playerStats) {
+                    /*for(PlayerStat stat : playerStats) {
                         Player player = iManagerFactory.getEntityManager(Player.class).getById(stat.getPlayerId());
                         participantPlayers.add(player);
-                    }
+                    }*/
 
                     String name;
                     long participantId = participant.getParticipantId();
@@ -582,7 +671,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         }
         if(!participantsBinded){
             bindParticipantsOnView(matchParticipants);
-            participantsBinded = true;
+            return;
         }
         if(frameOverviews.size() >= 10 || participantSelectedIndex == -1) {
             fab.hide();
@@ -595,6 +684,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
     }
 
     private void bindParticipantsOnView(ArrayList<Participant> matchParticipants) {
+        participantsBinded = true;
         participantArrayAdapter = new ArrayAdapter<Participant>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
         participantArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         participantSpinner.setAdapter(participantArrayAdapter);
@@ -604,7 +694,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 participantSelectedIndex = position;
                 frameOverviews = participantsFrameOverviews.get(position);
-                participantPlayers = matchPlayers.get(position);
+                //participantPlayers = matchPlayers.get(position);
                 bindDataOnView(new Intent());
             }
 
@@ -696,6 +786,20 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
     public void onActivityResult(final int requestCode, final int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_UPDATE_LOCALLY) {
             updateScores(resultCode);
+
+            Participant participant = matchParticipants.get(participantSelectedIndex);
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            if(frameOverviews.size() > 0) {
+                byte frames = (byte) frameOverviews.size();
+                int score = frameOverviews.get(frames-1).getCurrentScore();
+                participantStat.setScore(score);
+                participantStat.setFramesPlayedNumber(frames);
+            } else {
+                participantStat.setScore(0);
+                participantStat.setFramesPlayedNumber( (byte) 0);
+            }
+            participantSharedViewModel.setToChangeStat(participant);
+
             bindDataOnView(new Intent());
         } else {
             progressBar.setVisibility(View.VISIBLE);
@@ -753,10 +857,13 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                 toCreate = true;
                 frameOverview = new FrameOverview();
                 frameOverview.setFrameNumber( (byte) frameNumber);
+                //------------------------------------------------------------------------------------
+                PlayerStat playerStat = (PlayerStat) matchParticipants.get(participantSelectedIndex).getPlayerStats().get(0);
+                //------------------------------------------------------------------------------------
                 if(tournamentType.equals(TournamentTypes.individuals())){
-                    Player player = participantPlayers.get(0);
-                    frameOverview.setPlayerName(player.getName());
-                    frameOverview.setPlayerId(player.getId());
+                    //Player player = participantPlayers.get(0);
+                    frameOverview.setPlayerName(playerStat.getName());
+                    frameOverview.setPlayerId(playerStat.getPlayerId());
                 } else {
                     //TODO if needed
                 }

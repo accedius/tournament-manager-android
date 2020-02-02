@@ -1,12 +1,13 @@
 package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
@@ -62,6 +67,9 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     private Fragment thisFragment;
     int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
     int maxFramesPerPlayer = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+
+
+    private ParticipantSharedViewModel participantSharedViewModel;
 
     private class ParticipantPlayer {
         String name;
@@ -328,6 +336,202 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        participantSharedViewModel = ViewModelProviders.of(requireActivity()).get(ParticipantSharedViewModel.class);
+
+        participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
+            @Override
+            public void onChanged(@Nullable List<Participant> participants) {
+                if(participants != null && participants.size() > 0) {
+                    if(matchParticipants == null) {
+                        matchParticipants = new ArrayList<>();
+                    }
+                    addParticipantPlayers(participants);
+                    matchParticipants.addAll(participants);
+                    switchRecyclerViewsProgressBar();
+                    participantSpinnerAdapter = null;
+                    bindParticipantsOnSpinner();
+                }
+            }
+        });
+
+        participantSharedViewModel.getToDelete().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                boolean foundAndRemoved = removeParticipant(participant);
+                if(foundAndRemoved) {
+                    //switchRecyclerViewsProgressBar();
+                    participantSpinnerAdapter = null;
+                    bindParticipantsOnSpinner();
+                }
+            }
+        });
+
+        participantSharedViewModel.getToManage().observe(getViewLifecycleOwner(), new Observer<Participant>() {
+            @Override
+            public void onChanged(@Nullable Participant participant) {
+                if(participant == null)
+                    return;
+
+                Pair<Participant, Integer> foundParticipant = findParticipant(participant.getParticipantId());
+                if(foundParticipant == null)
+                    return;
+                Participant participantToChange = foundParticipant.first;
+                int position = foundParticipant.second;
+                ParticipantStat participantStat = (ParticipantStat) participantToChange.getParticipantStats().get(0);
+                List<PlayerStat> oldPlayerStats = (List<PlayerStat>) participantToChange.getPlayerStats();
+                List<PlayerStat> newPlayerStats = (List<PlayerStat>) participant.getPlayerStats();
+                List<PlayerStat> toAdd = new ArrayList<>();
+                List<PlayerStat> toRemove = new ArrayList<>();
+
+                //pair -> action, position in array
+                Map<Long, Pair<Integer, PlayerStat>> actionMap = new HashMap<>();
+                int remove = 0, stay = 1;
+
+                for(PlayerStat ps : oldPlayerStats) {
+                    actionMap.put(ps.getPlayerId(), new Pair<>(remove, ps));
+                }
+
+                for(PlayerStat newPlayerStat : newPlayerStats) {
+                    long playerId = newPlayerStat.getPlayerId();
+                    if(actionMap.get(playerId) != null) {
+                        actionMap.put(playerId, new Pair<>(stay, null));
+                    } else {
+                        toAdd.add(newPlayerStat);
+                    }
+                }
+
+                for(Map.Entry<Long, Pair<Integer, PlayerStat>> entry : actionMap.entrySet()) {
+                    if(entry.getValue().first == remove) {
+                        PlayerStat playerStat = entry.getValue().second;
+                        int score = participantStat.getScore() - playerStat.getPoints();
+                        int frames = participantStat.getFramesPlayedNumber() - playerStat.getFramesPlayedNumber();
+                        participantStat.setScore(score);
+                        participantStat.setFramesPlayedNumber((byte) frames);
+                        toRemove.add(playerStat);
+                    }
+                }
+
+                participantSharedViewModel.setToChangeStat(participantToChange);
+
+                removePlayerStatsFromParticipant(toRemove, participantToChange, position);
+                if(toAdd.size() > 0) {
+                    addPlayerStatsToParticipant(toAdd, participantToChange, position);
+                }
+
+                participantSpinnerAdapter = null;
+                bindParticipantsOnSpinner();
+            }
+        });
+    }
+
+    private void addParticipantPlayers(List<Participant> participants) {
+        int i = matchParticipants.size();
+        for(Participant newParticipant : participants) {
+            ParticipantStat participantStat = (ParticipantStat) newParticipant.getParticipantStats().get(0);
+            if(participantStat.getFrames() == null) {
+                participantStat.setFrames(new ArrayList<>());
+            }
+            if(newParticipant.getPlayerStats() != null) {
+                for(int j = 0; j < newParticipant.getPlayerStats().size(); ++j) {
+                    PlayerStat playerStat = (PlayerStat) newParticipant.getPlayerStats().get(j);
+                    List<FrameOverview> playerFrameOverviews = setPlayerFrames(playerStat, newParticipant);
+                    String name = newParticipant.getName() + " - " + playerStat.getName();
+                    ParticipantPlayer participantPlayer = new ParticipantPlayer(name, playerFrameOverviews, playerStat, i, newParticipant.getParticipantId());
+                    matchParticipantPlayers.add(participantPlayer);
+                }
+                ++i;
+            }
+        }
+        if(i > matchParticipants.size()) {
+            orderParticipantPlayers();
+        }
+    }
+
+    private void addPlayerStatsToParticipant(List<PlayerStat> toAdd, Participant participant, int position) {
+        for(PlayerStat playerStat : toAdd) {
+            //(String name, List<FrameOverview> frameOverviews, PlayerStat playerStat, int matchParticipantReferencePosition, long participantId)
+            ParticipantPlayer participantPlayer = new ParticipantPlayer(playerStat.getName(), new ArrayList<FrameOverview>(), playerStat, position, participant.getParticipantId());
+            matchParticipantPlayers.add(participantPlayer);
+        }
+        orderParticipantPlayers();
+        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
+        stats.addAll(toAdd);
+        participant.setPlayerStats(stats);
+    }
+
+    private void removePlayerStatsFromParticipant(List<PlayerStat> toRemove, Participant participant, int position) {
+        List<ParticipantPlayer> ppToRemove = new ArrayList<>();
+        for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
+            if(participantPlayer.matchParticipantReferencePosition == position) {
+                ppToRemove.add(participantPlayer);
+            }
+        }
+        if(ppToRemove.size() > 0) {
+            matchParticipantPlayers.removeAll(ppToRemove);
+        }
+        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
+        stats.removeAll(toRemove);
+        participant.setPlayerStats(stats);
+    }
+
+    private boolean removeParticipant(Participant participantToRemove) {
+        int i = 0;
+        boolean found = false;
+        for(Participant participant : matchParticipants) {
+            if(participant.getParticipantId() == participantToRemove.getParticipantId()) {
+                found = true;
+                break;
+            }
+            ++i;
+        }
+        if(found) {
+            List<ParticipantPlayer> toDelete = new ArrayList<>();
+            for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
+                if(participantPlayer.matchParticipantReferencePosition > i) {
+                    int refPos = participantPlayer.matchParticipantReferencePosition - 1;
+                    participantPlayer.matchParticipantReferencePosition = refPos;
+                } else if(participantPlayer.matchParticipantReferencePosition == i) {
+                    toDelete.add(participantPlayer);
+                }
+            }
+            matchParticipantPlayers.removeAll(toDelete);
+            matchParticipants.remove(i);
+            return true;
+        }
+        return false;
+    }
+
+    private Pair<Participant, Integer> findParticipant(long participantId) {
+        int position = 0;
+        for(Participant participant : matchParticipants) {
+            if(participantId == participant.getParticipantId()) {
+                return new Pair<>(participant, position);
+            }
+            ++position;
+        }
+        return null;
+    }
+
+    private List<ParticipantPlayer> orderParticipantPlayers() {
+        ParticipantPlayerComparatorByName comparatorByName = new ParticipantPlayerComparatorByName();
+        Collections.sort(matchParticipantPlayers, comparatorByName);
+        return matchParticipantPlayers;
+    }
+
+    private class ParticipantPlayerComparatorByName implements Comparator<ParticipantPlayer> {
+        @Override
+        public int compare(ParticipantPlayer o1, ParticipantPlayer o2) {
+            return o1.name.compareTo(o2.name);
+        }
+    }
+
+    @Override
     protected void bindDataOnView(Intent intent) {
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
@@ -341,6 +545,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
         if(participantSpinner.getSelectedItem() == null && matchParticipantPlayers != null){
             bindParticipantsOnSpinner();
+            return;
         }
 
         if (matchParticipants.size() < 1) {
@@ -394,6 +599,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
                 participantStat.setScore(0);
                 participantStat.setFramesPlayedNumber((byte) 0);
+                participantSharedViewModel.setToChangeStat(participant);
             }
             if(participant.getPlayerStats() != null) {
                 for(int j = 0; j < participant.getPlayerStats().size(); ++j) {
@@ -484,7 +690,9 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
     private void bindParticipantsOnSpinner() {
         if(matchParticipantPlayers == null || participantSpinnerAdapter == null) {
-            matchParticipantPlayers = createMatchParticipantPlayers();
+            if(matchParticipantPlayers == null) {
+                matchParticipantPlayers = createMatchParticipantPlayers();
+            }
             participantSpinnerAdapter = new ParticipantPlayerAdapter(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
             participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
@@ -556,13 +764,15 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 int newScore = frameOverviews.get(lastPositionOld + 1).getCurrentScore();
                 ++framesPlayedNumber;
 
+                participantStat.setFramesPlayedNumber(framesPlayedNumber);
+
                 if(newScore != oldScore) {
                     int score = participantStat.getScore();
                     score += newScore - oldScore;
                     participantStat.setScore(score);
-                }
 
-                participantStat.setFramesPlayedNumber(framesPlayedNumber);
+                    participantSharedViewModel.setToChangeStat(participant);
+                }
 
                 bindDataOnView(new Intent());
                 break;
@@ -582,6 +792,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     int score = participantStat.getScore();
                     score += newScore - oldScore;
                     participantStat.setScore(score);
+
+                    participantSharedViewModel.setToChangeStat(participant);
                 }
 
                 //((FrameOverviewAdapter) adapter).setItem(position, new FrameOverview(editedFrame) );
@@ -603,15 +815,17 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     newScore = participantPlayer.frameOverviews.get(position-1).getCurrentScore();
                 }
 
+                byte newFramesCount = participantStat.getFramesPlayedNumber();
+                --newFramesCount;
+                participantStat.setFramesPlayedNumber(newFramesCount);
+
                 if(newScore != oldScore) {
                     int score = participantStat.getScore();
                     score += newScore - oldScore;
                     participantStat.setScore(score);
-                }
 
-                byte newFramesCount = participantStat.getFramesPlayedNumber();
-                --newFramesCount;
-                participantStat.setFramesPlayedNumber(newFramesCount);
+                    participantSharedViewModel.setToChangeStat(participant);
+                }
 
                 if(position + 1 == maxFramesPerPlayer) {
                     fab.show();

@@ -98,7 +98,12 @@ public class MatchService extends AbstractIntentServiceWProgress {
                 matchManager.deleteContents(match.getId());
 
                 // 2. Save everything
-                matchManager.update(match);
+                // Update match - using set for old match - safe, no data from *edit button - pencil symbol* in showMatchActivity will be lost.
+                Match oldMatch = matchManager.getByIdFromDao(match.getId());
+                oldMatch.setPlayed(match.isPlayed());
+                oldMatch.setValidForStats(match.isValidForStats());
+                oldMatch.setTrackRolls(match.isTrackRolls());
+                matchManager.update(oldMatch);
 
                 // Participants
                 final ParticipantManager participantManager = managerFactory.getEntityManager(Participant.class);

@@ -30,6 +30,11 @@ public class DefaultViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         return fragments[position];
     }
+
+    public void setItem(int position, Fragment fragment) {
+        fragments[position] = fragment;
+    }
+
     public String getTag(int position) {
         return tags[position];
     }
