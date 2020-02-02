@@ -68,4 +68,13 @@ public class WinCondition implements Parcelable, IEntity {
     public void setWinCondition(int winCondition) {
         this.winCondition = winCondition;
     }
+
+    public long getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
 }

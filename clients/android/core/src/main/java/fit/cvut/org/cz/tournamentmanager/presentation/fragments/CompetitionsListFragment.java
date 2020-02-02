@@ -212,7 +212,7 @@ public class CompetitionsListFragment extends AbstractListFragment<Competition> 
             } else if (type.equals(CrossPackageConstants.EXTRA_EXPORT)) {
                 String json = intent.getStringExtra(CrossPackageConstants.EXTRA_JSON);
                 String filename = intent.getStringExtra(CrossPackageConstants.EXTRA_NAME);
-                View v = getView().findFocus();
+                View v = getView();
                 if (FilesHelper.saveFile(filename, json)) {
                     Snackbar.make(v, fit.cvut.org.cz.tmlibrary.R.string.export_file_created, Snackbar.LENGTH_LONG).show();
                 } else {

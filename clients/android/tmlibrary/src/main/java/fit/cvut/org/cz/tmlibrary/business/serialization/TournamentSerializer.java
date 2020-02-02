@@ -38,7 +38,7 @@ abstract public class TournamentSerializer extends BaseSerializer<Tournament> {
             hm.put(Constants.END, DateFormatter.getInstance().getDBDateFormat().format(entity.getEndDate()));
         }
         hm.put(Constants.NOTE, entity.getNote());
-        hm.put(Constants.TYPE, Integer.toString(entity.getType().id));
+        hm.put(Constants.TYPE, Integer.toString(entity.getTypeId()));
         return hm;
     }
 

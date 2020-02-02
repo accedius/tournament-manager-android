@@ -16,14 +16,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 /**
  * PointConfiguration entity (describes how many points costs different standings in a match: how much for 1st, 2nd and 3rd place and on etc.) and its representation in database
  */
 @DatabaseTable(tableName = DBConstants.tCONFIGURATIONS)
-public class PointConfiguration implements Parcelable, IEntity {
+public class PointConfiguration extends ShareBase implements Parcelable, IEntity {
     @DatabaseField(generatedId = true, columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cID)
     public long id;
 
@@ -39,6 +41,11 @@ public class PointConfiguration implements Parcelable, IEntity {
     public List<Float> configurationPlacePoints = new ArrayList<>();
 
     public PointConfiguration() {}
+
+    @Override
+    public String getEntityType() {
+        return Constants.POINT_CONFIGURATION;
+    }
 
     public PointConfiguration(Parcel in) {
         id = in.readLong();
@@ -74,6 +81,14 @@ public class PointConfiguration implements Parcelable, IEntity {
 
     public PointConfiguration(long id, long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
         this.id = id;
+        this.tournamentId = tournamentId;
+        this.sidesNumber = sidesNumber;
+        setConfigurationPlacePoints(pointConfiguration);
+    }
+
+    public PointConfiguration(long id, String uid, long tournamentId, long sidesNumber, List<Float> pointConfiguration) {
+        this.id = id;
+        this.uid = uid;
         this.tournamentId = tournamentId;
         this.sidesNumber = sidesNumber;
         setConfigurationPlacePoints(pointConfiguration);

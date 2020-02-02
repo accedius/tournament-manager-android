@@ -210,6 +210,7 @@ public class BowlingService extends AbstractIntentServiceWProgress {
                 }
                 DatabaseFactory.getInstance().getDatabase(this).endTransaction();
                 */
+                sendBroadcast(res);
                 break;
             }
         }

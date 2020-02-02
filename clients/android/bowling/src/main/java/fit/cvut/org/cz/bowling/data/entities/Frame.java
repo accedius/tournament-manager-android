@@ -9,11 +9,13 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.ArrayList;
 import java.util.List;
 
+import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
+import fit.cvut.org.cz.tmlibrary.data.entities.ShareBase;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 
 @DatabaseTable(tableName = DBConstants.tMATCH_FRAMES)
-public class Frame implements Parcelable, IEntity {
+public class Frame extends ShareBase implements Parcelable, IEntity {
     @DatabaseField(generatedId = true, columnName = fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants.cID)
     private long id;
 
@@ -33,6 +35,11 @@ public class Frame implements Parcelable, IEntity {
 
     public Frame() {
         //empty, for database needs
+    }
+
+    @Override
+    public String getEntityType() {
+        return Constants.FRAME;
     }
 
     public Frame(long matchId, long participantId, byte frameNumber, long playerId) {
