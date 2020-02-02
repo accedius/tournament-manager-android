@@ -40,6 +40,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     protected static List<Participant> matchParticipants;
     protected long matchId;
     private Spinner participantSpinner;
+    private ArrayAdapter<Participant> participantSpinnerAdapter;
     private Fragment thisFragment;
 
     public static final class RecyclerViewUpdateCodes {
@@ -181,6 +182,10 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             return;
         }
 
+
+        if(participantSpinner.getSelectedItem() == null && matchParticipants != null) {
+            bindParticipantsOnSpinner();
+        }
         if(participantSpinner.getSelectedItem() != null) {
             ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
             intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
@@ -190,8 +195,10 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     }
 
     private void bindParticipantsOnSpinner() {
-        ArrayAdapter<Participant> participantSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
-        participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if(participantSpinnerAdapter == null) {
+            participantSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
+            participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        }
         participantSpinner.setAdapter(participantSpinnerAdapter);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

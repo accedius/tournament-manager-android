@@ -53,6 +53,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     private Spinner participantSpinner;
+    ParticipantPlayerAdapter participantSpinnerAdapter;
     protected static List<Participant> matchParticipants;
     protected static List<ParticipantPlayer> matchParticipantPlayers;
     protected long matchId;
@@ -338,6 +339,10 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             return;
         }
 
+        if(participantSpinner.getSelectedItem() == null && matchParticipantPlayers != null){
+            bindParticipantsOnSpinner();
+        }
+
         if (matchParticipants.size() < 1) {
             fab.hide();
         } else {
@@ -478,9 +483,11 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     }
 
     private void bindParticipantsOnSpinner() {
-        matchParticipantPlayers = createMatchParticipantPlayers();
-        ParticipantPlayerAdapter participantSpinnerAdapter = new ParticipantPlayerAdapter(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
-        participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if(matchParticipantPlayers == null || participantSpinnerAdapter == null) {
+            matchParticipantPlayers = createMatchParticipantPlayers();
+            participantSpinnerAdapter = new ParticipantPlayerAdapter(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
+            participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        }
         participantSpinner.setAdapter(participantSpinnerAdapter);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -606,7 +613,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 --newFramesCount;
                 participantStat.setFramesPlayedNumber(newFramesCount);
 
-                if(position == maxFramesPerPlayer) {
+                if(position + 1 == maxFramesPerPlayer) {
                     fab.show();
                 }
 

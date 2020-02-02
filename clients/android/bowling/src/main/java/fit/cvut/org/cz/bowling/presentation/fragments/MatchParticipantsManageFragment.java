@@ -217,6 +217,15 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
             for (int i = 0; i < matchParticipants.size(); i++) {
                 String name = matchParticipants.get(i).getName();
                 Participant participant = matchParticipants.get(i);
+
+                //Compatibility check, in older generate scripts participantStats weren't being made on match generation -> mb fix by database upgrade script
+                if(participant.getParticipantStats() == null || participant.getParticipantStats().size() < 1) {
+                    ParticipantStat ps = new ParticipantStat(participant.getId());
+                    List<ParticipantStat> participantStats = new ArrayList<>();
+                    participantStats.add(ps);
+                    participant.setParticipantStats(participantStats);
+                }
+
                 ParticipantOverview po = getParticipantOverview(participant);
                 participantStatOverviews.add(po);
             }
@@ -228,8 +237,8 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     private ParticipantOverview getParticipantOverview(Participant participant) {
         long participantId = participant.getParticipantId();
-        long participantStatId = participant.getParticipantStats().get(0).getId();
         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+        long participantStatId = participantStat.getId();
         int score = participantStat.getScore();
         byte frame = participantStat.getFramesPlayedNumber();
         String name = participant.getName();
