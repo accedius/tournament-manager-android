@@ -46,6 +46,7 @@ public class PlayerStatSerializer {
         hm.put(Constants.STRIKES, String.valueOf(entity.getStrikes()));
         hm.put(Constants.SPARES, String.valueOf(entity.getSpares()));
         hm.put(Constants.POINTS, String.valueOf(entity.getPoints()));
+        hm.put(Constants.FRAMES_PLAYED, String.valueOf(entity.getFramesPlayedNumber()));
 
         return hm;
     }
@@ -54,6 +55,7 @@ public class PlayerStatSerializer {
         entity.setStrikes(Integer.parseInt(String.valueOf(syncData.get(Constants.STRIKES))));
         entity.setSpares(Integer.parseInt(String.valueOf(syncData.get(Constants.SPARES))));
         entity.setPoints(Integer.parseInt(String.valueOf(syncData.get(Constants.POINTS))));
+        entity.setFramesPlayedNumber(Byte.parseByte(String.valueOf(syncData.get(Constants.FRAMES_PLAYED))));
     }
 
     public String getEntityType() {
