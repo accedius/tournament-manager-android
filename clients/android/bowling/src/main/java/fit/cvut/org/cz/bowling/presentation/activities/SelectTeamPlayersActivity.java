@@ -21,9 +21,9 @@ public class SelectTeamPlayersActivity extends SelectableListActivity<Player> {
      * @return Intent that can be used to start this activity
      */
     public static Intent newStartIntent(Context context, long teamId, ArrayList<PlayerStat> alreadySelectedPlayers) {
-        Intent intent = new Intent(context, AddParticipantsActivity.class);
+        Intent intent = new Intent(context, SelectTeamPlayersActivity.class);
         intent.putExtra(ExtraConstants.EXTRA_TEAM_ID, teamId);
-        intent.putExtra(ExtraConstants.EXTRA_SELECTED, alreadySelectedPlayers);
+        intent.putParcelableArrayListExtra(ExtraConstants.EXTRA_SELECTED, alreadySelectedPlayers);
 
         return intent;
     }

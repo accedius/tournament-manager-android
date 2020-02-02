@@ -256,7 +256,7 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public class StatsReceiver extends BroadcastReceiver {
+    private class StatsReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

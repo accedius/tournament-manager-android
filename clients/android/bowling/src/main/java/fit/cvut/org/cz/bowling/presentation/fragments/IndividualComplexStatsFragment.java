@@ -71,7 +71,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
     private static Fragment thisFragment;
     private long matchId;
 
-    final static int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
+    final static int maxFramesPerPlayer = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
     final static int maxFrameScore = ConstraintsConstants.tenPinFrameMaxScore;
     final static int maxScore = ConstraintsConstants.tenPinMatchParticipantMaxScore;
 
@@ -89,7 +89,10 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         int participantIndex = 0;
         for(Participant participant : matchParticipants) {
             //-----------------------------------------------------------
-            int strikes = 0, spares = 0, points = 0, framesPlayed = 0;
+            int points = 0, framesPlayed = 0;
+            PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(0);
+            playerStat.setStrikes(0);
+            playerStat.setSpares(0);
             //-----------------------------------------------------------
 
             List<FrameOverview> overviews = participantsFrameOverviews.get(participantIndex);
@@ -140,13 +143,11 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                 for(FrameOverview overview : overviews) {
 
                     //-----------------------------------------------------------
-                    if(overview.getFrameScore() == maxFrameScore) {
-                        if(overview.getRolls().get(0) == 10) {
-                            ++strikes;
-                        } else {
-                            ++spares;
-                        }
+                    int frameScore = 0;
+                    for(Byte roll : overview.getRolls()) {
+                        frameScore += roll;
                     }
+                    addStSpFromFrame(overview.getRolls(), frameScore, frameIndex+1, playerStat);
                     //-----------------------------------------------------------
 
                     boolean frameToUpdate = true;
@@ -240,9 +241,6 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                 stat.setFrames(participantFrames);
 
                 //-----------------------------------------------------------
-                PlayerStat playerStat = (PlayerStat) participant.getPlayerStats().get(0);
-                playerStat.setStrikes(strikes);
-                playerStat.setSpares(spares);
                 playerStat.setPoints(points);
                 playerStat.setFramesPlayedNumber((byte) framesPlayed);
                 //-----------------------------------------------------------
@@ -284,6 +282,50 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         bundle.putParcelableArrayList(ROLLS_TO_DELETE, (ArrayList<? extends Parcelable>) rollsToDelete);
 
         return bundle;
+    }
+
+    private void addStSpFromFrame (List<Byte> rolls, int frameScore, int frameNumber, PlayerStat playerStat) {
+        int strikes = 0;
+        int spares = 0;
+        int i = frameNumber;
+        int j = rolls.size();
+        if(frameScore == maxFrameScore && i != maxFramesPerPlayer) {
+            if (j == 1) {
+                ++strikes;
+            } else {
+                ++spares;
+            }
+        } else if (i == maxFramesPerPlayer) {
+            //basically all possibilities with strikes or spares (dot "." is any number of knocked down pins < 10) -> X(X(X)), X(./), ./(X)
+            if(frameScore >= maxFrameScore && j > 2) {
+                byte roll1 = rolls.get(0), roll2 = rolls.get(1), roll3 = rolls.get(2);
+                if(roll1 == maxFrameScore) {
+                    ++strikes;
+                    if(roll2 == maxFrameScore) {
+                        ++strikes;
+                        if(roll3 == maxFrameScore) {
+                            ++strikes;
+                        }
+                    } else if (roll2 + roll3 == maxFrameScore) {
+                        ++spares;
+                    }
+                } else {
+                    if (roll2 + roll1 == maxFrameScore) {
+                        ++spares;
+                        if(roll3 == maxFrameScore){
+                            ++strikes;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(strikes > 0) {
+            playerStat.setStrikes(playerStat.getStrikes() + strikes);
+        }
+        if(spares > 0) {
+            playerStat.setSpares(playerStat.getSpares() + spares);
+        }
     }
 
     @Override
@@ -568,7 +610,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //empty
+                //fab.hide();
             }
         });
     }
@@ -631,7 +673,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
 
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -719,7 +761,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                     //TODO if needed
                 }
             }
-            if (frameNumber == maxFrames)
+            if (frameNumber == maxFramesPerPlayer)
                 v.findViewById(R.id.throw_3_input_layout).setVisibility(View.VISIBLE);
             builder.setTitle(getResources().getString(R.string.frame_num) + frameNumber + ": " + frameOverview.getPlayerName());
 
@@ -749,7 +791,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                             pinsInRoll2 = Integer.parseInt(roll2.getText().toString());
                         }
 
-                        if (frameNumber == maxFrames && !roll3.getText().toString().isEmpty() ) {
+                        if (frameNumber == maxFramesPerPlayer && !roll3.getText().toString().isEmpty() ) {
                             pinsInRoll3 = Integer.parseInt(roll3.getText().toString());
                         }
 
@@ -765,11 +807,11 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
                             til.setError(getResources().getString(R.string.flf_roll_format_violated) + " " + maxFrameScore + "!");
                             returnToken = true;
-                        } else if (frameNumber == maxFrames || pinsInRoll1 != maxFrameScore) {
+                        } else if (frameNumber == maxFramesPerPlayer || pinsInRoll1 != maxFrameScore) {
                             rolls.add((byte) pinsInRoll2);
                         }
 
-                        if (frameNumber == maxFrames) {
+                        if (frameNumber == maxFramesPerPlayer) {
                             if (pinsInRoll3 > maxFrameScore || pinsInRoll3 < 0) {
                                 TextInputLayout til = getDialog().findViewById(R.id.throw_3_input_layout);
                                 til.setError(getResources().getString(R.string.flf_roll_format_violated) + " " + maxFrameScore + "!");
@@ -782,14 +824,14 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                         if(returnToken)
                             return;
 
-                        if ( pinsInRoll1 + pinsInRoll2 > maxFrameScore && ( frameNumber != maxFrames || pinsInRoll1 != maxFrameScore) ) {
+                        if ( pinsInRoll1 + pinsInRoll2 > maxFrameScore && ( frameNumber != maxFramesPerPlayer || pinsInRoll1 != maxFrameScore) ) {
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
                             til.setError(getResources().getString(R.string.flf_regular_frame_too_many_pins_error) + " " + maxFrameScore + "!");
                             returnToken = true;
                         }
 
                         if (pinsInRoll1 + pinsInRoll2 < maxFrameScore
-                                && frameNumber == maxFrames
+                                && frameNumber == maxFramesPerPlayer
                                 && pinsInRoll3 > 0) {
                             TextInputLayout til = getDialog().findViewById(R.id.throw_2_input_layout);
                             til.setError(getResources().getString(R.string.flf_last_frame_invalid_extra_roll_error));

@@ -337,7 +337,7 @@ public class ParticipantsOverviewFragment extends BowlingAbstractMatchStatsListF
         return null;
     }
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

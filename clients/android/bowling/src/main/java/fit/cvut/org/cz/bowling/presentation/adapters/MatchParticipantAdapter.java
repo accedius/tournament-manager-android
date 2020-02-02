@@ -49,7 +49,7 @@ public class MatchParticipantAdapter extends AbstractListAdapter<ParticipantOver
         {
             holder.manage_participant.setVisibility(View.VISIBLE);
         }
-        if(stats.getScore() < 0) //nobody played yet
+        if(stats.getScore() < 0 || stats.getFramesPlayedNumber() <= 0) //nobody played yet
         {
             holder.score_display.setVisibility(View.GONE);
             holder.warning_not_played_yet.setVisibility(View.VISIBLE);

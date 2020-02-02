@@ -112,7 +112,7 @@ public class BowlingTeamsListFragment extends AbstractListFragment<Team> {
         return fab;
     }
 
-    public class TeamReceiver extends BroadcastReceiver {
+    private class TeamReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

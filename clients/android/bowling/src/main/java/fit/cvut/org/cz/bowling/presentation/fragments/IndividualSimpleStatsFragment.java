@@ -273,7 +273,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
     }
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

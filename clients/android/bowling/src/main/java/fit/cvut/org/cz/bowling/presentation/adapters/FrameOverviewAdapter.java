@@ -14,6 +14,7 @@ import java.util.Locale;
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
+import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
@@ -21,6 +22,9 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, FrameOverviewAdapter.FrameViewHolder> {
 
     private TournamentType type;
+
+    int rollMaxScore = ConstraintsConstants.tenPinFrameMaxScore;
+    int maxFrames = ConstraintsConstants.tenPinMatchParticipantMaxFrames;
 
     public FrameOverviewAdapter(TournamentType type) {
         this.type = type;
@@ -60,9 +64,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         Byte roll3 = getOrNull(rolls, 2);
 
         if (roll1 != null) {
-            if(roll1 == 10){
+            if(roll1 == rollMaxScore){
                 holder.roll1.setText(ExtraConstants.STRIKE_SYMBOL);
-                if(frameNum!=10){
+                if(frameNum != maxFrames){
                     roll2 = null;
                 }
             } else if (roll1 == 0) {
@@ -77,9 +81,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         }
 
         if (roll2 != null) {
-            if(roll2 == 10) {
+            if(roll2 == rollMaxScore && roll1 == rollMaxScore) {
                 holder.roll2.setText(ExtraConstants.STRIKE_SYMBOL);
-            } else if (roll2 + roll1 == 10 && roll2 > 0) {
+            } else if (roll2 + roll1 == rollMaxScore && roll2 > 0) {
                 holder.roll2.setText(ExtraConstants.SPARE_SYMBOL);
                 holder.roll3.setVisibility(View.GONE);
             } else if (roll2 == 0) {
@@ -94,9 +98,9 @@ public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, Fra
         }
 
         if (roll3 != null) {
-            if(roll3 == 10) {
+            if(roll3 == rollMaxScore && roll2 == rollMaxScore) {
                 holder.roll3.setText(ExtraConstants.STRIKE_SYMBOL);
-            } else if (roll3 + roll2 == 10 && roll3 > 0 && roll1 + roll2 != 10) {
+            } else if (roll3 + roll2 == rollMaxScore && roll3 > 0 && (roll1 + roll2 != rollMaxScore || roll2 == 0) ) {
                 holder.roll3.setText(ExtraConstants.SPARE_SYMBOL);
             } else if (roll3 == 0) {
                 holder.roll3.setText(ExtraConstants.ZERO_SYMBOL);

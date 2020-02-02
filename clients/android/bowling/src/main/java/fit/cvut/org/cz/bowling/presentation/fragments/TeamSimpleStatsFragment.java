@@ -40,6 +40,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     protected static List<Participant> matchParticipants;
     protected long matchId;
     private Spinner participantSpinner;
+    private ArrayAdapter<Participant> participantSpinnerAdapter;
     private Fragment thisFragment;
 
     public static final class RecyclerViewUpdateCodes {
@@ -155,7 +156,6 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     @Override
     public void askForData() {
         Intent intent = ParticipantService.newStartIntent(ParticipantService.ACTION_GET_BY_MATCH_ID, getContext());
-        Long matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
         intent.putExtra(ExtraConstants.EXTRA_MATCH_ID, matchId);
         getContext().startService(intent);
     }
@@ -182,15 +182,23 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             return;
         }
 
-        ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
-        intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
-        super.bindDataOnView(intent);
-        switchRecyclerViewsProgressBar();
+
+        if(participantSpinner.getSelectedItem() == null && matchParticipants != null) {
+            bindParticipantsOnSpinner();
+        }
+        if(participantSpinner.getSelectedItem() != null) {
+            ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) participantSpinner.getSelectedItem()).getPlayerStats();
+            intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) playerStatsToShow);
+            super.bindDataOnView(intent);
+            switchRecyclerViewsProgressBar();
+        }
     }
 
     private void bindParticipantsOnSpinner() {
-        ArrayAdapter<Participant> participantSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
-        participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if(participantSpinnerAdapter == null) {
+            participantSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, matchParticipants);
+            participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        }
         participantSpinner.setAdapter(participantSpinnerAdapter);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -300,11 +308,13 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(participantReceiver);
     }
 
-    public class ParticipantReceiver extends BroadcastReceiver {
+    private class ParticipantReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switchRecyclerViewsProgressBar();
+            if(matchParticipants == null) {
+                switchRecyclerViewsProgressBar();
+            }
             switch (action) {
                 case ParticipantService.ACTION_GET_BY_MATCH_ID: {
                     bindDataOnView(intent);

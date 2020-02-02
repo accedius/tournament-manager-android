@@ -119,7 +119,7 @@ public class ConfigurePointsFragment extends AbstractListFragment<PointConfigura
         return fab;
     }
 
-    public class PointConfigurationReceiver extends BroadcastReceiver {
+    private class PointConfigurationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
