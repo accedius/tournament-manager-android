@@ -125,7 +125,7 @@
     <string name="choose_file">Vyberte soubor</string>
     <string name="no_competition_file_error">Nebyl nalezen žádný soubor ve složce Download.</string>
     <string name="export_file_created">Soubor byl vytvořen ve složce Download.</string>
-    <string name="export_file_failed">Soubor se nepodařilo uložit. Zkuste to prosím později.</string>
+    <string name="export_file_failed">Soubor se nepodařilo uložit. Ujistěte se, zda má aplikace přístup k úložišti.</string>
     <string name="settings">Nastavení</string>
     <string name="settings_saved">Nastavení bylo uloženo.</string>
     <string name="settings_restored">Nastavení bylo obnoveno.</string>

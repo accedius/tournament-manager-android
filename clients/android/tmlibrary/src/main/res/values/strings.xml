@@ -64,7 +64,7 @@
 
     <string name="export_to_file">Export to file</string>
     <string name="export_file_created">File has been created in your Download folder.</string>
-    <string name="export_file_failed">File could not be created. Please try again later.</string>
+    <string name="export_file_failed">File could not be created. Make sure the app has storage permissions.</string>
     <string name="choose_file">Choose file to import</string>
 
     <string name="home">Home</string>
