@@ -17,6 +17,7 @@ import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.bowling.data.entities.WinCondition;
+import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
@@ -75,6 +76,8 @@ public class TournamentSerializer extends fit.cvut.org.cz.tmlibrary.business.ser
 
         /* Serialize Win Condition */
         WinCondition wc = ((IWinConditionManager)ManagerFactory.getInstance(context).getEntityManager(WinCondition.class)).getByTournamentId(entity.getId());
+        if (wc == null)
+            wc = new WinCondition(entity.getId(), WinConditionTypes.win_condition_default);
         item.getSubItems().add(WinConditionSerializer.getInstance(context).serialize(wc));
 
         return item;
