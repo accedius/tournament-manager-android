@@ -44,7 +44,7 @@
     <string name="finish">Finish</string>
     <string name="edit_stats">Edit stats</string>
     <string name="delete">Delete</string>
-    <string name="delete_members" translatable="false">Delete members</string>
+    <string name="delete_members">Delete members</string>
     <string name="cancel">Cancel</string>
     <string name="reset">Reset</string>
     <string name="generate_rosters">Generate rosters</string>

@@ -65,4 +65,21 @@
     <string name="default_win_condition">Standartní</string>
     <string name="total_points_win_condition">Výhra celkovými body</string>
     <string name="win_condition">Druh bodování</string>
+    <string name="l">P</string>
+    <string name="generate_by_goals">Generovat podle skóre</string>
+    <string name="generate_by_team_points">Generate podle týmových bodů</string>
+    <string name="legend_D">D: Remízy</string>
+    <string name="legend_GP">GP: Poč. odehraných zápasů</string>
+    <string name="legend_MP">MP: Body za zápas</string>
+    <string name="legend_MPAVG">Avg MP: Průměrný počet bodů za zápas</string>
+    <string name="legend_P">P: Body</string>
+    <string name="legend_PAVG">Avg P: Průměrný počet bodů</string>
+    <string name="legend_SP" translatable="false">P: Body</string>
+    <string name="legend_TL">L: Prohry</string>
+    <string name="legend_TW">W: Výhry</string>
+    <string name="legend_note">Pro zobrazení více statistik otočte obrazovku o 90°</string>
+    <string name="no">Ne</string>
+    <string name="normal_time">Základní čas</string>
+    <string name="set_all">Všechny pole musí být vyplněny</string>
+    <string name="yes">Ano</string>
 </resources>

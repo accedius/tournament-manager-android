@@ -8,7 +8,7 @@
     <string name="activity_create_competition" translatable="false">fit.cvut.org.cz.bowling.presentation.activities.CreateCompetitionActivity</string>
     <string name="activity_detail_competition" translatable="false">fit.cvut.org.cz.bowling.presentation.activities.ShowCompetitionActivity</string>
 
-    <string name="match_same_participants_error" tools:ignore="MissingTranslation">Home and away teams cannot be same!</string>
+    <string name="match_same_participants_error" tools:ignore="MissingTranslation" translatable="false">Home and away teams cannot be same!</string>
 
     <string name="generate_by_goals"  tools:ignore="MissingTranslation">Generate by goals</string>
     <string name="generate_by_score" tools:ignore="MissingTranslation">Generate by score</string>
@@ -22,80 +22,80 @@
 
     <string name="type_none">None</string>
 
-    <string name="gp" tools:ignore="MissingTranslation">GP</string>
-    <string name="w" tools:ignore="MissingTranslation">W</string>
+    <string name="gp" tools:ignore="MissingTranslation" translatable="false">GP</string>
+    <string name="w" tools:ignore="MissingTranslation" translatable="false">W</string>
     <string name="l" tools:ignore="MissingTranslation">L</string>
-    <string name="d" tools:ignore="MissingTranslation">D</string>
+    <string name="d" tools:ignore="MissingTranslation" translatable="false">D</string>
 
-    <string name="g" tools:ignore="MissingTranslation">G</string>
-    <string name="st" tools:ignore="MissingTranslation">St</string>
+    <string name="g" tools:ignore="MissingTranslation" translatable="false">G</string>
+    <string name="st" tools:ignore="MissingTranslation" translatable="false">St</string>
     <string name="legend_ST">St: Strikes</string>
     <string name="strikes">Strikes</string>
 
-    <string name="a" tools:ignore="MissingTranslation">A</string>
+    <string name="a" tools:ignore="MissingTranslation" translatable="false">A</string>
     <string name="sp">Sp</string>
     <string name="legend_SPA">Sp: Spares</string>
     <string name="spares">Spares</string>
 
-    <string name="pt" tools:ignore="MissingTranslation">Pt</string>
+    <string name="pt" tools:ignore="MissingTranslation" translatable="false">Pt</string>
     <string name="legend_PT">Pt: Points</string>
     <string name="points">Points</string>
 
-    <string name="p" tools:ignore="MissingTranslation">P</string>
-    <string name="pmp" tools:ignore="MissingTranslation">+/-</string>
+    <string name="p" tools:ignore="MissingTranslation" translatable="false">P</string>
+    <string name="pmp" tools:ignore="MissingTranslation" translatable="false">+/-</string>
 
-    <string name="ag" tools:ignore="MissingTranslation">Avg. G</string>
-    <string name="ast" tools:ignore="MissingTranslation">Avg. St</string>
-    <string name="amp" tools:ignore="MissingTranslation">Avg. MP</string>
+    <string name="ag" tools:ignore="MissingTranslation" translatable="false">Avg. G</string>
+    <string name="ast" tools:ignore="MissingTranslation" translatable="false">Avg. St</string>
+    <string name="amp" tools:ignore="MissingTranslation" translatable="false">Avg. MP</string>
     <string name="legend_AvgST" tools:ignore="MissingTranslation">Avg. St: Average strikes per match</string>
 
-    <string name="ap" tools:ignore="MissingTranslation">Avg. P</string>
-    <string name="asp" tools:ignore="MissingTranslation">Avg. Sp</string>
+    <string name="ap" tools:ignore="MissingTranslation" translatable="false">Avg. P</string>
+    <string name="asp" tools:ignore="MissingTranslation" translatable="false">Avg. Sp</string>
     <string name="legend_AvgSP">Avg. Sp: Average spares per match</string>
 
 
     <string name="score">Score</string>
-    <string name="so" tools:ignore="MissingTranslation">so</string>
-    <string name="ot" tools:ignore="MissingTranslation">ot</string>
+    <string name="so" tools:ignore="MissingTranslation" translatable="false">so</string>
+    <string name="ot" tools:ignore="MissingTranslation" translatable="false">ot</string>
 
     <string name="normal_time" tools:ignore="MissingTranslation">Normal time</string>
-    <string name="overtime" tools:ignore="MissingTranslation">Overtime</string>
-    <string name="shootouts" tools:ignore="MissingTranslation">Shootouts</string>
+    <string name="overtime" tools:ignore="MissingTranslation" translatable="false">Overtime</string>
+    <string name="shootouts" tools:ignore="MissingTranslation" translatable="false">Shootouts</string>
     <string name="set_all" tools:ignore="MissingTranslation">All fields need to be set!</string>
-    <string name="s" tools:ignore="MissingTranslation">S</string>
-    <string name="goals" tools:ignore="MissingTranslation">Goals</string>
-    <string name="assists" tools:ignore="MissingTranslation">Assists</string>
-    <string name="plus_minus_points" tools:ignore="MissingTranslation">+/- points</string>
-    <string name="saves" tools:ignore="MissingTranslation">Saves</string>
-    <string name="shootouts_error" tools:ignore="MissingTranslation">Shootouts are checked, match must not be draw!</string>
-    <string name="lot" tools:ignore="MissingTranslation">L ot</string>
-    <string name="lso" tools:ignore="MissingTranslation">L so</string>
-    <string name="wot" tools:ignore="MissingTranslation">W ot</string>
-    <string name="wso" tools:ignore="MissingTranslation">W so</string>
-    <string name="mp" tools:ignore="MissingTranslation">MP</string>
+    <string name="s" tools:ignore="MissingTranslation" translatable="false">S</string>
+    <string name="goals" tools:ignore="MissingTranslation" translatable="false">Goals</string>
+    <string name="assists" tools:ignore="MissingTranslation" translatable="false">Assists</string>
+    <string name="plus_minus_points" tools:ignore="MissingTranslation" translatable="false">+/- points</string>
+    <string name="saves" tools:ignore="MissingTranslation" translatable="false">Saves</string>
+    <string name="shootouts_error" tools:ignore="MissingTranslation" translatable="false">Shootouts are checked, match must not be draw!</string>
+    <string name="lot" tools:ignore="MissingTranslation" translatable="false">L ot</string>
+    <string name="lso" tools:ignore="MissingTranslation" translatable="false">L so</string>
+    <string name="wot" tools:ignore="MissingTranslation" translatable="false">W ot</string>
+    <string name="wso" tools:ignore="MissingTranslation" translatable="false">W so</string>
+    <string name="mp" tools:ignore="MissingTranslation" translatable="false">MP</string>
 
-    <string name="legend" tools:ignore="MissingTranslation">Stats legend:</string>
+    <string name="legend" tools:ignore="MissingTranslation" translatable="false">Stats legend:</string>
     <string name="legend_GP" tools:ignore="MissingTranslation">GP: Games played</string>
     <string name="legend_P" tools:ignore="MissingTranslation">P: Points</string>
     <string name="legend_SP" tools:ignore="MissingTranslation">P: Points</string>
     <string name="legend_TW" tools:ignore="MissingTranslation">W: Wins</string>
-    <string name="legend_W" tools:ignore="MissingTranslation">W: Wins in normal time</string>
-    <string name="legend_Wot" tools:ignore="MissingTranslation">W: Wins in overtime</string>
-    <string name="legend_Wso" tools:ignore="MissingTranslation">W: Wins in shootouts</string>
+    <string name="legend_W" tools:ignore="MissingTranslation" translatable="false">W: Wins in normal time</string>
+    <string name="legend_Wot" tools:ignore="MissingTranslation" translatable="false">W: Wins in overtime</string>
+    <string name="legend_Wso" tools:ignore="MissingTranslation" translatable="false">W: Wins in shootouts</string>
     <string name="legend_TL" tools:ignore="MissingTranslation">L: Losses</string>
-    <string name="legend_L" tools:ignore="MissingTranslation">L: Losses in normal time</string>
-    <string name="legend_Lot" tools:ignore="MissingTranslation">L: Losses in overtime</string>
-    <string name="legend_Lso" tools:ignore="MissingTranslation">L: Losses in shootouts</string>
+    <string name="legend_L" tools:ignore="MissingTranslation" translatable="false">L: Losses in normal time</string>
+    <string name="legend_Lot" tools:ignore="MissingTranslation" translatable="false">L: Losses in overtime</string>
+    <string name="legend_Lso" tools:ignore="MissingTranslation" translatable="false">L: Losses in shootouts</string>
     <string name="legend_D" tools:ignore="MissingTranslation">D: Draws</string>
-    <string name="legend_G" tools:ignore="MissingTranslation">G: Goals scored</string>
-    <string name="legend_A" tools:ignore="MissingTranslation">A: Assists</string>
-    <string name="legend_S" tools:ignore="MissingTranslation">S: Saves</string>
+    <string name="legend_G" tools:ignore="MissingTranslation" translatable="false">G: Goals scored</string>
+    <string name="legend_A" tools:ignore="MissingTranslation" translatable="false">A: Assists</string>
+    <string name="legend_S" tools:ignore="MissingTranslation" translatable="false">S: Saves</string>
     <string name="legend_MP" tools:ignore="MissingTranslation">MP: Match points</string>
-    <string name="legend_PM" tools:ignore="MissingTranslation">+/-: Plus minus points</string>
-    <string name="legend_GAVG" tools:ignore="MissingTranslation">Avg G: Average goals per match</string>
+    <string name="legend_PM" tools:ignore="MissingTranslation" translatable="false">+/-: Plus minus points</string>
+    <string name="legend_GAVG" tools:ignore="MissingTranslation" translatable="false">Avg G: Average goals per match</string>
     <string name="legend_PAVG" tools:ignore="MissingTranslation">Avg P: Average points per match</string>
     <string name="legend_MPAVG" tools:ignore="MissingTranslation">Avg MP: Average match points per match</string>
-    <string name="legend_note" tools:ignore="MissingTranslation">Get more statistics by change orientation to landscape</string>
+    <string name="legend_note" tools:ignore="MissingTranslation">Change orientation to landscape to show more statistics</string>
 
     <string name="point_configurations" tools:ignore="Missingtranslation">Point configurations</string>
     <string name="point_configuration_settings">Point configuration settings</string>
@@ -151,8 +151,8 @@
 
     <string name="coming_soon_label">This feature is coming soon…</string>
     
-    <string name="stat_match_point" tools:ignore="MissingTranslation">MP</string>
-    <string name="stat_match_point_average" tools:ignore="MissingTranslation">MP avg.</string>
+    <string name="stat_match_point" tools:ignore="MissingTranslation" translatable="false">MP</string>
+    <string name="stat_match_point_average" tools:ignore="MissingTranslation" translatable="false">MP avg.</string>
     <string name="default_win_condition">Default</string>
     <string name="total_points_win_condition">Win by total points</string>
     <string name="win_condition">Win condition</string>
