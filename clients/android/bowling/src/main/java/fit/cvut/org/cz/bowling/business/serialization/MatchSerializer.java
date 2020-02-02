@@ -73,7 +73,7 @@ public class MatchSerializer extends BaseSerializer<Match> {
                 ServerCommunicationItem teamSCI = TeamSerializer.getInstance(context).serializeToMinimal(team);
 
                 List<ServerCommunicationItem> paStats = new ArrayList<>();
-                for (ParticipantStat stat : ((IParticipantStatManager)ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class)).getByMatchId(entity.getId())) {
+                for (ParticipantStat stat : ((IParticipantStatManager)ManagerFactory.getInstance(context).getEntityManager(ParticipantStat.class)).getByParticipantId(tPart.getId())) {
                     paStats.add(ParticipantStatSerializer.getInstance(context).serialize(stat));
                 }
 
