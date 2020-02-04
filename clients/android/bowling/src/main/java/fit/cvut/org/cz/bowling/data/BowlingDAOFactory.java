@@ -98,20 +98,20 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         int fromVersion = oldVersion;
 
         //check if it's version 4 or older
-        checkForOldVersions(db, fromVersion);
+        fromVersion = checkForOldVersions(db, fromVersion);
 
         //from <=3 to 4
-        upgradeFromLT3To4(db, fromVersion);
+        fromVersion = upgradeFromLT3To4(db, fromVersion);
 
         switch (fromVersion) {
             case 4: /*from 4 to 5*/
-                upgradeFrom4To5(db, fromVersion);
+                fromVersion = upgradeFrom4To5(db, fromVersion);
             case 5:
-                upgradeFrom5To6(db, fromVersion);
+                fromVersion = upgradeFrom5To6(db, fromVersion);
             case 6:
-                upgradeFrom6To7(db, fromVersion);
+                fromVersion = upgradeFrom6To7(db, fromVersion);
             case 7:
-                upgradeFrom7To8(db, fromVersion);
+                fromVersion = upgradeFrom7To8(db, fromVersion);
         }
     }
 
@@ -160,10 +160,12 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
      * @param db
      * @param fromVersion
      */
-    private void checkForOldVersions (SQLiteDatabase db, int fromVersion) {
-        if (fromVersion < 5 && checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
-            fromVersion = 4;
+    private int checkForOldVersions (SQLiteDatabase db, final int fromVersion) {
+        int version = fromVersion;
+        if (version < 5 && checkIfColumnExists(db, DBConstants.tCONFIGURATIONS, DBConstants.cSIDES_NUMBER) ) {
+            version = 4;
         }
+        return version;
     }
 
     /**
@@ -171,16 +173,18 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
      * @param db
      * @param fromVersion
      */
-    private void upgradeFromLT3To4 (SQLiteDatabase db, int fromVersion) {
-        if(fromVersion <= 3) {
+    private int upgradeFromLT3To4 (SQLiteDatabase db, int fromVersion) {
+        int version = fromVersion;
+        if(version <= 3) {
             try {
                 TableUtils.dropTable(connectionSource, Match.class, true);
                 TableUtils.dropTable(connectionSource, PlayerStat.class, true);
                 TableUtils.dropTable(connectionSource, PointConfiguration.class, true);
             } catch (SQLException e) {}
             onCreate(db, connectionSource);
-            fromVersion = 4;
+            version = 4;
         }
+        return version;
     }
 
     /**
@@ -206,7 +210,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
      * @param db
      * @param fromVersion
      */
-    private void upgradeFrom4To5 (SQLiteDatabase db, int fromVersion) {
+    private int upgradeFrom4To5 (SQLiteDatabase db, int fromVersion) {
+        int version = fromVersion;
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         IEntityDAO<ParticipantStat, Long> participantStatDAO = iManagerFactory.getDaoFactory().getMyDao(ParticipantStat.class);
         try {
@@ -222,6 +227,7 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tMATCHES + " ADD COLUMN " + DBConstants.cTRACK_ROLLS + " BOOLEAN DEFAULT 0;"); // SQLite stores Booleans as Integers 0 -> false; 1 -> true
             }
         } catch (SQLException e) {}
+        //to be 100% sure
         dropTable(ParticipantStat.class);
         dropTable(PlayerStat.class);
         dropTable(Participant.class);
@@ -237,7 +243,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
             iMatchManager.delete(match.getId());
         }*/
 
-        ++fromVersion;
+        ++version;
+        return version;
     }
 
     /**
@@ -245,7 +252,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
      * @param db
      * @param fromVersion
      */
-    private void upgradeFrom5To6 (SQLiteDatabase db, int fromVersion) {
+    private int upgradeFrom5To6 (SQLiteDatabase db, int fromVersion) {
+        int version = fromVersion;
         dropTable(ParticipantStat.class);
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         IEntityDAO<Participant, Long> participantDao = iManagerFactory.getDaoFactory().getMyDao(Participant.class);
@@ -255,10 +263,12 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         } catch (SQLException e) {}
 
         onCreate(db, connectionSource);
-        ++fromVersion;
+        ++version;
+        return version;
     }
 
-    private void upgradeFrom6To7 (SQLiteDatabase db, int fromVersion) {
+    private int upgradeFrom6To7 (SQLiteDatabase db, int fromVersion) {
+        int version = fromVersion;
         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
         IEntityDAO<PlayerStat, Long> matchDAO = iManagerFactory.getDaoFactory().getMyDao(PlayerStat.class);
         try {
@@ -266,10 +276,14 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                 matchDAO.executeRaw("ALTER TABLE " + DBConstants.tPLAYER_STATS + " ADD COLUMN " + DBConstants.cFRAMES_NUMBER + " BYTE DEFAULT 0;");
             }
         } catch (SQLException e) {}
-        ++fromVersion;
+        ++version;
+        return version;
     }
 
-    private void upgradeFrom7To8(SQLiteDatabase db, int fromVersion) {
+    private int upgradeFrom7To8(SQLiteDatabase db, int fromVersion) {
+        int version = fromVersion;
         onCreate(db, connectionSource);
+        ++version;
+        return version;
     }
 }
