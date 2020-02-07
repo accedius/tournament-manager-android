@@ -195,6 +195,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
 
         } catch (SQLException e) {Log.e("BowlingDAOFactory", "onUpgrade: FAILED from " + oldVersion + " to " + newVersion + " on cycle value fromVersion = " + fromVersion);}
 
+        onCreate(db, connectionSource);
+
         Log.d("BowlingDAOFactory", "onUpgrade: SUCCESS" );
     }
 
