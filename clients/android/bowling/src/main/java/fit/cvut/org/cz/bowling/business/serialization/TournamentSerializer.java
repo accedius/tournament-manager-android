@@ -2,11 +2,6 @@ package fit.cvut.org.cz.bowling.business.serialization;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +15,6 @@ import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
-import fit.cvut.org.cz.tmlibrary.business.serialization.Constants;
 import fit.cvut.org.cz.tmlibrary.business.serialization.PlayerSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;

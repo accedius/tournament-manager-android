@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -15,28 +14,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
-import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
-import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.activities.CreateMatchActivity;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
-import fit.cvut.org.cz.bowling.presentation.fragments.NewBowlingMatchFragment;
 import fit.cvut.org.cz.bowling.presentation.services.MatchService;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * Dialog, that occurs, when the + button in matches fragment is clicked

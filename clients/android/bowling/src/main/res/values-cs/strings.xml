@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="generate_by_wins">Generovat podle výher</string>
     <string name="generate_by_lanes">Generovat podle lajn</string>
     <string name="generate_by_score">Generate podle score</string>

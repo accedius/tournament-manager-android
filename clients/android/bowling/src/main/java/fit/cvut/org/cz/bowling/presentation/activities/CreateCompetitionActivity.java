@@ -18,7 +18,6 @@ import fit.cvut.org.cz.bowling.presentation.services.CompetitionService;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractToolbarActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewCompetitionFragment;
 
 /**
  * Activity to create a bowling competition

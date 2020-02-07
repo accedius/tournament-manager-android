@@ -2,8 +2,6 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 
 import android.support.v4.app.Fragment;
 
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
-
 /**
  * Fragment is used in
  */

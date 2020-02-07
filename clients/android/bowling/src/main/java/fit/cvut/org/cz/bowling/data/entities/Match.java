@@ -3,18 +3,14 @@ package fit.cvut.org.cz.bowling.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 
 /**
  * Match entity and its representation in database

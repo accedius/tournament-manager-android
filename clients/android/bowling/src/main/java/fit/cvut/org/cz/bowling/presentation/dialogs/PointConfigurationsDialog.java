@@ -1,12 +1,9 @@
 package fit.cvut.org.cz.bowling.presentation.dialogs;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 
-import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.PointConfigurationService;
 

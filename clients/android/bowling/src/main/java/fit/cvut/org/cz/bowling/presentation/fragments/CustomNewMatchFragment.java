@@ -3,11 +3,9 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -18,17 +16,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import fit.cvut.org.cz.bowling.R;
-import fit.cvut.org.cz.bowling.business.ManagerFactory;
-import fit.cvut.org.cz.bowling.business.managers.TeamManager;
 import fit.cvut.org.cz.tmlibrary.data.entities.Match;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
-import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.dialogs.DatePickerDialogFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewMatchFragment;
 
 /**
  * Fragment for create or edit Match.

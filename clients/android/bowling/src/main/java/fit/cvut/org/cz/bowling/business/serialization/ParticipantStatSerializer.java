@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.HashMap;
 
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
-import fit.cvut.org.cz.tmlibrary.business.serialization.BaseSerializer;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.business.serialization.interfaces.ISerializingStrategy;
 import fit.cvut.org.cz.tmlibrary.business.serialization.strategies.FileSerializingStrategy;

@@ -1,8 +1,5 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
 import java.util.List;
 
 import fit.cvut.org.cz.bowling.data.entities.Match;
@@ -13,7 +10,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
 import fit.cvut.org.cz.tmlibrary.data.helpers.DBConstants;
-import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class TournamentManager extends fit.cvut.org.cz.tmlibrary.business.managers.TournamentManager {
     @Override

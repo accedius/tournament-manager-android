@@ -14,10 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,8 +24,6 @@ import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
-import fit.cvut.org.cz.tmlibrary.data.entities.Player;
-import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 
 public class EditFrameDialog extends DialogFragment {
     TextView roll1, roll2, roll3;

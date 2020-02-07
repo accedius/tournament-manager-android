@@ -8,8 +8,9 @@ import java.util.List;
 import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class UnitTest {

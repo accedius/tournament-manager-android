@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IPointConfigurationManager;
 import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.business.serialization.TeamSerializer;
 import fit.cvut.org.cz.bowling.business.serialization.TournamentSerializer;
-import fit.cvut.org.cz.bowling.data.entities.PointConfiguration;
 import fit.cvut.org.cz.tmlibrary.business.loaders.entities.TournamentImportInfo;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;

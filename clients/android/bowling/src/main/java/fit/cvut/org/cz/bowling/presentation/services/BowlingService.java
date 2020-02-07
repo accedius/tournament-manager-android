@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.entities.AggregatedStatistics;
 import fit.cvut.org.cz.bowling.business.loaders.CompetitionLoader;
@@ -35,7 +36,6 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.CrossPackageConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
-import fit.cvut.org.cz.bowling.R;
 
 /**
  * Exported service (is visible to all applications and can be called from them) to handle the request about bowling competitions (used in core to show list of competitions - set list fragment contents, to handle clicks on competitions etc.)

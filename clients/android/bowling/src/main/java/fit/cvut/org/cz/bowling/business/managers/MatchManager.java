@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.bowling.business.managers;
 
-import android.util.Log;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,32 +10,24 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IFrameManager;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
-import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
+import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
-import fit.cvut.org.cz.bowling.data.entities.Roll;
-import fit.cvut.org.cz.tmlibrary.business.generators.AllPlayAllMatchGenerator;
+import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IMatchGenerator;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITeamManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
-import fit.cvut.org.cz.tmlibrary.data.entities.EntityDAO;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
-import fit.cvut.org.cz.tmlibrary.data.entities.ParticipantType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class MatchManager extends BaseManager<Match> implements IMatchManager {

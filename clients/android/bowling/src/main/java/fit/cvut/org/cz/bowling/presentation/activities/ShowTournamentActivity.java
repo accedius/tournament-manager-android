@@ -17,7 +17,6 @@ import android.view.MenuItem;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
-import fit.cvut.org.cz.bowling.business.managers.TournamentManager;
 import fit.cvut.org.cz.bowling.presentation.BowlingPackage;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.dialogs.GenerateRostersDialog;
@@ -38,7 +37,6 @@ import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
  * Activity to show bowling tournament inner fragments (Overview, Standings, Matches etc.)

@@ -10,7 +10,6 @@ import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager;
 import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
-import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 public class WinConditionService extends AbstractIntentServiceWProgress {

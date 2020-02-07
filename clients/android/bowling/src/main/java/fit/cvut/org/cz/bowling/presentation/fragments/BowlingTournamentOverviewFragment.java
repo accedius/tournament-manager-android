@@ -7,15 +7,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
-import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
-import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.TournamentOverviewFragment;
 
 /**
  * Fragment is used in ShowTournamentActivity to show overview panel

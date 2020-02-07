@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

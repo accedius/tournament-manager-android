@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.view.menu.ActionMenuItem;
 import android.view.ActionProvider;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;

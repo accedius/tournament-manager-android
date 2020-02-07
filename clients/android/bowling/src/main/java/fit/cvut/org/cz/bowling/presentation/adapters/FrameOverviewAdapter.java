@@ -1,6 +1,5 @@
 package fit.cvut.org.cz.bowling.presentation.adapters;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import fit.cvut.org.cz.bowling.business.entities.FrameOverview;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.constraints.ConstraintsConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
-import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 
 public class FrameOverviewAdapter extends AbstractListAdapter<FrameOverview, FrameOverviewAdapter.FrameViewHolder> {

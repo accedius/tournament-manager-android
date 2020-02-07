@@ -13,8 +13,6 @@ import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
 import fit.cvut.org.cz.bowling.business.serialization.Constants;
 import fit.cvut.org.cz.bowling.business.serialization.MatchSerializer;
 import fit.cvut.org.cz.bowling.data.entities.Match;
-import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
-import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
 import fit.cvut.org.cz.tmlibrary.business.serialization.entities.ServerCommunicationItem;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;

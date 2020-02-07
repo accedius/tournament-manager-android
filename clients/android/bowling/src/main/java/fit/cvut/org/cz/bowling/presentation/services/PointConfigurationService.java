@@ -2,7 +2,6 @@ package fit.cvut.org.cz.bowling.presentation.services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.ArrayList;

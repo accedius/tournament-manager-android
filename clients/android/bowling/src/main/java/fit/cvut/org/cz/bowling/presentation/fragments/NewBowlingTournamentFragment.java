@@ -14,30 +14,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import fit.cvut.org.cz.bowling.R;
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
 import fit.cvut.org.cz.bowling.business.managers.interfaces.IWinConditionManager;
 import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.data.helpers.CompetitionTypes;
-import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.bowling.data.helpers.WinConditionTypes;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.bowling.presentation.services.TournamentService;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ICompetitionManager;
-import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionType;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
-import fit.cvut.org.cz.tmlibrary.data.entities.TournamentType;
-import fit.cvut.org.cz.tmlibrary.data.helpers.DateFormatter;
 import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
-import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
-import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.NewTournamentFragment;
 
 /**

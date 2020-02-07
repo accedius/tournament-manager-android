@@ -1,7 +1,5 @@
 package fit.cvut.org.cz.bowling.data.helpers;
 
-import com.j256.ormlite.field.DatabaseField;
-
 /**
  * Resource strings for database communication
  */

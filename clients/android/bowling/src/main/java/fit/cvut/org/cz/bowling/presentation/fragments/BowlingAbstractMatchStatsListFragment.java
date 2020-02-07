@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.presentation.communication.ExtraConstants;
 import fit.cvut.org.cz.tmlibrary.data.entities.Participant;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractListFragment;

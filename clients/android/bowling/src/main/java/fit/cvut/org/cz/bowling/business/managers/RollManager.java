@@ -8,10 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
 import fit.cvut.org.cz.bowling.data.entities.Roll;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.BaseManager;
-import fit.cvut.org.cz.bowling.business.managers.interfaces.IRollManager;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class RollManager extends BaseManager<Roll> implements IRollManager {
