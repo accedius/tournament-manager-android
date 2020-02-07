@@ -136,7 +136,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
                         PlayerStat statToEdit = new PlayerStat(stat);
                         Participant participant = matchParticipants.get(position);
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
-                        EditPlayerStatDialog dialog = EditPlayerStatDialog.newInstance(statToEdit, (byte) (ConstraintsConstants.tenPinMatchParticipantMaxFrames - (participantStat.getFramesPlayedNumber() - stat.getFramesPlayedNumber()) ), position);
+                        EditPlayerStatDialog dialog = EditPlayerStatDialog.newInstance(statToEdit, (byte) (ConstraintsConstants.tenPinMatchParticipantMaxFrames), position);
                         dialog.setTargetFragment(thisFragment, TeamSimpleStatsFragment.RecyclerViewUpdateCodes.DIALOG);
                         dialog.show(getFragmentManager(), "editPlayerStatDialog");
                     }
