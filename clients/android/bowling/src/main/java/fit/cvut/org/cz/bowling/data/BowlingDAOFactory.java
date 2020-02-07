@@ -14,6 +14,10 @@ import java.util.List;
 
 
 import fit.cvut.org.cz.bowling.business.ManagerFactory;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IMatchManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IParticipantStatManager;
+import fit.cvut.org.cz.bowling.business.managers.interfaces.IPlayerStatManager;
 import fit.cvut.org.cz.bowling.data.entities.Frame;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
@@ -24,6 +28,7 @@ import fit.cvut.org.cz.bowling.data.entities.WinCondition;
 import fit.cvut.org.cz.bowling.data.helpers.DBConstants;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManager;
 import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.IManagerFactory;
+import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager;
 import fit.cvut.org.cz.tmlibrary.data.DAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.entities.Competition;
 import fit.cvut.org.cz.tmlibrary.data.entities.CompetitionPlayer;
@@ -33,12 +38,13 @@ import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.TeamPlayer;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
 import fit.cvut.org.cz.tmlibrary.data.entities.TournamentPlayer;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IDAOFactory;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntity;
 import fit.cvut.org.cz.tmlibrary.data.interfaces.IEntityDAO;
 
 public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
-    private static final int DBVersion = 9;
+    private static final int DBVersion = 10;
 
     public BowlingDAOFactory(Context context, String name) {
         super(context, name, null, DBVersion);
@@ -183,6 +189,8 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                     fromVersion = upgradeFrom7To8(db, fromVersion);
                 case 8:
                     fromVersion = upgradeFrom8To9(db, fromVersion);
+                case 9:
+                    fromVersion = upgradeFrom9To10(db, fromVersion);
             }
 
         } catch (SQLException e) {Log.e("BowlingDAOFactory", "onUpgrade: FAILED from " + oldVersion + " to " + newVersion + " on cycle value fromVersion = " + fromVersion);}
@@ -393,4 +401,51 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
         ++version;
         return version;
     }
+
+     private int upgradeFrom9To10 (SQLiteDatabase db, int fromVersion) throws SQLException {
+         int version = fromVersion;
+
+         Log.d("BowlingDAOFactory", "upgradeFrom9To10: checking and fixing problems, caused by match generation in older version (<1.0.6)" );
+
+         IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+         ITournamentManager tournamentManager = iManagerFactory.getEntityManager(Tournament.class);
+         IParticipantManager participantManager = iManagerFactory.getEntityManager(Participant.class);
+         IParticipantStatManager participantStatManager = iManagerFactory.getEntityManager(ParticipantStat.class);
+         IPlayerStatManager playerStatManager = iManagerFactory.getEntityManager(PlayerStat.class);
+         IMatchManager matchManager = iManagerFactory.getEntityManager(Match.class);
+
+         List<Match> allMatchesRaw = matchManager.getAll();
+         for (Match rawMatch : allMatchesRaw) {
+             long matchId = rawMatch.getId();
+             List<Participant> matchParticipants = participantManager.getByMatchIdWithPlayerStats(matchId);
+             for(Participant participant : matchParticipants) {
+                 long participantId = participant.getId();
+                 long realParticipantId = participant.getParticipantId();
+                 List<ParticipantStat> participantStats = (List<ParticipantStat>) participant.getParticipantStats();
+                 List<PlayerStat> playerStats = (List<PlayerStat>) participant.getPlayerStats();
+                 if(participantStats.size() < 1) {
+                     Log.d("BowlingDAOFactory", "upgradeFrom9To10: adding participantStat for " + participant.getName() + " in match with Id = " + matchId);
+                     ParticipantStat participantStat = new ParticipantStat(participantId);
+                     participantStats.add(participantStat);
+                     participantStatManager.insert(participantStat);
+                 }
+                 if(playerStats.size() < 1) {
+                     Tournament tournament = tournamentManager.getById(rawMatch.getTournamentId());
+                     if(tournament.getTypeId() == TournamentTypes.type_individuals) {
+                         Log.d("BowlingDAOFactory", "upgradeFrom9To10: adding playerStat for " + participant.getName() + " in match for individuals (must be so) with Id = " + matchId + ", tournament name is " + tournament.getName());
+                         PlayerStat playerStat = new PlayerStat(participantId, realParticipantId);
+                         ParticipantStat participantStat = participantStats.get(0);
+                         int score = participantStat.getScore();
+                         byte frames = participantStat.getFramesPlayedNumber();
+                         playerStat.setPoints(score);
+                         playerStat.setFramesPlayedNumber(frames);
+                         playerStatManager.insert(playerStat);
+                     }
+                 }
+             }
+         }
+
+         ++version;
+         return version;
+     }
 }

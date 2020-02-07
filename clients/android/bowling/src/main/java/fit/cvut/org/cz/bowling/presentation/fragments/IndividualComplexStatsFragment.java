@@ -581,7 +581,6 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
             }
         } else {
             if(participantsFrameOverviews == null) {
-                //matchPlayers = new ArrayList<>();
                 matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
                 if(!matchParticipants.isEmpty()){
                     participantsFrameOverviews = new ArrayList<>();
@@ -589,14 +588,6 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance();
                 int index = 0;
                 for(Participant participant : matchParticipants) {
-                    if(participant.getParticipantStats() == null) {
-                        List<ParticipantStat> participantStats = new ArrayList<>();
-                        ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
-                        participantStat.setFrames(new ArrayList<>());
-                        participantStats.add(participantStat);
-                        participant.setParticipantStats(participantStats);
-                    }
-
                     if(isSwitchedBetweenInputModes) {
                         isSwitchedBetweenInputModes = false;
                         ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
@@ -604,15 +595,6 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
                         participantStat.setFramesPlayedNumber((byte) 0);
                         participantSharedViewModel.setToChangeStat(participant);
                     }
-
-                    //matchPlayers.add(new ArrayList<Player>());
-                    //participantPlayers = matchPlayers.get(index);
-
-                    List<PlayerStat> playerStats = (List<PlayerStat>) participant.getPlayerStats();
-                    /*for(PlayerStat stat : playerStats) {
-                        Player player = iManagerFactory.getEntityManager(Player.class).getById(stat.getPlayerId());
-                        participantPlayers.add(player);
-                    }*/
 
                     String name;
                     long participantId = participant.getParticipantId();

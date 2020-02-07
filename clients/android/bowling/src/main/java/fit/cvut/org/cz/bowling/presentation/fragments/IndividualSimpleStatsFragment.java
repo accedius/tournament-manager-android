@@ -216,14 +216,6 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
     protected void bindDataOnView(Intent intent) {
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-            for(Participant participant : matchParticipants) {
-                if(participant.getParticipantStats() == null || participant.getParticipantStats().size() < 1) {
-                    List<ParticipantStat> participantStats = new ArrayList<>();
-                    ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
-                    participantStats.add(participantStat);
-                    participant.setParticipantStats(participantStats);
-                }
-            }
             //TODO map of actions
         }
 
