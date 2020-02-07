@@ -22,6 +22,7 @@ import fit.cvut.org.cz.tmlibrary.business.managers.interfaces.ITournamentManager
 import fit.cvut.org.cz.tmlibrary.data.entities.Player;
 import fit.cvut.org.cz.tmlibrary.data.entities.Team;
 import fit.cvut.org.cz.tmlibrary.data.entities.Tournament;
+import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.services.AbstractIntentServiceWProgress;
 
 /**
@@ -59,6 +60,24 @@ public class TournamentService extends AbstractIntentServiceWProgress {
         return ExtraConstants.EXTRA_ACTION;
     }
 
+    private boolean setWinConditionForTournament (long tournamentId, int newCondition) {
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        IWinConditionManager iWinConditionManager = iManagerFactory.getEntityManager(WinCondition.class);
+        WinCondition wc = iWinConditionManager.getByTournamentId(tournamentId);
+        if(wc != null) {
+            if(wc.getWinCondition() != newCondition) {
+                wc.setWinCondition(newCondition);
+                iWinConditionManager.update(wc);
+            } else {
+                return false;
+            }
+        } else {
+            wc = new WinCondition(tournamentId, newCondition);
+            iWinConditionManager.insert(wc);
+        }
+        return true;
+    }
+
     @Override
     protected void doWork(Intent intent) {
         String action = intent.getStringExtra(ExtraConstants.EXTRA_ACTION);
@@ -68,27 +87,21 @@ public class TournamentService extends AbstractIntentServiceWProgress {
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
                 ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
                 iTournamentManager.insert(t);
+
+                int condition = intent.getIntExtra(ExtraConstants.EXTRA_OPTION, WinConditionTypes.win_condition_default);
+                setWinConditionForTournament(t.getId(), condition);
+
                 break;
             }
             case ACTION_UPDATE: {
-                Tournament c = intent.getParcelableExtra(ExtraConstants.EXTRA_TOURNAMENT);
+                Tournament t = intent.getParcelableExtra(ExtraConstants.EXTRA_TOURNAMENT);
                 IManagerFactory iManagerFactory = ManagerFactory.getInstance(this);
                 ITournamentManager iTournamentManager = iManagerFactory.getEntityManager(Tournament.class);
-                iTournamentManager.update(c);
+                iTournamentManager.update(t);
 
-                IWinConditionManager iWinConditionManager = iManagerFactory.getEntityManager(WinCondition.class);
-                WinCondition wc = iWinConditionManager.getByTournamentId(c.getId());
                 int condition = intent.getIntExtra(ExtraConstants.EXTRA_OPTION, WinConditionTypes.win_condition_default);
-                if(wc != null)
-                {
-                    wc.setWinCondition(condition);
-                    iWinConditionManager.update(wc);
-                }
-                else
-                {
-                    wc = new WinCondition(c.getId(),condition);
-                    iWinConditionManager.insert(wc);
-                }
+                setWinConditionForTournament(t.getId(), condition);
+
                 break;
             }
             case ACTION_DELETE: {

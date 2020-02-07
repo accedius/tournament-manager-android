@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -169,18 +170,42 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
             }
             setDatepicker(Calendar.getInstance(), Calendar.getInstance());
 
-            win_condition.setEnabled(false);
         } else {
             type.setEnabled(false);
 
-            win_condition.setVisibility(View.VISIBLE);
-            win_condition_label.setVisibility(View.VISIBLE);
             int wc = getWinConditionType();
             if(wc == WinConditionTypes.win_condition_default)
                 win_condition.setSelection(win_condition_adapter.getPosition(def));
             else if(wc == WinConditionTypes.win_condition_total_points)
                 win_condition.setSelection(win_condition_adapter.getPosition(tot));
         }
+
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                View v = getView();
+                switch (position) {
+                    //Individuals
+                    case 1: {
+                        v.findViewById(R.id.tv_tournament_win_condition_label).setVisibility(View.VISIBLE);
+                        v.findViewById(R.id.sp_win_condition).setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    //Teams and other
+                    default:
+                    case 0: {
+                        v.findViewById(R.id.tv_tournament_win_condition_label).setVisibility(View.GONE);
+                        v.findViewById(R.id.sp_win_condition).setVisibility(View.GONE);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //empty
+            }
+        });
 
         //We don't want user to write into editTexts
         startDate.setKeyListener(null);
@@ -197,7 +222,7 @@ public class NewBowlingTournamentFragment extends NewTournamentFragment {
 
     private int getWinConditionType() {
         IWinConditionManager winConditionManager = ((IWinConditionManager) ManagerFactory.getInstance(getContext()).getEntityManager(WinCondition.class));
-        WinCondition winCondition = winConditionManager.getById(competitionId);
+        WinCondition winCondition = winConditionManager.getById(tournamentId);
         if (winCondition == null) return WinConditionTypes.win_condition_default;
         return winCondition.getWinCondition();
     }

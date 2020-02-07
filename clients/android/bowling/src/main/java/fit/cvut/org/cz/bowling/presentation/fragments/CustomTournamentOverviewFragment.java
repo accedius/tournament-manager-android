@@ -120,22 +120,26 @@ public abstract class CustomTournamentOverviewFragment extends AbstractDataFragm
             tournamentType = TournamentTypes.teams();
         }
 
-        IWinConditionManager winConditionManager = ManagerFactory.getInstance().getEntityManager(WinCondition.class);
-        WinCondition wc = winConditionManager.getByTournamentId(tournament.getId());
-        int condition;
-        if(wc != null)
-        {
-            condition = wc.getWinCondition();
-        }
-        else
-        {
-            condition = WinConditionTypes.win_condition_default;
-        }
+        if(tournament.getTypeId() == TournamentTypes.type_individuals) {
+            IWinConditionManager winConditionManager = ManagerFactory.getInstance().getEntityManager(WinCondition.class);
+            WinCondition wc = winConditionManager.getByTournamentId(tournament.getId());
+            int condition;
+            if (wc != null) {
+                condition = wc.getWinCondition();
+            } else {
+                condition = WinConditionTypes.win_condition_default;
+            }
 
-        if(condition == WinConditionTypes.win_condition_total_points)
-            win_condition.setText(R.string.total_points_win_condition);
-        else
-            win_condition.setText(R.string.default_win_condition);
+            if (condition == WinConditionTypes.win_condition_total_points)
+                win_condition.setText(R.string.total_points_win_condition);
+            else
+                win_condition.setText(R.string.default_win_condition);
+
+        } else {
+            View v = getView();
+            v.findViewById(R.id.tour_win_condition_label).setVisibility(View.GONE);
+            v.findViewById(R.id.tour_win_condition).setVisibility(View.GONE);
+        }
 
         type.setText(tournamentType.value);
         if (tournament.getStartDate() != null)
