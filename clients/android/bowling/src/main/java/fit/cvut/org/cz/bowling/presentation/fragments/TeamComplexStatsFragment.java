@@ -438,7 +438,9 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
                 participantSharedViewModel.setToChangeStat(participantToChange);
 
-                removePlayerStatsFromParticipant(toRemove, participantToChange, position);
+                if(toRemove.size() > 0) {
+                    removePlayerStatsFromParticipant(toRemove, participantToChange, position);
+                }
                 if(toAdd.size() > 0) {
                     addPlayerStatsToParticipant(toAdd, participantToChange, position);
                 }
@@ -475,7 +477,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     private void addPlayerStatsToParticipant(List<PlayerStat> toAdd, Participant participant, int position) {
         for(PlayerStat playerStat : toAdd) {
             //(String name, List<FrameOverview> frameOverviews, PlayerStat playerStat, int matchParticipantReferencePosition, long participantId)
-            ParticipantPlayer participantPlayer = new ParticipantPlayer(playerStat.getName(), new ArrayList<FrameOverview>(), playerStat, position, participant.getParticipantId());
+            String name = participant.getName() + " - " + playerStat.getName();
+            ParticipantPlayer participantPlayer = new ParticipantPlayer(name, new ArrayList<FrameOverview>(), playerStat, position, participant.getParticipantId());
             matchParticipantPlayers.add(participantPlayer);
         }
         orderParticipantPlayers();
@@ -488,7 +491,12 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         List<ParticipantPlayer> ppToRemove = new ArrayList<>();
         for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
             if(participantPlayer.matchParticipantReferencePosition == position) {
-                ppToRemove.add(participantPlayer);
+                for(PlayerStat playerStat : toRemove) {
+                    if(playerStat.getPlayerId() == participantPlayer.playerStat.getPlayerId()) {
+                        ppToRemove.add(participantPlayer);
+                        break;
+                    }
+                }
             }
         }
         if(ppToRemove.size() > 0) {
