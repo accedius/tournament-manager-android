@@ -313,6 +313,9 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             bindParticipantsOnSpinner();
             return;
         }
+        if(matchParticipants.size() < 1) {
+            switchRecyclerViewsProgressBar();
+        }
 
 
         if(participantSpinner.getSelectedItem() == null && matchParticipants != null) {
