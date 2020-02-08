@@ -40,6 +40,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
     private static final String inputFragmentTag = "inputFragmentTag";
     public static final int REQUEST_CODE_MANAGE_CHECKBOX_STATE = 3137;
     private boolean userInputOnCheckBox = false;
+    private boolean initialCheckBoxState = false;
 
     public Bundle getResultsBundle() {
         if(inputFragment == null) {
@@ -107,9 +108,14 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
         boolean isSwitchedBetweenInputModes = false; //if method was called by user switching from one form of input to another after initial fragments' creation
         if(inputFragment != null) {
             getChildFragmentManager().beginTransaction().remove(inputFragment).commit();
-            isSwitchedBetweenInputModes = true;
+            if(isChecked != initialCheckBoxState) {
+                isSwitchedBetweenInputModes = true;
+            }
             ((ShowMatchActivity) getActivity()).flushUnsavedChanges();
+        } else {
+            initialCheckBoxState = isChecked;
         }
+
         if(isChecked) {
             switch(tournamentTypeId) {
                 case TournamentTypes.type_individuals: {
@@ -134,8 +140,9 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                 }
             }
         }
-        getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
+        //fragment should be null, otherwise app will crash, because it doesn't belong to inputFragment's FragmentManager, but no worries it's handled like that
         inputFragment.setTargetFragment(null, REQUEST_CODE_MANAGE_CHECKBOX_STATE);
+        getChildFragmentManager().beginTransaction().add(R.id.input_container, inputFragment, inputFragmentTag).commit();
     }
 
     @Override
@@ -198,7 +205,6 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 userInputOnCheckBox = true;
-                //match.setValidForStats(isChecked);
             }
         });
     }
@@ -229,7 +235,7 @@ public class MatchEditStatsFragment extends AbstractDataFragment {
                 //if true, that match is played by all participants
                 if(userInputOnCheckBox)
                     break;
-                boolean checkBoxShouldBeState = resultCode == 1;
+                boolean checkBoxShouldBeState = (resultCode == 1);
                 if(checkBoxShouldBeState) {
                     //checks only then wasn't checked before + if user didn't use manual input in last save, how works -> negation of (do nothing, then previously user set notValid for played match, because it seems user done this for purpose)
                     if(!partialDataPropagation.isChecked() && !(!match.isValidForStats() && match.isPlayed()) ) {
