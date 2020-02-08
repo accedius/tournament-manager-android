@@ -43,7 +43,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragme
  */
 public class ShowTournamentActivity extends AbstractTabActivity {
     private final int GEN_ROSTER_ID = 1001;
-    private final int TEAMS_LIST_POSITION = 4;
+    private final int TEAMS_LIST_POSITION = 3;
 
     private long competitionId;
     private long tournamentId;
@@ -91,8 +91,8 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                     Snackbar.make(findViewById(android.R.id.content), getString(fit.cvut.org.cz.tmlibrary.R.string.failGenerateRosters), Snackbar.LENGTH_LONG).show();
                 } else {
                     if (pager.getCurrentItem() == TEAMS_LIST_POSITION) {
-                        int itemTeamListFragment = pager.getCurrentItem();
-                        BowlingTeamsListFragment fr = (BowlingTeamsListFragment) adapter.getItem(itemTeamListFragment);
+                        int position = pager.getCurrentItem();
+                        BowlingTeamsListFragment fr = (BowlingTeamsListFragment) getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
                         fr.customOnResume();
                     } else {
                         pager.setCurrentItem(TEAMS_LIST_POSITION);
