@@ -97,13 +97,19 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
     @Override
     public Bundle getMatchStats() {
+        //whether or not the game is completed by all participants
+        boolean isMatchPlayed = false;
+        byte participantsWhoCompletedGameNumber = 0;
+
         //TODO make more sophisticated method (toAdd, toDelete, toEdit scheme)
         for(Participant participant : matchParticipants) {
             ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
             participantStat.setFrames(new ArrayList<Frame>());
-            ArrayList<ParticipantStat> participantStats = new ArrayList<>();
-            participantStats.add(participantStat);
-            participant.setParticipantStats(participantStats);
+            participantStat.setScore(0);
+            participantStat.setFramesPlayedNumber((byte) 0);
+            List<ParticipantStat> stats = new ArrayList<>();
+            stats.add(participantStat);
+            participant.setParticipantStats(stats);
         }
 
         for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
@@ -113,6 +119,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
             List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
             Participant participant = matchParticipants.get(participantPlayer.matchParticipantReferencePosition);
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
             List<Frame> newFrames = new ArrayList<>();
             byte i = 0;
             for(FrameOverview overview : frameOverviews) {
@@ -141,11 +148,23 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             playerStat.setPoints(points);
             playerStat.setFramesPlayedNumber(i);
 
-            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            int participantScore = participantStat.getScore() + points;
+            participantStat.setScore(participantScore);
+            int participantFrames = participantStat.getFramesPlayedNumber() + i;
+            participantStat.setFramesPlayedNumber((byte) participantFrames);
             participantStat.getFrames().addAll(newFrames);
         }
 
+        for(Participant participant : matchParticipants) {
+            ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            if(participantStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames * participant.getPlayerStats().size())
+                ++participantsWhoCompletedGameNumber;
+        }
+        if(participantsWhoCompletedGameNumber == matchParticipants.size())
+            isMatchPlayed = true;
+
         Bundle matchStatsBundle = new Bundle();
+        matchStatsBundle.putBoolean(EXTRA_BOOLEAN_IS_MATCH_PLAYED, isMatchPlayed);
         matchStatsBundle.putParcelableArrayList(ExtraConstants.EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) matchParticipants);
         return matchStatsBundle;
     }
