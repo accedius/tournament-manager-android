@@ -36,7 +36,6 @@ import fit.cvut.org.cz.tmlibrary.data.helpers.TournamentTypes;
 import fit.cvut.org.cz.tmlibrary.presentation.activities.AbstractTabActivity;
 import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
 import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
-import fit.cvut.org.cz.tmlibrary.presentation.fragments.MatchesListWrapperFragment;
 
 /**
  * Activity to show bowling tournament inner fragments (Overview, Standings, Matches etc.)

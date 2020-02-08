@@ -44,7 +44,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
      * @param v view of the row
      * @param playerId id of player that was clicked
      */
-    protected void setOnClickListeners(View v, long playerId, String name) {};
+    protected void setOnClickListeners(View v, long playerId, String name) {}
 
 
     /**

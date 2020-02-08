@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="sport_name" translatable="false">Bowling</string>
     <string name="context_names" translatable="false">Bowling</string>
     <string name="tournament_manager_package" translatable="false">TournamentManagerPackage</string>
@@ -16,7 +16,7 @@
     <string name="generate_by_team_points" >Generate by team points</string>
     <string name="generate_by_lanes" >Generate by lane</string>
     <string name="generate_matches" >Generate matches</string>
-    <string name="wrong_lanes">Number of lanes cant be more then number of players.</string>
+    <string name="wrong_lanes">Number of lanes can\'t be more then number of players.</string>
 
     <string name="enter_number_of_lanes">Enter number of lanes</string>
 
@@ -61,7 +61,6 @@
     <string name="legend"  translatable="false">Stats legend:</string>
     <string name="legend_GP" >GP: Games played</string>
     <string name="legend_P" >P: Points</string>
-    <string name="legend_SP" >P: Points</string>
     <string name="legend_TW" >W: Wins</string>
     <string name="legend_TL" >L: Losses</string>
     <string name="legend_D" >D: Draws</string>

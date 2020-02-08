@@ -74,7 +74,6 @@
     <string name="legend_MPAVG">Avg MP: Průměrný počet bodů za zápas</string>
     <string name="legend_P">P: Body</string>
     <string name="legend_PAVG">Avg P: Průměrný počet bodů</string>
-    <string name="legend_SP" translatable="false">P: Body</string>
     <string name="legend_TL">L: Prohry</string>
     <string name="legend_TW">W: Výhry</string>
     <string name="legend_note">Pro zobrazení více statistik otočte obrazovku o 90°</string>
