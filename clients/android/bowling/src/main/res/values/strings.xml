@@ -27,12 +27,10 @@
     <string name="l" >L</string>
     <string name="d"  translatable="false">D</string>
 
-    <string name="g"  translatable="false">G</string>
     <string name="st"  translatable="false">St</string>
     <string name="legend_ST">St: Strikes</string>
     <string name="strikes">Strikes</string>
 
-    <string name="a"  translatable="false">A</string>
     <string name="sp">Sp</string>
     <string name="legend_SPA">Sp: Spares</string>
     <string name="spares">Spares</string>
@@ -55,23 +53,9 @@
 
 
     <string name="score">Score</string>
-    <string name="so"  translatable="false">so</string>
-    <string name="ot"  translatable="false">ot</string>
 
     <string name="normal_time" >Normal time</string>
-    <string name="overtime"  translatable="false">Overtime</string>
-    <string name="shootouts"  translatable="false">Shootouts</string>
     <string name="set_all" >All fields need to be set!</string>
-    <string name="s"  translatable="false">S</string>
-    <string name="goals"  translatable="false">Goals</string>
-    <string name="assists"  translatable="false">Assists</string>
-    <string name="plus_minus_points"  translatable="false">+/- points</string>
-    <string name="saves"  translatable="false">Saves</string>
-    <string name="shootouts_error"  translatable="false">Shootouts are checked, match must not be draw!</string>
-    <string name="lot"  translatable="false">L ot</string>
-    <string name="lso"  translatable="false">L so</string>
-    <string name="wot"  translatable="false">W ot</string>
-    <string name="wso"  translatable="false">W so</string>
     <string name="mp"  translatable="false">MP</string>
 
     <string name="legend"  translatable="false">Stats legend:</string>
@@ -79,25 +63,14 @@
     <string name="legend_P" >P: Points</string>
     <string name="legend_SP" >P: Points</string>
     <string name="legend_TW" >W: Wins</string>
-    <string name="legend_W"  translatable="false">W: Wins in normal time</string>
-    <string name="legend_Wot"  translatable="false">W: Wins in overtime</string>
-    <string name="legend_Wso"  translatable="false">W: Wins in shootouts</string>
     <string name="legend_TL" >L: Losses</string>
-    <string name="legend_L"  translatable="false">L: Losses in normal time</string>
-    <string name="legend_Lot"  translatable="false">L: Losses in overtime</string>
-    <string name="legend_Lso"  translatable="false">L: Losses in shootouts</string>
     <string name="legend_D" >D: Draws</string>
-    <string name="legend_G"  translatable="false">G: Goals scored</string>
-    <string name="legend_A"  translatable="false">A: Assists</string>
-    <string name="legend_S"  translatable="false">S: Saves</string>
     <string name="legend_MP" >MP: Match points</string>
-    <string name="legend_PM"  translatable="false">+/-: Plus minus points</string>
-    <string name="legend_GAVG"  translatable="false">Avg G: Average goals per match</string>
     <string name="legend_PAVG" >Avg P: Average points per match</string>
     <string name="legend_MPAVG" >Avg MP: Average match points per match</string>
     <string name="legend_note" >Change orientation to landscape to show more statistics</string>
 
-    <string name="point_configurations" tools:ignore="Missingtranslation">Point configurations</string>
+    <string name="point_configurations">Point configurations</string>
     <string name="point_configuration_settings">Point configuration settings</string>
     <string name="pcd_input_label">Set number of competing sides:</string>
     <string name="prebaked_label_pc">Number of competing sides:</string>
