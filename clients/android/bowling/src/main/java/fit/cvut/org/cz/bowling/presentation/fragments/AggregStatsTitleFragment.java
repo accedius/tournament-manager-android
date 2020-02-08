@@ -51,6 +51,7 @@ public class AggregStatsTitleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         Long competitionID = getArguments().getLong(ExtraConstants.EXTRA_COMP_ID, -1);
         Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
@@ -116,12 +117,13 @@ public class AggregStatsTitleFragment extends Fragment {
     private HashMap<String, TextView> getColumns(View v) {
         HashMap<String, TextView> columns = new HashMap<>();
         columns.put(Constants.MATCHES,(TextView)v.findViewById(R.id.stats_games_played));
+        columns.put(Constants.MATCH_POINTS, (TextView) v.findViewById(R.id.stats_match_points));
         columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.stats_strikes));
         columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.stats_spares));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.stats_points));
-        if (v.findViewById(R.id.stats_match_points) != null) {
-            columns.put(Constants.MATCH_POINTS, (TextView) v.findViewById(R.id.stats_match_points));
+        if (v.findViewById(R.id.stats_strikes_avg) != null) {
             columns.put(Constants.STRIKES_AVG, (TextView) v.findViewById(R.id.stats_strikes_avg));
+            columns.put(Constants.SPARES_AVG, (TextView) v.findViewById(R.id.stats_spares_avg));
             columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.stats_points_avg));
             columns.put(Constants.MATCH_POINTS_AVG, (TextView) v.findViewById(R.id.stats_team_points_avg));
         }

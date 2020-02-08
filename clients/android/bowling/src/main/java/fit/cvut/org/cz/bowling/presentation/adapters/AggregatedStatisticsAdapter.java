@@ -26,12 +26,13 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
         AggregatedStatistics stats = data.get(position);
         holder.name.setText(stats.getPlayerName());
         holder.GP.setText(Long.toString(stats.getMatches()));
+        holder.MP.setText(Long.toString(stats.getMatchPoints()));
         holder.ST.setText(Long.toString(stats.getStrikes()));
         holder.SP.setText(Long.toString(stats.getSpares()));
         holder.P.setText(Long.toString(stats.getPoints()));
-        if (holder.MP != null) {
-            holder.MP.setText(Long.toString(stats.getMatchPoints()));
+        if (holder.AST != null) {
             holder.AST.setText(String.format("%.2f", stats.getAvgStrikes()));
+            holder.ASP.setText(String.format("%.2f", stats.getAvgSpares()));
             holder.AP.setText(String.format("%.2f", stats.getAvgPoints()));
             holder.AMP.setText(String.format("%.2f", stats.getAvgMatchPoints()));
         }
@@ -51,7 +52,7 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
      */
     public class AggregatedStatisticsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, ST, SP, P, MP, AST, AP, AMP;
+        TextView name, GP, ST, SP, P, MP, AST, ASP, AP, AMP;
         public View wholeView;
 
         public AggregatedStatisticsViewHolder(View itemView) {
@@ -59,12 +60,13 @@ public class AggregatedStatisticsAdapter extends AbstractListAdapter<AggregatedS
 
             name = (TextView) itemView.findViewById(R.id.as_name);
             GP = (TextView) itemView.findViewById(R.id.as_games_played);
+            MP = (TextView) itemView.findViewById(R.id.as_match_points);
             ST = (TextView) itemView.findViewById(R.id.as_strikes);
             SP = (TextView) itemView.findViewById(R.id.as_spares);
             P = (TextView) itemView.findViewById(R.id.as_points);
 
-            MP = (TextView) itemView.findViewById(R.id.as_match_points);
             AST = (TextView) itemView.findViewById(R.id.as_avg_st);
+            ASP = itemView.findViewById(R.id.as_avg_sp);
             AP = (TextView) itemView.findViewById(R.id.as_avg_p);
             AMP = (TextView) itemView.findViewById(R.id.as_avg_mp);
             wholeView = itemView;

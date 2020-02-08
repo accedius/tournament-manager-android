@@ -11,7 +11,7 @@ import fit.cvut.org.cz.bowling.business.entities.communication.Constants;
 public class Standing implements Parcelable {
     private String name;
     private int matches, matchPoints, strikes, spares, points;
-    private double averageMatchPoints, averagePoints, averageStrikes;
+    private double averageMatchPoints, averagePoints, averageStrikes, averageSpares;
     private long teamId;
 
     public Standing() {}
@@ -33,11 +33,12 @@ public class Standing implements Parcelable {
 
     public void recalculateAverages() {
         if(matches == 0) {
-            averageStrikes = averageMatchPoints = averagePoints = 0;
+            averageStrikes = averageSpares = averageMatchPoints = averagePoints = 0;
             return;
         }
         averageMatchPoints = ((double) matchPoints) / matches;
         averageStrikes  = ((double) strikes) / matches;
+        averageSpares = ((double) spares) /matches;
         averagePoints = ((double) points) / matches;
     }
 
@@ -88,6 +89,8 @@ public class Standing implements Parcelable {
     public double getAveragePoints() { return averagePoints; }
 
     public double getAverageStrikes() { return averageStrikes; }
+
+    public double getAverageSpares() { return averageSpares; }
 
     @Override
     public int describeContents() {
@@ -144,6 +147,10 @@ public class Standing implements Parcelable {
             case Constants.MATCH_POINTS: return getMatchPoints();
             case Constants.STRIKES: return getStrikes();
             case Constants.SPARES: return getSpares();
+            case Constants.STRIKES_AVG: return getAverageStrikes();
+            case Constants.SPARES_AVG: return getAverageSpares();
+            case Constants.POINTS_AVG: return getAveragePoints();
+            case Constants.MATCH_POINTS_AVG: return getAverageMatchPoints();
             default: return 0;
         }
     }

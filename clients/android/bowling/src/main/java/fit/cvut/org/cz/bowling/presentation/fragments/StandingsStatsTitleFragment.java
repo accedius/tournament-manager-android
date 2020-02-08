@@ -46,6 +46,7 @@ public class StandingsStatsTitleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         Long tournamentID = getArguments().getLong(ExtraConstants.EXTRA_TOUR_ID, -1);
 
         sf = StandingsFragment.newInstance(tournamentID);
@@ -70,21 +71,44 @@ public class StandingsStatsTitleFragment extends Fragment {
         Fragment fr = getChildFragmentManager().findFragmentById(R.id.stats_list);
         if (fr != null && fr instanceof AbstractDataFragment) {
             ((AbstractDataFragment) fr).customOnResume();
+            setDefaultOrder(getView());
         }
     }
 
     private void setDefaultOrder(View v) {
+        deleteOtherOrders(v);
         TextView points = (TextView)v.findViewById(R.id.standings_points);
         points.setText(points.getText() + " "+Constants.DESC_SIGN);
     }
 
-    private void setOrderingListeners(View v) {
-        final HashMap<String, TextView> columns = new HashMap<>();
+    private void deleteOtherOrders(View v) {
+        HashMap<String, TextView> columns = getColumns(v);
+        for (TextView textView : columns.values()) {
+            if (textView.getText().toString().contains(Constants.DESC_SIGN) || textView.getText().toString().contains(Constants.ASC_SIGN)) {
+                String text = textView.getText().toString();
+                textView.setText(text.substring(0, text.length()-2));
+            }
+        }
+    }
+
+    private HashMap<String, TextView> getColumns(View v) {
+        HashMap<String, TextView> columns = new HashMap<>();
         columns.put(Constants.MATCHES, (TextView)v.findViewById(R.id.standings_games_played));
         columns.put(Constants.POINTS, (TextView)v.findViewById(R.id.standings_points));
         columns.put(Constants.MATCH_POINTS, (TextView)v.findViewById(R.id.standings_match_points));
         columns.put(Constants.STRIKES, (TextView)v.findViewById(R.id.standings_strikes));
         columns.put(Constants.SPARES, (TextView)v.findViewById(R.id.standings_spares));
+        if (v.findViewById(R.id.standings_avg_strikes) != null) {
+            columns.put(Constants.STRIKES_AVG, (TextView) v.findViewById(R.id.standings_avg_strikes));
+            columns.put(Constants.SPARES_AVG, (TextView) v.findViewById(R.id.standings_avg_spares));
+            columns.put(Constants.POINTS_AVG, (TextView) v.findViewById(R.id.standings_avg_points));
+            columns.put(Constants.MATCH_POINTS_AVG, (TextView) v.findViewById(R.id.standings_avg_match_points));
+        }
+        return columns;
+    }
+
+    private void setOrderingListeners(View v) {
+        final HashMap<String, TextView> columns = getColumns(v);
 
         for (final Map.Entry<String, TextView> e : columns.entrySet()) {
             e.getValue().setOnClickListener(new View.OnClickListener() {

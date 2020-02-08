@@ -24,8 +24,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="@string/gp"/>
+            <TextView
+                android:id="@+id/stats_match_points"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/mp" />
             <TextView
                 android:id="@+id/stats_strikes"
                 android:layout_width="0dp"

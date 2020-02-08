@@ -189,7 +189,7 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 if (selectedPage == 1) {
                     StandingsHelpDialog standingsHelpDialog = StandingsHelpDialog.newInstance();
                     standingsHelpDialog.show(getSupportFragmentManager(), "HELP");
-                } else if (selectedPage == 2) {
+                } else {
                     StatsHelpDialog statsHelpDialog = StatsHelpDialog.newInstance();
                     statsHelpDialog.show(getSupportFragmentManager(), "HELP");
                 }

@@ -3,6 +3,7 @@ package fit.cvut.org.cz.bowling.presentation.fragments;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
 
@@ -33,6 +34,12 @@ public class StandingsFragment extends AbstractListFragment<Standing> {
         args.putLong(ExtraConstants.EXTRA_TOUR_ID, id);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     public void orderData(final String stat, HashMap<String, TextView> columns) {

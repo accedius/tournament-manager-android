@@ -73,6 +73,7 @@ public class BowlingPlayersStatsFragment extends AbstractListFragment<Aggregated
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         if (savedInstanceState != null) {
             tournamentID = savedInstanceState.getLong(SAVE_TOUR_ID);

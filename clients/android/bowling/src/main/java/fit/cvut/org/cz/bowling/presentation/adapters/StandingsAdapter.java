@@ -35,6 +35,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
         if(holder.averageStrikes != null) {
             stats.recalculateAverages();
             holder.averageStrikes.setText(String.format("%.2f", stats.getAverageStrikes()));
+            holder.averageSpares.setText(String.format("%.2f", stats.getAverageSpares()));
             holder.averagePoints.setText(String.format("%.2f", stats.getAveragePoints()));
             holder.averageMP.setText(String.format("%.2f", stats.getAverageMatchPoints()));
         }
@@ -45,7 +46,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
      */
     public class StandingsViewHolder extends RecyclerView.ViewHolder {
         public long id;
-        TextView name, GP, MP, strikes, spares, points, averageStrikes, averagePoints, averageMP;
+        TextView name, GP, MP, strikes, spares, points, averageStrikes, averageSpares, averagePoints, averageMP;
 
         public StandingsViewHolder(View itemView) {
             super(itemView);
@@ -58,6 +59,7 @@ public class StandingsAdapter extends AbstractListAdapter<Standing, StandingsAda
             points = (TextView) itemView.findViewById(R.id.as_points);
 
             averageStrikes = (TextView) itemView.findViewById(R.id.as_avg_st);
+            averageSpares = (TextView) itemView.findViewById(R.id.as_avg_sp);
             averagePoints = (TextView) itemView.findViewById(R.id.as_avg_p);
             averageMP = (TextView) itemView.findViewById(R.id.as_avg_mp);
         }
