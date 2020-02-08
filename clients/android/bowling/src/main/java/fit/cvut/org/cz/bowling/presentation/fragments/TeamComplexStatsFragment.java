@@ -616,7 +616,6 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         for(int i = 0; i < matchParticipants.size(); ++i) {
             Participant participant = matchParticipants.get(i);
             if(isSwitchedBetweenInputModes) {
-                isSwitchedBetweenInputModes = false;
                 ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
                 participantStat.setScore(0);
                 participantStat.setFramesPlayedNumber((byte) 0);
@@ -632,6 +631,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 }
             }
         }
+        isSwitchedBetweenInputModes = false;
 
         return participantPlayers;
     }
