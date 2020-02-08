@@ -574,6 +574,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             List<FrameOverview> frameOverviews = participantPlayer.frameOverviews;
             if(frameOverviews.size() >= maxFramesPerPlayer) {
                 fab.hide();
+            } else {
+                fab.show();
             }
             intent.putParcelableArrayListExtra(getDataKey(), (ArrayList<? extends Parcelable>) frameOverviews);
             super.bindDataOnView(intent);
