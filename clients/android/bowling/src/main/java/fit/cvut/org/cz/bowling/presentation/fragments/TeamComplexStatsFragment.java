@@ -759,6 +759,23 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         }
     }
 
+    private void setIsMatchPlayedInParentFragment(){
+        //Check if match is played to set MatchEditStatsFragment's CheckBox validForStats checked to true or false
+        int participantsWhoNotCompletedGameNumber = matchParticipants.size();
+        for(Participant participant : matchParticipants){
+            ParticipantStat overallStat = (ParticipantStat) participant.getParticipantStats().get(0);
+            if( overallStat.getFramesPlayedNumber() == ConstraintsConstants.tenPinMatchParticipantMaxFrames * participant.getPlayerStats().size() )
+                --participantsWhoNotCompletedGameNumber;
+        }
+        if(getParentFragment() != null) {
+            if(participantsWhoNotCompletedGameNumber == 0 ) {
+                getParentFragment().onActivityResult(getTargetRequestCode(), 1, null);
+            } else {
+                getParentFragment().onActivityResult(getTargetRequestCode(), 0, null);
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode != Activity.RESULT_OK)
@@ -794,6 +811,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
                     participantSharedViewModel.setToChangeStat(participant);
                 }
+
+                setIsMatchPlayedInParentFragment();
 
                 bindDataOnView(new Intent());
                 break;
@@ -847,6 +866,8 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
                     participantSharedViewModel.setToChangeStat(participant);
                 }
+
+                setIsMatchPlayedInParentFragment();
 
                 if(position + 1 == maxFramesPerPlayer) {
                     fab.show();
