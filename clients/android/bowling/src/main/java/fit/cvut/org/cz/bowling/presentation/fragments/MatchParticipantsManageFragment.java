@@ -223,11 +223,16 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         });
     }
 
-    public void flushUnsavedChanges () {
+    private void resetSharedViewModel() {
         participantSharedViewModel.setToAdd(null);
         participantSharedViewModel.setToDelete(null);
         participantSharedViewModel.setToManage(null);
         participantSharedViewModel.setToChangeStat(null);
+    }
+
+    public void flushUnsavedChanges () {
+        resetSharedViewModel();
+
         matchParticipants = null;
         participantStatOverviews = null;
 
