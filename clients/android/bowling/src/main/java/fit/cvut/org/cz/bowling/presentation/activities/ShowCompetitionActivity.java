@@ -28,6 +28,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.CompetitionOverviewFragm
  * Activity to handle showing bowling competition inner fragments (Overview, Tournaments etc.)
  */
 public class ShowCompetitionActivity extends AbstractTabActivity {
+    private final int OFFSCREEN_PAGE_LIMIT = 2;
+
     private long competitionID = -1;
     private DefaultViewPagerAdapter adapter = null;
 
@@ -51,6 +53,9 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
         Fragment f3 = AggregStatsTitleFragment.newInstance(competitionID, true);
         fragments = new Fragment[] {f1, f2, f3};
         super.onCreate(savedInstanceState);
+
+        pager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
+
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -58,7 +63,7 @@ public class ShowCompetitionActivity extends AbstractTabActivity {
             @Override
             public void onPageSelected(int position) {
                 Fragment fr = getSupportFragmentManager().findFragmentByTag(adapter.getTag(position));
-                if (fr != null && fr instanceof AbstractDataFragment)
+                if (fr instanceof CompetitionOverviewFragment)
                     ((AbstractDataFragment) fr).customOnResume();
             }
 

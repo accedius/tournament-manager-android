@@ -43,6 +43,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.fragments.AbstractDataFragment;
 public class ShowTournamentActivity extends AbstractTabActivity {
     private final int GEN_ROSTER_ID = 1001;
     private final int TEAMS_LIST_POSITION = 3;
+    private final int OFFSCREEN_PAGE_LIMIT = 4;
 
     private long competitionId;
     private long tournamentId;
@@ -58,6 +59,9 @@ public class ShowTournamentActivity extends AbstractTabActivity {
         tournamentId = getIntent().getExtras().getLong(ExtraConstants.EXTRA_TOUR_ID);
 
         super.onCreate(savedInstanceState);
+
+        pager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
+
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -69,12 +73,12 @@ public class ShowTournamentActivity extends AbstractTabActivity {
                 if (fr != null) {
                     if (fr instanceof AbstractDataFragment)
                         ((AbstractDataFragment) fr).customOnResume();
-                    if (fr instanceof MatchesListWrapperFragment)
-                        ((MatchesListWrapperFragment) fr).refresh();
                     if (fr instanceof StandingsStatsTitleFragment)
                         ((StandingsStatsTitleFragment) fr).refresh();
+                    /*if (fr instanceof MatchesListWrapperFragment)
+                        ((MatchesListWrapperFragment) fr).refresh();
                     if (fr instanceof AggregStatsTitleFragment)
-                        ((AggregStatsTitleFragment) fr).refresh();
+                        ((AggregStatsTitleFragment) fr).refresh();*/
                 }
             }
 

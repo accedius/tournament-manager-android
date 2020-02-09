@@ -34,6 +34,8 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.DefaultViewPagerAdapter;
  * Activity to handle showing bowling match inner fragments (Overview and Players)
  */
 public class ShowMatchActivity extends AbstractTabActivity {
+    private final int OFFSCREEN_PAGE_LIMIT = 2;
+
     private long matchId;
 
     private ViewPager pager;
@@ -80,7 +82,8 @@ public class ShowMatchActivity extends AbstractTabActivity {
         adapter = (DefaultViewPagerAdapter)getAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(fit.cvut.org.cz.tmlibrary.R.id.viewPager);
         pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(1);
+
+        pager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
 
         tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
