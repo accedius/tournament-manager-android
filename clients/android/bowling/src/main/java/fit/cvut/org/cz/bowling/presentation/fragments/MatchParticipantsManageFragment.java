@@ -90,22 +90,18 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
         setHasOptionsMenu(true);
         matchId = getArguments().getLong(ExtraConstants.EXTRA_MATCH_ID, -1);
 
-        if (savedInstanceState != null) {
-            matchParticipants = savedInstanceState.getParcelableArrayList(SAVE_PART);
-        } else {
-            IManagerFactory iManagerFactory = ManagerFactory.getInstance();
-            Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
-            long tournamentId = match.getTournamentId();
-            Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
-            tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
-        }
+        IManagerFactory iManagerFactory = ManagerFactory.getInstance();
+        Match match = iManagerFactory.getEntityManager(Match.class).getById(matchId);
+        long tournamentId = match.getTournamentId();
+        Tournament tournament = iManagerFactory.getEntityManager(Tournament.class).getById(tournamentId);
+        tournamentType = TournamentTypes.getMyTournamentType(tournament.getTypeId());
+
         thisFragment = this;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(SAVE_PART, new ArrayList<>(matchParticipants));
     }
 
     @Override
