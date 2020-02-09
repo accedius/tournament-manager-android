@@ -1,5 +1,6 @@
 package fit.cvut.org.cz.bowling.presentation.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fit.cvut.org.cz.bowling.R;
+import fit.cvut.org.cz.bowling.business.entities.ParticipantSharedViewModel;
 import fit.cvut.org.cz.bowling.data.entities.Match;
 import fit.cvut.org.cz.bowling.data.entities.ParticipantStat;
 import fit.cvut.org.cz.bowling.data.entities.PlayerStat;
@@ -83,6 +85,16 @@ public class ShowMatchActivity extends AbstractTabActivity {
         tabLayout = (TabLayout) findViewById(fit.cvut.org.cz.tmlibrary.R.id.tabs);
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        ParticipantSharedViewModel participantSharedViewModel = ViewModelProviders.of(this).get(ParticipantSharedViewModel.class);
+        resetSharedViewModel(participantSharedViewModel);
+    }
+
+    private void resetSharedViewModel(ParticipantSharedViewModel participantSharedViewModel) {
+        participantSharedViewModel.setToAdd(null);
+        participantSharedViewModel.setToDelete(null);
+        participantSharedViewModel.setToManage(null);
+        participantSharedViewModel.setToChangeStat(null);
     }
 
 
