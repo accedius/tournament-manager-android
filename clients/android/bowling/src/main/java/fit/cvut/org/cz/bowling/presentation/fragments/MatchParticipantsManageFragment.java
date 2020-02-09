@@ -270,7 +270,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 Participant participant = matchParticipants.get(i);
 
                 //Compatibility check, in older generate scripts participantStats weren't being made on match generation -> mb fix by database upgrade script
-                if(participant.getParticipantStats() == null || participant.getParticipantStats().size() < 1) {
+                if(participant.getParticipantStats() == null || participant.getParticipantStats().isEmpty()) {
                     ParticipantStat ps = new ParticipantStat(participant.getId());
                     List<ParticipantStat> participantStats = new ArrayList<>();
                     participantStats.add(ps);
@@ -317,7 +317,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 if (resultCode != AddParticipantsActivity.RESULT_OK)
                     return;
                 ArrayList<Participant> participantsToAdd = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
-                if (participantsToAdd.size() > 0) {
+                if (!participantsToAdd.isEmpty()) {
                     integrateNewParticipants(participantsToAdd);
 
                     participantSharedViewModel.setToAdd(participantsToAdd);

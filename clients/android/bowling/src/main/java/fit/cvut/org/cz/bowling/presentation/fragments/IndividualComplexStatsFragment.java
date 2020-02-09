@@ -393,7 +393,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
         participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
             @Override
             public void onChanged(@Nullable List<Participant> participants) {
-                if(participants != null && participants.size() > 0) {
+                if(participants != null && !participants.isEmpty()) {
                     matchParticipants.addAll(participants);
                     if(participantsFrameOverviews == null) {
                         participantsFrameOverviews = new ArrayList<>();
@@ -771,7 +771,7 @@ public class IndividualComplexStatsFragment extends BowlingAbstractMatchStatsLis
 
             Participant participant = matchParticipants.get(participantSelectedIndex);
             ParticipantStat participantStat = (ParticipantStat) participant.getParticipantStats().get(0);
-            if(frameOverviews.size() > 0) {
+            if(!frameOverviews.isEmpty()) {
                 byte frames = (byte) frameOverviews.size();
                 int score = frameOverviews.get(frames-1).getCurrentScore();
                 participantStat.setScore(score);

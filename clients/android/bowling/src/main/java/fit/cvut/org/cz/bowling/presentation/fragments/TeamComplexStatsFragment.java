@@ -363,7 +363,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
             @Override
             public void onChanged(@Nullable List<Participant> participants) {
-                if(participants != null && participants.size() > 0) {
+                if(participants != null && !participants.isEmpty()) {
                     if(matchParticipants == null) {
                         matchParticipants = new ArrayList<>();
                     }
@@ -438,7 +438,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
 
                 participantSharedViewModel.setToChangeStat(participantToChange);
 
-                if(toRemove.size() > 0) {
+                if(!toRemove.isEmpty()) {
                     removePlayerStatsFromParticipant(toRemove, participantToChange, position);
                 }
                 if(toAdd.size() > 0) {
@@ -499,7 +499,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 }
             }
         }
-        if(ppToRemove.size() > 0) {
+        if(!ppToRemove.isEmpty()) {
             matchParticipantPlayers.removeAll(ppToRemove);
         }
         List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
@@ -562,7 +562,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     protected void bindDataOnView(Intent intent) {
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
-            if (matchParticipants == null || matchParticipants.size() < 1) {
+            if (matchParticipants == null || matchParticipants.isEmpty()) {
                 fab.hide();
             }
             orderParticipantsAndTheirPlayers(matchParticipants);
@@ -575,7 +575,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             return;
         }
 
-        if (matchParticipants.size() < 1) {
+        if (matchParticipants.isEmpty()) {
             fab.hide();
         } else {
             ParticipantPlayer participantPlayer = (ParticipantPlayer) participantSpinner.getSelectedItem();
@@ -859,7 +859,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 bindDataOnView(new Intent());
 
                 int newScore = 0;
-                if(participantPlayer.frameOverviews.size() > 0) {
+                if(!participantPlayer.frameOverviews.isEmpty()) {
                     newScore = participantPlayer.frameOverviews.get(position-1).getCurrentScore();
                 }
 

@@ -169,7 +169,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
         participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
             @Override
             public void onChanged(@Nullable List<Participant> participants) {
-                if(participants != null && participants.size() > 0) {
+                if(participants != null && !participants.isEmpty()) {
                     if(matchParticipants == null) {
                         matchParticipants = new ArrayList<>();
                     }
@@ -302,7 +302,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
         if(matchParticipants == null) {
             matchParticipants = intent.getParcelableArrayListExtra(ExtraConstants.EXTRA_PARTICIPANTS);
             for(Participant participant : matchParticipants) {
-                if(participant.getParticipantStats() == null || participant.getParticipantStats().size() < 1) {
+                if(participant.getParticipantStats() == null || participant.getParticipantStats().isEmpty()) {
                     List<ParticipantStat> participantStats = new ArrayList<>();
                     ParticipantStat participantStat = new ParticipantStat(participant.getId(), 0, (byte) 0);
                     participantStats.add(participantStat);
@@ -313,7 +313,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             bindParticipantsOnSpinner();
             return;
         }
-        if(matchParticipants.size() < 1) {
+        if(matchParticipants.isEmpty()) {
             switchRecyclerViewsProgressBar();
         }
 

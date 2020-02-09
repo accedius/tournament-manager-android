@@ -152,7 +152,7 @@ public class MatchManager extends BaseManager<Match> implements IMatchManager {
             // In case of lanes > players
             if(players.size() == 1) {
                 split = 1;
-            } else if(players.size() < 1) {
+            } else if(players.isEmpty()) {
                 break;
             }
 

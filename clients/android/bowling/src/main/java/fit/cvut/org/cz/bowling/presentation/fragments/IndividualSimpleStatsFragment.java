@@ -161,7 +161,7 @@ public class IndividualSimpleStatsFragment extends  BowlingAbstractMatchStatsLis
         participantSharedViewModel.getToAdd().observe(getViewLifecycleOwner(), new Observer<List<Participant>>() {
             @Override
             public void onChanged(@Nullable List<Participant> participants) {
-                if(participants != null && participants.size() > 0) {
+                if(participants != null && !participants.isEmpty()) {
                     matchParticipants.addAll(participants);
                     bindDataOnView(new Intent());
                 }

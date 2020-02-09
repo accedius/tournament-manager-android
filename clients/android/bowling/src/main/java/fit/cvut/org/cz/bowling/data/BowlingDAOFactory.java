@@ -424,13 +424,13 @@ public class BowlingDAOFactory extends DAOFactory implements IDAOFactory {
                  long realParticipantId = participant.getParticipantId();
                  List<ParticipantStat> participantStats = (List<ParticipantStat>) participant.getParticipantStats();
                  List<PlayerStat> playerStats = (List<PlayerStat>) participant.getPlayerStats();
-                 if(participantStats.size() < 1) {
+                 if(participantStats.isEmpty()) {
                      Log.d("BowlingDAOFactory", "upgradeFrom9To10: adding participantStat for " + participant.getName() + " in match with Id = " + matchId);
                      ParticipantStat participantStat = new ParticipantStat(participantId);
                      participantStats.add(participantStat);
                      participantStatManager.insert(participantStat);
                  }
-                 if(playerStats.size() < 1) {
+                 if(playerStats.isEmpty()) {
                      Tournament tournament = tournamentManager.getById(rawMatch.getTournamentId());
                      if(tournament.getTypeId() == TournamentTypes.type_individuals) {
                          Log.d("BowlingDAOFactory", "upgradeFrom9To10: adding playerStat for " + participant.getName() + " in match for individuals (must be so) with Id = " + matchId + ", tournament name is " + tournament.getName());
