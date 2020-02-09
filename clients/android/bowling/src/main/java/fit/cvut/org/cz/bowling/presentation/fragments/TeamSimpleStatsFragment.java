@@ -45,6 +45,7 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
     protected static List<Participant> matchParticipants;
     protected long matchId;
     private Spinner participantSpinner;
+    int selectedSpinnerItemIndex;
     private ArrayAdapter<Participant> participantSpinnerAdapter;
     private Fragment thisFragment;
 
@@ -335,11 +336,11 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
             participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
         participantSpinner.setAdapter(participantSpinnerAdapter);
+        participantSpinner.setSelection(selectedSpinnerItemIndex);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /*ArrayList<PlayerStat> playerStatsToShow = (ArrayList<PlayerStat>) ((Participant) parent.getSelectedItem()).getPlayerStats();
-                intent.putParcelableArrayListExtra(getDataKey(), playerStatsToShow);*/
+                selectedSpinnerItemIndex = position;
                 switchRecyclerViewsProgressBar();
                 bindDataOnView(new Intent());
             }

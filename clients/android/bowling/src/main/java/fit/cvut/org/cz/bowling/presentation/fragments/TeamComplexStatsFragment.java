@@ -58,6 +58,7 @@ import fit.cvut.org.cz.tmlibrary.presentation.adapters.AbstractListAdapter;
 public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragment<FrameOverview> {
     private BroadcastReceiver participantReceiver = new ParticipantReceiver();
     private Spinner participantSpinner;
+    int selectedSpinnerItemIndex;
     ParticipantPlayerAdapter participantSpinnerAdapter;
     protected static List<Participant> matchParticipants;
     protected static List<ParticipantPlayer> matchParticipantPlayers;
@@ -724,11 +725,14 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
             }
             participantSpinnerAdapter = new ParticipantPlayerAdapter(getContext(), android.R.layout.simple_spinner_item, matchParticipantPlayers);
             participantSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selectedSpinnerItemIndex = 0;
         }
         participantSpinner.setAdapter(participantSpinnerAdapter);
+        participantSpinner.setSelection(selectedSpinnerItemIndex);
         participantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSpinnerItemIndex = position;
                 bindDataOnView(new Intent());
             }
 
