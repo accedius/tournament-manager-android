@@ -343,7 +343,12 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 List<Player> teamPlayers = data.getParcelableArrayListExtra(ExtraConstants.EXTRA_DATA);
                 setTeamPlayers(teamPlayers);
 
-                Participant managedTeam = matchParticipants.get(managedParticipantPosition);
+                Participant localManagedTeam = matchParticipants.get(managedParticipantPosition);
+
+                Participant managedTeam = new Participant(localManagedTeam);
+                List<PlayerStat> playerStats = new ArrayList<>( (List<PlayerStat>) localManagedTeam.getPlayerStats());
+                managedTeam.setPlayerStats(playerStats);
+
                 participantSharedViewModel.setToManage(managedTeam);
 
                 break;
@@ -377,6 +382,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
     private void integrateNewParticipants(List<Participant> newParticipants) {
         IManagerFactory managerFactory = ManagerFactory.getInstance(getContext());
+        List<Participant> localParticipants = new ArrayList<>();
         switch (tournamentType.id) {
             case TournamentTypes.type_individuals:
                 for (Participant newParticipant : newParticipants) {
@@ -395,6 +401,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
 
                     participantStatOverviews.add(ps);
                 }
+                localParticipants = newParticipants;
                 break;
             case TournamentTypes.type_teams:
                 for (Participant newParticipant : newParticipants) {
@@ -402,16 +409,27 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                     Team participantTeam = teamManager.getById(newParticipant.getParticipantId());
                     List<Player> teamPlayers = participantTeam.getPlayers();
                     List<PlayerStat> participantsPlayerStats = new ArrayList<>();
+
+                    Participant localParticipant = new Participant(newParticipant);
+                    List<PlayerStat> localParticipantsPlayerStats = new ArrayList<>();
+
                     String name = newParticipant.getName();
                     for (Player teamPlayer : teamPlayers) {
                         PlayerStat individualStat = new PlayerStat(-1, teamPlayer.getId());
                         individualStat.setName(teamPlayer.getName());
                         individualStat.setParticipantName(name);
                         participantsPlayerStats.add(individualStat);
+
+                        PlayerStat localIndividualStat = new PlayerStat(individualStat);
+                        localParticipantsPlayerStats.add(localIndividualStat);
                     }
                     newParticipant.setPlayerStats(participantsPlayerStats);
+                    localParticipant.setPlayerStats(localParticipantsPlayerStats);
 
                     setDefaultParticipantStat(newParticipant);
+                    setDefaultParticipantStat(localParticipant);
+
+                    localParticipants.add(localParticipant);
 
                     long participantId = newParticipant.getParticipantId();
                     ParticipantOverview ps = new ParticipantOverview(-1, participantId, name, 0, (byte) 0);
@@ -421,7 +439,7 @@ public class MatchParticipantsManageFragment extends AbstractDataFragment {
                 break;
         }
 
-        matchParticipants.addAll(newParticipants);
+        matchParticipants.addAll(localParticipants);
     }
 
     private void setDefaultParticipantStat(Participant participant) {

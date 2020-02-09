@@ -234,14 +234,18 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
                         int frames = participantStat.getFramesPlayedNumber() - playerStat.getFramesPlayedNumber();
                         participantStat.setScore(score);
                         participantStat.setFramesPlayedNumber((byte) frames);
-                        toRemove.add(playerStat);
+                        toRemove.add(new PlayerStat(playerStat) );
                     }
                 }
 
                 participantSharedViewModel.setToChangeStat(participantToChange);
 
-                removePlayerStatsFromParticipant(toRemove, participantToChange);
-                addPlayerStatsToParticipant(toAdd, participantToChange);
+                if(!toRemove.isEmpty()) {
+                    removePlayerStatsFromParticipant(toRemove, participantToChange);
+                }
+                if(!toAdd.isEmpty()) {
+                    addPlayerStatsToParticipant(toAdd, participantToChange);
+                }
 
                 bindDataOnView(new Intent());
             }
@@ -256,8 +260,20 @@ public class TeamSimpleStatsFragment extends BowlingAbstractMatchStatsListFragme
 
     private void removePlayerStatsFromParticipant(List<PlayerStat> toRemove, Participant participant) {
         List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
-        stats.removeAll(toRemove);
-        participant.setPlayerStats(stats);
+        List<PlayerStat> newStats = new ArrayList<>();
+        for(PlayerStat playerStat : stats) {
+            boolean isToStay = true;
+            for(PlayerStat playerStatToRemove : toRemove) {
+                if(playerStat.getPlayerId() == playerStatToRemove.getPlayerId()) {
+                    isToStay = false;
+                    break;
+                }
+            }
+            if(isToStay){
+                newStats.add(playerStat);
+            }
+        }
+        participant.setPlayerStats(newStats);
     }
 
     private boolean removeParticipant(Participant participantToRemove) {

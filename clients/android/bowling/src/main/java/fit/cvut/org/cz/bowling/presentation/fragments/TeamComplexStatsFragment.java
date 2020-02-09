@@ -278,7 +278,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if ( newState == RecyclerView.SCROLL_STATE_IDLE && matchParticipants != null && matchParticipants.size() > 0 && ((ParticipantPlayer) participantSpinner.getSelectedItem()).frameOverviews.size() != maxFramesPerPlayer ) {
+                    if ( newState == RecyclerView.SCROLL_STATE_IDLE && matchParticipants != null && !matchParticipants.isEmpty() && ((ParticipantPlayer) participantSpinner.getSelectedItem()).frameOverviews.size() != maxFramesPerPlayer ) {
                         fab.show();
                     } else {
                         fab.hide();
@@ -422,7 +422,7 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                     if(actionMap.get(playerId) != null) {
                         actionMap.put(playerId, new Pair<>(stay, null));
                     } else {
-                        toAdd.add(newPlayerStat);
+                        toAdd.add( new PlayerStat(newPlayerStat) );
                     }
                 }
 
@@ -433,21 +433,24 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
                         int frames = participantStat.getFramesPlayedNumber() - playerStat.getFramesPlayedNumber();
                         participantStat.setScore(score);
                         participantStat.setFramesPlayedNumber((byte) frames);
-                        toRemove.add(playerStat);
+                        toRemove.add(new PlayerStat(playerStat));
                     }
                 }
 
                 participantSharedViewModel.setToChangeStat(participantToChange);
+                participantToChange.getPlayerStats();
 
                 if(!toRemove.isEmpty()) {
                     removePlayerStatsFromParticipant(toRemove, participantToChange, position);
                 }
-                if(toAdd.size() > 0) {
+                participantToChange.getPlayerStats();
+                if(!toAdd.isEmpty()) {
                     addPlayerStatsToParticipant(toAdd, participantToChange, position);
                 }
-
+                participantToChange.getPlayerStats();
                 participantSpinnerAdapter = null;
                 bindParticipantsOnSpinner();
+                participantToChange.getPlayerStats();
             }
         });
     }
@@ -489,6 +492,22 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
     }
 
     private void removePlayerStatsFromParticipant(List<PlayerStat> toRemove, Participant participant, int position) {
+        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
+        List<PlayerStat> newStats = new ArrayList<>();
+        for(PlayerStat playerStat : stats) {
+            boolean isToStay = true;
+            for(PlayerStat playerStatToRemove : toRemove) {
+                if(playerStat.getPlayerId() == playerStatToRemove.getPlayerId()) {
+                    isToStay = false;
+                    break;
+                }
+            }
+            if(isToStay){
+                newStats.add(playerStat);
+            }
+        }
+        participant.setPlayerStats(newStats);
+
         List<ParticipantPlayer> ppToRemove = new ArrayList<>();
         for(ParticipantPlayer participantPlayer : matchParticipantPlayers) {
             if(participantPlayer.matchParticipantReferencePosition == position) {
@@ -503,9 +522,6 @@ public class TeamComplexStatsFragment extends BowlingAbstractMatchStatsListFragm
         if(!ppToRemove.isEmpty()) {
             matchParticipantPlayers.removeAll(ppToRemove);
         }
-        List<PlayerStat> stats = (List<PlayerStat>) participant.getPlayerStats();
-        stats.removeAll(toRemove);
-        participant.setPlayerStats(stats);
     }
 
     private boolean removeParticipant(Participant participantToRemove) {
